@@ -108,31 +108,3 @@ func (op *updateFeatureUpdateFeatureOperation) do(ctx context.Context, r *Featur
 
 	return nil
 }
-
-func sendFeatureUpdate(ctx context.Context, req map[string]interface{}, c *Client, u string) error {
-	c.Config.Logger.Infof("Created update: %#v", req)
-	body, err := marshalUpdateFeatureUpdateFeatureRequest(c, req)
-	if err != nil {
-		return err
-	}
-	u, err = dcl.AddQueryParams(u, map[string]string{"updateMask": "membershipSpecs"})
-	if err != nil {
-		return err
-	}
-	resp, err := dcl.SendRequest(ctx, c.Config, "PATCH", u, bytes.NewBuffer(body), c.Config.RetryProvider)
-	if err != nil {
-		return err
-	}
-
-	var o operations.StandardGCPOperation
-	if err := dcl.ParseResponse(resp.Response, &o); err != nil {
-		return err
-	}
-	err = o.Wait(ctx, c.Config, "https://gkehub.googleapis.com/v1/", "GET")
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}

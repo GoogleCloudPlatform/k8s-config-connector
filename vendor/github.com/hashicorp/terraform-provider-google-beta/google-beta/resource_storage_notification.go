@@ -6,6 +6,8 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"google.golang.org/api/storage/v1"
 )
 
@@ -38,7 +40,7 @@ func ResourceStorageNotification() *schema.Resource {
 				Type:             schema.TypeString,
 				Required:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description:      `The Cloud Pub/Sub topic to which this subscription publishes. Expects either the  topic name, assumed to belong to the default GCP provider project, or the project-level name,  i.e. projects/my-gcp-project/topics/my-topic or my-topic. If the project is not set in the provider, you will need to use the project-level name.`,
 			},
 
@@ -89,8 +91,8 @@ func ResourceStorageNotification() *schema.Resource {
 }
 
 func resourceStorageNotificationCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -100,7 +102,7 @@ func resourceStorageNotificationCreate(d *schema.ResourceData, meta interface{})
 	topicName := d.Get("topic").(string)
 	computedTopicName := getComputedTopicName("", topicName)
 	if computedTopicName != topicName {
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return err
 		}
@@ -108,7 +110,7 @@ func resourceStorageNotificationCreate(d *schema.ResourceData, meta interface{})
 	}
 
 	storageNotification := &storage.Notification{
-		CustomAttributes: expandStringMap(d, "custom_attributes"),
+		CustomAttributes: tpgresource.ExpandStringMap(d, "custom_attributes"),
 		EventTypes:       convertStringSet(d.Get("event_types").(*schema.Set)),
 		ObjectNamePrefix: d.Get("object_name_prefix").(string),
 		PayloadFormat:    d.Get("payload_format").(string),
@@ -126,8 +128,8 @@ func resourceStorageNotificationCreate(d *schema.ResourceData, meta interface{})
 }
 
 func resourceStorageNotificationRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -136,7 +138,7 @@ func resourceStorageNotificationRead(d *schema.ResourceData, meta interface{}) e
 
 	res, err := config.NewStorageClient(userAgent).Notifications.Get(bucket, notificationID).Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Notification configuration %s for bucket %s", notificationID, bucket))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Notification configuration %s for bucket %s", notificationID, bucket))
 	}
 
 	if err := d.Set("bucket", bucket); err != nil {
@@ -168,8 +170,8 @@ func resourceStorageNotificationRead(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceStorageNotificationDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

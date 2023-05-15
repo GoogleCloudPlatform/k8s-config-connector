@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceWorkstationsWorkstation() *schema.Resource {
@@ -46,19 +49,19 @@ func ResourceWorkstationsWorkstation() *schema.Resource {
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    true,
-				Description: `The location where the workstation cluster config should reside.`,
+				Description: `The location where the workstation parent resources reside.`,
 			},
 			"workstation_cluster_id": {
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    true,
-				Description: `The name of the workstation cluster.`,
+				Description: `The ID of the parent workstation cluster.`,
 			},
 			"workstation_config_id": {
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    true,
-				Description: `The ID of the workstation cluster config.`,
+				Description: `The ID of the parent workstation cluster config.`,
 			},
 			"workstation_id": {
 				Type:        schema.TypeString,
@@ -86,19 +89,19 @@ func ResourceWorkstationsWorkstation() *schema.Resource {
 			"create_time": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: `Time the Instance was created in UTC.`,
+				Description: `Time when this resource was created.`,
 			},
 			"host": {
 				Type:     schema.TypeString,
 				Computed: true,
-				Description: `Host to which clients can send HTTPS traffic that will be received by the workstation. 
-Authorized traffic will be received to the workstation as HTTP on port 80. 
+				Description: `Host to which clients can send HTTPS traffic that will be received by the workstation.
+Authorized traffic will be received to the workstation as HTTP on port 80.
 To send traffic to a different port, clients may prefix the host with the destination port in the format "{port}-{host}".`,
 			},
 			"name": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: `The name of the cluster resource.`,
+				Description: `Full name of this resource.`,
 			},
 			"state": {
 				Type:        schema.TypeString,
@@ -108,7 +111,7 @@ To send traffic to a different port, clients may prefix the host with the destin
 			"uid": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: `The system-generated UID of the resource.`,
+				Description: `A system-assigned unique identified for this resource.`,
 			},
 			"project": {
 				Type:     schema.TypeString,
@@ -122,8 +125,8 @@ To send traffic to a different port, clients may prefix the host with the destin
 }
 
 func resourceWorkstationsWorkstationCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -132,23 +135,23 @@ func resourceWorkstationsWorkstationCreate(d *schema.ResourceData, meta interfac
 	displayNameProp, err := expandWorkstationsWorkstationDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	labelsProp, err := expandWorkstationsWorkstationLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	annotationsProp, err := expandWorkstationsWorkstationAnnotations(d.Get("annotations"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("annotations"); !isEmptyValue(reflect.ValueOf(annotationsProp)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
+	} else if v, ok := d.GetOkExists("annotations"); !tpgresource.IsEmptyValue(reflect.ValueOf(annotationsProp)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
 		obj["annotations"] = annotationsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{WorkstationsBasePath}}projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations?workstationId={{workstation_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{WorkstationsBasePath}}projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations?workstationId={{workstation_id}}")
 	if err != nil {
 		return err
 	}
@@ -156,24 +159,24 @@ func resourceWorkstationsWorkstationCreate(d *schema.ResourceData, meta interfac
 	log.Printf("[DEBUG] Creating new Workstation: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Workstation: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Workstation: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations/{{workstation_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations/{{workstation_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -195,33 +198,33 @@ func resourceWorkstationsWorkstationCreate(d *schema.ResourceData, meta interfac
 }
 
 func resourceWorkstationsWorkstationRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{WorkstationsBasePath}}projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations/{{workstation_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{WorkstationsBasePath}}projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations/{{workstation_id}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Workstation: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("WorkstationsWorkstation %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("WorkstationsWorkstation %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -257,15 +260,15 @@ func resourceWorkstationsWorkstationRead(d *schema.ResourceData, meta interface{
 }
 
 func resourceWorkstationsWorkstationUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Workstation: %s", err)
 	}
@@ -275,23 +278,23 @@ func resourceWorkstationsWorkstationUpdate(d *schema.ResourceData, meta interfac
 	displayNameProp, err := expandWorkstationsWorkstationDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	labelsProp, err := expandWorkstationsWorkstationLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	annotationsProp, err := expandWorkstationsWorkstationAnnotations(d.Get("annotations"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("annotations"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
+	} else if v, ok := d.GetOkExists("annotations"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
 		obj["annotations"] = annotationsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{WorkstationsBasePath}}projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations/{{workstation_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{WorkstationsBasePath}}projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations/{{workstation_id}}")
 	if err != nil {
 		return err
 	}
@@ -312,17 +315,17 @@ func resourceWorkstationsWorkstationUpdate(d *schema.ResourceData, meta interfac
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Workstation %q: %s", d.Id(), err)
@@ -342,21 +345,21 @@ func resourceWorkstationsWorkstationUpdate(d *schema.ResourceData, meta interfac
 }
 
 func resourceWorkstationsWorkstationDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Workstation: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{WorkstationsBasePath}}projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations/{{workstation_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{WorkstationsBasePath}}projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations/{{workstation_id}}")
 	if err != nil {
 		return err
 	}
@@ -365,13 +368,13 @@ func resourceWorkstationsWorkstationDelete(d *schema.ResourceData, meta interfac
 	log.Printf("[DEBUG] Deleting Workstation %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Workstation")
+		return transport_tpg.HandleNotFoundError(err, d, "Workstation")
 	}
 
 	err = WorkstationsOperationWaitTime(
@@ -387,7 +390,7 @@ func resourceWorkstationsWorkstationDelete(d *schema.ResourceData, meta interfac
 }
 
 func resourceWorkstationsWorkstationImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/workstationClusters/(?P<workstation_cluster_id>[^/]+)/workstationConfigs/(?P<workstation_config_id>[^/]+)/workstations/(?P<workstation_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<workstation_cluster_id>[^/]+)/(?P<workstation_config_id>[^/]+)/(?P<workstation_id>[^/]+)",
@@ -397,7 +400,7 @@ func resourceWorkstationsWorkstationImport(d *schema.ResourceData, meta interfac
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations/{{workstation_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations/{{workstation_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -406,43 +409,43 @@ func resourceWorkstationsWorkstationImport(d *schema.ResourceData, meta interfac
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenWorkstationsWorkstationName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenWorkstationsWorkstationName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenWorkstationsWorkstationUid(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenWorkstationsWorkstationUid(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenWorkstationsWorkstationDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenWorkstationsWorkstationDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenWorkstationsWorkstationLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenWorkstationsWorkstationLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenWorkstationsWorkstationAnnotations(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenWorkstationsWorkstationAnnotations(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenWorkstationsWorkstationCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenWorkstationsWorkstationCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenWorkstationsWorkstationHost(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenWorkstationsWorkstationHost(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenWorkstationsWorkstationState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenWorkstationsWorkstationState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandWorkstationsWorkstationDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandWorkstationsWorkstationDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandWorkstationsWorkstationLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandWorkstationsWorkstationLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -453,7 +456,7 @@ func expandWorkstationsWorkstationLabels(v interface{}, d TerraformResourceData,
 	return m, nil
 }
 
-func expandWorkstationsWorkstationAnnotations(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandWorkstationsWorkstationAnnotations(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}

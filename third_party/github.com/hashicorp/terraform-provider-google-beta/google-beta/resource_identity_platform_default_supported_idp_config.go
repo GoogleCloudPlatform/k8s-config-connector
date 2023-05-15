@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceIdentityPlatformDefaultSupportedIdpConfig() *schema.Resource {
@@ -100,8 +103,8 @@ func ResourceIdentityPlatformDefaultSupportedIdpConfig() *schema.Resource {
 }
 
 func resourceIdentityPlatformDefaultSupportedIdpConfigCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -110,23 +113,23 @@ func resourceIdentityPlatformDefaultSupportedIdpConfigCreate(d *schema.ResourceD
 	clientIdProp, err := expandIdentityPlatformDefaultSupportedIdpConfigClientId(d.Get("client_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("client_id"); !isEmptyValue(reflect.ValueOf(clientIdProp)) && (ok || !reflect.DeepEqual(v, clientIdProp)) {
+	} else if v, ok := d.GetOkExists("client_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(clientIdProp)) && (ok || !reflect.DeepEqual(v, clientIdProp)) {
 		obj["clientId"] = clientIdProp
 	}
 	clientSecretProp, err := expandIdentityPlatformDefaultSupportedIdpConfigClientSecret(d.Get("client_secret"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("client_secret"); !isEmptyValue(reflect.ValueOf(clientSecretProp)) && (ok || !reflect.DeepEqual(v, clientSecretProp)) {
+	} else if v, ok := d.GetOkExists("client_secret"); !tpgresource.IsEmptyValue(reflect.ValueOf(clientSecretProp)) && (ok || !reflect.DeepEqual(v, clientSecretProp)) {
 		obj["clientSecret"] = clientSecretProp
 	}
 	enabledProp, err := expandIdentityPlatformDefaultSupportedIdpConfigEnabled(d.Get("enabled"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enabled"); !isEmptyValue(reflect.ValueOf(enabledProp)) && (ok || !reflect.DeepEqual(v, enabledProp)) {
+	} else if v, ok := d.GetOkExists("enabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(enabledProp)) && (ok || !reflect.DeepEqual(v, enabledProp)) {
 		obj["enabled"] = enabledProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/defaultSupportedIdpConfigs?idpId={{idp_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/defaultSupportedIdpConfigs?idpId={{idp_id}}")
 	if err != nil {
 		return err
 	}
@@ -134,18 +137,18 @@ func resourceIdentityPlatformDefaultSupportedIdpConfigCreate(d *schema.ResourceD
 	log.Printf("[DEBUG] Creating new DefaultSupportedIdpConfig: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for DefaultSupportedIdpConfig: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating DefaultSupportedIdpConfig: %s", err)
 	}
@@ -154,7 +157,7 @@ func resourceIdentityPlatformDefaultSupportedIdpConfigCreate(d *schema.ResourceD
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/defaultSupportedIdpConfigs/{{idp_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/defaultSupportedIdpConfigs/{{idp_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -166,33 +169,33 @@ func resourceIdentityPlatformDefaultSupportedIdpConfigCreate(d *schema.ResourceD
 }
 
 func resourceIdentityPlatformDefaultSupportedIdpConfigRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/defaultSupportedIdpConfigs/{{idp_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/defaultSupportedIdpConfigs/{{idp_id}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for DefaultSupportedIdpConfig: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("IdentityPlatformDefaultSupportedIdpConfig %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("IdentityPlatformDefaultSupportedIdpConfig %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -216,15 +219,15 @@ func resourceIdentityPlatformDefaultSupportedIdpConfigRead(d *schema.ResourceDat
 }
 
 func resourceIdentityPlatformDefaultSupportedIdpConfigUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for DefaultSupportedIdpConfig: %s", err)
 	}
@@ -234,23 +237,23 @@ func resourceIdentityPlatformDefaultSupportedIdpConfigUpdate(d *schema.ResourceD
 	clientIdProp, err := expandIdentityPlatformDefaultSupportedIdpConfigClientId(d.Get("client_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("client_id"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, clientIdProp)) {
+	} else if v, ok := d.GetOkExists("client_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, clientIdProp)) {
 		obj["clientId"] = clientIdProp
 	}
 	clientSecretProp, err := expandIdentityPlatformDefaultSupportedIdpConfigClientSecret(d.Get("client_secret"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("client_secret"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, clientSecretProp)) {
+	} else if v, ok := d.GetOkExists("client_secret"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, clientSecretProp)) {
 		obj["clientSecret"] = clientSecretProp
 	}
 	enabledProp, err := expandIdentityPlatformDefaultSupportedIdpConfigEnabled(d.Get("enabled"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enabled"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enabledProp)) {
+	} else if v, ok := d.GetOkExists("enabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enabledProp)) {
 		obj["enabled"] = enabledProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/defaultSupportedIdpConfigs/{{idp_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/defaultSupportedIdpConfigs/{{idp_id}}")
 	if err != nil {
 		return err
 	}
@@ -271,17 +274,17 @@ func resourceIdentityPlatformDefaultSupportedIdpConfigUpdate(d *schema.ResourceD
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating DefaultSupportedIdpConfig %q: %s", d.Id(), err)
@@ -293,21 +296,21 @@ func resourceIdentityPlatformDefaultSupportedIdpConfigUpdate(d *schema.ResourceD
 }
 
 func resourceIdentityPlatformDefaultSupportedIdpConfigDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for DefaultSupportedIdpConfig: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/defaultSupportedIdpConfigs/{{idp_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/defaultSupportedIdpConfigs/{{idp_id}}")
 	if err != nil {
 		return err
 	}
@@ -316,13 +319,13 @@ func resourceIdentityPlatformDefaultSupportedIdpConfigDelete(d *schema.ResourceD
 	log.Printf("[DEBUG] Deleting DefaultSupportedIdpConfig %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "DefaultSupportedIdpConfig")
+		return transport_tpg.HandleNotFoundError(err, d, "DefaultSupportedIdpConfig")
 	}
 
 	log.Printf("[DEBUG] Finished deleting DefaultSupportedIdpConfig %q: %#v", d.Id(), res)
@@ -330,7 +333,7 @@ func resourceIdentityPlatformDefaultSupportedIdpConfigDelete(d *schema.ResourceD
 }
 
 func resourceIdentityPlatformDefaultSupportedIdpConfigImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/defaultSupportedIdpConfigs/(?P<idp_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<idp_id>[^/]+)",
@@ -340,7 +343,7 @@ func resourceIdentityPlatformDefaultSupportedIdpConfigImport(d *schema.ResourceD
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/defaultSupportedIdpConfigs/{{idp_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/defaultSupportedIdpConfigs/{{idp_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -349,30 +352,30 @@ func resourceIdentityPlatformDefaultSupportedIdpConfigImport(d *schema.ResourceD
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenIdentityPlatformDefaultSupportedIdpConfigName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformDefaultSupportedIdpConfigName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIdentityPlatformDefaultSupportedIdpConfigClientId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformDefaultSupportedIdpConfigClientId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIdentityPlatformDefaultSupportedIdpConfigClientSecret(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformDefaultSupportedIdpConfigClientSecret(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIdentityPlatformDefaultSupportedIdpConfigEnabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformDefaultSupportedIdpConfigEnabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandIdentityPlatformDefaultSupportedIdpConfigClientId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformDefaultSupportedIdpConfigClientId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandIdentityPlatformDefaultSupportedIdpConfigClientSecret(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformDefaultSupportedIdpConfigClientSecret(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandIdentityPlatformDefaultSupportedIdpConfigEnabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformDefaultSupportedIdpConfigEnabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

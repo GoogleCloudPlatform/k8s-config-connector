@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceGoogleAppEngineDefaultServiceAccount() *schema.Resource {
@@ -40,27 +42,27 @@ func DataSourceGoogleAppEngineDefaultServiceAccount() *schema.Resource {
 }
 
 func dataSourceGoogleAppEngineDefaultServiceAccountRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
 	serviceAccountEmail := fmt.Sprintf("%s@appspot.gserviceaccount.com", project)
 
-	serviceAccountName, err := serviceAccountFQN(serviceAccountEmail, d, config)
+	serviceAccountName, err := tpgresource.ServiceAccountFQN(serviceAccountEmail, d, config)
 	if err != nil {
 		return err
 	}
 
 	sa, err := config.NewIamClient(userAgent).Projects.ServiceAccounts.Get(serviceAccountName).Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Service Account %q", serviceAccountName))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Service Account %q", serviceAccountName))
 	}
 
 	d.SetId(sa.Name)

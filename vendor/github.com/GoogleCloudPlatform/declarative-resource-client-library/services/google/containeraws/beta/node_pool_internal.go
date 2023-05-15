@@ -93,6 +93,11 @@ func (r *NodePoolConfig) validate() error {
 			return err
 		}
 	}
+	if !dcl.IsEmptyValueIndirect(r.SpotConfig) {
+		if err := r.SpotConfig.validate(); err != nil {
+			return err
+		}
+	}
 	if !dcl.IsEmptyValueIndirect(r.ProxyConfig) {
 		if err := r.ProxyConfig.validate(); err != nil {
 			return err
@@ -133,6 +138,12 @@ func (r *NodePoolConfigConfigEncryption) validate() error {
 }
 func (r *NodePoolConfigSshConfig) validate() error {
 	if err := dcl.Required(r, "ec2KeyPair"); err != nil {
+		return err
+	}
+	return nil
+}
+func (r *NodePoolConfigSpotConfig) validate() error {
+	if err := dcl.Required(r, "instanceTypes"); err != nil {
 		return err
 	}
 	return nil
@@ -784,6 +795,7 @@ func canonicalizeNodePoolConfig(des, initial *NodePoolConfig, opts ...dcl.ApplyO
 	}
 	cDes.ConfigEncryption = canonicalizeNodePoolConfigConfigEncryption(des.ConfigEncryption, initial.ConfigEncryption, opts...)
 	cDes.SshConfig = canonicalizeNodePoolConfigSshConfig(des.SshConfig, initial.SshConfig, opts...)
+	cDes.SpotConfig = canonicalizeNodePoolConfigSpotConfig(des.SpotConfig, initial.SpotConfig, opts...)
 	if dcl.StringArrayCanonicalize(des.SecurityGroupIds, initial.SecurityGroupIds) {
 		cDes.SecurityGroupIds = initial.SecurityGroupIds
 	} else {
@@ -853,6 +865,7 @@ func canonicalizeNewNodePoolConfig(c *Client, des, nw *NodePoolConfig) *NodePool
 	}
 	nw.ConfigEncryption = canonicalizeNewNodePoolConfigConfigEncryption(c, des.ConfigEncryption, nw.ConfigEncryption)
 	nw.SshConfig = canonicalizeNewNodePoolConfigSshConfig(c, des.SshConfig, nw.SshConfig)
+	nw.SpotConfig = canonicalizeNewNodePoolConfigSpotConfig(c, des.SpotConfig, nw.SpotConfig)
 	if dcl.StringArrayCanonicalize(des.SecurityGroupIds, nw.SecurityGroupIds) {
 		nw.SecurityGroupIds = des.SecurityGroupIds
 	}
@@ -1411,6 +1424,124 @@ func canonicalizeNewNodePoolConfigSshConfigSlice(c *Client, des, nw []NodePoolCo
 	for i, d := range des {
 		n := nw[i]
 		items = append(items, *canonicalizeNewNodePoolConfigSshConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeNodePoolConfigSpotConfig(des, initial *NodePoolConfigSpotConfig, opts ...dcl.ApplyOption) *NodePoolConfigSpotConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &NodePoolConfigSpotConfig{}
+
+	if dcl.StringArrayCanonicalize(des.InstanceTypes, initial.InstanceTypes) {
+		cDes.InstanceTypes = initial.InstanceTypes
+	} else {
+		cDes.InstanceTypes = des.InstanceTypes
+	}
+
+	return cDes
+}
+
+func canonicalizeNodePoolConfigSpotConfigSlice(des, initial []NodePoolConfigSpotConfig, opts ...dcl.ApplyOption) []NodePoolConfigSpotConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]NodePoolConfigSpotConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeNodePoolConfigSpotConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]NodePoolConfigSpotConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeNodePoolConfigSpotConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewNodePoolConfigSpotConfig(c *Client, des, nw *NodePoolConfigSpotConfig) *NodePoolConfigSpotConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for NodePoolConfigSpotConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringArrayCanonicalize(des.InstanceTypes, nw.InstanceTypes) {
+		nw.InstanceTypes = des.InstanceTypes
+	}
+
+	return nw
+}
+
+func canonicalizeNewNodePoolConfigSpotConfigSet(c *Client, des, nw []NodePoolConfigSpotConfig) []NodePoolConfigSpotConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NodePoolConfigSpotConfig
+	for _, d := range des {
+		matchedIndex := -1
+		for i, n := range nw {
+			if diffs, _ := compareNodePoolConfigSpotConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedIndex = i
+				break
+			}
+		}
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNodePoolConfigSpotConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
+		}
+	}
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
+
+	return items
+}
+
+func canonicalizeNewNodePoolConfigSpotConfigSlice(c *Client, des, nw []NodePoolConfigSpotConfig) []NodePoolConfigSpotConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []NodePoolConfigSpotConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewNodePoolConfigSpotConfig(c, &d, &n))
 	}
 
 	return items
@@ -2230,6 +2361,13 @@ func compareNodePoolConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.F
 		diffs = append(diffs, ds...)
 	}
 
+	if ds, err := dcl.Diff(desired.SpotConfig, actual.SpotConfig, dcl.DiffInfo{ObjectFunction: compareNodePoolConfigSpotConfigNewStyle, EmptyObject: EmptyNodePoolConfigSpotConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SpotConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
 	if ds, err := dcl.Diff(desired.SecurityGroupIds, actual.SecurityGroupIds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNodePoolUpdateAwsNodePoolOperation")}, fn.AddNest("SecurityGroupIds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
@@ -2410,6 +2548,35 @@ func compareNodePoolConfigSshConfigNewStyle(d, a interface{}, fn dcl.FieldName) 
 	}
 
 	if ds, err := dcl.Diff(desired.Ec2KeyPair, actual.Ec2KeyPair, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNodePoolUpdateAwsNodePoolOperation")}, fn.AddNest("Ec2KeyPair")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareNodePoolConfigSpotConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*NodePoolConfigSpotConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(NodePoolConfigSpotConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a NodePoolConfigSpotConfig or *NodePoolConfigSpotConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*NodePoolConfigSpotConfig)
+	if !ok {
+		actualNotPointer, ok := a.(NodePoolConfigSpotConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a NodePoolConfigSpotConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.InstanceTypes, actual.InstanceTypes, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceTypes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2852,6 +3019,11 @@ func expandNodePoolConfig(c *Client, f *NodePoolConfig, res *NodePool) (map[stri
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["sshConfig"] = v
 	}
+	if v, err := expandNodePoolConfigSpotConfig(c, f.SpotConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding SpotConfig into spotConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["spotConfig"] = v
+	}
 	if v := f.SecurityGroupIds; v != nil {
 		m["securityGroupIds"] = v
 	}
@@ -2898,6 +3070,7 @@ func flattenNodePoolConfig(c *Client, i interface{}, res *NodePool) *NodePoolCon
 	r.IamInstanceProfile = dcl.FlattenString(m["iamInstanceProfile"])
 	r.ConfigEncryption = flattenNodePoolConfigConfigEncryption(c, m["configEncryption"], res)
 	r.SshConfig = flattenNodePoolConfigSshConfig(c, m["sshConfig"], res)
+	r.SpotConfig = flattenNodePoolConfigSpotConfig(c, m["spotConfig"], res)
 	r.SecurityGroupIds = dcl.FlattenStringSlice(m["securityGroupIds"])
 	r.ProxyConfig = flattenNodePoolConfigProxyConfig(c, m["proxyConfig"], res)
 	r.InstancePlacement = flattenNodePoolConfigInstancePlacement(c, m["instancePlacement"], res)
@@ -3379,6 +3552,120 @@ func flattenNodePoolConfigSshConfig(c *Client, i interface{}, res *NodePool) *No
 		return EmptyNodePoolConfigSshConfig
 	}
 	r.Ec2KeyPair = dcl.FlattenString(m["ec2KeyPair"])
+
+	return r
+}
+
+// expandNodePoolConfigSpotConfigMap expands the contents of NodePoolConfigSpotConfig into a JSON
+// request object.
+func expandNodePoolConfigSpotConfigMap(c *Client, f map[string]NodePoolConfigSpotConfig, res *NodePool) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandNodePoolConfigSpotConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandNodePoolConfigSpotConfigSlice expands the contents of NodePoolConfigSpotConfig into a JSON
+// request object.
+func expandNodePoolConfigSpotConfigSlice(c *Client, f []NodePoolConfigSpotConfig, res *NodePool) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandNodePoolConfigSpotConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenNodePoolConfigSpotConfigMap flattens the contents of NodePoolConfigSpotConfig from a JSON
+// response object.
+func flattenNodePoolConfigSpotConfigMap(c *Client, i interface{}, res *NodePool) map[string]NodePoolConfigSpotConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]NodePoolConfigSpotConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]NodePoolConfigSpotConfig{}
+	}
+
+	items := make(map[string]NodePoolConfigSpotConfig)
+	for k, item := range a {
+		items[k] = *flattenNodePoolConfigSpotConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenNodePoolConfigSpotConfigSlice flattens the contents of NodePoolConfigSpotConfig from a JSON
+// response object.
+func flattenNodePoolConfigSpotConfigSlice(c *Client, i interface{}, res *NodePool) []NodePoolConfigSpotConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []NodePoolConfigSpotConfig{}
+	}
+
+	if len(a) == 0 {
+		return []NodePoolConfigSpotConfig{}
+	}
+
+	items := make([]NodePoolConfigSpotConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenNodePoolConfigSpotConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandNodePoolConfigSpotConfig expands an instance of NodePoolConfigSpotConfig into a JSON
+// request object.
+func expandNodePoolConfigSpotConfig(c *Client, f *NodePoolConfigSpotConfig, res *NodePool) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.InstanceTypes; v != nil {
+		m["instanceTypes"] = v
+	}
+
+	return m, nil
+}
+
+// flattenNodePoolConfigSpotConfig flattens an instance of NodePoolConfigSpotConfig from a JSON
+// response object.
+func flattenNodePoolConfigSpotConfig(c *Client, i interface{}, res *NodePool) *NodePoolConfigSpotConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &NodePoolConfigSpotConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyNodePoolConfigSpotConfig
+	}
+	r.InstanceTypes = dcl.FlattenStringSlice(m["instanceTypes"])
 
 	return r
 }
@@ -4340,6 +4627,17 @@ func extractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if !dcl.IsEmptyValueIndirect(vSshConfig) {
 		o.SshConfig = vSshConfig
 	}
+	vSpotConfig := o.SpotConfig
+	if vSpotConfig == nil {
+		// note: explicitly not the empty object.
+		vSpotConfig = &NodePoolConfigSpotConfig{}
+	}
+	if err := extractNodePoolConfigSpotConfigFields(r, vSpotConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vSpotConfig) {
+		o.SpotConfig = vSpotConfig
+	}
 	vProxyConfig := o.ProxyConfig
 	if vProxyConfig == nil {
 		// note: explicitly not the empty object.
@@ -4385,6 +4683,9 @@ func extractNodePoolConfigConfigEncryptionFields(r *NodePool, o *NodePoolConfigC
 	return nil
 }
 func extractNodePoolConfigSshConfigFields(r *NodePool, o *NodePoolConfigSshConfig) error {
+	return nil
+}
+func extractNodePoolConfigSpotConfigFields(r *NodePool, o *NodePoolConfigSpotConfig) error {
 	return nil
 }
 func extractNodePoolConfigProxyConfigFields(r *NodePool, o *NodePoolConfigProxyConfig) error {
@@ -4473,6 +4774,17 @@ func postReadExtractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if !dcl.IsEmptyValueIndirect(vSshConfig) {
 		o.SshConfig = vSshConfig
 	}
+	vSpotConfig := o.SpotConfig
+	if vSpotConfig == nil {
+		// note: explicitly not the empty object.
+		vSpotConfig = &NodePoolConfigSpotConfig{}
+	}
+	if err := extractNodePoolConfigSpotConfigFields(r, vSpotConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vSpotConfig) {
+		o.SpotConfig = vSpotConfig
+	}
 	vProxyConfig := o.ProxyConfig
 	if vProxyConfig == nil {
 		// note: explicitly not the empty object.
@@ -4518,6 +4830,9 @@ func postReadExtractNodePoolConfigConfigEncryptionFields(r *NodePool, o *NodePoo
 	return nil
 }
 func postReadExtractNodePoolConfigSshConfigFields(r *NodePool, o *NodePoolConfigSshConfig) error {
+	return nil
+}
+func postReadExtractNodePoolConfigSpotConfigFields(r *NodePool, o *NodePoolConfigSpotConfig) error {
 	return nil
 }
 func postReadExtractNodePoolConfigProxyConfigFields(r *NodePool, o *NodePoolConfigProxyConfig) error {

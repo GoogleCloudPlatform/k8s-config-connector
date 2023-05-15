@@ -21,6 +21,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceMonitoringMetricDescriptor() *schema.Resource {
@@ -57,7 +61,7 @@ func ResourceMonitoringMetricDescriptor() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"METRIC_KIND_UNSPECIFIED", "GAUGE", "DELTA", "CUMULATIVE"}),
+				ValidateFunc: verify.ValidateEnum([]string{"METRIC_KIND_UNSPECIFIED", "GAUGE", "DELTA", "CUMULATIVE"}),
 				Description:  `Whether the metric records instantaneous values, changes to a value, etc. Some combinations of metricKind and valueType might not be supported. Possible values: ["METRIC_KIND_UNSPECIFIED", "GAUGE", "DELTA", "CUMULATIVE"]`,
 			},
 			"type": {
@@ -70,7 +74,7 @@ func ResourceMonitoringMetricDescriptor() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"BOOL", "INT64", "DOUBLE", "STRING", "DISTRIBUTION"}),
+				ValidateFunc: verify.ValidateEnum([]string{"BOOL", "INT64", "DOUBLE", "STRING", "DISTRIBUTION"}),
 				Description:  `Whether the measurement is an integer, a floating-point number, etc. Some combinations of metricKind and valueType might not be supported. Possible values: ["BOOL", "INT64", "DOUBLE", "STRING", "DISTRIBUTION"]`,
 			},
 			"labels": {
@@ -84,7 +88,7 @@ func ResourceMonitoringMetricDescriptor() *schema.Resource {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"LAUNCH_STAGE_UNSPECIFIED", "UNIMPLEMENTED", "PRELAUNCH", "EARLY_ACCESS", "ALPHA", "BETA", "GA", "DEPRECATED", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"LAUNCH_STAGE_UNSPECIFIED", "UNIMPLEMENTED", "PRELAUNCH", "EARLY_ACCESS", "ALPHA", "BETA", "GA", "DEPRECATED", ""}),
 				Description:  `The launch stage of the metric definition. Possible values: ["LAUNCH_STAGE_UNSPECIFIED", "UNIMPLEMENTED", "PRELAUNCH", "EARLY_ACCESS", "ALPHA", "BETA", "GA", "DEPRECATED"]`,
 			},
 			"metadata": {
@@ -136,12 +140,13 @@ More info can be found in the API documentation
 (https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors).`,
 			},
 			"monitored_resource_types": {
-				Type:        schema.TypeList,
+				Type:        schema.TypeSet,
 				Computed:    true,
 				Description: `If present, then a time series, which is identified partially by a metric type and a MonitoredResourceDescriptor, that is associated with this metric type can only be associated with one of the monitored resource types listed here. This field allows time series to be associated with the intersection of this metric type and the monitored resource types in this list.`,
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
 				},
+				Set: schema.HashString,
 			},
 			"name": {
 				Type:        schema.TypeString,
@@ -175,7 +180,7 @@ func monitoringMetricDescriptorLabelsSchema() *schema.Resource {
 			"value_type": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"STRING", "BOOL", "INT64", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"STRING", "BOOL", "INT64", ""}),
 				Description:  `The type of data that can be assigned to the label. Default value: "STRING" Possible values: ["STRING", "BOOL", "INT64"]`,
 				Default:      "STRING",
 			},
@@ -184,8 +189,8 @@ func monitoringMetricDescriptorLabelsSchema() *schema.Resource {
 }
 
 func resourceMonitoringMetricDescriptorCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -194,59 +199,59 @@ func resourceMonitoringMetricDescriptorCreate(d *schema.ResourceData, meta inter
 	typeProp, err := expandMonitoringMetricDescriptorType(d.Get("type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("type"); !isEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
+	} else if v, ok := d.GetOkExists("type"); !tpgresource.IsEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
 		obj["type"] = typeProp
 	}
 	labelsProp, err := expandMonitoringMetricDescriptorLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	metricKindProp, err := expandMonitoringMetricDescriptorMetricKind(d.Get("metric_kind"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("metric_kind"); !isEmptyValue(reflect.ValueOf(metricKindProp)) && (ok || !reflect.DeepEqual(v, metricKindProp)) {
+	} else if v, ok := d.GetOkExists("metric_kind"); !tpgresource.IsEmptyValue(reflect.ValueOf(metricKindProp)) && (ok || !reflect.DeepEqual(v, metricKindProp)) {
 		obj["metricKind"] = metricKindProp
 	}
 	valueTypeProp, err := expandMonitoringMetricDescriptorValueType(d.Get("value_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("value_type"); !isEmptyValue(reflect.ValueOf(valueTypeProp)) && (ok || !reflect.DeepEqual(v, valueTypeProp)) {
+	} else if v, ok := d.GetOkExists("value_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(valueTypeProp)) && (ok || !reflect.DeepEqual(v, valueTypeProp)) {
 		obj["valueType"] = valueTypeProp
 	}
 	unitProp, err := expandMonitoringMetricDescriptorUnit(d.Get("unit"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("unit"); !isEmptyValue(reflect.ValueOf(unitProp)) && (ok || !reflect.DeepEqual(v, unitProp)) {
+	} else if v, ok := d.GetOkExists("unit"); !tpgresource.IsEmptyValue(reflect.ValueOf(unitProp)) && (ok || !reflect.DeepEqual(v, unitProp)) {
 		obj["unit"] = unitProp
 	}
 	descriptionProp, err := expandMonitoringMetricDescriptorDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	displayNameProp, err := expandMonitoringMetricDescriptorDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	metadataProp, err := expandMonitoringMetricDescriptorMetadata(d.Get("metadata"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("metadata"); !isEmptyValue(reflect.ValueOf(metadataProp)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
+	} else if v, ok := d.GetOkExists("metadata"); !tpgresource.IsEmptyValue(reflect.ValueOf(metadataProp)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
 		obj["metadata"] = metadataProp
 	}
 	launchStageProp, err := expandMonitoringMetricDescriptorLaunchStage(d.Get("launch_stage"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("launch_stage"); !isEmptyValue(reflect.ValueOf(launchStageProp)) && (ok || !reflect.DeepEqual(v, launchStageProp)) {
+	} else if v, ok := d.GetOkExists("launch_stage"); !tpgresource.IsEmptyValue(reflect.ValueOf(launchStageProp)) && (ok || !reflect.DeepEqual(v, launchStageProp)) {
 		obj["launchStage"] = launchStageProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/projects/{{project}}/metricDescriptors")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/projects/{{project}}/metricDescriptors")
 	if err != nil {
 		return err
 	}
@@ -254,18 +259,18 @@ func resourceMonitoringMetricDescriptorCreate(d *schema.ResourceData, meta inter
 	log.Printf("[DEBUG] Creating new MetricDescriptor: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for MetricDescriptor: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), transport_tpg.IsMonitoringConcurrentEditError)
 	if err != nil {
 		return fmt.Errorf("Error creating MetricDescriptor: %s", err)
 	}
@@ -274,7 +279,7 @@ func resourceMonitoringMetricDescriptorCreate(d *schema.ResourceData, meta inter
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -290,34 +295,34 @@ func resourceMonitoringMetricDescriptorCreate(d *schema.ResourceData, meta inter
 	return resourceMonitoringMetricDescriptorRead(d, meta)
 }
 
-func resourceMonitoringMetricDescriptorPollRead(d *schema.ResourceData, meta interface{}) PollReadFunc {
+func resourceMonitoringMetricDescriptorPollRead(d *schema.ResourceData, meta interface{}) transport_tpg.PollReadFunc {
 	return func() (map[string]interface{}, error) {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 
-		url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
+		url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
 		if err != nil {
 			return nil, err
 		}
 
 		billingProject := ""
 
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return nil, fmt.Errorf("Error fetching project for MetricDescriptor: %s", err)
 		}
 		billingProject = project
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		userAgent, err := generateUserAgentString(d, config.UserAgent)
+		userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 		if err != nil {
 			return nil, err
 		}
 
-		res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, IsMonitoringConcurrentEditError)
+		res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil, transport_tpg.IsMonitoringConcurrentEditError)
 		if err != nil {
 			return res, err
 		}
@@ -326,33 +331,33 @@ func resourceMonitoringMetricDescriptorPollRead(d *schema.ResourceData, meta int
 }
 
 func resourceMonitoringMetricDescriptorRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for MetricDescriptor: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil, transport_tpg.IsMonitoringConcurrentEditError)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("MonitoringMetricDescriptor %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("MonitoringMetricDescriptor %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -391,15 +396,15 @@ func resourceMonitoringMetricDescriptorRead(d *schema.ResourceData, meta interfa
 }
 
 func resourceMonitoringMetricDescriptorUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for MetricDescriptor: %s", err)
 	}
@@ -409,59 +414,59 @@ func resourceMonitoringMetricDescriptorUpdate(d *schema.ResourceData, meta inter
 	typeProp, err := expandMonitoringMetricDescriptorType(d.Get("type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("type"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, typeProp)) {
+	} else if v, ok := d.GetOkExists("type"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, typeProp)) {
 		obj["type"] = typeProp
 	}
 	labelsProp, err := expandMonitoringMetricDescriptorLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	metricKindProp, err := expandMonitoringMetricDescriptorMetricKind(d.Get("metric_kind"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("metric_kind"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, metricKindProp)) {
+	} else if v, ok := d.GetOkExists("metric_kind"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, metricKindProp)) {
 		obj["metricKind"] = metricKindProp
 	}
 	valueTypeProp, err := expandMonitoringMetricDescriptorValueType(d.Get("value_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("value_type"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, valueTypeProp)) {
+	} else if v, ok := d.GetOkExists("value_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, valueTypeProp)) {
 		obj["valueType"] = valueTypeProp
 	}
 	unitProp, err := expandMonitoringMetricDescriptorUnit(d.Get("unit"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("unit"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, unitProp)) {
+	} else if v, ok := d.GetOkExists("unit"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, unitProp)) {
 		obj["unit"] = unitProp
 	}
 	descriptionProp, err := expandMonitoringMetricDescriptorDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	displayNameProp, err := expandMonitoringMetricDescriptorDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	metadataProp, err := expandMonitoringMetricDescriptorMetadata(d.Get("metadata"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("metadata"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
+	} else if v, ok := d.GetOkExists("metadata"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
 		obj["metadata"] = metadataProp
 	}
 	launchStageProp, err := expandMonitoringMetricDescriptorLaunchStage(d.Get("launch_stage"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("launch_stage"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, launchStageProp)) {
+	} else if v, ok := d.GetOkExists("launch_stage"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, launchStageProp)) {
 		obj["launchStage"] = launchStageProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/projects/{{project}}/metricDescriptors")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/projects/{{project}}/metricDescriptors")
 	if err != nil {
 		return err
 	}
@@ -469,11 +474,11 @@ func resourceMonitoringMetricDescriptorUpdate(d *schema.ResourceData, meta inter
 	log.Printf("[DEBUG] Updating MetricDescriptor %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate), IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate), transport_tpg.IsMonitoringConcurrentEditError)
 
 	if err != nil {
 		return fmt.Errorf("Error updating MetricDescriptor %q: %s", d.Id(), err)
@@ -490,21 +495,21 @@ func resourceMonitoringMetricDescriptorUpdate(d *schema.ResourceData, meta inter
 }
 
 func resourceMonitoringMetricDescriptorDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for MetricDescriptor: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -513,13 +518,13 @@ func resourceMonitoringMetricDescriptorDelete(d *schema.ResourceData, meta inter
 	log.Printf("[DEBUG] Deleting MetricDescriptor %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), transport_tpg.IsMonitoringConcurrentEditError)
 	if err != nil {
-		return handleNotFoundError(err, d, "MetricDescriptor")
+		return transport_tpg.HandleNotFoundError(err, d, "MetricDescriptor")
 	}
 
 	err = PollingWaitTime(resourceMonitoringMetricDescriptorPollRead(d, meta), PollCheckForAbsence, "Deleting MetricDescriptor", d.Timeout(schema.TimeoutCreate), 20)
@@ -533,7 +538,7 @@ func resourceMonitoringMetricDescriptorDelete(d *schema.ResourceData, meta inter
 
 func resourceMonitoringMetricDescriptorImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<project>[^ ]+) (?P<name>[^ ]+)", "(?P<name>[^ ]+)"}, d, config); err != nil {
@@ -543,15 +548,15 @@ func resourceMonitoringMetricDescriptorImport(d *schema.ResourceData, meta inter
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenMonitoringMetricDescriptorName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringMetricDescriptorName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringMetricDescriptorType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringMetricDescriptorType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringMetricDescriptorLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringMetricDescriptorLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -571,51 +576,54 @@ func flattenMonitoringMetricDescriptorLabels(v interface{}, d *schema.ResourceDa
 	}
 	return transformed
 }
-func flattenMonitoringMetricDescriptorLabelsKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringMetricDescriptorLabelsKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringMetricDescriptorLabelsValueType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
-	if v == nil || isEmptyValue(reflect.ValueOf(v)) {
+func flattenMonitoringMetricDescriptorLabelsValueType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil || tpgresource.IsEmptyValue(reflect.ValueOf(v)) {
 		return "STRING"
 	}
 
 	return v
 }
 
-func flattenMonitoringMetricDescriptorLabelsDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringMetricDescriptorLabelsDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringMetricDescriptorMetricKind(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringMetricDescriptorMetricKind(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringMetricDescriptorValueType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringMetricDescriptorValueType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringMetricDescriptorUnit(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringMetricDescriptorUnit(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringMetricDescriptorDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringMetricDescriptorDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringMetricDescriptorDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringMetricDescriptorDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringMetricDescriptorMonitoredResourceTypes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
-	return v
+func flattenMonitoringMetricDescriptorMonitoredResourceTypes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return v
+	}
+	return schema.NewSet(schema.HashString, v.([]interface{}))
 }
 
-func expandMonitoringMetricDescriptorType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringMetricDescriptorLabels(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
@@ -629,21 +637,21 @@ func expandMonitoringMetricDescriptorLabels(v interface{}, d TerraformResourceDa
 		transformedKey, err := expandMonitoringMetricDescriptorLabelsKey(original["key"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedKey); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["key"] = transformedKey
 		}
 
 		transformedValueType, err := expandMonitoringMetricDescriptorLabelsValueType(original["value_type"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedValueType); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedValueType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["valueType"] = transformedValueType
 		}
 
 		transformedDescription, err := expandMonitoringMetricDescriptorLabelsDescription(original["description"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedDescription); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedDescription); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["description"] = transformedDescription
 		}
 
@@ -652,39 +660,39 @@ func expandMonitoringMetricDescriptorLabels(v interface{}, d TerraformResourceDa
 	return req, nil
 }
 
-func expandMonitoringMetricDescriptorLabelsKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorLabelsKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringMetricDescriptorLabelsValueType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorLabelsValueType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringMetricDescriptorLabelsDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorLabelsDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringMetricDescriptorMetricKind(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorMetricKind(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringMetricDescriptorValueType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorValueType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringMetricDescriptorUnit(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorUnit(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringMetricDescriptorDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringMetricDescriptorDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringMetricDescriptorMetadata(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorMetadata(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -696,28 +704,28 @@ func expandMonitoringMetricDescriptorMetadata(v interface{}, d TerraformResource
 	transformedSamplePeriod, err := expandMonitoringMetricDescriptorMetadataSamplePeriod(original["sample_period"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSamplePeriod); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSamplePeriod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["samplePeriod"] = transformedSamplePeriod
 	}
 
 	transformedIngestDelay, err := expandMonitoringMetricDescriptorMetadataIngestDelay(original["ingest_delay"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedIngestDelay); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedIngestDelay); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["ingestDelay"] = transformedIngestDelay
 	}
 
 	return transformed, nil
 }
 
-func expandMonitoringMetricDescriptorMetadataSamplePeriod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorMetadataSamplePeriod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringMetricDescriptorMetadataIngestDelay(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorMetadataIngestDelay(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringMetricDescriptorLaunchStage(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringMetricDescriptorLaunchStage(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

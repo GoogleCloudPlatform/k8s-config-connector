@@ -322,7 +322,7 @@ permission to Acknowledge() messages on this subscription.{% endverbatim %}</p>
             <p>{% verbatim %}The maximum number of delivery attempts for any message. The value must be
 between 5 and 100.
 
-The number of delivery attempts is defined as 1 + (the sum of number of 
+The number of delivery attempts is defined as 1 + (the sum of number of
 NACKs and number of times the acknowledgement deadline has been exceeded for the message).
 
 A NACK is any call to ModifyAckDeadline with a 0 deadline. Note that
@@ -400,9 +400,9 @@ Example - "3.5s".{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The subscription only delivers the messages that match the filter. 
+            <p>{% verbatim %}Immutable. The subscription only delivers the messages that match the filter.
 Pub/Sub automatically acknowledges the messages that don't match the filter. You can filter messages
-by their attributes. The maximum length of a filter is 256 bytes. After creating the subscription, 
+by their attributes. The maximum length of a filter is 256 bytes. After creating the subscription,
 you can't modify the filter.{% endverbatim %}</p>
         </td>
     </tr>
@@ -551,7 +551,7 @@ messageRetentionDuration window.{% endverbatim %}</p>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}A policy that specifies how Pub/Sub retries message delivery for this subscription.
 
-If not set, the default retry policy is applied. This generally implies that messages will be retried as soon as possible for healthy subscribers. 
+If not set, the default retry policy is applied. This generally implies that messages will be retried as soon as possible for healthy subscribers.
 RetryPolicy will be triggered on NACKs or acknowledgement deadline exceeded events for a given message.{% endverbatim %}</p>
         </td>
     </tr>
@@ -562,7 +562,7 @@ RetryPolicy will be triggered on NACKs or acknowledgement deadline exceeded even
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The maximum delay between consecutive deliveries of a given message. Value should be between 0 and 600 seconds. Defaults to 600 seconds. 
+            <p>{% verbatim %}The maximum delay between consecutive deliveries of a given message. Value should be between 0 and 600 seconds. Defaults to 600 seconds.
 A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
         </td>
     </tr>

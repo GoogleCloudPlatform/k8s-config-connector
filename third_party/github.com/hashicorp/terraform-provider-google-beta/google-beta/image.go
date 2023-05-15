@@ -5,6 +5,10 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
+
 	"google.golang.org/api/googleapi"
 )
 
@@ -14,16 +18,16 @@ const (
 )
 
 var (
-	resolveImageProjectImage           = regexp.MustCompile(fmt.Sprintf("projects/(%s)/global/images/(%s)$", ProjectRegex, resolveImageImageRegex))
-	resolveImageProjectFamily          = regexp.MustCompile(fmt.Sprintf("projects/(%s)/global/images/family/(%s)$", ProjectRegex, resolveImageFamilyRegex))
+	resolveImageProjectImage           = regexp.MustCompile(fmt.Sprintf("projects/(%s)/global/images/(%s)$", verify.ProjectRegex, resolveImageImageRegex))
+	resolveImageProjectFamily          = regexp.MustCompile(fmt.Sprintf("projects/(%s)/global/images/family/(%s)$", verify.ProjectRegex, resolveImageFamilyRegex))
 	resolveImageGlobalImage            = regexp.MustCompile(fmt.Sprintf("^global/images/(%s)$", resolveImageImageRegex))
 	resolveImageGlobalFamily           = regexp.MustCompile(fmt.Sprintf("^global/images/family/(%s)$", resolveImageFamilyRegex))
 	resolveImageFamilyFamily           = regexp.MustCompile(fmt.Sprintf("^family/(%s)$", resolveImageFamilyRegex))
-	resolveImageProjectImageShorthand  = regexp.MustCompile(fmt.Sprintf("^(%s)/(%s)$", ProjectRegex, resolveImageImageRegex))
-	resolveImageProjectFamilyShorthand = regexp.MustCompile(fmt.Sprintf("^(%s)/(%s)$", ProjectRegex, resolveImageFamilyRegex))
+	resolveImageProjectImageShorthand  = regexp.MustCompile(fmt.Sprintf("^(%s)/(%s)$", verify.ProjectRegex, resolveImageImageRegex))
+	resolveImageProjectFamilyShorthand = regexp.MustCompile(fmt.Sprintf("^(%s)/(%s)$", verify.ProjectRegex, resolveImageFamilyRegex))
 	resolveImageFamily                 = regexp.MustCompile(fmt.Sprintf("^(%s)$", resolveImageFamilyRegex))
 	resolveImageImage                  = regexp.MustCompile(fmt.Sprintf("^(%s)$", resolveImageImageRegex))
-	resolveImageLink                   = regexp.MustCompile(fmt.Sprintf("^https://www.googleapis.com/compute/[a-z0-9]+/projects/(%s)/global/images/(%s)", ProjectRegex, resolveImageImageRegex))
+	resolveImageLink                   = regexp.MustCompile(fmt.Sprintf("^https://www.googleapis.com/compute/[a-z0-9]+/projects/(%s)/global/images/(%s)", verify.ProjectRegex, resolveImageImageRegex))
 
 	windowsSqlImage         = regexp.MustCompile("^sql-(?:server-)?([0-9]{4})-([a-z]+)-windows-(?:server-)?([0-9]{4})(?:-r([0-9]+))?-dc-v[0-9]+$")
 	canonicalUbuntuLtsImage = regexp.MustCompile("^ubuntu-(minimal-)?([0-9]+)(?:.*(arm64))?.*$")
@@ -45,7 +49,7 @@ var imageMap = map[string]string{
 	"windows-sql": "windows-sql-cloud",
 }
 
-func resolveImageImageExists(c *Config, project, name, userAgent string) (bool, error) {
+func resolveImageImageExists(c *transport_tpg.Config, project, name, userAgent string) (bool, error) {
 	if _, err := c.NewComputeClient(userAgent).Images.Get(project, name).Do(); err == nil {
 		return true, nil
 	} else if gerr, ok := err.(*googleapi.Error); ok && gerr.Code == 404 {
@@ -55,7 +59,7 @@ func resolveImageImageExists(c *Config, project, name, userAgent string) (bool, 
 	}
 }
 
-func resolveImageFamilyExists(c *Config, project, name, userAgent string) (bool, error) {
+func resolveImageFamilyExists(c *transport_tpg.Config, project, name, userAgent string) (bool, error) {
 	if _, err := c.NewComputeClient(userAgent).Images.GetFromFamily(project, name).Do(); err == nil {
 		return true, nil
 	} else if gerr, ok := err.(*googleapi.Error); ok && gerr.Code == 404 {
@@ -90,7 +94,7 @@ func sanityTestRegexMatches(expected int, got []string, regexType, name string) 
 //	If not, check if it could be a GCP-provided image, and if it exists. If it does, return it as projects/{project}/global/images/{image}.
 //	If not, check if it's a family in the current project. If it is, return it as global/images/family/{family}.
 //	If not, check if it could be a GCP-provided family, and if it exists. If it does, return it as projects/{project}/global/images/family/{family}
-func resolveImage(c *Config, project, name, userAgent string) (string, error) {
+func resolveImage(c *transport_tpg.Config, project, name, userAgent string) (string, error) {
 	var builtInProject string
 	for k, v := range imageMap {
 		if strings.Contains(name, k) {
@@ -211,7 +215,7 @@ func resolveImage(c *Config, project, name, userAgent string) (string, error) {
 func resolveImageRefToRelativeURI(providerProject, name string) (string, error) {
 	switch {
 	case resolveImageLink.MatchString(name): // https://www.googleapis.com/compute/v1/projects/xyz/global/images/xyz
-		namePath, err := getRelativePath(name)
+		namePath, err := tpgresource.GetRelativePath(name)
 		if err != nil {
 			return "", err
 		}

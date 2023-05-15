@@ -3,14 +3,17 @@ package google
 import (
 	"fmt"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func DataSourceGoogleRuntimeconfigConfig() *schema.Resource {
 
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceRuntimeconfigConfig().Schema)
-	addRequiredFieldsToSchema(dsSchema, "name")
-	addOptionalFieldsToSchema(dsSchema, "project")
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceRuntimeconfigConfig().Schema)
+	tpgresource.AddRequiredFieldsToSchema(dsSchema, "name")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "project")
 
 	return &schema.Resource{
 		Read:   dataSourceGoogleRuntimeconfigConfigRead,
@@ -19,9 +22,9 @@ func DataSourceGoogleRuntimeconfigConfig() *schema.Resource {
 }
 
 func dataSourceGoogleRuntimeconfigConfigRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
-	id, err := ReplaceVars(d, config, "projects/{{project}}/configs/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/configs/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}

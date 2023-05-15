@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceApigeeEnvgroup() *schema.Resource {
@@ -69,8 +72,8 @@ in the format 'organizations/{{org_name}}'.`,
 }
 
 func resourceApigeeEnvgroupCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -79,17 +82,17 @@ func resourceApigeeEnvgroupCreate(d *schema.ResourceData, meta interface{}) erro
 	nameProp, err := expandApigeeEnvgroupName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	hostnamesProp, err := expandApigeeEnvgroupHostnames(d.Get("hostnames"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("hostnames"); !isEmptyValue(reflect.ValueOf(hostnamesProp)) && (ok || !reflect.DeepEqual(v, hostnamesProp)) {
+	} else if v, ok := d.GetOkExists("hostnames"); !tpgresource.IsEmptyValue(reflect.ValueOf(hostnamesProp)) && (ok || !reflect.DeepEqual(v, hostnamesProp)) {
 		obj["hostnames"] = hostnamesProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/envgroups")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/envgroups")
 	if err != nil {
 		return err
 	}
@@ -98,17 +101,17 @@ func resourceApigeeEnvgroupCreate(d *schema.ResourceData, meta interface{}) erro
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Envgroup: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{org_id}}/envgroups/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{org_id}}/envgroups/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -132,7 +135,7 @@ func resourceApigeeEnvgroupCreate(d *schema.ResourceData, meta interface{}) erro
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "{{org_id}}/envgroups/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "{{org_id}}/envgroups/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -144,13 +147,13 @@ func resourceApigeeEnvgroupCreate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceApigeeEnvgroupRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/envgroups/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/envgroups/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -158,13 +161,13 @@ func resourceApigeeEnvgroupRead(d *schema.ResourceData, meta interface{}) error 
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ApigeeEnvgroup %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ApigeeEnvgroup %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenApigeeEnvgroupName(res["name"], d, config)); err != nil {
@@ -178,8 +181,8 @@ func resourceApigeeEnvgroupRead(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceApigeeEnvgroupUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -190,11 +193,11 @@ func resourceApigeeEnvgroupUpdate(d *schema.ResourceData, meta interface{}) erro
 	hostnamesProp, err := expandApigeeEnvgroupHostnames(d.Get("hostnames"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("hostnames"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, hostnamesProp)) {
+	} else if v, ok := d.GetOkExists("hostnames"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, hostnamesProp)) {
 		obj["hostnames"] = hostnamesProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/envgroups/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/envgroups/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -207,17 +210,17 @@ func resourceApigeeEnvgroupUpdate(d *schema.ResourceData, meta interface{}) erro
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Envgroup %q: %s", d.Id(), err)
@@ -237,15 +240,15 @@ func resourceApigeeEnvgroupUpdate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceApigeeEnvgroupDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/envgroups/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/envgroups/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -254,13 +257,13 @@ func resourceApigeeEnvgroupDelete(d *schema.ResourceData, meta interface{}) erro
 	log.Printf("[DEBUG] Deleting Envgroup %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Envgroup")
+		return transport_tpg.HandleNotFoundError(err, d, "Envgroup")
 	}
 
 	err = ApigeeOperationWaitTime(
@@ -276,7 +279,7 @@ func resourceApigeeEnvgroupDelete(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceApigeeEnvgroupImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats cannot import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
@@ -311,7 +314,7 @@ func resourceApigeeEnvgroupImport(d *schema.ResourceData, meta interface{}) ([]*
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{org_id}}/envgroups/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{org_id}}/envgroups/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -320,18 +323,18 @@ func resourceApigeeEnvgroupImport(d *schema.ResourceData, meta interface{}) ([]*
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenApigeeEnvgroupName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeEnvgroupName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeEnvgroupHostnames(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeEnvgroupHostnames(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandApigeeEnvgroupName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeEnvgroupName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeEnvgroupHostnames(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeEnvgroupHostnames(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

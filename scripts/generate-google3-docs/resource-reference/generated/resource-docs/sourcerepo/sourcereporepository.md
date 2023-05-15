@@ -125,7 +125,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}How this repository publishes a change in the repository through Cloud Pub/Sub. 
+            <p>{% verbatim %}How this repository publishes a change in the repository through Cloud Pub/Sub.
 Keyed by the topic names.{% endverbatim %}</p>
         </td>
     </tr>
@@ -146,7 +146,7 @@ Keyed by the topic names.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The format of the Cloud Pub/Sub messages. 
+            <p>{% verbatim %}The format of the Cloud Pub/Sub messages.
 - PROTOBUF: The message payload is a serialized protocol buffer of SourceRepoEvent.
 - JSON: The message payload is a JSON string of SourceRepoEvent. Possible values: ["PROTOBUF", "JSON"].{% endverbatim %}</p>
         </td>

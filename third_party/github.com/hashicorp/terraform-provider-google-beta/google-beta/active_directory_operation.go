@@ -18,13 +18,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"time"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 type ActiveDirectoryOperationWaiter struct {
-	Config    *Config
+	Config    *transport_tpg.Config
 	UserAgent string
 	Project   string
-	CommonOperationWaiter
+	tpgresource.CommonOperationWaiter
 }
 
 func (w *ActiveDirectoryOperationWaiter) QueryOp() (interface{}, error) {
@@ -34,10 +37,10 @@ func (w *ActiveDirectoryOperationWaiter) QueryOp() (interface{}, error) {
 	// Returns the proper get.
 	url := fmt.Sprintf("%s%s", w.Config.ActiveDirectoryBasePath, w.CommonOperationWaiter.Op.Name)
 
-	return SendRequest(w.Config, "GET", w.Project, url, w.UserAgent, nil)
+	return transport_tpg.SendRequest(w.Config, "GET", w.Project, url, w.UserAgent, nil)
 }
 
-func createActiveDirectoryWaiter(config *Config, op map[string]interface{}, project, activity, userAgent string) (*ActiveDirectoryOperationWaiter, error) {
+func createActiveDirectoryWaiter(config *transport_tpg.Config, op map[string]interface{}, project, activity, userAgent string) (*ActiveDirectoryOperationWaiter, error) {
 	w := &ActiveDirectoryOperationWaiter{
 		Config:    config,
 		UserAgent: userAgent,
@@ -50,18 +53,18 @@ func createActiveDirectoryWaiter(config *Config, op map[string]interface{}, proj
 }
 
 // nolint: deadcode,unused
-func ActiveDirectoryOperationWaitTimeWithResponse(config *Config, op map[string]interface{}, response *map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
+func ActiveDirectoryOperationWaitTimeWithResponse(config *transport_tpg.Config, op map[string]interface{}, response *map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
 	w, err := createActiveDirectoryWaiter(config, op, project, activity, userAgent)
 	if err != nil {
 		return err
 	}
-	if err := OperationWait(w, activity, timeout, config.PollInterval); err != nil {
+	if err := tpgresource.OperationWait(w, activity, timeout, config.PollInterval); err != nil {
 		return err
 	}
 	return json.Unmarshal([]byte(w.CommonOperationWaiter.Op.Response), response)
 }
 
-func ActiveDirectoryOperationWaitTime(config *Config, op map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
+func ActiveDirectoryOperationWaitTime(config *transport_tpg.Config, op map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
 	if val, ok := op["name"]; !ok || val == "" {
 		// This was a synchronous call - there is no operation to wait for.
 		return nil
@@ -71,5 +74,5 @@ func ActiveDirectoryOperationWaitTime(config *Config, op map[string]interface{},
 		// If w is nil, the op was synchronous.
 		return err
 	}
-	return OperationWait(w, activity, timeout, config.PollInterval)
+	return tpgresource.OperationWait(w, activity, timeout, config.PollInterval)
 }

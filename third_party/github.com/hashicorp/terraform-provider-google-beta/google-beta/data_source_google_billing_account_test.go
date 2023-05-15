@@ -5,15 +5,17 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
 func TestAccDataSourceGoogleBillingAccount_byFullName(t *testing.T) {
-	billingId := GetTestMasterBillingAccountFromEnv(t)
+	billingId := acctest.GetTestMasterBillingAccountFromEnv(t)
 	name := "billingAccounts/" + billingId
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -29,11 +31,11 @@ func TestAccDataSourceGoogleBillingAccount_byFullName(t *testing.T) {
 }
 
 func TestAccDataSourceGoogleBillingAccount_byShortName(t *testing.T) {
-	billingId := GetTestMasterBillingAccountFromEnv(t)
+	billingId := acctest.GetTestMasterBillingAccountFromEnv(t)
 	name := "billingAccounts/" + billingId
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,11 +51,11 @@ func TestAccDataSourceGoogleBillingAccount_byShortName(t *testing.T) {
 }
 
 func TestAccDataSourceGoogleBillingAccount_byFullNameClosed(t *testing.T) {
-	billingId := GetTestMasterBillingAccountFromEnv(t)
+	billingId := acctest.GetTestMasterBillingAccountFromEnv(t)
 	name := "billingAccounts/" + billingId
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -68,7 +70,7 @@ func TestAccDataSourceGoogleBillingAccount_byDisplayName(t *testing.T) {
 	name := RandString(t, 16)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{

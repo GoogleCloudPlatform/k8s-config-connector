@@ -40,7 +40,7 @@ type TagsTagKeySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Input only. The resource name of the new TagKey's parent. Must be of the form organizations/{org_id}. */
+	/* Immutable. Input only. The resource name of the new TagKey's parent. Must be of the form organizations/{org_id} or projects/{project_id_or_number}. */
 	Parent string `json:"parent"`
 
 	/* Immutable. Optional. A purpose cannot be changed once set.

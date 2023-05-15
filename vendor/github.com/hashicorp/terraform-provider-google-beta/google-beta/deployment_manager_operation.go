@@ -5,11 +5,14 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
 type DeploymentManagerOperationWaiter struct {
-	Config       *Config
+	Config       *transport_tpg.Config
 	UserAgent    string
 	Project      string
 	OperationUrl string
@@ -25,20 +28,20 @@ func (w *DeploymentManagerOperationWaiter) QueryOp() (interface{}, error) {
 		return nil, fmt.Errorf("cannot query unset/nil operation")
 	}
 
-	resp, err := SendRequest(w.Config, "GET", w.Project, w.Op.SelfLink, w.UserAgent, nil)
+	resp, err := transport_tpg.SendRequest(w.Config, "GET", w.Project, w.Op.SelfLink, w.UserAgent, nil)
 	if err != nil {
 		return nil, err
 	}
 	op := &compute.Operation{}
-	if err := Convert(resp, op); err != nil {
+	if err := tpgresource.Convert(resp, op); err != nil {
 		return nil, fmt.Errorf("could not convert response to operation: %v", err)
 	}
 	return op, nil
 }
 
-func DeploymentManagerOperationWaitTime(config *Config, resp interface{}, project, activity, userAgent string, timeout time.Duration) error {
+func DeploymentManagerOperationWaitTime(config *transport_tpg.Config, resp interface{}, project, activity, userAgent string, timeout time.Duration) error {
 	op := &compute.Operation{}
-	err := Convert(resp, op)
+	err := tpgresource.Convert(resp, op)
 	if err != nil {
 		return err
 	}
@@ -55,7 +58,7 @@ func DeploymentManagerOperationWaitTime(config *Config, resp interface{}, projec
 		return err
 	}
 
-	return OperationWait(w, activity, timeout, config.PollInterval)
+	return tpgresource.OperationWait(w, activity, timeout, config.PollInterval)
 }
 
 func (w *DeploymentManagerOperationWaiter) Error() error {

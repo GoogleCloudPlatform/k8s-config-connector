@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccIdentityPlatformTenantOauthIdpConfig_identityPlatformTenantOauthIdpConfigBasicExample(t *testing.T) {
@@ -32,7 +36,7 @@ func TestAccIdentityPlatformTenantOauthIdpConfig_identityPlatformTenantOauthIdpC
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIdentityPlatformTenantOauthIdpConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -79,7 +83,7 @@ func testAccCheckIdentityPlatformTenantOauthIdpConfigDestroyProducer(t *testing.
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{IdentityPlatformBasePath}}projects/{{project}}/tenants/{{tenant}}/oauthIdpConfigs/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{IdentityPlatformBasePath}}projects/{{project}}/tenants/{{tenant}}/oauthIdpConfigs/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -90,7 +94,7 @@ func testAccCheckIdentityPlatformTenantOauthIdpConfigDestroyProducer(t *testing.
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("IdentityPlatformTenantOauthIdpConfig still exists at %s", url)
 			}

@@ -25,6 +25,9 @@ import (
 
 	dcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	compute "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/compute/beta"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceComputeNetworkFirewallPolicyRule() *schema.Resource {
@@ -152,10 +155,52 @@ func ComputeNetworkFirewallPolicyRuleMatchSchema() *schema.Resource {
 				Elem:        ComputeNetworkFirewallPolicyRuleMatchLayer4ConfigsSchema(),
 			},
 
+			"dest_address_groups": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "Address groups which should be matched against the traffic destination. Maximum number of destination address groups is 10. Destination address groups is only supported in Egress rules.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+
+			"dest_fqdns": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "Domain names that will be used to match against the resolved domain name of destination of traffic. Can only be specified if DIRECTION is egress.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+
 			"dest_ip_ranges": {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Description: "CIDR IP address range. Maximum number of destination CIDR IP ranges allowed is 5000.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+
+			"dest_region_codes": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "The Unicode country codes whose IP addresses will be used to match against the source of traffic. Can only be specified if DIRECTION is egress.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+
+			"dest_threat_intelligences": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "Name of the Google Cloud Threat Intelligence list.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+
+			"src_address_groups": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "Address groups which should be matched against the traffic source. Maximum number of source address groups is 10. Source address groups is only supported in Ingress rules.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+
+			"src_fqdns": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "Domain names that will be used to match against the resolved domain name of source of traffic. Can only be specified if DIRECTION is ingress.",
 				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 
@@ -166,11 +211,25 @@ func ComputeNetworkFirewallPolicyRuleMatchSchema() *schema.Resource {
 				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 
+			"src_region_codes": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "The Unicode country codes whose IP addresses will be used to match against the source of traffic. Can only be specified if DIRECTION is ingress.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+
 			"src_secure_tags": {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Description: "List of secure tag values, which should be matched at the source of the traffic. For INGRESS rule, if all the <code>srcSecureTag</code> are INEFFECTIVE, and there is no <code>srcIpRange</code>, this rule will be ignored. Maximum number of source tag values allowed is 256.",
 				Elem:        ComputeNetworkFirewallPolicyRuleMatchSrcSecureTagsSchema(),
+			},
+
+			"src_threat_intelligences": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "Name of the Google Cloud Threat Intelligence list.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 		},
 	}
@@ -234,7 +293,7 @@ func ComputeNetworkFirewallPolicyRuleTargetSecureTagsSchema() *schema.Resource {
 }
 
 func resourceComputeNetworkFirewallPolicyRuleCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -261,17 +320,17 @@ func resourceComputeNetworkFirewallPolicyRuleCreate(d *schema.ResourceData, meta
 	}
 	d.SetId(id)
 	directive := CreateDirective
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := project
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLComputeClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutCreate))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLComputeClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutCreate))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -293,7 +352,7 @@ func resourceComputeNetworkFirewallPolicyRuleCreate(d *schema.ResourceData, meta
 }
 
 func resourceComputeNetworkFirewallPolicyRuleRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -314,17 +373,17 @@ func resourceComputeNetworkFirewallPolicyRuleRead(d *schema.ResourceData, meta i
 		TargetServiceAccounts: expandStringArray(d.Get("target_service_accounts")),
 	}
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := project
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLComputeClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutRead))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLComputeClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutRead))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -382,7 +441,7 @@ func resourceComputeNetworkFirewallPolicyRuleRead(d *schema.ResourceData, meta i
 	return nil
 }
 func resourceComputeNetworkFirewallPolicyRuleUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -403,18 +462,18 @@ func resourceComputeNetworkFirewallPolicyRuleUpdate(d *schema.ResourceData, meta
 		TargetServiceAccounts: expandStringArray(d.Get("target_service_accounts")),
 	}
 	directive := UpdateDirective
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLComputeClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutUpdate))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLComputeClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutUpdate))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -436,7 +495,7 @@ func resourceComputeNetworkFirewallPolicyRuleUpdate(d *schema.ResourceData, meta
 }
 
 func resourceComputeNetworkFirewallPolicyRuleDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -458,17 +517,17 @@ func resourceComputeNetworkFirewallPolicyRuleDelete(d *schema.ResourceData, meta
 	}
 
 	log.Printf("[DEBUG] Deleting NetworkFirewallPolicyRule %q", d.Id())
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := project
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLComputeClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutDelete))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLComputeClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutDelete))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -483,7 +542,7 @@ func resourceComputeNetworkFirewallPolicyRuleDelete(d *schema.ResourceData, meta
 }
 
 func resourceComputeNetworkFirewallPolicyRuleImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/global/firewallPolicies/(?P<firewall_policy>[^/]+)/rules/(?P<priority>[^/]+)",
@@ -513,10 +572,18 @@ func expandComputeNetworkFirewallPolicyRuleMatch(o interface{}) *compute.Network
 	}
 	obj := objArr[0].(map[string]interface{})
 	return &compute.NetworkFirewallPolicyRuleMatch{
-		Layer4Configs: expandComputeNetworkFirewallPolicyRuleMatchLayer4ConfigsArray(obj["layer4_configs"]),
-		DestIPRanges:  expandStringArray(obj["dest_ip_ranges"]),
-		SrcIPRanges:   expandStringArray(obj["src_ip_ranges"]),
-		SrcSecureTags: expandComputeNetworkFirewallPolicyRuleMatchSrcSecureTagsArray(obj["src_secure_tags"]),
+		Layer4Configs:           expandComputeNetworkFirewallPolicyRuleMatchLayer4ConfigsArray(obj["layer4_configs"]),
+		DestAddressGroups:       expandStringArray(obj["dest_address_groups"]),
+		DestFqdns:               expandStringArray(obj["dest_fqdns"]),
+		DestIPRanges:            expandStringArray(obj["dest_ip_ranges"]),
+		DestRegionCodes:         expandStringArray(obj["dest_region_codes"]),
+		DestThreatIntelligences: expandStringArray(obj["dest_threat_intelligences"]),
+		SrcAddressGroups:        expandStringArray(obj["src_address_groups"]),
+		SrcFqdns:                expandStringArray(obj["src_fqdns"]),
+		SrcIPRanges:             expandStringArray(obj["src_ip_ranges"]),
+		SrcRegionCodes:          expandStringArray(obj["src_region_codes"]),
+		SrcSecureTags:           expandComputeNetworkFirewallPolicyRuleMatchSrcSecureTagsArray(obj["src_secure_tags"]),
+		SrcThreatIntelligences:  expandStringArray(obj["src_threat_intelligences"]),
 	}
 }
 
@@ -525,10 +592,18 @@ func flattenComputeNetworkFirewallPolicyRuleMatch(obj *compute.NetworkFirewallPo
 		return nil
 	}
 	transformed := map[string]interface{}{
-		"layer4_configs":  flattenComputeNetworkFirewallPolicyRuleMatchLayer4ConfigsArray(obj.Layer4Configs),
-		"dest_ip_ranges":  obj.DestIPRanges,
-		"src_ip_ranges":   obj.SrcIPRanges,
-		"src_secure_tags": flattenComputeNetworkFirewallPolicyRuleMatchSrcSecureTagsArray(obj.SrcSecureTags),
+		"layer4_configs":            flattenComputeNetworkFirewallPolicyRuleMatchLayer4ConfigsArray(obj.Layer4Configs),
+		"dest_address_groups":       obj.DestAddressGroups,
+		"dest_fqdns":                obj.DestFqdns,
+		"dest_ip_ranges":            obj.DestIPRanges,
+		"dest_region_codes":         obj.DestRegionCodes,
+		"dest_threat_intelligences": obj.DestThreatIntelligences,
+		"src_address_groups":        obj.SrcAddressGroups,
+		"src_fqdns":                 obj.SrcFqdns,
+		"src_ip_ranges":             obj.SrcIPRanges,
+		"src_region_codes":          obj.SrcRegionCodes,
+		"src_secure_tags":           flattenComputeNetworkFirewallPolicyRuleMatchSrcSecureTagsArray(obj.SrcSecureTags),
+		"src_threat_intelligences":  obj.SrcThreatIntelligences,
 	}
 
 	return []interface{}{transformed}

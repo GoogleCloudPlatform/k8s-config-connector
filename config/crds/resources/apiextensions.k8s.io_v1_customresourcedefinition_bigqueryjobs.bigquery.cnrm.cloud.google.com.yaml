@@ -410,6 +410,21 @@ spec:
                       empty string is present for all data types except for STRING and BYTE. For STRING and BYTE columns, BigQuery interprets the empty string as
                       an empty value.
                     type: string
+                  parquetOptions:
+                    description: Immutable. Parquet Options for load and make external
+                      tables.
+                    properties:
+                      enableListInference:
+                        description: Immutable. If sourceFormat is set to PARQUET,
+                          indicates whether to use schema inference specifically for
+                          Parquet LIST logical type.
+                        type: boolean
+                      enumAsString:
+                        description: Immutable. If sourceFormat is set to PARQUET,
+                          indicates whether to infer Parquet ENUM logical type as
+                          STRING instead of BYTES by default.
+                        type: boolean
+                    type: object
                   projectionFields:
                     description: |-
                       Immutable. If sourceFormat is set to "DATASTORE_BACKUP", indicates which entity properties to load into BigQuery from a Cloud Datastore backup.

@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func suppressAttachedClustersLoggingConfigDiff(_, old, new string, d *schema.ResourceData) bool {
@@ -29,7 +33,7 @@ func suppressAttachedClustersLoggingConfigDiff(_, old, new string, d *schema.Res
 		return true
 	}
 	_, n := d.GetChange("logging_config.0.component_config.0.enable_components")
-	if isEmptyValue(reflect.ValueOf(n)) {
+	if tpgresource.IsEmptyValue(reflect.ValueOf(n)) {
 		return true
 	}
 	return false
@@ -71,7 +75,7 @@ func ResourceContainerAttachedCluster() *schema.Resource {
 							Type:         schema.TypeString,
 							Required:     true,
 							ForceNew:     true,
-							ValidateFunc: validateRegexp(`^projects/[0-9]+$`),
+							ValidateFunc: verify.ValidateRegexp(`^projects/[0-9]+$`),
 							Description:  `The number of the Fleet host project where this cluster will be registered.`,
 						},
 						"membership": {
@@ -194,7 +198,7 @@ than 255 UTF-8 encoded bytes.`,
 										Description: `The components to be enabled. Possible values: ["SYSTEM_COMPONENTS", "WORKLOADS"]`,
 										Elem: &schema.Schema{
 											Type:         schema.TypeString,
-											ValidateFunc: validateEnum([]string{"SYSTEM_COMPONENTS", "WORKLOADS"}),
+											ValidateFunc: verify.ValidateEnum([]string{"SYSTEM_COMPONENTS", "WORKLOADS"}),
 										},
 									},
 								},
@@ -326,8 +330,8 @@ the Workload Identity Pool.`,
 }
 
 func resourceContainerAttachedClusterCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -336,43 +340,43 @@ func resourceContainerAttachedClusterCreate(d *schema.ResourceData, meta interfa
 	nameProp, err := expandContainerAttachedClusterName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	descriptionProp, err := expandContainerAttachedClusterDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	oidcConfigProp, err := expandContainerAttachedClusterOidcConfig(d.Get("oidc_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("oidc_config"); !isEmptyValue(reflect.ValueOf(oidcConfigProp)) && (ok || !reflect.DeepEqual(v, oidcConfigProp)) {
+	} else if v, ok := d.GetOkExists("oidc_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(oidcConfigProp)) && (ok || !reflect.DeepEqual(v, oidcConfigProp)) {
 		obj["oidcConfig"] = oidcConfigProp
 	}
 	platformVersionProp, err := expandContainerAttachedClusterPlatformVersion(d.Get("platform_version"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("platform_version"); !isEmptyValue(reflect.ValueOf(platformVersionProp)) && (ok || !reflect.DeepEqual(v, platformVersionProp)) {
+	} else if v, ok := d.GetOkExists("platform_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(platformVersionProp)) && (ok || !reflect.DeepEqual(v, platformVersionProp)) {
 		obj["platformVersion"] = platformVersionProp
 	}
 	distributionProp, err := expandContainerAttachedClusterDistribution(d.Get("distribution"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("distribution"); !isEmptyValue(reflect.ValueOf(distributionProp)) && (ok || !reflect.DeepEqual(v, distributionProp)) {
+	} else if v, ok := d.GetOkExists("distribution"); !tpgresource.IsEmptyValue(reflect.ValueOf(distributionProp)) && (ok || !reflect.DeepEqual(v, distributionProp)) {
 		obj["distribution"] = distributionProp
 	}
 	fleetProp, err := expandContainerAttachedClusterFleet(d.Get("fleet"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("fleet"); !isEmptyValue(reflect.ValueOf(fleetProp)) && (ok || !reflect.DeepEqual(v, fleetProp)) {
+	} else if v, ok := d.GetOkExists("fleet"); !tpgresource.IsEmptyValue(reflect.ValueOf(fleetProp)) && (ok || !reflect.DeepEqual(v, fleetProp)) {
 		obj["fleet"] = fleetProp
 	}
 	annotationsProp, err := expandContainerAttachedClusterAnnotations(d.Get("annotations"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("annotations"); !isEmptyValue(reflect.ValueOf(annotationsProp)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
+	} else if v, ok := d.GetOkExists("annotations"); !tpgresource.IsEmptyValue(reflect.ValueOf(annotationsProp)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
 		obj["annotations"] = annotationsProp
 	}
 	loggingConfigProp, err := expandContainerAttachedClusterLoggingConfig(d.Get("logging_config"), d, config)
@@ -384,17 +388,17 @@ func resourceContainerAttachedClusterCreate(d *schema.ResourceData, meta interfa
 	authorizationProp, err := expandContainerAttachedClusterAuthorization(d.Get("authorization"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("authorization"); !isEmptyValue(reflect.ValueOf(authorizationProp)) && (ok || !reflect.DeepEqual(v, authorizationProp)) {
+	} else if v, ok := d.GetOkExists("authorization"); !tpgresource.IsEmptyValue(reflect.ValueOf(authorizationProp)) && (ok || !reflect.DeepEqual(v, authorizationProp)) {
 		obj["authorization"] = authorizationProp
 	}
 	monitoringConfigProp, err := expandContainerAttachedClusterMonitoringConfig(d.Get("monitoring_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("monitoring_config"); !isEmptyValue(reflect.ValueOf(monitoringConfigProp)) && (ok || !reflect.DeepEqual(v, monitoringConfigProp)) {
+	} else if v, ok := d.GetOkExists("monitoring_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(monitoringConfigProp)) && (ok || !reflect.DeepEqual(v, monitoringConfigProp)) {
 		obj["monitoringConfig"] = monitoringConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ContainerAttachedBasePath}}projects/{{project}}/locations/{{location}}/attachedClusters?attached_cluster_id={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ContainerAttachedBasePath}}projects/{{project}}/locations/{{location}}/attachedClusters?attached_cluster_id={{name}}")
 	if err != nil {
 		return err
 	}
@@ -402,24 +406,24 @@ func resourceContainerAttachedClusterCreate(d *schema.ResourceData, meta interfa
 	log.Printf("[DEBUG] Creating new Cluster: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Cluster: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Cluster: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -443,7 +447,7 @@ func resourceContainerAttachedClusterCreate(d *schema.ResourceData, meta interfa
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -455,33 +459,33 @@ func resourceContainerAttachedClusterCreate(d *schema.ResourceData, meta interfa
 }
 
 func resourceContainerAttachedClusterRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ContainerAttachedBasePath}}projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ContainerAttachedBasePath}}projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Cluster: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ContainerAttachedCluster %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ContainerAttachedCluster %q", d.Id()))
 	}
 
 	// Explicitly set virtual fields to default values if unset
@@ -556,15 +560,15 @@ func resourceContainerAttachedClusterRead(d *schema.ResourceData, meta interface
 }
 
 func resourceContainerAttachedClusterUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Cluster: %s", err)
 	}
@@ -574,31 +578,31 @@ func resourceContainerAttachedClusterUpdate(d *schema.ResourceData, meta interfa
 	descriptionProp, err := expandContainerAttachedClusterDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	oidcConfigProp, err := expandContainerAttachedClusterOidcConfig(d.Get("oidc_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("oidc_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, oidcConfigProp)) {
+	} else if v, ok := d.GetOkExists("oidc_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, oidcConfigProp)) {
 		obj["oidcConfig"] = oidcConfigProp
 	}
 	platformVersionProp, err := expandContainerAttachedClusterPlatformVersion(d.Get("platform_version"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("platform_version"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, platformVersionProp)) {
+	} else if v, ok := d.GetOkExists("platform_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, platformVersionProp)) {
 		obj["platformVersion"] = platformVersionProp
 	}
 	fleetProp, err := expandContainerAttachedClusterFleet(d.Get("fleet"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("fleet"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, fleetProp)) {
+	} else if v, ok := d.GetOkExists("fleet"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, fleetProp)) {
 		obj["fleet"] = fleetProp
 	}
 	annotationsProp, err := expandContainerAttachedClusterAnnotations(d.Get("annotations"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("annotations"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
+	} else if v, ok := d.GetOkExists("annotations"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
 		obj["annotations"] = annotationsProp
 	}
 	loggingConfigProp, err := expandContainerAttachedClusterLoggingConfig(d.Get("logging_config"), d, config)
@@ -610,17 +614,17 @@ func resourceContainerAttachedClusterUpdate(d *schema.ResourceData, meta interfa
 	authorizationProp, err := expandContainerAttachedClusterAuthorization(d.Get("authorization"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("authorization"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, authorizationProp)) {
+	} else if v, ok := d.GetOkExists("authorization"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, authorizationProp)) {
 		obj["authorization"] = authorizationProp
 	}
 	monitoringConfigProp, err := expandContainerAttachedClusterMonitoringConfig(d.Get("monitoring_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("monitoring_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, monitoringConfigProp)) {
+	} else if v, ok := d.GetOkExists("monitoring_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, monitoringConfigProp)) {
 		obj["monitoringConfig"] = monitoringConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ContainerAttachedBasePath}}projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ContainerAttachedBasePath}}projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -661,7 +665,7 @@ func resourceContainerAttachedClusterUpdate(d *schema.ResourceData, meta interfa
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -684,17 +688,17 @@ func resourceContainerAttachedClusterUpdate(d *schema.ResourceData, meta interfa
 		newUpdateMask = append(newUpdateMask, mask)
 	}
 	// Overwrite the previously set mask.
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(newUpdateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(newUpdateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Cluster %q: %s", d.Id(), err)
@@ -714,21 +718,21 @@ func resourceContainerAttachedClusterUpdate(d *schema.ResourceData, meta interfa
 }
 
 func resourceContainerAttachedClusterDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Cluster: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{ContainerAttachedBasePath}}projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ContainerAttachedBasePath}}projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -736,7 +740,7 @@ func resourceContainerAttachedClusterDelete(d *schema.ResourceData, meta interfa
 	var obj map[string]interface{}
 	if v, ok := d.GetOk("deletion_policy"); ok {
 		if v == "DELETE_IGNORE_ERRORS" {
-			url, err = AddQueryParams(url, map[string]string{"ignore_errors": "true"})
+			url, err = transport_tpg.AddQueryParams(url, map[string]string{"ignore_errors": "true"})
 			if err != nil {
 				return err
 			}
@@ -745,13 +749,13 @@ func resourceContainerAttachedClusterDelete(d *schema.ResourceData, meta interfa
 	log.Printf("[DEBUG] Deleting Cluster %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Cluster")
+		return transport_tpg.HandleNotFoundError(err, d, "Cluster")
 	}
 
 	err = ContainerAttachedOperationWaitTime(
@@ -767,7 +771,7 @@ func resourceContainerAttachedClusterDelete(d *schema.ResourceData, meta interfa
 }
 
 func resourceContainerAttachedClusterImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/attachedClusters/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -777,7 +781,7 @@ func resourceContainerAttachedClusterImport(d *schema.ResourceData, meta interfa
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -791,18 +795,18 @@ func resourceContainerAttachedClusterImport(d *schema.ResourceData, meta interfa
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenContainerAttachedClusterName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenContainerAttachedClusterDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterOidcConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterOidcConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -817,27 +821,27 @@ func flattenContainerAttachedClusterOidcConfig(v interface{}, d *schema.Resource
 		flattenContainerAttachedClusterOidcConfigJwks(original["jwks"], d, config)
 	return []interface{}{transformed}
 }
-func flattenContainerAttachedClusterOidcConfigIssuerUrl(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterOidcConfigIssuerUrl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterOidcConfigJwks(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterOidcConfigJwks(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterPlatformVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterPlatformVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterDistribution(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterDistribution(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterClusterRegion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterClusterRegion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterFleet(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterFleet(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -852,43 +856,43 @@ func flattenContainerAttachedClusterFleet(v interface{}, d *schema.ResourceData,
 		flattenContainerAttachedClusterFleetProject(original["project"], d, config)
 	return []interface{}{transformed}
 }
-func flattenContainerAttachedClusterFleetMembership(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterFleetMembership(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterFleetProject(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterFleetProject(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterUid(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterUid(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterReconciling(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterReconciling(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterKubernetesVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterKubernetesVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterAnnotations(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterAnnotations(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterWorkloadIdentityConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterWorkloadIdentityConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -905,19 +909,19 @@ func flattenContainerAttachedClusterWorkloadIdentityConfig(v interface{}, d *sch
 		flattenContainerAttachedClusterWorkloadIdentityConfigWorkloadPool(original["workloadPool"], d, config)
 	return []interface{}{transformed}
 }
-func flattenContainerAttachedClusterWorkloadIdentityConfigIdentityProvider(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterWorkloadIdentityConfigIdentityProvider(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterWorkloadIdentityConfigIssuerUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterWorkloadIdentityConfigIssuerUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterWorkloadIdentityConfigWorkloadPool(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterWorkloadIdentityConfigWorkloadPool(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterLoggingConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterLoggingConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -927,7 +931,7 @@ func flattenContainerAttachedClusterLoggingConfig(v interface{}, d *schema.Resou
 		flattenContainerAttachedClusterLoggingConfigComponentConfig(original["componentConfig"], d, config)
 	return []interface{}{transformed}
 }
-func flattenContainerAttachedClusterLoggingConfigComponentConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterLoggingConfigComponentConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -937,11 +941,11 @@ func flattenContainerAttachedClusterLoggingConfigComponentConfig(v interface{}, 
 		flattenContainerAttachedClusterLoggingConfigComponentConfigEnableComponents(original["enableComponents"], d, config)
 	return []interface{}{transformed}
 }
-func flattenContainerAttachedClusterLoggingConfigComponentConfigEnableComponents(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterLoggingConfigComponentConfigEnableComponents(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenContainerAttachedClusterErrors(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterErrors(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -959,7 +963,7 @@ func flattenContainerAttachedClusterErrors(v interface{}, d *schema.ResourceData
 	}
 	return transformed
 }
-func flattenContainerAttachedClusterErrorsMessage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterErrorsMessage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -980,7 +984,7 @@ func flattenContainerAttachedClusterErrorsMessage(v interface{}, d *schema.Resou
 //	     "user2"
 //	   ]
 //	}
-func flattenContainerAttachedClusterAuthorization(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterAuthorization(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -997,7 +1001,7 @@ func flattenContainerAttachedClusterAuthorization(v interface{}, d *schema.Resou
 	return []interface{}{transformed}
 }
 
-func flattenContainerAttachedClusterMonitoringConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterMonitoringConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1007,7 +1011,7 @@ func flattenContainerAttachedClusterMonitoringConfig(v interface{}, d *schema.Re
 		flattenContainerAttachedClusterMonitoringConfigManagedPrometheusConfig(original["managedPrometheusConfig"], d, config)
 	return []interface{}{transformed}
 }
-func flattenContainerAttachedClusterMonitoringConfigManagedPrometheusConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterMonitoringConfigManagedPrometheusConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1017,19 +1021,19 @@ func flattenContainerAttachedClusterMonitoringConfigManagedPrometheusConfig(v in
 		flattenContainerAttachedClusterMonitoringConfigManagedPrometheusConfigEnabled(original["enabled"], d, config)
 	return []interface{}{transformed}
 }
-func flattenContainerAttachedClusterMonitoringConfigManagedPrometheusConfigEnabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenContainerAttachedClusterMonitoringConfigManagedPrometheusConfigEnabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandContainerAttachedClusterName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandContainerAttachedClusterDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandContainerAttachedClusterOidcConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterOidcConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1041,37 +1045,37 @@ func expandContainerAttachedClusterOidcConfig(v interface{}, d TerraformResource
 	transformedIssuerUrl, err := expandContainerAttachedClusterOidcConfigIssuerUrl(original["issuer_url"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedIssuerUrl); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedIssuerUrl); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["issuerUrl"] = transformedIssuerUrl
 	}
 
 	transformedJwks, err := expandContainerAttachedClusterOidcConfigJwks(original["jwks"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedJwks); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedJwks); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["jwks"] = transformedJwks
 	}
 
 	return transformed, nil
 }
 
-func expandContainerAttachedClusterOidcConfigIssuerUrl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterOidcConfigIssuerUrl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandContainerAttachedClusterOidcConfigJwks(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterOidcConfigJwks(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandContainerAttachedClusterPlatformVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterPlatformVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandContainerAttachedClusterDistribution(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterDistribution(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandContainerAttachedClusterFleet(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterFleet(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1083,29 +1087,29 @@ func expandContainerAttachedClusterFleet(v interface{}, d TerraformResourceData,
 	transformedMembership, err := expandContainerAttachedClusterFleetMembership(original["membership"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMembership); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMembership); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["membership"] = transformedMembership
 	}
 
 	transformedProject, err := expandContainerAttachedClusterFleetProject(original["project"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProject); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProject); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["project"] = transformedProject
 	}
 
 	return transformed, nil
 }
 
-func expandContainerAttachedClusterFleetMembership(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterFleetMembership(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandContainerAttachedClusterFleetProject(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterFleetProject(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandContainerAttachedClusterAnnotations(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandContainerAttachedClusterAnnotations(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1116,7 +1120,7 @@ func expandContainerAttachedClusterAnnotations(v interface{}, d TerraformResourc
 	return m, nil
 }
 
-func expandContainerAttachedClusterLoggingConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterLoggingConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		transformed := make(map[string]interface{})
@@ -1136,7 +1140,7 @@ func expandContainerAttachedClusterLoggingConfig(v interface{}, d TerraformResou
 	return transformed, nil
 }
 
-func expandContainerAttachedClusterLoggingConfigComponentConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterLoggingConfigComponentConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 {
 		return nil, nil
@@ -1160,7 +1164,7 @@ func expandContainerAttachedClusterLoggingConfigComponentConfig(v interface{}, d
 	return transformed, nil
 }
 
-func expandContainerAttachedClusterLoggingConfigComponentConfigEnableComponents(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterLoggingConfigComponentConfigEnableComponents(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
@@ -1185,7 +1189,7 @@ type attachedClusterUser struct {
 //	     "user2"
 //	   ]
 //	}
-func expandContainerAttachedClusterAuthorization(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterAuthorization(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1202,7 +1206,7 @@ func expandContainerAttachedClusterAuthorization(v interface{}, d TerraformResou
 	return transformed, nil
 }
 
-func expandContainerAttachedClusterMonitoringConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterMonitoringConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 {
 		return nil, nil
@@ -1219,14 +1223,14 @@ func expandContainerAttachedClusterMonitoringConfig(v interface{}, d TerraformRe
 	transformedManagedPrometheusConfig, err := expandContainerAttachedClusterMonitoringConfigManagedPrometheusConfig(original["managed_prometheus_config"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedManagedPrometheusConfig); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedManagedPrometheusConfig); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["managedPrometheusConfig"] = transformedManagedPrometheusConfig
 	}
 
 	return transformed, nil
 }
 
-func expandContainerAttachedClusterMonitoringConfigManagedPrometheusConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterMonitoringConfigManagedPrometheusConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 {
 		return nil, nil
@@ -1243,13 +1247,13 @@ func expandContainerAttachedClusterMonitoringConfigManagedPrometheusConfig(v int
 	transformedEnabled, err := expandContainerAttachedClusterMonitoringConfigManagedPrometheusConfigEnabled(original["enabled"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEnabled); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEnabled); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["enabled"] = transformedEnabled
 	}
 
 	return transformed, nil
 }
 
-func expandContainerAttachedClusterMonitoringConfigManagedPrometheusConfigEnabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandContainerAttachedClusterMonitoringConfigManagedPrometheusConfigEnabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

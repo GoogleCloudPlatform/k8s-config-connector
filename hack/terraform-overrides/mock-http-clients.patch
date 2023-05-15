@@ -1,8 +1,8 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/config.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/config.go
-index 67b3cb7fa..67fe21955 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/config.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/config.go
-@@ -527,6 +527,14 @@ var DefaultClientScopes = []string{
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/transport/config.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/transport/config.go
+index 8c32f3083..95eb1dacb 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/transport/config.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/transport/config.go
+@@ -539,6 +539,14 @@ var DefaultClientScopes = []string{
  	"https://www.googleapis.com/auth/userinfo.email",
  }
  
@@ -17,7 +17,7 @@ index 67b3cb7fa..67fe21955 100644
  func HandleSDKDefaults(d *schema.ResourceData) error {
  	if d.Get("impersonate_service_account") == "" {
  		d.Set("impersonate_service_account", MultiEnvDefault([]string{
-@@ -1171,13 +1179,20 @@ func (c *Config) LoadAndValidate(ctx context.Context) error {
+@@ -1193,13 +1201,20 @@ func (c *Config) LoadAndValidate(ctx context.Context) error {
  
  	c.tokenSource = tokenSource
  

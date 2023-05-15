@@ -177,5 +177,29 @@ spec:
             version: v1beta1
             group: cloudbuild.cnrm.cloud.google.com
           targetField: name
+        - tfField: source_to_build.repository
+          key: repositoryRef
+          description: |-
+            Only `external` field is supported to configure the reference.
+
+            The qualified resource name of the Repo API repository.
+            Either uri or repository can be specified and is required.
+          gvk:
+            kind: CloudBuildV2Repository
+            version: v1beta1
+            group: cloudbuild.cnrm.cloud.google.com
+          targetField: name
+        - tfField: git_file_source.repository
+          key: repositoryRef
+          description: |-
+            Only `external` field is supported to configure the reference.
+
+            The fully qualified resource name of the Repo API repository. The fully qualified resource name of the Repo API repository.
+            If unspecified, the repo from which the trigger invocation originated is assumed to be the repo from which to read the specified path.
+          gvk:
+            kind: CloudBuildV2Repository
+            version: v1beta1
+            group: cloudbuild.cnrm.cloud.google.com
+          targetField: name
       ignoredFields:
         - trigger_template.project_id

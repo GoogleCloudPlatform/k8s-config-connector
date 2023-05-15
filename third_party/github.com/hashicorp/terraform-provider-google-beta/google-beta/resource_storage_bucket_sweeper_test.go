@@ -6,6 +6,8 @@ import (
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func init() {
@@ -20,7 +22,7 @@ func testSweepStorageBucket(region string) error {
 	resourceName := "StorageBucket"
 	log.Printf("[INFO][SWEEPER_LOG] Starting sweeper for %s", resourceName)
 
-	config, err := SharedConfigForRegion(region)
+	config, err := acctest.SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -37,12 +39,12 @@ func testSweepStorageBucket(region string) error {
 		"projection": "noAcl", // returns 1000 items instead of 200
 	}
 
-	servicesUrl, err := AddQueryParams("https://storage.googleapis.com/storage/v1/b", params)
+	servicesUrl, err := transport_tpg.AddQueryParams("https://storage.googleapis.com/storage/v1/b", params)
 	if err != nil {
 		return err
 	}
 
-	res, err := SendRequest(config, "GET", config.Project, servicesUrl, config.UserAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", config.Project, servicesUrl, config.UserAgent, nil)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] Error in response from request %s: %s", servicesUrl, err)
 		return nil
@@ -64,13 +66,13 @@ func testSweepStorageBucket(region string) error {
 
 		id := obj["name"].(string)
 		// Increment count and skip if resource is not sweepable.
-		if !IsSweepableTestResource(id) {
+		if !acctest.IsSweepableTestResource(id) {
 			nonPrefixCount++
 			continue
 		}
 
 		deleteUrl := fmt.Sprintf("https://storage.googleapis.com/storage/v1/b/%s", id)
-		_, err = SendRequest(config, "DELETE", config.Project, deleteUrl, config.UserAgent, nil)
+		_, err = transport_tpg.SendRequest(config, "DELETE", config.Project, deleteUrl, config.UserAgent, nil)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] Error deleting for url %s : %s", deleteUrl, err)
 		} else {

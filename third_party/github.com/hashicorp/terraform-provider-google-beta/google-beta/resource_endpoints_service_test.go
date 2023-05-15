@@ -5,33 +5,36 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccEndpointsService_basic(t *testing.T) {
 	// Uses random provider
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 	serviceId := "tf-test" + RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		CheckDestroy:             testAccCheckEndpointServiceDestroyProducer(t),
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccEndpointsService_basic(serviceId, GetTestProjectFromEnv(), "1"),
+				Config: testAccEndpointsService_basic(serviceId, acctest.GetTestProjectFromEnv(), "1"),
 				Check:  testAccCheckEndpointExistsByName(t, serviceId),
 			},
 			{
-				Config: testAccEndpointsService_basic(serviceId, GetTestProjectFromEnv(), "2"),
+				Config: testAccEndpointsService_basic(serviceId, acctest.GetTestProjectFromEnv(), "2"),
 				Check:  testAccCheckEndpointExistsByName(t, serviceId),
 			},
 			{
-				Config: testAccEndpointsService_basic(serviceId, GetTestProjectFromEnv(), "3"),
+				Config: testAccEndpointsService_basic(serviceId, acctest.GetTestProjectFromEnv(), "3"),
 				Check:  testAccCheckEndpointExistsByName(t, serviceId),
 			},
 		},
@@ -43,12 +46,12 @@ func TestAccEndpointsService_grpc(t *testing.T) {
 	serviceId := "tf-test" + RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckEndpointServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccEndpointsService_grpc(serviceId, GetTestProjectFromEnv()),
+				Config: testAccEndpointsService_grpc(serviceId, acctest.GetTestProjectFromEnv()),
 				Check:  testAccCheckEndpointExistsByName(t, serviceId),
 			},
 		},
@@ -73,7 +76,7 @@ func TestEndpointsService_grpcMigrateState(t *testing.T) {
 				"protoc_output":        "",
 				"name":                 "testcase",
 			},
-			Meta: &Config{Project: "gcp-project", Region: "us-central1"},
+			Meta: &transport_tpg.Config{Project: "gcp-project", Region: "us-central1"},
 		},
 		"update from non-protoc_output": {
 			StateVersion: 0,
@@ -85,7 +88,7 @@ func TestEndpointsService_grpcMigrateState(t *testing.T) {
 				"openapi_config": "foo bar baz",
 				"name":           "testcase-2",
 			},
-			Meta: &Config{Project: "gcp-project", Region: "us-central1"},
+			Meta: &transport_tpg.Config{Project: "gcp-project", Region: "us-central1"},
 		},
 	}
 
@@ -210,7 +213,7 @@ func testAccCheckEndpointServiceDestroyProducer(t *testing.T) func(s *terraform.
 			service, err := config.NewServiceManClient(config.UserAgent).Services.GetConfig(serviceName).Do()
 			if err != nil {
 				// ServiceManagement returns 403 if service doesn't exist.
-				if !IsGoogleApiErrorWithCode(err, 403) {
+				if !transport_tpg.IsGoogleApiErrorWithCode(err, 403) {
 					return err
 				}
 			}

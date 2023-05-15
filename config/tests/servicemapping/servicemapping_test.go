@@ -437,6 +437,11 @@ func validateTypeConfigGVK(t *testing.T, rc v1alpha1.ResourceConfig, ref v1alpha
 			Version: "v1beta1",
 			Kind:    "CloudBuildBitbucketServerConfig",
 		},
+		{
+			Group:   "cloudbuild.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "CloudBuildV2Repository",
+		},
 	}
 	for _, g := range ignoredGVKList {
 		if gvk == g {

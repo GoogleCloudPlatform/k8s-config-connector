@@ -6,6 +6,9 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	compute "google.golang.org/api/compute/v0.beta"
@@ -39,8 +42,8 @@ func DataSourceGoogleComputeZones() *schema.Resource {
 }
 
 func dataSourceGoogleComputeZonesRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -50,7 +53,7 @@ func dataSourceGoogleComputeZonesRead(d *schema.ResourceData, meta interface{}) 
 		region = r.(string)
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -61,7 +64,7 @@ func dataSourceGoogleComputeZonesRead(d *schema.ResourceData, meta interface{}) 
 	}
 
 	zones := []string{}
-	err = config.NewComputeClient(userAgent).Zones.List(project).Filter(filter).Pages(config.context, func(zl *compute.ZoneList) error {
+	err = config.NewComputeClient(userAgent).Zones.List(project).Filter(filter).Pages(config.Context, func(zl *compute.ZoneList) error {
 		for _, zone := range zl.Items {
 			// We have no way to guarantee a specific base path for the region, but the built-in API-level filtering
 			// only lets us query on exact matches, so we do our own filtering here.

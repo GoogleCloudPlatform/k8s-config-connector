@@ -7,6 +7,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccBigQueryDatasetAccess_basic(t *testing.T) {
@@ -17,11 +21,11 @@ func TestAccBigQueryDatasetAccess_basic(t *testing.T) {
 
 	expected := map[string]interface{}{
 		"role":        "OWNER",
-		"userByEmail": fmt.Sprintf("%s@%s.iam.gserviceaccount.com", saID, GetTestProjectFromEnv()),
+		"userByEmail": fmt.Sprintf("%s@%s.iam.gserviceaccount.com", saID, acctest.GetTestProjectFromEnv()),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -46,14 +50,14 @@ func TestAccBigQueryDatasetAccess_view(t *testing.T) {
 
 	expected := map[string]interface{}{
 		"view": map[string]interface{}{
-			"projectId": GetTestProjectFromEnv(),
+			"projectId": acctest.GetTestProjectFromEnv(),
 			"datasetId": datasetID2,
 			"tableId":   tableID,
 		},
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -77,7 +81,7 @@ func TestAccBigQueryDatasetAccess_authorizedDataset(t *testing.T) {
 	expected := map[string]interface{}{
 		"dataset": map[string]interface{}{
 			"dataset": map[string]interface{}{
-				"projectId": GetTestProjectFromEnv(),
+				"projectId": acctest.GetTestProjectFromEnv(),
 				"datasetId": datasetID2,
 			},
 			"targetTypes": []interface{}{"VIEWS"},
@@ -85,7 +89,7 @@ func TestAccBigQueryDatasetAccess_authorizedDataset(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -102,7 +106,7 @@ func TestAccBigQueryDatasetAccess_authorizedDataset(t *testing.T) {
 
 func TestAccBigQueryDatasetAccess_authorizedRoutine(t *testing.T) {
 	// Multiple fine-grained resources
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -113,14 +117,14 @@ func TestAccBigQueryDatasetAccess_authorizedRoutine(t *testing.T) {
 
 	expected := map[string]interface{}{
 		"routine": map[string]interface{}{
-			"projectId": GetTestProjectFromEnv(),
+			"projectId": acctest.GetTestProjectFromEnv(),
 			"datasetId": context["public_dataset"],
 			"routineId": context["public_routine"],
 		},
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -138,7 +142,7 @@ func TestAccBigQueryDatasetAccess_authorizedRoutine(t *testing.T) {
 
 func TestAccBigQueryDatasetAccess_multiple(t *testing.T) {
 	// Multiple fine-grained resources
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	datasetID := fmt.Sprintf("tf_test_%s", RandString(t, 10))
@@ -154,7 +158,7 @@ func TestAccBigQueryDatasetAccess_multiple(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -192,7 +196,7 @@ func TestAccBigQueryDatasetAccess_predefinedRole(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -226,7 +230,7 @@ func TestAccBigQueryDatasetAccess_iamMember(t *testing.T) {
 	sinkName := fmt.Sprintf("tf_test_%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -242,7 +246,7 @@ func TestAccBigQueryDatasetAccess_allUsers(t *testing.T) {
 	datasetID := fmt.Sprintf("tf_test_%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -261,7 +265,7 @@ func TestAccBigQueryDatasetAccess_allAuthenticatedUsers(t *testing.T) {
 	datasetID := fmt.Sprintf("tf_test_%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -287,12 +291,12 @@ func testAccCheckBigQueryDatasetAccess(t *testing.T, n string, expected map[stri
 		}
 
 		config := GoogleProviderConfig(t)
-		url, err := replaceVarsForTest(config, rs, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
+		url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
 		if err != nil {
 			return err
 		}
 
-		ds, err := SendRequest(config, "GET", "", url, config.UserAgent, nil)
+		ds, err := transport_tpg.SendRequest(config, "GET", "", url, config.UserAgent, nil)
 		if err != nil {
 			return err
 		}

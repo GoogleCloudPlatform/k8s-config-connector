@@ -10,6 +10,9 @@ import (
 	"log"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
@@ -70,10 +73,10 @@ func (w *ComputeOperationWaiter) QueryOp() (interface{}, error) {
 		}
 	}
 	if w.Op.Zone != "" {
-		zone := GetResourceNameFromSelfLink(w.Op.Zone)
+		zone := tpgresource.GetResourceNameFromSelfLink(w.Op.Zone)
 		return w.Service.ZoneOperations.Get(w.Project, zone, w.Op.Name).Do()
 	} else if w.Op.Region != "" {
-		region := GetResourceNameFromSelfLink(w.Op.Region)
+		region := tpgresource.GetResourceNameFromSelfLink(w.Op.Region)
 		return w.Service.RegionOperations.Get(w.Project, region, w.Op.Name).Do()
 	} else if w.Parent != "" {
 		return w.Service.GlobalOrganizationOperations.Get(w.Op.Name).ParentId(w.Parent).Do()
@@ -97,16 +100,16 @@ func (w *ComputeOperationWaiter) TargetStates() []string {
 	return []string{"DONE"}
 }
 
-func ComputeOperationWaitTime(config *Config, res interface{}, project, activity, userAgent string, timeout time.Duration) error {
+func ComputeOperationWaitTime(config *transport_tpg.Config, res interface{}, project, activity, userAgent string, timeout time.Duration) error {
 	op := &compute.Operation{}
-	err := Convert(res, op)
+	err := tpgresource.Convert(res, op)
 	if err != nil {
 		return err
 	}
 
 	w := &ComputeOperationWaiter{
 		Service: config.NewComputeClient(userAgent),
-		Context: config.context,
+		Context: config.Context,
 		Op:      op,
 		Project: project,
 	}
@@ -114,12 +117,12 @@ func ComputeOperationWaitTime(config *Config, res interface{}, project, activity
 	if err := w.SetOp(op); err != nil {
 		return err
 	}
-	return OperationWait(w, activity, timeout, config.PollInterval)
+	return tpgresource.OperationWait(w, activity, timeout, config.PollInterval)
 }
 
-func ComputeOrgOperationWaitTimeWithResponse(config *Config, res interface{}, response *map[string]interface{}, parent, activity, userAgent string, timeout time.Duration) error {
+func ComputeOrgOperationWaitTimeWithResponse(config *transport_tpg.Config, res interface{}, response *map[string]interface{}, parent, activity, userAgent string, timeout time.Duration) error {
 	op := &compute.Operation{}
-	err := Convert(res, op)
+	err := tpgresource.Convert(res, op)
 	if err != nil {
 		return err
 	}
@@ -133,7 +136,7 @@ func ComputeOrgOperationWaitTimeWithResponse(config *Config, res interface{}, re
 	if err := w.SetOp(op); err != nil {
 		return err
 	}
-	if err := OperationWait(w, activity, timeout, config.PollInterval); err != nil {
+	if err := tpgresource.OperationWait(w, activity, timeout, config.PollInterval); err != nil {
 		return err
 	}
 	e, err := json.Marshal(w.Op)

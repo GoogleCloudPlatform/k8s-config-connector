@@ -4,6 +4,10 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	runtimeconfig "google.golang.org/api/runtimeconfig/v1beta1"
 )
@@ -26,7 +30,7 @@ func ResourceRuntimeconfigConfig() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateRegexp("[0-9A-Za-z](?:[_.A-Za-z0-9-]{0,62}[_.A-Za-z0-9])?"),
+				ValidateFunc: verify.ValidateRegexp("[0-9A-Za-z](?:[_.A-Za-z0-9-]{0,62}[_.A-Za-z0-9])?"),
 				Description:  `The name of the runtime config.`,
 			},
 
@@ -49,13 +53,13 @@ func ResourceRuntimeconfigConfig() *schema.Resource {
 }
 
 func resourceRuntimeconfigConfigCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -81,8 +85,8 @@ func resourceRuntimeconfigConfigCreate(d *schema.ResourceData, meta interface{})
 }
 
 func resourceRuntimeconfigConfigRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -90,7 +94,7 @@ func resourceRuntimeconfigConfigRead(d *schema.ResourceData, meta interface{}) e
 	fullName := d.Id()
 	runConfig, err := config.NewRuntimeconfigClient(userAgent).Projects.Configs.Get(fullName).Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("RuntimeConfig %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("RuntimeConfig %q", d.Id()))
 	}
 
 	project, name, err := resourceRuntimeconfigParseFullName(runConfig.Name)
@@ -98,7 +102,7 @@ func resourceRuntimeconfigConfigRead(d *schema.ResourceData, meta interface{}) e
 		return err
 	}
 	// Check to see if project matches our current defined value - if it doesn't, we'll explicitly set it
-	curProject, err := getProject(d, config)
+	curProject, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -122,8 +126,8 @@ func resourceRuntimeconfigConfigRead(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceRuntimeconfigConfigUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -147,8 +151,8 @@ func resourceRuntimeconfigConfigUpdate(d *schema.ResourceData, meta interface{})
 }
 
 func resourceRuntimeconfigConfigDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -164,13 +168,13 @@ func resourceRuntimeconfigConfigDelete(d *schema.ResourceData, meta interface{})
 }
 
 func resourceRuntimeconfigConfigImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{"projects/(?P<project>[^/]+)/configs/(?P<name>[^/]+)", "(?P<name>[^/]+)"}, d, config); err != nil {
 		return nil, err
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/configs/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/configs/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

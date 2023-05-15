@@ -20,6 +20,9 @@ import (
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"google.golang.org/api/cloudresourcemanager/v1"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 var SecurityCenterSourceIamSchema = map[string]*schema.Schema{
@@ -39,11 +42,11 @@ var SecurityCenterSourceIamSchema = map[string]*schema.Schema{
 type SecurityCenterSourceIamUpdater struct {
 	organization string
 	source       string
-	d            TerraformResourceData
-	Config       *Config
+	d            tpgresource.TerraformResourceData
+	Config       *transport_tpg.Config
 }
 
-func SecurityCenterSourceIamUpdaterProducer(d TerraformResourceData, config *Config) (ResourceIamUpdater, error) {
+func SecurityCenterSourceIamUpdaterProducer(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
 	values := make(map[string]string)
 
 	if v, ok := d.GetOk("organization"); ok {
@@ -81,7 +84,7 @@ func SecurityCenterSourceIamUpdaterProducer(d TerraformResourceData, config *Con
 	return u, nil
 }
 
-func SecurityCenterSourceIdParseFunc(d *schema.ResourceData, config *Config) error {
+func SecurityCenterSourceIdParseFunc(d *schema.ResourceData, config *transport_tpg.Config) error {
 	values := make(map[string]string)
 
 	m, err := getImportIdQualifiers([]string{"organizations/(?P<organization>[^/]+)/sources/(?P<source>[^/]+)", "(?P<organization>[^/]+)/(?P<source>[^/]+)", "(?P<source>[^/]+)"}, d, config, d.Id())
@@ -114,18 +117,18 @@ func (u *SecurityCenterSourceIamUpdater) GetResourceIamPolicy() (*cloudresourcem
 
 	var obj map[string]interface{}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
 
-	policy, err := SendRequest(u.Config, "POST", "", url, userAgent, obj)
+	policy, err := transport_tpg.SendRequest(u.Config, "POST", "", url, userAgent, obj)
 	if err != nil {
 		return nil, errwrap.Wrapf(fmt.Sprintf("Error retrieving IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
 
 	out := &cloudresourcemanager.Policy{}
-	err = Convert(policy, out)
+	err = tpgresource.Convert(policy, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a policy to a resource manager policy: {{err}}", err)
 	}
@@ -134,7 +137,7 @@ func (u *SecurityCenterSourceIamUpdater) GetResourceIamPolicy() (*cloudresourcem
 }
 
 func (u *SecurityCenterSourceIamUpdater) SetResourceIamPolicy(policy *cloudresourcemanager.Policy) error {
-	json, err := ConvertToMap(policy)
+	json, err := tpgresource.ConvertToMap(policy)
 	if err != nil {
 		return err
 	}
@@ -147,12 +150,12 @@ func (u *SecurityCenterSourceIamUpdater) SetResourceIamPolicy(policy *cloudresou
 		return err
 	}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	_, err = SendRequestWithTimeout(u.Config, "POST", "", url, userAgent, obj, u.d.Timeout(schema.TimeoutCreate))
+	_, err = transport_tpg.SendRequestWithTimeout(u.Config, "POST", "", url, userAgent, obj, u.d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return errwrap.Wrapf(fmt.Sprintf("Error setting IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
@@ -162,7 +165,7 @@ func (u *SecurityCenterSourceIamUpdater) SetResourceIamPolicy(policy *cloudresou
 
 func (u *SecurityCenterSourceIamUpdater) qualifySourceUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{SecurityCenterBasePath}}%s:%s", fmt.Sprintf("organizations/%s/sources/%s", u.organization, u.source), methodIdentifier)
-	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
+	url, err := tpgresource.ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

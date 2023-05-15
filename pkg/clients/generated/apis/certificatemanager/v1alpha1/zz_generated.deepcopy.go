@@ -480,6 +480,11 @@ func (in *CertificateManagerCertificateSpec) DeepCopyInto(out *CertificateManage
 		*out = new(string)
 		**out = **in
 	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
+		**out = **in
+	}
 	if in.Managed != nil {
 		in, out := &in.Managed, &out.Managed
 		*out = new(CertificateManaged)

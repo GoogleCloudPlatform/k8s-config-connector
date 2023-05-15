@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceAlloydbBackup() *schema.Resource {
@@ -52,8 +55,14 @@ func ResourceAlloydbBackup() *schema.Resource {
 				Type:             schema.TypeString,
 				Required:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: ProjectNumberDiffSuppress,
+				DiffSuppressFunc: tpgresource.ProjectNumberDiffSuppress,
 				Description:      `The full resource name of the backup source cluster (e.g., projects/{project}/locations/{location}/clusters/{clusterId}).`,
+			},
+			"location": {
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: `The location where the alloydb backup should reside.`,
 			},
 			"description": {
 				Type:        schema.TypeString,
@@ -61,22 +70,54 @@ func ResourceAlloydbBackup() *schema.Resource {
 				ForceNew:    true,
 				Description: `User-provided description of the backup.`,
 			},
+			"encryption_config": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key).`,
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"kms_key_name": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							ForceNew:    true,
+							Description: `The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME].`,
+						},
+					},
+				},
+			},
 			"labels": {
 				Type:        schema.TypeMap,
 				Optional:    true,
 				Description: `User-defined labels for the alloydb backup.`,
 				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
-			"location": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				ForceNew:    true,
-				Description: `The location where the alloydb backup should reside.`,
-			},
 			"create_time": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: `Time the Backup was created in UTC.`,
+			},
+			"encryption_info": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Description: `EncryptionInfo describes the encryption information of a cluster or a backup.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"encryption_type": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: `Output only. Type of encryption.`,
+						},
+						"kms_key_versions": {
+							Type:        schema.TypeList,
+							Computed:    true,
+							Description: `Output only. Cloud KMS key versions that are being used to protect the database or the backup.`,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
+						},
+					},
+				},
 			},
 			"etag": {
 				Type:        schema.TypeString,
@@ -120,8 +161,8 @@ func ResourceAlloydbBackup() *schema.Resource {
 }
 
 func resourceAlloydbBackupCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -130,20 +171,26 @@ func resourceAlloydbBackupCreate(d *schema.ResourceData, meta interface{}) error
 	clusterNameProp, err := expandAlloydbBackupClusterName(d.Get("cluster_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("cluster_name"); !isEmptyValue(reflect.ValueOf(clusterNameProp)) && (ok || !reflect.DeepEqual(v, clusterNameProp)) {
+	} else if v, ok := d.GetOkExists("cluster_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(clusterNameProp)) && (ok || !reflect.DeepEqual(v, clusterNameProp)) {
 		obj["clusterName"] = clusterNameProp
 	}
 	labelsProp, err := expandAlloydbBackupLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	descriptionProp, err := expandAlloydbBackupDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
+	}
+	encryptionConfigProp, err := expandAlloydbBackupEncryptionConfig(d.Get("encryption_config"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("encryption_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(encryptionConfigProp)) && (ok || !reflect.DeepEqual(v, encryptionConfigProp)) {
+		obj["encryptionConfig"] = encryptionConfigProp
 	}
 
 	obj, err = resourceAlloydbBackupEncoder(d, meta, obj)
@@ -151,7 +198,7 @@ func resourceAlloydbBackupCreate(d *schema.ResourceData, meta interface{}) error
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/backups?backupId={{backup_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/backups?backupId={{backup_id}}")
 	if err != nil {
 		return err
 	}
@@ -159,24 +206,24 @@ func resourceAlloydbBackupCreate(d *schema.ResourceData, meta interface{}) error
 	log.Printf("[DEBUG] Creating new Backup: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Backup: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Backup: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/backups/{{backup_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/backups/{{backup_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -198,33 +245,33 @@ func resourceAlloydbBackupCreate(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceAlloydbBackupRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/backups/{{backup_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/backups/{{backup_id}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Backup: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("AlloydbBackup %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("AlloydbBackup %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -261,20 +308,26 @@ func resourceAlloydbBackupRead(d *schema.ResourceData, meta interface{}) error {
 	if err := d.Set("etag", flattenAlloydbBackupEtag(res["etag"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Backup: %s", err)
 	}
+	if err := d.Set("encryption_config", flattenAlloydbBackupEncryptionConfig(res["encryptionConfig"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Backup: %s", err)
+	}
+	if err := d.Set("encryption_info", flattenAlloydbBackupEncryptionInfo(res["encryptionInfo"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Backup: %s", err)
+	}
 
 	return nil
 }
 
 func resourceAlloydbBackupUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Backup: %s", err)
 	}
@@ -284,8 +337,14 @@ func resourceAlloydbBackupUpdate(d *schema.ResourceData, meta interface{}) error
 	labelsProp, err := expandAlloydbBackupLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
+	}
+	encryptionConfigProp, err := expandAlloydbBackupEncryptionConfig(d.Get("encryption_config"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("encryption_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, encryptionConfigProp)) {
+		obj["encryptionConfig"] = encryptionConfigProp
 	}
 
 	obj, err = resourceAlloydbBackupEncoder(d, meta, obj)
@@ -293,7 +352,7 @@ func resourceAlloydbBackupUpdate(d *schema.ResourceData, meta interface{}) error
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/backups/{{backup_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/backups/{{backup_id}}")
 	if err != nil {
 		return err
 	}
@@ -304,19 +363,23 @@ func resourceAlloydbBackupUpdate(d *schema.ResourceData, meta interface{}) error
 	if d.HasChange("labels") {
 		updateMask = append(updateMask, "labels")
 	}
+
+	if d.HasChange("encryption_config") {
+		updateMask = append(updateMask, "encryptionConfig")
+	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Backup %q: %s", d.Id(), err)
@@ -336,21 +399,21 @@ func resourceAlloydbBackupUpdate(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceAlloydbBackupDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Backup: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/backups/{{backup_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/backups/{{backup_id}}")
 	if err != nil {
 		return err
 	}
@@ -359,13 +422,13 @@ func resourceAlloydbBackupDelete(d *schema.ResourceData, meta interface{}) error
 	log.Printf("[DEBUG] Deleting Backup %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Backup")
+		return transport_tpg.HandleNotFoundError(err, d, "Backup")
 	}
 
 	err = AlloydbOperationWaitTime(
@@ -381,7 +444,7 @@ func resourceAlloydbBackupDelete(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceAlloydbBackupImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/backups/(?P<backup_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<backup_id>[^/]+)",
@@ -391,7 +454,7 @@ func resourceAlloydbBackupImport(d *schema.ResourceData, meta interface{}) ([]*s
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/backups/{{backup_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/backups/{{backup_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -400,51 +463,91 @@ func resourceAlloydbBackupImport(d *schema.ResourceData, meta interface{}) ([]*s
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenAlloydbBackupName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbBackupName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbBackupUid(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbBackupUid(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbBackupClusterName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbBackupClusterName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbBackupLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbBackupLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbBackupCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbBackupCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbBackupUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbBackupUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbBackupState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbBackupState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbBackupDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbBackupDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbBackupReconciling(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbBackupReconciling(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbBackupEtag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbBackupEtag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandAlloydbBackupClusterName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func flattenAlloydbBackupEncryptionConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["kms_key_name"] =
+		flattenAlloydbBackupEncryptionConfigKmsKeyName(original["kmsKeyName"], d, config)
+	return []interface{}{transformed}
+}
+func flattenAlloydbBackupEncryptionConfigKmsKeyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenAlloydbBackupEncryptionInfo(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["encryption_type"] =
+		flattenAlloydbBackupEncryptionInfoEncryptionType(original["encryptionType"], d, config)
+	transformed["kms_key_versions"] =
+		flattenAlloydbBackupEncryptionInfoKmsKeyVersions(original["kmsKeyVersions"], d, config)
+	return []interface{}{transformed}
+}
+func flattenAlloydbBackupEncryptionInfoEncryptionType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenAlloydbBackupEncryptionInfoKmsKeyVersions(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func expandAlloydbBackupClusterName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbBackupLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandAlloydbBackupLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -455,7 +558,30 @@ func expandAlloydbBackupLabels(v interface{}, d TerraformResourceData, config *C
 	return m, nil
 }
 
-func expandAlloydbBackupDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbBackupDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandAlloydbBackupEncryptionConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedKmsKeyName, err := expandAlloydbBackupEncryptionConfigKmsKeyName(original["kms_key_name"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["kmsKeyName"] = transformedKmsKeyName
+	}
+
+	return transformed, nil
+}
+
+func expandAlloydbBackupEncryptionConfigKmsKeyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

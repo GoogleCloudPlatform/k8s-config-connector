@@ -17,12 +17,15 @@ package google
 import (
 	"fmt"
 	"time"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 type IAM2OperationWaiter struct {
-	Config    *Config
+	Config    *transport_tpg.Config
 	UserAgent string
-	CommonOperationWaiter
+	tpgresource.CommonOperationWaiter
 }
 
 func (w *IAM2OperationWaiter) QueryOp() (interface{}, error) {
@@ -32,10 +35,10 @@ func (w *IAM2OperationWaiter) QueryOp() (interface{}, error) {
 	// Returns the proper get.
 	url := fmt.Sprintf("%s%s", w.Config.IAM2BasePath, w.CommonOperationWaiter.Op.Name)
 
-	return SendRequest(w.Config, "GET", "", url, w.UserAgent, nil)
+	return transport_tpg.SendRequest(w.Config, "GET", "", url, w.UserAgent, nil)
 }
 
-func createIAM2Waiter(config *Config, op map[string]interface{}, activity, userAgent string) (*IAM2OperationWaiter, error) {
+func createIAM2Waiter(config *transport_tpg.Config, op map[string]interface{}, activity, userAgent string) (*IAM2OperationWaiter, error) {
 	w := &IAM2OperationWaiter{
 		Config:    config,
 		UserAgent: userAgent,
@@ -46,7 +49,7 @@ func createIAM2Waiter(config *Config, op map[string]interface{}, activity, userA
 	return w, nil
 }
 
-func IAM2OperationWaitTime(config *Config, op map[string]interface{}, activity, userAgent string, timeout time.Duration) error {
+func IAM2OperationWaitTime(config *transport_tpg.Config, op map[string]interface{}, activity, userAgent string, timeout time.Duration) error {
 	if val, ok := op["name"]; !ok || val == "" {
 		// This was a synchronous call - there is no operation to wait for.
 		return nil
@@ -56,5 +59,5 @@ func IAM2OperationWaitTime(config *Config, op map[string]interface{}, activity, 
 		// If w is nil, the op was synchronous.
 		return err
 	}
-	return OperationWait(w, activity, timeout, config.PollInterval)
+	return tpgresource.OperationWait(w, activity, timeout, config.PollInterval)
 }

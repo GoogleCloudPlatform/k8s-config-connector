@@ -24,20 +24,23 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccAssuredWorkloadsWorkload_BasicHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
-		"region":        GetTestRegionFromEnv(),
+		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"region":        acctest.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAssuredWorkloadsWorkloadDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -66,14 +69,14 @@ func TestAccAssuredWorkloadsWorkload_FullHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
-		"region":        GetTestRegionFromEnv(),
+		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"region":        acctest.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAssuredWorkloadsWorkloadDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -183,7 +186,7 @@ func testAccCheckAssuredWorkloadsWorkloadDestroyProducer(t *testing.T) func(s *t
 				Name:                       dcl.StringOrNil(rs.Primary.Attributes["name"]),
 			}
 
-			client := NewDCLAssuredWorkloadsClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLAssuredWorkloadsClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetWorkload(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_assured_workloads_workload still exists %v", obj)

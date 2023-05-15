@@ -35,6 +35,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type BackupEncryptionConfig struct {
+	/* Immutable. The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]. */
+	// +optional
+	KmsKeyName *string `json:"kmsKeyName,omitempty"`
+}
+
 type AlloyDBBackupSpec struct {
 	/* Immutable. The full resource name of the backup source cluster (e.g., projects/{project}/locations/{location}/clusters/{clusterId}). */
 	ClusterName string `json:"clusterName"`
@@ -42,6 +48,10 @@ type AlloyDBBackupSpec struct {
 	/* Immutable. User-provided description of the backup. */
 	// +optional
 	Description *string `json:"description,omitempty"`
+
+	/* EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key). */
+	// +optional
+	EncryptionConfig *BackupEncryptionConfig `json:"encryptionConfig,omitempty"`
 
 	/* Immutable. The location where the alloydb backup should reside. */
 	Location string `json:"location"`
@@ -54,6 +64,16 @@ type AlloyDBBackupSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type BackupEncryptionInfoStatus struct {
+	/* Output only. Type of encryption. */
+	// +optional
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	/* Output only. Cloud KMS key versions that are being used to protect the database or the backup. */
+	// +optional
+	KmsKeyVersions []string `json:"kmsKeyVersions,omitempty"`
+}
+
 type AlloyDBBackupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AlloyDBBackup's current state. */
@@ -61,6 +81,10 @@ type AlloyDBBackupStatus struct {
 	/* Time the Backup was created in UTC. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
+
+	/* EncryptionInfo describes the encryption information of a cluster or a backup. */
+	// +optional
+	EncryptionInfo []BackupEncryptionInfoStatus `json:"encryptionInfo,omitempty"`
 
 	/* A hash of the resource. */
 	// +optional

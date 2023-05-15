@@ -54,6 +54,11 @@ type ResourcepolicyDayOfWeeks struct {
 	StartTime string `json:"startTime"`
 }
 
+type ResourcepolicyDiskConsistencyGroupPolicy struct {
+	/* Immutable. Enable disk consistency on the resource policy. */
+	Enabled bool `json:"enabled"`
+}
+
 type ResourcepolicyGroupPlacementPolicy struct {
 	/* Immutable. The number of availability domains instances will be spread across. If two instances are in different
 	availability domain, they will not be put in the same low latency network. */
@@ -188,6 +193,10 @@ type ComputeResourcePolicySpec struct {
 	/* Immutable. An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
+
+	/* Immutable. Replication consistency group for asynchronous disk replication. */
+	// +optional
+	DiskConsistencyGroupPolicy *ResourcepolicyDiskConsistencyGroupPolicy `json:"diskConsistencyGroupPolicy,omitempty"`
 
 	/* Immutable. Resource policy for instances used for placement configuration. */
 	// +optional

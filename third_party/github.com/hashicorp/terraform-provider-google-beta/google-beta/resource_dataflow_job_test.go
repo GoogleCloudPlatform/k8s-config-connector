@@ -10,6 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
@@ -22,7 +25,7 @@ const (
 func TestAccDataflowJob_basic(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -31,7 +34,7 @@ func TestAccDataflowJob_basic(t *testing.T) {
 	zone := "us-central1-f"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -54,7 +57,7 @@ func TestAccDataflowJob_basic(t *testing.T) {
 func TestAccDataflowJobSkipWait_basic(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -63,7 +66,7 @@ func TestAccDataflowJobSkipWait_basic(t *testing.T) {
 	zone := "us-central1-f"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -86,7 +89,7 @@ func TestAccDataflowJobSkipWait_basic(t *testing.T) {
 func TestAccDataflowJob_withRegion(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -94,7 +97,7 @@ func TestAccDataflowJob_withRegion(t *testing.T) {
 	job := "tf-test-dataflow-job-" + randStr
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobRegionDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -117,7 +120,7 @@ func TestAccDataflowJob_withRegion(t *testing.T) {
 func TestAccDataflowJob_withServiceAccount(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -126,7 +129,7 @@ func TestAccDataflowJob_withServiceAccount(t *testing.T) {
 	accountId := "tf-test-dataflow-sa" + randStr
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -150,7 +153,7 @@ func TestAccDataflowJob_withServiceAccount(t *testing.T) {
 func TestAccDataflowJob_withNetwork(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -159,7 +162,7 @@ func TestAccDataflowJob_withNetwork(t *testing.T) {
 	network := "tf-test-dataflow-net" + randStr
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -183,7 +186,7 @@ func TestAccDataflowJob_withNetwork(t *testing.T) {
 func TestAccDataflowJob_withSubnetwork(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -193,7 +196,7 @@ func TestAccDataflowJob_withSubnetwork(t *testing.T) {
 	subnetwork := "tf-test-dataflow-subnet" + randStr
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -217,7 +220,7 @@ func TestAccDataflowJob_withSubnetwork(t *testing.T) {
 func TestAccDataflowJob_withLabels(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -227,7 +230,7 @@ func TestAccDataflowJob_withLabels(t *testing.T) {
 	value := "my-value"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -251,7 +254,7 @@ func TestAccDataflowJob_withLabels(t *testing.T) {
 func TestAccDataflowJob_withIpConfig(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -259,7 +262,7 @@ func TestAccDataflowJob_withIpConfig(t *testing.T) {
 	job := "tf-test-dataflow-job-" + randStr
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -282,7 +285,7 @@ func TestAccDataflowJob_withIpConfig(t *testing.T) {
 func TestAccDataflowJob_withKmsKey(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -297,7 +300,7 @@ func TestAccDataflowJob_withKmsKey(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -319,7 +322,7 @@ func TestAccDataflowJob_withKmsKey(t *testing.T) {
 func TestAccDataflowJobWithAdditionalExperiments(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -328,7 +331,7 @@ func TestAccDataflowJobWithAdditionalExperiments(t *testing.T) {
 	additionalExperiments := []string{"enable_stackdriver_agent_metrics", "shuffle_mode=service"}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -352,12 +355,12 @@ func TestAccDataflowJobWithAdditionalExperiments(t *testing.T) {
 func TestAccDataflowJob_streamUpdate(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	suffix := RandString(t, 10)
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -386,7 +389,7 @@ func TestAccDataflowJob_streamUpdate(t *testing.T) {
 func TestAccDataflowJob_virtualUpdate(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	suffix := RandString(t, 10)
@@ -394,7 +397,7 @@ func TestAccDataflowJob_virtualUpdate(t *testing.T) {
 	// If the update is virtual-only, the ID should remain the same after updating.
 	var id string
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -539,7 +542,7 @@ func testAccDataflowJobHasNetwork(t *testing.T, res, expected string) resource.T
 			return fmt.Errorf("no network interfaces in template properties: %+v", instanceTmpl.Properties)
 		}
 		actual := instanceTmpl.Properties.NetworkInterfaces[0].Network
-		if GetResourceNameFromSelfLink(actual) != GetResourceNameFromSelfLink(expected) {
+		if tpgresource.GetResourceNameFromSelfLink(actual) != tpgresource.GetResourceNameFromSelfLink(expected) {
 			return fmt.Errorf("network mismatch: %s != %s", actual, expected)
 		}
 		return nil
@@ -556,7 +559,7 @@ func testAccDataflowJobHasSubnetwork(t *testing.T, res, expected string) resourc
 			return fmt.Errorf("no network interfaces in template properties: %+v", instanceTmpl.Properties)
 		}
 		actual := instanceTmpl.Properties.NetworkInterfaces[0].Subnetwork
-		if GetResourceNameFromSelfLink(actual) != GetResourceNameFromSelfLink(expected) {
+		if tpgresource.GetResourceNameFromSelfLink(actual) != tpgresource.GetResourceNameFromSelfLink(expected) {
 			return fmt.Errorf("subnetwork mismatch: %s != %s", actual, expected)
 		}
 		return nil
@@ -716,7 +719,7 @@ func testAccDataflowJobHasTempLocation(t *testing.T, res, targetLocation string)
 		if err != nil {
 			return fmt.Errorf("dataflow job does not exist")
 		}
-		sdkPipelineOptions, err := ConvertToMap(job.Environment.SdkPipelineOptions)
+		sdkPipelineOptions, err := tpgresource.ConvertToMap(job.Environment.SdkPipelineOptions)
 		if err != nil {
 			return err
 		}

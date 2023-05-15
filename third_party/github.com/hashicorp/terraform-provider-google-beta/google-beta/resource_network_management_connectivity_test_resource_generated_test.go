@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccNetworkManagementConnectivityTest_networkManagementConnectivityTestInstancesExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccNetworkManagementConnectivityTest_networkManagementConnectivityTestI
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkManagementConnectivityTestDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -115,7 +119,7 @@ func TestAccNetworkManagementConnectivityTest_networkManagementConnectivityTestA
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkManagementConnectivityTestDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -192,7 +196,7 @@ func testAccCheckNetworkManagementConnectivityTestDestroyProducer(t *testing.T) 
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{NetworkManagementBasePath}}projects/{{project}}/locations/global/connectivityTests/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NetworkManagementBasePath}}projects/{{project}}/locations/global/connectivityTests/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -203,7 +207,7 @@ func testAccCheckNetworkManagementConnectivityTestDestroyProducer(t *testing.T) 
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("NetworkManagementConnectivityTest still exists at %s", url)
 			}

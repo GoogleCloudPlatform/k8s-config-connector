@@ -7,6 +7,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
@@ -91,19 +94,19 @@ func computeInstanceFromMachineImageSchema() map[string]*schema.Schema {
 }
 
 func resourceComputeInstanceFromMachineImageCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
 	// Get the zone
-	z, err := getZone(d, config)
+	z, err := tpgresource.GetZone(d, config)
 	if err != nil {
 		return err
 	}
@@ -132,7 +135,7 @@ func resourceComputeInstanceFromMachineImageCreate(d *schema.ResourceData, meta 
 	src := d.Get("source_machine_image").(string)
 	instance.SourceMachineImage = src
 
-	tpl, err := ParseMachineImageFieldValue(src, d, config)
+	tpl, err := tpgresource.ParseMachineImageFieldValue(src, d, config)
 	if err != nil {
 		return err
 	}
@@ -173,7 +176,7 @@ func resourceComputeInstanceFromMachineImageCreate(d *schema.ResourceData, meta 
 			// Assume for now that all fields are exact snake_case versions of the API fields.
 			// This won't necessarily always be true, but it serves as a good approximation and
 			// can be adjusted later as we discover issues.
-			instance.ForceSendFields = append(instance.ForceSendFields, SnakeToPascalCase(f))
+			instance.ForceSendFields = append(instance.ForceSendFields, tpgresource.SnakeToPascalCase(f))
 		}
 	}
 
@@ -200,7 +203,7 @@ func resourceComputeInstanceFromMachineImageCreate(d *schema.ResourceData, meta 
 
 // Instances have disks spread across multiple schema properties. This function
 // ensures that overriding one of these properties does not override the others.
-func adjustInstanceFromMachineImageDisks(d *schema.ResourceData, config *Config, mi *compute.MachineImage, zone *compute.Zone, project string) ([]*compute.AttachedDisk, error) {
+func adjustInstanceFromMachineImageDisks(d *schema.ResourceData, config *transport_tpg.Config, mi *compute.MachineImage, zone *compute.Zone, project string) ([]*compute.AttachedDisk, error) {
 	disks := []*compute.AttachedDisk{}
 	if _, hasBootDisk := d.GetOk("boot_disk"); hasBootDisk {
 		bootDisk, err := expandBootDisk(d, config, project)

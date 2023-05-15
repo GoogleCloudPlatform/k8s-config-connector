@@ -24,19 +24,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccPrivatecaCertificateTemplate_BasicCertificateTemplate(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  acctest.GetTestProjectFromEnv(),
+		"region":        acctest.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPrivatecaCertificateTemplateDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -262,7 +265,7 @@ func testAccCheckPrivatecaCertificateTemplateDestroyProducer(t *testing.T) func(
 				UpdateTime:  dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLPrivatecaClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLPrivatecaClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetCertificateTemplate(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_privateca_certificate_template still exists %v", obj)

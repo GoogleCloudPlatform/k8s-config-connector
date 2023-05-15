@@ -142,7 +142,7 @@ recreated to modify this field.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Enable ULA internal ipv6 on this network. Enabling this feature will assign 
+            <p>{% verbatim %}Immutable. Enable ULA internal ipv6 on this network. Enabling this feature will assign
 a /48 from google defined ULA prefix fd20::/20.{% endverbatim %}</p>
         </td>
     </tr>
@@ -153,10 +153,10 @@ a /48 from google defined ULA prefix fd20::/20.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. When enabling ula internal ipv6, caller optionally can specify the /48 range 
-they want from the google defined ULA prefix fd20::/20. The input must be a 
-valid /48 ULA IPv6 address and must be within the fd20::/20. Operation will 
-fail if the speficied /48 is already in used by another resource. 
+            <p>{% verbatim %}Immutable. When enabling ula internal ipv6, caller optionally can specify the /48 range
+they want from the google defined ULA prefix fd20::/20. The input must be a
+valid /48 ULA IPv6 address and must be within the fd20::/20. Operation will
+fail if the speficied /48 is already in used by another resource.
 If the field is not speficied, then a /48 range will be randomly allocated from fd20::/20 and returned via this field.{% endverbatim %}</p>
         </td>
     </tr>
@@ -167,10 +167,10 @@ If the field is not speficied, then a /48 range will be randomly allocated from 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Maximum Transmission Unit in bytes. The default value is 1460 bytes. 
+            <p>{% verbatim %}Immutable. Maximum Transmission Unit in bytes. The default value is 1460 bytes.
 The minimum value for this field is 1300 and the maximum value is 8896 bytes (jumbo frames).
 Note that packets larger than 1500 bytes (standard Ethernet) can be subject to TCP-MSS clamping or dropped
-with an ICMP 'Fragmentation-Needed' message if the packets are routed to the Internet or other VPCs 
+with an ICMP 'Fragmentation-Needed' message if the packets are routed to the Internet or other VPCs
 with varying MTUs.{% endverbatim %}</p>
         </td>
     </tr>
@@ -181,7 +181,7 @@ with varying MTUs.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Set the order that Firewall Rules and Firewall Policies are evaluated. Needs to be either 'AFTER_CLASSIC_FIREWALL' or 'BEFORE_CLASSIC_FIREWALL' Default 'AFTER_CLASSIC_FIREWALL' Default value: "AFTER_CLASSIC_FIREWALL" Possible values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"].{% endverbatim %}</p>
+            <p>{% verbatim %}Set the order that Firewall Rules and Firewall Policies are evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

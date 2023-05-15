@@ -1,4 +1,123 @@
-## 4.62.0 (Unreleased)
+## 4.65.0 (Unreleased)
+
+FEATURES:
+* **New Data Source:** `google_datastream_static_ips` ([#5587](https://github.com/hashicorp/terraform-provider-google-beta/pull/5587))
+* **New Resource:** `google_compute_disk_async_replication` ([#5588](https://github.com/hashicorp/terraform-provider-google-beta/pull/5588))
+* **New Resource:** `google_firestore_field` ([#5603](https://github.com/hashicorp/terraform-provider-google-beta/pull/5603))
+* **New Resource:** `google_gkeonprem_bare_metal_cluster` ([#5594](https://github.com/hashicorp/terraform-provider-google-beta/pull/5594))
+* **New Resource:** `google_gkeonprem_bare_metal_node_pool` ([#5602](https://github.com/hashicorp/terraform-provider-google-beta/pull/5602))
+* **New Resource:** `google_network_security_tls_inspection_policy` ([#5615](https://github.com/hashicorp/terraform-provider-google-beta/pull/5615))
+
+IMPROVEMENTS:
+* bigquery: added general field `load.parquet_options` to `google_bigquery_job` ([#5592](https://github.com/hashicorp/terraform-provider-google-beta/pull/5592))
+* cloudbuild: added `allow_failure` and `allow_exit_codes` to `build.step` in `google_cloudbuild_trigger` resource ([#5593](https://github.com/hashicorp/terraform-provider-google-beta/pull/5593))
+* cloudbuild: added `git_file_source.repository` and `source_to_build.repository` fields to `google_cloudbuild_trigger` resource (beta) ([#5597](https://github.com/hashicorp/terraform-provider-google-beta/pull/5597))
+* cloudrunv2: added `template.containers.depends_on` and `template.volumes.empty_dir` to `google_cloud_run_v2_service`. ([#5613](https://github.com/hashicorp/terraform-provider-google-beta/pull/5613))
+* cloudrunv2: added `template.template.volumes.empty_dir` to `google_cloud_run_v2_job`. ([#5613](https://github.com/hashicorp/terraform-provider-google-beta/pull/5613))
+* compute: added enumeration values `SEV_SNP_CAPABLE`, `SUSPEND_RESUME_COMPATIBLE`, `TDX_CAPABLE` for the `guest_os_features` of `google_compute_image` ([#5604](https://github.com/hashicorp/terraform-provider-google-beta/pull/5604))
+* compute: added support for `stack_type` to `google_compute_network_peering` ([#5601](https://github.com/hashicorp/terraform-provider-google-beta/pull/5601))
+* container: added `gcs_fuse_csi_driver_config` to `google_container_cluster` resource. ([#5616](https://github.com/hashicorp/terraform-provider-google-beta/pull/5616))
+* dlp: added `publish_to_stackdriver` field to `google_data_loss_prevention_job_trigger` resource ([#5610](https://github.com/hashicorp/terraform-provider-google-beta/pull/5610))
+* network_security: added `tls_inspection_policy` field to `google_network_security_gateway_security_policy` ([#5615](https://github.com/hashicorp/terraform-provider-google-beta/pull/5615))
+
+BUG FIXES:
+* certificatemanager: fixed an issue where `self_managed.pem_certificate` and `self_managed.pem_certificate` can't be updated on `google_certificate_manager_certificate` ([#5606](https://github.com/hashicorp/terraform-provider-google-beta/pull/5606))
+* compute: fixed crash on `terraform destroy -refresh=false` for instance group managers with `wait_for_instances = "true"` if the instance group manager was not found ([#5614](https://github.com/hashicorp/terraform-provider-google-beta/pull/5614))
+* container: fixed node auto-provisioning not working when `auto_provisioning_defaults.management` is not provided on `google_container_cluster` ([#5605](https://github.com/hashicorp/terraform-provider-google-beta/pull/5605))
+* provider: fixed an issue where mtls transports were not used consistently ([#5618](https://github.com/hashicorp/terraform-provider-google-beta/pull/5618))
+
+## 4.64.0 (May 8, 2023)
+
+FEATURES:
+* **New Data Source:** `google_alloydb_locations` ([#5507](https://github.com/hashicorp/terraform-provider-google-beta/pull/5507))
+* **New Data Source:** `google_sql_tiers` ([#5548](https://github.com/hashicorp/terraform-provider-google-beta/pull/5548))
+* **New Resource:** `google_access_context_manager_egress_policy` ([#5525](https://github.com/hashicorp/terraform-provider-google-beta/pull/5525))
+* **New Resource:** `google_database_migration_service_connection_profile` ([#5527](https://github.com/hashicorp/terraform-provider-google-beta/pull/5527))
+* **New Resource:** `google_gkeonprem_vmware_cluster` ([#5533](https://github.com/hashicorp/terraform-provider-google-beta/pull/5533))
+* **New Resource:** `google_gkeonprem_vmware_node_pool` ([#5579](https://github.com/hashicorp/terraform-provider-google-beta/pull/5579))
+* **New Resource:** `google_network_security_address_group` ([#5539](https://github.com/hashicorp/terraform-provider-google-beta/pull/5539))
+* **New Resource:** `google_network_security_authorization_policy` ([#5582](https://github.com/hashicorp/terraform-provider-google-beta/pull/5582))
+* **New Resource:** `google_network_services_grpc_route` ([#5572](https://github.com/hashicorp/terraform-provider-google-beta/pull/5572))
+* **New Resource:** `google_network_services_service_binding` ([#5536](https://github.com/hashicorp/terraform-provider-google-beta/pull/5536))
+* **New Resource:** `google_networksecurity_client_tls_policy` ([#5561](https://github.com/hashicorp/terraform-provider-google-beta/pull/5561))
+* **New Resource:** `google_networkservices_endpoint_policy` ([#5542](https://github.com/hashicorp/terraform-provider-google-beta/pull/5542))
+* **New Resource:** `google_networkservices_tls_route` ([#5524](https://github.com/hashicorp/terraform-provider-google-beta/pull/5524))
+* **New Resource:** `google_workstations_workstation_config_iam` ([#5512](https://github.com/hashicorp/terraform-provider-google-beta/pull/5512))
+* **New Resource:** `google_workstations_workstation_iam` ([#5512](https://github.com/hashicorp/terraform-provider-google-beta/pull/5512))
+
+IMPROVEMENTS:
+* alloydb: added `encryption_config` and `encryption_info` fields in `google_alloydb_cluster`, to allow CMEK encryption of the cluster's data. ([#5551](https://github.com/hashicorp/terraform-provider-google-beta/pull/5551))
+* alloydb: added support for CMEK in `google_alloydb_backup` resource ([#5549](https://github.com/hashicorp/terraform-provider-google-beta/pull/5549))
+* alloydb: added the `encryption_config` field inside the `automated_backup_policy` block in`google_alloydb_cluster`, to allow CMEK encryption of automated backups. ([#5551](https://github.com/hashicorp/terraform-provider-google-beta/pull/5551))
+* certificatemanager: added `location` field to `certificatemanager` certificate resource ([#5554](https://github.com/hashicorp/terraform-provider-google-beta/pull/5554))
+* cloudrun: added field `port` to `http_get` to resource `google_cloud_run_service` ([#5510](https://github.com/hashicorp/terraform-provider-google-beta/pull/5510))
+* cloudrunv2: added field `port` to `http_get` to resource `google_cloud_run_v2_service` ([#5510](https://github.com/hashicorp/terraform-provider-google-beta/pull/5510))
+* cloudrunv2: added field `startupCpuBoost` to resource `google_cloud_run_v2_service` ([#5521](https://github.com/hashicorp/terraform-provider-google-beta/pull/5521))
+* cloudrunv2: added support for `session_affinity` to `google_cloud_run_v2_service` ([#5518](https://github.com/hashicorp/terraform-provider-google-beta/pull/5518))
+* compute: added `allow_psc_global_access` to `google_compute_forwarding_rule` resource ([#5523](https://github.com/hashicorp/terraform-provider-google-beta/pull/5523))
+* compute: added `dest_fqdns`, `dest_region_codes`, `dest_threat_intelligences`, `src_fqdns`, `src_region_codes`, and `src_threat_intelligences` to `google_compute_firewall_policy_rule` resource. ([#5523](https://github.com/hashicorp/terraform-provider-google-beta/pull/5523))
+* compute: added `source_ip_ranges` and `base_forwarding_rule` to `google_compute_forwarding_rule` resource ([#5523](https://github.com/hashicorp/terraform-provider-google-beta/pull/5523))
+* compute: added `bypass_cache_on_request_headers` to `cdn_policy` in `google_compute_backend_service` resource ([#5563](https://github.com/hashicorp/terraform-provider-google-beta/pull/5563))
+* compute: added `dest_address_groups` and `src_address_groups` fields to `google_compute_firewall_policy_rule` and `google_compute_network_firewall_policy_rule` ([#5530](https://github.com/hashicorp/terraform-provider-google-beta/pull/5530))
+* compute: added new field `async_primary_disk` to `google_compute_disk` and `google_compute_region_disk` ([#5553](https://github.com/hashicorp/terraform-provider-google-beta/pull/5553))
+* compute: added new field `disk_consistency_group_policy` to `google_compute_resource_policy` ([#5553](https://github.com/hashicorp/terraform-provider-google-beta/pull/5553))
+* compute: added support for IPv6 prefix exchange in `google_compute_router_peer` ([#5531](https://github.com/hashicorp/terraform-provider-google-beta/pull/5531))
+* compute: made `network_firewall_policy_enforcement_order` field mutable in `google_compute_network`. ([#5516](https://github.com/hashicorp/terraform-provider-google-beta/pull/5516))
+* dlp: added `exclude_by_hotword` exclusion rule to `google_data_loss_prevention_inspect_template` resource ([#5555](https://github.com/hashicorp/terraform-provider-google-beta/pull/5555))
+* dlp: added `image_transformations` field to `google_data_loss_prevention_deidentify_template` resource ([#5556](https://github.com/hashicorp/terraform-provider-google-beta/pull/5556))
+* dlp: added `inspectConfig` field to `google_data_loss_prevention_job_trigger` resource ([#5535](https://github.com/hashicorp/terraform-provider-google-beta/pull/5535))
+* dlp: added `replace_dictionary_config` field to `info_type_transformations` in `google_data_loss_prevention_deidentify_template` resource ([#5556](https://github.com/hashicorp/terraform-provider-google-beta/pull/5556))
+* dlp: added `surrogate_type` custom type to `google_data_loss_prevention_inspect_template` resource ([#5555](https://github.com/hashicorp/terraform-provider-google-beta/pull/5555))
+* dlp: added `version` field for multiple `info_type` blocks to `google_data_loss_prevention_inspect_template` resource ([#5555](https://github.com/hashicorp/terraform-provider-google-beta/pull/5555))
+* sql: Added support for Postgres in `google_sql_source_representation_instance` ([#5557](https://github.com/hashicorp/terraform-provider-google-beta/pull/5557))
+* vertexai: added `region` field to `google_vertex_ai_endpoint` ([#5514](https://github.com/hashicorp/terraform-provider-google-beta/pull/5514))
+* workflows: added `crypto_key_name` field to `google_workflows_workflow` resource ([#5509](https://github.com/hashicorp/terraform-provider-google-beta/pull/5509))
+* workstations: supported in-place update for `host` and `container` in `google_workstations_workstation_config` ([#5585](https://github.com/hashicorp/terraform-provider-google-beta/pull/5585))
+
+BUG FIXES:
+* cloudplatform: added validation for `role_id` on `google_organization_iam_custom_role` ([#5569](https://github.com/hashicorp/terraform-provider-google-beta/pull/5569))
+* compute: fixed an import bug for `google_compute_router_interface` that happened when project was not set in the provider configuration or via environment variable ([#5508](https://github.com/hashicorp/terraform-provider-google-beta/pull/5508))
+* dns: fixed bug in `google_dns_keys` data source where list attributes could not be used at plan-time ([#5546](https://github.com/hashicorp/terraform-provider-google-beta/pull/5546))
+* firebase: specified required argument `bundle_id` in `google_firebase_apple_app` ([#5577](https://github.com/hashicorp/terraform-provider-google-beta/pull/5577))
+* workstations: fixed an issue where modifying `persistent_directories` and `encryption_key` would fail with API errors; now updating them will recreate the resource ([#5585](https://github.com/hashicorp/terraform-provider-google-beta/pull/5585))
+* workstations: fixed an issue where unsetting the container working directory in `google_workstations_workstations_config` was not propagated to the underlying resource ([#5585](https://github.com/hashicorp/terraform-provider-google-beta/pull/5585))
+
+## 4.63.1 (April 26, 2023)
+
+BUG FIXES:
+* bigtable: fixed plan failure because of an unused zone being unavailable
+
+## 4.63.0 (April 24, 2023)
+
+NOTES:
+* alloydb: changed `location` from `optional` to `required` for `google_alloydb_cluster` and `google_alloydb_backup` resources. `location` had previously been marked as optional, but operations failed if it was omitted, and there was no way for `location` to be inherited from the provider configuration or from an environment variable. This means there was no way to have a working configuration without `location` specified. ([#5492](https://github.com/hashicorp/terraform-provider-google-beta/pull/5492), [#5494](https://github.com/hashicorp/terraform-provider-google-beta/pull/5494))
+* workflows: updated api version from v1beta1 to v1 (beta) ([#5482](https://github.com/hashicorp/terraform-provider-google-beta/pull/5482))
+
+FEATURES:
+* **New Resource:** `google_access_context_manager_ingress_policy` ([#5474](https://github.com/hashicorp/terraform-provider-google-beta/pull/5474))
+* **New Resource:** `google_compute_public_advertised_prefix` ([#5476](https://github.com/hashicorp/terraform-provider-google-beta/pull/5476))
+* **New Resource:** `google_compute_public_delegated_prefix` ([#5476](https://github.com/hashicorp/terraform-provider-google-beta/pull/5476))
+* **New Resource:** `google_compute_region_commitment` ([#5473](https://github.com/hashicorp/terraform-provider-google-beta/pull/5473))
+* **New Resource:** `google_network_services_http_route` ([#5471](https://github.com/hashicorp/terraform-provider-google-beta/pull/5471))
+* **New Resource:** `google_network_services_tcp_route` (beta) ([#5497](https://github.com/hashicorp/terraform-provider-google-beta/pull/5497))
+
+IMPROVEMENTS:
+* dlp: added `inspect_job.actions.job_notification_emails` and `inspect_job.actions.deidentify`  fields to `google_data_loss_prevention_job_trigger` resource ([#5477](https://github.com/hashicorp/terraform-provider-google-beta/pull/5477))
+* dlp: added `triggers.manual` and `inspect_job.storage_config.hybrid_options` to `google_data_loss_prevention_job_trigger` ([#5490](https://github.com/hashicorp/terraform-provider-google-beta/pull/5490))
+* iam: added `oidc.web_sso_config` field to `google_iam_workforce_pool_provider` ([#5491](https://github.com/hashicorp/terraform-provider-google-beta/pull/5491))
+
+BUG FIXES:
+* alloydb: changed `weekly_schedule` (under `automated_backup_policy`) from required to optional for `google_alloydb_cluster` ([#5495](https://github.com/hashicorp/terraform-provider-google-beta/pull/5495))
+* compute: fixed an issue with TTLs being sent when `USE_ORIGIN_HEADERS` is set in `google_compute_backend_bucket` ([#5488](https://github.com/hashicorp/terraform-provider-google-beta/pull/5488))
+* networkservices: increased default timeouts for `google_network_services_edge_cache_keyset` to 60m (from 30m) ([#5481](https://github.com/hashicorp/terraform-provider-google-beta/pull/5481))
+* sql: fixed an issue that prevented setting `enable_private_path_for_google_cloud_services` to `false` in `google_sql_database_instance`([#5484](https://github.com/hashicorp/terraform-provider-google-beta/pull/5484))
+
+## 4.62.1 (April 19, 2023)
+
+BUG FIXES:
+* compute: fixed a diff that occurred when `stack_type` was unset on `google_compute_ha_vpn_gateway` ([#5479](https://github.com/hashicorp/terraform-provider-google-beta/pull/5479))
+
+## 4.62.0 (April 17, 2023)
 
 FEATURES:
 * **New Data Source:** `google_compute_region_instance_template` ([#5467](https://github.com/hashicorp/terraform-provider-google-beta/pull/5467))

@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccHealthcareDataset_healthcareDatasetBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccHealthcareDataset_healthcareDatasetBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckHealthcareDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -70,7 +74,7 @@ func testAccCheckHealthcareDatasetDestroyProducer(t *testing.T) func(s *terrafor
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{HealthcareBasePath}}projects/{{project}}/locations/{{location}}/datasets/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{HealthcareBasePath}}projects/{{project}}/locations/{{location}}/datasets/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -81,7 +85,7 @@ func testAccCheckHealthcareDatasetDestroyProducer(t *testing.T) func(s *terrafor
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, HealthcareDatasetNotInitialized)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, transport_tpg.HealthcareDatasetNotInitialized)
 			if err == nil {
 				return fmt.Errorf("HealthcareDataset still exists at %s", url)
 			}

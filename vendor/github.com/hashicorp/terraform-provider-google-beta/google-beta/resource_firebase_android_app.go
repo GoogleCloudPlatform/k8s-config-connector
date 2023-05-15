@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceFirebaseAndroidApp() *schema.Resource {
@@ -107,8 +110,8 @@ serving traffic. Set to 'DELETE' to delete the AndroidApp. Defaults to 'DELETE'.
 }
 
 func resourceFirebaseAndroidAppCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -117,35 +120,35 @@ func resourceFirebaseAndroidAppCreate(d *schema.ResourceData, meta interface{}) 
 	displayNameProp, err := expandFirebaseAndroidAppDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	packageNameProp, err := expandFirebaseAndroidAppPackageName(d.Get("package_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("package_name"); !isEmptyValue(reflect.ValueOf(packageNameProp)) && (ok || !reflect.DeepEqual(v, packageNameProp)) {
+	} else if v, ok := d.GetOkExists("package_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(packageNameProp)) && (ok || !reflect.DeepEqual(v, packageNameProp)) {
 		obj["packageName"] = packageNameProp
 	}
 	sha1HashesProp, err := expandFirebaseAndroidAppSha1Hashes(d.Get("sha1_hashes"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("sha1_hashes"); !isEmptyValue(reflect.ValueOf(sha1HashesProp)) && (ok || !reflect.DeepEqual(v, sha1HashesProp)) {
+	} else if v, ok := d.GetOkExists("sha1_hashes"); !tpgresource.IsEmptyValue(reflect.ValueOf(sha1HashesProp)) && (ok || !reflect.DeepEqual(v, sha1HashesProp)) {
 		obj["sha1Hashes"] = sha1HashesProp
 	}
 	sha256HashesProp, err := expandFirebaseAndroidAppSha256Hashes(d.Get("sha256_hashes"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("sha256_hashes"); !isEmptyValue(reflect.ValueOf(sha256HashesProp)) && (ok || !reflect.DeepEqual(v, sha256HashesProp)) {
+	} else if v, ok := d.GetOkExists("sha256_hashes"); !tpgresource.IsEmptyValue(reflect.ValueOf(sha256HashesProp)) && (ok || !reflect.DeepEqual(v, sha256HashesProp)) {
 		obj["sha256Hashes"] = sha256HashesProp
 	}
 	etagProp, err := expandFirebaseAndroidAppEtag(d.Get("etag"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("etag"); !isEmptyValue(reflect.ValueOf(etagProp)) && (ok || !reflect.DeepEqual(v, etagProp)) {
+	} else if v, ok := d.GetOkExists("etag"); !tpgresource.IsEmptyValue(reflect.ValueOf(etagProp)) && (ok || !reflect.DeepEqual(v, etagProp)) {
 		obj["etag"] = etagProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/androidApps")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/androidApps")
 	if err != nil {
 		return err
 	}
@@ -153,24 +156,24 @@ func resourceFirebaseAndroidAppCreate(d *schema.ResourceData, meta interface{}) 
 	log.Printf("[DEBUG] Creating new AndroidApp: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AndroidApp: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating AndroidApp: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -194,7 +197,7 @@ func resourceFirebaseAndroidAppCreate(d *schema.ResourceData, meta interface{}) 
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -206,33 +209,33 @@ func resourceFirebaseAndroidAppCreate(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceFirebaseAndroidAppRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AndroidApp: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseAndroidApp %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("FirebaseAndroidApp %q", d.Id()))
 	}
 
 	// Explicitly set virtual fields to default values if unset
@@ -271,15 +274,15 @@ func resourceFirebaseAndroidAppRead(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceFirebaseAndroidAppUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AndroidApp: %s", err)
 	}
@@ -289,35 +292,35 @@ func resourceFirebaseAndroidAppUpdate(d *schema.ResourceData, meta interface{}) 
 	displayNameProp, err := expandFirebaseAndroidAppDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	packageNameProp, err := expandFirebaseAndroidAppPackageName(d.Get("package_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("package_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, packageNameProp)) {
+	} else if v, ok := d.GetOkExists("package_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, packageNameProp)) {
 		obj["packageName"] = packageNameProp
 	}
 	sha1HashesProp, err := expandFirebaseAndroidAppSha1Hashes(d.Get("sha1_hashes"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("sha1_hashes"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sha1HashesProp)) {
+	} else if v, ok := d.GetOkExists("sha1_hashes"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sha1HashesProp)) {
 		obj["sha1Hashes"] = sha1HashesProp
 	}
 	sha256HashesProp, err := expandFirebaseAndroidAppSha256Hashes(d.Get("sha256_hashes"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("sha256_hashes"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sha256HashesProp)) {
+	} else if v, ok := d.GetOkExists("sha256_hashes"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sha256HashesProp)) {
 		obj["sha256Hashes"] = sha256HashesProp
 	}
 	etagProp, err := expandFirebaseAndroidAppEtag(d.Get("etag"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("etag"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, etagProp)) {
+	} else if v, ok := d.GetOkExists("etag"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, etagProp)) {
 		obj["etag"] = etagProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -346,17 +349,17 @@ func resourceFirebaseAndroidAppUpdate(d *schema.ResourceData, meta interface{}) 
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating AndroidApp %q: %s", d.Id(), err)
@@ -368,8 +371,8 @@ func resourceFirebaseAndroidAppUpdate(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceFirebaseAndroidAppDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -385,13 +388,13 @@ func resourceFirebaseAndroidAppDelete(d *schema.ResourceData, meta interface{}) 
 	// End of Handwritten
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for App: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}:remove")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}:remove")
 	if err != nil {
 		return err
 	}
@@ -399,13 +402,13 @@ func resourceFirebaseAndroidAppDelete(d *schema.ResourceData, meta interface{}) 
 	log.Printf("[DEBUG] Deleting App %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "App")
+		return transport_tpg.HandleNotFoundError(err, d, "App")
 	}
 
 	err = FirebaseOperationWaitTime(
@@ -427,7 +430,7 @@ func resourceFirebaseAndroidAppDelete(d *schema.ResourceData, meta interface{}) 
 
 func resourceFirebaseAndroidAppImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<project>[^ ]+) (?P<name>[^ ]+)", "(?P<name>[^ ]+)"}, d, config); err != nil {
@@ -437,50 +440,50 @@ func resourceFirebaseAndroidAppImport(d *schema.ResourceData, meta interface{}) 
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenFirebaseAndroidAppName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAndroidAppName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseAndroidAppDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAndroidAppDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseAndroidAppAppId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAndroidAppAppId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseAndroidAppPackageName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAndroidAppPackageName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseAndroidAppSha1Hashes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAndroidAppSha1Hashes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseAndroidAppSha256Hashes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAndroidAppSha256Hashes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseAndroidAppEtag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAndroidAppEtag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandFirebaseAndroidAppDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseAndroidAppDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandFirebaseAndroidAppPackageName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseAndroidAppPackageName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandFirebaseAndroidAppSha1Hashes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseAndroidAppSha1Hashes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandFirebaseAndroidAppSha256Hashes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseAndroidAppSha256Hashes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandFirebaseAndroidAppEtag(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseAndroidAppEtag(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

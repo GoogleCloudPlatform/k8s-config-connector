@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceHealthcareDicomStore() *schema.Resource {
@@ -131,8 +134,8 @@ streamConfigs is an array, so you can specify multiple BigQuery destinations. Yo
 }
 
 func resourceHealthcareDicomStoreCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -141,29 +144,29 @@ func resourceHealthcareDicomStoreCreate(d *schema.ResourceData, meta interface{}
 	nameProp, err := expandHealthcareDicomStoreName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	labelsProp, err := expandHealthcareDicomStoreLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	notificationConfigProp, err := expandHealthcareDicomStoreNotificationConfig(d.Get("notification_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("notification_config"); !isEmptyValue(reflect.ValueOf(notificationConfigProp)) && (ok || !reflect.DeepEqual(v, notificationConfigProp)) {
+	} else if v, ok := d.GetOkExists("notification_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(notificationConfigProp)) && (ok || !reflect.DeepEqual(v, notificationConfigProp)) {
 		obj["notificationConfig"] = notificationConfigProp
 	}
 	streamConfigsProp, err := expandHealthcareDicomStoreStreamConfigs(d.Get("stream_configs"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("stream_configs"); !isEmptyValue(reflect.ValueOf(streamConfigsProp)) && (ok || !reflect.DeepEqual(v, streamConfigsProp)) {
+	} else if v, ok := d.GetOkExists("stream_configs"); !tpgresource.IsEmptyValue(reflect.ValueOf(streamConfigsProp)) && (ok || !reflect.DeepEqual(v, streamConfigsProp)) {
 		obj["streamConfigs"] = streamConfigsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores?dicomStoreId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores?dicomStoreId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -172,17 +175,17 @@ func resourceHealthcareDicomStoreCreate(d *schema.ResourceData, meta interface{}
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating DicomStore: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{dataset}}/dicomStores/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{dataset}}/dicomStores/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -194,13 +197,13 @@ func resourceHealthcareDicomStoreCreate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceHealthcareDicomStoreRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -208,13 +211,13 @@ func resourceHealthcareDicomStoreRead(d *schema.ResourceData, meta interface{}) 
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("HealthcareDicomStore %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("HealthcareDicomStore %q", d.Id()))
 	}
 
 	res, err = resourceHealthcareDicomStoreDecoder(d, meta, res)
@@ -246,8 +249,8 @@ func resourceHealthcareDicomStoreRead(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceHealthcareDicomStoreUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -258,23 +261,23 @@ func resourceHealthcareDicomStoreUpdate(d *schema.ResourceData, meta interface{}
 	labelsProp, err := expandHealthcareDicomStoreLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	notificationConfigProp, err := expandHealthcareDicomStoreNotificationConfig(d.Get("notification_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("notification_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationConfigProp)) {
+	} else if v, ok := d.GetOkExists("notification_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationConfigProp)) {
 		obj["notificationConfig"] = notificationConfigProp
 	}
 	streamConfigsProp, err := expandHealthcareDicomStoreStreamConfigs(d.Get("stream_configs"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("stream_configs"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, streamConfigsProp)) {
+	} else if v, ok := d.GetOkExists("stream_configs"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, streamConfigsProp)) {
 		obj["streamConfigs"] = streamConfigsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -295,17 +298,17 @@ func resourceHealthcareDicomStoreUpdate(d *schema.ResourceData, meta interface{}
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating DicomStore %q: %s", d.Id(), err)
@@ -317,15 +320,15 @@ func resourceHealthcareDicomStoreUpdate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceHealthcareDicomStoreDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -334,13 +337,13 @@ func resourceHealthcareDicomStoreDelete(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Deleting DicomStore %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "DicomStore")
+		return transport_tpg.HandleNotFoundError(err, d, "DicomStore")
 	}
 
 	log.Printf("[DEBUG] Finished deleting DicomStore %q: %#v", d.Id(), res)
@@ -349,7 +352,7 @@ func resourceHealthcareDicomStoreDelete(d *schema.ResourceData, meta interface{}
 
 func resourceHealthcareDicomStoreImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	dicomStoreId, err := ParseHealthcareDicomStoreId(d.Id(), config)
 	if err != nil {
@@ -366,15 +369,15 @@ func resourceHealthcareDicomStoreImport(d *schema.ResourceData, meta interface{}
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenHealthcareDicomStoreName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareDicomStoreName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenHealthcareDicomStoreLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareDicomStoreLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenHealthcareDicomStoreNotificationConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareDicomStoreNotificationConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -387,11 +390,11 @@ func flattenHealthcareDicomStoreNotificationConfig(v interface{}, d *schema.Reso
 		flattenHealthcareDicomStoreNotificationConfigPubsubTopic(original["pubsubTopic"], d, config)
 	return []interface{}{transformed}
 }
-func flattenHealthcareDicomStoreNotificationConfigPubsubTopic(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareDicomStoreNotificationConfigPubsubTopic(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenHealthcareDicomStoreStreamConfigs(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareDicomStoreStreamConfigs(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -409,7 +412,7 @@ func flattenHealthcareDicomStoreStreamConfigs(v interface{}, d *schema.ResourceD
 	}
 	return transformed
 }
-func flattenHealthcareDicomStoreStreamConfigsBigqueryDestination(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareDicomStoreStreamConfigsBigqueryDestination(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -422,15 +425,15 @@ func flattenHealthcareDicomStoreStreamConfigsBigqueryDestination(v interface{}, 
 		flattenHealthcareDicomStoreStreamConfigsBigqueryDestinationTableUri(original["tableUri"], d, config)
 	return []interface{}{transformed}
 }
-func flattenHealthcareDicomStoreStreamConfigsBigqueryDestinationTableUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareDicomStoreStreamConfigsBigqueryDestinationTableUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandHealthcareDicomStoreName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareDicomStoreName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandHealthcareDicomStoreLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandHealthcareDicomStoreLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -441,7 +444,7 @@ func expandHealthcareDicomStoreLabels(v interface{}, d TerraformResourceData, co
 	return m, nil
 }
 
-func expandHealthcareDicomStoreNotificationConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareDicomStoreNotificationConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -453,18 +456,18 @@ func expandHealthcareDicomStoreNotificationConfig(v interface{}, d TerraformReso
 	transformedPubsubTopic, err := expandHealthcareDicomStoreNotificationConfigPubsubTopic(original["pubsub_topic"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPubsubTopic); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPubsubTopic); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["pubsubTopic"] = transformedPubsubTopic
 	}
 
 	return transformed, nil
 }
 
-func expandHealthcareDicomStoreNotificationConfigPubsubTopic(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareDicomStoreNotificationConfigPubsubTopic(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandHealthcareDicomStoreStreamConfigs(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareDicomStoreStreamConfigs(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -477,7 +480,7 @@ func expandHealthcareDicomStoreStreamConfigs(v interface{}, d TerraformResourceD
 		transformedBigqueryDestination, err := expandHealthcareDicomStoreStreamConfigsBigqueryDestination(original["bigquery_destination"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedBigqueryDestination); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedBigqueryDestination); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["bigqueryDestination"] = transformedBigqueryDestination
 		}
 
@@ -486,7 +489,7 @@ func expandHealthcareDicomStoreStreamConfigs(v interface{}, d TerraformResourceD
 	return req, nil
 }
 
-func expandHealthcareDicomStoreStreamConfigsBigqueryDestination(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareDicomStoreStreamConfigsBigqueryDestination(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -498,14 +501,14 @@ func expandHealthcareDicomStoreStreamConfigsBigqueryDestination(v interface{}, d
 	transformedTableUri, err := expandHealthcareDicomStoreStreamConfigsBigqueryDestinationTableUri(original["table_uri"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTableUri); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTableUri); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["tableUri"] = transformedTableUri
 	}
 
 	return transformed, nil
 }
 
-func expandHealthcareDicomStoreStreamConfigsBigqueryDestinationTableUri(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareDicomStoreStreamConfigsBigqueryDestinationTableUri(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

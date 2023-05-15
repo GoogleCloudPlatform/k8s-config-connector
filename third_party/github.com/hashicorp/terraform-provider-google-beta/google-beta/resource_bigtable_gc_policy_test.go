@@ -10,11 +10,13 @@ import (
 	"cloud.google.com/go/bigtable"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 )
 
 func TestAccBigtableGCPolicy_basic(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -22,7 +24,7 @@ func TestAccBigtableGCPolicy_basic(t *testing.T) {
 	familyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableGCPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -39,7 +41,7 @@ func TestAccBigtableGCPolicy_basic(t *testing.T) {
 
 func TestAccBigtableGCPolicy_abandoned(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -47,7 +49,7 @@ func TestAccBigtableGCPolicy_abandoned(t *testing.T) {
 	familyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableGCPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -72,7 +74,7 @@ func TestAccBigtableGCPolicy_abandoned(t *testing.T) {
 
 func TestAccBigtableGCPolicy_swapOffDeprecated(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -80,7 +82,7 @@ func TestAccBigtableGCPolicy_swapOffDeprecated(t *testing.T) {
 	familyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableGCPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -110,7 +112,7 @@ func TestAccBigtableGCPolicy_swapOffDeprecated(t *testing.T) {
 
 func TestAccBigtableGCPolicy_union(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -118,7 +120,7 @@ func TestAccBigtableGCPolicy_union(t *testing.T) {
 	familyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableGCPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -136,7 +138,7 @@ func TestAccBigtableGCPolicy_union(t *testing.T) {
 // Testing multiple GC policies; one per column family.
 func TestAccBigtableGCPolicy_multiplePolicies(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -144,7 +146,7 @@ func TestAccBigtableGCPolicy_multiplePolicies(t *testing.T) {
 	familyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableGCPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -164,7 +166,7 @@ func TestAccBigtableGCPolicy_multiplePolicies(t *testing.T) {
 }
 
 func TestAccBigtableGCPolicy_gcRulesPolicy(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -175,7 +177,7 @@ func TestAccBigtableGCPolicy_gcRulesPolicy(t *testing.T) {
 	gcRulesUpdate := "{\"mode\":\"intersection\",\"rules\":[{\"max_age\":\"16h\"},{\"max_version\":1}]}"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableGCPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -206,7 +208,7 @@ func TestUnitBigtableGCPolicy_customizeDiff(t *testing.T) {
 }
 
 func (testcase *testUnitBigtableGCPolicyCustomizeDiffTestcase) check(t *testing.T) {
-	d := &ResourceDiffMock{
+	d := &tpgresource.ResourceDiffMock{
 		Before: map[string]interface{}{},
 		After:  map[string]interface{}{},
 	}

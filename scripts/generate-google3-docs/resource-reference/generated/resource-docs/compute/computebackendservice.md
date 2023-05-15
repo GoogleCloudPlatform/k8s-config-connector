@@ -112,6 +112,8 @@ backend:
   maxRatePerInstance: float
   maxUtilization: float
 cdnPolicy:
+  bypassCacheOnRequestHeaders:
+  - headerName: string
   cacheKeyPolicy:
     includeHost: boolean
     includeHttpHeaders:
@@ -555,6 +557,37 @@ CPU utilization target for the group. Valid range is [0.0, 1.0].{% endverbatim %
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Cloud CDN configuration for this BackendService.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.bypassCacheOnRequestHeaders</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified.
+The cache is bypassed for all cdnPolicy.cacheMode settings.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.bypassCacheOnRequestHeaders[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.bypassCacheOnRequestHeaders[].headerName</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The header field name to match on when bypassing cache. Values are case-insensitive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -2,35 +2,19 @@ package google
 
 import (
 	"errors"
-	"fmt"
-	"log"
 	"sort"
 
 	compute "google.golang.org/api/compute/v0.beta"
-)
 
-const METADATA_FINGERPRINT_RETRIES = 10
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+)
 
 // Since the google compute API uses optimistic locking, there is a chance
 // we need to resubmit our updated metadata. To do this, you need to provide
 // an update function that attempts to submit your metadata
 func MetadataRetryWrapper(update func() error) error {
-	attempt := 0
-	for attempt < METADATA_FINGERPRINT_RETRIES {
-		err := update()
-		if err == nil {
-			return nil
-		}
-
-		if ok, _ := IsFingerprintError(err); !ok {
-			// Something else went wrong, don't retry
-			return err
-		}
-
-		log.Printf("[DEBUG] Dismissed an error as retryable as a fingerprint mismatch: %s", err)
-		attempt++
-	}
-	return fmt.Errorf("Failed to update metadata after %d retries", attempt)
+	return transport_tpg.MetadataRetryWrapper(update)
 }
 
 // Update the metadata (serverMD) according to the provided diff (oldMDMap v
@@ -138,7 +122,7 @@ func flattenMetadata(metadata *compute.Metadata) map[string]interface{} {
 	return metadataMap
 }
 
-func resourceInstanceMetadata(d TerraformResourceData) (*compute.Metadata, error) {
+func resourceInstanceMetadata(d tpgresource.TerraformResourceData) (*compute.Metadata, error) {
 	m := &compute.Metadata{}
 	mdMap := d.Get("metadata").(map[string]interface{})
 	if v, ok := d.GetOk("metadata_startup_script"); ok && v.(string) != "" {

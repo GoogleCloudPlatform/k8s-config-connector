@@ -6,6 +6,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"google.golang.org/api/googleapi"
 
@@ -94,18 +97,18 @@ func ResourceDataflowFlexTemplateJob() *schema.Resource {
 
 // resourceDataflowFlexTemplateJobCreate creates a Flex Template Job from TF code.
 func resourceDataflowFlexTemplateJobCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	region, err := getRegion(d, config)
+	region, err := tpgresource.GetRegion(d, config)
 	if err != nil {
 		return err
 	}
@@ -114,9 +117,9 @@ func resourceDataflowFlexTemplateJobCreate(d *schema.ResourceData, meta interfac
 		LaunchParameter: &dataflow.LaunchFlexTemplateParameter{
 			ContainerSpecGcsPath: d.Get("container_spec_gcs_path").(string),
 			JobName:              d.Get("name").(string),
-			Parameters:           expandStringMap(d, "parameters"),
+			Parameters:           tpgresource.ExpandStringMap(d, "parameters"),
 			Environment: &dataflow.FlexTemplateRuntimeEnvironment{
-				AdditionalUserLabels: expandStringMap(d, "labels"),
+				AdditionalUserLabels: tpgresource.ExpandStringMap(d, "labels"),
 			},
 		},
 	}
@@ -144,18 +147,18 @@ func resourceDataflowFlexTemplateJobCreate(d *schema.ResourceData, meta interfac
 
 // resourceDataflowFlexTemplateJobRead reads a Flex Template Job resource.
 func resourceDataflowFlexTemplateJobRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	region, err := getRegion(d, config)
+	region, err := tpgresource.GetRegion(d, config)
 	if err != nil {
 		return err
 	}
@@ -164,7 +167,7 @@ func resourceDataflowFlexTemplateJobRead(d *schema.ResourceData, meta interface{
 
 	job, err := resourceDataflowJobGetJob(config, project, region, userAgent, jobId)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Dataflow job %s", jobId))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Dataflow job %s", jobId))
 	}
 
 	if err := d.Set("state", job.CurrentState); err != nil {
@@ -183,21 +186,21 @@ func resourceDataflowFlexTemplateJobRead(d *schema.ResourceData, meta interface{
 	return nil
 }
 
-func waitForDataflowJobState(d *schema.ResourceData, config *Config, jobID, userAgent string, timeout time.Duration, targetState string) error {
+func waitForDataflowJobState(d *schema.ResourceData, config *transport_tpg.Config, jobID, userAgent string, timeout time.Duration, targetState string) error {
 	return resource.Retry(timeout, func() *resource.RetryError {
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return resource.NonRetryableError(err)
 		}
 
-		region, err := getRegion(d, config)
+		region, err := tpgresource.GetRegion(d, config)
 		if err != nil {
 			return resource.NonRetryableError(err)
 		}
 
 		job, err := resourceDataflowJobGetJob(config, project, region, userAgent, jobID)
 		if err != nil {
-			if isRetryableError(err) {
+			if transport_tpg.IsRetryableError(err) {
 				return resource.RetryableError(err)
 			}
 			return resource.NonRetryableError(err)
@@ -228,18 +231,18 @@ func resourceDataflowFlexTemplateJobUpdate(d *schema.ResourceData, meta interfac
 		return nil
 	}
 
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	region, err := getRegion(d, config)
+	region, err := tpgresource.GetRegion(d, config)
 	if err != nil {
 		return err
 	}
@@ -254,9 +257,9 @@ func resourceDataflowFlexTemplateJobUpdate(d *schema.ResourceData, meta interfac
 		LaunchParameter: &dataflow.LaunchFlexTemplateParameter{
 			ContainerSpecGcsPath: d.Get("container_spec_gcs_path").(string),
 			JobName:              d.Get("name").(string),
-			Parameters:           expandStringMap(d, "parameters"),
+			Parameters:           tpgresource.ExpandStringMap(d, "parameters"),
 			Environment: &dataflow.FlexTemplateRuntimeEnvironment{
-				AdditionalUserLabels: expandStringMap(d, "labels"),
+				AdditionalUserLabels: tpgresource.ExpandStringMap(d, "labels"),
 			},
 			Update: true,
 		},
@@ -285,18 +288,18 @@ func resourceDataflowFlexTemplateJobUpdate(d *schema.ResourceData, meta interfac
 }
 
 func resourceDataflowFlexTemplateJobDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	region, err := getRegion(d, config)
+	region, err := tpgresource.GetRegion(d, config)
 	if err != nil {
 		return err
 	}

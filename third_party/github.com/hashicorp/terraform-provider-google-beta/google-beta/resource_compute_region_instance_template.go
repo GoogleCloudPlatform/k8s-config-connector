@@ -10,6 +10,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
+
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
@@ -50,7 +55,7 @@ func ResourceComputeRegionInstanceTemplate() *schema.Resource {
 				Computed:      true,
 				ForceNew:      true,
 				ConflictsWith: []string{"name_prefix"},
-				ValidateFunc:  validateGCEName,
+				ValidateFunc:  verify.ValidateGCEName,
 				Description:   `The name of the instance template. If you leave this blank, Terraform will auto-generate a unique name.`,
 			},
 
@@ -255,7 +260,7 @@ Google Cloud KMS.`,
 										Type:             schema.TypeString,
 										Required:         true,
 										ForceNew:         true,
-										DiffSuppressFunc: compareSelfLinkRelativePaths,
+										DiffSuppressFunc: tpgresource.CompareSelfLinkRelativePaths,
 										Description:      `The self link of the encryption key that is stored in Google Cloud KMS.`,
 									},
 								},
@@ -270,7 +275,7 @@ Google Cloud KMS.`,
 							Description: `A list (short name or id) of resource policies to attach to this disk. Currently a max of 1 resource policy is supported.`,
 							Elem: &schema.Schema{
 								Type:             schema.TypeString,
-								DiffSuppressFunc: compareResourceNames,
+								DiffSuppressFunc: tpgresource.CompareResourceNames,
 							},
 						},
 					},
@@ -364,7 +369,7 @@ Google Cloud KMS.`,
 							Optional:         true,
 							ForceNew:         true,
 							Computed:         true,
-							DiffSuppressFunc: compareSelfLinkOrResourceName,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 							Description:      `The name or self_link of the network to attach this interface to. Use network attribute for Legacy or Auto subnetted networks and subnetwork for custom subnetted networks.`,
 						},
 
@@ -373,7 +378,7 @@ Google Cloud KMS.`,
 							Optional:         true,
 							ForceNew:         true,
 							Computed:         true,
-							DiffSuppressFunc: compareSelfLinkOrResourceName,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 							Description:      `The name of the subnetwork to attach this interface to. The subnetwork must exist in the same region this instance will be created in. Either network or subnetwork must be provided.`,
 						},
 
@@ -446,7 +451,7 @@ Google Cloud KMS.`,
 										Type:             schema.TypeString,
 										Required:         true,
 										ForceNew:         true,
-										DiffSuppressFunc: IpCidrRangeDiffSuppress,
+										DiffSuppressFunc: tpgresource.IpCidrRangeDiffSuppress,
 										Description:      `The IP CIDR range represented by this alias IP range. This IP CIDR range must belong to the specified subnetwork and cannot contain IP addresses reserved by system or used by other network interfaces. At the time of writing only a netmask (e.g. /24) may be supplied, with a CIDR format resulting in an API error.`,
 									},
 									"subnetwork_range_name": {
@@ -564,7 +569,7 @@ Google Cloud KMS.`,
 							AtLeastOneOf:     schedulingInstTemplateKeys,
 							ForceNew:         true,
 							Elem:             instanceSchedulingNodeAffinitiesElemSchema(),
-							DiffSuppressFunc: EmptyOrDefaultStringSuppress(""),
+							DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress(""),
 							Description:      `Specifies node affinities or anti-affinities to determine which sole-tenant nodes your instances and managed instance groups will use as host systems.`,
 						},
 						"min_node_cpus": {
@@ -654,10 +659,10 @@ be from 0 to 999,999,999 inclusive.`,
 							Elem: &schema.Schema{
 								Type: schema.TypeString,
 								StateFunc: func(v interface{}) string {
-									return canonicalizeServiceScope(v.(string))
+									return tpgresource.CanonicalizeServiceScope(v.(string))
 								},
 							},
-							Set: stringScopeHashcode,
+							Set: tpgresource.StringScopeHashcode,
 						},
 					},
 				},
@@ -672,7 +677,7 @@ be from 0 to 999,999,999 inclusive.`,
 				// Since this block is used by the API based on which
 				// image being used, the field needs to be marked as Computed.
 				Computed:         true,
-				DiffSuppressFunc: EmptyOrDefaultStringSuppress(""),
+				DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress(""),
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"enable_secure_boot": {
@@ -770,7 +775,7 @@ be from 0 to 999,999,999 inclusive.`,
 							Type:             schema.TypeString,
 							Required:         true,
 							ForceNew:         true,
-							DiffSuppressFunc: compareSelfLinkOrResourceName,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 							Description:      `The accelerator type resource to expose to this instance. E.g. nvidia-tesla-k80.`,
 						},
 					},
@@ -816,7 +821,7 @@ be from 0 to 999,999,999 inclusive.`,
 				Description: `A list of self_links of resource policies to attach to the instance. Currently a max of 1 resource policy is supported.`,
 				Elem: &schema.Schema{
 					Type:             schema.TypeString,
-					DiffSuppressFunc: compareResourceNames,
+					DiffSuppressFunc: tpgresource.CompareResourceNames,
 				},
 			},
 
@@ -870,18 +875,18 @@ be from 0 to 999,999,999 inclusive.`,
 }
 
 func resourceComputeRegionInstanceTemplateCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	region, err := getRegion(d, config)
+	region, err := tpgresource.GetRegion(d, config)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -937,7 +942,7 @@ func resourceComputeRegionInstanceTemplateCreate(d *schema.ResourceData, meta in
 	}
 
 	if _, ok := d.GetOk("labels"); ok {
-		instanceProperties.Labels = expandLabels(d)
+		instanceProperties.Labels = tpgresource.ExpandLabels(d)
 	}
 
 	var itName string
@@ -954,12 +959,12 @@ func resourceComputeRegionInstanceTemplateCreate(d *schema.ResourceData, meta in
 	instanceTemplate["properties"] = instanceProperties
 	instanceTemplate["name"] = itName
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/instanceTemplates")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/instanceTemplates")
 	if err != nil {
 		return err
 	}
 
-	op, err := SendRequestWithTimeout(config, "POST", project, url, userAgent, instanceTemplate, d.Timeout(schema.TimeoutCreate))
+	op, err := transport_tpg.SendRequestWithTimeout(config, "POST", project, url, userAgent, instanceTemplate, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating RegionInstanceTemplate: %s", err)
 	}
@@ -976,13 +981,13 @@ func resourceComputeRegionInstanceTemplateCreate(d *schema.ResourceData, meta in
 }
 
 func resourceComputeRegionInstanceTemplateRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -990,14 +995,14 @@ func resourceComputeRegionInstanceTemplateRead(d *schema.ResourceData, meta inte
 	splits := strings.Split(d.Id(), "/")
 	name := splits[len(splits)-1]
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/instanceTemplates/"+name)
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/instanceTemplates/"+name)
 	if err != nil {
 		return err
 	}
 
-	instanceTemplate, err := SendRequest(config, "GET", project, url, userAgent, nil)
+	instanceTemplate, err := transport_tpg.SendRequest(config, "GET", project, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeRegionInstanceTemplate %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeRegionInstanceTemplate %q", d.Id()))
 	}
 
 	instancePropertiesMap := instanceTemplate["properties"]
@@ -1169,27 +1174,27 @@ func resourceComputeRegionInstanceTemplateRead(d *schema.ResourceData, meta inte
 }
 
 func resourceComputeRegionInstanceTemplateDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/instanceTemplates/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/instanceTemplates/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	var obj map[string]interface{}
 
-	op, err := SendRequestWithTimeout(config, "DELETE", project, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	op, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", project, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "RegionInstanceTemplate")
+		return transport_tpg.HandleNotFoundError(err, d, "RegionInstanceTemplate")
 	}
 
 	err = ComputeOperationWaitTime(config, op, project, "Deleting Region Instance Template", userAgent, d.Timeout(schema.TimeoutDelete))
@@ -1202,13 +1207,13 @@ func resourceComputeRegionInstanceTemplateDelete(d *schema.ResourceData, meta in
 }
 
 func resourceComputeRegionInstanceTemplateImportState(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{"projects/(?P<project>[^/]+)/regions/(?P<region>[^/]+)/instanceTemplates/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)", "(?P<region>[^/]+)/(?P<name>[^/]+)", "(?P<name>[^/]+)"}, d, config); err != nil {
 		return nil, err
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/regions/{{region}}/instanceTemplates/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/regions/{{region}}/instanceTemplates/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

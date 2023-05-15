@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceServiceDirectoryNamespace() *schema.Resource {
@@ -53,7 +57,7 @@ A full list of valid locations can be found by running
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateRFC1035Name(2, 63),
+				ValidateFunc: verify.ValidateRFC1035Name(2, 63),
 				Description: `The Resource ID must be 1-63 characters long, including digits,
 lowercase letters or the hyphen character.`,
 			},
@@ -83,8 +87,8 @@ in the format 'projects/*/locations/*/namespaces/*'.`,
 }
 
 func resourceServiceDirectoryNamespaceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -93,11 +97,11 @@ func resourceServiceDirectoryNamespaceCreate(d *schema.ResourceData, meta interf
 	labelsProp, err := expandServiceDirectoryNamespaceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}projects/{{project}}/locations/{{location}}/namespaces?namespaceId={{namespace_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}projects/{{project}}/locations/{{location}}/namespaces?namespaceId={{namespace_id}}")
 	if err != nil {
 		return err
 	}
@@ -105,18 +109,18 @@ func resourceServiceDirectoryNamespaceCreate(d *schema.ResourceData, meta interf
 	log.Printf("[DEBUG] Creating new Namespace: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Namespace: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Namespace: %s", err)
 	}
@@ -125,7 +129,7 @@ func resourceServiceDirectoryNamespaceCreate(d *schema.ResourceData, meta interf
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -137,33 +141,33 @@ func resourceServiceDirectoryNamespaceCreate(d *schema.ResourceData, meta interf
 }
 
 func resourceServiceDirectoryNamespaceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Namespace: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ServiceDirectoryNamespace %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ServiceDirectoryNamespace %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -181,15 +185,15 @@ func resourceServiceDirectoryNamespaceRead(d *schema.ResourceData, meta interfac
 }
 
 func resourceServiceDirectoryNamespaceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Namespace: %s", err)
 	}
@@ -199,11 +203,11 @@ func resourceServiceDirectoryNamespaceUpdate(d *schema.ResourceData, meta interf
 	labelsProp, err := expandServiceDirectoryNamespaceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -216,17 +220,17 @@ func resourceServiceDirectoryNamespaceUpdate(d *schema.ResourceData, meta interf
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Namespace %q: %s", d.Id(), err)
@@ -238,21 +242,21 @@ func resourceServiceDirectoryNamespaceUpdate(d *schema.ResourceData, meta interf
 }
 
 func resourceServiceDirectoryNamespaceDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Namespace: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -261,13 +265,13 @@ func resourceServiceDirectoryNamespaceDelete(d *schema.ResourceData, meta interf
 	log.Printf("[DEBUG] Deleting Namespace %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Namespace")
+		return transport_tpg.HandleNotFoundError(err, d, "Namespace")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Namespace %q: %#v", d.Id(), res)
@@ -275,7 +279,7 @@ func resourceServiceDirectoryNamespaceDelete(d *schema.ResourceData, meta interf
 }
 
 func resourceServiceDirectoryNamespaceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats cannot import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
@@ -312,7 +316,7 @@ func resourceServiceDirectoryNamespaceImport(d *schema.ResourceData, meta interf
 		d.SetId(id)
 	} else if len(nameParts) == 2 {
 		// `{{location}}/{{namespace_id}}`
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return nil, err
 		}
@@ -341,15 +345,15 @@ func resourceServiceDirectoryNamespaceImport(d *schema.ResourceData, meta interf
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenServiceDirectoryNamespaceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenServiceDirectoryNamespaceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenServiceDirectoryNamespaceLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenServiceDirectoryNamespaceLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandServiceDirectoryNamespaceLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandServiceDirectoryNamespaceLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}

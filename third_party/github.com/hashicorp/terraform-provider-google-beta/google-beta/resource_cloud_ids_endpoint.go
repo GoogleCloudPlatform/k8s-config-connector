@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceCloudIdsEndpoint() *schema.Resource {
@@ -64,7 +68,7 @@ func ResourceCloudIdsEndpoint() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"INFORMATIONAL", "LOW", "MEDIUM", "HIGH", "CRITICAL"}),
+				ValidateFunc: verify.ValidateEnum([]string{"INFORMATIONAL", "LOW", "MEDIUM", "HIGH", "CRITICAL"}),
 				Description:  `The minimum alert severity level that is reported by the endpoint. Possible values: ["INFORMATIONAL", "LOW", "MEDIUM", "HIGH", "CRITICAL"]`,
 			},
 			"description": {
@@ -113,8 +117,8 @@ func ResourceCloudIdsEndpoint() *schema.Resource {
 }
 
 func resourceCloudIdsEndpointCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -123,35 +127,35 @@ func resourceCloudIdsEndpointCreate(d *schema.ResourceData, meta interface{}) er
 	nameProp, err := expandCloudIdsEndpointName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	networkProp, err := expandCloudIdsEndpointNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 	descriptionProp, err := expandCloudIdsEndpointDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	severityProp, err := expandCloudIdsEndpointSeverity(d.Get("severity"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("severity"); !isEmptyValue(reflect.ValueOf(severityProp)) && (ok || !reflect.DeepEqual(v, severityProp)) {
+	} else if v, ok := d.GetOkExists("severity"); !tpgresource.IsEmptyValue(reflect.ValueOf(severityProp)) && (ok || !reflect.DeepEqual(v, severityProp)) {
 		obj["severity"] = severityProp
 	}
 	threatExceptionsProp, err := expandCloudIdsEndpointThreatExceptions(d.Get("threat_exceptions"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("threat_exceptions"); !isEmptyValue(reflect.ValueOf(threatExceptionsProp)) && (ok || !reflect.DeepEqual(v, threatExceptionsProp)) {
+	} else if v, ok := d.GetOkExists("threat_exceptions"); !tpgresource.IsEmptyValue(reflect.ValueOf(threatExceptionsProp)) && (ok || !reflect.DeepEqual(v, threatExceptionsProp)) {
 		obj["threatExceptions"] = threatExceptionsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudIdsBasePath}}projects/{{project}}/locations/{{location}}/endpoints?endpointId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudIdsBasePath}}projects/{{project}}/locations/{{location}}/endpoints?endpointId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -159,24 +163,24 @@ func resourceCloudIdsEndpointCreate(d *schema.ResourceData, meta interface{}) er
 	log.Printf("[DEBUG] Creating new Endpoint: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Endpoint: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Endpoint: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -200,7 +204,7 @@ func resourceCloudIdsEndpointCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -212,33 +216,33 @@ func resourceCloudIdsEndpointCreate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceCloudIdsEndpointRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudIdsBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudIdsBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Endpoint: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("CloudIdsEndpoint %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("CloudIdsEndpoint %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -277,15 +281,15 @@ func resourceCloudIdsEndpointRead(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceCloudIdsEndpointUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Endpoint: %s", err)
 	}
@@ -295,11 +299,11 @@ func resourceCloudIdsEndpointUpdate(d *schema.ResourceData, meta interface{}) er
 	threatExceptionsProp, err := expandCloudIdsEndpointThreatExceptions(d.Get("threat_exceptions"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("threat_exceptions"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, threatExceptionsProp)) {
+	} else if v, ok := d.GetOkExists("threat_exceptions"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, threatExceptionsProp)) {
 		obj["threatExceptions"] = threatExceptionsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudIdsBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudIdsBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -312,17 +316,17 @@ func resourceCloudIdsEndpointUpdate(d *schema.ResourceData, meta interface{}) er
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Endpoint %q: %s", d.Id(), err)
@@ -342,21 +346,21 @@ func resourceCloudIdsEndpointUpdate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceCloudIdsEndpointDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Endpoint: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{CloudIdsBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudIdsBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -365,13 +369,13 @@ func resourceCloudIdsEndpointDelete(d *schema.ResourceData, meta interface{}) er
 	log.Printf("[DEBUG] Deleting Endpoint %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Endpoint")
+		return transport_tpg.HandleNotFoundError(err, d, "Endpoint")
 	}
 
 	err = CloudIdsOperationWaitTime(
@@ -387,7 +391,7 @@ func resourceCloudIdsEndpointDelete(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceCloudIdsEndpointImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/endpoints/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -397,7 +401,7 @@ func resourceCloudIdsEndpointImport(d *schema.ResourceData, meta interface{}) ([
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -406,59 +410,59 @@ func resourceCloudIdsEndpointImport(d *schema.ResourceData, meta interface{}) ([
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenCloudIdsEndpointName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIdsEndpointName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	parts := strings.Split(d.Get("name").(string), "/")
 	return parts[len(parts)-1]
 }
 
-func flattenCloudIdsEndpointCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIdsEndpointCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIdsEndpointUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIdsEndpointUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIdsEndpointNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIdsEndpointNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIdsEndpointDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIdsEndpointDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIdsEndpointEndpointForwardingRule(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIdsEndpointEndpointForwardingRule(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIdsEndpointEndpointIp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIdsEndpointEndpointIp(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIdsEndpointSeverity(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIdsEndpointSeverity(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIdsEndpointThreatExceptions(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIdsEndpointThreatExceptions(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandCloudIdsEndpointName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	return ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+func expandCloudIdsEndpointName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 }
 
-func expandCloudIdsEndpointNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIdsEndpointNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudIdsEndpointDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIdsEndpointDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudIdsEndpointSeverity(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIdsEndpointSeverity(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudIdsEndpointThreatExceptions(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIdsEndpointThreatExceptions(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

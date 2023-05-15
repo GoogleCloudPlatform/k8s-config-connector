@@ -4,6 +4,8 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 )
 
 func TestAccDataLossPreventionStoredInfoType_dlpStoredInfoTypeCustomDiffFuncForceNew(t *testing.T) {
@@ -191,7 +193,7 @@ func TestAccDataLossPreventionStoredInfoType_dlpStoredInfoTypeCustomDiffFuncForc
 			fieldAfter = "large_custom_dictionary"
 		}
 
-		d := &ResourceDiffMock{
+		d := &tpgresource.ResourceDiffMock{
 			Before: map[string]interface{}{
 				fieldBefore: tc.before[fieldBefore],
 			},
@@ -213,12 +215,12 @@ func TestAccDataLossPreventionStoredInfoType_dlpStoredInfoTypeUpdate(t *testing.
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
+		"project":       acctest.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataLossPreventionStoredInfoTypeDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -277,11 +279,11 @@ func TestAccDataLossPreventionStoredInfoType_dlpStoredInfoTypeGroupIndexUpdate(t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project": GetTestProjectFromEnv(),
+		"project": acctest.GetTestProjectFromEnv(),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataLossPreventionStoredInfoTypeDestroyProducer(t),
 		Steps: []resource.TestStep{

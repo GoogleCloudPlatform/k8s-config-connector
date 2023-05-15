@@ -3,12 +3,16 @@ package google
 import (
 	"bytes"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"io/ioutil"
 	"regexp"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccDeploymentManagerDeployment_basicFile(t *testing.T) {
@@ -22,7 +26,7 @@ func TestAccDeploymentManagerDeployment_basicFile(t *testing.T) {
 	})
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy: resource.ComposeTestCheckFunc(
 			testAccCheckDeploymentManagerDeploymentDestroyProducer(t),
@@ -49,7 +53,7 @@ func TestAccDeploymentManagerDeployment_deleteInvalidOnCreate(t *testing.T) {
 	accountId := "tf-dm-" + randStr
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDeploymentManagerDestroyInvalidDeployment(t, deploymentName),
 		Steps: []resource.TestStep{
@@ -69,7 +73,7 @@ func TestAccDeploymentManagerDeployment_createDeletePolicy(t *testing.T) {
 	accountId := "tf-dm-" + randStr
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDeploymentManagerDeploymentDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -97,7 +101,7 @@ func TestAccDeploymentManagerDeployment_imports(t *testing.T) {
 	})
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy: resource.ComposeTestCheckFunc(
 			testAccCheckDeploymentManagerDeploymentDestroyProducer(t),
@@ -126,7 +130,7 @@ func TestAccDeploymentManagerDeployment_update(t *testing.T) {
 	accountId2 := "tf-dm-second" + randStr
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy: resource.ComposeTestCheckFunc(
 			testAccCheckDeploymentManagerDeploymentDestroyProducer(t),
@@ -378,11 +382,11 @@ func testDeploymentManagerDeploymentVerifyServiceAccountExists(t *testing.T, acc
 	}
 }
 
-func testCheckDeploymentServiceAccountExists(accountId string, config *Config) (exists bool, err error) {
+func testCheckDeploymentServiceAccountExists(accountId string, config *transport_tpg.Config) (exists bool, err error) {
 	_, err = config.NewIamClient(config.UserAgent).Projects.ServiceAccounts.Get(
-		fmt.Sprintf("projects/%s/serviceAccounts/%s@%s.iam.gserviceaccount.com", GetTestProjectFromEnv(), accountId, GetTestProjectFromEnv())).Do()
+		fmt.Sprintf("projects/%s/serviceAccounts/%s@%s.iam.gserviceaccount.com", acctest.GetTestProjectFromEnv(), accountId, acctest.GetTestProjectFromEnv())).Do()
 	if err != nil {
-		if IsGoogleApiErrorWithCode(err, 404) {
+		if transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 			return false, nil
 		}
 		return false, fmt.Errorf("unexpected error while trying to confirm deployment service account %q exists: %v", accountId, err)
@@ -399,9 +403,9 @@ func testAccCheckDeploymentManagerDestroyInvalidDeployment(t *testing.T, deploym
 		}
 
 		config := GoogleProviderConfig(t)
-		url := fmt.Sprintf("%sprojects/%s/global/deployments/%s", config.DeploymentManagerBasePath, GetTestProjectFromEnv(), deploymentName)
-		_, err := SendRequest(config, "GET", "", url, config.UserAgent, nil)
-		if !IsGoogleApiErrorWithCode(err, 404) {
+		url := fmt.Sprintf("%sprojects/%s/global/deployments/%s", config.DeploymentManagerBasePath, acctest.GetTestProjectFromEnv(), deploymentName)
+		_, err := transport_tpg.SendRequest(config, "GET", "", url, config.UserAgent, nil)
+		if !transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 			return fmt.Errorf("Unexpected error while trying to confirm DeploymentManagerDeployment deleted: %v", err)
 		}
 		if err == nil {
@@ -423,12 +427,12 @@ func testAccCheckDeploymentManagerDeploymentDestroyProducer(t *testing.T) func(s
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{DeploymentManagerBasePath}}projects/{{project}}/global/deployments/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DeploymentManagerBasePath}}projects/{{project}}/global/deployments/{{name}}")
 			if err != nil {
 				return err
 			}
 
-			_, err = SendRequest(config, "GET", "", url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", "", url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("DeploymentManagerDeployment still exists at %s", url)
 			}

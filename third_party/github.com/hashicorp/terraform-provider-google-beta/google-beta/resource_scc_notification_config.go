@@ -23,6 +23,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceSecurityCenterNotificationConfig() *schema.Resource {
@@ -125,8 +128,8 @@ publish to the Pub/Sub topic.`,
 }
 
 func resourceSecurityCenterNotificationConfigCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -135,23 +138,23 @@ func resourceSecurityCenterNotificationConfigCreate(d *schema.ResourceData, meta
 	descriptionProp, err := expandSecurityCenterNotificationConfigDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	pubsubTopicProp, err := expandSecurityCenterNotificationConfigPubsubTopic(d.Get("pubsub_topic"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("pubsub_topic"); !isEmptyValue(reflect.ValueOf(pubsubTopicProp)) && (ok || !reflect.DeepEqual(v, pubsubTopicProp)) {
+	} else if v, ok := d.GetOkExists("pubsub_topic"); !tpgresource.IsEmptyValue(reflect.ValueOf(pubsubTopicProp)) && (ok || !reflect.DeepEqual(v, pubsubTopicProp)) {
 		obj["pubsubTopic"] = pubsubTopicProp
 	}
 	streamingConfigProp, err := expandSecurityCenterNotificationConfigStreamingConfig(d.Get("streaming_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("streaming_config"); !isEmptyValue(reflect.ValueOf(streamingConfigProp)) && (ok || !reflect.DeepEqual(v, streamingConfigProp)) {
+	} else if v, ok := d.GetOkExists("streaming_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(streamingConfigProp)) && (ok || !reflect.DeepEqual(v, streamingConfigProp)) {
 		obj["streamingConfig"] = streamingConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecurityCenterBasePath}}organizations/{{organization}}/notificationConfigs?configId={{config_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecurityCenterBasePath}}organizations/{{organization}}/notificationConfigs?configId={{config_id}}")
 	if err != nil {
 		return err
 	}
@@ -160,11 +163,11 @@ func resourceSecurityCenterNotificationConfigCreate(d *schema.ResourceData, meta
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating NotificationConfig: %s", err)
 	}
@@ -173,7 +176,7 @@ func resourceSecurityCenterNotificationConfigCreate(d *schema.ResourceData, meta
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -203,13 +206,13 @@ func resourceSecurityCenterNotificationConfigCreate(d *schema.ResourceData, meta
 }
 
 func resourceSecurityCenterNotificationConfigRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -217,13 +220,13 @@ func resourceSecurityCenterNotificationConfigRead(d *schema.ResourceData, meta i
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("SecurityCenterNotificationConfig %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("SecurityCenterNotificationConfig %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenSecurityCenterNotificationConfigName(res["name"], d, config)); err != nil {
@@ -246,8 +249,8 @@ func resourceSecurityCenterNotificationConfigRead(d *schema.ResourceData, meta i
 }
 
 func resourceSecurityCenterNotificationConfigUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -258,23 +261,23 @@ func resourceSecurityCenterNotificationConfigUpdate(d *schema.ResourceData, meta
 	descriptionProp, err := expandSecurityCenterNotificationConfigDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	pubsubTopicProp, err := expandSecurityCenterNotificationConfigPubsubTopic(d.Get("pubsub_topic"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("pubsub_topic"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, pubsubTopicProp)) {
+	} else if v, ok := d.GetOkExists("pubsub_topic"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, pubsubTopicProp)) {
 		obj["pubsubTopic"] = pubsubTopicProp
 	}
 	streamingConfigProp, err := expandSecurityCenterNotificationConfigStreamingConfig(d.Get("streaming_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("streaming_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, streamingConfigProp)) {
+	} else if v, ok := d.GetOkExists("streaming_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, streamingConfigProp)) {
 		obj["streamingConfig"] = streamingConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -295,17 +298,17 @@ func resourceSecurityCenterNotificationConfigUpdate(d *schema.ResourceData, meta
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating NotificationConfig %q: %s", d.Id(), err)
@@ -317,15 +320,15 @@ func resourceSecurityCenterNotificationConfigUpdate(d *schema.ResourceData, meta
 }
 
 func resourceSecurityCenterNotificationConfigDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -334,13 +337,13 @@ func resourceSecurityCenterNotificationConfigDelete(d *schema.ResourceData, meta
 	log.Printf("[DEBUG] Deleting NotificationConfig %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "NotificationConfig")
+		return transport_tpg.HandleNotFoundError(err, d, "NotificationConfig")
 	}
 
 	log.Printf("[DEBUG] Finished deleting NotificationConfig %q: %#v", d.Id(), res)
@@ -348,7 +351,7 @@ func resourceSecurityCenterNotificationConfigDelete(d *schema.ResourceData, meta
 }
 
 func resourceSecurityCenterNotificationConfigImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
@@ -370,23 +373,23 @@ func resourceSecurityCenterNotificationConfigImport(d *schema.ResourceData, meta
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenSecurityCenterNotificationConfigName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterNotificationConfigName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecurityCenterNotificationConfigDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterNotificationConfigDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecurityCenterNotificationConfigPubsubTopic(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterNotificationConfigPubsubTopic(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecurityCenterNotificationConfigServiceAccount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterNotificationConfigServiceAccount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecurityCenterNotificationConfigStreamingConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterNotificationConfigStreamingConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -399,19 +402,19 @@ func flattenSecurityCenterNotificationConfigStreamingConfig(v interface{}, d *sc
 		flattenSecurityCenterNotificationConfigStreamingConfigFilter(original["filter"], d, config)
 	return []interface{}{transformed}
 }
-func flattenSecurityCenterNotificationConfigStreamingConfigFilter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterNotificationConfigStreamingConfigFilter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandSecurityCenterNotificationConfigDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSecurityCenterNotificationConfigDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandSecurityCenterNotificationConfigPubsubTopic(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSecurityCenterNotificationConfigPubsubTopic(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandSecurityCenterNotificationConfigStreamingConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSecurityCenterNotificationConfigStreamingConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -423,13 +426,13 @@ func expandSecurityCenterNotificationConfigStreamingConfig(v interface{}, d Terr
 	transformedFilter, err := expandSecurityCenterNotificationConfigStreamingConfigFilter(original["filter"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedFilter); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedFilter); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["filter"] = transformedFilter
 	}
 
 	return transformed, nil
 }
 
-func expandSecurityCenterNotificationConfigStreamingConfigFilter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSecurityCenterNotificationConfigStreamingConfigFilter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

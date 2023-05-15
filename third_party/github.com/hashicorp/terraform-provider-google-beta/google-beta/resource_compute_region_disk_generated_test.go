@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeRegionDisk_regionDiskBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccComputeRegionDisk_regionDiskBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -76,6 +80,61 @@ resource "google_compute_snapshot" "snapdisk" {
 `, context)
 }
 
+func TestAccComputeRegionDisk_regionDiskAsyncExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeRegionDisk_regionDiskAsyncExample(context),
+			},
+			{
+				ResourceName:            "google_compute_region_disk.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"type", "interface", "region", "snapshot"},
+			},
+		},
+	})
+}
+
+func testAccComputeRegionDisk_regionDiskAsyncExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_compute_region_disk" "primary" {
+  provider = google-beta
+
+  name                      = "tf-test-primary-region-disk%{random_suffix}"
+  type                      = "pd-ssd"
+  region                    = "us-central1"
+  physical_block_size_bytes = 4096
+
+  replica_zones = ["us-central1-a", "us-central1-f"]
+}
+
+resource "google_compute_region_disk" "secondary" {
+  provider = google-beta
+
+  name                      = "tf-test-secondary-region-disk%{random_suffix}"
+  type                      = "pd-ssd"
+  region                    = "us-east1"
+  physical_block_size_bytes = 4096
+
+  async_primary_disk {
+    disk = google_compute_region_disk.primary.id
+  }
+
+  replica_zones = ["us-east1-b", "us-east1-c"]
+}
+`, context)
+}
+
 func testAccCheckComputeRegionDiskDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
 		for name, rs := range s.RootModule().Resources {
@@ -88,7 +147,7 @@ func testAccCheckComputeRegionDiskDestroyProducer(t *testing.T) func(s *terrafor
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/disks/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/disks/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -99,7 +158,7 @@ func testAccCheckComputeRegionDiskDestroyProducer(t *testing.T) func(s *terrafor
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("ComputeRegionDisk still exists at %s", url)
 			}

@@ -2,21 +2,23 @@ package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"reflect"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccBinaryAuthorizationPolicy_basic(t *testing.T) {
 	t.Parallel()
 
-	org := GetTestOrgFromEnv(t)
+	org := acctest.GetTestOrgFromEnv(t)
 	pid := "tf-test-" + RandString(t, 10)
-	billingId := GetTestBillingAccountFromEnv(t)
+	billingId := acctest.GetTestBillingAccountFromEnv(t)
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -40,14 +42,14 @@ func TestAccBinaryAuthorizationPolicy_basic(t *testing.T) {
 func TestAccBinaryAuthorizationPolicy_full(t *testing.T) {
 	t.Parallel()
 
-	org := GetTestOrgFromEnv(t)
+	org := acctest.GetTestOrgFromEnv(t)
 	pid := "tf-test-" + RandString(t, 10)
-	billingId := GetTestBillingAccountFromEnv(t)
+	billingId := acctest.GetTestBillingAccountFromEnv(t)
 	note := RandString(t, 10)
 	attestor := RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -72,14 +74,14 @@ func TestAccBinaryAuthorizationPolicy_full(t *testing.T) {
 func TestAccBinaryAuthorizationPolicy_separateProject(t *testing.T) {
 	t.Parallel()
 
-	org := GetTestOrgFromEnv(t)
+	org := acctest.GetTestOrgFromEnv(t)
 	pid := "tf-test-" + RandString(t, 10)
-	billingId := GetTestBillingAccountFromEnv(t)
+	billingId := acctest.GetTestBillingAccountFromEnv(t)
 	note := RandString(t, 10)
 	attestor := RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -103,14 +105,14 @@ func TestAccBinaryAuthorizationPolicy_separateProject(t *testing.T) {
 func TestAccBinaryAuthorizationPolicy_update(t *testing.T) {
 	t.Parallel()
 
-	org := GetTestOrgFromEnv(t)
+	org := acctest.GetTestOrgFromEnv(t)
 	pid := "tf-test-" + RandString(t, 10)
-	billingId := GetTestBillingAccountFromEnv(t)
+	billingId := acctest.GetTestBillingAccountFromEnv(t)
 	note := RandString(t, 10)
 	attestor := RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -159,7 +161,7 @@ func testAccCheckBinaryAuthorizationPolicyDefault(t *testing.T, pid string) reso
 	return func(s *terraform.State) error {
 		config := GoogleProviderConfig(t)
 		url := fmt.Sprintf("https://binaryauthorization.googleapis.com/v1/projects/%s/policy", pid)
-		pol, err := SendRequest(config, "GET", "", url, config.UserAgent, nil)
+		pol, err := transport_tpg.SendRequest(config, "GET", "", url, config.UserAgent, nil)
 		if err != nil {
 			return err
 		}

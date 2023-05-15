@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 const notebooksInstanceGoogleProvidedLabel = "goog-caip-notebook"
@@ -70,7 +74,7 @@ func ResourceNotebooksInstance() *schema.Resource {
 				Type:             schema.TypeString,
 				Required:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description:      `A reference to a machine type which defines VM kind.`,
 			},
 			"name": {
@@ -99,7 +103,7 @@ machineType you have selected.`,
 							Type:         schema.TypeString,
 							Required:     true,
 							ForceNew:     true,
-							ValidateFunc: validateEnum([]string{"ACCELERATOR_TYPE_UNSPECIFIED", "NVIDIA_TESLA_K80", "NVIDIA_TESLA_P100", "NVIDIA_TESLA_V100", "NVIDIA_TESLA_P4", "NVIDIA_TESLA_T4", "NVIDIA_TESLA_T4_VWS", "NVIDIA_TESLA_P100_VWS", "NVIDIA_TESLA_P4_VWS", "NVIDIA_TESLA_A100", "TPU_V2", "TPU_V3"}),
+							ValidateFunc: verify.ValidateEnum([]string{"ACCELERATOR_TYPE_UNSPECIFIED", "NVIDIA_TESLA_K80", "NVIDIA_TESLA_P100", "NVIDIA_TESLA_V100", "NVIDIA_TESLA_P4", "NVIDIA_TESLA_T4", "NVIDIA_TESLA_T4_VWS", "NVIDIA_TESLA_P100_VWS", "NVIDIA_TESLA_P4_VWS", "NVIDIA_TESLA_A100", "TPU_V2", "TPU_V3"}),
 							Description:  `Type of this accelerator. Possible values: ["ACCELERATOR_TYPE_UNSPECIFIED", "NVIDIA_TESLA_K80", "NVIDIA_TESLA_P100", "NVIDIA_TESLA_V100", "NVIDIA_TESLA_P4", "NVIDIA_TESLA_T4", "NVIDIA_TESLA_T4_VWS", "NVIDIA_TESLA_P100_VWS", "NVIDIA_TESLA_P4_VWS", "NVIDIA_TESLA_A100", "TPU_V2", "TPU_V3"]`,
 						},
 					},
@@ -117,7 +121,7 @@ If not specified, this defaults to 100.`,
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"DISK_TYPE_UNSPECIFIED", "PD_STANDARD", "PD_SSD", "PD_BALANCED", "PD_EXTREME", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"DISK_TYPE_UNSPECIFIED", "PD_STANDARD", "PD_SSD", "PD_BALANCED", "PD_EXTREME", ""}),
 				Description:  `Possible disk types for notebook instances. Possible values: ["DISK_TYPE_UNSPECIFIED", "PD_STANDARD", "PD_SSD", "PD_BALANCED", "PD_EXTREME"]`,
 			},
 			"container_image": {
@@ -165,15 +169,15 @@ If not specified, this defaults to 100.`,
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"DISK_TYPE_UNSPECIFIED", "PD_STANDARD", "PD_SSD", "PD_BALANCED", "PD_EXTREME", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"DISK_TYPE_UNSPECIFIED", "PD_STANDARD", "PD_SSD", "PD_BALANCED", "PD_EXTREME", ""}),
 				Description:  `Possible disk types for notebook instances. Possible values: ["DISK_TYPE_UNSPECIFIED", "PD_STANDARD", "PD_SSD", "PD_BALANCED", "PD_EXTREME"]`,
 			},
 			"disk_encryption": {
 				Type:             schema.TypeString,
 				Optional:         true,
 				ForceNew:         true,
-				ValidateFunc:     validateEnum([]string{"DISK_ENCRYPTION_UNSPECIFIED", "GMEK", "CMEK", ""}),
-				DiffSuppressFunc: EmptyOrDefaultStringSuppress("DISK_ENCRYPTION_UNSPECIFIED"),
+				ValidateFunc:     verify.ValidateEnum([]string{"DISK_ENCRYPTION_UNSPECIFIED", "GMEK", "CMEK", ""}),
+				DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress("DISK_ENCRYPTION_UNSPECIFIED"),
 				Description:      `Disk encryption method used on the boot and data disks, defaults to GMEK. Possible values: ["DISK_ENCRYPTION_UNSPECIFIED", "GMEK", "CMEK"]`,
 			},
 			"install_gpu_driver": {
@@ -226,7 +230,7 @@ An object containing a list of "key": value pairs. Example: { "name": "wrench", 
 				Computed:         true,
 				Optional:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description: `The name of the VPC that this instance is in.
 Format: projects/{project_id}/global/networks/{network_id}`,
 			},
@@ -234,7 +238,7 @@ Format: projects/{project_id}/global/networks/{network_id}`,
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"UNSPECIFIED_NIC_TYPE", "VIRTIO_NET", "GVNIC", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"UNSPECIFIED_NIC_TYPE", "VIRTIO_NET", "GVNIC", ""}),
 				Description:  `The type of vNIC driver. Possible values: ["UNSPECIFIED_NIC_TYPE", "VIRTIO_NET", "GVNIC"]`,
 			},
 			"no_proxy_access": {
@@ -275,7 +279,7 @@ or Cloud Storage path (gs://path-to-file/file-name).`,
 							Type:         schema.TypeString,
 							Required:     true,
 							ForceNew:     true,
-							ValidateFunc: validateEnum([]string{"NO_RESERVATION", "ANY_RESERVATION", "SPECIFIC_RESERVATION"}),
+							ValidateFunc: verify.ValidateEnum([]string{"NO_RESERVATION", "ANY_RESERVATION", "SPECIFIC_RESERVATION"}),
 							Description:  `The type of Compute Reservation. Possible values: ["NO_RESERVATION", "ANY_RESERVATION", "SPECIFIC_RESERVATION"]`,
 						},
 						"key": {
@@ -364,7 +368,7 @@ Enabled by default.`,
 				Computed:         true,
 				Optional:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description: `The name of the subnet that this instance is in.
 Format: projects/{project_id}/regions/{region}/subnetworks/{subnetwork_id}`,
 			},
@@ -445,8 +449,8 @@ the population of this value.`,
 }
 
 func resourceNotebooksInstanceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -455,167 +459,167 @@ func resourceNotebooksInstanceCreate(d *schema.ResourceData, meta interface{}) e
 	machineTypeProp, err := expandNotebooksInstanceMachineType(d.Get("machine_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("machine_type"); !isEmptyValue(reflect.ValueOf(machineTypeProp)) && (ok || !reflect.DeepEqual(v, machineTypeProp)) {
+	} else if v, ok := d.GetOkExists("machine_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(machineTypeProp)) && (ok || !reflect.DeepEqual(v, machineTypeProp)) {
 		obj["machineType"] = machineTypeProp
 	}
 	postStartupScriptProp, err := expandNotebooksInstancePostStartupScript(d.Get("post_startup_script"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("post_startup_script"); !isEmptyValue(reflect.ValueOf(postStartupScriptProp)) && (ok || !reflect.DeepEqual(v, postStartupScriptProp)) {
+	} else if v, ok := d.GetOkExists("post_startup_script"); !tpgresource.IsEmptyValue(reflect.ValueOf(postStartupScriptProp)) && (ok || !reflect.DeepEqual(v, postStartupScriptProp)) {
 		obj["postStartupScript"] = postStartupScriptProp
 	}
 	instanceOwnersProp, err := expandNotebooksInstanceInstanceOwners(d.Get("instance_owners"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("instance_owners"); !isEmptyValue(reflect.ValueOf(instanceOwnersProp)) && (ok || !reflect.DeepEqual(v, instanceOwnersProp)) {
+	} else if v, ok := d.GetOkExists("instance_owners"); !tpgresource.IsEmptyValue(reflect.ValueOf(instanceOwnersProp)) && (ok || !reflect.DeepEqual(v, instanceOwnersProp)) {
 		obj["instanceOwners"] = instanceOwnersProp
 	}
 	serviceAccountProp, err := expandNotebooksInstanceServiceAccount(d.Get("service_account"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("service_account"); !isEmptyValue(reflect.ValueOf(serviceAccountProp)) && (ok || !reflect.DeepEqual(v, serviceAccountProp)) {
+	} else if v, ok := d.GetOkExists("service_account"); !tpgresource.IsEmptyValue(reflect.ValueOf(serviceAccountProp)) && (ok || !reflect.DeepEqual(v, serviceAccountProp)) {
 		obj["serviceAccount"] = serviceAccountProp
 	}
 	serviceAccountScopesProp, err := expandNotebooksInstanceServiceAccountScopes(d.Get("service_account_scopes"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("service_account_scopes"); !isEmptyValue(reflect.ValueOf(serviceAccountScopesProp)) && (ok || !reflect.DeepEqual(v, serviceAccountScopesProp)) {
+	} else if v, ok := d.GetOkExists("service_account_scopes"); !tpgresource.IsEmptyValue(reflect.ValueOf(serviceAccountScopesProp)) && (ok || !reflect.DeepEqual(v, serviceAccountScopesProp)) {
 		obj["serviceAccountScopes"] = serviceAccountScopesProp
 	}
 	acceleratorConfigProp, err := expandNotebooksInstanceAcceleratorConfig(d.Get("accelerator_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("accelerator_config"); !isEmptyValue(reflect.ValueOf(acceleratorConfigProp)) && (ok || !reflect.DeepEqual(v, acceleratorConfigProp)) {
+	} else if v, ok := d.GetOkExists("accelerator_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(acceleratorConfigProp)) && (ok || !reflect.DeepEqual(v, acceleratorConfigProp)) {
 		obj["acceleratorConfig"] = acceleratorConfigProp
 	}
 	shieldedInstanceConfigProp, err := expandNotebooksInstanceShieldedInstanceConfig(d.Get("shielded_instance_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("shielded_instance_config"); !isEmptyValue(reflect.ValueOf(shieldedInstanceConfigProp)) && (ok || !reflect.DeepEqual(v, shieldedInstanceConfigProp)) {
+	} else if v, ok := d.GetOkExists("shielded_instance_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(shieldedInstanceConfigProp)) && (ok || !reflect.DeepEqual(v, shieldedInstanceConfigProp)) {
 		obj["shieldedInstanceConfig"] = shieldedInstanceConfigProp
 	}
 	nicTypeProp, err := expandNotebooksInstanceNicType(d.Get("nic_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("nic_type"); !isEmptyValue(reflect.ValueOf(nicTypeProp)) && (ok || !reflect.DeepEqual(v, nicTypeProp)) {
+	} else if v, ok := d.GetOkExists("nic_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(nicTypeProp)) && (ok || !reflect.DeepEqual(v, nicTypeProp)) {
 		obj["nicType"] = nicTypeProp
 	}
 	reservationAffinityProp, err := expandNotebooksInstanceReservationAffinity(d.Get("reservation_affinity"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("reservation_affinity"); !isEmptyValue(reflect.ValueOf(reservationAffinityProp)) && (ok || !reflect.DeepEqual(v, reservationAffinityProp)) {
+	} else if v, ok := d.GetOkExists("reservation_affinity"); !tpgresource.IsEmptyValue(reflect.ValueOf(reservationAffinityProp)) && (ok || !reflect.DeepEqual(v, reservationAffinityProp)) {
 		obj["reservationAffinity"] = reservationAffinityProp
 	}
 	installGpuDriverProp, err := expandNotebooksInstanceInstallGpuDriver(d.Get("install_gpu_driver"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("install_gpu_driver"); !isEmptyValue(reflect.ValueOf(installGpuDriverProp)) && (ok || !reflect.DeepEqual(v, installGpuDriverProp)) {
+	} else if v, ok := d.GetOkExists("install_gpu_driver"); !tpgresource.IsEmptyValue(reflect.ValueOf(installGpuDriverProp)) && (ok || !reflect.DeepEqual(v, installGpuDriverProp)) {
 		obj["installGpuDriver"] = installGpuDriverProp
 	}
 	customGpuDriverPathProp, err := expandNotebooksInstanceCustomGpuDriverPath(d.Get("custom_gpu_driver_path"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("custom_gpu_driver_path"); !isEmptyValue(reflect.ValueOf(customGpuDriverPathProp)) && (ok || !reflect.DeepEqual(v, customGpuDriverPathProp)) {
+	} else if v, ok := d.GetOkExists("custom_gpu_driver_path"); !tpgresource.IsEmptyValue(reflect.ValueOf(customGpuDriverPathProp)) && (ok || !reflect.DeepEqual(v, customGpuDriverPathProp)) {
 		obj["customGpuDriverPath"] = customGpuDriverPathProp
 	}
 	bootDiskTypeProp, err := expandNotebooksInstanceBootDiskType(d.Get("boot_disk_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("boot_disk_type"); !isEmptyValue(reflect.ValueOf(bootDiskTypeProp)) && (ok || !reflect.DeepEqual(v, bootDiskTypeProp)) {
+	} else if v, ok := d.GetOkExists("boot_disk_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(bootDiskTypeProp)) && (ok || !reflect.DeepEqual(v, bootDiskTypeProp)) {
 		obj["bootDiskType"] = bootDiskTypeProp
 	}
 	bootDiskSizeGbProp, err := expandNotebooksInstanceBootDiskSizeGb(d.Get("boot_disk_size_gb"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("boot_disk_size_gb"); !isEmptyValue(reflect.ValueOf(bootDiskSizeGbProp)) && (ok || !reflect.DeepEqual(v, bootDiskSizeGbProp)) {
+	} else if v, ok := d.GetOkExists("boot_disk_size_gb"); !tpgresource.IsEmptyValue(reflect.ValueOf(bootDiskSizeGbProp)) && (ok || !reflect.DeepEqual(v, bootDiskSizeGbProp)) {
 		obj["bootDiskSizeGb"] = bootDiskSizeGbProp
 	}
 	dataDiskTypeProp, err := expandNotebooksInstanceDataDiskType(d.Get("data_disk_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("data_disk_type"); !isEmptyValue(reflect.ValueOf(dataDiskTypeProp)) && (ok || !reflect.DeepEqual(v, dataDiskTypeProp)) {
+	} else if v, ok := d.GetOkExists("data_disk_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(dataDiskTypeProp)) && (ok || !reflect.DeepEqual(v, dataDiskTypeProp)) {
 		obj["dataDiskType"] = dataDiskTypeProp
 	}
 	dataDiskSizeGbProp, err := expandNotebooksInstanceDataDiskSizeGb(d.Get("data_disk_size_gb"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("data_disk_size_gb"); !isEmptyValue(reflect.ValueOf(dataDiskSizeGbProp)) && (ok || !reflect.DeepEqual(v, dataDiskSizeGbProp)) {
+	} else if v, ok := d.GetOkExists("data_disk_size_gb"); !tpgresource.IsEmptyValue(reflect.ValueOf(dataDiskSizeGbProp)) && (ok || !reflect.DeepEqual(v, dataDiskSizeGbProp)) {
 		obj["dataDiskSizeGb"] = dataDiskSizeGbProp
 	}
 	noRemoveDataDiskProp, err := expandNotebooksInstanceNoRemoveDataDisk(d.Get("no_remove_data_disk"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("no_remove_data_disk"); !isEmptyValue(reflect.ValueOf(noRemoveDataDiskProp)) && (ok || !reflect.DeepEqual(v, noRemoveDataDiskProp)) {
+	} else if v, ok := d.GetOkExists("no_remove_data_disk"); !tpgresource.IsEmptyValue(reflect.ValueOf(noRemoveDataDiskProp)) && (ok || !reflect.DeepEqual(v, noRemoveDataDiskProp)) {
 		obj["noRemoveDataDisk"] = noRemoveDataDiskProp
 	}
 	diskEncryptionProp, err := expandNotebooksInstanceDiskEncryption(d.Get("disk_encryption"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("disk_encryption"); !isEmptyValue(reflect.ValueOf(diskEncryptionProp)) && (ok || !reflect.DeepEqual(v, diskEncryptionProp)) {
+	} else if v, ok := d.GetOkExists("disk_encryption"); !tpgresource.IsEmptyValue(reflect.ValueOf(diskEncryptionProp)) && (ok || !reflect.DeepEqual(v, diskEncryptionProp)) {
 		obj["diskEncryption"] = diskEncryptionProp
 	}
 	kmsKeyProp, err := expandNotebooksInstanceKmsKey(d.Get("kms_key"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("kms_key"); !isEmptyValue(reflect.ValueOf(kmsKeyProp)) && (ok || !reflect.DeepEqual(v, kmsKeyProp)) {
+	} else if v, ok := d.GetOkExists("kms_key"); !tpgresource.IsEmptyValue(reflect.ValueOf(kmsKeyProp)) && (ok || !reflect.DeepEqual(v, kmsKeyProp)) {
 		obj["kmsKey"] = kmsKeyProp
 	}
 	noPublicIpProp, err := expandNotebooksInstanceNoPublicIp(d.Get("no_public_ip"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("no_public_ip"); !isEmptyValue(reflect.ValueOf(noPublicIpProp)) && (ok || !reflect.DeepEqual(v, noPublicIpProp)) {
+	} else if v, ok := d.GetOkExists("no_public_ip"); !tpgresource.IsEmptyValue(reflect.ValueOf(noPublicIpProp)) && (ok || !reflect.DeepEqual(v, noPublicIpProp)) {
 		obj["noPublicIp"] = noPublicIpProp
 	}
 	noProxyAccessProp, err := expandNotebooksInstanceNoProxyAccess(d.Get("no_proxy_access"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("no_proxy_access"); !isEmptyValue(reflect.ValueOf(noProxyAccessProp)) && (ok || !reflect.DeepEqual(v, noProxyAccessProp)) {
+	} else if v, ok := d.GetOkExists("no_proxy_access"); !tpgresource.IsEmptyValue(reflect.ValueOf(noProxyAccessProp)) && (ok || !reflect.DeepEqual(v, noProxyAccessProp)) {
 		obj["noProxyAccess"] = noProxyAccessProp
 	}
 	networkProp, err := expandNotebooksInstanceNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 	subnetProp, err := expandNotebooksInstanceSubnet(d.Get("subnet"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("subnet"); !isEmptyValue(reflect.ValueOf(subnetProp)) && (ok || !reflect.DeepEqual(v, subnetProp)) {
+	} else if v, ok := d.GetOkExists("subnet"); !tpgresource.IsEmptyValue(reflect.ValueOf(subnetProp)) && (ok || !reflect.DeepEqual(v, subnetProp)) {
 		obj["subnet"] = subnetProp
 	}
 	labelsProp, err := expandNotebooksInstanceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	tagsProp, err := expandNotebooksInstanceTags(d.Get("tags"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("tags"); !isEmptyValue(reflect.ValueOf(tagsProp)) && (ok || !reflect.DeepEqual(v, tagsProp)) {
+	} else if v, ok := d.GetOkExists("tags"); !tpgresource.IsEmptyValue(reflect.ValueOf(tagsProp)) && (ok || !reflect.DeepEqual(v, tagsProp)) {
 		obj["tags"] = tagsProp
 	}
 	metadataProp, err := expandNotebooksInstanceMetadata(d.Get("metadata"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("metadata"); !isEmptyValue(reflect.ValueOf(metadataProp)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
+	} else if v, ok := d.GetOkExists("metadata"); !tpgresource.IsEmptyValue(reflect.ValueOf(metadataProp)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
 		obj["metadata"] = metadataProp
 	}
 	vmImageProp, err := expandNotebooksInstanceVmImage(d.Get("vm_image"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("vm_image"); !isEmptyValue(reflect.ValueOf(vmImageProp)) && (ok || !reflect.DeepEqual(v, vmImageProp)) {
+	} else if v, ok := d.GetOkExists("vm_image"); !tpgresource.IsEmptyValue(reflect.ValueOf(vmImageProp)) && (ok || !reflect.DeepEqual(v, vmImageProp)) {
 		obj["vmImage"] = vmImageProp
 	}
 	containerImageProp, err := expandNotebooksInstanceContainerImage(d.Get("container_image"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("container_image"); !isEmptyValue(reflect.ValueOf(containerImageProp)) && (ok || !reflect.DeepEqual(v, containerImageProp)) {
+	} else if v, ok := d.GetOkExists("container_image"); !tpgresource.IsEmptyValue(reflect.ValueOf(containerImageProp)) && (ok || !reflect.DeepEqual(v, containerImageProp)) {
 		obj["containerImage"] = containerImageProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/instances?instanceId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/instances?instanceId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -623,24 +627,24 @@ func resourceNotebooksInstanceCreate(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Creating new Instance: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Instance: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/instances/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/instances/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -660,7 +664,7 @@ func resourceNotebooksInstanceCreate(d *schema.ResourceData, meta interface{}) e
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/instances/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/instances/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -672,33 +676,33 @@ func resourceNotebooksInstanceCreate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceNotebooksInstanceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("NotebooksInstance %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("NotebooksInstance %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -776,15 +780,15 @@ func resourceNotebooksInstanceRead(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceNotebooksInstanceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
@@ -798,21 +802,21 @@ func resourceNotebooksInstanceUpdate(d *schema.ResourceData, meta interface{}) e
 		labelsProp, err := expandNotebooksInstanceLabels(d.Get("labels"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+		} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 			obj["labels"] = labelsProp
 		}
 
-		url, err := ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/instances/{{name}}:setLabels")
+		url, err := tpgresource.ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/instances/{{name}}:setLabels")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Instance %q: %s", d.Id(), err)
 		} else {
@@ -833,21 +837,21 @@ func resourceNotebooksInstanceUpdate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceNotebooksInstanceDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -856,13 +860,13 @@ func resourceNotebooksInstanceDelete(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Deleting Instance %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Instance")
+		return transport_tpg.HandleNotFoundError(err, d, "Instance")
 	}
 
 	err = NotebooksOperationWaitTime(
@@ -878,7 +882,7 @@ func resourceNotebooksInstanceDelete(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceNotebooksInstanceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/instances/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -888,7 +892,7 @@ func resourceNotebooksInstanceImport(d *schema.ResourceData, meta interface{}) (
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/instances/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/instances/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -897,30 +901,30 @@ func resourceNotebooksInstanceImport(d *schema.ResourceData, meta interface{}) (
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenNotebooksInstanceMachineType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceMachineType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenNotebooksInstancePostStartupScript(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstancePostStartupScript(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceProxyUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceProxyUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceServiceAccount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceServiceAccount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceServiceAccountScopes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceServiceAccountScopes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceAcceleratorConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceAcceleratorConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -935,11 +939,11 @@ func flattenNotebooksInstanceAcceleratorConfig(v interface{}, d *schema.Resource
 		flattenNotebooksInstanceAcceleratorConfigCoreCount(original["coreCount"], d, config)
 	return []interface{}{transformed}
 }
-func flattenNotebooksInstanceAcceleratorConfigType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceAcceleratorConfigType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceAcceleratorConfigCoreCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceAcceleratorConfigCoreCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -956,7 +960,7 @@ func flattenNotebooksInstanceAcceleratorConfigCoreCount(v interface{}, d *schema
 	return v // let terraform core handle it otherwise
 }
 
-func flattenNotebooksInstanceShieldedInstanceConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceShieldedInstanceConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -973,23 +977,23 @@ func flattenNotebooksInstanceShieldedInstanceConfig(v interface{}, d *schema.Res
 		flattenNotebooksInstanceShieldedInstanceConfigEnableVtpm(original["enableVtpm"], d, config)
 	return []interface{}{transformed}
 }
-func flattenNotebooksInstanceShieldedInstanceConfigEnableIntegrityMonitoring(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceShieldedInstanceConfigEnableIntegrityMonitoring(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceShieldedInstanceConfigEnableSecureBoot(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceShieldedInstanceConfigEnableSecureBoot(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceShieldedInstanceConfigEnableVtpm(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceShieldedInstanceConfigEnableVtpm(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceNicType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceNicType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceReservationAffinity(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceReservationAffinity(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1006,91 +1010,91 @@ func flattenNotebooksInstanceReservationAffinity(v interface{}, d *schema.Resour
 		flattenNotebooksInstanceReservationAffinityValues(original["values"], d, config)
 	return []interface{}{transformed}
 }
-func flattenNotebooksInstanceReservationAffinityConsumeReservationType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceReservationAffinityConsumeReservationType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceReservationAffinityKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceReservationAffinityKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceReservationAffinityValues(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceReservationAffinityValues(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceInstallGpuDriver(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceInstallGpuDriver(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceCustomGpuDriverPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceCustomGpuDriverPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceDiskEncryption(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceDiskEncryption(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceKmsKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceKmsKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceNoPublicIp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceNoPublicIp(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceNoProxyAccess(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceNoProxyAccess(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceSubnet(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceSubnet(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceTags(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceTags(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksInstanceUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksInstanceUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandNotebooksInstanceMachineType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceMachineType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstancePostStartupScript(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstancePostStartupScript(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceInstanceOwners(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceInstanceOwners(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceServiceAccount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceServiceAccount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceServiceAccountScopes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceServiceAccountScopes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceAcceleratorConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceAcceleratorConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1102,29 +1106,29 @@ func expandNotebooksInstanceAcceleratorConfig(v interface{}, d TerraformResource
 	transformedType, err := expandNotebooksInstanceAcceleratorConfigType(original["type"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedType); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["type"] = transformedType
 	}
 
 	transformedCoreCount, err := expandNotebooksInstanceAcceleratorConfigCoreCount(original["core_count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCoreCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCoreCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["coreCount"] = transformedCoreCount
 	}
 
 	return transformed, nil
 }
 
-func expandNotebooksInstanceAcceleratorConfigType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceAcceleratorConfigType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceAcceleratorConfigCoreCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceAcceleratorConfigCoreCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceShieldedInstanceConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceShieldedInstanceConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1136,44 +1140,44 @@ func expandNotebooksInstanceShieldedInstanceConfig(v interface{}, d TerraformRes
 	transformedEnableIntegrityMonitoring, err := expandNotebooksInstanceShieldedInstanceConfigEnableIntegrityMonitoring(original["enable_integrity_monitoring"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEnableIntegrityMonitoring); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEnableIntegrityMonitoring); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["enableIntegrityMonitoring"] = transformedEnableIntegrityMonitoring
 	}
 
 	transformedEnableSecureBoot, err := expandNotebooksInstanceShieldedInstanceConfigEnableSecureBoot(original["enable_secure_boot"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEnableSecureBoot); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEnableSecureBoot); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["enableSecureBoot"] = transformedEnableSecureBoot
 	}
 
 	transformedEnableVtpm, err := expandNotebooksInstanceShieldedInstanceConfigEnableVtpm(original["enable_vtpm"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEnableVtpm); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEnableVtpm); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["enableVtpm"] = transformedEnableVtpm
 	}
 
 	return transformed, nil
 }
 
-func expandNotebooksInstanceShieldedInstanceConfigEnableIntegrityMonitoring(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceShieldedInstanceConfigEnableIntegrityMonitoring(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceShieldedInstanceConfigEnableSecureBoot(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceShieldedInstanceConfigEnableSecureBoot(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceShieldedInstanceConfigEnableVtpm(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceShieldedInstanceConfigEnableVtpm(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceNicType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceNicType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceReservationAffinity(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceReservationAffinity(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1185,92 +1189,92 @@ func expandNotebooksInstanceReservationAffinity(v interface{}, d TerraformResour
 	transformedConsumeReservationType, err := expandNotebooksInstanceReservationAffinityConsumeReservationType(original["consume_reservation_type"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedConsumeReservationType); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedConsumeReservationType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["consumeReservationType"] = transformedConsumeReservationType
 	}
 
 	transformedKey, err := expandNotebooksInstanceReservationAffinityKey(original["key"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKey); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["key"] = transformedKey
 	}
 
 	transformedValues, err := expandNotebooksInstanceReservationAffinityValues(original["values"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedValues); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedValues); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["values"] = transformedValues
 	}
 
 	return transformed, nil
 }
 
-func expandNotebooksInstanceReservationAffinityConsumeReservationType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceReservationAffinityConsumeReservationType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceReservationAffinityKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceReservationAffinityKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceReservationAffinityValues(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceReservationAffinityValues(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceInstallGpuDriver(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceInstallGpuDriver(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceCustomGpuDriverPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceCustomGpuDriverPath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceBootDiskType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceBootDiskType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceBootDiskSizeGb(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceBootDiskSizeGb(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceDataDiskType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceDataDiskType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceDataDiskSizeGb(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceDataDiskSizeGb(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceNoRemoveDataDisk(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceNoRemoveDataDisk(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceDiskEncryption(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceDiskEncryption(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceKmsKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceKmsKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceNoPublicIp(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceNoPublicIp(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceNoProxyAccess(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceNoProxyAccess(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceSubnet(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceSubnet(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandNotebooksInstanceLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1281,11 +1285,11 @@ func expandNotebooksInstanceLabels(v interface{}, d TerraformResourceData, confi
 	return m, nil
 }
 
-func expandNotebooksInstanceTags(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceTags(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceMetadata(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandNotebooksInstanceMetadata(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1296,7 +1300,7 @@ func expandNotebooksInstanceMetadata(v interface{}, d TerraformResourceData, con
 	return m, nil
 }
 
-func expandNotebooksInstanceVmImage(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceVmImage(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1308,40 +1312,40 @@ func expandNotebooksInstanceVmImage(v interface{}, d TerraformResourceData, conf
 	transformedProject, err := expandNotebooksInstanceVmImageProject(original["project"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProject); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProject); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["project"] = transformedProject
 	}
 
 	transformedImageFamily, err := expandNotebooksInstanceVmImageImageFamily(original["image_family"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedImageFamily); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedImageFamily); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["imageFamily"] = transformedImageFamily
 	}
 
 	transformedImageName, err := expandNotebooksInstanceVmImageImageName(original["image_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedImageName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedImageName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["imageName"] = transformedImageName
 	}
 
 	return transformed, nil
 }
 
-func expandNotebooksInstanceVmImageProject(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceVmImageProject(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceVmImageImageFamily(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceVmImageImageFamily(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceVmImageImageName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceVmImageImageName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceContainerImage(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceContainerImage(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1353,24 +1357,24 @@ func expandNotebooksInstanceContainerImage(v interface{}, d TerraformResourceDat
 	transformedRepository, err := expandNotebooksInstanceContainerImageRepository(original["repository"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRepository); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRepository); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["repository"] = transformedRepository
 	}
 
 	transformedTag, err := expandNotebooksInstanceContainerImageTag(original["tag"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTag); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTag); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["tag"] = transformedTag
 	}
 
 	return transformed, nil
 }
 
-func expandNotebooksInstanceContainerImageRepository(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceContainerImageRepository(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksInstanceContainerImageTag(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksInstanceContainerImageTag(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

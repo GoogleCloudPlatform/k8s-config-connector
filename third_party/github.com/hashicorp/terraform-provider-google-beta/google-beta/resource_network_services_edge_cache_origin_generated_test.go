@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccNetworkServicesEdgeCacheOrigin_networkServicesEdgeCacheOriginBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccNetworkServicesEdgeCacheOrigin_networkServicesEdgeCacheOriginBasicEx
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesEdgeCacheOriginDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -66,7 +70,7 @@ func TestAccNetworkServicesEdgeCacheOrigin_networkServicesEdgeCacheOriginAdvance
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesEdgeCacheOriginDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -153,7 +157,7 @@ func TestAccNetworkServicesEdgeCacheOrigin_networkServicesEdgeCacheOriginV4authE
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesEdgeCacheOriginDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -211,7 +215,7 @@ func testAccCheckNetworkServicesEdgeCacheOriginDestroyProducer(t *testing.T) fun
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/edgeCacheOrigins/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/edgeCacheOrigins/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -222,7 +226,7 @@ func testAccCheckNetworkServicesEdgeCacheOriginDestroyProducer(t *testing.T) fun
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("NetworkServicesEdgeCacheOrigin still exists at %s", url)
 			}

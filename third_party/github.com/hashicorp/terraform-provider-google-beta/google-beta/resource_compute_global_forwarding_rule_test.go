@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccComputeGlobalForwardingRule_updateTarget(t *testing.T) {
@@ -19,7 +20,7 @@ func TestAccComputeGlobalForwardingRule_updateTarget(t *testing.T) {
 	urlmap := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeGlobalForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -63,7 +64,7 @@ func TestAccComputeGlobalForwardingRule_ipv6(t *testing.T) {
 	urlmap := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeGlobalForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -94,7 +95,7 @@ func TestAccComputeGlobalForwardingRule_labels(t *testing.T) {
 	urlmap := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeGlobalForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -132,7 +133,7 @@ func TestAccComputeGlobalForwardingRule_internalLoadBalancing(t *testing.T) {
 	it := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeGlobalForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{

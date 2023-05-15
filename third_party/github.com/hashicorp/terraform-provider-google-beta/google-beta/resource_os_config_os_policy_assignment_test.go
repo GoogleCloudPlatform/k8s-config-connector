@@ -7,6 +7,9 @@ import (
 	osconfig "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/osconfig/beta"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"strings"
 	"testing"
 )
@@ -15,15 +18,15 @@ func TestAccOsConfigOsPolicyAssignment_basicOsPolicyAssignment(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"zone":          GetTestZoneFromEnv(),
+		"project_name":  acctest.GetTestProjectFromEnv(),
+		"zone":          acctest.GetTestZoneFromEnv(),
 		"random_suffix": RandString(t, 10),
-		"org_id":        GetTestOrgFromEnv(t),
-		"billing_act":   GetTestBillingAccountFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"billing_act":   acctest.GetTestBillingAccountFromEnv(t),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckOsConfigOsPolicyAssignmentDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -185,7 +188,7 @@ func testAccCheckOsConfigOsPolicyAssignmentDestroyProducer(t *testing.T) func(s 
 				Uid:                dcl.StringOrNil(rs.Primary.Attributes["uid"]),
 			}
 
-			client := NewDCLOsConfigClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLOsConfigClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetOSPolicyAssignment(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_os_config_os_policy_assignment still exists %v", obj)

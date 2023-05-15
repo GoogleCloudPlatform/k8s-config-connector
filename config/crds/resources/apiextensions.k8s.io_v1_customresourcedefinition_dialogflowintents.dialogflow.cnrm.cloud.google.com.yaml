@@ -74,11 +74,10 @@ spec:
                 description: The name of this intent to be displayed on the console.
                 type: string
               events:
-                description: "The collection of event names that trigger the intent.
-                  If the collection of input contexts is not empty, all of\nthe contexts
-                  must be present in the active user session for an event to trigger
-                  this intent. See the \n[events reference](https://cloud.google.com/dialogflow/docs/events-overview)
-                  for more details."
+                description: |-
+                  The collection of event names that trigger the intent. If the collection of input contexts is not empty, all of
+                  the contexts must be present in the active user session for an event to trigger this intent. See the
+                  [events reference](https://cloud.google.com/dialogflow/docs/events-overview) for more details.
                 items:
                   type: string
                 type: array
@@ -204,8 +203,9 @@ spec:
                   type: object
                 type: array
               name:
-                description: "The unique identifier of this intent. \nFormat: projects/<Project
-                  ID>/agent/intents/<Intent ID>."
+                description: |-
+                  The unique identifier of this intent.
+                  Format: projects/<Project ID>/agent/intents/<Intent ID>.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

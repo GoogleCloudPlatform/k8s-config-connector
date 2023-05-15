@@ -23,6 +23,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceVertexAIFeaturestoreEntitytype() *schema.Resource {
@@ -205,8 +208,8 @@ If both FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days a
 
 func resourceVertexAIFeaturestoreEntitytypeCreate(d *schema.ResourceData, meta interface{}) error {
 	var project string
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -215,25 +218,25 @@ func resourceVertexAIFeaturestoreEntitytypeCreate(d *schema.ResourceData, meta i
 	descriptionProp, err := expandVertexAIFeaturestoreEntitytypeDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	labelsProp, err := expandVertexAIFeaturestoreEntitytypeLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	monitoringConfigProp, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfig(d.Get("monitoring_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("monitoring_config"); !isEmptyValue(reflect.ValueOf(monitoringConfigProp)) && (ok || !reflect.DeepEqual(v, monitoringConfigProp)) {
+	} else if v, ok := d.GetOkExists("monitoring_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(monitoringConfigProp)) && (ok || !reflect.DeepEqual(v, monitoringConfigProp)) {
 		obj["monitoringConfig"] = monitoringConfigProp
 	}
 	offlineStorageTtlDaysProp, err := expandVertexAIFeaturestoreEntitytypeOfflineStorageTtlDays(d.Get("offline_storage_ttl_days"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("offline_storage_ttl_days"); !isEmptyValue(reflect.ValueOf(offlineStorageTtlDaysProp)) && (ok || !reflect.DeepEqual(v, offlineStorageTtlDaysProp)) {
+	} else if v, ok := d.GetOkExists("offline_storage_ttl_days"); !tpgresource.IsEmptyValue(reflect.ValueOf(offlineStorageTtlDaysProp)) && (ok || !reflect.DeepEqual(v, offlineStorageTtlDaysProp)) {
 		obj["offlineStorageTtlDays"] = offlineStorageTtlDaysProp
 	}
 
@@ -242,7 +245,7 @@ func resourceVertexAIFeaturestoreEntitytypeCreate(d *schema.ResourceData, meta i
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{VertexAIBasePath}}{{featurestore}}/entityTypes?entityTypeId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}{{featurestore}}/entityTypes?entityTypeId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -251,7 +254,7 @@ func resourceVertexAIFeaturestoreEntitytypeCreate(d *schema.ResourceData, meta i
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
@@ -264,13 +267,13 @@ func resourceVertexAIFeaturestoreEntitytypeCreate(d *schema.ResourceData, meta i
 			}
 		}
 	}
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating FeaturestoreEntitytype: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{featurestore}}/entityTypes/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{featurestore}}/entityTypes/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -290,7 +293,7 @@ func resourceVertexAIFeaturestoreEntitytypeCreate(d *schema.ResourceData, meta i
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "{{featurestore}}/entityTypes/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "{{featurestore}}/entityTypes/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -302,13 +305,13 @@ func resourceVertexAIFeaturestoreEntitytypeCreate(d *schema.ResourceData, meta i
 }
 
 func resourceVertexAIFeaturestoreEntitytypeRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{VertexAIBasePath}}{{featurestore}}/entityTypes/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}{{featurestore}}/entityTypes/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -316,13 +319,13 @@ func resourceVertexAIFeaturestoreEntitytypeRead(d *schema.ResourceData, meta int
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("VertexAIFeaturestoreEntitytype %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("VertexAIFeaturestoreEntitytype %q", d.Id()))
 	}
 
 	if err := d.Set("description", flattenVertexAIFeaturestoreEntitytypeDescription(res["description"], d, config)); err != nil {
@@ -348,8 +351,8 @@ func resourceVertexAIFeaturestoreEntitytypeRead(d *schema.ResourceData, meta int
 }
 
 func resourceVertexAIFeaturestoreEntitytypeUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -360,25 +363,25 @@ func resourceVertexAIFeaturestoreEntitytypeUpdate(d *schema.ResourceData, meta i
 	descriptionProp, err := expandVertexAIFeaturestoreEntitytypeDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	labelsProp, err := expandVertexAIFeaturestoreEntitytypeLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	monitoringConfigProp, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfig(d.Get("monitoring_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("monitoring_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, monitoringConfigProp)) {
+	} else if v, ok := d.GetOkExists("monitoring_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, monitoringConfigProp)) {
 		obj["monitoringConfig"] = monitoringConfigProp
 	}
 	offlineStorageTtlDaysProp, err := expandVertexAIFeaturestoreEntitytypeOfflineStorageTtlDays(d.Get("offline_storage_ttl_days"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("offline_storage_ttl_days"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, offlineStorageTtlDaysProp)) {
+	} else if v, ok := d.GetOkExists("offline_storage_ttl_days"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, offlineStorageTtlDaysProp)) {
 		obj["offlineStorageTtlDays"] = offlineStorageTtlDaysProp
 	}
 
@@ -387,7 +390,7 @@ func resourceVertexAIFeaturestoreEntitytypeUpdate(d *schema.ResourceData, meta i
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{VertexAIBasePath}}{{featurestore}}/entityTypes/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}{{featurestore}}/entityTypes/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -412,17 +415,17 @@ func resourceVertexAIFeaturestoreEntitytypeUpdate(d *schema.ResourceData, meta i
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating FeaturestoreEntitytype %q: %s", d.Id(), err)
@@ -435,15 +438,15 @@ func resourceVertexAIFeaturestoreEntitytypeUpdate(d *schema.ResourceData, meta i
 
 func resourceVertexAIFeaturestoreEntitytypeDelete(d *schema.ResourceData, meta interface{}) error {
 	var project string
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{VertexAIBasePath}}{{featurestore}}/entityTypes/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}{{featurestore}}/entityTypes/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -461,13 +464,13 @@ func resourceVertexAIFeaturestoreEntitytypeDelete(d *schema.ResourceData, meta i
 	log.Printf("[DEBUG] Deleting FeaturestoreEntitytype %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "FeaturestoreEntitytype")
+		return transport_tpg.HandleNotFoundError(err, d, "FeaturestoreEntitytype")
 	}
 
 	err = VertexAIOperationWaitTime(
@@ -483,7 +486,7 @@ func resourceVertexAIFeaturestoreEntitytypeDelete(d *schema.ResourceData, meta i
 }
 
 func resourceVertexAIFeaturestoreEntitytypeImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"(?P<featurestore>.+)/entityTypes/(?P<name>[^/]+)",
 	}, d, config); err != nil {
@@ -491,7 +494,7 @@ func resourceVertexAIFeaturestoreEntitytypeImport(d *schema.ResourceData, meta i
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{featurestore}}/entityTypes/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{featurestore}}/entityTypes/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -507,23 +510,23 @@ func resourceVertexAIFeaturestoreEntitytypeImport(d *schema.ResourceData, meta i
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenVertexAIFeaturestoreEntitytypeDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIFeaturestoreEntitytypeCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIFeaturestoreEntitytypeUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIFeaturestoreEntitytypeLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -542,7 +545,7 @@ func flattenVertexAIFeaturestoreEntitytypeMonitoringConfig(v interface{}, d *sch
 		flattenVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfig(original["categoricalThresholdConfig"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysis(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysis(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -561,15 +564,15 @@ func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysis(v int
 		flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisStalenessDays(original["stalenessDays"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisDisabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisDisabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisMonitoringInterval(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisMonitoringInterval(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisMonitoringIntervalDays(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisMonitoringIntervalDays(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -586,7 +589,7 @@ func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisMonito
 	return v // let terraform core handle it otherwise
 }
 
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisStalenessDays(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisStalenessDays(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -603,7 +606,7 @@ func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisStalen
 	return v // let terraform core handle it otherwise
 }
 
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysis(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysis(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -618,15 +621,15 @@ func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysis
 		flattenVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysisAnomalyDetectionBaseline(original["anomalyDetectionBaseline"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysisState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysisState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysisAnomalyDetectionBaseline(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysisAnomalyDetectionBaseline(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -639,11 +642,11 @@ func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConf
 		flattenVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConfigValue(original["value"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConfigValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConfigValue(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -656,11 +659,11 @@ func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdCo
 		flattenVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfigValue(original["value"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfigValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfigValue(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIFeaturestoreEntitytypeOfflineStorageTtlDays(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIFeaturestoreEntitytypeOfflineStorageTtlDays(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -677,11 +680,11 @@ func flattenVertexAIFeaturestoreEntitytypeOfflineStorageTtlDays(v interface{}, d
 	return v // let terraform core handle it otherwise
 }
 
-func expandVertexAIFeaturestoreEntitytypeDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandVertexAIFeaturestoreEntitytypeLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -692,7 +695,7 @@ func expandVertexAIFeaturestoreEntitytypeLabels(v interface{}, d TerraformResour
 	return m, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -704,35 +707,35 @@ func expandVertexAIFeaturestoreEntitytypeMonitoringConfig(v interface{}, d Terra
 	transformedSnapshotAnalysis, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysis(original["snapshot_analysis"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSnapshotAnalysis); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSnapshotAnalysis); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["snapshotAnalysis"] = transformedSnapshotAnalysis
 	}
 
 	transformedImportFeaturesAnalysis, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysis(original["import_features_analysis"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedImportFeaturesAnalysis); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedImportFeaturesAnalysis); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["importFeaturesAnalysis"] = transformedImportFeaturesAnalysis
 	}
 
 	transformedNumericalThresholdConfig, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConfig(original["numerical_threshold_config"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedNumericalThresholdConfig); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedNumericalThresholdConfig); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["numericalThresholdConfig"] = transformedNumericalThresholdConfig
 	}
 
 	transformedCategoricalThresholdConfig, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfig(original["categorical_threshold_config"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCategoricalThresholdConfig); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCategoricalThresholdConfig); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["categoricalThresholdConfig"] = transformedCategoricalThresholdConfig
 	}
 
 	return transformed, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysis(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysis(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -744,51 +747,51 @@ func expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysis(v inte
 	transformedDisabled, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisDisabled(original["disabled"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDisabled); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDisabled); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["disabled"] = transformedDisabled
 	}
 
 	transformedMonitoringInterval, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisMonitoringInterval(original["monitoring_interval"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMonitoringInterval); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMonitoringInterval); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["monitoringInterval"] = transformedMonitoringInterval
 	}
 
 	transformedMonitoringIntervalDays, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisMonitoringIntervalDays(original["monitoring_interval_days"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMonitoringIntervalDays); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMonitoringIntervalDays); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["monitoringIntervalDays"] = transformedMonitoringIntervalDays
 	}
 
 	transformedStalenessDays, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisStalenessDays(original["staleness_days"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedStalenessDays); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedStalenessDays); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["stalenessDays"] = transformedStalenessDays
 	}
 
 	return transformed, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisDisabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisDisabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisMonitoringInterval(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisMonitoringInterval(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisMonitoringIntervalDays(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisMonitoringIntervalDays(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisStalenessDays(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfigSnapshotAnalysisStalenessDays(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysis(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysis(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -800,29 +803,29 @@ func expandVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysis(
 	transformedState, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysisState(original["state"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedState); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedState); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["state"] = transformedState
 	}
 
 	transformedAnomalyDetectionBaseline, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysisAnomalyDetectionBaseline(original["anomaly_detection_baseline"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAnomalyDetectionBaseline); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAnomalyDetectionBaseline); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["anomalyDetectionBaseline"] = transformedAnomalyDetectionBaseline
 	}
 
 	return transformed, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysisState(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysisState(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysisAnomalyDetectionBaseline(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfigImportFeaturesAnalysisAnomalyDetectionBaseline(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -834,18 +837,18 @@ func expandVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConfi
 	transformedValue, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConfigValue(original["value"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedValue); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedValue); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["value"] = transformedValue
 	}
 
 	return transformed, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConfigValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfigNumericalThresholdConfigValue(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -857,18 +860,18 @@ func expandVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdCon
 	transformedValue, err := expandVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfigValue(original["value"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedValue); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedValue); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["value"] = transformedValue
 	}
 
 	return transformed, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfigValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfigValue(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIFeaturestoreEntitytypeOfflineStorageTtlDays(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIFeaturestoreEntitytypeOfflineStorageTtlDays(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

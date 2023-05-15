@@ -25,6 +25,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/customdiff"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"google.golang.org/api/googleapi"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 // diffsupress for beta and to check change in source_disk attribute
@@ -302,6 +305,24 @@ first character must be a lowercase letter, and all following
 characters must be a dash, lowercase letter, or digit, except the last
 character, which cannot be a dash.`,
 			},
+			"async_primary_disk": {
+				Type:             schema.TypeList,
+				Optional:         true,
+				ForceNew:         true,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkRelativePaths,
+				Description:      `A nested object resource`,
+				MaxItems:         1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"disk": {
+							Type:        schema.TypeString,
+							Required:    true,
+							ForceNew:    true,
+							Description: `Primary disk for asynchronous disk replication.`,
+						},
+					},
+				},
+			},
 			"description": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -332,7 +353,7 @@ you do not need to provide a key to use the disk later.`,
 							Type:             schema.TypeString,
 							Optional:         true,
 							ForceNew:         true,
-							DiffSuppressFunc: compareSelfLinkRelativePaths,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkRelativePaths,
 							Description: `The self link of the encryption key used to encrypt the disk. Also called KmsKeyName
 in the cloud console. Your project's Compute Engine System service account
 ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com') must have
@@ -358,8 +379,8 @@ RFC 4648 base64 to either encrypt or decrypt this resource.`,
 							Type:     schema.TypeString,
 							Optional: true,
 							ForceNew: true,
-							Description: `Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit 
-customer-supplied encryption key to either encrypt or decrypt 
+							Description: `Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit
+customer-supplied encryption key to either encrypt or decrypt
 this resource. You can provide either the rawKey or the rsaEncryptedKey.`,
 							Sensitive: true,
 						},
@@ -392,7 +413,7 @@ These images can be referred by family name here.`,
 				Optional:         true,
 				Deprecated:       "This field is no longer in use, disk interfaces will be automatically determined on attachment. To resolve this issue, remove this field from your config.",
 				ForceNew:         true,
-				DiffSuppressFunc: AlwaysDiffSuppress,
+				DiffSuppressFunc: tpgresource.AlwaysDiffSuppress,
 				Description:      `Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI.`,
 				Default:          "SCSI",
 			},
@@ -502,7 +523,7 @@ the source image is protected by a customer-supplied encryption key.`,
 							Type:             schema.TypeString,
 							Optional:         true,
 							ForceNew:         true,
-							DiffSuppressFunc: compareSelfLinkRelativePaths,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkRelativePaths,
 							Description: `The self link of the encryption key used to encrypt the disk. Also called KmsKeyName
 in the cloud console. Your project's Compute Engine System service account
 ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com') must have
@@ -546,7 +567,7 @@ key.`,
 							Type:             schema.TypeString,
 							Optional:         true,
 							ForceNew:         true,
-							DiffSuppressFunc: compareSelfLinkRelativePaths,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkRelativePaths,
 							Description: `The self link of the encryption key used to encrypt the disk. Also called KmsKeyName
 in the cloud console. Your project's Compute Engine System service account
 ('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com') must have
@@ -666,8 +687,8 @@ project/zones/zone/instances/instance`,
 }
 
 func resourceComputeDiskCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -676,103 +697,109 @@ func resourceComputeDiskCreate(d *schema.ResourceData, meta interface{}) error {
 	labelFingerprintProp, err := expandComputeDiskLabelFingerprint(d.Get("label_fingerprint"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("label_fingerprint"); !isEmptyValue(reflect.ValueOf(labelFingerprintProp)) && (ok || !reflect.DeepEqual(v, labelFingerprintProp)) {
+	} else if v, ok := d.GetOkExists("label_fingerprint"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelFingerprintProp)) && (ok || !reflect.DeepEqual(v, labelFingerprintProp)) {
 		obj["labelFingerprint"] = labelFingerprintProp
 	}
 	descriptionProp, err := expandComputeDiskDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	labelsProp, err := expandComputeDiskLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	nameProp, err := expandComputeDiskName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	sizeGbProp, err := expandComputeDiskSize(d.Get("size"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("size"); !isEmptyValue(reflect.ValueOf(sizeGbProp)) && (ok || !reflect.DeepEqual(v, sizeGbProp)) {
+	} else if v, ok := d.GetOkExists("size"); !tpgresource.IsEmptyValue(reflect.ValueOf(sizeGbProp)) && (ok || !reflect.DeepEqual(v, sizeGbProp)) {
 		obj["sizeGb"] = sizeGbProp
 	}
 	physicalBlockSizeBytesProp, err := expandComputeDiskPhysicalBlockSizeBytes(d.Get("physical_block_size_bytes"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("physical_block_size_bytes"); !isEmptyValue(reflect.ValueOf(physicalBlockSizeBytesProp)) && (ok || !reflect.DeepEqual(v, physicalBlockSizeBytesProp)) {
+	} else if v, ok := d.GetOkExists("physical_block_size_bytes"); !tpgresource.IsEmptyValue(reflect.ValueOf(physicalBlockSizeBytesProp)) && (ok || !reflect.DeepEqual(v, physicalBlockSizeBytesProp)) {
 		obj["physicalBlockSizeBytes"] = physicalBlockSizeBytesProp
 	}
 	sourceDiskProp, err := expandComputeDiskSourceDisk(d.Get("source_disk"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("source_disk"); !isEmptyValue(reflect.ValueOf(sourceDiskProp)) && (ok || !reflect.DeepEqual(v, sourceDiskProp)) {
+	} else if v, ok := d.GetOkExists("source_disk"); !tpgresource.IsEmptyValue(reflect.ValueOf(sourceDiskProp)) && (ok || !reflect.DeepEqual(v, sourceDiskProp)) {
 		obj["sourceDisk"] = sourceDiskProp
 	}
 	typeProp, err := expandComputeDiskType(d.Get("type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("type"); !isEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
+	} else if v, ok := d.GetOkExists("type"); !tpgresource.IsEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
 		obj["type"] = typeProp
 	}
 	sourceImageProp, err := expandComputeDiskImage(d.Get("image"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("image"); !isEmptyValue(reflect.ValueOf(sourceImageProp)) && (ok || !reflect.DeepEqual(v, sourceImageProp)) {
+	} else if v, ok := d.GetOkExists("image"); !tpgresource.IsEmptyValue(reflect.ValueOf(sourceImageProp)) && (ok || !reflect.DeepEqual(v, sourceImageProp)) {
 		obj["sourceImage"] = sourceImageProp
 	}
 	resourcePoliciesProp, err := expandComputeDiskResourcePolicies(d.Get("resource_policies"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("resource_policies"); !isEmptyValue(reflect.ValueOf(resourcePoliciesProp)) && (ok || !reflect.DeepEqual(v, resourcePoliciesProp)) {
+	} else if v, ok := d.GetOkExists("resource_policies"); !tpgresource.IsEmptyValue(reflect.ValueOf(resourcePoliciesProp)) && (ok || !reflect.DeepEqual(v, resourcePoliciesProp)) {
 		obj["resourcePolicies"] = resourcePoliciesProp
 	}
 	multiWriterProp, err := expandComputeDiskMultiWriter(d.Get("multi_writer"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("multi_writer"); !isEmptyValue(reflect.ValueOf(multiWriterProp)) && (ok || !reflect.DeepEqual(v, multiWriterProp)) {
+	} else if v, ok := d.GetOkExists("multi_writer"); !tpgresource.IsEmptyValue(reflect.ValueOf(multiWriterProp)) && (ok || !reflect.DeepEqual(v, multiWriterProp)) {
 		obj["multiWriter"] = multiWriterProp
 	}
 	provisionedIopsProp, err := expandComputeDiskProvisionedIops(d.Get("provisioned_iops"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("provisioned_iops"); !isEmptyValue(reflect.ValueOf(provisionedIopsProp)) && (ok || !reflect.DeepEqual(v, provisionedIopsProp)) {
+	} else if v, ok := d.GetOkExists("provisioned_iops"); !tpgresource.IsEmptyValue(reflect.ValueOf(provisionedIopsProp)) && (ok || !reflect.DeepEqual(v, provisionedIopsProp)) {
 		obj["provisionedIops"] = provisionedIopsProp
+	}
+	asyncPrimaryDiskProp, err := expandComputeDiskAsyncPrimaryDisk(d.Get("async_primary_disk"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("async_primary_disk"); !tpgresource.IsEmptyValue(reflect.ValueOf(asyncPrimaryDiskProp)) && (ok || !reflect.DeepEqual(v, asyncPrimaryDiskProp)) {
+		obj["asyncPrimaryDisk"] = asyncPrimaryDiskProp
 	}
 	zoneProp, err := expandComputeDiskZone(d.Get("zone"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("zone"); !isEmptyValue(reflect.ValueOf(zoneProp)) && (ok || !reflect.DeepEqual(v, zoneProp)) {
+	} else if v, ok := d.GetOkExists("zone"); !tpgresource.IsEmptyValue(reflect.ValueOf(zoneProp)) && (ok || !reflect.DeepEqual(v, zoneProp)) {
 		obj["zone"] = zoneProp
 	}
 	sourceImageEncryptionKeyProp, err := expandComputeDiskSourceImageEncryptionKey(d.Get("source_image_encryption_key"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("source_image_encryption_key"); !isEmptyValue(reflect.ValueOf(sourceImageEncryptionKeyProp)) && (ok || !reflect.DeepEqual(v, sourceImageEncryptionKeyProp)) {
+	} else if v, ok := d.GetOkExists("source_image_encryption_key"); !tpgresource.IsEmptyValue(reflect.ValueOf(sourceImageEncryptionKeyProp)) && (ok || !reflect.DeepEqual(v, sourceImageEncryptionKeyProp)) {
 		obj["sourceImageEncryptionKey"] = sourceImageEncryptionKeyProp
 	}
 	diskEncryptionKeyProp, err := expandComputeDiskDiskEncryptionKey(d.Get("disk_encryption_key"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("disk_encryption_key"); !isEmptyValue(reflect.ValueOf(diskEncryptionKeyProp)) && (ok || !reflect.DeepEqual(v, diskEncryptionKeyProp)) {
+	} else if v, ok := d.GetOkExists("disk_encryption_key"); !tpgresource.IsEmptyValue(reflect.ValueOf(diskEncryptionKeyProp)) && (ok || !reflect.DeepEqual(v, diskEncryptionKeyProp)) {
 		obj["diskEncryptionKey"] = diskEncryptionKeyProp
 	}
 	sourceSnapshotProp, err := expandComputeDiskSnapshot(d.Get("snapshot"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("snapshot"); !isEmptyValue(reflect.ValueOf(sourceSnapshotProp)) && (ok || !reflect.DeepEqual(v, sourceSnapshotProp)) {
+	} else if v, ok := d.GetOkExists("snapshot"); !tpgresource.IsEmptyValue(reflect.ValueOf(sourceSnapshotProp)) && (ok || !reflect.DeepEqual(v, sourceSnapshotProp)) {
 		obj["sourceSnapshot"] = sourceSnapshotProp
 	}
 	sourceSnapshotEncryptionKeyProp, err := expandComputeDiskSourceSnapshotEncryptionKey(d.Get("source_snapshot_encryption_key"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("source_snapshot_encryption_key"); !isEmptyValue(reflect.ValueOf(sourceSnapshotEncryptionKeyProp)) && (ok || !reflect.DeepEqual(v, sourceSnapshotEncryptionKeyProp)) {
+	} else if v, ok := d.GetOkExists("source_snapshot_encryption_key"); !tpgresource.IsEmptyValue(reflect.ValueOf(sourceSnapshotEncryptionKeyProp)) && (ok || !reflect.DeepEqual(v, sourceSnapshotEncryptionKeyProp)) {
 		obj["sourceSnapshotEncryptionKey"] = sourceSnapshotEncryptionKeyProp
 	}
 
@@ -781,7 +808,7 @@ func resourceComputeDiskCreate(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/disks")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/disks")
 	if err != nil {
 		return err
 	}
@@ -789,24 +816,24 @@ func resourceComputeDiskCreate(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG] Creating new Disk: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Disk: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Disk: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/disks/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/disks/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -828,33 +855,33 @@ func resourceComputeDiskCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceComputeDiskRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/disks/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/disks/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Disk: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeDisk %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeDisk %q", d.Id()))
 	}
 
 	res, err = resourceComputeDiskDecoder(d, meta, res)
@@ -924,6 +951,9 @@ func resourceComputeDiskRead(d *schema.ResourceData, meta interface{}) error {
 	if err := d.Set("provisioned_iops", flattenComputeDiskProvisionedIops(res["provisionedIops"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Disk: %s", err)
 	}
+	if err := d.Set("async_primary_disk", flattenComputeDiskAsyncPrimaryDisk(res["asyncPrimaryDisk"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Disk: %s", err)
+	}
 	if err := d.Set("zone", flattenComputeDiskZone(res["zone"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Disk: %s", err)
 	}
@@ -945,7 +975,7 @@ func resourceComputeDiskRead(d *schema.ResourceData, meta interface{}) error {
 	if err := d.Set("source_snapshot_id", flattenComputeDiskSourceSnapshotId(res["sourceSnapshotId"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Disk: %s", err)
 	}
-	if err := d.Set("self_link", ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
+	if err := d.Set("self_link", tpgresource.ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
 		return fmt.Errorf("Error reading Disk: %s", err)
 	}
 
@@ -953,15 +983,15 @@ func resourceComputeDiskRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceComputeDiskUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Disk: %s", err)
 	}
@@ -975,27 +1005,27 @@ func resourceComputeDiskUpdate(d *schema.ResourceData, meta interface{}) error {
 		labelFingerprintProp, err := expandComputeDiskLabelFingerprint(d.Get("label_fingerprint"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("label_fingerprint"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelFingerprintProp)) {
+		} else if v, ok := d.GetOkExists("label_fingerprint"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelFingerprintProp)) {
 			obj["labelFingerprint"] = labelFingerprintProp
 		}
 		labelsProp, err := expandComputeDiskLabels(d.Get("labels"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+		} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 			obj["labels"] = labelsProp
 		}
 
-		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/disks/{{name}}/setLabels")
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/disks/{{name}}/setLabels")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Disk %q: %s", d.Id(), err)
 		} else {
@@ -1015,21 +1045,21 @@ func resourceComputeDiskUpdate(d *schema.ResourceData, meta interface{}) error {
 		sizeGbProp, err := expandComputeDiskSize(d.Get("size"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("size"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sizeGbProp)) {
+		} else if v, ok := d.GetOkExists("size"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sizeGbProp)) {
 			obj["sizeGb"] = sizeGbProp
 		}
 
-		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/disks/{{name}}/resize")
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/disks/{{name}}/resize")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Disk %q: %s", d.Id(), err)
 		} else {
@@ -1050,29 +1080,29 @@ func resourceComputeDiskUpdate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceComputeDiskDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Disk: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/disks/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/disks/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	var obj map[string]interface{}
-	readRes, err := SendRequest(config, "GET", project, url, userAgent, nil)
+	readRes, err := transport_tpg.SendRequest(config, "GET", project, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeDisk %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeDisk %q", d.Id()))
 	}
 
 	// if disks are attached to instances, they must be detached before the disk can be deleted
@@ -1082,7 +1112,7 @@ func resourceComputeDiskDelete(d *schema.ResourceData, meta interface{}) error {
 
 		for _, instance := range convertStringArr(v) {
 			self := d.Get("self_link").(string)
-			instanceProject, instanceZone, instanceName, err := GetLocationalResourcePropertiesFromSelfLinkString(instance)
+			instanceProject, instanceZone, instanceName, err := tpgresource.GetLocationalResourcePropertiesFromSelfLinkString(instance)
 			if err != nil {
 				return err
 			}
@@ -1099,7 +1129,7 @@ func resourceComputeDiskDelete(d *schema.ResourceData, meta interface{}) error {
 				if compareSelfLinkOrResourceName("", disk.Source, self, nil) {
 					detachCalls = append(detachCalls, detachArgs{
 						project:    instanceProject,
-						zone:       GetResourceNameFromSelfLink(i.Zone),
+						zone:       tpgresource.GetResourceNameFromSelfLink(i.Zone),
 						instance:   i.Name,
 						deviceName: disk.DeviceName,
 					})
@@ -1127,13 +1157,13 @@ func resourceComputeDiskDelete(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG] Deleting Disk %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Disk")
+		return transport_tpg.HandleNotFoundError(err, d, "Disk")
 	}
 
 	err = ComputeOperationWaitTime(
@@ -1149,7 +1179,7 @@ func resourceComputeDiskDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceComputeDiskImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/zones/(?P<zone>[^/]+)/disks/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<zone>[^/]+)/(?P<name>[^/]+)",
@@ -1160,7 +1190,7 @@ func resourceComputeDiskImport(d *schema.ResourceData, meta interface{}) ([]*sch
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/disks/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/disks/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1169,35 +1199,35 @@ func resourceComputeDiskImport(d *schema.ResourceData, meta interface{}) ([]*sch
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenComputeDiskLabelFingerprint(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskLabelFingerprint(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskCreationTimestamp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskCreationTimestamp(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskLastAttachTimestamp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskLastAttachTimestamp(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskLastDetachTimestamp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskLastDetachTimestamp(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskSize(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSize(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1214,14 +1244,14 @@ func flattenComputeDiskSize(v interface{}, d *schema.ResourceData, config *Confi
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeDiskUsers(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskUsers(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return convertAndMapStringArr(v.([]interface{}), ConvertSelfLinkToV1)
+	return convertAndMapStringArr(v.([]interface{}), tpgresource.ConvertSelfLinkToV1)
 }
 
-func flattenComputeDiskPhysicalBlockSizeBytes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskPhysicalBlockSizeBytes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1238,37 +1268,37 @@ func flattenComputeDiskPhysicalBlockSizeBytes(v interface{}, d *schema.ResourceD
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeDiskSourceDisk(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceDisk(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskSourceDiskId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceDiskId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenComputeDiskImage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskImage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskResourcePolicies(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskResourcePolicies(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return convertAndMapStringArr(v.([]interface{}), ConvertSelfLinkToV1)
+	return convertAndMapStringArr(v.([]interface{}), tpgresource.ConvertSelfLinkToV1)
 }
 
-func flattenComputeDiskMultiWriter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskMultiWriter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskProvisionedIops(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskProvisionedIops(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1285,14 +1315,31 @@ func flattenComputeDiskProvisionedIops(v interface{}, d *schema.ResourceData, co
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeDiskZone(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskAsyncPrimaryDisk(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["disk"] =
+		flattenComputeDiskAsyncPrimaryDiskDisk(original["disk"], d, config)
+	return []interface{}{transformed}
+}
+func flattenComputeDiskAsyncPrimaryDiskDisk(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenComputeDiskZone(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenComputeDiskSourceImageEncryptionKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceImageEncryptionKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1311,27 +1358,27 @@ func flattenComputeDiskSourceImageEncryptionKey(v interface{}, d *schema.Resourc
 		flattenComputeDiskSourceImageEncryptionKeyKmsKeyServiceAccount(original["kmsKeyServiceAccount"], d, config)
 	return []interface{}{transformed}
 }
-func flattenComputeDiskSourceImageEncryptionKeyRawKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceImageEncryptionKeyRawKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskSourceImageEncryptionKeySha256(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceImageEncryptionKeySha256(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskSourceImageEncryptionKeyKmsKeySelfLink(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceImageEncryptionKeyKmsKeySelfLink(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskSourceImageEncryptionKeyKmsKeyServiceAccount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceImageEncryptionKeyKmsKeyServiceAccount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskSourceImageId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceImageId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskDiskEncryptionKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskDiskEncryptionKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1352,34 +1399,34 @@ func flattenComputeDiskDiskEncryptionKey(v interface{}, d *schema.ResourceData, 
 		flattenComputeDiskDiskEncryptionKeyKmsKeyServiceAccount(original["kmsKeyServiceAccount"], d, config)
 	return []interface{}{transformed}
 }
-func flattenComputeDiskDiskEncryptionKeyRawKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskDiskEncryptionKeyRawKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskDiskEncryptionKeyRsaEncryptedKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskDiskEncryptionKeyRsaEncryptedKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskDiskEncryptionKeySha256(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskDiskEncryptionKeySha256(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskDiskEncryptionKeyKmsKeySelfLink(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskDiskEncryptionKeyKmsKeySelfLink(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskDiskEncryptionKeyKmsKeyServiceAccount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskDiskEncryptionKeyKmsKeyServiceAccount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskSnapshot(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSnapshot(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return ConvertSelfLinkToV1(v.(string))
+	return tpgresource.ConvertSelfLinkToV1(v.(string))
 }
 
-func flattenComputeDiskSourceSnapshotEncryptionKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceSnapshotEncryptionKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1398,35 +1445,35 @@ func flattenComputeDiskSourceSnapshotEncryptionKey(v interface{}, d *schema.Reso
 		flattenComputeDiskSourceSnapshotEncryptionKeyKmsKeyServiceAccount(original["kmsKeyServiceAccount"], d, config)
 	return []interface{}{transformed}
 }
-func flattenComputeDiskSourceSnapshotEncryptionKeyRawKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceSnapshotEncryptionKeyRawKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskSourceSnapshotEncryptionKeyKmsKeySelfLink(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceSnapshotEncryptionKeyKmsKeySelfLink(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskSourceSnapshotEncryptionKeySha256(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceSnapshotEncryptionKeySha256(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskSourceSnapshotEncryptionKeyKmsKeyServiceAccount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceSnapshotEncryptionKeyKmsKeyServiceAccount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeDiskSourceSnapshotId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeDiskSourceSnapshotId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandComputeDiskLabelFingerprint(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskLabelFingerprint(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandComputeDiskLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1437,42 +1484,42 @@ func expandComputeDiskLabels(v interface{}, d TerraformResourceData, config *Con
 	return m, nil
 }
 
-func expandComputeDiskName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskSize(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskSize(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskPhysicalBlockSizeBytes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskPhysicalBlockSizeBytes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskSourceDisk(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskSourceDisk(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	f, err := parseZonalFieldValue("diskTypes", v.(string), "project", "zone", d, config, true)
+func expandComputeDiskType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	f, err := tpgresource.ParseZonalFieldValue("diskTypes", v.(string), "project", "zone", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for type: %s", err)
 	}
 	return f.RelativeLink(), nil
 }
 
-func expandComputeDiskImage(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskImage(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskResourcePolicies(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskResourcePolicies(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
 		if raw == nil {
 			return nil, fmt.Errorf("Invalid value for resource_policies: nil")
 		}
-		f, err := parseRegionalFieldValue("resourcePolicies", raw.(string), "project", "region", "zone", d, config, true)
+		f, err := tpgresource.ParseRegionalFieldValue("resourcePolicies", raw.(string), "project", "region", "zone", d, config, true)
 		if err != nil {
 			return nil, fmt.Errorf("Invalid value for resource_policies: %s", err)
 		}
@@ -1481,23 +1528,46 @@ func expandComputeDiskResourcePolicies(v interface{}, d TerraformResourceData, c
 	return req, nil
 }
 
-func expandComputeDiskMultiWriter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskMultiWriter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskProvisionedIops(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskProvisionedIops(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskZone(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	f, err := parseGlobalFieldValue("zones", v.(string), "project", d, config, true)
+func expandComputeDiskAsyncPrimaryDisk(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedDisk, err := expandComputeDiskAsyncPrimaryDiskDisk(original["disk"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedDisk); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["disk"] = transformedDisk
+	}
+
+	return transformed, nil
+}
+
+func expandComputeDiskAsyncPrimaryDiskDisk(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandComputeDiskZone(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	f, err := tpgresource.ParseGlobalFieldValue("zones", v.(string), "project", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for zone: %s", err)
 	}
 	return f.RelativeLink(), nil
 }
 
-func expandComputeDiskSourceImageEncryptionKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskSourceImageEncryptionKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1509,51 +1579,51 @@ func expandComputeDiskSourceImageEncryptionKey(v interface{}, d TerraformResourc
 	transformedRawKey, err := expandComputeDiskSourceImageEncryptionKeyRawKey(original["raw_key"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRawKey); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRawKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["rawKey"] = transformedRawKey
 	}
 
 	transformedSha256, err := expandComputeDiskSourceImageEncryptionKeySha256(original["sha256"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSha256); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSha256); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["sha256"] = transformedSha256
 	}
 
 	transformedKmsKeySelfLink, err := expandComputeDiskSourceImageEncryptionKeyKmsKeySelfLink(original["kms_key_self_link"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKmsKeySelfLink); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKmsKeySelfLink); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kmsKeyName"] = transformedKmsKeySelfLink
 	}
 
 	transformedKmsKeyServiceAccount, err := expandComputeDiskSourceImageEncryptionKeyKmsKeyServiceAccount(original["kms_key_service_account"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKmsKeyServiceAccount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKmsKeyServiceAccount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kmsKeyServiceAccount"] = transformedKmsKeyServiceAccount
 	}
 
 	return transformed, nil
 }
 
-func expandComputeDiskSourceImageEncryptionKeyRawKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskSourceImageEncryptionKeyRawKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskSourceImageEncryptionKeySha256(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskSourceImageEncryptionKeySha256(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskSourceImageEncryptionKeyKmsKeySelfLink(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskSourceImageEncryptionKeyKmsKeySelfLink(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskSourceImageEncryptionKeyKmsKeyServiceAccount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskSourceImageEncryptionKeyKmsKeyServiceAccount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskDiskEncryptionKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskDiskEncryptionKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1565,70 +1635,70 @@ func expandComputeDiskDiskEncryptionKey(v interface{}, d TerraformResourceData, 
 	transformedRawKey, err := expandComputeDiskDiskEncryptionKeyRawKey(original["raw_key"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRawKey); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRawKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["rawKey"] = transformedRawKey
 	}
 
 	transformedRsaEncryptedKey, err := expandComputeDiskDiskEncryptionKeyRsaEncryptedKey(original["rsa_encrypted_key"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRsaEncryptedKey); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRsaEncryptedKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["rsaEncryptedKey"] = transformedRsaEncryptedKey
 	}
 
 	transformedSha256, err := expandComputeDiskDiskEncryptionKeySha256(original["sha256"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSha256); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSha256); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["sha256"] = transformedSha256
 	}
 
 	transformedKmsKeySelfLink, err := expandComputeDiskDiskEncryptionKeyKmsKeySelfLink(original["kms_key_self_link"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKmsKeySelfLink); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKmsKeySelfLink); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kmsKeyName"] = transformedKmsKeySelfLink
 	}
 
 	transformedKmsKeyServiceAccount, err := expandComputeDiskDiskEncryptionKeyKmsKeyServiceAccount(original["kms_key_service_account"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKmsKeyServiceAccount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKmsKeyServiceAccount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kmsKeyServiceAccount"] = transformedKmsKeyServiceAccount
 	}
 
 	return transformed, nil
 }
 
-func expandComputeDiskDiskEncryptionKeyRawKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskDiskEncryptionKeyRawKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskDiskEncryptionKeyRsaEncryptedKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskDiskEncryptionKeyRsaEncryptedKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskDiskEncryptionKeySha256(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskDiskEncryptionKeySha256(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskDiskEncryptionKeyKmsKeySelfLink(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskDiskEncryptionKeyKmsKeySelfLink(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskDiskEncryptionKeyKmsKeyServiceAccount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskDiskEncryptionKeyKmsKeyServiceAccount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskSnapshot(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	f, err := parseGlobalFieldValue("snapshots", v.(string), "project", d, config, true)
+func expandComputeDiskSnapshot(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	f, err := tpgresource.ParseGlobalFieldValue("snapshots", v.(string), "project", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for snapshot: %s", err)
 	}
 	return f.RelativeLink(), nil
 }
 
-func expandComputeDiskSourceSnapshotEncryptionKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskSourceSnapshotEncryptionKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1640,59 +1710,59 @@ func expandComputeDiskSourceSnapshotEncryptionKey(v interface{}, d TerraformReso
 	transformedRawKey, err := expandComputeDiskSourceSnapshotEncryptionKeyRawKey(original["raw_key"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRawKey); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRawKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["rawKey"] = transformedRawKey
 	}
 
 	transformedKmsKeySelfLink, err := expandComputeDiskSourceSnapshotEncryptionKeyKmsKeySelfLink(original["kms_key_self_link"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKmsKeySelfLink); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKmsKeySelfLink); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kmsKeyName"] = transformedKmsKeySelfLink
 	}
 
 	transformedSha256, err := expandComputeDiskSourceSnapshotEncryptionKeySha256(original["sha256"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSha256); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSha256); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["sha256"] = transformedSha256
 	}
 
 	transformedKmsKeyServiceAccount, err := expandComputeDiskSourceSnapshotEncryptionKeyKmsKeyServiceAccount(original["kms_key_service_account"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKmsKeyServiceAccount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKmsKeyServiceAccount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kmsKeyServiceAccount"] = transformedKmsKeyServiceAccount
 	}
 
 	return transformed, nil
 }
 
-func expandComputeDiskSourceSnapshotEncryptionKeyRawKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskSourceSnapshotEncryptionKeyRawKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskSourceSnapshotEncryptionKeyKmsKeySelfLink(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskSourceSnapshotEncryptionKeyKmsKeySelfLink(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskSourceSnapshotEncryptionKeySha256(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskSourceSnapshotEncryptionKeySha256(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeDiskSourceSnapshotEncryptionKeyKmsKeyServiceAccount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeDiskSourceSnapshotEncryptionKeyKmsKeyServiceAccount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
 func resourceComputeDiskEncoder(d *schema.ResourceData, meta interface{}, obj map[string]interface{}) (map[string]interface{}, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return nil, err
 	}
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return nil, err
 	}

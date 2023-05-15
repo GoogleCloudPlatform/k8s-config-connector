@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeHealthCheck_healthCheckTcpExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccComputeHealthCheck_healthCheckTcpExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -70,7 +74,7 @@ func TestAccComputeHealthCheck_healthCheckTcpFullExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -116,7 +120,7 @@ func TestAccComputeHealthCheck_healthCheckSslExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -155,7 +159,7 @@ func TestAccComputeHealthCheck_healthCheckSslFullExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -201,7 +205,7 @@ func TestAccComputeHealthCheck_healthCheckHttpExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -240,7 +244,7 @@ func TestAccComputeHealthCheck_healthCheckHttpFullExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -287,7 +291,7 @@ func TestAccComputeHealthCheck_healthCheckHttpsExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -326,7 +330,7 @@ func TestAccComputeHealthCheck_healthCheckHttpsFullExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -373,7 +377,7 @@ func TestAccComputeHealthCheck_healthCheckHttp2Example(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -412,7 +416,7 @@ func TestAccComputeHealthCheck_healthCheckHttp2FullExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -459,7 +463,7 @@ func TestAccComputeHealthCheck_healthCheckGrpcExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -498,7 +502,7 @@ func TestAccComputeHealthCheck_healthCheckGrpcFullExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -539,7 +543,7 @@ func TestAccComputeHealthCheck_healthCheckWithLoggingExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -588,7 +592,7 @@ func testAccCheckComputeHealthCheckDestroyProducer(t *testing.T) func(s *terrafo
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/healthChecks/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/healthChecks/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -599,7 +603,7 @@ func testAccCheckComputeHealthCheckDestroyProducer(t *testing.T) func(s *terrafo
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("ComputeHealthCheck still exists at %s", url)
 			}

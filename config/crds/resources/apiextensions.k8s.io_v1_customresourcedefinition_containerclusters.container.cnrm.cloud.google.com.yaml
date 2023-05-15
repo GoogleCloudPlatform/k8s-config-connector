@@ -109,6 +109,16 @@ spec:
                     required:
                     - enabled
                     type: object
+                  gcsFuseCsiDriverConfig:
+                    description: The status of the GCS Fuse CSI driver addon, which
+                      allows the usage of gcs bucket as volumes. Defaults to disabled;
+                      set enabled = true to enable.
+                    properties:
+                      enabled:
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
                   gkeBackupAgentConfig:
                     description: The status of the Backup for GKE Agent addon. It
                       is disabled by default. Set enabled = true to enable.

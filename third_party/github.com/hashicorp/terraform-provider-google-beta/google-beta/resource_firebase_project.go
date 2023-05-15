@@ -20,24 +20,27 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
-func getExistingFirebaseProjectId(config *Config, d *schema.ResourceData, billingProject string, userAgent string) (string, error) {
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}")
+func getExistingFirebaseProjectId(config *transport_tpg.Config, d *schema.ResourceData, billingProject string, userAgent string) (string, error) {
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}")
 	if err != nil {
 		return "", err
 	}
 
-	_, err = SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err == nil {
-		id, err := ReplaceVars(d, config, "projects/{{project}}")
+		id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}")
 		if err != nil {
 			return "", fmt.Errorf("Error constructing id: %s", err)
 		}
 		return id, nil
 	}
 
-	if !IsGoogleApiErrorWithCode(err, 404) {
+	if !transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 		return "", err
 	}
 
@@ -82,15 +85,15 @@ func ResourceFirebaseProject() *schema.Resource {
 }
 
 func resourceFirebaseProjectCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	obj := make(map[string]interface{})
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}:addFirebase")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}:addFirebase")
 	if err != nil {
 		return err
 	}
@@ -98,14 +101,14 @@ func resourceFirebaseProjectCreate(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Creating new Project: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Project: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
@@ -120,13 +123,13 @@ func resourceFirebaseProjectCreate(d *schema.ResourceData, meta interface{}) err
 		d.SetId(existingId)
 		return resourceFirebaseProjectRead(d, meta)
 	}
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Project: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -148,33 +151,33 @@ func resourceFirebaseProjectCreate(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceFirebaseProjectRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Project: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseProject %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("FirebaseProject %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -201,7 +204,7 @@ func resourceFirebaseProjectDelete(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceFirebaseProjectImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)",
 		"(?P<project>[^/]+)",
@@ -210,7 +213,7 @@ func resourceFirebaseProjectImport(d *schema.ResourceData, meta interface{}) ([]
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -219,10 +222,10 @@ func resourceFirebaseProjectImport(d *schema.ResourceData, meta interface{}) ([]
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenFirebaseProjectProjectNumber(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseProjectProjectNumber(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseProjectDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseProjectDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }

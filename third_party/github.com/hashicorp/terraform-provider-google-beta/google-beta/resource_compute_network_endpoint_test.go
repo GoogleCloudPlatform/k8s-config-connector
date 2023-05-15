@@ -6,11 +6,13 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeNetworkEndpoint_networkEndpointsBasic(t *testing.T) {
 	// Multiple fine-grained resources
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -21,10 +23,10 @@ func TestAccComputeNetworkEndpoint_networkEndpointsBasic(t *testing.T) {
 		"add2_port":     102,
 	}
 	negId := fmt.Sprintf("projects/%s/zones/%s/networkEndpointGroups/tf-test-neg-%s",
-		GetTestProjectFromEnv(), GetTestZoneFromEnv(), context["random_suffix"])
+		acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), context["random_suffix"])
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -204,7 +206,7 @@ func testAccComputeNetworkEndpointsListEndpointPorts(t *testing.T, negId string)
 	config := GoogleProviderConfig(t)
 
 	url := fmt.Sprintf("https://www.googleapis.com/compute/beta/%s/listNetworkEndpoints", negId)
-	res, err := SendRequest(config, "POST", "", url, config.UserAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "POST", "", url, config.UserAgent, nil)
 	if err != nil {
 		return nil, err
 	}

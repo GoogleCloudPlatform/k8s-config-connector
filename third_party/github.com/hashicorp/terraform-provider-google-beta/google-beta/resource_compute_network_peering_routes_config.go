@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceComputeNetworkPeeringRoutesConfig() *schema.Resource {
@@ -74,8 +77,8 @@ func ResourceComputeNetworkPeeringRoutesConfig() *schema.Resource {
 }
 
 func resourceComputeNetworkPeeringRoutesConfigCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -84,7 +87,7 @@ func resourceComputeNetworkPeeringRoutesConfigCreate(d *schema.ResourceData, met
 	nameProp, err := expandNestedComputeNetworkPeeringRoutesConfigPeering(d.Get("peering"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("peering"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("peering"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	exportCustomRoutesProp, err := expandNestedComputeNetworkPeeringRoutesConfigExportCustomRoutes(d.Get("export_custom_routes"), d, config)
@@ -105,14 +108,14 @@ func resourceComputeNetworkPeeringRoutesConfigCreate(d *schema.ResourceData, met
 		return err
 	}
 
-	lockName, err := ReplaceVars(d, config, "projects/{{project}}/global/networks/{{network}}/peerings")
+	lockName, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/networks/{{network}}/peerings")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/networks/{{network}}/updatePeering")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/networks/{{network}}/updatePeering")
 	if err != nil {
 		return err
 	}
@@ -120,24 +123,24 @@ func resourceComputeNetworkPeeringRoutesConfigCreate(d *schema.ResourceData, met
 	log.Printf("[DEBUG] Creating new NetworkPeeringRoutesConfig: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for NetworkPeeringRoutesConfig: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating NetworkPeeringRoutesConfig: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/networks/{{network}}/networkPeerings/{{peering}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/networks/{{network}}/networkPeerings/{{peering}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -159,33 +162,33 @@ func resourceComputeNetworkPeeringRoutesConfigCreate(d *schema.ResourceData, met
 }
 
 func resourceComputeNetworkPeeringRoutesConfigRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/networks/{{network}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/networks/{{network}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for NetworkPeeringRoutesConfig: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeNetworkPeeringRoutesConfig %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeNetworkPeeringRoutesConfig %q", d.Id()))
 	}
 
 	res, err = flattenNestedComputeNetworkPeeringRoutesConfig(d, meta, res)
@@ -218,15 +221,15 @@ func resourceComputeNetworkPeeringRoutesConfigRead(d *schema.ResourceData, meta 
 }
 
 func resourceComputeNetworkPeeringRoutesConfigUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for NetworkPeeringRoutesConfig: %s", err)
 	}
@@ -236,7 +239,7 @@ func resourceComputeNetworkPeeringRoutesConfigUpdate(d *schema.ResourceData, met
 	nameProp, err := expandNestedComputeNetworkPeeringRoutesConfigPeering(d.Get("peering"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("peering"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("peering"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	exportCustomRoutesProp, err := expandNestedComputeNetworkPeeringRoutesConfigExportCustomRoutes(d.Get("export_custom_routes"), d, config)
@@ -257,14 +260,14 @@ func resourceComputeNetworkPeeringRoutesConfigUpdate(d *schema.ResourceData, met
 		return err
 	}
 
-	lockName, err := ReplaceVars(d, config, "projects/{{project}}/global/networks/{{network}}/peerings")
+	lockName, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/networks/{{network}}/peerings")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/networks/{{network}}/updatePeering")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/networks/{{network}}/updatePeering")
 	if err != nil {
 		return err
 	}
@@ -272,11 +275,11 @@ func resourceComputeNetworkPeeringRoutesConfigUpdate(d *schema.ResourceData, met
 	log.Printf("[DEBUG] Updating NetworkPeeringRoutesConfig %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating NetworkPeeringRoutesConfig %q: %s", d.Id(), err)
@@ -305,7 +308,7 @@ func resourceComputeNetworkPeeringRoutesConfigDelete(d *schema.ResourceData, met
 }
 
 func resourceComputeNetworkPeeringRoutesConfigImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/global/networks/(?P<network>[^/]+)/networkPeerings/(?P<peering>[^/]+)",
 		"(?P<project>[^/]+)/(?P<network>[^/]+)/(?P<peering>[^/]+)",
@@ -315,7 +318,7 @@ func resourceComputeNetworkPeeringRoutesConfigImport(d *schema.ResourceData, met
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/networks/{{network}}/networkPeerings/{{peering}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/networks/{{network}}/networkPeerings/{{peering}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -324,27 +327,27 @@ func resourceComputeNetworkPeeringRoutesConfigImport(d *schema.ResourceData, met
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenNestedComputeNetworkPeeringRoutesConfigPeering(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedComputeNetworkPeeringRoutesConfigPeering(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedComputeNetworkPeeringRoutesConfigExportCustomRoutes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedComputeNetworkPeeringRoutesConfigExportCustomRoutes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedComputeNetworkPeeringRoutesConfigImportCustomRoutes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedComputeNetworkPeeringRoutesConfigImportCustomRoutes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandNestedComputeNetworkPeeringRoutesConfigPeering(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedComputeNetworkPeeringRoutesConfigPeering(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedComputeNetworkPeeringRoutesConfigExportCustomRoutes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedComputeNetworkPeeringRoutesConfigExportCustomRoutes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedComputeNetworkPeeringRoutesConfigImportCustomRoutes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedComputeNetworkPeeringRoutesConfigImportCustomRoutes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
@@ -383,11 +386,11 @@ func flattenNestedComputeNetworkPeeringRoutesConfig(d *schema.ResourceData, meta
 }
 
 func resourceComputeNetworkPeeringRoutesConfigFindNestedObjectInList(d *schema.ResourceData, meta interface{}, items []interface{}) (index int, item map[string]interface{}, err error) {
-	expectedPeering, err := expandNestedComputeNetworkPeeringRoutesConfigPeering(d.Get("peering"), d, meta.(*Config))
+	expectedPeering, err := expandNestedComputeNetworkPeeringRoutesConfigPeering(d.Get("peering"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedPeering := flattenNestedComputeNetworkPeeringRoutesConfigPeering(expectedPeering, d, meta.(*Config))
+	expectedFlattenedPeering := flattenNestedComputeNetworkPeeringRoutesConfigPeering(expectedPeering, d, meta.(*transport_tpg.Config))
 
 	// Search list for this resource.
 	for idx, itemRaw := range items {
@@ -396,9 +399,9 @@ func resourceComputeNetworkPeeringRoutesConfigFindNestedObjectInList(d *schema.R
 		}
 		item := itemRaw.(map[string]interface{})
 
-		itemPeering := flattenNestedComputeNetworkPeeringRoutesConfigPeering(item["name"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemPeering)) && isEmptyValue(reflect.ValueOf(expectedFlattenedPeering))) && !reflect.DeepEqual(itemPeering, expectedFlattenedPeering) {
+		itemPeering := flattenNestedComputeNetworkPeeringRoutesConfigPeering(item["name"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemPeering)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedPeering))) && !reflect.DeepEqual(itemPeering, expectedFlattenedPeering) {
 			log.Printf("[DEBUG] Skipping item with name= %#v, looking for %#v)", itemPeering, expectedFlattenedPeering)
 			continue
 		}

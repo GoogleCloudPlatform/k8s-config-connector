@@ -23,6 +23,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 var accessApprovalCloudProductMapping = map[string]string{
@@ -46,7 +50,7 @@ func accessApprovalEnrolledServicesHash(v interface{}) int {
 	}
 	buf.WriteString(fmt.Sprintf("%s-", strings.ToLower(cp))) // ToLower just in case
 	buf.WriteString(fmt.Sprintf("%s-", strings.ToLower(m["enrollment_level"].(string))))
-	return hashcode(buf.String())
+	return tpgresource.Hashcode(buf.String())
 }
 
 func ResourceAccessApprovalFolderSettings() *schema.Resource {
@@ -166,7 +170,7 @@ Note: These values are supported as input, but considered a legacy format:
 			"enrollment_level": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"BLOCK_ALL", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"BLOCK_ALL", ""}),
 				Description:  `The enrollment level of the service. Default value: "BLOCK_ALL" Possible values: ["BLOCK_ALL"]`,
 				Default:      "BLOCK_ALL",
 			},
@@ -175,8 +179,8 @@ Note: These values are supported as input, but considered a legacy format:
 }
 
 func resourceAccessApprovalFolderSettingsCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -185,23 +189,23 @@ func resourceAccessApprovalFolderSettingsCreate(d *schema.ResourceData, meta int
 	notificationEmailsProp, err := expandAccessApprovalFolderSettingsNotificationEmails(d.Get("notification_emails"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("notification_emails"); !isEmptyValue(reflect.ValueOf(notificationEmailsProp)) && (ok || !reflect.DeepEqual(v, notificationEmailsProp)) {
+	} else if v, ok := d.GetOkExists("notification_emails"); !tpgresource.IsEmptyValue(reflect.ValueOf(notificationEmailsProp)) && (ok || !reflect.DeepEqual(v, notificationEmailsProp)) {
 		obj["notificationEmails"] = notificationEmailsProp
 	}
 	enrolledServicesProp, err := expandAccessApprovalFolderSettingsEnrolledServices(d.Get("enrolled_services"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enrolled_services"); !isEmptyValue(reflect.ValueOf(enrolledServicesProp)) && (ok || !reflect.DeepEqual(v, enrolledServicesProp)) {
+	} else if v, ok := d.GetOkExists("enrolled_services"); !tpgresource.IsEmptyValue(reflect.ValueOf(enrolledServicesProp)) && (ok || !reflect.DeepEqual(v, enrolledServicesProp)) {
 		obj["enrolledServices"] = enrolledServicesProp
 	}
 	activeKeyVersionProp, err := expandAccessApprovalFolderSettingsActiveKeyVersion(d.Get("active_key_version"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("active_key_version"); !isEmptyValue(reflect.ValueOf(activeKeyVersionProp)) && (ok || !reflect.DeepEqual(v, activeKeyVersionProp)) {
+	} else if v, ok := d.GetOkExists("active_key_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(activeKeyVersionProp)) && (ok || !reflect.DeepEqual(v, activeKeyVersionProp)) {
 		obj["activeKeyVersion"] = activeKeyVersionProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{AccessApprovalBasePath}}folders/{{folder_id}}/accessApprovalSettings")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AccessApprovalBasePath}}folders/{{folder_id}}/accessApprovalSettings")
 	if err != nil {
 		return err
 	}
@@ -210,7 +214,7 @@ func resourceAccessApprovalFolderSettingsCreate(d *schema.ResourceData, meta int
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
@@ -229,11 +233,11 @@ func resourceAccessApprovalFolderSettingsCreate(d *schema.ResourceData, meta int
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating FolderSettings: %s", err)
 	}
@@ -242,7 +246,7 @@ func resourceAccessApprovalFolderSettingsCreate(d *schema.ResourceData, meta int
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "folders/{{folder_id}}/accessApprovalSettings")
+	id, err := tpgresource.ReplaceVars(d, config, "folders/{{folder_id}}/accessApprovalSettings")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -254,13 +258,13 @@ func resourceAccessApprovalFolderSettingsCreate(d *schema.ResourceData, meta int
 }
 
 func resourceAccessApprovalFolderSettingsRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{AccessApprovalBasePath}}folders/{{folder_id}}/accessApprovalSettings")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AccessApprovalBasePath}}folders/{{folder_id}}/accessApprovalSettings")
 	if err != nil {
 		return err
 	}
@@ -268,13 +272,13 @@ func resourceAccessApprovalFolderSettingsRead(d *schema.ResourceData, meta inter
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("AccessApprovalFolderSettings %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("AccessApprovalFolderSettings %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenAccessApprovalFolderSettingsName(res["name"], d, config)); err != nil {
@@ -303,8 +307,8 @@ func resourceAccessApprovalFolderSettingsRead(d *schema.ResourceData, meta inter
 }
 
 func resourceAccessApprovalFolderSettingsUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -315,23 +319,23 @@ func resourceAccessApprovalFolderSettingsUpdate(d *schema.ResourceData, meta int
 	notificationEmailsProp, err := expandAccessApprovalFolderSettingsNotificationEmails(d.Get("notification_emails"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("notification_emails"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationEmailsProp)) {
+	} else if v, ok := d.GetOkExists("notification_emails"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationEmailsProp)) {
 		obj["notificationEmails"] = notificationEmailsProp
 	}
 	enrolledServicesProp, err := expandAccessApprovalFolderSettingsEnrolledServices(d.Get("enrolled_services"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enrolled_services"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enrolledServicesProp)) {
+	} else if v, ok := d.GetOkExists("enrolled_services"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enrolledServicesProp)) {
 		obj["enrolledServices"] = enrolledServicesProp
 	}
 	activeKeyVersionProp, err := expandAccessApprovalFolderSettingsActiveKeyVersion(d.Get("active_key_version"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("active_key_version"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, activeKeyVersionProp)) {
+	} else if v, ok := d.GetOkExists("active_key_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, activeKeyVersionProp)) {
 		obj["activeKeyVersion"] = activeKeyVersionProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{AccessApprovalBasePath}}folders/{{folder_id}}/accessApprovalSettings")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AccessApprovalBasePath}}folders/{{folder_id}}/accessApprovalSettings")
 	if err != nil {
 		return err
 	}
@@ -352,17 +356,17 @@ func resourceAccessApprovalFolderSettingsUpdate(d *schema.ResourceData, meta int
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating FolderSettings %q: %s", d.Id(), err)
@@ -374,8 +378,8 @@ func resourceAccessApprovalFolderSettingsUpdate(d *schema.ResourceData, meta int
 }
 
 func resourceAccessApprovalFolderSettingsDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -385,7 +389,7 @@ func resourceAccessApprovalFolderSettingsDelete(d *schema.ResourceData, meta int
 	obj["enrolledServices"] = []string{}
 	obj["activeKeyVersion"] = ""
 
-	url, err := ReplaceVars(d, config, "{{AccessApprovalBasePath}}folders/{{folder_id}}/accessApprovalSettings")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AccessApprovalBasePath}}folders/{{folder_id}}/accessApprovalSettings")
 	if err != nil {
 		return err
 	}
@@ -399,12 +403,12 @@ func resourceAccessApprovalFolderSettingsDelete(d *schema.ResourceData, meta int
 
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", "", url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", "", url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error emptying FolderSettings %q: %s", d.Id(), err)
@@ -416,7 +420,7 @@ func resourceAccessApprovalFolderSettingsDelete(d *schema.ResourceData, meta int
 }
 
 func resourceAccessApprovalFolderSettingsImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"folders/(?P<folder_id>[^/]+)/accessApprovalSettings",
 		"(?P<folder_id>[^/]+)",
@@ -425,7 +429,7 @@ func resourceAccessApprovalFolderSettingsImport(d *schema.ResourceData, meta int
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "folders/{{folder_id}}/accessApprovalSettings")
+	id, err := tpgresource.ReplaceVars(d, config, "folders/{{folder_id}}/accessApprovalSettings")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -434,18 +438,18 @@ func resourceAccessApprovalFolderSettingsImport(d *schema.ResourceData, meta int
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenAccessApprovalFolderSettingsName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAccessApprovalFolderSettingsName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAccessApprovalFolderSettingsNotificationEmails(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAccessApprovalFolderSettingsNotificationEmails(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
 	return schema.NewSet(schema.HashString, v.([]interface{}))
 }
 
-func flattenAccessApprovalFolderSettingsEnrolledServices(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAccessApprovalFolderSettingsEnrolledServices(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -464,36 +468,36 @@ func flattenAccessApprovalFolderSettingsEnrolledServices(v interface{}, d *schem
 	}
 	return transformed
 }
-func flattenAccessApprovalFolderSettingsEnrolledServicesCloudProduct(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAccessApprovalFolderSettingsEnrolledServicesCloudProduct(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAccessApprovalFolderSettingsEnrolledServicesEnrollmentLevel(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAccessApprovalFolderSettingsEnrolledServicesEnrollmentLevel(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAccessApprovalFolderSettingsEnrolledAncestor(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAccessApprovalFolderSettingsEnrolledAncestor(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAccessApprovalFolderSettingsActiveKeyVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAccessApprovalFolderSettingsActiveKeyVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAccessApprovalFolderSettingsAncestorHasActiveKeyVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAccessApprovalFolderSettingsAncestorHasActiveKeyVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAccessApprovalFolderSettingsInvalidKeyVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAccessApprovalFolderSettingsInvalidKeyVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandAccessApprovalFolderSettingsNotificationEmails(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAccessApprovalFolderSettingsNotificationEmails(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	return v, nil
 }
 
-func expandAccessApprovalFolderSettingsEnrolledServices(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAccessApprovalFolderSettingsEnrolledServices(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
@@ -507,14 +511,14 @@ func expandAccessApprovalFolderSettingsEnrolledServices(v interface{}, d Terrafo
 		transformedCloudProduct, err := expandAccessApprovalFolderSettingsEnrolledServicesCloudProduct(original["cloud_product"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedCloudProduct); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedCloudProduct); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["cloudProduct"] = transformedCloudProduct
 		}
 
 		transformedEnrollmentLevel, err := expandAccessApprovalFolderSettingsEnrolledServicesEnrollmentLevel(original["enrollment_level"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedEnrollmentLevel); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedEnrollmentLevel); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["enrollmentLevel"] = transformedEnrollmentLevel
 		}
 
@@ -523,14 +527,14 @@ func expandAccessApprovalFolderSettingsEnrolledServices(v interface{}, d Terrafo
 	return req, nil
 }
 
-func expandAccessApprovalFolderSettingsEnrolledServicesCloudProduct(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAccessApprovalFolderSettingsEnrolledServicesCloudProduct(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAccessApprovalFolderSettingsEnrolledServicesEnrollmentLevel(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAccessApprovalFolderSettingsEnrolledServicesEnrollmentLevel(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAccessApprovalFolderSettingsActiveKeyVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAccessApprovalFolderSettingsActiveKeyVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

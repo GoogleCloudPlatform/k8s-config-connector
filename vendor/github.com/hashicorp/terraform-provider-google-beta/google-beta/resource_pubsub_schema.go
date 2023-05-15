@@ -21,6 +21,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourcePubsubSchema() *schema.Resource {
@@ -43,7 +47,7 @@ func ResourcePubsubSchema() *schema.Resource {
 				Type:             schema.TypeString,
 				Required:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description:      `The ID to use for the schema, which will become the final component of the schema's resource name.`,
 			},
 			"definition": {
@@ -58,7 +62,7 @@ that is a valid schema definition of the type specified in type.`,
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"TYPE_UNSPECIFIED", "PROTOCOL_BUFFER", "AVRO", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"TYPE_UNSPECIFIED", "PROTOCOL_BUFFER", "AVRO", ""}),
 				Description:  `The type of the schema definition Default value: "TYPE_UNSPECIFIED" Possible values: ["TYPE_UNSPECIFIED", "PROTOCOL_BUFFER", "AVRO"]`,
 				Default:      "TYPE_UNSPECIFIED",
 			},
@@ -74,8 +78,8 @@ that is a valid schema definition of the type specified in type.`,
 }
 
 func resourcePubsubSchemaCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -84,23 +88,23 @@ func resourcePubsubSchemaCreate(d *schema.ResourceData, meta interface{}) error 
 	typeProp, err := expandPubsubSchemaType(d.Get("type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("type"); !isEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
+	} else if v, ok := d.GetOkExists("type"); !tpgresource.IsEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
 		obj["type"] = typeProp
 	}
 	definitionProp, err := expandPubsubSchemaDefinition(d.Get("definition"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("definition"); !isEmptyValue(reflect.ValueOf(definitionProp)) && (ok || !reflect.DeepEqual(v, definitionProp)) {
+	} else if v, ok := d.GetOkExists("definition"); !tpgresource.IsEmptyValue(reflect.ValueOf(definitionProp)) && (ok || !reflect.DeepEqual(v, definitionProp)) {
 		obj["definition"] = definitionProp
 	}
 	nameProp, err := expandPubsubSchemaName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{PubsubBasePath}}projects/{{project}}/schemas?schemaId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{PubsubBasePath}}projects/{{project}}/schemas?schemaId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -108,24 +112,24 @@ func resourcePubsubSchemaCreate(d *schema.ResourceData, meta interface{}) error 
 	log.Printf("[DEBUG] Creating new Schema: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Schema: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Schema: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/schemas/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/schemas/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -136,34 +140,34 @@ func resourcePubsubSchemaCreate(d *schema.ResourceData, meta interface{}) error 
 	return resourcePubsubSchemaRead(d, meta)
 }
 
-func resourcePubsubSchemaPollRead(d *schema.ResourceData, meta interface{}) PollReadFunc {
+func resourcePubsubSchemaPollRead(d *schema.ResourceData, meta interface{}) transport_tpg.PollReadFunc {
 	return func() (map[string]interface{}, error) {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 
-		url, err := ReplaceVars(d, config, "{{PubsubBasePath}}projects/{{project}}/schemas/{{name}}")
+		url, err := tpgresource.ReplaceVars(d, config, "{{PubsubBasePath}}projects/{{project}}/schemas/{{name}}")
 		if err != nil {
 			return nil, err
 		}
 
 		billingProject := ""
 
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return nil, fmt.Errorf("Error fetching project for Schema: %s", err)
 		}
 		billingProject = project
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		userAgent, err := generateUserAgentString(d, config.UserAgent)
+		userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 		if err != nil {
 			return nil, err
 		}
 
-		res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+		res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 		if err != nil {
 			return res, err
 		}
@@ -172,33 +176,33 @@ func resourcePubsubSchemaPollRead(d *schema.ResourceData, meta interface{}) Poll
 }
 
 func resourcePubsubSchemaRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{PubsubBasePath}}projects/{{project}}/schemas/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{PubsubBasePath}}projects/{{project}}/schemas/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Schema: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("PubsubSchema %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("PubsubSchema %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -216,21 +220,21 @@ func resourcePubsubSchemaRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourcePubsubSchemaDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Schema: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{PubsubBasePath}}projects/{{project}}/schemas/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{PubsubBasePath}}projects/{{project}}/schemas/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -239,13 +243,13 @@ func resourcePubsubSchemaDelete(d *schema.ResourceData, meta interface{}) error 
 	log.Printf("[DEBUG] Deleting Schema %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Schema")
+		return transport_tpg.HandleNotFoundError(err, d, "Schema")
 	}
 
 	err = PollingWaitTime(resourcePubsubSchemaPollRead(d, meta), PollCheckForAbsence, "Deleting Schema", d.Timeout(schema.TimeoutCreate), 10)
@@ -258,7 +262,7 @@ func resourcePubsubSchemaDelete(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourcePubsubSchemaImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/schemas/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
@@ -268,7 +272,7 @@ func resourcePubsubSchemaImport(d *schema.ResourceData, meta interface{}) ([]*sc
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/schemas/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/schemas/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -277,25 +281,25 @@ func resourcePubsubSchemaImport(d *schema.ResourceData, meta interface{}) ([]*sc
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenPubsubSchemaType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenPubsubSchemaType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenPubsubSchemaName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenPubsubSchemaName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func expandPubsubSchemaType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandPubsubSchemaType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandPubsubSchemaDefinition(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandPubsubSchemaDefinition(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandPubsubSchemaName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	return GetResourceNameFromSelfLink(v.(string)), nil
+func expandPubsubSchemaName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return tpgresource.GetResourceNameFromSelfLink(v.(string)), nil
 }

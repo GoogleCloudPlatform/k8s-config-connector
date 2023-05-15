@@ -220,7 +220,7 @@ letter 's' (seconds). It must be greater than a day (ie, 86400).{% endverbatim %
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions. 
+            <p>{% verbatim %}Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions.
 You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion.{% endverbatim %}</p>
         </td>
     </tr>

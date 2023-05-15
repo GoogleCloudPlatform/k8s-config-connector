@@ -10,6 +10,11 @@ import (
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
+
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
@@ -35,7 +40,7 @@ func ResourceComputeSecurityPolicy() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateGCEName,
+				ValidateFunc: verify.ValidateGCEName,
 				Description:  `The name of the security policy.`,
 			},
 
@@ -574,13 +579,13 @@ func rulesCustomizeDiff(_ context.Context, diff *schema.ResourceDiff, _ interfac
 }
 
 func resourceComputeSecurityPolicyCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -621,7 +626,7 @@ func resourceComputeSecurityPolicyCreate(d *schema.ResourceData, meta interface{
 		return errwrap.Wrapf("Error creating SecurityPolicy: {{err}}", err)
 	}
 
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/securityPolicies/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/securityPolicies/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -636,13 +641,13 @@ func resourceComputeSecurityPolicyCreate(d *schema.ResourceData, meta interface{
 }
 
 func resourceComputeSecurityPolicyRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -653,7 +658,7 @@ func resourceComputeSecurityPolicyRead(d *schema.ResourceData, meta interface{})
 
 	securityPolicy, err := client.SecurityPolicies.Get(project, sp).Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("SecurityPolicy %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("SecurityPolicy %q", d.Id()))
 	}
 
 	if err := d.Set("name", securityPolicy.Name); err != nil {
@@ -674,7 +679,7 @@ func resourceComputeSecurityPolicyRead(d *schema.ResourceData, meta interface{})
 	if err := d.Set("project", project); err != nil {
 		return fmt.Errorf("Error setting project: %s", err)
 	}
-	if err := d.Set("self_link", ConvertSelfLinkToV1(securityPolicy.SelfLink)); err != nil {
+	if err := d.Set("self_link", tpgresource.ConvertSelfLinkToV1(securityPolicy.SelfLink)); err != nil {
 		return fmt.Errorf("Error setting self_link: %s", err)
 	}
 	if err := d.Set("advanced_options_config", flattenSecurityPolicyAdvancedOptionsConfig(securityPolicy.AdvancedOptionsConfig)); err != nil {
@@ -693,13 +698,13 @@ func resourceComputeSecurityPolicyRead(d *schema.ResourceData, meta interface{})
 }
 
 func resourceComputeSecurityPolicyUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -820,13 +825,13 @@ func resourceComputeSecurityPolicyUpdate(d *schema.ResourceData, meta interface{
 }
 
 func resourceComputeSecurityPolicyDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -1417,13 +1422,13 @@ func flattenSecurityPolicyRequestHeader(conf *compute.SecurityPolicyRuleHttpHead
 }
 
 func resourceSecurityPolicyStateImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{"projects/(?P<project>[^/]+)/global/securityPolicies/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<name>[^/]+)", "(?P<name>[^/]+)"}, d, config); err != nil {
 		return nil, err
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/securityPolicies/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/securityPolicies/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

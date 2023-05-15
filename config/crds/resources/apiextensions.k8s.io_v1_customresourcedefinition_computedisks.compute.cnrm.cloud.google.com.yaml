@@ -58,6 +58,40 @@ spec:
             type: object
           spec:
             properties:
+              asyncPrimaryDisk:
+                description: Immutable. A nested object resource.
+                properties:
+                  diskRef:
+                    description: Immutable. Primary disk for asynchronous disk replication.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `selfLink` field of a `ComputeDisk`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                required:
+                - diskRef
+                type: object
               description:
                 description: |-
                   Immutable. An optional description of this resource. Provide this property when
@@ -184,10 +218,10 @@ spec:
                         type: object
                     type: object
                   rsaEncryptedKey:
-                    description: "Immutable. Specifies an RFC 4648 base64 encoded,
-                      RSA-wrapped 2048-bit \ncustomer-supplied encryption key to either
-                      encrypt or decrypt \nthis resource. You can provide either the
-                      rawKey or the rsaEncryptedKey."
+                    description: |-
+                      Immutable. Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit
+                      customer-supplied encryption key to either encrypt or decrypt
+                      this resource. You can provide either the rawKey or the rsaEncryptedKey.
                     oneOf:
                     - not:
                         required:

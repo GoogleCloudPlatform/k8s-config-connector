@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceComputeMachineImage() *schema.Resource {
@@ -131,8 +134,8 @@ customer-supplied encryption key that protects this resource.`,
 }
 
 func resourceComputeMachineImageCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -141,35 +144,35 @@ func resourceComputeMachineImageCreate(d *schema.ResourceData, meta interface{})
 	nameProp, err := expandComputeMachineImageName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	descriptionProp, err := expandComputeMachineImageDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	sourceInstanceProp, err := expandComputeMachineImageSourceInstance(d.Get("source_instance"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("source_instance"); !isEmptyValue(reflect.ValueOf(sourceInstanceProp)) && (ok || !reflect.DeepEqual(v, sourceInstanceProp)) {
+	} else if v, ok := d.GetOkExists("source_instance"); !tpgresource.IsEmptyValue(reflect.ValueOf(sourceInstanceProp)) && (ok || !reflect.DeepEqual(v, sourceInstanceProp)) {
 		obj["sourceInstance"] = sourceInstanceProp
 	}
 	guestFlushProp, err := expandComputeMachineImageGuestFlush(d.Get("guest_flush"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("guest_flush"); !isEmptyValue(reflect.ValueOf(guestFlushProp)) && (ok || !reflect.DeepEqual(v, guestFlushProp)) {
+	} else if v, ok := d.GetOkExists("guest_flush"); !tpgresource.IsEmptyValue(reflect.ValueOf(guestFlushProp)) && (ok || !reflect.DeepEqual(v, guestFlushProp)) {
 		obj["guestFlush"] = guestFlushProp
 	}
 	machineImageEncryptionKeyProp, err := expandComputeMachineImageMachineImageEncryptionKey(d.Get("machine_image_encryption_key"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("machine_image_encryption_key"); !isEmptyValue(reflect.ValueOf(machineImageEncryptionKeyProp)) && (ok || !reflect.DeepEqual(v, machineImageEncryptionKeyProp)) {
+	} else if v, ok := d.GetOkExists("machine_image_encryption_key"); !tpgresource.IsEmptyValue(reflect.ValueOf(machineImageEncryptionKeyProp)) && (ok || !reflect.DeepEqual(v, machineImageEncryptionKeyProp)) {
 		obj["machineImageEncryptionKey"] = machineImageEncryptionKeyProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/machineImages")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/machineImages")
 	if err != nil {
 		return err
 	}
@@ -177,24 +180,24 @@ func resourceComputeMachineImageCreate(d *schema.ResourceData, meta interface{})
 	log.Printf("[DEBUG] Creating new MachineImage: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for MachineImage: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating MachineImage: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/machineImages/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/machineImages/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -216,33 +219,33 @@ func resourceComputeMachineImageCreate(d *schema.ResourceData, meta interface{})
 }
 
 func resourceComputeMachineImageRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/machineImages/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/machineImages/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for MachineImage: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeMachineImage %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeMachineImage %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -267,7 +270,7 @@ func resourceComputeMachineImageRead(d *schema.ResourceData, meta interface{}) e
 	if err := d.Set("machine_image_encryption_key", flattenComputeMachineImageMachineImageEncryptionKey(res["machineImageEncryptionKey"], d, config)); err != nil {
 		return fmt.Errorf("Error reading MachineImage: %s", err)
 	}
-	if err := d.Set("self_link", ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
+	if err := d.Set("self_link", tpgresource.ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
 		return fmt.Errorf("Error reading MachineImage: %s", err)
 	}
 
@@ -275,21 +278,21 @@ func resourceComputeMachineImageRead(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceComputeMachineImageDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for MachineImage: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/machineImages/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/machineImages/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -298,13 +301,13 @@ func resourceComputeMachineImageDelete(d *schema.ResourceData, meta interface{})
 	log.Printf("[DEBUG] Deleting MachineImage %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "MachineImage")
+		return transport_tpg.HandleNotFoundError(err, d, "MachineImage")
 	}
 
 	err = ComputeOperationWaitTime(
@@ -320,7 +323,7 @@ func resourceComputeMachineImageDelete(d *schema.ResourceData, meta interface{})
 }
 
 func resourceComputeMachineImageImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/global/machineImages/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
@@ -330,7 +333,7 @@ func resourceComputeMachineImageImport(d *schema.ResourceData, meta interface{})
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/machineImages/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/machineImages/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -339,30 +342,30 @@ func resourceComputeMachineImageImport(d *schema.ResourceData, meta interface{})
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenComputeMachineImageName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeMachineImageName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeMachineImageDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeMachineImageDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeMachineImageSourceInstance(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeMachineImageSourceInstance(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return ConvertSelfLinkToV1(v.(string))
+	return tpgresource.ConvertSelfLinkToV1(v.(string))
 }
 
-func flattenComputeMachineImageStorageLocations(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeMachineImageStorageLocations(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeMachineImageGuestFlush(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeMachineImageGuestFlush(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeMachineImageMachineImageEncryptionKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeMachineImageMachineImageEncryptionKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -381,43 +384,43 @@ func flattenComputeMachineImageMachineImageEncryptionKey(v interface{}, d *schem
 		flattenComputeMachineImageMachineImageEncryptionKeyKmsKeyServiceAccount(original["kmsKeyServiceAccount"], d, config)
 	return []interface{}{transformed}
 }
-func flattenComputeMachineImageMachineImageEncryptionKeyRawKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeMachineImageMachineImageEncryptionKeyRawKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeMachineImageMachineImageEncryptionKeySha256(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeMachineImageMachineImageEncryptionKeySha256(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeMachineImageMachineImageEncryptionKeyKmsKeyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeMachineImageMachineImageEncryptionKeyKmsKeyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeMachineImageMachineImageEncryptionKeyKmsKeyServiceAccount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeMachineImageMachineImageEncryptionKeyKmsKeyServiceAccount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandComputeMachineImageName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeMachineImageName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeMachineImageDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeMachineImageDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeMachineImageSourceInstance(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	f, err := parseZonalFieldValue("instances", v.(string), "project", "zone", d, config, true)
+func expandComputeMachineImageSourceInstance(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	f, err := tpgresource.ParseZonalFieldValue("instances", v.(string), "project", "zone", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for source_instance: %s", err)
 	}
 	return f.RelativeLink(), nil
 }
 
-func expandComputeMachineImageGuestFlush(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeMachineImageGuestFlush(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeMachineImageMachineImageEncryptionKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeMachineImageMachineImageEncryptionKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -429,46 +432,46 @@ func expandComputeMachineImageMachineImageEncryptionKey(v interface{}, d Terrafo
 	transformedRawKey, err := expandComputeMachineImageMachineImageEncryptionKeyRawKey(original["raw_key"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRawKey); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRawKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["rawKey"] = transformedRawKey
 	}
 
 	transformedSha256, err := expandComputeMachineImageMachineImageEncryptionKeySha256(original["sha256"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSha256); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSha256); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["sha256"] = transformedSha256
 	}
 
 	transformedKmsKeyName, err := expandComputeMachineImageMachineImageEncryptionKeyKmsKeyName(original["kms_key_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kmsKeyName"] = transformedKmsKeyName
 	}
 
 	transformedKmsKeyServiceAccount, err := expandComputeMachineImageMachineImageEncryptionKeyKmsKeyServiceAccount(original["kms_key_service_account"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKmsKeyServiceAccount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKmsKeyServiceAccount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kmsKeyServiceAccount"] = transformedKmsKeyServiceAccount
 	}
 
 	return transformed, nil
 }
 
-func expandComputeMachineImageMachineImageEncryptionKeyRawKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeMachineImageMachineImageEncryptionKeyRawKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeMachineImageMachineImageEncryptionKeySha256(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeMachineImageMachineImageEncryptionKeySha256(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeMachineImageMachineImageEncryptionKeyKmsKeyName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeMachineImageMachineImageEncryptionKeyKmsKeyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeMachineImageMachineImageEncryptionKeyKmsKeyServiceAccount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeMachineImageMachineImageEncryptionKeyKmsKeyServiceAccount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

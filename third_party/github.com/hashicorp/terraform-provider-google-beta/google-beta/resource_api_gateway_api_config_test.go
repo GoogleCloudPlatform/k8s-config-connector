@@ -1,6 +1,7 @@
 package google
 
 import (
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -14,7 +15,7 @@ func TestAccApiGatewayApiConfig_apigatewayApiConfigBasicExampleUpdated(t *testin
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckApiGatewayApiConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -30,7 +31,7 @@ func TestAccApiGatewayApiConfig_apigatewayApiConfigBasicExampleUpdated(t *testin
 
 func TestAccApiGatewayApiConfig_generatedPrefix(t *testing.T) {
 	// Random generated id within resource
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -38,7 +39,7 @@ func TestAccApiGatewayApiConfig_generatedPrefix(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckApiGatewayApiConfigDestroyProducer(t),
 		Steps: []resource.TestStep{

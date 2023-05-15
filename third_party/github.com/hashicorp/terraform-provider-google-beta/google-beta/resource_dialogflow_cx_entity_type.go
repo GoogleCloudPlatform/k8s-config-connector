@@ -24,6 +24,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceDialogflowCXEntityType() *schema.Resource {
@@ -78,7 +82,7 @@ For KIND_LIST entity types: A string that can contain references to other entity
 			"kind": {
 				Type:         schema.TypeString,
 				Required:     true,
-				ValidateFunc: validateEnum([]string{"KIND_MAP", "KIND_LIST", "KIND_REGEXP"}),
+				ValidateFunc: verify.ValidateEnum([]string{"KIND_MAP", "KIND_LIST", "KIND_REGEXP"}),
 				Description: `Indicates whether the entity type can be automatically expanded.
 * KIND_MAP: Map entity types allow mapping of a group of synonyms to a canonical value.
 * KIND_LIST: List entity types contain a set of entries that do not map to canonical values. However, list entity types can contain references to other entity types (with or without aliases).
@@ -87,7 +91,7 @@ For KIND_LIST entity types: A string that can contain references to other entity
 			"auto_expansion_mode": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"AUTO_EXPANSION_MODE_DEFAULT", "AUTO_EXPANSION_MODE_UNSPECIFIED", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"AUTO_EXPANSION_MODE_DEFAULT", "AUTO_EXPANSION_MODE_UNSPECIFIED", ""}),
 				Description: `Represents kinds of entities.
 * AUTO_EXPANSION_MODE_UNSPECIFIED: Auto expansion disabled for the entity.
 * AUTO_EXPANSION_MODE_DEFAULT: Allows an agent to recognize values that have not been explicitly listed in the entity. Possible values: ["AUTO_EXPANSION_MODE_DEFAULT", "AUTO_EXPANSION_MODE_UNSPECIFIED"]`,
@@ -146,8 +150,8 @@ Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entityTy
 }
 
 func resourceDialogflowCXEntityTypeCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -156,47 +160,47 @@ func resourceDialogflowCXEntityTypeCreate(d *schema.ResourceData, meta interface
 	displayNameProp, err := expandDialogflowCXEntityTypeDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	kindProp, err := expandDialogflowCXEntityTypeKind(d.Get("kind"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("kind"); !isEmptyValue(reflect.ValueOf(kindProp)) && (ok || !reflect.DeepEqual(v, kindProp)) {
+	} else if v, ok := d.GetOkExists("kind"); !tpgresource.IsEmptyValue(reflect.ValueOf(kindProp)) && (ok || !reflect.DeepEqual(v, kindProp)) {
 		obj["kind"] = kindProp
 	}
 	autoExpansionModeProp, err := expandDialogflowCXEntityTypeAutoExpansionMode(d.Get("auto_expansion_mode"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("auto_expansion_mode"); !isEmptyValue(reflect.ValueOf(autoExpansionModeProp)) && (ok || !reflect.DeepEqual(v, autoExpansionModeProp)) {
+	} else if v, ok := d.GetOkExists("auto_expansion_mode"); !tpgresource.IsEmptyValue(reflect.ValueOf(autoExpansionModeProp)) && (ok || !reflect.DeepEqual(v, autoExpansionModeProp)) {
 		obj["autoExpansionMode"] = autoExpansionModeProp
 	}
 	entitiesProp, err := expandDialogflowCXEntityTypeEntities(d.Get("entities"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("entities"); !isEmptyValue(reflect.ValueOf(entitiesProp)) && (ok || !reflect.DeepEqual(v, entitiesProp)) {
+	} else if v, ok := d.GetOkExists("entities"); !tpgresource.IsEmptyValue(reflect.ValueOf(entitiesProp)) && (ok || !reflect.DeepEqual(v, entitiesProp)) {
 		obj["entities"] = entitiesProp
 	}
 	excludedPhrasesProp, err := expandDialogflowCXEntityTypeExcludedPhrases(d.Get("excluded_phrases"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("excluded_phrases"); !isEmptyValue(reflect.ValueOf(excludedPhrasesProp)) && (ok || !reflect.DeepEqual(v, excludedPhrasesProp)) {
+	} else if v, ok := d.GetOkExists("excluded_phrases"); !tpgresource.IsEmptyValue(reflect.ValueOf(excludedPhrasesProp)) && (ok || !reflect.DeepEqual(v, excludedPhrasesProp)) {
 		obj["excludedPhrases"] = excludedPhrasesProp
 	}
 	enableFuzzyExtractionProp, err := expandDialogflowCXEntityTypeEnableFuzzyExtraction(d.Get("enable_fuzzy_extraction"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enable_fuzzy_extraction"); !isEmptyValue(reflect.ValueOf(enableFuzzyExtractionProp)) && (ok || !reflect.DeepEqual(v, enableFuzzyExtractionProp)) {
+	} else if v, ok := d.GetOkExists("enable_fuzzy_extraction"); !tpgresource.IsEmptyValue(reflect.ValueOf(enableFuzzyExtractionProp)) && (ok || !reflect.DeepEqual(v, enableFuzzyExtractionProp)) {
 		obj["enableFuzzyExtraction"] = enableFuzzyExtractionProp
 	}
 	redactProp, err := expandDialogflowCXEntityTypeRedact(d.Get("redact"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("redact"); !isEmptyValue(reflect.ValueOf(redactProp)) && (ok || !reflect.DeepEqual(v, redactProp)) {
+	} else if v, ok := d.GetOkExists("redact"); !tpgresource.IsEmptyValue(reflect.ValueOf(redactProp)) && (ok || !reflect.DeepEqual(v, redactProp)) {
 		obj["redact"] = redactProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/entityTypes")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/entityTypes")
 	if err != nil {
 		return err
 	}
@@ -205,7 +209,7 @@ func resourceDialogflowCXEntityTypeCreate(d *schema.ResourceData, meta interface
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
@@ -223,7 +227,7 @@ func resourceDialogflowCXEntityTypeCreate(d *schema.ResourceData, meta interface
 	}
 
 	url = strings.Replace(url, "-dialogflow", fmt.Sprintf("%s-dialogflow", location), 1)
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating EntityType: %s", err)
 	}
@@ -232,7 +236,7 @@ func resourceDialogflowCXEntityTypeCreate(d *schema.ResourceData, meta interface
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{parent}}/entityTypes/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{parent}}/entityTypes/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -244,13 +248,13 @@ func resourceDialogflowCXEntityTypeCreate(d *schema.ResourceData, meta interface
 }
 
 func resourceDialogflowCXEntityTypeRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/entityTypes/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/entityTypes/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -258,7 +262,7 @@ func resourceDialogflowCXEntityTypeRead(d *schema.ResourceData, meta interface{}
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
@@ -276,9 +280,9 @@ func resourceDialogflowCXEntityTypeRead(d *schema.ResourceData, meta interface{}
 	}
 
 	url = strings.Replace(url, "-dialogflow", fmt.Sprintf("%s-dialogflow", location), 1)
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("DialogflowCXEntityType %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("DialogflowCXEntityType %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenDialogflowCXEntityTypeName(res["name"], d, config)); err != nil {
@@ -310,8 +314,8 @@ func resourceDialogflowCXEntityTypeRead(d *schema.ResourceData, meta interface{}
 }
 
 func resourceDialogflowCXEntityTypeUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -322,47 +326,47 @@ func resourceDialogflowCXEntityTypeUpdate(d *schema.ResourceData, meta interface
 	displayNameProp, err := expandDialogflowCXEntityTypeDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	kindProp, err := expandDialogflowCXEntityTypeKind(d.Get("kind"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("kind"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, kindProp)) {
+	} else if v, ok := d.GetOkExists("kind"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, kindProp)) {
 		obj["kind"] = kindProp
 	}
 	autoExpansionModeProp, err := expandDialogflowCXEntityTypeAutoExpansionMode(d.Get("auto_expansion_mode"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("auto_expansion_mode"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, autoExpansionModeProp)) {
+	} else if v, ok := d.GetOkExists("auto_expansion_mode"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, autoExpansionModeProp)) {
 		obj["autoExpansionMode"] = autoExpansionModeProp
 	}
 	entitiesProp, err := expandDialogflowCXEntityTypeEntities(d.Get("entities"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("entities"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, entitiesProp)) {
+	} else if v, ok := d.GetOkExists("entities"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, entitiesProp)) {
 		obj["entities"] = entitiesProp
 	}
 	excludedPhrasesProp, err := expandDialogflowCXEntityTypeExcludedPhrases(d.Get("excluded_phrases"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("excluded_phrases"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, excludedPhrasesProp)) {
+	} else if v, ok := d.GetOkExists("excluded_phrases"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, excludedPhrasesProp)) {
 		obj["excludedPhrases"] = excludedPhrasesProp
 	}
 	enableFuzzyExtractionProp, err := expandDialogflowCXEntityTypeEnableFuzzyExtraction(d.Get("enable_fuzzy_extraction"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enable_fuzzy_extraction"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enableFuzzyExtractionProp)) {
+	} else if v, ok := d.GetOkExists("enable_fuzzy_extraction"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enableFuzzyExtractionProp)) {
 		obj["enableFuzzyExtraction"] = enableFuzzyExtractionProp
 	}
 	redactProp, err := expandDialogflowCXEntityTypeRedact(d.Get("redact"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("redact"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, redactProp)) {
+	} else if v, ok := d.GetOkExists("redact"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, redactProp)) {
 		obj["redact"] = redactProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/entityTypes/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/entityTypes/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -399,7 +403,7 @@ func resourceDialogflowCXEntityTypeUpdate(d *schema.ResourceData, meta interface
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -420,11 +424,11 @@ func resourceDialogflowCXEntityTypeUpdate(d *schema.ResourceData, meta interface
 	url = strings.Replace(url, "-dialogflow", fmt.Sprintf("%s-dialogflow", location), 1)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating EntityType %q: %s", d.Id(), err)
@@ -436,15 +440,15 @@ func resourceDialogflowCXEntityTypeUpdate(d *schema.ResourceData, meta interface
 }
 
 func resourceDialogflowCXEntityTypeDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/entityTypes/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/entityTypes/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -468,13 +472,13 @@ func resourceDialogflowCXEntityTypeDelete(d *schema.ResourceData, meta interface
 	log.Printf("[DEBUG] Deleting EntityType %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "EntityType")
+		return transport_tpg.HandleNotFoundError(err, d, "EntityType")
 	}
 
 	log.Printf("[DEBUG] Finished deleting EntityType %q: %#v", d.Id(), res)
@@ -482,7 +486,7 @@ func resourceDialogflowCXEntityTypeDelete(d *schema.ResourceData, meta interface
 }
 
 func resourceDialogflowCXEntityTypeImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value and parent contains slashes
 	if err := ParseImportId([]string{
@@ -493,7 +497,7 @@ func resourceDialogflowCXEntityTypeImport(d *schema.ResourceData, meta interface
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{parent}}/entityTypes/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{parent}}/entityTypes/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -502,26 +506,26 @@ func resourceDialogflowCXEntityTypeImport(d *schema.ResourceData, meta interface
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenDialogflowCXEntityTypeName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEntityTypeName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenDialogflowCXEntityTypeDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEntityTypeDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXEntityTypeKind(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEntityTypeKind(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXEntityTypeAutoExpansionMode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEntityTypeAutoExpansionMode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXEntityTypeEntities(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEntityTypeEntities(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -540,15 +544,15 @@ func flattenDialogflowCXEntityTypeEntities(v interface{}, d *schema.ResourceData
 	}
 	return transformed
 }
-func flattenDialogflowCXEntityTypeEntitiesValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEntityTypeEntitiesValue(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXEntityTypeEntitiesSynonyms(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEntityTypeEntitiesSynonyms(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXEntityTypeExcludedPhrases(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEntityTypeExcludedPhrases(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -566,31 +570,31 @@ func flattenDialogflowCXEntityTypeExcludedPhrases(v interface{}, d *schema.Resou
 	}
 	return transformed
 }
-func flattenDialogflowCXEntityTypeExcludedPhrasesValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEntityTypeExcludedPhrasesValue(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXEntityTypeEnableFuzzyExtraction(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEntityTypeEnableFuzzyExtraction(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXEntityTypeRedact(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEntityTypeRedact(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandDialogflowCXEntityTypeDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEntityTypeDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXEntityTypeKind(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEntityTypeKind(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXEntityTypeAutoExpansionMode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEntityTypeAutoExpansionMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXEntityTypeEntities(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEntityTypeEntities(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -603,14 +607,14 @@ func expandDialogflowCXEntityTypeEntities(v interface{}, d TerraformResourceData
 		transformedValue, err := expandDialogflowCXEntityTypeEntitiesValue(original["value"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedValue); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedValue); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["value"] = transformedValue
 		}
 
 		transformedSynonyms, err := expandDialogflowCXEntityTypeEntitiesSynonyms(original["synonyms"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSynonyms); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSynonyms); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["synonyms"] = transformedSynonyms
 		}
 
@@ -619,15 +623,15 @@ func expandDialogflowCXEntityTypeEntities(v interface{}, d TerraformResourceData
 	return req, nil
 }
 
-func expandDialogflowCXEntityTypeEntitiesValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEntityTypeEntitiesValue(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXEntityTypeEntitiesSynonyms(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEntityTypeEntitiesSynonyms(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXEntityTypeExcludedPhrases(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEntityTypeExcludedPhrases(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -640,7 +644,7 @@ func expandDialogflowCXEntityTypeExcludedPhrases(v interface{}, d TerraformResou
 		transformedValue, err := expandDialogflowCXEntityTypeExcludedPhrasesValue(original["value"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedValue); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedValue); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["value"] = transformedValue
 		}
 
@@ -649,14 +653,14 @@ func expandDialogflowCXEntityTypeExcludedPhrases(v interface{}, d TerraformResou
 	return req, nil
 }
 
-func expandDialogflowCXEntityTypeExcludedPhrasesValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEntityTypeExcludedPhrasesValue(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXEntityTypeEnableFuzzyExtraction(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEntityTypeEnableFuzzyExtraction(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXEntityTypeRedact(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEntityTypeRedact(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

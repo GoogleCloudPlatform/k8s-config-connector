@@ -2052,21 +2052,21 @@ func compareJobPubsubTargetNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.TopicName, actual.TopicName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TopicName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TopicName, actual.TopicName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("TopicName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Data, actual.Data, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Data")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Data, actual.Data, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Data")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Attributes, actual.Attributes, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Attributes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Attributes, actual.Attributes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Attributes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2095,35 +2095,35 @@ func compareJobAppEngineHttpTargetNewStyle(d, a interface{}, fn dcl.FieldName) (
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.HttpMethod, actual.HttpMethod, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("HttpMethod")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HttpMethod, actual.HttpMethod, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("HttpMethod")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AppEngineRouting, actual.AppEngineRouting, dcl.DiffInfo{ObjectFunction: compareJobAppEngineHttpTargetAppEngineRoutingNewStyle, EmptyObject: EmptyJobAppEngineHttpTargetAppEngineRouting, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AppEngineRouting")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AppEngineRouting, actual.AppEngineRouting, dcl.DiffInfo{ObjectFunction: compareJobAppEngineHttpTargetAppEngineRoutingNewStyle, EmptyObject: EmptyJobAppEngineHttpTargetAppEngineRouting, OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("AppEngineRouting")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RelativeUri, actual.RelativeUri, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RelativeUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RelativeUri, actual.RelativeUri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("RelativeUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Headers, actual.Headers, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Headers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Headers, actual.Headers, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Headers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Body, actual.Body, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Body")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Body, actual.Body, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Body")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2152,21 +2152,21 @@ func compareJobAppEngineHttpTargetAppEngineRoutingNewStyle(d, a interface{}, fn 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Service, actual.Service, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Service")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Service, actual.Service, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Service")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Version, actual.Version, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Version")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Version, actual.Version, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Version")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Instance, actual.Instance, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Instance")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Instance, actual.Instance, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Instance")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2202,42 +2202,42 @@ func compareJobHttpTargetNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.HttpMethod, actual.HttpMethod, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("HttpMethod")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HttpMethod, actual.HttpMethod, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("HttpMethod")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Headers, actual.Headers, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Headers")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Headers, actual.Headers, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Headers")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Body, actual.Body, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Body")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Body, actual.Body, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Body")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OAuthToken, actual.OAuthToken, dcl.DiffInfo{ObjectFunction: compareJobHttpTargetOAuthTokenNewStyle, EmptyObject: EmptyJobHttpTargetOAuthToken, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OauthToken")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OAuthToken, actual.OAuthToken, dcl.DiffInfo{ObjectFunction: compareJobHttpTargetOAuthTokenNewStyle, EmptyObject: EmptyJobHttpTargetOAuthToken, OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("OauthToken")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OidcToken, actual.OidcToken, dcl.DiffInfo{ObjectFunction: compareJobHttpTargetOidcTokenNewStyle, EmptyObject: EmptyJobHttpTargetOidcToken, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OidcToken")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OidcToken, actual.OidcToken, dcl.DiffInfo{ObjectFunction: compareJobHttpTargetOidcTokenNewStyle, EmptyObject: EmptyJobHttpTargetOidcToken, OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("OidcToken")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2266,14 +2266,14 @@ func compareJobHttpTargetOAuthTokenNewStyle(d, a interface{}, fn dcl.FieldName) 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ServiceAccountEmail, actual.ServiceAccountEmail, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServiceAccountEmail")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServiceAccountEmail, actual.ServiceAccountEmail, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("ServiceAccountEmail")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Scope, actual.Scope, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Scope")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Scope, actual.Scope, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Scope")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2302,14 +2302,14 @@ func compareJobHttpTargetOidcTokenNewStyle(d, a interface{}, fn dcl.FieldName) (
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ServiceAccountEmail, actual.ServiceAccountEmail, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServiceAccountEmail")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServiceAccountEmail, actual.ServiceAccountEmail, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("ServiceAccountEmail")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Audience, actual.Audience, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Audience")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Audience, actual.Audience, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Audience")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2417,35 +2417,35 @@ func compareJobRetryConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.RetryCount, actual.RetryCount, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RetryCount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RetryCount, actual.RetryCount, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("RetryCount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaxRetryDuration, actual.MaxRetryDuration, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MaxRetryDuration")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxRetryDuration, actual.MaxRetryDuration, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("MaxRetryDuration")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MinBackoffDuration, actual.MinBackoffDuration, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MinBackoffDuration")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MinBackoffDuration, actual.MinBackoffDuration, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("MinBackoffDuration")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaxBackoffDuration, actual.MaxBackoffDuration, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MaxBackoffDuration")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxBackoffDuration, actual.MaxBackoffDuration, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("MaxBackoffDuration")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaxDoublings, actual.MaxDoublings, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MaxDoublings")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxDoublings, actual.MaxDoublings, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("MaxDoublings")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

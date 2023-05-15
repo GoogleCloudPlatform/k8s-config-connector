@@ -7,6 +7,9 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/davecgh/go-spew/spew"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"google.golang.org/api/cloudresourcemanager/v1"
@@ -17,7 +20,7 @@ func iamMemberCaseDiffSuppress(k, old, new string, d *schema.ResourceData) bool 
 	if isCaseSensitive {
 		return old == new
 	}
-	return CaseDiffSuppress(k, old, new, d)
+	return tpgresource.CaseDiffSuppress(k, old, new, d)
 }
 
 func validateIAMMember(i interface{}, k string) ([]string, []error) {
@@ -89,7 +92,7 @@ func iamMemberImport(newUpdaterFunc newResourceIamUpdaterFunc, resourceIdParser 
 		if resourceIdParser == nil {
 			return nil, errors.New("Import not supported for this IAM resource.")
 		}
-		config := m.(*Config)
+		config := m.(*transport_tpg.Config)
 		s := strings.Fields(d.Id())
 		var id, role, member string
 		if len(s) < 3 {
@@ -206,7 +209,7 @@ func getResourceIamMember(d *schema.ResourceData) *cloudresourcemanager.Binding 
 
 func resourceIamMemberCreate(newUpdaterFunc newResourceIamUpdaterFunc, enableBatching bool) schema.CreateFunc {
 	return func(d *schema.ResourceData, meta interface{}) error {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 
 		updater, err := newUpdaterFunc(d, config)
 		if err != nil {
@@ -239,7 +242,7 @@ func resourceIamMemberCreate(newUpdaterFunc newResourceIamUpdaterFunc, enableBat
 
 func resourceIamMemberRead(newUpdaterFunc newResourceIamUpdaterFunc) schema.ReadFunc {
 	return func(d *schema.ResourceData, meta interface{}) error {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 
 		updater, err := newUpdaterFunc(d, config)
 		if err != nil {
@@ -250,7 +253,7 @@ func resourceIamMemberRead(newUpdaterFunc newResourceIamUpdaterFunc) schema.Read
 		eCondition := conditionKeyFromCondition(eMember.Condition)
 		p, err := iamPolicyReadWithRetry(updater)
 		if err != nil {
-			return handleNotFoundError(err, d, fmt.Sprintf("Resource %q with IAM Member: Role %q Member %q", updater.DescribeResource(), eMember.Role, eMember.Members[0]))
+			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Resource %q with IAM Member: Role %q Member %q", updater.DescribeResource(), eMember.Role, eMember.Members[0]))
 		}
 		log.Print(spew.Sprintf("[DEBUG]: Retrieved policy for %s: %#v\n", updater.DescribeResource(), p))
 		log.Printf("[DEBUG]: Looking for binding with role %q and condition %#v", eMember.Role, eCondition)
@@ -301,7 +304,7 @@ func resourceIamMemberRead(newUpdaterFunc newResourceIamUpdaterFunc) schema.Read
 
 func resourceIamMemberDelete(newUpdaterFunc newResourceIamUpdaterFunc, enableBatching bool) schema.DeleteFunc {
 	return func(d *schema.ResourceData, meta interface{}) error {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 
 		updater, err := newUpdaterFunc(d, config)
 		if err != nil {
@@ -321,7 +324,7 @@ func resourceIamMemberDelete(newUpdaterFunc newResourceIamUpdaterFunc, enableBat
 			err = iamPolicyReadModifyWrite(updater, modifyF)
 		}
 		if err != nil {
-			return handleNotFoundError(err, d, fmt.Sprintf("Resource %s for IAM Member (role %q, %q)", updater.GetResourceId(), memberBind.Members[0], memberBind.Role))
+			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Resource %s for IAM Member (role %q, %q)", updater.GetResourceId(), memberBind.Members[0], memberBind.Role))
 		}
 		return resourceIamMemberRead(newUpdaterFunc)(d, meta)
 	}

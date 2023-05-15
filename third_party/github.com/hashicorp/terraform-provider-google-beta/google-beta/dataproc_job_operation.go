@@ -5,6 +5,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"google.golang.org/api/dataproc/v1"
 )
 
@@ -66,14 +69,14 @@ func (w *DataprocJobOperationWaiter) TargetStates() []string {
 	return []string{"CANCELLED", "DONE", "ATTEMPT_FAILURE", "ERROR", "RUNNING"}
 }
 
-func dataprocJobOperationWait(config *Config, region, projectId, jobId, activity, userAgent string, timeout time.Duration) error {
+func dataprocJobOperationWait(config *transport_tpg.Config, region, projectId, jobId, activity, userAgent string, timeout time.Duration) error {
 	w := &DataprocJobOperationWaiter{
 		Service:   config.NewDataprocClient(userAgent),
 		Region:    region,
 		ProjectId: projectId,
 		JobId:     jobId,
 	}
-	return OperationWait(w, activity, timeout, config.PollInterval)
+	return tpgresource.OperationWait(w, activity, timeout, config.PollInterval)
 }
 
 type DataprocDeleteJobOperationWaiter struct {
@@ -94,7 +97,7 @@ func (w *DataprocDeleteJobOperationWaiter) QueryOp() (interface{}, error) {
 	}
 	job, err := w.Service.Projects.Regions.Jobs.Get(w.ProjectId, w.Region, w.JobId).Do()
 	if err != nil {
-		if IsGoogleApiErrorWithCode(err, http.StatusNotFound) {
+		if transport_tpg.IsGoogleApiErrorWithCode(err, http.StatusNotFound) {
 			w.Status = "DELETED"
 			return job, nil
 		}
@@ -104,7 +107,7 @@ func (w *DataprocDeleteJobOperationWaiter) QueryOp() (interface{}, error) {
 	return job, err
 }
 
-func dataprocDeleteOperationWait(config *Config, region, projectId, jobId, activity, userAgent string, timeout time.Duration) error {
+func dataprocDeleteOperationWait(config *transport_tpg.Config, region, projectId, jobId, activity, userAgent string, timeout time.Duration) error {
 	w := &DataprocDeleteJobOperationWaiter{
 		DataprocJobOperationWaiter{
 			Service:   config.NewDataprocClient(userAgent),
@@ -113,5 +116,5 @@ func dataprocDeleteOperationWait(config *Config, region, projectId, jobId, activ
 			JobId:     jobId,
 		},
 	}
-	return OperationWait(w, activity, timeout, config.PollInterval)
+	return tpgresource.OperationWait(w, activity, timeout, config.PollInterval)
 }

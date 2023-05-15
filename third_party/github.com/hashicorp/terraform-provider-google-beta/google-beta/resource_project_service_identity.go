@@ -5,6 +5,9 @@ import (
 	"log"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
@@ -42,18 +45,18 @@ func ResourceProjectServiceIdentity() *schema.Resource {
 }
 
 func resourceProjectServiceIdentityCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ServiceUsageBasePath}}projects/{{project}}/services/{{service}}:generateServiceIdentity")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ServiceUsageBasePath}}projects/{{project}}/services/{{service}}:generateServiceIdentity")
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -61,11 +64,11 @@ func resourceProjectServiceIdentityCreate(d *schema.ResourceData, meta interface
 	billingProject := project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, nil, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, nil, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Service Identity: %s", err)
 	}
@@ -80,7 +83,7 @@ func resourceProjectServiceIdentityCreate(d *schema.ResourceData, meta interface
 
 	log.Printf("[DEBUG] Finished creating Service Identity %q: %#v", d.Id(), res)
 
-	id, err := ReplaceVars(d, config, "projects/{{project}}/services/{{service}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/services/{{service}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}

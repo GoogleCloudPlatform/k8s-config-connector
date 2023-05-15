@@ -6,23 +6,27 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+
 	dcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	eventarc "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/eventarc/beta"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccEventarcGoogleChannelConfig_basic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  acctest.GetTestProjectFromEnv(),
+		"region":        acctest.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckEventarcGoogleChannelConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -41,21 +45,21 @@ func TestAccEventarcGoogleChannelConfig_basic(t *testing.T) {
 func TestAccEventarcGoogleChannelConfig_cryptoKeyUpdate(t *testing.T) {
 	t.Parallel()
 
-	region := GetTestRegionFromEnv()
+	region := acctest.GetTestRegionFromEnv()
 	key1 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-google-channel-config-key1")
 	key2 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-google-channel-config-key2")
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  acctest.GetTestProjectFromEnv(),
+		"region":        acctest.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
-		"key_ring":      GetResourceNameFromSelfLink(key1.KeyRing.Name),
-		"key1":          GetResourceNameFromSelfLink(key1.CryptoKey.Name),
-		"key2":          GetResourceNameFromSelfLink(key2.CryptoKey.Name),
+		"key_ring":      tpgresource.GetResourceNameFromSelfLink(key1.KeyRing.Name),
+		"key1":          tpgresource.GetResourceNameFromSelfLink(key1.CryptoKey.Name),
+		"key2":          tpgresource.GetResourceNameFromSelfLink(key2.CryptoKey.Name),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckEventarcGoogleChannelConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -190,7 +194,7 @@ func testAccCheckEventarcGoogleChannelConfigDestroyProducer(t *testing.T) func(s
 				UpdateTime:    dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLEventarcClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLEventarcClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetGoogleChannelConfig(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_eventarc_google_channel_config still exists %v", obj)

@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceFirebaseWebApp() *schema.Resource {
@@ -87,8 +90,8 @@ serving traffic. Set to 'DELETE' to delete the WebApp. Default to 'ABANDON'`,
 }
 
 func resourceFirebaseWebAppCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -97,11 +100,11 @@ func resourceFirebaseWebAppCreate(d *schema.ResourceData, meta interface{}) erro
 	displayNameProp, err := expandFirebaseWebAppDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/webApps")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/webApps")
 	if err != nil {
 		return err
 	}
@@ -109,24 +112,24 @@ func resourceFirebaseWebAppCreate(d *schema.ResourceData, meta interface{}) erro
 	log.Printf("[DEBUG] Creating new WebApp: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for WebApp: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating WebApp: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -150,7 +153,7 @@ func resourceFirebaseWebAppCreate(d *schema.ResourceData, meta interface{}) erro
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -162,33 +165,33 @@ func resourceFirebaseWebAppCreate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceFirebaseWebAppRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for WebApp: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseWebApp %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("FirebaseWebApp %q", d.Id()))
 	}
 
 	// Explicitly set virtual fields to default values if unset
@@ -218,15 +221,15 @@ func resourceFirebaseWebAppRead(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceFirebaseWebAppUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for WebApp: %s", err)
 	}
@@ -236,11 +239,11 @@ func resourceFirebaseWebAppUpdate(d *schema.ResourceData, meta interface{}) erro
 	displayNameProp, err := expandFirebaseWebAppDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -253,17 +256,17 @@ func resourceFirebaseWebAppUpdate(d *schema.ResourceData, meta interface{}) erro
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating WebApp %q: %s", d.Id(), err)
@@ -275,8 +278,8 @@ func resourceFirebaseWebAppUpdate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceFirebaseWebAppDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -292,13 +295,13 @@ func resourceFirebaseWebAppDelete(d *schema.ResourceData, meta interface{}) erro
 	// End of Handwritten
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for App: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}:remove")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}:remove")
 	if err != nil {
 		return err
 	}
@@ -306,13 +309,13 @@ func resourceFirebaseWebAppDelete(d *schema.ResourceData, meta interface{}) erro
 	log.Printf("[DEBUG] Deleting App %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "App")
+		return transport_tpg.HandleNotFoundError(err, d, "App")
 	}
 
 	err = FirebaseOperationWaitTime(
@@ -334,7 +337,7 @@ func resourceFirebaseWebAppDelete(d *schema.ResourceData, meta interface{}) erro
 
 func resourceFirebaseWebAppImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<project>[^ ]+) (?P<name>[^ ]+)", "(?P<name>[^ ]+)"}, d, config); err != nil {
@@ -344,22 +347,22 @@ func resourceFirebaseWebAppImport(d *schema.ResourceData, meta interface{}) ([]*
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenFirebaseWebAppName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseWebAppName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseWebAppDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseWebAppDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseWebAppAppId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseWebAppAppId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseWebAppAppUrls(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseWebAppAppUrls(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandFirebaseWebAppDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseWebAppDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

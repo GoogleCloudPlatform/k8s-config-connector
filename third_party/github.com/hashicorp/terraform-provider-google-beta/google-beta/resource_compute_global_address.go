@@ -21,6 +21,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceComputeGlobalAddress() *schema.Resource {
@@ -66,8 +70,8 @@ address or omitted to allow GCP to choose a valid one for you.`,
 				Type:             schema.TypeString,
 				Optional:         true,
 				ForceNew:         true,
-				ValidateFunc:     validateEnum([]string{"EXTERNAL", "INTERNAL", ""}),
-				DiffSuppressFunc: EmptyOrDefaultStringSuppress("EXTERNAL"),
+				ValidateFunc:     verify.ValidateEnum([]string{"EXTERNAL", "INTERNAL", ""}),
+				DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress("EXTERNAL"),
 				Description: `The type of the address to reserve.
 
 * EXTERNAL indicates public/external single IP address.
@@ -84,8 +88,8 @@ address or omitted to allow GCP to choose a valid one for you.`,
 				Type:             schema.TypeString,
 				Optional:         true,
 				ForceNew:         true,
-				ValidateFunc:     validateEnum([]string{"IPV4", "IPV6", ""}),
-				DiffSuppressFunc: EmptyOrDefaultStringSuppress("IPV4"),
+				ValidateFunc:     verify.ValidateEnum([]string{"IPV4", "IPV6", ""}),
+				DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress("IPV4"),
 				Description:      `The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"]. This field can only be specified for a global address.`,
 			},
 			"labels": {
@@ -152,8 +156,8 @@ internally during updates.`,
 }
 
 func resourceComputeGlobalAddressCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -162,65 +166,65 @@ func resourceComputeGlobalAddressCreate(d *schema.ResourceData, meta interface{}
 	addressProp, err := expandComputeGlobalAddressAddress(d.Get("address"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("address"); !isEmptyValue(reflect.ValueOf(addressProp)) && (ok || !reflect.DeepEqual(v, addressProp)) {
+	} else if v, ok := d.GetOkExists("address"); !tpgresource.IsEmptyValue(reflect.ValueOf(addressProp)) && (ok || !reflect.DeepEqual(v, addressProp)) {
 		obj["address"] = addressProp
 	}
 	descriptionProp, err := expandComputeGlobalAddressDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	nameProp, err := expandComputeGlobalAddressName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	labelsProp, err := expandComputeGlobalAddressLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	labelFingerprintProp, err := expandComputeGlobalAddressLabelFingerprint(d.Get("label_fingerprint"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("label_fingerprint"); !isEmptyValue(reflect.ValueOf(labelFingerprintProp)) && (ok || !reflect.DeepEqual(v, labelFingerprintProp)) {
+	} else if v, ok := d.GetOkExists("label_fingerprint"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelFingerprintProp)) && (ok || !reflect.DeepEqual(v, labelFingerprintProp)) {
 		obj["labelFingerprint"] = labelFingerprintProp
 	}
 	ipVersionProp, err := expandComputeGlobalAddressIpVersion(d.Get("ip_version"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ip_version"); !isEmptyValue(reflect.ValueOf(ipVersionProp)) && (ok || !reflect.DeepEqual(v, ipVersionProp)) {
+	} else if v, ok := d.GetOkExists("ip_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(ipVersionProp)) && (ok || !reflect.DeepEqual(v, ipVersionProp)) {
 		obj["ipVersion"] = ipVersionProp
 	}
 	prefixLengthProp, err := expandComputeGlobalAddressPrefixLength(d.Get("prefix_length"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("prefix_length"); !isEmptyValue(reflect.ValueOf(prefixLengthProp)) && (ok || !reflect.DeepEqual(v, prefixLengthProp)) {
+	} else if v, ok := d.GetOkExists("prefix_length"); !tpgresource.IsEmptyValue(reflect.ValueOf(prefixLengthProp)) && (ok || !reflect.DeepEqual(v, prefixLengthProp)) {
 		obj["prefixLength"] = prefixLengthProp
 	}
 	addressTypeProp, err := expandComputeGlobalAddressAddressType(d.Get("address_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("address_type"); !isEmptyValue(reflect.ValueOf(addressTypeProp)) && (ok || !reflect.DeepEqual(v, addressTypeProp)) {
+	} else if v, ok := d.GetOkExists("address_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(addressTypeProp)) && (ok || !reflect.DeepEqual(v, addressTypeProp)) {
 		obj["addressType"] = addressTypeProp
 	}
 	purposeProp, err := expandComputeGlobalAddressPurpose(d.Get("purpose"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("purpose"); !isEmptyValue(reflect.ValueOf(purposeProp)) && (ok || !reflect.DeepEqual(v, purposeProp)) {
+	} else if v, ok := d.GetOkExists("purpose"); !tpgresource.IsEmptyValue(reflect.ValueOf(purposeProp)) && (ok || !reflect.DeepEqual(v, purposeProp)) {
 		obj["purpose"] = purposeProp
 	}
 	networkProp, err := expandComputeGlobalAddressNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses")
 	if err != nil {
 		return err
 	}
@@ -228,24 +232,24 @@ func resourceComputeGlobalAddressCreate(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Creating new GlobalAddress: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for GlobalAddress: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating GlobalAddress: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/addresses/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/addresses/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -261,7 +265,7 @@ func resourceComputeGlobalAddressCreate(d *schema.ResourceData, meta interface{}
 		return fmt.Errorf("Error waiting to create GlobalAddress: %s", err)
 	}
 
-	if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		// Labels cannot be set in a create.  We'll have to set them here.
 		err = resourceComputeGlobalAddressRead(d, meta)
 		if err != nil {
@@ -278,11 +282,11 @@ func resourceComputeGlobalAddressCreate(d *schema.ResourceData, meta interface{}
 		labelFingerprintProp := d.Get("label_fingerprint")
 		obj["labelFingerprint"] = labelFingerprintProp
 
-		url, err = ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}/setLabels")
+		url, err = tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}/setLabels")
 		if err != nil {
 			return err
 		}
-		res, err = SendRequest(config, "POST", project, url, userAgent, obj)
+		res, err = transport_tpg.SendRequest(config, "POST", project, url, userAgent, obj)
 		if err != nil {
 			return fmt.Errorf("Error adding labels to ComputeGlobalAddress %q: %s", d.Id(), err)
 		}
@@ -303,33 +307,33 @@ func resourceComputeGlobalAddressCreate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceComputeGlobalAddressRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for GlobalAddress: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeGlobalAddress %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeGlobalAddress %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -369,7 +373,7 @@ func resourceComputeGlobalAddressRead(d *schema.ResourceData, meta interface{}) 
 	if err := d.Set("network", flattenComputeGlobalAddressNetwork(res["network"], d, config)); err != nil {
 		return fmt.Errorf("Error reading GlobalAddress: %s", err)
 	}
-	if err := d.Set("self_link", ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
+	if err := d.Set("self_link", tpgresource.ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
 		return fmt.Errorf("Error reading GlobalAddress: %s", err)
 	}
 
@@ -377,15 +381,15 @@ func resourceComputeGlobalAddressRead(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceComputeGlobalAddressUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for GlobalAddress: %s", err)
 	}
@@ -399,27 +403,27 @@ func resourceComputeGlobalAddressUpdate(d *schema.ResourceData, meta interface{}
 		labelsProp, err := expandComputeGlobalAddressLabels(d.Get("labels"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+		} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 			obj["labels"] = labelsProp
 		}
 		labelFingerprintProp, err := expandComputeGlobalAddressLabelFingerprint(d.Get("label_fingerprint"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("label_fingerprint"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelFingerprintProp)) {
+		} else if v, ok := d.GetOkExists("label_fingerprint"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelFingerprintProp)) {
 			obj["labelFingerprint"] = labelFingerprintProp
 		}
 
-		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}/setLabels")
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}/setLabels")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating GlobalAddress %q: %s", d.Id(), err)
 		} else {
@@ -440,21 +444,21 @@ func resourceComputeGlobalAddressUpdate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceComputeGlobalAddressDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for GlobalAddress: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -463,13 +467,13 @@ func resourceComputeGlobalAddressDelete(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Deleting GlobalAddress %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "GlobalAddress")
+		return transport_tpg.HandleNotFoundError(err, d, "GlobalAddress")
 	}
 
 	err = ComputeOperationWaitTime(
@@ -485,7 +489,7 @@ func resourceComputeGlobalAddressDelete(d *schema.ResourceData, meta interface{}
 }
 
 func resourceComputeGlobalAddressImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/global/addresses/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
@@ -495,7 +499,7 @@ func resourceComputeGlobalAddressImport(d *schema.ResourceData, meta interface{}
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/addresses/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/addresses/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -504,35 +508,35 @@ func resourceComputeGlobalAddressImport(d *schema.ResourceData, meta interface{}
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenComputeGlobalAddressAddress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeGlobalAddressAddress(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeGlobalAddressCreationTimestamp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeGlobalAddressCreationTimestamp(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeGlobalAddressDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeGlobalAddressDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeGlobalAddressName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeGlobalAddressName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeGlobalAddressLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeGlobalAddressLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeGlobalAddressLabelFingerprint(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeGlobalAddressLabelFingerprint(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeGlobalAddressIpVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeGlobalAddressIpVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeGlobalAddressPrefixLength(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeGlobalAddressPrefixLength(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -549,34 +553,34 @@ func flattenComputeGlobalAddressPrefixLength(v interface{}, d *schema.ResourceDa
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeGlobalAddressAddressType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeGlobalAddressAddressType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeGlobalAddressPurpose(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeGlobalAddressPurpose(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeGlobalAddressNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeGlobalAddressNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return ConvertSelfLinkToV1(v.(string))
+	return tpgresource.ConvertSelfLinkToV1(v.(string))
 }
 
-func expandComputeGlobalAddressAddress(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeGlobalAddressAddress(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeGlobalAddressDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeGlobalAddressDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeGlobalAddressName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeGlobalAddressName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeGlobalAddressLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandComputeGlobalAddressLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -587,28 +591,28 @@ func expandComputeGlobalAddressLabels(v interface{}, d TerraformResourceData, co
 	return m, nil
 }
 
-func expandComputeGlobalAddressLabelFingerprint(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeGlobalAddressLabelFingerprint(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeGlobalAddressIpVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeGlobalAddressIpVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeGlobalAddressPrefixLength(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeGlobalAddressPrefixLength(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeGlobalAddressAddressType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeGlobalAddressAddressType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeGlobalAddressPurpose(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeGlobalAddressPurpose(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeGlobalAddressNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	f, err := parseGlobalFieldValue("networks", v.(string), "project", d, config, true)
+func expandComputeGlobalAddressNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	f, err := tpgresource.ParseGlobalFieldValue("networks", v.(string), "project", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for network: %s", err)
 	}

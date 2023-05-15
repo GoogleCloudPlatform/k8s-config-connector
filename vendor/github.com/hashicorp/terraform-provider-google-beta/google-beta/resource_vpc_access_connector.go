@@ -22,6 +22,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceVPCAccessConnector() *schema.Resource {
@@ -95,7 +98,7 @@ func ResourceVPCAccessConnector() *schema.Resource {
 				Computed:         true,
 				Optional:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareResourceNames,
+				DiffSuppressFunc: tpgresource.CompareResourceNames,
 				Description:      `Name or self_link of the VPC network. Required if 'ip_cidr_range' is set.`,
 				ExactlyOneOf:     []string{"network", "subnet.0.name"},
 			},
@@ -154,8 +157,8 @@ https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/su
 }
 
 func resourceVPCAccessConnectorCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -164,55 +167,55 @@ func resourceVPCAccessConnectorCreate(d *schema.ResourceData, meta interface{}) 
 	nameProp, err := expandVPCAccessConnectorName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	networkProp, err := expandVPCAccessConnectorNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 	ipCidrRangeProp, err := expandVPCAccessConnectorIpCidrRange(d.Get("ip_cidr_range"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ip_cidr_range"); !isEmptyValue(reflect.ValueOf(ipCidrRangeProp)) && (ok || !reflect.DeepEqual(v, ipCidrRangeProp)) {
+	} else if v, ok := d.GetOkExists("ip_cidr_range"); !tpgresource.IsEmptyValue(reflect.ValueOf(ipCidrRangeProp)) && (ok || !reflect.DeepEqual(v, ipCidrRangeProp)) {
 		obj["ipCidrRange"] = ipCidrRangeProp
 	}
 	machineTypeProp, err := expandVPCAccessConnectorMachineType(d.Get("machine_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("machine_type"); !isEmptyValue(reflect.ValueOf(machineTypeProp)) && (ok || !reflect.DeepEqual(v, machineTypeProp)) {
+	} else if v, ok := d.GetOkExists("machine_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(machineTypeProp)) && (ok || !reflect.DeepEqual(v, machineTypeProp)) {
 		obj["machineType"] = machineTypeProp
 	}
 	minThroughputProp, err := expandVPCAccessConnectorMinThroughput(d.Get("min_throughput"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("min_throughput"); !isEmptyValue(reflect.ValueOf(minThroughputProp)) && (ok || !reflect.DeepEqual(v, minThroughputProp)) {
+	} else if v, ok := d.GetOkExists("min_throughput"); !tpgresource.IsEmptyValue(reflect.ValueOf(minThroughputProp)) && (ok || !reflect.DeepEqual(v, minThroughputProp)) {
 		obj["minThroughput"] = minThroughputProp
 	}
 	minInstancesProp, err := expandVPCAccessConnectorMinInstances(d.Get("min_instances"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("min_instances"); !isEmptyValue(reflect.ValueOf(minInstancesProp)) && (ok || !reflect.DeepEqual(v, minInstancesProp)) {
+	} else if v, ok := d.GetOkExists("min_instances"); !tpgresource.IsEmptyValue(reflect.ValueOf(minInstancesProp)) && (ok || !reflect.DeepEqual(v, minInstancesProp)) {
 		obj["minInstances"] = minInstancesProp
 	}
 	maxInstancesProp, err := expandVPCAccessConnectorMaxInstances(d.Get("max_instances"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("max_instances"); !isEmptyValue(reflect.ValueOf(maxInstancesProp)) && (ok || !reflect.DeepEqual(v, maxInstancesProp)) {
+	} else if v, ok := d.GetOkExists("max_instances"); !tpgresource.IsEmptyValue(reflect.ValueOf(maxInstancesProp)) && (ok || !reflect.DeepEqual(v, maxInstancesProp)) {
 		obj["maxInstances"] = maxInstancesProp
 	}
 	maxThroughputProp, err := expandVPCAccessConnectorMaxThroughput(d.Get("max_throughput"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("max_throughput"); !isEmptyValue(reflect.ValueOf(maxThroughputProp)) && (ok || !reflect.DeepEqual(v, maxThroughputProp)) {
+	} else if v, ok := d.GetOkExists("max_throughput"); !tpgresource.IsEmptyValue(reflect.ValueOf(maxThroughputProp)) && (ok || !reflect.DeepEqual(v, maxThroughputProp)) {
 		obj["maxThroughput"] = maxThroughputProp
 	}
 	subnetProp, err := expandVPCAccessConnectorSubnet(d.Get("subnet"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("subnet"); !isEmptyValue(reflect.ValueOf(subnetProp)) && (ok || !reflect.DeepEqual(v, subnetProp)) {
+	} else if v, ok := d.GetOkExists("subnet"); !tpgresource.IsEmptyValue(reflect.ValueOf(subnetProp)) && (ok || !reflect.DeepEqual(v, subnetProp)) {
 		obj["subnet"] = subnetProp
 	}
 
@@ -221,7 +224,7 @@ func resourceVPCAccessConnectorCreate(d *schema.ResourceData, meta interface{}) 
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{VPCAccessBasePath}}projects/{{project}}/locations/{{region}}/connectors?connectorId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VPCAccessBasePath}}projects/{{project}}/locations/{{region}}/connectors?connectorId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -229,24 +232,24 @@ func resourceVPCAccessConnectorCreate(d *schema.ResourceData, meta interface{}) 
 	log.Printf("[DEBUG] Creating new Connector: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Connector: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Connector: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/connectors/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/connectors/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -278,7 +281,7 @@ func resourceVPCAccessConnectorCreate(d *schema.ResourceData, meta interface{}) 
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/connectors/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/connectors/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -295,33 +298,33 @@ func resourceVPCAccessConnectorCreate(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceVPCAccessConnectorRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{VPCAccessBasePath}}projects/{{project}}/locations/{{region}}/connectors/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VPCAccessBasePath}}projects/{{project}}/locations/{{region}}/connectors/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Connector: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("VPCAccessConnector %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("VPCAccessConnector %q", d.Id()))
 	}
 
 	res, err = resourceVPCAccessConnectorDecoder(d, meta, res)
@@ -375,21 +378,21 @@ func resourceVPCAccessConnectorRead(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceVPCAccessConnectorDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Connector: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{VPCAccessBasePath}}projects/{{project}}/locations/{{region}}/connectors/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VPCAccessBasePath}}projects/{{project}}/locations/{{region}}/connectors/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -398,13 +401,13 @@ func resourceVPCAccessConnectorDelete(d *schema.ResourceData, meta interface{}) 
 	log.Printf("[DEBUG] Deleting Connector %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Connector")
+		return transport_tpg.HandleNotFoundError(err, d, "Connector")
 	}
 
 	err = VPCAccessOperationWaitTime(
@@ -420,7 +423,7 @@ func resourceVPCAccessConnectorDelete(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceVPCAccessConnectorImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/connectors/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)",
@@ -431,7 +434,7 @@ func resourceVPCAccessConnectorImport(d *schema.ResourceData, meta interface{}) 
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/connectors/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/connectors/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -440,33 +443,33 @@ func resourceVPCAccessConnectorImport(d *schema.ResourceData, meta interface{}) 
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenVPCAccessConnectorName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVPCAccessConnectorName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenVPCAccessConnectorNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVPCAccessConnectorNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenVPCAccessConnectorIpCidrRange(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVPCAccessConnectorIpCidrRange(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVPCAccessConnectorState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVPCAccessConnectorState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVPCAccessConnectorMachineType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVPCAccessConnectorMachineType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVPCAccessConnectorMinThroughput(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVPCAccessConnectorMinThroughput(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -483,7 +486,7 @@ func flattenVPCAccessConnectorMinThroughput(v interface{}, d *schema.ResourceDat
 	return v // let terraform core handle it otherwise
 }
 
-func flattenVPCAccessConnectorMinInstances(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVPCAccessConnectorMinInstances(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -500,7 +503,7 @@ func flattenVPCAccessConnectorMinInstances(v interface{}, d *schema.ResourceData
 	return v // let terraform core handle it otherwise
 }
 
-func flattenVPCAccessConnectorMaxInstances(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVPCAccessConnectorMaxInstances(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -517,7 +520,7 @@ func flattenVPCAccessConnectorMaxInstances(v interface{}, d *schema.ResourceData
 	return v // let terraform core handle it otherwise
 }
 
-func flattenVPCAccessConnectorMaxThroughput(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVPCAccessConnectorMaxThroughput(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -534,7 +537,7 @@ func flattenVPCAccessConnectorMaxThroughput(v interface{}, d *schema.ResourceDat
 	return v // let terraform core handle it otherwise
 }
 
-func flattenVPCAccessConnectorSubnet(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVPCAccessConnectorSubnet(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -549,47 +552,47 @@ func flattenVPCAccessConnectorSubnet(v interface{}, d *schema.ResourceData, conf
 		flattenVPCAccessConnectorSubnetProjectId(original["projectId"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVPCAccessConnectorSubnetName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVPCAccessConnectorSubnetName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVPCAccessConnectorSubnetProjectId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVPCAccessConnectorSubnetProjectId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandVPCAccessConnectorName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVPCAccessConnectorName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVPCAccessConnectorNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	return GetResourceNameFromSelfLink(v.(string)), nil
+func expandVPCAccessConnectorNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return tpgresource.GetResourceNameFromSelfLink(v.(string)), nil
 }
 
-func expandVPCAccessConnectorIpCidrRange(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVPCAccessConnectorIpCidrRange(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVPCAccessConnectorMachineType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVPCAccessConnectorMachineType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVPCAccessConnectorMinThroughput(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVPCAccessConnectorMinThroughput(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVPCAccessConnectorMinInstances(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVPCAccessConnectorMinInstances(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVPCAccessConnectorMaxInstances(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVPCAccessConnectorMaxInstances(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVPCAccessConnectorMaxThroughput(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVPCAccessConnectorMaxThroughput(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVPCAccessConnectorSubnet(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVPCAccessConnectorSubnet(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -601,25 +604,25 @@ func expandVPCAccessConnectorSubnet(v interface{}, d TerraformResourceData, conf
 	transformedName, err := expandVPCAccessConnectorSubnetName(original["name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["name"] = transformedName
 	}
 
 	transformedProjectId, err := expandVPCAccessConnectorSubnetProjectId(original["project_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["projectId"] = transformedProjectId
 	}
 
 	return transformed, nil
 }
 
-func expandVPCAccessConnectorSubnetName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVPCAccessConnectorSubnetName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVPCAccessConnectorSubnetProjectId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVPCAccessConnectorSubnetProjectId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

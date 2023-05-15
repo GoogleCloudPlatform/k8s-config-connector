@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceDialogflowIntent() *schema.Resource {
@@ -61,14 +65,14 @@ Note: The action name must not contain whitespaces.`,
 (i.e. default platform). Possible values: ["FACEBOOK", "SLACK", "TELEGRAM", "KIK", "SKYPE", "LINE", "VIBER", "ACTIONS_ON_GOOGLE", "GOOGLE_HANGOUTS"]`,
 				Elem: &schema.Schema{
 					Type:         schema.TypeString,
-					ValidateFunc: validateEnum([]string{"FACEBOOK", "SLACK", "TELEGRAM", "KIK", "SKYPE", "LINE", "VIBER", "ACTIONS_ON_GOOGLE", "GOOGLE_HANGOUTS"}),
+					ValidateFunc: verify.ValidateEnum([]string{"FACEBOOK", "SLACK", "TELEGRAM", "KIK", "SKYPE", "LINE", "VIBER", "ACTIONS_ON_GOOGLE", "GOOGLE_HANGOUTS"}),
 				},
 			},
 			"events": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Description: `The collection of event names that trigger the intent. If the collection of input contexts is not empty, all of
-the contexts must be present in the active user session for an event to trigger this intent. See the 
+the contexts must be present in the active user session for an event to trigger this intent. See the
 [events reference](https://cloud.google.com/dialogflow/docs/events-overview) for more details.`,
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
@@ -124,7 +128,7 @@ Format: projects/<Project ID>/agent/intents/<Intent ID>.`,
 				Type:         schema.TypeString,
 				Computed:     true,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"WEBHOOK_STATE_ENABLED", "WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"WEBHOOK_STATE_ENABLED", "WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING", ""}),
 				Description: `Indicates whether webhooks are enabled for the intent.
 * WEBHOOK_STATE_ENABLED: Webhook is enabled in the agent and in the intent.
 * WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING: Webhook is enabled in the agent and in the intent. Also, each slot
@@ -155,7 +159,7 @@ Format: projects/<Project ID>/agent/intents/<Intent ID>.`,
 			"name": {
 				Type:     schema.TypeString,
 				Computed: true,
-				Description: `The unique identifier of this intent. 
+				Description: `The unique identifier of this intent.
 Format: projects/<Project ID>/agent/intents/<Intent ID>.`,
 			},
 			"root_followup_intent_name": {
@@ -177,8 +181,8 @@ Format: projects/<Project ID>/agent/intents/<Intent ID>.`,
 }
 
 func resourceDialogflowIntentCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -187,71 +191,71 @@ func resourceDialogflowIntentCreate(d *schema.ResourceData, meta interface{}) er
 	displayNameProp, err := expandDialogflowIntentDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	webhookStateProp, err := expandDialogflowIntentWebhookState(d.Get("webhook_state"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("webhook_state"); !isEmptyValue(reflect.ValueOf(webhookStateProp)) && (ok || !reflect.DeepEqual(v, webhookStateProp)) {
+	} else if v, ok := d.GetOkExists("webhook_state"); !tpgresource.IsEmptyValue(reflect.ValueOf(webhookStateProp)) && (ok || !reflect.DeepEqual(v, webhookStateProp)) {
 		obj["webhookState"] = webhookStateProp
 	}
 	priorityProp, err := expandDialogflowIntentPriority(d.Get("priority"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("priority"); !isEmptyValue(reflect.ValueOf(priorityProp)) && (ok || !reflect.DeepEqual(v, priorityProp)) {
+	} else if v, ok := d.GetOkExists("priority"); !tpgresource.IsEmptyValue(reflect.ValueOf(priorityProp)) && (ok || !reflect.DeepEqual(v, priorityProp)) {
 		obj["priority"] = priorityProp
 	}
 	isFallbackProp, err := expandDialogflowIntentIsFallback(d.Get("is_fallback"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("is_fallback"); !isEmptyValue(reflect.ValueOf(isFallbackProp)) && (ok || !reflect.DeepEqual(v, isFallbackProp)) {
+	} else if v, ok := d.GetOkExists("is_fallback"); !tpgresource.IsEmptyValue(reflect.ValueOf(isFallbackProp)) && (ok || !reflect.DeepEqual(v, isFallbackProp)) {
 		obj["isFallback"] = isFallbackProp
 	}
 	mlDisabledProp, err := expandDialogflowIntentMlDisabled(d.Get("ml_disabled"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ml_disabled"); !isEmptyValue(reflect.ValueOf(mlDisabledProp)) && (ok || !reflect.DeepEqual(v, mlDisabledProp)) {
+	} else if v, ok := d.GetOkExists("ml_disabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(mlDisabledProp)) && (ok || !reflect.DeepEqual(v, mlDisabledProp)) {
 		obj["mlDisabled"] = mlDisabledProp
 	}
 	inputContextNamesProp, err := expandDialogflowIntentInputContextNames(d.Get("input_context_names"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("input_context_names"); !isEmptyValue(reflect.ValueOf(inputContextNamesProp)) && (ok || !reflect.DeepEqual(v, inputContextNamesProp)) {
+	} else if v, ok := d.GetOkExists("input_context_names"); !tpgresource.IsEmptyValue(reflect.ValueOf(inputContextNamesProp)) && (ok || !reflect.DeepEqual(v, inputContextNamesProp)) {
 		obj["inputContextNames"] = inputContextNamesProp
 	}
 	eventsProp, err := expandDialogflowIntentEvents(d.Get("events"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("events"); !isEmptyValue(reflect.ValueOf(eventsProp)) && (ok || !reflect.DeepEqual(v, eventsProp)) {
+	} else if v, ok := d.GetOkExists("events"); !tpgresource.IsEmptyValue(reflect.ValueOf(eventsProp)) && (ok || !reflect.DeepEqual(v, eventsProp)) {
 		obj["events"] = eventsProp
 	}
 	actionProp, err := expandDialogflowIntentAction(d.Get("action"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("action"); !isEmptyValue(reflect.ValueOf(actionProp)) && (ok || !reflect.DeepEqual(v, actionProp)) {
+	} else if v, ok := d.GetOkExists("action"); !tpgresource.IsEmptyValue(reflect.ValueOf(actionProp)) && (ok || !reflect.DeepEqual(v, actionProp)) {
 		obj["action"] = actionProp
 	}
 	resetContextsProp, err := expandDialogflowIntentResetContexts(d.Get("reset_contexts"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("reset_contexts"); !isEmptyValue(reflect.ValueOf(resetContextsProp)) && (ok || !reflect.DeepEqual(v, resetContextsProp)) {
+	} else if v, ok := d.GetOkExists("reset_contexts"); !tpgresource.IsEmptyValue(reflect.ValueOf(resetContextsProp)) && (ok || !reflect.DeepEqual(v, resetContextsProp)) {
 		obj["resetContexts"] = resetContextsProp
 	}
 	defaultResponsePlatformsProp, err := expandDialogflowIntentDefaultResponsePlatforms(d.Get("default_response_platforms"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_response_platforms"); !isEmptyValue(reflect.ValueOf(defaultResponsePlatformsProp)) && (ok || !reflect.DeepEqual(v, defaultResponsePlatformsProp)) {
+	} else if v, ok := d.GetOkExists("default_response_platforms"); !tpgresource.IsEmptyValue(reflect.ValueOf(defaultResponsePlatformsProp)) && (ok || !reflect.DeepEqual(v, defaultResponsePlatformsProp)) {
 		obj["defaultResponsePlatforms"] = defaultResponsePlatformsProp
 	}
 	parentFollowupIntentNameProp, err := expandDialogflowIntentParentFollowupIntentName(d.Get("parent_followup_intent_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("parent_followup_intent_name"); !isEmptyValue(reflect.ValueOf(parentFollowupIntentNameProp)) && (ok || !reflect.DeepEqual(v, parentFollowupIntentNameProp)) {
+	} else if v, ok := d.GetOkExists("parent_followup_intent_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(parentFollowupIntentNameProp)) && (ok || !reflect.DeepEqual(v, parentFollowupIntentNameProp)) {
 		obj["parentFollowupIntentName"] = parentFollowupIntentNameProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DialogflowBasePath}}projects/{{project}}/agent/intents/")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowBasePath}}projects/{{project}}/agent/intents/")
 	if err != nil {
 		return err
 	}
@@ -259,18 +263,18 @@ func resourceDialogflowIntentCreate(d *schema.ResourceData, meta interface{}) er
 	log.Printf("[DEBUG] Creating new Intent: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Intent: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Intent: %s", err)
 	}
@@ -279,7 +283,7 @@ func resourceDialogflowIntentCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -309,33 +313,33 @@ func resourceDialogflowIntentCreate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceDialogflowIntentRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{DialogflowBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Intent: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("DialogflowIntent %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("DialogflowIntent %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -389,15 +393,15 @@ func resourceDialogflowIntentRead(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceDialogflowIntentUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Intent: %s", err)
 	}
@@ -407,65 +411,65 @@ func resourceDialogflowIntentUpdate(d *schema.ResourceData, meta interface{}) er
 	displayNameProp, err := expandDialogflowIntentDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	webhookStateProp, err := expandDialogflowIntentWebhookState(d.Get("webhook_state"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("webhook_state"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, webhookStateProp)) {
+	} else if v, ok := d.GetOkExists("webhook_state"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, webhookStateProp)) {
 		obj["webhookState"] = webhookStateProp
 	}
 	priorityProp, err := expandDialogflowIntentPriority(d.Get("priority"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("priority"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, priorityProp)) {
+	} else if v, ok := d.GetOkExists("priority"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, priorityProp)) {
 		obj["priority"] = priorityProp
 	}
 	isFallbackProp, err := expandDialogflowIntentIsFallback(d.Get("is_fallback"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("is_fallback"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, isFallbackProp)) {
+	} else if v, ok := d.GetOkExists("is_fallback"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, isFallbackProp)) {
 		obj["isFallback"] = isFallbackProp
 	}
 	mlDisabledProp, err := expandDialogflowIntentMlDisabled(d.Get("ml_disabled"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ml_disabled"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, mlDisabledProp)) {
+	} else if v, ok := d.GetOkExists("ml_disabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, mlDisabledProp)) {
 		obj["mlDisabled"] = mlDisabledProp
 	}
 	inputContextNamesProp, err := expandDialogflowIntentInputContextNames(d.Get("input_context_names"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("input_context_names"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, inputContextNamesProp)) {
+	} else if v, ok := d.GetOkExists("input_context_names"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, inputContextNamesProp)) {
 		obj["inputContextNames"] = inputContextNamesProp
 	}
 	eventsProp, err := expandDialogflowIntentEvents(d.Get("events"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("events"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, eventsProp)) {
+	} else if v, ok := d.GetOkExists("events"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, eventsProp)) {
 		obj["events"] = eventsProp
 	}
 	actionProp, err := expandDialogflowIntentAction(d.Get("action"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("action"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, actionProp)) {
+	} else if v, ok := d.GetOkExists("action"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, actionProp)) {
 		obj["action"] = actionProp
 	}
 	resetContextsProp, err := expandDialogflowIntentResetContexts(d.Get("reset_contexts"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("reset_contexts"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, resetContextsProp)) {
+	} else if v, ok := d.GetOkExists("reset_contexts"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, resetContextsProp)) {
 		obj["resetContexts"] = resetContextsProp
 	}
 	defaultResponsePlatformsProp, err := expandDialogflowIntentDefaultResponsePlatforms(d.Get("default_response_platforms"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_response_platforms"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultResponsePlatformsProp)) {
+	} else if v, ok := d.GetOkExists("default_response_platforms"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultResponsePlatformsProp)) {
 		obj["defaultResponsePlatforms"] = defaultResponsePlatformsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DialogflowBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -473,11 +477,11 @@ func resourceDialogflowIntentUpdate(d *schema.ResourceData, meta interface{}) er
 	log.Printf("[DEBUG] Updating Intent %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Intent %q: %s", d.Id(), err)
@@ -489,21 +493,21 @@ func resourceDialogflowIntentUpdate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceDialogflowIntentDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Intent: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{DialogflowBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -512,13 +516,13 @@ func resourceDialogflowIntentDelete(d *schema.ResourceData, meta interface{}) er
 	log.Printf("[DEBUG] Deleting Intent %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Intent")
+		return transport_tpg.HandleNotFoundError(err, d, "Intent")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Intent %q: %#v", d.Id(), res)
@@ -527,7 +531,7 @@ func resourceDialogflowIntentDelete(d *schema.ResourceData, meta interface{}) er
 
 func resourceDialogflowIntentImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
@@ -548,19 +552,19 @@ func resourceDialogflowIntentImport(d *schema.ResourceData, meta interface{}) ([
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenDialogflowIntentName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentWebhookState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentWebhookState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentPriority(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentPriority(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -577,43 +581,43 @@ func flattenDialogflowIntentPriority(v interface{}, d *schema.ResourceData, conf
 	return v // let terraform core handle it otherwise
 }
 
-func flattenDialogflowIntentIsFallback(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentIsFallback(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentMlDisabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentMlDisabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentInputContextNames(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentInputContextNames(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentEvents(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentEvents(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentAction(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentAction(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentResetContexts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentResetContexts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentDefaultResponsePlatforms(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentDefaultResponsePlatforms(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentRootFollowupIntentName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentRootFollowupIntentName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentParentFollowupIntentName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentParentFollowupIntentName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentFollowupIntentInfo(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentFollowupIntentInfo(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -632,54 +636,54 @@ func flattenDialogflowIntentFollowupIntentInfo(v interface{}, d *schema.Resource
 	}
 	return transformed
 }
-func flattenDialogflowIntentFollowupIntentInfoFollowupIntentName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentFollowupIntentInfoFollowupIntentName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowIntentFollowupIntentInfoParentFollowupIntentName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowIntentFollowupIntentInfoParentFollowupIntentName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandDialogflowIntentDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowIntentDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowIntentWebhookState(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowIntentWebhookState(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowIntentPriority(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowIntentPriority(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowIntentIsFallback(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowIntentIsFallback(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowIntentMlDisabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowIntentMlDisabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowIntentInputContextNames(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowIntentInputContextNames(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowIntentEvents(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowIntentEvents(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowIntentAction(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowIntentAction(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowIntentResetContexts(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowIntentResetContexts(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowIntentDefaultResponsePlatforms(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowIntentDefaultResponsePlatforms(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowIntentParentFollowupIntentName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowIntentParentFollowupIntentName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

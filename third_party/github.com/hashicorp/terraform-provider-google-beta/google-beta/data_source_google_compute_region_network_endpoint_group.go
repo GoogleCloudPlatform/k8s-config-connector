@@ -5,16 +5,18 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceGoogleComputeRegionNetworkEndpointGroup() *schema.Resource {
 	// Generate datasource schema from resource
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceComputeRegionNetworkEndpointGroup().Schema)
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceComputeRegionNetworkEndpointGroup().Schema)
 
-	addOptionalFieldsToSchema(dsSchema, "name")
-	addOptionalFieldsToSchema(dsSchema, "region")
-	addOptionalFieldsToSchema(dsSchema, "project")
-	addOptionalFieldsToSchema(dsSchema, "self_link")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "name")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "region")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "project")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "self_link")
 
 	return &schema.Resource{
 		Read:   dataSourceComputeRegionNetworkEndpointGroupRead,
@@ -23,20 +25,20 @@ func DataSourceGoogleComputeRegionNetworkEndpointGroup() *schema.Resource {
 }
 
 func dataSourceComputeRegionNetworkEndpointGroupRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if name, ok := d.GetOk("name"); ok {
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return err
 		}
-		region, err := getRegion(d, config)
+		region, err := tpgresource.GetRegion(d, config)
 		if err != nil {
 			return err
 		}
 
 		d.SetId(fmt.Sprintf("projects/%s/regions/%s/networkEndpointGroups/%s", project, region, name.(string)))
 	} else if selfLink, ok := d.GetOk("self_link"); ok {
-		parsed, err := ParseNetworkEndpointGroupRegionalFieldValue(selfLink.(string), d, config)
+		parsed, err := tpgresource.ParseNetworkEndpointGroupRegionalFieldValue(selfLink.(string), d, config)
 		if err != nil {
 			return err
 		}

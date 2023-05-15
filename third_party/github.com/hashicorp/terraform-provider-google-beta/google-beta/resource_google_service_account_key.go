@@ -5,6 +5,9 @@ import (
 	"log"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"google.golang.org/api/iam/v1"
@@ -94,13 +97,13 @@ func ResourceGoogleServiceAccountKey() *schema.Resource {
 }
 
 func resourceGoogleServiceAccountKeyCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	serviceAccountName, err := serviceAccountFQN(d.Get("service_account_id").(string), d, config)
+	serviceAccountName, err := tpgresource.ServiceAccountFQN(d.Get("service_account_id").(string), d, config)
 	if err != nil {
 		return err
 	}
@@ -146,8 +149,8 @@ func resourceGoogleServiceAccountKeyCreate(d *schema.ResourceData, meta interfac
 }
 
 func resourceGoogleServiceAccountKeyRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -157,11 +160,11 @@ func resourceGoogleServiceAccountKeyRead(d *schema.ResourceData, meta interface{
 	// Confirm the service account key exists
 	sak, err := config.NewIamClient(userAgent).Projects.ServiceAccounts.Keys.Get(d.Id()).PublicKeyType(publicKeyType).Do()
 	if err != nil {
-		if err = handleNotFoundError(err, d, fmt.Sprintf("Service Account Key %q", d.Id())); err == nil {
+		if err = transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Service Account Key %q", d.Id())); err == nil {
 			return nil
 		} else {
 			// This resource also returns 403 when it's not found.
-			if IsGoogleApiErrorWithCode(err, 403) {
+			if transport_tpg.IsGoogleApiErrorWithCode(err, 403) {
 				log.Printf("[DEBUG] Got a 403 error trying to read service account key %s, assuming it's gone.", d.Id())
 				d.SetId("")
 				return nil
@@ -184,8 +187,8 @@ func resourceGoogleServiceAccountKeyRead(d *schema.ResourceData, meta interface{
 }
 
 func resourceGoogleServiceAccountKeyDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -193,11 +196,11 @@ func resourceGoogleServiceAccountKeyDelete(d *schema.ResourceData, meta interfac
 	_, err = config.NewIamClient(userAgent).Projects.ServiceAccounts.Keys.Delete(d.Id()).Do()
 
 	if err != nil {
-		if err = handleNotFoundError(err, d, fmt.Sprintf("Service Account Key %q", d.Id())); err == nil {
+		if err = transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Service Account Key %q", d.Id())); err == nil {
 			return nil
 		} else {
 			// This resource also returns 403 when it's not found.
-			if IsGoogleApiErrorWithCode(err, 403) {
+			if transport_tpg.IsGoogleApiErrorWithCode(err, 403) {
 				log.Printf("[DEBUG] Got a 403 error trying to read service account key %s, assuming it's gone.", d.Id())
 				d.SetId("")
 				return nil

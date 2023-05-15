@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceNetworkSecurityGatewaySecurityPolicy() *schema.Resource {
@@ -60,6 +63,11 @@ gatewaySecurityPolicy should match the pattern:(^a-z?$).`,
 The default value is 'global'.`,
 				Default: "global",
 			},
+			"tls_inspection_policy": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: `Name of a TlsInspectionPolicy resource that defines how TLS inspection is performed for any rule that enables it.`,
+			},
 			"create_time": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -91,8 +99,8 @@ Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".`,
 }
 
 func resourceNetworkSecurityGatewaySecurityPolicyCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -101,11 +109,17 @@ func resourceNetworkSecurityGatewaySecurityPolicyCreate(d *schema.ResourceData, 
 	descriptionProp, err := expandNetworkSecurityGatewaySecurityPolicyDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
+	tlsInspectionPolicyProp, err := expandNetworkSecurityGatewaySecurityPolicyTlsInspectionPolicy(d.Get("tls_inspection_policy"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("tls_inspection_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(tlsInspectionPolicyProp)) && (ok || !reflect.DeepEqual(v, tlsInspectionPolicyProp)) {
+		obj["tlsInspectionPolicy"] = tlsInspectionPolicyProp
+	}
 
-	url, err := ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies?gatewaySecurityPolicyId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies?gatewaySecurityPolicyId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -113,24 +127,24 @@ func resourceNetworkSecurityGatewaySecurityPolicyCreate(d *schema.ResourceData, 
 	log.Printf("[DEBUG] Creating new GatewaySecurityPolicy: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for GatewaySecurityPolicy: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating GatewaySecurityPolicy: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -152,33 +166,33 @@ func resourceNetworkSecurityGatewaySecurityPolicyCreate(d *schema.ResourceData, 
 }
 
 func resourceNetworkSecurityGatewaySecurityPolicyRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for GatewaySecurityPolicy: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("NetworkSecurityGatewaySecurityPolicy %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("NetworkSecurityGatewaySecurityPolicy %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -202,15 +216,15 @@ func resourceNetworkSecurityGatewaySecurityPolicyRead(d *schema.ResourceData, me
 }
 
 func resourceNetworkSecurityGatewaySecurityPolicyUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for GatewaySecurityPolicy: %s", err)
 	}
@@ -220,11 +234,17 @@ func resourceNetworkSecurityGatewaySecurityPolicyUpdate(d *schema.ResourceData, 
 	descriptionProp, err := expandNetworkSecurityGatewaySecurityPolicyDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
+	tlsInspectionPolicyProp, err := expandNetworkSecurityGatewaySecurityPolicyTlsInspectionPolicy(d.Get("tls_inspection_policy"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("tls_inspection_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, tlsInspectionPolicyProp)) {
+		obj["tlsInspectionPolicy"] = tlsInspectionPolicyProp
+	}
 
-	url, err := ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -235,19 +255,23 @@ func resourceNetworkSecurityGatewaySecurityPolicyUpdate(d *schema.ResourceData, 
 	if d.HasChange("description") {
 		updateMask = append(updateMask, "description")
 	}
+
+	if d.HasChange("tls_inspection_policy") {
+		updateMask = append(updateMask, "tlsInspectionPolicy")
+	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating GatewaySecurityPolicy %q: %s", d.Id(), err)
@@ -267,21 +291,21 @@ func resourceNetworkSecurityGatewaySecurityPolicyUpdate(d *schema.ResourceData, 
 }
 
 func resourceNetworkSecurityGatewaySecurityPolicyDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for GatewaySecurityPolicy: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -290,13 +314,13 @@ func resourceNetworkSecurityGatewaySecurityPolicyDelete(d *schema.ResourceData, 
 	log.Printf("[DEBUG] Deleting GatewaySecurityPolicy %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "GatewaySecurityPolicy")
+		return transport_tpg.HandleNotFoundError(err, d, "GatewaySecurityPolicy")
 	}
 
 	err = NetworkSecurityOperationWaitTime(
@@ -312,7 +336,7 @@ func resourceNetworkSecurityGatewaySecurityPolicyDelete(d *schema.ResourceData, 
 }
 
 func resourceNetworkSecurityGatewaySecurityPolicyImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/gatewaySecurityPolicies/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -322,7 +346,7 @@ func resourceNetworkSecurityGatewaySecurityPolicyImport(d *schema.ResourceData, 
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -331,22 +355,26 @@ func resourceNetworkSecurityGatewaySecurityPolicyImport(d *schema.ResourceData, 
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenNetworkSecurityGatewaySecurityPolicySelfLink(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkSecurityGatewaySecurityPolicySelfLink(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNetworkSecurityGatewaySecurityPolicyCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkSecurityGatewaySecurityPolicyCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNetworkSecurityGatewaySecurityPolicyUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkSecurityGatewaySecurityPolicyUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNetworkSecurityGatewaySecurityPolicyDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkSecurityGatewaySecurityPolicyDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandNetworkSecurityGatewaySecurityPolicyDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNetworkSecurityGatewaySecurityPolicyDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandNetworkSecurityGatewaySecurityPolicyTlsInspectionPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

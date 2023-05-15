@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceGKEBackupBackupPlan() *schema.Resource {
@@ -276,8 +279,8 @@ backupPlans.delete to ensure that their change will be applied to the same versi
 }
 
 func resourceGKEBackupBackupPlanCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -286,53 +289,53 @@ func resourceGKEBackupBackupPlanCreate(d *schema.ResourceData, meta interface{})
 	nameProp, err := expandGKEBackupBackupPlanName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	descriptionProp, err := expandGKEBackupBackupPlanDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	clusterProp, err := expandGKEBackupBackupPlanCluster(d.Get("cluster"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("cluster"); !isEmptyValue(reflect.ValueOf(clusterProp)) && (ok || !reflect.DeepEqual(v, clusterProp)) {
+	} else if v, ok := d.GetOkExists("cluster"); !tpgresource.IsEmptyValue(reflect.ValueOf(clusterProp)) && (ok || !reflect.DeepEqual(v, clusterProp)) {
 		obj["cluster"] = clusterProp
 	}
 	retentionPolicyProp, err := expandGKEBackupBackupPlanRetentionPolicy(d.Get("retention_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("retention_policy"); !isEmptyValue(reflect.ValueOf(retentionPolicyProp)) && (ok || !reflect.DeepEqual(v, retentionPolicyProp)) {
+	} else if v, ok := d.GetOkExists("retention_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(retentionPolicyProp)) && (ok || !reflect.DeepEqual(v, retentionPolicyProp)) {
 		obj["retentionPolicy"] = retentionPolicyProp
 	}
 	labelsProp, err := expandGKEBackupBackupPlanLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	backupScheduleProp, err := expandGKEBackupBackupPlanBackupSchedule(d.Get("backup_schedule"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("backup_schedule"); !isEmptyValue(reflect.ValueOf(backupScheduleProp)) && (ok || !reflect.DeepEqual(v, backupScheduleProp)) {
+	} else if v, ok := d.GetOkExists("backup_schedule"); !tpgresource.IsEmptyValue(reflect.ValueOf(backupScheduleProp)) && (ok || !reflect.DeepEqual(v, backupScheduleProp)) {
 		obj["backupSchedule"] = backupScheduleProp
 	}
 	deactivatedProp, err := expandGKEBackupBackupPlanDeactivated(d.Get("deactivated"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("deactivated"); !isEmptyValue(reflect.ValueOf(deactivatedProp)) && (ok || !reflect.DeepEqual(v, deactivatedProp)) {
+	} else if v, ok := d.GetOkExists("deactivated"); !tpgresource.IsEmptyValue(reflect.ValueOf(deactivatedProp)) && (ok || !reflect.DeepEqual(v, deactivatedProp)) {
 		obj["deactivated"] = deactivatedProp
 	}
 	backupConfigProp, err := expandGKEBackupBackupPlanBackupConfig(d.Get("backup_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("backup_config"); !isEmptyValue(reflect.ValueOf(backupConfigProp)) && (ok || !reflect.DeepEqual(v, backupConfigProp)) {
+	} else if v, ok := d.GetOkExists("backup_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(backupConfigProp)) && (ok || !reflect.DeepEqual(v, backupConfigProp)) {
 		obj["backupConfig"] = backupConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{GKEBackupBasePath}}projects/{{project}}/locations/{{location}}/backupPlans?backupPlanId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{GKEBackupBasePath}}projects/{{project}}/locations/{{location}}/backupPlans?backupPlanId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -340,24 +343,24 @@ func resourceGKEBackupBackupPlanCreate(d *schema.ResourceData, meta interface{})
 	log.Printf("[DEBUG] Creating new BackupPlan: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for BackupPlan: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating BackupPlan: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -381,7 +384,7 @@ func resourceGKEBackupBackupPlanCreate(d *schema.ResourceData, meta interface{})
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -393,33 +396,33 @@ func resourceGKEBackupBackupPlanCreate(d *schema.ResourceData, meta interface{})
 }
 
 func resourceGKEBackupBackupPlanRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{GKEBackupBasePath}}projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{GKEBackupBasePath}}projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for BackupPlan: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("GKEBackupBackupPlan %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("GKEBackupBackupPlan %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -464,15 +467,15 @@ func resourceGKEBackupBackupPlanRead(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceGKEBackupBackupPlanUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for BackupPlan: %s", err)
 	}
@@ -482,41 +485,41 @@ func resourceGKEBackupBackupPlanUpdate(d *schema.ResourceData, meta interface{})
 	descriptionProp, err := expandGKEBackupBackupPlanDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	retentionPolicyProp, err := expandGKEBackupBackupPlanRetentionPolicy(d.Get("retention_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("retention_policy"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, retentionPolicyProp)) {
+	} else if v, ok := d.GetOkExists("retention_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, retentionPolicyProp)) {
 		obj["retentionPolicy"] = retentionPolicyProp
 	}
 	labelsProp, err := expandGKEBackupBackupPlanLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	backupScheduleProp, err := expandGKEBackupBackupPlanBackupSchedule(d.Get("backup_schedule"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("backup_schedule"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, backupScheduleProp)) {
+	} else if v, ok := d.GetOkExists("backup_schedule"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, backupScheduleProp)) {
 		obj["backupSchedule"] = backupScheduleProp
 	}
 	deactivatedProp, err := expandGKEBackupBackupPlanDeactivated(d.Get("deactivated"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("deactivated"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, deactivatedProp)) {
+	} else if v, ok := d.GetOkExists("deactivated"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, deactivatedProp)) {
 		obj["deactivated"] = deactivatedProp
 	}
 	backupConfigProp, err := expandGKEBackupBackupPlanBackupConfig(d.Get("backup_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("backup_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, backupConfigProp)) {
+	} else if v, ok := d.GetOkExists("backup_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, backupConfigProp)) {
 		obj["backupConfig"] = backupConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{GKEBackupBasePath}}projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{GKEBackupBasePath}}projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -549,17 +552,17 @@ func resourceGKEBackupBackupPlanUpdate(d *schema.ResourceData, meta interface{})
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating BackupPlan %q: %s", d.Id(), err)
@@ -579,21 +582,21 @@ func resourceGKEBackupBackupPlanUpdate(d *schema.ResourceData, meta interface{})
 }
 
 func resourceGKEBackupBackupPlanDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for BackupPlan: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{GKEBackupBasePath}}projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{GKEBackupBasePath}}projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -602,13 +605,13 @@ func resourceGKEBackupBackupPlanDelete(d *schema.ResourceData, meta interface{})
 	log.Printf("[DEBUG] Deleting BackupPlan %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "BackupPlan")
+		return transport_tpg.HandleNotFoundError(err, d, "BackupPlan")
 	}
 
 	err = GKEBackupOperationWaitTime(
@@ -624,7 +627,7 @@ func resourceGKEBackupBackupPlanDelete(d *schema.ResourceData, meta interface{})
 }
 
 func resourceGKEBackupBackupPlanImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/backupPlans/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -634,7 +637,7 @@ func resourceGKEBackupBackupPlanImport(d *schema.ResourceData, meta interface{})
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -643,26 +646,26 @@ func resourceGKEBackupBackupPlanImport(d *schema.ResourceData, meta interface{})
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenGKEBackupBackupPlanName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenGKEBackupBackupPlanUid(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanUid(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanCluster(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanCluster(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanRetentionPolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanRetentionPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -679,7 +682,7 @@ func flattenGKEBackupBackupPlanRetentionPolicy(v interface{}, d *schema.Resource
 		flattenGKEBackupBackupPlanRetentionPolicyLocked(original["locked"], d, config)
 	return []interface{}{transformed}
 }
-func flattenGKEBackupBackupPlanRetentionPolicyBackupDeleteLockDays(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanRetentionPolicyBackupDeleteLockDays(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -696,7 +699,7 @@ func flattenGKEBackupBackupPlanRetentionPolicyBackupDeleteLockDays(v interface{}
 	return v // let terraform core handle it otherwise
 }
 
-func flattenGKEBackupBackupPlanRetentionPolicyBackupRetainDays(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanRetentionPolicyBackupRetainDays(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -713,15 +716,15 @@ func flattenGKEBackupBackupPlanRetentionPolicyBackupRetainDays(v interface{}, d 
 	return v // let terraform core handle it otherwise
 }
 
-func flattenGKEBackupBackupPlanRetentionPolicyLocked(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanRetentionPolicyLocked(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanBackupSchedule(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupSchedule(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -736,23 +739,23 @@ func flattenGKEBackupBackupPlanBackupSchedule(v interface{}, d *schema.ResourceD
 		flattenGKEBackupBackupPlanBackupSchedulePaused(original["paused"], d, config)
 	return []interface{}{transformed}
 }
-func flattenGKEBackupBackupPlanBackupScheduleCronSchedule(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupScheduleCronSchedule(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanBackupSchedulePaused(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupSchedulePaused(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanEtag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanEtag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanDeactivated(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanDeactivated(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanBackupConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -775,15 +778,15 @@ func flattenGKEBackupBackupPlanBackupConfig(v interface{}, d *schema.ResourceDat
 		flattenGKEBackupBackupPlanBackupConfigSelectedApplications(original["selectedApplications"], d, config)
 	return []interface{}{transformed}
 }
-func flattenGKEBackupBackupPlanBackupConfigIncludeVolumeData(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupConfigIncludeVolumeData(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanBackupConfigIncludeSecrets(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupConfigIncludeSecrets(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanBackupConfigEncryptionKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupConfigEncryptionKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -796,15 +799,15 @@ func flattenGKEBackupBackupPlanBackupConfigEncryptionKey(v interface{}, d *schem
 		flattenGKEBackupBackupPlanBackupConfigEncryptionKeyGcpKmsEncryptionKey(original["gcpKmsEncryptionKey"], d, config)
 	return []interface{}{transformed}
 }
-func flattenGKEBackupBackupPlanBackupConfigEncryptionKeyGcpKmsEncryptionKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupConfigEncryptionKeyGcpKmsEncryptionKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanBackupConfigAllNamespaces(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupConfigAllNamespaces(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanBackupConfigSelectedNamespaces(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupConfigSelectedNamespaces(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -817,11 +820,11 @@ func flattenGKEBackupBackupPlanBackupConfigSelectedNamespaces(v interface{}, d *
 		flattenGKEBackupBackupPlanBackupConfigSelectedNamespacesNamespaces(original["namespaces"], d, config)
 	return []interface{}{transformed}
 }
-func flattenGKEBackupBackupPlanBackupConfigSelectedNamespacesNamespaces(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupConfigSelectedNamespacesNamespaces(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanBackupConfigSelectedApplications(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupConfigSelectedApplications(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -834,7 +837,7 @@ func flattenGKEBackupBackupPlanBackupConfigSelectedApplications(v interface{}, d
 		flattenGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNames(original["namespacedNames"], d, config)
 	return []interface{}{transformed}
 }
-func flattenGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNames(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNames(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -853,15 +856,15 @@ func flattenGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNames(v
 	}
 	return transformed
 }
-func flattenGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNamesNamespace(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNamesNamespace(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNamesName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNamesName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenGKEBackupBackupPlanProtectedPodCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenGKEBackupBackupPlanProtectedPodCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -878,19 +881,19 @@ func flattenGKEBackupBackupPlanProtectedPodCount(v interface{}, d *schema.Resour
 	return v // let terraform core handle it otherwise
 }
 
-func expandGKEBackupBackupPlanName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	return ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
+func expandGKEBackupBackupPlanName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/backupPlans/{{name}}")
 }
 
-func expandGKEBackupBackupPlanDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanCluster(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanCluster(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanRetentionPolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanRetentionPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -902,40 +905,40 @@ func expandGKEBackupBackupPlanRetentionPolicy(v interface{}, d TerraformResource
 	transformedBackupDeleteLockDays, err := expandGKEBackupBackupPlanRetentionPolicyBackupDeleteLockDays(original["backup_delete_lock_days"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBackupDeleteLockDays); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBackupDeleteLockDays); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["backupDeleteLockDays"] = transformedBackupDeleteLockDays
 	}
 
 	transformedBackupRetainDays, err := expandGKEBackupBackupPlanRetentionPolicyBackupRetainDays(original["backup_retain_days"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBackupRetainDays); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBackupRetainDays); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["backupRetainDays"] = transformedBackupRetainDays
 	}
 
 	transformedLocked, err := expandGKEBackupBackupPlanRetentionPolicyLocked(original["locked"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLocked); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLocked); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["locked"] = transformedLocked
 	}
 
 	return transformed, nil
 }
 
-func expandGKEBackupBackupPlanRetentionPolicyBackupDeleteLockDays(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanRetentionPolicyBackupDeleteLockDays(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanRetentionPolicyBackupRetainDays(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanRetentionPolicyBackupRetainDays(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanRetentionPolicyLocked(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanRetentionPolicyLocked(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandGKEBackupBackupPlanLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -946,7 +949,7 @@ func expandGKEBackupBackupPlanLabels(v interface{}, d TerraformResourceData, con
 	return m, nil
 }
 
-func expandGKEBackupBackupPlanBackupSchedule(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupSchedule(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -958,33 +961,33 @@ func expandGKEBackupBackupPlanBackupSchedule(v interface{}, d TerraformResourceD
 	transformedCronSchedule, err := expandGKEBackupBackupPlanBackupScheduleCronSchedule(original["cron_schedule"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCronSchedule); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCronSchedule); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["cronSchedule"] = transformedCronSchedule
 	}
 
 	transformedPaused, err := expandGKEBackupBackupPlanBackupSchedulePaused(original["paused"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPaused); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPaused); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["paused"] = transformedPaused
 	}
 
 	return transformed, nil
 }
 
-func expandGKEBackupBackupPlanBackupScheduleCronSchedule(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupScheduleCronSchedule(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanBackupSchedulePaused(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupSchedulePaused(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanDeactivated(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanDeactivated(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanBackupConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -996,57 +999,57 @@ func expandGKEBackupBackupPlanBackupConfig(v interface{}, d TerraformResourceDat
 	transformedIncludeVolumeData, err := expandGKEBackupBackupPlanBackupConfigIncludeVolumeData(original["include_volume_data"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedIncludeVolumeData); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedIncludeVolumeData); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["includeVolumeData"] = transformedIncludeVolumeData
 	}
 
 	transformedIncludeSecrets, err := expandGKEBackupBackupPlanBackupConfigIncludeSecrets(original["include_secrets"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedIncludeSecrets); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedIncludeSecrets); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["includeSecrets"] = transformedIncludeSecrets
 	}
 
 	transformedEncryptionKey, err := expandGKEBackupBackupPlanBackupConfigEncryptionKey(original["encryption_key"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEncryptionKey); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEncryptionKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["encryptionKey"] = transformedEncryptionKey
 	}
 
 	transformedAllNamespaces, err := expandGKEBackupBackupPlanBackupConfigAllNamespaces(original["all_namespaces"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAllNamespaces); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAllNamespaces); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["allNamespaces"] = transformedAllNamespaces
 	}
 
 	transformedSelectedNamespaces, err := expandGKEBackupBackupPlanBackupConfigSelectedNamespaces(original["selected_namespaces"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSelectedNamespaces); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSelectedNamespaces); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["selectedNamespaces"] = transformedSelectedNamespaces
 	}
 
 	transformedSelectedApplications, err := expandGKEBackupBackupPlanBackupConfigSelectedApplications(original["selected_applications"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSelectedApplications); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSelectedApplications); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["selectedApplications"] = transformedSelectedApplications
 	}
 
 	return transformed, nil
 }
 
-func expandGKEBackupBackupPlanBackupConfigIncludeVolumeData(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupConfigIncludeVolumeData(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanBackupConfigIncludeSecrets(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupConfigIncludeSecrets(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanBackupConfigEncryptionKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupConfigEncryptionKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1058,22 +1061,22 @@ func expandGKEBackupBackupPlanBackupConfigEncryptionKey(v interface{}, d Terrafo
 	transformedGcpKmsEncryptionKey, err := expandGKEBackupBackupPlanBackupConfigEncryptionKeyGcpKmsEncryptionKey(original["gcp_kms_encryption_key"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedGcpKmsEncryptionKey); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedGcpKmsEncryptionKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["gcpKmsEncryptionKey"] = transformedGcpKmsEncryptionKey
 	}
 
 	return transformed, nil
 }
 
-func expandGKEBackupBackupPlanBackupConfigEncryptionKeyGcpKmsEncryptionKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupConfigEncryptionKeyGcpKmsEncryptionKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanBackupConfigAllNamespaces(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupConfigAllNamespaces(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanBackupConfigSelectedNamespaces(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupConfigSelectedNamespaces(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1085,18 +1088,18 @@ func expandGKEBackupBackupPlanBackupConfigSelectedNamespaces(v interface{}, d Te
 	transformedNamespaces, err := expandGKEBackupBackupPlanBackupConfigSelectedNamespacesNamespaces(original["namespaces"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedNamespaces); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedNamespaces); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["namespaces"] = transformedNamespaces
 	}
 
 	return transformed, nil
 }
 
-func expandGKEBackupBackupPlanBackupConfigSelectedNamespacesNamespaces(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupConfigSelectedNamespacesNamespaces(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanBackupConfigSelectedApplications(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupConfigSelectedApplications(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1108,14 +1111,14 @@ func expandGKEBackupBackupPlanBackupConfigSelectedApplications(v interface{}, d 
 	transformedNamespacedNames, err := expandGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNames(original["namespaced_names"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedNamespacedNames); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedNamespacedNames); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["namespacedNames"] = transformedNamespacedNames
 	}
 
 	return transformed, nil
 }
 
-func expandGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNames(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNames(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -1128,14 +1131,14 @@ func expandGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNames(v 
 		transformedNamespace, err := expandGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNamesNamespace(original["namespace"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedNamespace); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedNamespace); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["namespace"] = transformedNamespace
 		}
 
 		transformedName, err := expandGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNamesName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
@@ -1144,10 +1147,10 @@ func expandGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNames(v 
 	return req, nil
 }
 
-func expandGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNamesNamespace(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNamesNamespace(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNamesName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandGKEBackupBackupPlanBackupConfigSelectedApplicationsNamespacedNamesName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

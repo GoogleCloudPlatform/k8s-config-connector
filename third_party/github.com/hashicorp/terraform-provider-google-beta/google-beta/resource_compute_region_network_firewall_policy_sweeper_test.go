@@ -22,6 +22,8 @@ import (
 
 	compute "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/compute/beta"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func init() {
@@ -34,7 +36,7 @@ func init() {
 func testSweepComputeRegionNetworkFirewallPolicy(region string) error {
 	log.Print("[INFO][SWEEPER_LOG] Starting sweeper for ComputeRegionNetworkFirewallPolicy")
 
-	config, err := SharedConfigForRegion(region)
+	config, err := acctest.SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -47,7 +49,7 @@ func testSweepComputeRegionNetworkFirewallPolicy(region string) error {
 	}
 
 	t := &testing.T{}
-	billingId := GetTestBillingAccountFromEnv(t)
+	billingId := acctest.GetTestBillingAccountFromEnv(t)
 
 	// Setup variables to be used for Delete arguments.
 	d := map[string]string{
@@ -58,7 +60,7 @@ func testSweepComputeRegionNetworkFirewallPolicy(region string) error {
 		"billing_account": billingId,
 	}
 
-	client := NewDCLComputeClient(config, config.UserAgent, "", 0)
+	client := transport_tpg.NewDCLComputeClient(config, config.UserAgent, "", 0)
 	err = client.DeleteAllNetworkFirewallPolicy(context.Background(), d["project"], d["location"], isDeletableComputeRegionNetworkFirewallPolicy)
 	if err != nil {
 		return err
@@ -67,5 +69,5 @@ func testSweepComputeRegionNetworkFirewallPolicy(region string) error {
 }
 
 func isDeletableComputeRegionNetworkFirewallPolicy(r *compute.NetworkFirewallPolicy) bool {
-	return IsSweepableTestResource(*r.Name)
+	return acctest.IsSweepableTestResource(*r.Name)
 }

@@ -22,6 +22,8 @@ import (
 
 	recaptchaenterprise "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/recaptchaenterprise/beta"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func init() {
@@ -34,7 +36,7 @@ func init() {
 func testSweepRecaptchaEnterpriseKey(region string) error {
 	log.Print("[INFO][SWEEPER_LOG] Starting sweeper for RecaptchaEnterpriseKey")
 
-	config, err := SharedConfigForRegion(region)
+	config, err := acctest.SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -47,7 +49,7 @@ func testSweepRecaptchaEnterpriseKey(region string) error {
 	}
 
 	t := &testing.T{}
-	billingId := GetTestBillingAccountFromEnv(t)
+	billingId := acctest.GetTestBillingAccountFromEnv(t)
 
 	// Setup variables to be used for Delete arguments.
 	d := map[string]string{
@@ -58,7 +60,7 @@ func testSweepRecaptchaEnterpriseKey(region string) error {
 		"billing_account": billingId,
 	}
 
-	client := NewDCLRecaptchaEnterpriseClient(config, config.UserAgent, "", 0)
+	client := transport_tpg.NewDCLRecaptchaEnterpriseClient(config, config.UserAgent, "", 0)
 	err = client.DeleteAllKey(context.Background(), d["project"], isDeletableRecaptchaEnterpriseKey)
 	if err != nil {
 		return err
@@ -67,5 +69,5 @@ func testSweepRecaptchaEnterpriseKey(region string) error {
 }
 
 func isDeletableRecaptchaEnterpriseKey(r *recaptchaenterprise.Key) bool {
-	return IsSweepableTestResource(*r.Name)
+	return acctest.IsSweepableTestResource(*r.Name)
 }

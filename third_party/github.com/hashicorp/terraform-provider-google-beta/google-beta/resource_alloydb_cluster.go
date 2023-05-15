@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceAlloydbCluster() *schema.Resource {
@@ -48,10 +52,16 @@ func ResourceAlloydbCluster() *schema.Resource {
 				ForceNew:    true,
 				Description: `The ID of the alloydb cluster.`,
 			},
+			"location": {
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: `The location where the alloydb cluster should reside.`,
+			},
 			"network": {
 				Type:             schema.TypeString,
 				Required:         true,
-				DiffSuppressFunc: ProjectNumberDiffSuppress,
+				DiffSuppressFunc: tpgresource.ProjectNumberDiffSuppress,
 				Description: `The relative resource name of the VPC network on which the instance can be accessed. It is specified in the following form:
 
 "projects/{projectNumber}/global/networks/{network_id}".`,
@@ -66,6 +76,79 @@ If no policy is provided then the default policy will be used. The default polic
 				MaxItems: 1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
+						"backup_window": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Description: `The length of the time window during which a backup can be taken. If a backup does not succeed within this time window, it will be canceled and considered failed.
+
+The backup window must be at least 5 minutes long. There is no upper bound on the window. If not set, it will default to 1 hour.
+
+A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".`,
+						},
+						"enabled": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Whether automated backups are enabled.`,
+						},
+						"encryption_config": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Description: `EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key).`,
+							MaxItems:    1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"kms_key_name": {
+										Type:        schema.TypeString,
+										Optional:    true,
+										Description: `The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME].`,
+									},
+								},
+							},
+						},
+						"labels": {
+							Type:        schema.TypeMap,
+							Optional:    true,
+							Description: `Labels to apply to backups created using this configuration.`,
+							Elem:        &schema.Schema{Type: schema.TypeString},
+						},
+						"location": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: `The location where the backup will be stored. Currently, the only supported option is to store the backup in the same region as the cluster.`,
+						},
+						"quantity_based_retention": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Description: `Quantity-based Backup retention policy to retain recent backups. Conflicts with 'time_based_retention', both can't be set together.`,
+							MaxItems:    1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"count": {
+										Type:        schema.TypeInt,
+										Optional:    true,
+										Description: `The number of backups to retain.`,
+									},
+								},
+							},
+							ConflictsWith: []string{"automated_backup_policy.0.time_based_retention"},
+						},
+						"time_based_retention": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Description: `Time-based Backup retention policy. Conflicts with 'quantity_based_retention', both can't be set together.`,
+							MaxItems:    1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"retention_period": {
+										Type:     schema.TypeString,
+										Optional: true,
+										Description: `The retention period.
+A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".`,
+									},
+								},
+							},
+							ConflictsWith: []string{"automated_backup_policy.0.quantity_based_retention"},
+						},
 						"weekly_schedule": {
 							Type:        schema.TypeList,
 							Computed:    true,
@@ -88,17 +171,17 @@ If no policy is provided then the default policy will be used. The default polic
 												"minutes": {
 													Type:        schema.TypeInt,
 													Optional:    true,
-													Description: `Minutes of hour of day. Must be from 0 to 59.`,
+													Description: `Minutes of hour of day. Currently, only the value 0 is supported.`,
 												},
 												"nanos": {
 													Type:        schema.TypeInt,
 													Optional:    true,
-													Description: `Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.`,
+													Description: `Fractions of seconds in nanoseconds. Currently, only the value 0 is supported.`,
 												},
 												"seconds": {
 													Type:        schema.TypeInt,
 													Optional:    true,
-													Description: `Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.`,
+													Description: `Seconds of minutes of the time. Currently, only the value 0 is supported.`,
 												},
 											},
 										},
@@ -110,69 +193,11 @@ If no policy is provided then the default policy will be used. The default polic
 										MinItems:    1,
 										Elem: &schema.Schema{
 											Type:         schema.TypeString,
-											ValidateFunc: validateEnum([]string{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"}),
+											ValidateFunc: verify.ValidateEnum([]string{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"}),
 										},
 									},
 								},
 							},
-						},
-						"backup_window": {
-							Type:     schema.TypeString,
-							Optional: true,
-							Description: `The length of the time window during which a backup can be taken. If a backup does not succeed within this time window, it will be canceled and considered failed.
-
-The backup window must be at least 5 minutes long. There is no upper bound on the window. If not set, it will default to 1 hour.
-
-A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".`,
-						},
-						"enabled": {
-							Type:        schema.TypeBool,
-							Optional:    true,
-							Description: `Whether automated backups are enabled.`,
-						},
-						"labels": {
-							Type:        schema.TypeMap,
-							Optional:    true,
-							Description: `Labels to apply to backups created using this configuration.`,
-							Elem:        &schema.Schema{Type: schema.TypeString},
-						},
-						"location": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: `The location where the backup will be stored. Currently, the only supported option is to store the backup in the same region as the cluster.`,
-						},
-						"quantity_based_retention": {
-							Type:        schema.TypeList,
-							Optional:    true,
-							Description: `Quantity-based Backup retention policy to retain recent backups.`,
-							MaxItems:    1,
-							Elem: &schema.Resource{
-								Schema: map[string]*schema.Schema{
-									"count": {
-										Type:        schema.TypeInt,
-										Optional:    true,
-										Description: `The number of backups to retain.`,
-									},
-								},
-							},
-							ConflictsWith: []string{"automated_backup_policy.0.time_based_retention"},
-						},
-						"time_based_retention": {
-							Type:        schema.TypeList,
-							Optional:    true,
-							Description: `Time-based Backup retention policy.`,
-							MaxItems:    1,
-							Elem: &schema.Resource{
-								Schema: map[string]*schema.Schema{
-									"retention_period": {
-										Type:     schema.TypeString,
-										Optional: true,
-										Description: `The retention period.
-A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".`,
-									},
-								},
-							},
-							ConflictsWith: []string{"automated_backup_policy.0.quantity_based_retention"},
 						},
 					},
 				},
@@ -181,6 +206,22 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: `User-settable and human-readable display name for the Cluster.`,
+			},
+			"encryption_config": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key).`,
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"kms_key_name": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							ForceNew:    true,
+							Description: `The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME].`,
+						},
+					},
+				},
 			},
 			"initial_user": {
 				Type:        schema.TypeList,
@@ -209,12 +250,6 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
 				Description: `User-defined labels for the alloydb cluster.`,
 				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
-			"location": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				ForceNew:    true,
-				Description: `The location where the alloydb cluster should reside.`,
-			},
 			"backup_source": {
 				Type:        schema.TypeList,
 				Computed:    true,
@@ -233,6 +268,28 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: `The database engine major version. This is an output-only field and it's populated at the Cluster creation time. This field cannot be changed after cluster creation.`,
+			},
+			"encryption_info": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Description: `EncryptionInfo describes the encryption information of a cluster or a backup.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"encryption_type": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: `Output only. Type of encryption.`,
+						},
+						"kms_key_versions": {
+							Type:        schema.TypeList,
+							Computed:    true,
+							Description: `Output only. Cloud KMS key versions that are being used to protect the database or the backup.`,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
+						},
+					},
+				},
 			},
 			"migration_source": {
 				Type:        schema.TypeList,
@@ -280,8 +337,8 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
 }
 
 func resourceAlloydbClusterCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -290,35 +347,41 @@ func resourceAlloydbClusterCreate(d *schema.ResourceData, meta interface{}) erro
 	labelsProp, err := expandAlloydbClusterLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
+	}
+	encryptionConfigProp, err := expandAlloydbClusterEncryptionConfig(d.Get("encryption_config"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("encryption_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(encryptionConfigProp)) && (ok || !reflect.DeepEqual(v, encryptionConfigProp)) {
+		obj["encryptionConfig"] = encryptionConfigProp
 	}
 	networkProp, err := expandAlloydbClusterNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 	displayNameProp, err := expandAlloydbClusterDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	initialUserProp, err := expandAlloydbClusterInitialUser(d.Get("initial_user"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("initial_user"); !isEmptyValue(reflect.ValueOf(initialUserProp)) && (ok || !reflect.DeepEqual(v, initialUserProp)) {
+	} else if v, ok := d.GetOkExists("initial_user"); !tpgresource.IsEmptyValue(reflect.ValueOf(initialUserProp)) && (ok || !reflect.DeepEqual(v, initialUserProp)) {
 		obj["initialUser"] = initialUserProp
 	}
 	automatedBackupPolicyProp, err := expandAlloydbClusterAutomatedBackupPolicy(d.Get("automated_backup_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("automated_backup_policy"); !isEmptyValue(reflect.ValueOf(automatedBackupPolicyProp)) && (ok || !reflect.DeepEqual(v, automatedBackupPolicyProp)) {
+	} else if v, ok := d.GetOkExists("automated_backup_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(automatedBackupPolicyProp)) && (ok || !reflect.DeepEqual(v, automatedBackupPolicyProp)) {
 		obj["automatedBackupPolicy"] = automatedBackupPolicyProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/clusters?clusterId={{cluster_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/clusters?clusterId={{cluster_id}}")
 	if err != nil {
 		return err
 	}
@@ -326,24 +389,24 @@ func resourceAlloydbClusterCreate(d *schema.ResourceData, meta interface{}) erro
 	log.Printf("[DEBUG] Creating new Cluster: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Cluster: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Cluster: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -365,33 +428,33 @@ func resourceAlloydbClusterCreate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceAlloydbClusterRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Cluster: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("AlloydbCluster %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("AlloydbCluster %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -405,6 +468,12 @@ func resourceAlloydbClusterRead(d *schema.ResourceData, meta interface{}) error 
 		return fmt.Errorf("Error reading Cluster: %s", err)
 	}
 	if err := d.Set("labels", flattenAlloydbClusterLabels(res["labels"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Cluster: %s", err)
+	}
+	if err := d.Set("encryption_config", flattenAlloydbClusterEncryptionConfig(res["encryptionConfig"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Cluster: %s", err)
+	}
+	if err := d.Set("encryption_info", flattenAlloydbClusterEncryptionInfo(res["encryptionInfo"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Cluster: %s", err)
 	}
 	if err := d.Set("network", flattenAlloydbClusterNetwork(res["network"], d, config)); err != nil {
@@ -430,15 +499,15 @@ func resourceAlloydbClusterRead(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceAlloydbClusterUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Cluster: %s", err)
 	}
@@ -448,35 +517,41 @@ func resourceAlloydbClusterUpdate(d *schema.ResourceData, meta interface{}) erro
 	labelsProp, err := expandAlloydbClusterLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
+	}
+	encryptionConfigProp, err := expandAlloydbClusterEncryptionConfig(d.Get("encryption_config"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("encryption_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, encryptionConfigProp)) {
+		obj["encryptionConfig"] = encryptionConfigProp
 	}
 	networkProp, err := expandAlloydbClusterNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 	displayNameProp, err := expandAlloydbClusterDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	initialUserProp, err := expandAlloydbClusterInitialUser(d.Get("initial_user"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("initial_user"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, initialUserProp)) {
+	} else if v, ok := d.GetOkExists("initial_user"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, initialUserProp)) {
 		obj["initialUser"] = initialUserProp
 	}
 	automatedBackupPolicyProp, err := expandAlloydbClusterAutomatedBackupPolicy(d.Get("automated_backup_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("automated_backup_policy"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, automatedBackupPolicyProp)) {
+	} else if v, ok := d.GetOkExists("automated_backup_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, automatedBackupPolicyProp)) {
 		obj["automatedBackupPolicy"] = automatedBackupPolicyProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
 	if err != nil {
 		return err
 	}
@@ -486,6 +561,10 @@ func resourceAlloydbClusterUpdate(d *schema.ResourceData, meta interface{}) erro
 
 	if d.HasChange("labels") {
 		updateMask = append(updateMask, "labels")
+	}
+
+	if d.HasChange("encryption_config") {
+		updateMask = append(updateMask, "encryptionConfig")
 	}
 
 	if d.HasChange("network") {
@@ -505,17 +584,17 @@ func resourceAlloydbClusterUpdate(d *schema.ResourceData, meta interface{}) erro
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Cluster %q: %s", d.Id(), err)
@@ -535,21 +614,21 @@ func resourceAlloydbClusterUpdate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceAlloydbClusterDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Cluster: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
 	if err != nil {
 		return err
 	}
@@ -558,13 +637,13 @@ func resourceAlloydbClusterDelete(d *schema.ResourceData, meta interface{}) erro
 	log.Printf("[DEBUG] Deleting Cluster %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Cluster")
+		return transport_tpg.HandleNotFoundError(err, d, "Cluster")
 	}
 
 	err = AlloydbOperationWaitTime(
@@ -580,7 +659,7 @@ func resourceAlloydbClusterDelete(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceAlloydbClusterImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<cluster_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<cluster_id>[^/]+)",
@@ -591,7 +670,7 @@ func resourceAlloydbClusterImport(d *schema.ResourceData, meta interface{}) ([]*
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -600,31 +679,71 @@ func resourceAlloydbClusterImport(d *schema.ResourceData, meta interface{}) ([]*
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenAlloydbClusterName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterUid(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterUid(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterEncryptionConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["kms_key_name"] =
+		flattenAlloydbClusterEncryptionConfigKmsKeyName(original["kmsKeyName"], d, config)
+	return []interface{}{transformed}
+}
+func flattenAlloydbClusterEncryptionConfigKmsKeyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterEncryptionInfo(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["encryption_type"] =
+		flattenAlloydbClusterEncryptionInfoEncryptionType(original["encryptionType"], d, config)
+	transformed["kms_key_versions"] =
+		flattenAlloydbClusterEncryptionInfoKmsKeyVersions(original["kmsKeyVersions"], d, config)
+	return []interface{}{transformed}
+}
+func flattenAlloydbClusterEncryptionInfoEncryptionType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterDatabaseVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterEncryptionInfoKmsKeyVersions(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterAutomatedBackupPolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenAlloydbClusterDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenAlloydbClusterDatabaseVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenAlloydbClusterAutomatedBackupPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -639,6 +758,8 @@ func flattenAlloydbClusterAutomatedBackupPolicy(v interface{}, d *schema.Resourc
 		flattenAlloydbClusterAutomatedBackupPolicyLocation(original["location"], d, config)
 	transformed["labels"] =
 		flattenAlloydbClusterAutomatedBackupPolicyLabels(original["labels"], d, config)
+	transformed["encryption_config"] =
+		flattenAlloydbClusterAutomatedBackupPolicyEncryptionConfig(original["encryptionConfig"], d, config)
 	transformed["weekly_schedule"] =
 		flattenAlloydbClusterAutomatedBackupPolicyWeeklySchedule(original["weeklySchedule"], d, config)
 	transformed["time_based_retention"] =
@@ -649,19 +770,36 @@ func flattenAlloydbClusterAutomatedBackupPolicy(v interface{}, d *schema.Resourc
 		flattenAlloydbClusterAutomatedBackupPolicyEnabled(original["enabled"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAlloydbClusterAutomatedBackupPolicyBackupWindow(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyBackupWindow(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterAutomatedBackupPolicyLocation(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyLocation(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterAutomatedBackupPolicyLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterAutomatedBackupPolicyWeeklySchedule(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyEncryptionConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["kms_key_name"] =
+		flattenAlloydbClusterAutomatedBackupPolicyEncryptionConfigKmsKeyName(original["kmsKeyName"], d, config)
+	return []interface{}{transformed}
+}
+func flattenAlloydbClusterAutomatedBackupPolicyEncryptionConfigKmsKeyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenAlloydbClusterAutomatedBackupPolicyWeeklySchedule(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -676,11 +814,11 @@ func flattenAlloydbClusterAutomatedBackupPolicyWeeklySchedule(v interface{}, d *
 		flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimes(original["startTimes"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleDaysOfWeek(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleDaysOfWeek(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -701,7 +839,7 @@ func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimes(v interf
 	}
 	return transformed
 }
-func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesHours(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesHours(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -718,7 +856,7 @@ func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesHours(v i
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesMinutes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesMinutes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -735,7 +873,7 @@ func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesMinutes(v
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesSeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesSeconds(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -752,7 +890,7 @@ func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesSeconds(v
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesNanos(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesNanos(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -769,7 +907,7 @@ func flattenAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesNanos(v i
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAlloydbClusterAutomatedBackupPolicyTimeBasedRetention(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyTimeBasedRetention(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -782,11 +920,11 @@ func flattenAlloydbClusterAutomatedBackupPolicyTimeBasedRetention(v interface{},
 		flattenAlloydbClusterAutomatedBackupPolicyTimeBasedRetentionRetentionPeriod(original["retentionPeriod"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAlloydbClusterAutomatedBackupPolicyTimeBasedRetentionRetentionPeriod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyTimeBasedRetentionRetentionPeriod(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterAutomatedBackupPolicyQuantityBasedRetention(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyQuantityBasedRetention(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -799,7 +937,7 @@ func flattenAlloydbClusterAutomatedBackupPolicyQuantityBasedRetention(v interfac
 		flattenAlloydbClusterAutomatedBackupPolicyQuantityBasedRetentionCount(original["count"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAlloydbClusterAutomatedBackupPolicyQuantityBasedRetentionCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyQuantityBasedRetentionCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -816,11 +954,11 @@ func flattenAlloydbClusterAutomatedBackupPolicyQuantityBasedRetentionCount(v int
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAlloydbClusterAutomatedBackupPolicyEnabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterAutomatedBackupPolicyEnabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterBackupSource(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterBackupSource(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -833,11 +971,11 @@ func flattenAlloydbClusterBackupSource(v interface{}, d *schema.ResourceData, co
 		flattenAlloydbClusterBackupSourceBackupName(original["backupName"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAlloydbClusterBackupSourceBackupName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterBackupSourceBackupName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterMigrationSource(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterMigrationSource(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -854,19 +992,19 @@ func flattenAlloydbClusterMigrationSource(v interface{}, d *schema.ResourceData,
 		flattenAlloydbClusterMigrationSourceSourceType(original["sourceType"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAlloydbClusterMigrationSourceHostPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterMigrationSourceHostPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterMigrationSourceReferenceId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterMigrationSourceReferenceId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbClusterMigrationSourceSourceType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbClusterMigrationSourceSourceType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandAlloydbClusterLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandAlloydbClusterLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -877,15 +1015,38 @@ func expandAlloydbClusterLabels(v interface{}, d TerraformResourceData, config *
 	return m, nil
 }
 
-func expandAlloydbClusterNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterEncryptionConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedKmsKeyName, err := expandAlloydbClusterEncryptionConfigKmsKeyName(original["kms_key_name"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["kmsKeyName"] = transformedKmsKeyName
+	}
+
+	return transformed, nil
+}
+
+func expandAlloydbClusterEncryptionConfigKmsKeyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterInitialUser(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandAlloydbClusterInitialUser(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -897,29 +1058,29 @@ func expandAlloydbClusterInitialUser(v interface{}, d TerraformResourceData, con
 	transformedUser, err := expandAlloydbClusterInitialUserUser(original["user"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedUser); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedUser); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["user"] = transformedUser
 	}
 
 	transformedPassword, err := expandAlloydbClusterInitialUserPassword(original["password"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPassword); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPassword); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["password"] = transformedPassword
 	}
 
 	return transformed, nil
 }
 
-func expandAlloydbClusterInitialUserUser(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterInitialUserUser(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterInitialUserPassword(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterInitialUserPassword(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -931,64 +1092,71 @@ func expandAlloydbClusterAutomatedBackupPolicy(v interface{}, d TerraformResourc
 	transformedBackupWindow, err := expandAlloydbClusterAutomatedBackupPolicyBackupWindow(original["backup_window"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBackupWindow); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBackupWindow); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["backupWindow"] = transformedBackupWindow
 	}
 
 	transformedLocation, err := expandAlloydbClusterAutomatedBackupPolicyLocation(original["location"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLocation); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLocation); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["location"] = transformedLocation
 	}
 
 	transformedLabels, err := expandAlloydbClusterAutomatedBackupPolicyLabels(original["labels"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLabels); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLabels); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["labels"] = transformedLabels
+	}
+
+	transformedEncryptionConfig, err := expandAlloydbClusterAutomatedBackupPolicyEncryptionConfig(original["encryption_config"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedEncryptionConfig); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["encryptionConfig"] = transformedEncryptionConfig
 	}
 
 	transformedWeeklySchedule, err := expandAlloydbClusterAutomatedBackupPolicyWeeklySchedule(original["weekly_schedule"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedWeeklySchedule); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedWeeklySchedule); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["weeklySchedule"] = transformedWeeklySchedule
 	}
 
 	transformedTimeBasedRetention, err := expandAlloydbClusterAutomatedBackupPolicyTimeBasedRetention(original["time_based_retention"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTimeBasedRetention); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTimeBasedRetention); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["timeBasedRetention"] = transformedTimeBasedRetention
 	}
 
 	transformedQuantityBasedRetention, err := expandAlloydbClusterAutomatedBackupPolicyQuantityBasedRetention(original["quantity_based_retention"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedQuantityBasedRetention); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedQuantityBasedRetention); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["quantityBasedRetention"] = transformedQuantityBasedRetention
 	}
 
 	transformedEnabled, err := expandAlloydbClusterAutomatedBackupPolicyEnabled(original["enabled"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEnabled); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEnabled); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["enabled"] = transformedEnabled
 	}
 
 	return transformed, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyBackupWindow(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyBackupWindow(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyLocation(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyLocation(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandAlloydbClusterAutomatedBackupPolicyLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -999,7 +1167,30 @@ func expandAlloydbClusterAutomatedBackupPolicyLabels(v interface{}, d TerraformR
 	return m, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyWeeklySchedule(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyEncryptionConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedKmsKeyName, err := expandAlloydbClusterAutomatedBackupPolicyEncryptionConfigKmsKeyName(original["kms_key_name"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["kmsKeyName"] = transformedKmsKeyName
+	}
+
+	return transformed, nil
+}
+
+func expandAlloydbClusterAutomatedBackupPolicyEncryptionConfigKmsKeyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandAlloydbClusterAutomatedBackupPolicyWeeklySchedule(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1011,25 +1202,25 @@ func expandAlloydbClusterAutomatedBackupPolicyWeeklySchedule(v interface{}, d Te
 	transformedDaysOfWeek, err := expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleDaysOfWeek(original["days_of_week"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDaysOfWeek); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDaysOfWeek); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["daysOfWeek"] = transformedDaysOfWeek
 	}
 
 	transformedStartTimes, err := expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimes(original["start_times"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedStartTimes); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedStartTimes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["startTimes"] = transformedStartTimes
 	}
 
 	return transformed, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleDaysOfWeek(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleDaysOfWeek(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -1042,28 +1233,28 @@ func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimes(v interfa
 		transformedHours, err := expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesHours(original["hours"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedHours); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedHours); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["hours"] = transformedHours
 		}
 
 		transformedMinutes, err := expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesMinutes(original["minutes"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedMinutes); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedMinutes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["minutes"] = transformedMinutes
 		}
 
 		transformedSeconds, err := expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesSeconds(original["seconds"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSeconds); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSeconds); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["seconds"] = transformedSeconds
 		}
 
 		transformedNanos, err := expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesNanos(original["nanos"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedNanos); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedNanos); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["nanos"] = transformedNanos
 		}
 
@@ -1072,23 +1263,23 @@ func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimes(v interfa
 	return req, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesHours(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesHours(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesMinutes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesMinutes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesSeconds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesSeconds(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesNanos(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyWeeklyScheduleStartTimesNanos(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyTimeBasedRetention(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyTimeBasedRetention(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1100,18 +1291,18 @@ func expandAlloydbClusterAutomatedBackupPolicyTimeBasedRetention(v interface{}, 
 	transformedRetentionPeriod, err := expandAlloydbClusterAutomatedBackupPolicyTimeBasedRetentionRetentionPeriod(original["retention_period"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRetentionPeriod); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRetentionPeriod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["retentionPeriod"] = transformedRetentionPeriod
 	}
 
 	return transformed, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyTimeBasedRetentionRetentionPeriod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyTimeBasedRetentionRetentionPeriod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyQuantityBasedRetention(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyQuantityBasedRetention(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1123,17 +1314,17 @@ func expandAlloydbClusterAutomatedBackupPolicyQuantityBasedRetention(v interface
 	transformedCount, err := expandAlloydbClusterAutomatedBackupPolicyQuantityBasedRetentionCount(original["count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["count"] = transformedCount
 	}
 
 	return transformed, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyQuantityBasedRetentionCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyQuantityBasedRetentionCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbClusterAutomatedBackupPolicyEnabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbClusterAutomatedBackupPolicyEnabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

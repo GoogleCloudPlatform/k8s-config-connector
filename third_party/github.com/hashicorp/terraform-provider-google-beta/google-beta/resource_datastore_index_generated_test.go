@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccDatastoreIndex_datastoreIndexExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccDatastoreIndex_datastoreIndexExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDatastoreIndexDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -75,7 +79,7 @@ func testAccCheckDatastoreIndexDestroyProducer(t *testing.T) func(s *terraform.S
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{DatastoreBasePath}}projects/{{project}}/indexes/{{index_id}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DatastoreBasePath}}projects/{{project}}/indexes/{{index_id}}")
 			if err != nil {
 				return err
 			}
@@ -86,7 +90,7 @@ func testAccCheckDatastoreIndexDestroyProducer(t *testing.T) func(s *terraform.S
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, DatastoreIndex409Contention)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, transport_tpg.DatastoreIndex409Contention)
 			if err == nil {
 				return fmt.Errorf("DatastoreIndex still exists at %s", url)
 			}

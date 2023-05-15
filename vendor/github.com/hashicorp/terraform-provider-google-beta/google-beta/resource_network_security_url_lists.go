@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceNetworkSecurityUrlLists() *schema.Resource {
@@ -92,8 +95,8 @@ Examples: '2014-10-02T15:01:23Z' and '2014-10-02T15:01:23.045123456Z'.`,
 }
 
 func resourceNetworkSecurityUrlListsCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -102,17 +105,17 @@ func resourceNetworkSecurityUrlListsCreate(d *schema.ResourceData, meta interfac
 	descriptionProp, err := expandNetworkSecurityUrlListsDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	valuesProp, err := expandNetworkSecurityUrlListsValues(d.Get("values"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("values"); !isEmptyValue(reflect.ValueOf(valuesProp)) && (ok || !reflect.DeepEqual(v, valuesProp)) {
+	} else if v, ok := d.GetOkExists("values"); !tpgresource.IsEmptyValue(reflect.ValueOf(valuesProp)) && (ok || !reflect.DeepEqual(v, valuesProp)) {
 		obj["values"] = valuesProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/urlLists?urlListId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/urlLists?urlListId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -120,24 +123,24 @@ func resourceNetworkSecurityUrlListsCreate(d *schema.ResourceData, meta interfac
 	log.Printf("[DEBUG] Creating new UrlLists: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for UrlLists: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating UrlLists: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -159,33 +162,33 @@ func resourceNetworkSecurityUrlListsCreate(d *schema.ResourceData, meta interfac
 }
 
 func resourceNetworkSecurityUrlListsRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for UrlLists: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("NetworkSecurityUrlLists %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("NetworkSecurityUrlLists %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -209,15 +212,15 @@ func resourceNetworkSecurityUrlListsRead(d *schema.ResourceData, meta interface{
 }
 
 func resourceNetworkSecurityUrlListsUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for UrlLists: %s", err)
 	}
@@ -227,17 +230,17 @@ func resourceNetworkSecurityUrlListsUpdate(d *schema.ResourceData, meta interfac
 	descriptionProp, err := expandNetworkSecurityUrlListsDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	valuesProp, err := expandNetworkSecurityUrlListsValues(d.Get("values"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("values"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, valuesProp)) {
+	} else if v, ok := d.GetOkExists("values"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, valuesProp)) {
 		obj["values"] = valuesProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -254,17 +257,17 @@ func resourceNetworkSecurityUrlListsUpdate(d *schema.ResourceData, meta interfac
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating UrlLists %q: %s", d.Id(), err)
@@ -284,21 +287,21 @@ func resourceNetworkSecurityUrlListsUpdate(d *schema.ResourceData, meta interfac
 }
 
 func resourceNetworkSecurityUrlListsDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for UrlLists: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -307,13 +310,13 @@ func resourceNetworkSecurityUrlListsDelete(d *schema.ResourceData, meta interfac
 	log.Printf("[DEBUG] Deleting UrlLists %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "UrlLists")
+		return transport_tpg.HandleNotFoundError(err, d, "UrlLists")
 	}
 
 	err = NetworkSecurityOperationWaitTime(
@@ -329,7 +332,7 @@ func resourceNetworkSecurityUrlListsDelete(d *schema.ResourceData, meta interfac
 }
 
 func resourceNetworkSecurityUrlListsImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/urlLists/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -339,7 +342,7 @@ func resourceNetworkSecurityUrlListsImport(d *schema.ResourceData, meta interfac
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -348,26 +351,26 @@ func resourceNetworkSecurityUrlListsImport(d *schema.ResourceData, meta interfac
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenNetworkSecurityUrlListsCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkSecurityUrlListsCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNetworkSecurityUrlListsUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkSecurityUrlListsUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNetworkSecurityUrlListsDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkSecurityUrlListsDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNetworkSecurityUrlListsValues(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkSecurityUrlListsValues(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandNetworkSecurityUrlListsDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNetworkSecurityUrlListsDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNetworkSecurityUrlListsValues(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNetworkSecurityUrlListsValues(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

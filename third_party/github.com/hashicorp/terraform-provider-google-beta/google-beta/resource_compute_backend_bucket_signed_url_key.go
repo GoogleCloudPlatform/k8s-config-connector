@@ -21,6 +21,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceComputeBackendBucketSignedUrlKey() *schema.Resource {
@@ -54,7 +58,7 @@ valid RFC 4648 Section 5 base64url encoded string.`,
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateRegexp(`^(?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)$`),
+				ValidateFunc: verify.ValidateRegexp(`^(?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)$`),
 				Description:  `Name of the signed URL key.`,
 			},
 			"project": {
@@ -69,8 +73,8 @@ valid RFC 4648 Section 5 base64url encoded string.`,
 }
 
 func resourceComputeBackendBucketSignedUrlKeyCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -79,30 +83,30 @@ func resourceComputeBackendBucketSignedUrlKeyCreate(d *schema.ResourceData, meta
 	keyNameProp, err := expandNestedComputeBackendBucketSignedUrlKeyName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(keyNameProp)) && (ok || !reflect.DeepEqual(v, keyNameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(keyNameProp)) && (ok || !reflect.DeepEqual(v, keyNameProp)) {
 		obj["keyName"] = keyNameProp
 	}
 	keyValueProp, err := expandNestedComputeBackendBucketSignedUrlKeyKeyValue(d.Get("key_value"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("key_value"); !isEmptyValue(reflect.ValueOf(keyValueProp)) && (ok || !reflect.DeepEqual(v, keyValueProp)) {
+	} else if v, ok := d.GetOkExists("key_value"); !tpgresource.IsEmptyValue(reflect.ValueOf(keyValueProp)) && (ok || !reflect.DeepEqual(v, keyValueProp)) {
 		obj["keyValue"] = keyValueProp
 	}
 	backendBucketProp, err := expandNestedComputeBackendBucketSignedUrlKeyBackendBucket(d.Get("backend_bucket"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("backend_bucket"); !isEmptyValue(reflect.ValueOf(backendBucketProp)) && (ok || !reflect.DeepEqual(v, backendBucketProp)) {
+	} else if v, ok := d.GetOkExists("backend_bucket"); !tpgresource.IsEmptyValue(reflect.ValueOf(backendBucketProp)) && (ok || !reflect.DeepEqual(v, backendBucketProp)) {
 		obj["backendBucket"] = backendBucketProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "signedUrlKey/{{project}}/backendBuckets/{{backend_bucket}}/")
+	lockName, err := tpgresource.ReplaceVars(d, config, "signedUrlKey/{{project}}/backendBuckets/{{backend_bucket}}/")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{backend_bucket}}/addSignedUrlKey")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{backend_bucket}}/addSignedUrlKey")
 	if err != nil {
 		return err
 	}
@@ -110,24 +114,24 @@ func resourceComputeBackendBucketSignedUrlKeyCreate(d *schema.ResourceData, meta
 	log.Printf("[DEBUG] Creating new BackendBucketSignedUrlKey: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for BackendBucketSignedUrlKey: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating BackendBucketSignedUrlKey: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/backendBuckets/{{backend_bucket}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/backendBuckets/{{backend_bucket}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -149,33 +153,33 @@ func resourceComputeBackendBucketSignedUrlKeyCreate(d *schema.ResourceData, meta
 }
 
 func resourceComputeBackendBucketSignedUrlKeyRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{backend_bucket}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{backend_bucket}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for BackendBucketSignedUrlKey: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeBackendBucketSignedUrlKey %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeBackendBucketSignedUrlKey %q", d.Id()))
 	}
 
 	res, err = flattenNestedComputeBackendBucketSignedUrlKey(d, meta, res)
@@ -202,28 +206,28 @@ func resourceComputeBackendBucketSignedUrlKeyRead(d *schema.ResourceData, meta i
 }
 
 func resourceComputeBackendBucketSignedUrlKeyDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for BackendBucketSignedUrlKey: %s", err)
 	}
 	billingProject = project
 
-	lockName, err := ReplaceVars(d, config, "signedUrlKey/{{project}}/backendBuckets/{{backend_bucket}}/")
+	lockName, err := tpgresource.ReplaceVars(d, config, "signedUrlKey/{{project}}/backendBuckets/{{backend_bucket}}/")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{backend_bucket}}/deleteSignedUrlKey?keyName={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{backend_bucket}}/deleteSignedUrlKey?keyName={{name}}")
 	if err != nil {
 		return err
 	}
@@ -232,13 +236,13 @@ func resourceComputeBackendBucketSignedUrlKeyDelete(d *schema.ResourceData, meta
 	log.Printf("[DEBUG] Deleting BackendBucketSignedUrlKey %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "BackendBucketSignedUrlKey")
+		return transport_tpg.HandleNotFoundError(err, d, "BackendBucketSignedUrlKey")
 	}
 
 	err = ComputeOperationWaitTime(
@@ -253,20 +257,20 @@ func resourceComputeBackendBucketSignedUrlKeyDelete(d *schema.ResourceData, meta
 	return nil
 }
 
-func flattenNestedComputeBackendBucketSignedUrlKeyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedComputeBackendBucketSignedUrlKeyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandNestedComputeBackendBucketSignedUrlKeyName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedComputeBackendBucketSignedUrlKeyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedComputeBackendBucketSignedUrlKeyKeyValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedComputeBackendBucketSignedUrlKeyKeyValue(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedComputeBackendBucketSignedUrlKeyBackendBucket(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	f, err := parseGlobalFieldValue("backendBuckets", v.(string), "project", d, config, true)
+func expandNestedComputeBackendBucketSignedUrlKeyBackendBucket(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	f, err := tpgresource.ParseGlobalFieldValue("backendBuckets", v.(string), "project", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for backend_bucket: %s", err)
 	}
@@ -306,11 +310,11 @@ func flattenNestedComputeBackendBucketSignedUrlKey(d *schema.ResourceData, meta 
 }
 
 func resourceComputeBackendBucketSignedUrlKeyFindNestedObjectInList(d *schema.ResourceData, meta interface{}, items []interface{}) (index int, item map[string]interface{}, err error) {
-	expectedName, err := expandNestedComputeBackendBucketSignedUrlKeyName(d.Get("name"), d, meta.(*Config))
+	expectedName, err := expandNestedComputeBackendBucketSignedUrlKeyName(d.Get("name"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedName := flattenNestedComputeBackendBucketSignedUrlKeyName(expectedName, d, meta.(*Config))
+	expectedFlattenedName := flattenNestedComputeBackendBucketSignedUrlKeyName(expectedName, d, meta.(*transport_tpg.Config))
 
 	// Search list for this resource.
 	for idx, itemRaw := range items {
@@ -322,9 +326,9 @@ func resourceComputeBackendBucketSignedUrlKeyFindNestedObjectInList(d *schema.Re
 			"keyName": itemRaw,
 		}
 
-		itemName := flattenNestedComputeBackendBucketSignedUrlKeyName(item["keyName"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemName)) && isEmptyValue(reflect.ValueOf(expectedFlattenedName))) && !reflect.DeepEqual(itemName, expectedFlattenedName) {
+		itemName := flattenNestedComputeBackendBucketSignedUrlKeyName(item["keyName"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemName)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedName))) && !reflect.DeepEqual(itemName, expectedFlattenedName) {
 			log.Printf("[DEBUG] Skipping item with keyName= %#v, looking for %#v)", itemName, expectedFlattenedName)
 			continue
 		}

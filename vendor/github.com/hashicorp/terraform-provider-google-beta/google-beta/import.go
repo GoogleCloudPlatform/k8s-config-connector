@@ -6,6 +6,9 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 // Parse an import id extracting field values using the given list of regexes.
@@ -15,7 +18,7 @@ import (
 // - projects/(?P<project>[^/]+)/regions/(?P<region>[^/]+)/subnetworks/(?P<name>[^/]+) (applied first)
 // - (?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+),
 // - (?P<name>[^/]+) (applied last)
-func ParseImportId(idRegexes []string, d TerraformResourceData, config *Config) error {
+func ParseImportId(idRegexes []string, d tpgresource.TerraformResourceData, config *transport_tpg.Config) error {
 	for _, idFormat := range idRegexes {
 		re, err := regexp.Compile(idFormat)
 
@@ -73,9 +76,9 @@ func ParseImportId(idRegexes []string, d TerraformResourceData, config *Config) 
 	return fmt.Errorf("Import id %q doesn't match any of the accepted formats: %v", d.Id(), idRegexes)
 }
 
-func setDefaultValues(idRegex string, d TerraformResourceData, config *Config) error {
+func setDefaultValues(idRegex string, d tpgresource.TerraformResourceData, config *transport_tpg.Config) error {
 	if _, ok := d.GetOk("project"); !ok && strings.Contains(idRegex, "?P<project>") {
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return err
 		}
@@ -84,7 +87,7 @@ func setDefaultValues(idRegex string, d TerraformResourceData, config *Config) e
 		}
 	}
 	if _, ok := d.GetOk("region"); !ok && strings.Contains(idRegex, "?P<region>") {
-		region, err := getRegion(d, config)
+		region, err := tpgresource.GetRegion(d, config)
 		if err != nil {
 			return err
 		}
@@ -93,7 +96,7 @@ func setDefaultValues(idRegex string, d TerraformResourceData, config *Config) e
 		}
 	}
 	if _, ok := d.GetOk("zone"); !ok && strings.Contains(idRegex, "?P<zone>") {
-		zone, err := getZone(d, config)
+		zone, err := tpgresource.GetZone(d, config)
 		if err != nil {
 			return err
 		}
@@ -113,7 +116,7 @@ func setDefaultValues(idRegex string, d TerraformResourceData, config *Config) e
 // - projects/(?P<project>[^/]+)/regions/(?P<region>[^/]+)/subnetworks/(?P<name>[^/]+) (applied first)
 // - (?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+),
 // - (?P<name>[^/]+) (applied last)
-func getImportIdQualifiers(idRegexes []string, d TerraformResourceData, config *Config, id string) (map[string]string, error) {
+func getImportIdQualifiers(idRegexes []string, d tpgresource.TerraformResourceData, config *transport_tpg.Config, id string) (map[string]string, error) {
 	for _, idFormat := range idRegexes {
 		re, err := regexp.Compile(idFormat)
 
@@ -156,18 +159,18 @@ func getImportIdQualifiers(idRegexes []string, d TerraformResourceData, config *
 
 // Returns a set of default values that are contained in a regular expression
 // This does not mutate any parameters, instead returning a map of defaults
-func getDefaultValues(idRegex string, d TerraformResourceData, config *Config) (map[string]string, error) {
+func getDefaultValues(idRegex string, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	result := make(map[string]string)
 	if _, ok := d.GetOk("project"); !ok && strings.Contains(idRegex, "?P<project>") {
-		project, _ := getProject(d, config)
+		project, _ := tpgresource.GetProject(d, config)
 		result["project"] = project
 	}
 	if _, ok := d.GetOk("region"); !ok && strings.Contains(idRegex, "?P<region>") {
-		region, _ := getRegion(d, config)
+		region, _ := tpgresource.GetRegion(d, config)
 		result["region"] = region
 	}
 	if _, ok := d.GetOk("zone"); !ok && strings.Contains(idRegex, "?P<zone>") {
-		zone, _ := getZone(d, config)
+		zone, _ := tpgresource.GetZone(d, config)
 		result["zone"] = zone
 	}
 	return result, nil

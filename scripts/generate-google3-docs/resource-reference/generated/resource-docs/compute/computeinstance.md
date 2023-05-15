@@ -1946,7 +1946,10 @@ tagsFingerprint: string
         <td><code>currentStatus</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Current status of the instance.{% endverbatim %}</p>
+            <p>{% verbatim %}
+					Current status of the instance.
+					This could be one of the following values: PROVISIONING, STAGING, RUNNING, STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED.
+					For more information about the status of the instance, see [Instance life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

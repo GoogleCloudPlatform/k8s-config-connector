@@ -6,6 +6,8 @@ import (
 
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"google.golang.org/api/cloudresourcemanager/v1"
 	resourceManagerV3 "google.golang.org/api/cloudresourcemanager/v3"
 )
@@ -20,11 +22,11 @@ var IamFolderSchema = map[string]*schema.Schema{
 
 type FolderIamUpdater struct {
 	folderId string
-	d        TerraformResourceData
-	Config   *Config
+	d        tpgresource.TerraformResourceData
+	Config   *transport_tpg.Config
 }
 
-func NewFolderIamUpdater(d TerraformResourceData, config *Config) (ResourceIamUpdater, error) {
+func NewFolderIamUpdater(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
 	return &FolderIamUpdater{
 		folderId: canonicalFolderId(d.Get("folder").(string)),
 		d:        d,
@@ -32,7 +34,7 @@ func NewFolderIamUpdater(d TerraformResourceData, config *Config) (ResourceIamUp
 	}, nil
 }
 
-func FolderIdParseFunc(d *schema.ResourceData, _ *Config) error {
+func FolderIdParseFunc(d *schema.ResourceData, _ *transport_tpg.Config) error {
 	if !strings.HasPrefix(d.Id(), "folders/") {
 		d.SetId(fmt.Sprintf("folders/%s", d.Id()))
 	}
@@ -43,7 +45,7 @@ func FolderIdParseFunc(d *schema.ResourceData, _ *Config) error {
 }
 
 func (u *FolderIamUpdater) GetResourceIamPolicy() (*cloudresourcemanager.Policy, error) {
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +59,7 @@ func (u *FolderIamUpdater) SetResourceIamPolicy(policy *cloudresourcemanager.Pol
 		return err
 	}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -97,7 +99,7 @@ func canonicalFolderId(folder string) string {
 // v1 and v2 policy are identical
 func v1PolicyToV2(in *cloudresourcemanager.Policy) (*resourceManagerV3.Policy, error) {
 	out := &resourceManagerV3.Policy{}
-	err := Convert(in, out)
+	err := tpgresource.Convert(in, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a v1 policy to a v2 policy: {{err}}", err)
 	}
@@ -106,7 +108,7 @@ func v1PolicyToV2(in *cloudresourcemanager.Policy) (*resourceManagerV3.Policy, e
 
 func v2PolicyToV1(in *resourceManagerV3.Policy) (*cloudresourcemanager.Policy, error) {
 	out := &cloudresourcemanager.Policy{}
-	err := Convert(in, out)
+	err := tpgresource.Convert(in, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a v2 policy to a v1 policy: {{err}}", err)
 	}
@@ -114,7 +116,7 @@ func v2PolicyToV1(in *resourceManagerV3.Policy) (*cloudresourcemanager.Policy, e
 }
 
 // Retrieve the existing IAM Policy for a folder
-func getFolderIamPolicyByFolderName(folderName, userAgent string, config *Config) (*cloudresourcemanager.Policy, error) {
+func getFolderIamPolicyByFolderName(folderName, userAgent string, config *transport_tpg.Config) (*cloudresourcemanager.Policy, error) {
 	p, err := config.NewResourceManagerV3Client(userAgent).Folders.GetIamPolicy(folderName,
 		&resourceManagerV3.GetIamPolicyRequest{
 			Options: &resourceManagerV3.GetPolicyOptions{

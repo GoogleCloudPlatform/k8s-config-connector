@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccContainerAttachedCluster_containerAttachedClusterBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccContainerAttachedCluster_containerAttachedClusterBasicExample(t *tes
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckContainerAttachedClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -83,7 +87,7 @@ func TestAccContainerAttachedCluster_containerAttachedClusterFullExample(t *test
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckContainerAttachedClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -152,7 +156,7 @@ func TestAccContainerAttachedCluster_containerAttachedClusterIgnoreErrorsExample
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckContainerAttachedClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -210,7 +214,7 @@ func testAccCheckContainerAttachedClusterDestroyProducer(t *testing.T) func(s *t
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ContainerAttachedBasePath}}projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ContainerAttachedBasePath}}projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -221,7 +225,7 @@ func testAccCheckContainerAttachedClusterDestroyProducer(t *testing.T) func(s *t
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("ContainerAttachedCluster still exists at %s", url)
 			}

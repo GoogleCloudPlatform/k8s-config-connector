@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceKMSKeyRing() *schema.Resource {
@@ -71,8 +74,8 @@ A full list of valid locations can be found by running 'gcloud kms locations lis
 }
 
 func resourceKMSKeyRingCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -81,13 +84,13 @@ func resourceKMSKeyRingCreate(d *schema.ResourceData, meta interface{}) error {
 	nameProp, err := expandKMSKeyRingName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	locationProp, err := expandKMSKeyRingLocation(d.Get("location"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("location"); !isEmptyValue(reflect.ValueOf(locationProp)) && (ok || !reflect.DeepEqual(v, locationProp)) {
+	} else if v, ok := d.GetOkExists("location"); !tpgresource.IsEmptyValue(reflect.ValueOf(locationProp)) && (ok || !reflect.DeepEqual(v, locationProp)) {
 		obj["location"] = locationProp
 	}
 
@@ -96,7 +99,7 @@ func resourceKMSKeyRingCreate(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{KMSBasePath}}projects/{{project}}/locations/{{location}}/keyRings?keyRingId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{KMSBasePath}}projects/{{project}}/locations/{{location}}/keyRings?keyRingId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -104,24 +107,24 @@ func resourceKMSKeyRingCreate(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG] Creating new KeyRing: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for KeyRing: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating KeyRing: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/keyRings/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/keyRings/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -133,33 +136,33 @@ func resourceKMSKeyRingCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceKMSKeyRingRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{KMSBasePath}}projects/{{project}}/locations/{{location}}/keyRings/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{KMSBasePath}}projects/{{project}}/locations/{{location}}/keyRings/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for KeyRing: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("KMSKeyRing %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("KMSKeyRing %q", d.Id()))
 	}
 
 	res, err = resourceKMSKeyRingDecoder(d, meta, res)
@@ -195,7 +198,7 @@ func resourceKMSKeyRingDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceKMSKeyRingImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/keyRings/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -205,7 +208,7 @@ func resourceKMSKeyRingImport(d *schema.ResourceData, meta interface{}) ([]*sche
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/keyRings/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/keyRings/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -214,15 +217,15 @@ func resourceKMSKeyRingImport(d *schema.ResourceData, meta interface{}) ([]*sche
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenKMSKeyRingName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenKMSKeyRingName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandKMSKeyRingName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandKMSKeyRingName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandKMSKeyRingLocation(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandKMSKeyRingLocation(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

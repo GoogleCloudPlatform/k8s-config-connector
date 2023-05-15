@@ -16,11 +16,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
+
 	container "google.golang.org/api/container/v1beta1"
 )
 
 var (
-	instanceGroupManagerURL = regexp.MustCompile(fmt.Sprintf("projects/(%s)/zones/([a-z0-9-]*)/instanceGroupManagers/([^/]*)", ProjectRegex))
+	instanceGroupManagerURL = regexp.MustCompile(fmt.Sprintf("projects/(%s)/zones/([a-z0-9-]*)/instanceGroupManagers/([^/]*)", verify.ProjectRegex))
 
 	masterAuthorizedNetworksConfig = &schema.Resource{
 		Schema: map[string]*schema.Schema{
@@ -72,6 +76,7 @@ var (
 		"addons_config.0.config_connector_config",
 		"addons_config.0.istio_config",
 		"addons_config.0.kalm_config",
+		"addons_config.0.gcs_fuse_csi_driver_config",
 	}
 
 	privateClusterConfigKeys = []string{
@@ -102,7 +107,7 @@ func clusterSchemaNodeConfig() *schema.Schema {
 	schemaMap := nodeConfigSch.Elem.(*schema.Resource).Schema
 	for _, k := range forceNewClusterNodeConfigFields {
 		if sch, ok := schemaMap[k]; ok {
-			changeFieldSchemaToForceNew(sch)
+			tpgresource.ChangeFieldSchemaToForceNew(sch)
 		}
 	}
 	return nodeConfigSch
@@ -406,7 +411,7 @@ func ResourceContainerCluster() *schema.Resource {
 										Type:     schema.TypeString,
 										Optional: true,
 										// We can't use a Terraform-level default because it won't be true when the block is disabled: true
-										DiffSuppressFunc: EmptyOrDefaultStringSuppress("AUTH_NONE"),
+										DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress("AUTH_NONE"),
 										ValidateFunc:     validation.StringInSlice([]string{"AUTH_NONE", "AUTH_MUTUAL_TLS"}, false),
 										Description:      `The authentication type between services in Istio. Available options include AUTH_MUTUAL_TLS.`,
 									},
@@ -420,6 +425,23 @@ func ResourceContainerCluster() *schema.Resource {
 							AtLeastOneOf: addonsConfigKeys,
 							MaxItems:     1,
 							Description:  `Configuration for the KALM addon, which manages the lifecycle of k8s. It is disabled by default; Set enabled = true to enable.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"enabled": {
+										Type:     schema.TypeBool,
+										Required: true,
+									},
+								},
+							},
+						},
+						"gcs_fuse_csi_driver_config": {
+							Type:          schema.TypeList,
+							Optional:      true,
+							Computed:      true,
+							AtLeastOneOf:  addonsConfigKeys,
+							MaxItems:      1,
+							Description:   `The status of the GCS Fuse CSI driver addon, which allows the usage of gcs bucket as volumes. Defaults to disabled; set enabled = true to enable.`,
+							ConflictsWith: []string{"enable_autopilot"},
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"enabled": {
@@ -540,7 +562,7 @@ func ResourceContainerCluster() *schema.Resource {
 									"min_cpu_platform": {
 										Type:             schema.TypeString,
 										Optional:         true,
-										DiffSuppressFunc: EmptyOrDefaultStringSuppress("automatic"),
+										DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress("automatic"),
 										Description:      `Minimum CPU platform to be used by this instance. The instance may be scheduled on the specified or newer CPU platform. Applicable values are the friendly names of CPU platforms, such as Intel Haswell.`,
 									},
 									"boot_disk_kms_key": {
@@ -728,7 +750,7 @@ func ResourceContainerCluster() *schema.Resource {
 				Optional:      true,
 				Computed:      true,
 				ForceNew:      true,
-				ValidateFunc:  orEmpty(validateRFC1918Network(8, 32)),
+				ValidateFunc:  verify.OrEmpty(verify.ValidateRFC1918Network(8, 32)),
 				ConflictsWith: []string{"ip_allocation_policy"},
 				Description:   `The IP address range of the Kubernetes pods in this cluster in CIDR notation (e.g. 10.96.0.0/14). Leave blank to have one automatically chosen or specify a /14 block in 10.0.0.0/8. This field will only work for routes-based clusters, where ip_allocation_policy is not defined.`,
 			},
@@ -889,8 +911,8 @@ func ResourceContainerCluster() *schema.Resource {
 									"start_time": {
 										Type:             schema.TypeString,
 										Required:         true,
-										ValidateFunc:     validateRFC3339Time,
-										DiffSuppressFunc: Rfc3339TimeDiffSuppress,
+										ValidateFunc:     verify.ValidateRFC3339Time,
+										DiffSuppressFunc: tpgresource.Rfc3339TimeDiffSuppress,
 									},
 									"duration": {
 										Type:     schema.TypeString,
@@ -913,12 +935,12 @@ func ResourceContainerCluster() *schema.Resource {
 									"start_time": {
 										Type:         schema.TypeString,
 										Required:     true,
-										ValidateFunc: validateRFC3339Date,
+										ValidateFunc: verify.ValidateRFC3339Date,
 									},
 									"end_time": {
 										Type:         schema.TypeString,
 										Required:     true,
-										ValidateFunc: validateRFC3339Date,
+										ValidateFunc: verify.ValidateRFC3339Date,
 									},
 									"recurrence": {
 										Type:             schema.TypeString,
@@ -942,12 +964,12 @@ func ResourceContainerCluster() *schema.Resource {
 									"start_time": {
 										Type:         schema.TypeString,
 										Required:     true,
-										ValidateFunc: validateRFC3339Date,
+										ValidateFunc: verify.ValidateRFC3339Date,
 									},
 									"end_time": {
 										Type:         schema.TypeString,
 										Required:     true,
-										ValidateFunc: validateRFC3339Date,
+										ValidateFunc: verify.ValidateRFC3339Date,
 									},
 									"exclusion_options": {
 										Type:        schema.TypeList,
@@ -1219,7 +1241,7 @@ func ResourceContainerCluster() *schema.Resource {
 				Optional:         true,
 				Default:          "default",
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description:      `The name or self_link of the Google Compute Engine network to which the cluster is connected. For Shared VPC, set this to the self link of the shared network.`,
 			},
 
@@ -1242,7 +1264,7 @@ func ResourceContainerCluster() *schema.Resource {
 							Default:          "PROVIDER_UNSPECIFIED",
 							Optional:         true,
 							ValidateFunc:     validation.StringInSlice([]string{"PROVIDER_UNSPECIFIED", "CALICO"}, false),
-							DiffSuppressFunc: EmptyOrDefaultStringSuppress("PROVIDER_UNSPECIFIED"),
+							DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress("PROVIDER_UNSPECIFIED"),
 							Description:      `The selected network policy provider. Defaults to PROVIDER_UNSPECIFIED.`,
 						},
 					},
@@ -1330,7 +1352,7 @@ func ResourceContainerCluster() *schema.Resource {
 				Optional:         true,
 				Computed:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description:      `The name or self_link of the Google Compute Engine subnetwork in which the cluster's instances are launched.`,
 			},
 
@@ -1487,7 +1509,7 @@ func ResourceContainerCluster() *schema.Resource {
 							Optional:     true,
 							ForceNew:     true,
 							AtLeastOneOf: privateClusterConfigKeys,
-							ValidateFunc: orEmpty(validation.IsCIDRNetwork(28, 28)),
+							ValidateFunc: verify.OrEmpty(validation.IsCIDRNetwork(28, 28)),
 							Description:  `The IP range in CIDR notation to use for the hosted master network. This range will be used for assigning private IP addresses to the cluster master(s) and the ILB VIP. This range must not overlap with any other ranges in use within the cluster's network, and it must be a /28 subnet. See Private Cluster Limitations for more details. This field only applies to private clusters, when enable_private_nodes is true.`,
 						},
 						"peering_name": {
@@ -1505,7 +1527,7 @@ func ResourceContainerCluster() *schema.Resource {
 							Optional:         true,
 							ForceNew:         true,
 							AtLeastOneOf:     privateClusterConfigKeys,
-							DiffSuppressFunc: compareSelfLinkOrResourceName,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 							Description:      `Subnetwork in cluster's network where master's endpoint will be provisioned.`,
 						},
 						"public_endpoint": {
@@ -1737,7 +1759,7 @@ func ResourceContainerCluster() *schema.Resource {
 				Computed:         true,
 				Description:      `The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation.`,
 				ValidateFunc:     validation.StringInSlice([]string{"DATAPATH_PROVIDER_UNSPECIFIED", "LEGACY_DATAPATH", "ADVANCED_DATAPATH"}, false),
-				DiffSuppressFunc: EmptyOrDefaultStringSuppress("DATAPATH_PROVIDER_UNSPECIFIED"),
+				DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress("DATAPATH_PROVIDER_UNSPECIFIED"),
 			},
 
 			"enable_intranode_visibility": {
@@ -1922,18 +1944,18 @@ func resourceNodeConfigEmptyGuestAccelerator(_ context.Context, diff *schema.Res
 }
 
 func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	location, err := getLocation(d, config)
+	location, err := tpgresource.GetLocation(d, config)
 	if err != nil {
 		return err
 	}
@@ -1985,7 +2007,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		MasterAuth:           expandMasterAuth(d.Get("master_auth")),
 		NotificationConfig:   expandNotificationConfig(d.Get("notification_config")),
 		ConfidentialNodes:    expandConfidentialNodes(d.Get("confidential_nodes")),
-		ResourceLabels:       expandStringMap(d, "resource_labels"),
+		ResourceLabels:       tpgresource.ExpandStringMap(d, "resource_labels"),
 		NodePoolAutoConfig:   expandNodePoolAutoConfig(d.Get("node_pool_auto_config")),
 		ProtectConfig:        expandProtectConfig(d.Get("protect_config")),
 		CostManagementConfig: expandCostManagementConfig(d.Get("cost_management_config")),
@@ -2021,14 +2043,14 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		// GKE requires a full list of node locations
 		// but when using a multi-zonal cluster our schema only asks for the
 		// additional zones, so append the cluster location if it's a zone
-		if isZone(location) {
+		if tpgresource.IsZone(location) {
 			locationsSet.Add(location)
 		}
 		cluster.Locations = convertStringSet(locationsSet)
 	}
 
 	if v, ok := d.GetOk("network"); ok {
-		network, err := ParseNetworkFieldValue(v.(string), d, config)
+		network, err := tpgresource.ParseNetworkFieldValue(v.(string), d, config)
 		if err != nil {
 			return err
 		}
@@ -2036,7 +2058,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	if v, ok := d.GetOk("subnetwork"); ok {
-		subnetwork, err := parseRegionalFieldValue("subnetworks", v.(string), "project", "location", "location", d, config, true) // variant of ParseSubnetworkFieldValue
+		subnetwork, err := tpgresource.ParseRegionalFieldValue("subnetworks", v.(string), "project", "location", "location", d, config, true) // variant of ParseSubnetworkFieldValue
 		if err != nil {
 			return err
 		}
@@ -2125,12 +2147,12 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		Cluster: cluster,
 	}
 
-	mutexKV.Lock(containerClusterMutexKey(project, location, clusterName))
-	defer mutexKV.Unlock(containerClusterMutexKey(project, location, clusterName))
+	transport_tpg.MutexStore.Lock(containerClusterMutexKey(project, location, clusterName))
+	defer transport_tpg.MutexStore.Unlock(containerClusterMutexKey(project, location, clusterName))
 
 	parent := fmt.Sprintf("projects/%s/locations/%s", project, location)
 	var op *container.Operation
-	err = retry(func() error {
+	err = transport_tpg.Retry(func() error {
 		clusterCreateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Create(parent, req)
 		if config.UserProjectOverride {
 			clusterCreateCall.Header().Add("X-Goog-User-Project", project)
@@ -2152,7 +2174,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		// before attempting to Read the state of the cluster. This allows a graceful resumption of a Create that was killed
 		// by the upstream Terraform process exiting early such as a sigterm.
 		select {
-		case <-config.context.Done():
+		case <-config.Context.Done():
 			log.Printf("[DEBUG] Persisting %s so this operation can be resumed \n", op.Name)
 			if err := d.Set("operation", op.Name); err != nil {
 				return fmt.Errorf("Error setting operation: %s", err)
@@ -2187,7 +2209,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	if d.Get("remove_default_node_pool").(bool) {
 		parent := fmt.Sprintf("%s/nodePools/%s", containerClusterFullName(project, location, clusterName), "default-pool")
-		err = retry(func() error {
+		err = transport_tpg.Retry(func() error {
 			clusterNodePoolDeleteCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.NodePools.Delete(parent)
 			if config.UserProjectOverride {
 				clusterNodePoolDeleteCall.Header().Add("X-Goog-User-Project", project)
@@ -2221,18 +2243,18 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	location, err := getLocation(d, config)
+	location, err := tpgresource.GetLocation(d, config)
 	if err != nil {
 		return err
 	}
@@ -2281,7 +2303,7 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 
 	cluster, err := clusterGetCall.Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Container Cluster %q", d.Get("name").(string)))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Container Cluster %q", d.Get("name").(string)))
 	}
 
 	if err := d.Set("name", cluster.Name); err != nil {
@@ -2519,18 +2541,18 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	location, err := getLocation(d, config)
+	location, err := tpgresource.GetLocation(d, config)
 	if err != nil {
 		return err
 	}
@@ -2573,7 +2595,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		updateF := updateFunc(req, "updating GKE cluster master authorized networks")
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 		log.Printf("[INFO] GKE cluster %s master authorized networks config has been updated", d.Id())
@@ -2589,7 +2611,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 			updateF := updateFunc(req, "updating GKE cluster addons")
 			// Call update serially.
-			if err := lockedCall(lockKey, updateF); err != nil {
+			if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 				return err
 			}
 
@@ -2605,7 +2627,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		updateF := updateFunc(req, "updating GKE cluster autoscaling")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2625,7 +2647,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		updateF := updateFunc(req, "updating GKE binary authorization")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2643,7 +2665,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		updateF := updateFunc(req, "updating enable private endpoint")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2663,7 +2685,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		updateF := updateFunc(req, "updating master global access config")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2679,7 +2701,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		updateF := updateFunc(req, "updating GKE binary authorization")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2699,7 +2721,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		updateF := updateFunc(req, "updating GKE shielded nodes")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2731,7 +2753,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2767,7 +2789,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2799,7 +2821,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2836,7 +2858,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2853,7 +2875,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		updateF := updateFunc(req, "updating cost management config")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2868,7 +2890,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 		updateF := updateFunc(req, "updating GKE cluster authenticator groups config")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2900,7 +2922,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2929,7 +2951,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -2947,7 +2969,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		// zones, then remove the ones we aren't using anymore.
 		azSet := azSetOld.Union(azSetNew)
 
-		if isZone(location) {
+		if tpgresource.IsZone(location) {
 			azSet.Add(location)
 		}
 
@@ -2959,11 +2981,11 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		updateF := updateFunc(req, "updating GKE cluster node locations")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
-		if isZone(location) {
+		if tpgresource.IsZone(location) {
 			azSetNew.Add(location)
 		}
 		if !azSet.Equal(azSetNew) {
@@ -2975,7 +2997,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 			updateF := updateFunc(req, "updating GKE cluster node locations")
 			// Call update serially.
-			if err := lockedCall(lockKey, updateF); err != nil {
+			if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 				return err
 			}
 		}
@@ -3009,7 +3031,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -3042,7 +3064,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -3074,7 +3096,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -3119,7 +3141,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 			updateF := updateFunc(req, "updating GKE master version")
 			// Call update serially.
-			if err := lockedCall(lockKey, updateF); err != nil {
+			if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 				return err
 			}
 			log.Printf("[INFO] GKE cluster %s: master has been updated to %s", d.Id(), ver)
@@ -3143,7 +3165,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 					}
 					updateF := updateFunc(req, "updating GKE default node pool node version")
 					// Call update serially.
-					if err := lockedCall(lockKey, updateF); err != nil {
+					if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 						return err
 					}
 					log.Printf("[INFO] GKE cluster %s: default node pool has been updated to %s", d.Id(),
@@ -3183,7 +3205,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Call update serially.
-			if err := lockedCall(lockKey, updateF); err != nil {
+			if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 				return err
 			}
 
@@ -3216,7 +3238,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -3272,7 +3294,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 			updateF := updateFunc(req, "updating GKE cluster vertical pod autoscaling")
 			// Call update serially.
-			if err := lockedCall(lockKey, updateF); err != nil {
+			if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 				return err
 			}
 
@@ -3301,7 +3323,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			// Wait until it's updated
 			return ContainerOperationWait(config, op, project, location, "updating GKE cluster service externalips config", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 		log.Printf("[INFO] GKE cluster %s service externalips config  has been updated", d.Id())
@@ -3328,7 +3350,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			// Wait until it's updated
 			return ContainerOperationWait(config, op, project, location, "updating GKE cluster mesh certificates config", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 		log.Printf("[INFO] GKE cluster %s mesh certificates config has been updated", d.Id())
@@ -3355,7 +3377,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			// Wait until it's updated
 			return ContainerOperationWait(config, op, project, location, "updating GKE cluster database encryption config", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 		log.Printf("[INFO] GKE cluster %s database encryption config has been updated", d.Id())
@@ -3382,7 +3404,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			// Wait until it's updated
 			return ContainerOperationWait(config, op, project, location, "updating GKE cluster pod security policy config", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 		log.Printf("[INFO] GKE cluster %s pod security policy config has been updated", d.Id())
@@ -3408,7 +3430,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		updateF := updateFunc(req, "updating GKE cluster workload identity config")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -3431,7 +3453,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		updateF := updateFunc(req, "updating GKE cluster identity service config")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -3446,7 +3468,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 		updateF := updateFunc(req, "updating GKE cluster logging config")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -3461,7 +3483,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 		updateF := updateFunc(req, "updating GKE cluster monitoring config")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -3491,7 +3513,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 	}
@@ -3504,7 +3526,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 		op, err := clusterNodePoolDeleteCall.Do()
 		if err != nil {
-			if !IsGoogleApiErrorWithCode(err, 404) {
+			if !transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 				return errwrap.Wrapf("Error deleting default node pool: {{err}}", err)
 			}
 			log.Printf("[WARN] Container cluster %q default node pool already removed, no change", d.Id())
@@ -3537,7 +3559,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			// Wait until it's updated
 			return ContainerOperationWait(config, op, project, location, "updating GKE cluster resource usage export config", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 		log.Printf("[INFO] GKE cluster %s resource usage export config has been updated", d.Id())
@@ -3553,7 +3575,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 			updateF := updateFunc(req, "updating GKE Gateway API")
 			// Call update serially.
-			if err := lockedCall(lockKey, updateF); err != nil {
+			if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 				return err
 			}
 
@@ -3576,7 +3598,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 			updateF := updateFunc(req, "updating GKE cluster desired node pool logging configuration defaults.")
 			// Call update serially.
-			if err := lockedCall(lockKey, updateF); err != nil {
+			if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 				return err
 			}
 
@@ -3597,7 +3619,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 			updateF := updateFunc(req, "updating GKE cluster desired gcfs config.")
 			// Call update serially.
-			if err := lockedCall(lockKey, updateF); err != nil {
+			if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 				return err
 			}
 
@@ -3619,7 +3641,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		updateF := updateFunc(req, "updating GKE cluster node pool auto config network tags")
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -3653,7 +3675,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		// Call update serially.
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -3671,7 +3693,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			},
 		}
 		updateF := updateFunc(req, "updating GKE cluster master protect_config")
-		if err := lockedCall(lockKey, updateF); err != nil {
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 			return err
 		}
 
@@ -3682,18 +3704,18 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceContainerClusterDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	location, err := getLocation(d, config)
+	location, err := tpgresource.GetLocation(d, config)
 	if err != nil {
 		return err
 	}
@@ -3701,7 +3723,7 @@ func resourceContainerClusterDelete(d *schema.ResourceData, meta interface{}) er
 	clusterName := d.Get("name").(string)
 
 	if _, err := containerClusterAwaitRestingState(config, project, location, clusterName, userAgent, d.Timeout(schema.TimeoutDelete)); err != nil {
-		if IsGoogleApiErrorWithCode(err, 404) {
+		if transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 			log.Printf("[INFO] GKE cluster %s doesn't exist to delete", d.Id())
 			return nil
 		}
@@ -3709,8 +3731,8 @@ func resourceContainerClusterDelete(d *schema.ResourceData, meta interface{}) er
 	}
 
 	log.Printf("[DEBUG] Deleting GKE cluster %s", d.Get("name").(string))
-	mutexKV.Lock(containerClusterMutexKey(project, location, clusterName))
-	defer mutexKV.Unlock(containerClusterMutexKey(project, location, clusterName))
+	transport_tpg.MutexStore.Lock(containerClusterMutexKey(project, location, clusterName))
+	defer transport_tpg.MutexStore.Unlock(containerClusterMutexKey(project, location, clusterName))
 
 	var op *container.Operation
 	var count = 0
@@ -3757,19 +3779,19 @@ func resourceContainerClusterDelete(d *schema.ResourceData, meta interface{}) er
 // but implemented in separate function as it doesn't try to lock already
 // locked cluster state, does different error handling, and doesn't do retries.
 func cleanFailedContainerCluster(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	location, err := getLocation(d, config)
+	location, err := tpgresource.GetLocation(d, config)
 	if err != nil {
 		return err
 	}
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -3784,7 +3806,7 @@ func cleanFailedContainerCluster(d *schema.ResourceData, meta interface{}) error
 	}
 	op, err := clusterDeleteCall.Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Container Cluster %q", d.Get("name").(string)))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Container Cluster %q", d.Get("name").(string)))
 	}
 
 	// Wait until it's deleted
@@ -3805,7 +3827,7 @@ var containerClusterRestingStates = RestingStates{
 }
 
 // returns a state with no error if the state is a resting state, and the last state with an error otherwise
-func containerClusterAwaitRestingState(config *Config, project, location, clusterName, userAgent string, timeout time.Duration) (state string, err error) {
+func containerClusterAwaitRestingState(config *transport_tpg.Config, project, location, clusterName, userAgent string, timeout time.Duration) (state string, err error) {
 	err = resource.Retry(timeout, func() *resource.RetryError {
 		name := containerClusterFullName(project, location, clusterName)
 		clusterGetCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Get(name)
@@ -3933,6 +3955,14 @@ func expandClusterAddonsConfig(configured interface{}) *container.AddonsConfig {
 		}
 	}
 
+	if v, ok := config["gcs_fuse_csi_driver_config"]; ok && len(v.([]interface{})) > 0 {
+		addon := v.([]interface{})[0].(map[string]interface{})
+		ac.GcsFuseCsiDriverConfig = &container.GcsFuseCsiDriverConfig{
+			Enabled:         addon["enabled"].(bool),
+			ForceSendFields: []string{"Enabled"},
+		}
+	}
+
 	return ac
 }
 
@@ -3979,15 +4009,15 @@ func expandIPAllocationPolicy(configured interface{}, networkingMode string) (*c
 }
 
 func expandMaintenancePolicy(d *schema.ResourceData, meta interface{}) *container.MaintenancePolicy {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	// We have to perform a full Get() as part of this, to get the fingerprint.  We can't do this
 	// at any other time, because the fingerprint update might happen between plan and apply.
 	// We can omit error checks, since to have gotten this far, a project is definitely configured.
-	project, _ := getProject(d, config)
-	location, _ := getLocation(d, config)
+	project, _ := tpgresource.GetProject(d, config)
+	location, _ := tpgresource.GetLocation(d, config)
 	clusterName := d.Get("name").(string)
 	name := containerClusterFullName(project, location, clusterName)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return nil
 	}
@@ -4213,7 +4243,7 @@ func expandStandardRolloutPolicy(configured interface{}) *container.StandardRoll
 func expandManagement(configured interface{}) *container.NodeManagement {
 	l, ok := configured.([]interface{})
 	if !ok || l == nil || len(l) == 0 || l[0] == nil {
-		return &container.NodeManagement{}
+		return nil
 	}
 	config := l[0].(map[string]interface{})
 
@@ -4955,10 +4985,18 @@ func flattenClusterAddonsConfig(c *container.AddonsConfig) []map[string]interfac
 			},
 		}
 	}
+
+	if c.GcsFuseCsiDriverConfig != nil {
+		result["gcs_fuse_csi_driver_config"] = []map[string]interface{}{
+			{
+				"enabled": c.GcsFuseCsiDriverConfig.Enabled,
+			},
+		}
+	}
 	return []map[string]interface{}{result}
 }
 
-func flattenClusterNodePools(d *schema.ResourceData, config *Config, c []*container.NodePool) ([]map[string]interface{}, error) {
+func flattenClusterNodePools(d *schema.ResourceData, config *transport_tpg.Config, c []*container.NodePool) ([]map[string]interface{}, error) {
 	nodePools := make([]map[string]interface{}, 0, len(c))
 
 	for i, np := range c {
@@ -5058,7 +5096,7 @@ func flattenDefaultSnatStatus(c *container.DefaultSnatStatus) []map[string]inter
 	return result
 }
 
-func flattenWorkloadIdentityConfig(c *container.WorkloadIdentityConfig, d *schema.ResourceData, config *Config) []map[string]interface{} {
+func flattenWorkloadIdentityConfig(c *container.WorkloadIdentityConfig, d *schema.ResourceData, config *transport_tpg.Config) []map[string]interface{} {
 	if c == nil {
 		return nil
 	}
@@ -5070,7 +5108,7 @@ func flattenWorkloadIdentityConfig(c *container.WorkloadIdentityConfig, d *schem
 	}
 }
 
-func flattenIdentityServiceConfig(c *container.IdentityServiceConfig, d *schema.ResourceData, config *Config) []map[string]interface{} {
+func flattenIdentityServiceConfig(c *container.IdentityServiceConfig, d *schema.ResourceData, config *transport_tpg.Config) []map[string]interface{} {
 	if c == nil {
 		return nil
 	}
@@ -5094,7 +5132,7 @@ func flattenPodCidrOverprovisionConfig(c *container.PodCIDROverprovisionConfig) 
 	}
 }
 
-func flattenIPAllocationPolicy(c *container.Cluster, d *schema.ResourceData, config *Config) ([]map[string]interface{}, error) {
+func flattenIPAllocationPolicy(c *container.Cluster, d *schema.ResourceData, config *transport_tpg.Config) ([]map[string]interface{}, error) {
 	// If IP aliasing isn't enabled, none of the values in this block can be set.
 	if c == nil || c.IpAllocationPolicy == nil || !c.IpAllocationPolicy.UseIpAliases {
 		if err := d.Set("networking_mode", "ROUTES"); err != nil {
@@ -5504,9 +5542,9 @@ func flattenNodePoolAutoConfigNetworkTags(c *container.NetworkTags) []map[string
 }
 
 func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
-	//userAgent, err := generateUserAgentString(d, config.UserAgent)
+	//userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	//if err != nil {
 	//	return nil, err
 	//}
@@ -5520,12 +5558,12 @@ func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interfac
 	if err := ParseImportId(idRegexes, d, config); err != nil {
 		return nil, err
 	}
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return nil, err
 	}
 
-	location, err := getLocation(d, config)
+	location, err := tpgresource.GetLocation(d, config)
 	if err != nil {
 		return nil, err
 	}
@@ -5552,13 +5590,13 @@ func containerClusterFullName(project, location, cluster string) string {
 	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", project, location, cluster)
 }
 
-func extractNodePoolInformationFromCluster(d *schema.ResourceData, config *Config, clusterName string) (*NodePoolInformation, error) {
-	project, err := getProject(d, config)
+func extractNodePoolInformationFromCluster(d *schema.ResourceData, config *transport_tpg.Config, clusterName string) (*NodePoolInformation, error) {
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return nil, err
 	}
 
-	location, err := getLocation(d, config)
+	location, err := tpgresource.GetLocation(d, config)
 	if err != nil {
 		return nil, err
 	}

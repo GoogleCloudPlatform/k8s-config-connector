@@ -2,6 +2,8 @@ package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -10,7 +12,7 @@ import (
 
 func DataSourceGoogleCloudIdentityGroups() *schema.Resource {
 	// Generate datasource schema from resource
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceCloudIdentityGroup().Schema)
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceCloudIdentityGroup().Schema)
 
 	return &schema.Resource{
 		Read: dataSourceGoogleCloudIdentityGroupsRead,
@@ -39,8 +41,8 @@ groups or customers/{customer_id} for Google Groups.`,
 }
 
 func dataSourceGoogleCloudIdentityGroupsRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -50,12 +52,12 @@ func dataSourceGoogleCloudIdentityGroupsRead(d *schema.ResourceData, meta interf
 	if config.UserProjectOverride {
 		billingProject := ""
 		// err may be nil - project isn't required for this resource
-		if project, err := getProject(d, config); err == nil {
+		if project, err := tpgresource.GetProject(d, config); err == nil {
 			billingProject = project
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
@@ -63,7 +65,7 @@ func dataSourceGoogleCloudIdentityGroupsRead(d *schema.ResourceData, meta interf
 			groupsCall.Header().Set("X-Goog-User-Project", billingProject)
 		}
 	}
-	err = groupsCall.Pages(config.context, func(resp *cloudidentity.ListGroupsResponse) error {
+	err = groupsCall.Pages(config.Context, func(resp *cloudidentity.ListGroupsResponse) error {
 		for _, group := range resp.Groups {
 			result = append(result, map[string]interface{}{
 				"name":         group.Name,
@@ -77,7 +79,7 @@ func dataSourceGoogleCloudIdentityGroupsRead(d *schema.ResourceData, meta interf
 		return nil
 	})
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("CloudIdentityGroups %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("CloudIdentityGroups %q", d.Id()))
 	}
 
 	if err := d.Set("groups", result); err != nil {

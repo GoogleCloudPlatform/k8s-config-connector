@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeForwardingRule_internalHttpLbWithMigBackendExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccComputeForwardingRule_internalHttpLbWithMigBackendExample(t *testing
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -250,7 +254,7 @@ func TestAccComputeForwardingRule_internalTcpUdpLbWithMigBackendExample(t *testi
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -458,7 +462,7 @@ func TestAccComputeForwardingRule_forwardingRuleExternallbExample(t *testing.T) 
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -514,7 +518,7 @@ func TestAccComputeForwardingRule_forwardingRuleGlobalInternallbExample(t *testi
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -578,7 +582,7 @@ func TestAccComputeForwardingRule_forwardingRuleBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -617,7 +621,7 @@ func TestAccComputeForwardingRule_forwardingRuleL3DefaultExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -673,7 +677,7 @@ func TestAccComputeForwardingRule_forwardingRuleInternallbExample(t *testing.T) 
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -742,7 +746,7 @@ func TestAccComputeForwardingRule_forwardingRuleHttpLbExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -961,7 +965,7 @@ func TestAccComputeForwardingRule_forwardingRuleRegionalHttpXlbExample(t *testin
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -1187,7 +1191,7 @@ func TestAccComputeForwardingRule_forwardingRuleVpcPscExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -1208,13 +1212,14 @@ func testAccComputeForwardingRule_forwardingRuleVpcPscExample(context map[string
 	return Nprintf(`
 // Forwarding rule for VPC private service connect
 resource "google_compute_forwarding_rule" "default" {
-  provider              = google-beta
-  name                  = "tf-test-psc-endpoint%{random_suffix}"
-  region                = "us-central1"
-  load_balancing_scheme = ""
-  target                = google_compute_service_attachment.producer_service_attachment.id
-  network               = google_compute_network.consumer_net.name
-  ip_address            = google_compute_address.consumer_address.id
+  provider                = google-beta
+  name                    = "tf-test-psc-endpoint%{random_suffix}"
+  region                  = "us-central1"
+  load_balancing_scheme   = ""
+  target                  = google_compute_service_attachment.producer_service_attachment.id
+  network                 = google_compute_network.consumer_net.name
+  ip_address              = google_compute_address.consumer_address.id
+  allow_psc_global_access = true
 }
 
 // Consumer service endpoint
@@ -1234,8 +1239,8 @@ resource "google_compute_subnetwork" "consumer_subnet" {
 }
 
 resource "google_compute_address" "consumer_address" {
+  provider      = google-beta
   name         = "tf-test-website-ip%{random_suffix}-1"
-  provider     = google-beta
   region       = "us-central1"
   subnetwork   = google_compute_subnetwork.consumer_subnet.id
   address_type = "INTERNAL"
@@ -1278,8 +1283,6 @@ resource "google_compute_service_attachment" "producer_service_attachment" {
   connection_preference = "ACCEPT_AUTOMATIC"
   nat_subnets           = [google_compute_subnetwork.psc_producer_subnet.name]
   target_service        = google_compute_forwarding_rule.producer_target_service.id
-
-
 }
 
 resource "google_compute_forwarding_rule" "producer_target_service" {
@@ -1292,8 +1295,6 @@ resource "google_compute_forwarding_rule" "producer_target_service" {
   all_ports             = true
   network               = google_compute_network.producer_net.name
   subnetwork            = google_compute_subnetwork.producer_subnet.name
-
-
 }
 
 resource "google_compute_region_backend_service" "producer_service_backend" {
@@ -1317,6 +1318,64 @@ resource "google_compute_health_check" "producer_service_health_check" {
 `, context)
 }
 
+func TestAccComputeForwardingRule_forwardingRuleRegionalSteeringExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeForwardingRule_forwardingRuleRegionalSteeringExample(context),
+			},
+			{
+				ResourceName:            "google_compute_forwarding_rule.steering",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "region"},
+			},
+		},
+	})
+}
+
+func testAccComputeForwardingRule_forwardingRuleRegionalSteeringExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_compute_forwarding_rule" "steering" {
+  name = "tf-test-steering-rule%{random_suffix}"
+  region = "us-central1"
+  ip_address = google_compute_address.basic.self_link
+  backend_service = google_compute_region_backend_service.external.self_link
+  load_balancing_scheme = "EXTERNAL"
+  source_ip_ranges = ["34.121.88.0/24", "35.187.239.137"]
+  depends_on = [google_compute_forwarding_rule.external]
+}
+
+resource "google_compute_address" "basic" {
+  name = "tf-test-website-ip%{random_suffix}"
+  region = "us-central1"
+}
+
+resource "google_compute_region_backend_service" "external" {
+  name = "tf-test-service-backend%{random_suffix}"
+  region = "us-central1"
+  load_balancing_scheme = "EXTERNAL"
+}
+
+resource "google_compute_forwarding_rule" "external" {
+  name = "tf-test-external-forwarding-rule%{random_suffix}"
+  region = "us-central1"
+  ip_address = google_compute_address.basic.self_link
+  backend_service = google_compute_region_backend_service.external.self_link
+  load_balancing_scheme = "EXTERNAL"
+}
+`, context)
+}
+
 func testAccCheckComputeForwardingRuleDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
 		for name, rs := range s.RootModule().Resources {
@@ -1329,7 +1388,7 @@ func testAccCheckComputeForwardingRuleDestroyProducer(t *testing.T) func(s *terr
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -1340,7 +1399,7 @@ func testAccCheckComputeForwardingRuleDestroyProducer(t *testing.T) func(s *terr
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("ComputeForwardingRule still exists at %s", url)
 			}

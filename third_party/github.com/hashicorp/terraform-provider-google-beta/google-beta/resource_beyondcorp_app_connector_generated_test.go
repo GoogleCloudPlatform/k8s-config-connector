@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccBeyondcorpAppConnector_beyondcorpAppConnectorBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccBeyondcorpAppConnector_beyondcorpAppConnectorBasicExample(t *testing
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBeyondcorpAppConnectorDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -74,7 +78,7 @@ func TestAccBeyondcorpAppConnector_beyondcorpAppConnectorFullExample(t *testing.
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBeyondcorpAppConnectorDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -127,7 +131,7 @@ func testAccCheckBeyondcorpAppConnectorDestroyProducer(t *testing.T) func(s *ter
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{BeyondcorpBasePath}}projects/{{project}}/locations/{{region}}/appConnectors/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{BeyondcorpBasePath}}projects/{{project}}/locations/{{region}}/appConnectors/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -138,7 +142,7 @@ func testAccCheckBeyondcorpAppConnectorDestroyProducer(t *testing.T) func(s *ter
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("BeyondcorpAppConnector still exists at %s", url)
 			}

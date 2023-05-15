@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceMonitoringService() *schema.Resource {
@@ -52,7 +56,7 @@ func ResourceMonitoringService() *schema.Resource {
 				Computed:     true,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateRegexp(`^[a-z0-9\-]+$`),
+				ValidateFunc: verify.ValidateRegexp(`^[a-z0-9\-]+$`),
 				Description: `An optional service ID to use. If not given, the server will generate a
 service ID.`,
 			},
@@ -102,8 +106,8 @@ projects/[PROJECT_ID]/services/[SERVICE_ID].`,
 }
 
 func resourceMonitoringServiceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -112,7 +116,7 @@ func resourceMonitoringServiceCreate(d *schema.ResourceData, meta interface{}) e
 	displayNameProp, err := expandMonitoringServiceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	userLabelsProp, err := expandMonitoringServiceUserLabels(d.Get("user_labels"), d, config)
@@ -124,13 +128,13 @@ func resourceMonitoringServiceCreate(d *schema.ResourceData, meta interface{}) e
 	telemetryProp, err := expandMonitoringServiceTelemetry(d.Get("telemetry"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("telemetry"); !isEmptyValue(reflect.ValueOf(telemetryProp)) && (ok || !reflect.DeepEqual(v, telemetryProp)) {
+	} else if v, ok := d.GetOkExists("telemetry"); !tpgresource.IsEmptyValue(reflect.ValueOf(telemetryProp)) && (ok || !reflect.DeepEqual(v, telemetryProp)) {
 		obj["telemetry"] = telemetryProp
 	}
 	nameProp, err := expandMonitoringServiceServiceId(d.Get("service_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("service_id"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("service_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 
@@ -139,7 +143,7 @@ func resourceMonitoringServiceCreate(d *schema.ResourceData, meta interface{}) e
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/projects/{{project}}/services?serviceId={{service_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/projects/{{project}}/services?serviceId={{service_id}}")
 	if err != nil {
 		return err
 	}
@@ -147,18 +151,18 @@ func resourceMonitoringServiceCreate(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Creating new Service: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Service: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), transport_tpg.IsMonitoringConcurrentEditError)
 	if err != nil {
 		return fmt.Errorf("Error creating Service: %s", err)
 	}
@@ -167,7 +171,7 @@ func resourceMonitoringServiceCreate(d *schema.ResourceData, meta interface{}) e
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -179,33 +183,33 @@ func resourceMonitoringServiceCreate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceMonitoringServiceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Service: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil, transport_tpg.IsMonitoringConcurrentEditError)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("MonitoringService %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("MonitoringService %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -232,15 +236,15 @@ func resourceMonitoringServiceRead(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceMonitoringServiceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Service: %s", err)
 	}
@@ -250,7 +254,7 @@ func resourceMonitoringServiceUpdate(d *schema.ResourceData, meta interface{}) e
 	displayNameProp, err := expandMonitoringServiceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	userLabelsProp, err := expandMonitoringServiceUserLabels(d.Get("user_labels"), d, config)
@@ -262,7 +266,7 @@ func resourceMonitoringServiceUpdate(d *schema.ResourceData, meta interface{}) e
 	telemetryProp, err := expandMonitoringServiceTelemetry(d.Get("telemetry"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("telemetry"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, telemetryProp)) {
+	} else if v, ok := d.GetOkExists("telemetry"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, telemetryProp)) {
 		obj["telemetry"] = telemetryProp
 	}
 
@@ -271,7 +275,7 @@ func resourceMonitoringServiceUpdate(d *schema.ResourceData, meta interface{}) e
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -292,17 +296,17 @@ func resourceMonitoringServiceUpdate(d *schema.ResourceData, meta interface{}) e
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate), IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate), transport_tpg.IsMonitoringConcurrentEditError)
 
 	if err != nil {
 		return fmt.Errorf("Error updating Service %q: %s", d.Id(), err)
@@ -314,21 +318,21 @@ func resourceMonitoringServiceUpdate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceMonitoringServiceDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Service: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -337,13 +341,13 @@ func resourceMonitoringServiceDelete(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Deleting Service %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), transport_tpg.IsMonitoringConcurrentEditError)
 	if err != nil {
-		return handleNotFoundError(err, d, "Service")
+		return transport_tpg.HandleNotFoundError(err, d, "Service")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Service %q: %#v", d.Id(), res)
@@ -352,7 +356,7 @@ func resourceMonitoringServiceDelete(d *schema.ResourceData, meta interface{}) e
 
 func resourceMonitoringServiceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<project>[^ ]+) (?P<name>[^ ]+)", "(?P<name>[^ ]+)"}, d, config); err != nil {
@@ -362,19 +366,19 @@ func resourceMonitoringServiceImport(d *schema.ResourceData, meta interface{}) (
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenMonitoringServiceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringServiceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringServiceDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringServiceDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringServiceUserLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringServiceUserLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringServiceTelemetry(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringServiceTelemetry(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -387,22 +391,22 @@ func flattenMonitoringServiceTelemetry(v interface{}, d *schema.ResourceData, co
 		flattenMonitoringServiceTelemetryResourceName(original["resourceName"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMonitoringServiceTelemetryResourceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringServiceTelemetryResourceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringServiceServiceId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringServiceServiceId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func expandMonitoringServiceDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringServiceDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringServiceUserLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandMonitoringServiceUserLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -413,7 +417,7 @@ func expandMonitoringServiceUserLabels(v interface{}, d TerraformResourceData, c
 	return m, nil
 }
 
-func expandMonitoringServiceTelemetry(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringServiceTelemetry(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -425,18 +429,18 @@ func expandMonitoringServiceTelemetry(v interface{}, d TerraformResourceData, co
 	transformedResourceName, err := expandMonitoringServiceTelemetryResourceName(original["resource_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedResourceName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedResourceName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["resourceName"] = transformedResourceName
 	}
 
 	return transformed, nil
 }
 
-func expandMonitoringServiceTelemetryResourceName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringServiceTelemetryResourceName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringServiceServiceId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringServiceServiceId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

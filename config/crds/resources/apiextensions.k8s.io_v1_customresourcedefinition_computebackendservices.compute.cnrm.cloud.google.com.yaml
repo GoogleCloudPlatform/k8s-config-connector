@@ -247,6 +247,20 @@ spec:
               cdnPolicy:
                 description: Cloud CDN configuration for this BackendService.
                 properties:
+                  bypassCacheOnRequestHeaders:
+                    description: |-
+                      Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified.
+                      The cache is bypassed for all cdnPolicy.cacheMode settings.
+                    items:
+                      properties:
+                        headerName:
+                          description: The header field name to match on when bypassing
+                            cache. Values are case-insensitive.
+                          type: string
+                      required:
+                      - headerName
+                      type: object
+                    type: array
                   cacheKeyPolicy:
                     description: The CacheKeyPolicy for this CdnPolicy.
                     properties:

@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccVertexAITensorboard_vertexAiTensorboardExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccVertexAITensorboard_vertexAiTensorboardExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckVertexAITensorboardDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -71,7 +75,7 @@ func TestAccVertexAITensorboard_vertexAiTensorboardFullExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckVertexAITensorboardDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -126,7 +130,7 @@ func testAccCheckVertexAITensorboardDestroyProducer(t *testing.T) func(s *terraf
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{VertexAIBasePath}}{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{VertexAIBasePath}}{{name}}")
 			if err != nil {
 				return err
 			}
@@ -137,7 +141,7 @@ func testAccCheckVertexAITensorboardDestroyProducer(t *testing.T) func(s *terraf
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("VertexAITensorboard still exists at %s", url)
 			}

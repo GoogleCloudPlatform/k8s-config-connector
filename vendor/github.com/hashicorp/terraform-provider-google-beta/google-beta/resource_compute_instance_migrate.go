@@ -6,6 +6,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	compute "google.golang.org/api/compute/v0.beta"
@@ -161,7 +164,7 @@ func migrateStateV1toV2(is *terraform.InstanceState) (*terraform.InstanceState, 
 
 	for service_acct_index, newScopes := range newScopesMap {
 		for _, newScope := range newScopes {
-			hash := hashcode(canonicalizeServiceScope(newScope))
+			hash := tpgresource.Hashcode(tpgresource.CanonicalizeServiceScope(newScope))
 			newKey := fmt.Sprintf("service_account.%s.scopes.%d", service_acct_index, hash)
 			is.Attributes[newKey] = newScope
 		}
@@ -185,7 +188,7 @@ func migrateStateV3toV4(is *terraform.InstanceState, meta interface{}) (*terrafo
 	// we have no other way to know which source belongs to which attached disk.
 	// Also note that the following code modifies the returned instance- if you need immutability, please change
 	// this to make a copy of the needed data.
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	instance, err := getInstanceFromInstanceState(config, is)
 	if err != nil {
 		return is, fmt.Errorf("migration error: %s", err)
@@ -237,7 +240,7 @@ func migrateStateV3toV4(is *terraform.InstanceState, meta interface{}) (*terrafo
 
 			for _, disk := range instance.Disks {
 				if disk.Boot {
-					is.Attributes["boot_disk.0.source"] = GetResourceNameFromSelfLink(disk.Source)
+					is.Attributes["boot_disk.0.source"] = tpgresource.GetResourceNameFromSelfLink(disk.Source)
 					is.Attributes["boot_disk.0.device_name"] = disk.DeviceName
 					break
 				}
@@ -310,7 +313,7 @@ func migrateStateV4toV5(is *terraform.InstanceState, meta interface{}) (*terrafo
 	return is, nil
 }
 
-func getInstanceFromInstanceState(config *Config, is *terraform.InstanceState) (*compute.Instance, error) {
+func getInstanceFromInstanceState(config *transport_tpg.Config, is *terraform.InstanceState) (*compute.Instance, error) {
 	project, ok := is.Attributes["project"]
 	if !ok {
 		if config.Project == "" {
@@ -338,7 +341,7 @@ func getInstanceFromInstanceState(config *Config, is *terraform.InstanceState) (
 	return instance, nil
 }
 
-func getAllDisksFromInstanceState(config *Config, is *terraform.InstanceState) ([]*compute.Disk, error) {
+func getAllDisksFromInstanceState(config *transport_tpg.Config, is *terraform.InstanceState) ([]*compute.Disk, error) {
 	project, ok := is.Attributes["project"]
 	if !ok {
 		if config.Project == "" {
@@ -374,7 +377,7 @@ func getAllDisksFromInstanceState(config *Config, is *terraform.InstanceState) (
 	return diskList, nil
 }
 
-func getDiskFromAttributes(config *Config, instance *compute.Instance, allDisks map[string]*compute.Disk, attributes map[string]string, i int) (*compute.AttachedDisk, error) {
+func getDiskFromAttributes(config *transport_tpg.Config, instance *compute.Instance, allDisks map[string]*compute.Disk, attributes map[string]string, i int) (*compute.AttachedDisk, error) {
 	if diskSource := attributes[fmt.Sprintf("disk.%d.disk", i)]; diskSource != "" {
 		return getDiskFromSource(instance, diskSource)
 	}
@@ -447,7 +450,7 @@ func getDiskFromEncryptionKey(instance *compute.Instance, encryptionKey string) 
 	return nil, fmt.Errorf("could not find attached disk with encryption hash %q", encryptionSha)
 }
 
-func getDiskFromAutoDeleteAndImage(config *Config, instance *compute.Instance, allDisks map[string]*compute.Disk, autoDelete bool, image, project, zone string) (*compute.AttachedDisk, error) {
+func getDiskFromAutoDeleteAndImage(config *transport_tpg.Config, instance *compute.Instance, allDisks map[string]*compute.Disk, autoDelete bool, image, project, zone string) (*compute.AttachedDisk, error) {
 	img, err := resolveImage(config, project, image, config.UserAgent)
 	if err != nil {
 		return nil, err
@@ -462,8 +465,8 @@ func getDiskFromAutoDeleteAndImage(config *Config, instance *compute.Instance, a
 		}
 		if disk.AutoDelete == autoDelete {
 			// Read the disk to check if its image matches
-			fullDisk := allDisks[GetResourceNameFromSelfLink(disk.Source)]
-			sourceImage, err := getRelativePath(fullDisk.SourceImage)
+			fullDisk := allDisks[tpgresource.GetResourceNameFromSelfLink(disk.Source)]
+			sourceImage, err := tpgresource.GetRelativePath(fullDisk.SourceImage)
 			if err != nil {
 				return nil, err
 			}
@@ -487,8 +490,8 @@ func getDiskFromAutoDeleteAndImage(config *Config, instance *compute.Instance, a
 		}
 		if disk.AutoDelete == autoDelete {
 			// Read the disk to check if its image matches
-			fullDisk := allDisks[GetResourceNameFromSelfLink(disk.Source)]
-			sourceImage, err := getRelativePath(fullDisk.SourceImage)
+			fullDisk := allDisks[tpgresource.GetResourceNameFromSelfLink(disk.Source)]
+			sourceImage, err := tpgresource.GetRelativePath(fullDisk.SourceImage)
 			if err != nil {
 				return nil, err
 			}

@@ -24,6 +24,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceDialogflowCXIntent() *schema.Resource {
@@ -179,8 +182,8 @@ Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/
 }
 
 func resourceDialogflowCXIntentCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -189,53 +192,53 @@ func resourceDialogflowCXIntentCreate(d *schema.ResourceData, meta interface{}) 
 	displayNameProp, err := expandDialogflowCXIntentDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	trainingPhrasesProp, err := expandDialogflowCXIntentTrainingPhrases(d.Get("training_phrases"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("training_phrases"); !isEmptyValue(reflect.ValueOf(trainingPhrasesProp)) && (ok || !reflect.DeepEqual(v, trainingPhrasesProp)) {
+	} else if v, ok := d.GetOkExists("training_phrases"); !tpgresource.IsEmptyValue(reflect.ValueOf(trainingPhrasesProp)) && (ok || !reflect.DeepEqual(v, trainingPhrasesProp)) {
 		obj["trainingPhrases"] = trainingPhrasesProp
 	}
 	parametersProp, err := expandDialogflowCXIntentParameters(d.Get("parameters"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("parameters"); !isEmptyValue(reflect.ValueOf(parametersProp)) && (ok || !reflect.DeepEqual(v, parametersProp)) {
+	} else if v, ok := d.GetOkExists("parameters"); !tpgresource.IsEmptyValue(reflect.ValueOf(parametersProp)) && (ok || !reflect.DeepEqual(v, parametersProp)) {
 		obj["parameters"] = parametersProp
 	}
 	priorityProp, err := expandDialogflowCXIntentPriority(d.Get("priority"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("priority"); !isEmptyValue(reflect.ValueOf(priorityProp)) && (ok || !reflect.DeepEqual(v, priorityProp)) {
+	} else if v, ok := d.GetOkExists("priority"); !tpgresource.IsEmptyValue(reflect.ValueOf(priorityProp)) && (ok || !reflect.DeepEqual(v, priorityProp)) {
 		obj["priority"] = priorityProp
 	}
 	isFallbackProp, err := expandDialogflowCXIntentIsFallback(d.Get("is_fallback"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("is_fallback"); !isEmptyValue(reflect.ValueOf(isFallbackProp)) && (ok || !reflect.DeepEqual(v, isFallbackProp)) {
+	} else if v, ok := d.GetOkExists("is_fallback"); !tpgresource.IsEmptyValue(reflect.ValueOf(isFallbackProp)) && (ok || !reflect.DeepEqual(v, isFallbackProp)) {
 		obj["isFallback"] = isFallbackProp
 	}
 	labelsProp, err := expandDialogflowCXIntentLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	descriptionProp, err := expandDialogflowCXIntentDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	languageCodeProp, err := expandDialogflowCXIntentLanguageCode(d.Get("language_code"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("language_code"); !isEmptyValue(reflect.ValueOf(languageCodeProp)) && (ok || !reflect.DeepEqual(v, languageCodeProp)) {
+	} else if v, ok := d.GetOkExists("language_code"); !tpgresource.IsEmptyValue(reflect.ValueOf(languageCodeProp)) && (ok || !reflect.DeepEqual(v, languageCodeProp)) {
 		obj["languageCode"] = languageCodeProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/intents")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/intents")
 	if err != nil {
 		return err
 	}
@@ -244,7 +247,7 @@ func resourceDialogflowCXIntentCreate(d *schema.ResourceData, meta interface{}) 
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
@@ -262,7 +265,7 @@ func resourceDialogflowCXIntentCreate(d *schema.ResourceData, meta interface{}) 
 	}
 
 	url = strings.Replace(url, "-dialogflow", fmt.Sprintf("%s-dialogflow", location), 1)
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Intent: %s", err)
 	}
@@ -271,7 +274,7 @@ func resourceDialogflowCXIntentCreate(d *schema.ResourceData, meta interface{}) 
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{parent}}/intents/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{parent}}/intents/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -283,13 +286,13 @@ func resourceDialogflowCXIntentCreate(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceDialogflowCXIntentRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/intents/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/intents/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -297,7 +300,7 @@ func resourceDialogflowCXIntentRead(d *schema.ResourceData, meta interface{}) er
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
@@ -315,9 +318,9 @@ func resourceDialogflowCXIntentRead(d *schema.ResourceData, meta interface{}) er
 	}
 
 	url = strings.Replace(url, "-dialogflow", fmt.Sprintf("%s-dialogflow", location), 1)
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("DialogflowCXIntent %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("DialogflowCXIntent %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenDialogflowCXIntentName(res["name"], d, config)); err != nil {
@@ -352,8 +355,8 @@ func resourceDialogflowCXIntentRead(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceDialogflowCXIntentUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -364,47 +367,47 @@ func resourceDialogflowCXIntentUpdate(d *schema.ResourceData, meta interface{}) 
 	displayNameProp, err := expandDialogflowCXIntentDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	trainingPhrasesProp, err := expandDialogflowCXIntentTrainingPhrases(d.Get("training_phrases"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("training_phrases"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, trainingPhrasesProp)) {
+	} else if v, ok := d.GetOkExists("training_phrases"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, trainingPhrasesProp)) {
 		obj["trainingPhrases"] = trainingPhrasesProp
 	}
 	parametersProp, err := expandDialogflowCXIntentParameters(d.Get("parameters"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("parameters"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, parametersProp)) {
+	} else if v, ok := d.GetOkExists("parameters"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, parametersProp)) {
 		obj["parameters"] = parametersProp
 	}
 	priorityProp, err := expandDialogflowCXIntentPriority(d.Get("priority"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("priority"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, priorityProp)) {
+	} else if v, ok := d.GetOkExists("priority"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, priorityProp)) {
 		obj["priority"] = priorityProp
 	}
 	isFallbackProp, err := expandDialogflowCXIntentIsFallback(d.Get("is_fallback"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("is_fallback"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, isFallbackProp)) {
+	} else if v, ok := d.GetOkExists("is_fallback"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, isFallbackProp)) {
 		obj["isFallback"] = isFallbackProp
 	}
 	labelsProp, err := expandDialogflowCXIntentLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	descriptionProp, err := expandDialogflowCXIntentDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/intents/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/intents/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -441,7 +444,7 @@ func resourceDialogflowCXIntentUpdate(d *schema.ResourceData, meta interface{}) 
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -462,11 +465,11 @@ func resourceDialogflowCXIntentUpdate(d *schema.ResourceData, meta interface{}) 
 	url = strings.Replace(url, "-dialogflow", fmt.Sprintf("%s-dialogflow", location), 1)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Intent %q: %s", d.Id(), err)
@@ -478,15 +481,15 @@ func resourceDialogflowCXIntentUpdate(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceDialogflowCXIntentDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/intents/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/intents/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -510,13 +513,13 @@ func resourceDialogflowCXIntentDelete(d *schema.ResourceData, meta interface{}) 
 	log.Printf("[DEBUG] Deleting Intent %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Intent")
+		return transport_tpg.HandleNotFoundError(err, d, "Intent")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Intent %q: %#v", d.Id(), res)
@@ -524,7 +527,7 @@ func resourceDialogflowCXIntentDelete(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceDialogflowCXIntentImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value and parent contains slashes
 	if err := ParseImportId([]string{
@@ -535,7 +538,7 @@ func resourceDialogflowCXIntentImport(d *schema.ResourceData, meta interface{}) 
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{parent}}/intents/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{parent}}/intents/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -544,18 +547,18 @@ func resourceDialogflowCXIntentImport(d *schema.ResourceData, meta interface{}) 
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenDialogflowCXIntentName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenDialogflowCXIntentDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXIntentTrainingPhrases(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentTrainingPhrases(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -575,11 +578,11 @@ func flattenDialogflowCXIntentTrainingPhrases(v interface{}, d *schema.ResourceD
 	}
 	return transformed
 }
-func flattenDialogflowCXIntentTrainingPhrasesId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentTrainingPhrasesId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXIntentTrainingPhrasesParts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentTrainingPhrasesParts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -598,15 +601,15 @@ func flattenDialogflowCXIntentTrainingPhrasesParts(v interface{}, d *schema.Reso
 	}
 	return transformed
 }
-func flattenDialogflowCXIntentTrainingPhrasesPartsText(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentTrainingPhrasesPartsText(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXIntentTrainingPhrasesPartsParameterId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentTrainingPhrasesPartsParameterId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXIntentTrainingPhrasesRepeatCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentTrainingPhrasesRepeatCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -623,7 +626,7 @@ func flattenDialogflowCXIntentTrainingPhrasesRepeatCount(v interface{}, d *schem
 	return v // let terraform core handle it otherwise
 }
 
-func flattenDialogflowCXIntentParameters(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentParameters(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -644,23 +647,23 @@ func flattenDialogflowCXIntentParameters(v interface{}, d *schema.ResourceData, 
 	}
 	return transformed
 }
-func flattenDialogflowCXIntentParametersId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentParametersId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXIntentParametersEntityType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentParametersEntityType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXIntentParametersIsList(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentParametersIsList(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXIntentParametersRedact(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentParametersRedact(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXIntentPriority(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentPriority(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -677,27 +680,27 @@ func flattenDialogflowCXIntentPriority(v interface{}, d *schema.ResourceData, co
 	return v // let terraform core handle it otherwise
 }
 
-func flattenDialogflowCXIntentIsFallback(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentIsFallback(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXIntentLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXIntentDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXIntentLanguageCode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXIntentLanguageCode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandDialogflowCXIntentDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXIntentTrainingPhrases(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentTrainingPhrases(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -710,21 +713,21 @@ func expandDialogflowCXIntentTrainingPhrases(v interface{}, d TerraformResourceD
 		transformedId, err := expandDialogflowCXIntentTrainingPhrasesId(original["id"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedId); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["id"] = transformedId
 		}
 
 		transformedParts, err := expandDialogflowCXIntentTrainingPhrasesParts(original["parts"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedParts); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedParts); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["parts"] = transformedParts
 		}
 
 		transformedRepeatCount, err := expandDialogflowCXIntentTrainingPhrasesRepeatCount(original["repeat_count"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedRepeatCount); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedRepeatCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["repeatCount"] = transformedRepeatCount
 		}
 
@@ -733,11 +736,11 @@ func expandDialogflowCXIntentTrainingPhrases(v interface{}, d TerraformResourceD
 	return req, nil
 }
 
-func expandDialogflowCXIntentTrainingPhrasesId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentTrainingPhrasesId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXIntentTrainingPhrasesParts(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentTrainingPhrasesParts(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -750,14 +753,14 @@ func expandDialogflowCXIntentTrainingPhrasesParts(v interface{}, d TerraformReso
 		transformedText, err := expandDialogflowCXIntentTrainingPhrasesPartsText(original["text"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedText); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedText); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["text"] = transformedText
 		}
 
 		transformedParameterId, err := expandDialogflowCXIntentTrainingPhrasesPartsParameterId(original["parameter_id"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedParameterId); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedParameterId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["parameterId"] = transformedParameterId
 		}
 
@@ -766,19 +769,19 @@ func expandDialogflowCXIntentTrainingPhrasesParts(v interface{}, d TerraformReso
 	return req, nil
 }
 
-func expandDialogflowCXIntentTrainingPhrasesPartsText(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentTrainingPhrasesPartsText(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXIntentTrainingPhrasesPartsParameterId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentTrainingPhrasesPartsParameterId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXIntentTrainingPhrasesRepeatCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentTrainingPhrasesRepeatCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXIntentParameters(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentParameters(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -791,28 +794,28 @@ func expandDialogflowCXIntentParameters(v interface{}, d TerraformResourceData, 
 		transformedId, err := expandDialogflowCXIntentParametersId(original["id"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedId); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["id"] = transformedId
 		}
 
 		transformedEntityType, err := expandDialogflowCXIntentParametersEntityType(original["entity_type"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedEntityType); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedEntityType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["entityType"] = transformedEntityType
 		}
 
 		transformedIsList, err := expandDialogflowCXIntentParametersIsList(original["is_list"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedIsList); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedIsList); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["isList"] = transformedIsList
 		}
 
 		transformedRedact, err := expandDialogflowCXIntentParametersRedact(original["redact"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedRedact); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedRedact); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["redact"] = transformedRedact
 		}
 
@@ -821,31 +824,31 @@ func expandDialogflowCXIntentParameters(v interface{}, d TerraformResourceData, 
 	return req, nil
 }
 
-func expandDialogflowCXIntentParametersId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentParametersId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXIntentParametersEntityType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentParametersEntityType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXIntentParametersIsList(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentParametersIsList(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXIntentParametersRedact(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentParametersRedact(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXIntentPriority(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentPriority(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXIntentIsFallback(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentIsFallback(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXIntentLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandDialogflowCXIntentLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -856,10 +859,10 @@ func expandDialogflowCXIntentLabels(v interface{}, d TerraformResourceData, conf
 	return m, nil
 }
 
-func expandDialogflowCXIntentDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXIntentLanguageCode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXIntentLanguageCode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

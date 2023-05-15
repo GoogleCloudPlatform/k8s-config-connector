@@ -56,6 +56,10 @@ type ClusterAddonsConfig struct {
 	// +optional
 	GcpFilestoreCsiDriverConfig *ClusterGcpFilestoreCsiDriverConfig `json:"gcpFilestoreCsiDriverConfig,omitempty"`
 
+	/* The status of the GCS Fuse CSI driver addon, which allows the usage of gcs bucket as volumes. Defaults to disabled; set enabled = true to enable. */
+	// +optional
+	GcsFuseCsiDriverConfig *ClusterGcsFuseCsiDriverConfig `json:"gcsFuseCsiDriverConfig,omitempty"`
+
 	/* The status of the Backup for GKE Agent addon. It is disabled by default. Set enabled = true to enable. */
 	// +optional
 	GkeBackupAgentConfig *ClusterGkeBackupAgentConfig `json:"gkeBackupAgentConfig,omitempty"`
@@ -288,6 +292,10 @@ type ClusterGcfsConfig struct {
 }
 
 type ClusterGcpFilestoreCsiDriverConfig struct {
+	Enabled bool `json:"enabled"`
+}
+
+type ClusterGcsFuseCsiDriverConfig struct {
 	Enabled bool `json:"enabled"`
 }
 

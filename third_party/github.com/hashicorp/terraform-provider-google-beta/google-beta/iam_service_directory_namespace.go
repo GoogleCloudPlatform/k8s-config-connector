@@ -20,6 +20,9 @@ import (
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"google.golang.org/api/cloudresourcemanager/v1"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 var ServiceDirectoryNamespaceIamSchema = map[string]*schema.Schema{
@@ -33,11 +36,11 @@ var ServiceDirectoryNamespaceIamSchema = map[string]*schema.Schema{
 
 type ServiceDirectoryNamespaceIamUpdater struct {
 	name   string
-	d      TerraformResourceData
-	Config *Config
+	d      tpgresource.TerraformResourceData
+	Config *transport_tpg.Config
 }
 
-func ServiceDirectoryNamespaceIamUpdaterProducer(d TerraformResourceData, config *Config) (ResourceIamUpdater, error) {
+func ServiceDirectoryNamespaceIamUpdaterProducer(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
 	values := make(map[string]string)
 
 	if v, ok := d.GetOk("name"); ok {
@@ -67,7 +70,7 @@ func ServiceDirectoryNamespaceIamUpdaterProducer(d TerraformResourceData, config
 	return u, nil
 }
 
-func ServiceDirectoryNamespaceIdParseFunc(d *schema.ResourceData, config *Config) error {
+func ServiceDirectoryNamespaceIdParseFunc(d *schema.ResourceData, config *transport_tpg.Config) error {
 	values := make(map[string]string)
 
 	m, err := getImportIdQualifiers([]string{"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/namespaces/(?P<namespace_id>[^/]+)", "(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<namespace_id>[^/]+)", "(?P<location>[^/]+)/(?P<namespace_id>[^/]+)"}, d, config, d.Id())
@@ -99,18 +102,18 @@ func (u *ServiceDirectoryNamespaceIamUpdater) GetResourceIamPolicy() (*cloudreso
 
 	var obj map[string]interface{}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
 
-	policy, err := SendRequest(u.Config, "POST", "", url, userAgent, obj)
+	policy, err := transport_tpg.SendRequest(u.Config, "POST", "", url, userAgent, obj)
 	if err != nil {
 		return nil, errwrap.Wrapf(fmt.Sprintf("Error retrieving IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
 
 	out := &cloudresourcemanager.Policy{}
-	err = Convert(policy, out)
+	err = tpgresource.Convert(policy, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a policy to a resource manager policy: {{err}}", err)
 	}
@@ -119,7 +122,7 @@ func (u *ServiceDirectoryNamespaceIamUpdater) GetResourceIamPolicy() (*cloudreso
 }
 
 func (u *ServiceDirectoryNamespaceIamUpdater) SetResourceIamPolicy(policy *cloudresourcemanager.Policy) error {
-	json, err := ConvertToMap(policy)
+	json, err := tpgresource.ConvertToMap(policy)
 	if err != nil {
 		return err
 	}
@@ -132,12 +135,12 @@ func (u *ServiceDirectoryNamespaceIamUpdater) SetResourceIamPolicy(policy *cloud
 		return err
 	}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	_, err = SendRequestWithTimeout(u.Config, "POST", "", url, userAgent, obj, u.d.Timeout(schema.TimeoutCreate))
+	_, err = transport_tpg.SendRequestWithTimeout(u.Config, "POST", "", url, userAgent, obj, u.d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return errwrap.Wrapf(fmt.Sprintf("Error setting IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
@@ -147,7 +150,7 @@ func (u *ServiceDirectoryNamespaceIamUpdater) SetResourceIamPolicy(policy *cloud
 
 func (u *ServiceDirectoryNamespaceIamUpdater) qualifyNamespaceUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{ServiceDirectoryBasePath}}%s:%s", fmt.Sprintf("%s", u.name), methodIdentifier)
-	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
+	url, err := tpgresource.ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

@@ -25,6 +25,9 @@ import (
 
 	dcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	assuredworkloads "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/assuredworkloads/beta"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceAssuredWorkloadsWorkload() *schema.Resource {
@@ -193,7 +196,7 @@ func AssuredWorkloadsWorkloadResourcesSchema() *schema.Resource {
 }
 
 func resourceAssuredWorkloadsWorkloadCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	obj := &assuredworkloads.Workload{
 		BillingAccount:             dcl.String(d.Get("billing_account").(string)),
@@ -213,17 +216,17 @@ func resourceAssuredWorkloadsWorkloadCreate(d *schema.ResourceData, meta interfa
 	}
 	d.SetId(id)
 	directive := CreateDirective
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := ""
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLAssuredWorkloadsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutCreate))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLAssuredWorkloadsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutCreate))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -256,7 +259,7 @@ func resourceAssuredWorkloadsWorkloadCreate(d *schema.ResourceData, meta interfa
 }
 
 func resourceAssuredWorkloadsWorkloadRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	obj := &assuredworkloads.Workload{
 		BillingAccount:             dcl.String(d.Get("billing_account").(string)),
@@ -271,17 +274,17 @@ func resourceAssuredWorkloadsWorkloadRead(d *schema.ResourceData, meta interface
 		Name:                       dcl.StringOrNil(d.Get("name").(string)),
 	}
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := ""
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLAssuredWorkloadsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutRead))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLAssuredWorkloadsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutRead))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -333,7 +336,7 @@ func resourceAssuredWorkloadsWorkloadRead(d *schema.ResourceData, meta interface
 	return nil
 }
 func resourceAssuredWorkloadsWorkloadUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	obj := &assuredworkloads.Workload{
 		BillingAccount:             dcl.String(d.Get("billing_account").(string)),
@@ -362,18 +365,18 @@ func resourceAssuredWorkloadsWorkloadUpdate(d *schema.ResourceData, meta interfa
 	}
 	directive := UpdateDirective
 	directive = append(directive, dcl.WithStateHint(old))
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLAssuredWorkloadsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutUpdate))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLAssuredWorkloadsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutUpdate))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -395,7 +398,7 @@ func resourceAssuredWorkloadsWorkloadUpdate(d *schema.ResourceData, meta interfa
 }
 
 func resourceAssuredWorkloadsWorkloadDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	obj := &assuredworkloads.Workload{
 		BillingAccount:             dcl.String(d.Get("billing_account").(string)),
@@ -411,17 +414,17 @@ func resourceAssuredWorkloadsWorkloadDelete(d *schema.ResourceData, meta interfa
 	}
 
 	log.Printf("[DEBUG] Deleting Workload %q", d.Id())
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := ""
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLAssuredWorkloadsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutDelete))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLAssuredWorkloadsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutDelete))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -436,7 +439,7 @@ func resourceAssuredWorkloadsWorkloadDelete(d *schema.ResourceData, meta interfa
 }
 
 func resourceAssuredWorkloadsWorkloadImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	if err := ParseImportId([]string{
 		"organizations/(?P<organization>[^/]+)/locations/(?P<location>[^/]+)/workloads/(?P<name>[^/]+)",

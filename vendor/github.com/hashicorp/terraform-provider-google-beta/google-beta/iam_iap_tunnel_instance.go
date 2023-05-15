@@ -20,6 +20,9 @@ import (
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"google.golang.org/api/cloudresourcemanager/v1"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 var IapTunnelInstanceIamSchema = map[string]*schema.Schema{
@@ -47,11 +50,11 @@ type IapTunnelInstanceIamUpdater struct {
 	project  string
 	zone     string
 	instance string
-	d        TerraformResourceData
-	Config   *Config
+	d        tpgresource.TerraformResourceData
+	Config   *transport_tpg.Config
 }
 
-func IapTunnelInstanceIamUpdaterProducer(d TerraformResourceData, config *Config) (ResourceIamUpdater, error) {
+func IapTunnelInstanceIamUpdaterProducer(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
 	values := make(map[string]string)
 
 	project, _ := getProject(d, config)
@@ -103,7 +106,7 @@ func IapTunnelInstanceIamUpdaterProducer(d TerraformResourceData, config *Config
 	return u, nil
 }
 
-func IapTunnelInstanceIdParseFunc(d *schema.ResourceData, config *Config) error {
+func IapTunnelInstanceIdParseFunc(d *schema.ResourceData, config *transport_tpg.Config) error {
 	values := make(map[string]string)
 
 	project, _ := getProject(d, config)
@@ -145,7 +148,7 @@ func (u *IapTunnelInstanceIamUpdater) GetResourceIamPolicy() (*cloudresourcemana
 		return nil, err
 	}
 
-	project, err := getProject(u.d, u.Config)
+	project, err := tpgresource.GetProject(u.d, u.Config)
 	if err != nil {
 		return nil, err
 	}
@@ -156,18 +159,18 @@ func (u *IapTunnelInstanceIamUpdater) GetResourceIamPolicy() (*cloudresourcemana
 		},
 	}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
 
-	policy, err := SendRequest(u.Config, "POST", project, url, userAgent, obj)
+	policy, err := transport_tpg.SendRequest(u.Config, "POST", project, url, userAgent, obj)
 	if err != nil {
 		return nil, errwrap.Wrapf(fmt.Sprintf("Error retrieving IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
 
 	out := &cloudresourcemanager.Policy{}
-	err = Convert(policy, out)
+	err = tpgresource.Convert(policy, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a policy to a resource manager policy: {{err}}", err)
 	}
@@ -176,7 +179,7 @@ func (u *IapTunnelInstanceIamUpdater) GetResourceIamPolicy() (*cloudresourcemana
 }
 
 func (u *IapTunnelInstanceIamUpdater) SetResourceIamPolicy(policy *cloudresourcemanager.Policy) error {
-	json, err := ConvertToMap(policy)
+	json, err := tpgresource.ConvertToMap(policy)
 	if err != nil {
 		return err
 	}
@@ -188,17 +191,17 @@ func (u *IapTunnelInstanceIamUpdater) SetResourceIamPolicy(policy *cloudresource
 	if err != nil {
 		return err
 	}
-	project, err := getProject(u.d, u.Config)
+	project, err := tpgresource.GetProject(u.d, u.Config)
 	if err != nil {
 		return err
 	}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	_, err = SendRequestWithTimeout(u.Config, "POST", project, url, userAgent, obj, u.d.Timeout(schema.TimeoutCreate))
+	_, err = transport_tpg.SendRequestWithTimeout(u.Config, "POST", project, url, userAgent, obj, u.d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return errwrap.Wrapf(fmt.Sprintf("Error setting IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
@@ -208,7 +211,7 @@ func (u *IapTunnelInstanceIamUpdater) SetResourceIamPolicy(policy *cloudresource
 
 func (u *IapTunnelInstanceIamUpdater) qualifyTunnelInstanceUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{IapBasePath}}%s:%s", fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s", u.project, u.zone, u.instance), methodIdentifier)
-	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
+	url, err := tpgresource.ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

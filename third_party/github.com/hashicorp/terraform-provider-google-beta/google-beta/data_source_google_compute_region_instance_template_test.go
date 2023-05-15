@@ -4,19 +4,20 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccRegionInstanceTemplateDatasource_name(t *testing.T) {
 	t.Parallel()
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccRegionInstanceTemplate_name(GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccRegionInstanceTemplate_name(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceStateWithIgnores(
+					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_region_instance_template.default",
 						"google_compute_region_instance_template.default",
 						map[string]struct{}{},
@@ -31,13 +32,13 @@ func TestAccRegionInstanceTemplateDatasource_filter(t *testing.T) {
 	t.Parallel()
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccRegionInstanceTemplate_filter(GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccRegionInstanceTemplate_filter(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceStateWithIgnores(
+					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_region_instance_template.default",
 						"google_compute_region_instance_template.c",
 						map[string]struct{}{},
@@ -52,13 +53,13 @@ func TestAccRegionInstanceTemplateDatasource_filter_mostRecent(t *testing.T) {
 	t.Parallel()
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccRegionInstanceTemplate_filter_mostRecent(GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccRegionInstanceTemplate_filter_mostRecent(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceStateWithIgnores(
+					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_region_instance_template.default",
 						"google_compute_region_instance_template.c",
 						map[string]struct{}{},

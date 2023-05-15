@@ -4,12 +4,14 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceGoogleIapClient() *schema.Resource {
 
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceIapClient().Schema)
-	addRequiredFieldsToSchema(dsSchema, "brand", "client_id")
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceIapClient().Schema)
+	tpgresource.AddRequiredFieldsToSchema(dsSchema, "brand", "client_id")
 
 	return &schema.Resource{
 		Read:   dataSourceGoogleIapClientRead,
@@ -18,9 +20,9 @@ func DataSourceGoogleIapClient() *schema.Resource {
 }
 
 func dataSourceGoogleIapClientRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
-	id, err := ReplaceVars(d, config, "{{brand}}/identityAwareProxyClients/{{client_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{brand}}/identityAwareProxyClients/{{client_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}

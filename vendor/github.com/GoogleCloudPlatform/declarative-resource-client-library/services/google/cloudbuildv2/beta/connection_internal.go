@@ -30,7 +30,7 @@ func (r *Connection) validate() error {
 	if err := dcl.ValidateAtMostOneOfFieldsSet([]string{"GithubConfig", "GithubEnterpriseConfig"}, r.GithubConfig, r.GithubEnterpriseConfig); err != nil {
 		return err
 	}
-	if err := dcl.Required(r, "name"); err != nil {
+	if err := dcl.RequiredParameter(r.Name, "Name"); err != nil {
 		return err
 	}
 	if err := dcl.RequiredParameter(r.Project, "Project"); err != nil {
@@ -532,7 +532,7 @@ func canonicalizeConnectionDesiredState(rawDesired, rawInitial *Connection, opts
 		return rawDesired, nil
 	}
 	canonicalDesired := &Connection{}
-	if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawInitial.Name) {
+	if dcl.NameToSelfLink(rawDesired.Name, rawInitial.Name) {
 		canonicalDesired.Name = rawInitial.Name
 	} else {
 		canonicalDesired.Name = rawDesired.Name
@@ -580,13 +580,7 @@ func canonicalizeConnectionDesiredState(rawDesired, rawInitial *Connection, opts
 
 func canonicalizeConnectionNewState(c *Client, rawNew, rawDesired *Connection) (*Connection, error) {
 
-	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
-		rawNew.Name = rawDesired.Name
-	} else {
-		if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawNew.Name) {
-			rawNew.Name = rawDesired.Name
-		}
-	}
+	rawNew.Name = rawDesired.Name
 
 	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
@@ -1670,7 +1664,7 @@ func expandConnection(c *Client, f *Connection) (map[string]interface{}, error) 
 	m := make(map[string]interface{})
 	res := f
 	_ = res
-	if v, err := dcl.DeriveField("projects/%s/locations/%s/connections/%s", f.Name, dcl.SelfLinkToName(f.Project), dcl.SelfLinkToName(f.Location), dcl.SelfLinkToName(f.Name)); err != nil {
+	if v, err := dcl.EmptyValue(); err != nil {
 		return nil, fmt.Errorf("error expanding Name into name: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["name"] = v

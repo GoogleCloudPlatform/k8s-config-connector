@@ -1,6 +1,7 @@
 package google
 
 import (
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -14,7 +15,7 @@ func TestAccComputeRegionNetworkEndpointGroup_negWithServerlessDeployment(t *tes
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionNetworkEndpointGroupDestroyProducer(t),
 		Steps: []resource.TestStep{

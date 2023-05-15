@@ -189,6 +189,10 @@ type JobLoad struct {
 	// +optional
 	NullMarker *string `json:"nullMarker,omitempty"`
 
+	/* Immutable. Parquet Options for load and make external tables. */
+	// +optional
+	ParquetOptions *JobParquetOptions `json:"parquetOptions,omitempty"`
+
 	/* Immutable. If sourceFormat is set to "DATASTORE_BACKUP", indicates which entity properties to load into BigQuery from a Cloud Datastore backup.
 	Property names are case sensitive and must be top-level properties. If no properties are specified, BigQuery loads all properties.
 	If any named property isn't found in the Cloud Datastore backup, an invalid error is returned in the job result. */
@@ -249,6 +253,16 @@ type JobLoad struct {
 	Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"]. */
 	// +optional
 	WriteDisposition *string `json:"writeDisposition,omitempty"`
+}
+
+type JobParquetOptions struct {
+	/* Immutable. If sourceFormat is set to PARQUET, indicates whether to use schema inference specifically for Parquet LIST logical type. */
+	// +optional
+	EnableListInference *bool `json:"enableListInference,omitempty"`
+
+	/* Immutable. If sourceFormat is set to PARQUET, indicates whether to infer Parquet ENUM logical type as STRING instead of BYTES by default. */
+	// +optional
+	EnumAsString *bool `json:"enumAsString,omitempty"`
 }
 
 type JobQuery struct {

@@ -25,6 +25,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/structure"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceFirestoreDocument() *schema.Resource {
@@ -101,8 +104,8 @@ func ResourceFirestoreDocument() *schema.Resource {
 }
 
 func resourceFirestoreDocumentCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -111,11 +114,11 @@ func resourceFirestoreDocumentCreate(d *schema.ResourceData, meta interface{}) e
 	fieldsProp, err := expandFirestoreDocumentFields(d.Get("fields"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("fields"); !isEmptyValue(reflect.ValueOf(fieldsProp)) && (ok || !reflect.DeepEqual(v, fieldsProp)) {
+	} else if v, ok := d.GetOkExists("fields"); !tpgresource.IsEmptyValue(reflect.ValueOf(fieldsProp)) && (ok || !reflect.DeepEqual(v, fieldsProp)) {
 		obj["fields"] = fieldsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirestoreBasePath}}projects/{{project}}/databases/{{database}}/documents/{{collection}}?documentId={{document_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirestoreBasePath}}projects/{{project}}/databases/{{database}}/documents/{{collection}}?documentId={{document_id}}")
 	if err != nil {
 		return err
 	}
@@ -123,18 +126,18 @@ func resourceFirestoreDocumentCreate(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Creating new Document: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Document: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Document: %s", err)
 	}
@@ -143,7 +146,7 @@ func resourceFirestoreDocumentCreate(d *schema.ResourceData, meta interface{}) e
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -155,33 +158,33 @@ func resourceFirestoreDocumentCreate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceFirestoreDocumentRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirestoreBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirestoreBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Document: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("FirestoreDocument %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("FirestoreDocument %q", d.Id()))
 	}
 
 	res, err = resourceFirestoreDocumentDecoder(d, meta, res)
@@ -220,15 +223,15 @@ func resourceFirestoreDocumentRead(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceFirestoreDocumentUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Document: %s", err)
 	}
@@ -238,11 +241,11 @@ func resourceFirestoreDocumentUpdate(d *schema.ResourceData, meta interface{}) e
 	fieldsProp, err := expandFirestoreDocumentFields(d.Get("fields"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("fields"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, fieldsProp)) {
+	} else if v, ok := d.GetOkExists("fields"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, fieldsProp)) {
 		obj["fields"] = fieldsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirestoreBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirestoreBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -250,11 +253,11 @@ func resourceFirestoreDocumentUpdate(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Updating Document %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Document %q: %s", d.Id(), err)
@@ -266,21 +269,21 @@ func resourceFirestoreDocumentUpdate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceFirestoreDocumentDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Document: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{FirestoreBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirestoreBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -289,13 +292,13 @@ func resourceFirestoreDocumentDelete(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Deleting Document %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Document")
+		return transport_tpg.HandleNotFoundError(err, d, "Document")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Document %q: %#v", d.Id(), res)
@@ -304,7 +307,7 @@ func resourceFirestoreDocumentDelete(d *schema.ResourceData, meta interface{}) e
 
 func resourceFirestoreDocumentImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
@@ -333,15 +336,15 @@ func resourceFirestoreDocumentImport(d *schema.ResourceData, meta interface{}) (
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenFirestoreDocumentName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirestoreDocumentName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirestoreDocumentPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirestoreDocumentPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirestoreDocumentFields(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirestoreDocumentFields(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -353,15 +356,15 @@ func flattenFirestoreDocumentFields(v interface{}, d *schema.ResourceData, confi
 	return string(b)
 }
 
-func flattenFirestoreDocumentCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirestoreDocumentCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirestoreDocumentUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirestoreDocumentUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandFirestoreDocumentFields(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirestoreDocumentFields(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	b := []byte(v.(string))
 	if len(b) == 0 {
 		return nil, nil

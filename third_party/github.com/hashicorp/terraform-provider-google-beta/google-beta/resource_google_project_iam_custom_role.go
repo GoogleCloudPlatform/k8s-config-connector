@@ -6,6 +6,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 	"google.golang.org/api/iam/v1"
 )
 
@@ -26,7 +29,7 @@ func ResourceGoogleProjectIamCustomRole() *schema.Resource {
 				Required:     true,
 				ForceNew:     true,
 				Description:  `The camel case role id to use for this role. Cannot contain - characters.`,
-				ValidateFunc: validateIAMCustomRoleID,
+				ValidateFunc: verify.ValidateIAMCustomRoleID,
 			},
 			"title": {
 				Type:        schema.TypeString,
@@ -53,7 +56,7 @@ func ResourceGoogleProjectIamCustomRole() *schema.Resource {
 				Default:          "GA",
 				Description:      `The current launch stage of the role. Defaults to GA.`,
 				ValidateFunc:     validation.StringInSlice([]string{"ALPHA", "BETA", "GA", "DEPRECATED", "DISABLED", "EAP"}, false),
-				DiffSuppressFunc: EmptyOrDefaultStringSuppress("ALPHA"),
+				DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress("ALPHA"),
 			},
 			"description": {
 				Type:        schema.TypeString,
@@ -76,13 +79,13 @@ func ResourceGoogleProjectIamCustomRole() *schema.Resource {
 }
 
 func resourceGoogleProjectIamCustomRoleCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -102,7 +105,7 @@ func resourceGoogleProjectIamCustomRoleCreate(d *schema.ResourceData, meta inter
 			// If a role with same name exists and is enabled, just return error
 			return fmt.Errorf("Custom project role %s already exists and must be imported", roleId)
 		}
-	} else if err := handleNotFoundError(err, d, fmt.Sprintf("Custom Project Role %q", roleId)); err == nil {
+	} else if err := transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Custom Project Role %q", roleId)); err == nil {
 		// If no role is found, actually create a new role.
 		role, err := config.NewIamClient(userAgent).Projects.Roles.Create("projects/"+project, &iam.CreateRoleRequest{
 			RoleId: d.Get("role_id").(string),
@@ -132,8 +135,8 @@ func extractProjectFromProjectIamCustomRoleID(id string) string {
 }
 
 func resourceGoogleProjectIamCustomRoleRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -142,10 +145,10 @@ func resourceGoogleProjectIamCustomRoleRead(d *schema.ResourceData, meta interfa
 
 	role, err := config.NewIamClient(userAgent).Projects.Roles.Get(d.Id()).Do()
 	if err != nil {
-		return handleNotFoundError(err, d, d.Id())
+		return transport_tpg.HandleNotFoundError(err, d, d.Id())
 	}
 
-	if err := d.Set("role_id", GetResourceNameFromSelfLink(role.Name)); err != nil {
+	if err := d.Set("role_id", tpgresource.GetResourceNameFromSelfLink(role.Name)); err != nil {
 		return fmt.Errorf("Error setting role_id: %s", err)
 	}
 	if err := d.Set("title", role.Title); err != nil {
@@ -174,8 +177,8 @@ func resourceGoogleProjectIamCustomRoleRead(d *schema.ResourceData, meta interfa
 }
 
 func resourceGoogleProjectIamCustomRoleUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -213,8 +216,8 @@ func resourceGoogleProjectIamCustomRoleUpdate(d *schema.ResourceData, meta inter
 }
 
 func resourceGoogleProjectIamCustomRoleDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -228,7 +231,7 @@ func resourceGoogleProjectIamCustomRoleDelete(d *schema.ResourceData, meta inter
 }
 
 func resourceGoogleProjectIamCustomRoleImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/roles/(?P<role_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<role_id>[^/]+)",
@@ -238,7 +241,7 @@ func resourceGoogleProjectIamCustomRoleImport(d *schema.ResourceData, meta inter
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/roles/{{role_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/roles/{{role_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

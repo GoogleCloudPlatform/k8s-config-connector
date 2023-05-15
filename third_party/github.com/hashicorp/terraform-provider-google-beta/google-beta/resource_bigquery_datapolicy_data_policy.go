@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceBigqueryDatapolicyDataPolicy() *schema.Resource {
@@ -51,7 +55,7 @@ func ResourceBigqueryDatapolicyDataPolicy() *schema.Resource {
 			"data_policy_type": {
 				Type:         schema.TypeString,
 				Required:     true,
-				ValidateFunc: validateEnum([]string{"COLUMN_LEVEL_SECURITY_POLICY", "DATA_MASKING_POLICY"}),
+				ValidateFunc: verify.ValidateEnum([]string{"COLUMN_LEVEL_SECURITY_POLICY", "DATA_MASKING_POLICY"}),
 				Description:  `The enrollment level of the service. Possible values: ["COLUMN_LEVEL_SECURITY_POLICY", "DATA_MASKING_POLICY"]`,
 			},
 			"location": {
@@ -63,7 +67,7 @@ func ResourceBigqueryDatapolicyDataPolicy() *schema.Resource {
 			"policy_tag": {
 				Type:             schema.TypeString,
 				Required:         true,
-				DiffSuppressFunc: ProjectNumberDiffSuppress,
+				DiffSuppressFunc: tpgresource.ProjectNumberDiffSuppress,
 				Description:      `Policy tag resource name, in the format of projects/{project_number}/locations/{locationId}/taxonomies/{taxonomyId}/policyTags/{policyTag_id}.`,
 			},
 			"data_masking_policy": {
@@ -76,7 +80,7 @@ func ResourceBigqueryDatapolicyDataPolicy() *schema.Resource {
 						"predefined_expression": {
 							Type:         schema.TypeString,
 							Required:     true,
-							ValidateFunc: validateEnum([]string{"SHA256", "ALWAYS_NULL", "DEFAULT_MASKING_VALUE", "LAST_FOUR_CHARACTERS", "FIRST_FOUR_CHARACTERS", "EMAIL_MASK", "DATE_YEAR_MASK"}),
+							ValidateFunc: verify.ValidateEnum([]string{"SHA256", "ALWAYS_NULL", "DEFAULT_MASKING_VALUE", "LAST_FOUR_CHARACTERS", "FIRST_FOUR_CHARACTERS", "EMAIL_MASK", "DATE_YEAR_MASK"}),
 							Description:  `The available masking rules. Learn more here: https://cloud.google.com/bigquery/docs/column-data-masking-intro#masking_options. Possible values: ["SHA256", "ALWAYS_NULL", "DEFAULT_MASKING_VALUE", "LAST_FOUR_CHARACTERS", "FIRST_FOUR_CHARACTERS", "EMAIL_MASK", "DATE_YEAR_MASK"]`,
 						},
 					},
@@ -99,8 +103,8 @@ func ResourceBigqueryDatapolicyDataPolicy() *schema.Resource {
 }
 
 func resourceBigqueryDatapolicyDataPolicyCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -109,29 +113,29 @@ func resourceBigqueryDatapolicyDataPolicyCreate(d *schema.ResourceData, meta int
 	dataPolicyIdProp, err := expandBigqueryDatapolicyDataPolicyDataPolicyId(d.Get("data_policy_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("data_policy_id"); !isEmptyValue(reflect.ValueOf(dataPolicyIdProp)) && (ok || !reflect.DeepEqual(v, dataPolicyIdProp)) {
+	} else if v, ok := d.GetOkExists("data_policy_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(dataPolicyIdProp)) && (ok || !reflect.DeepEqual(v, dataPolicyIdProp)) {
 		obj["dataPolicyId"] = dataPolicyIdProp
 	}
 	policyTagProp, err := expandBigqueryDatapolicyDataPolicyPolicyTag(d.Get("policy_tag"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("policy_tag"); !isEmptyValue(reflect.ValueOf(policyTagProp)) && (ok || !reflect.DeepEqual(v, policyTagProp)) {
+	} else if v, ok := d.GetOkExists("policy_tag"); !tpgresource.IsEmptyValue(reflect.ValueOf(policyTagProp)) && (ok || !reflect.DeepEqual(v, policyTagProp)) {
 		obj["policyTag"] = policyTagProp
 	}
 	dataPolicyTypeProp, err := expandBigqueryDatapolicyDataPolicyDataPolicyType(d.Get("data_policy_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("data_policy_type"); !isEmptyValue(reflect.ValueOf(dataPolicyTypeProp)) && (ok || !reflect.DeepEqual(v, dataPolicyTypeProp)) {
+	} else if v, ok := d.GetOkExists("data_policy_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(dataPolicyTypeProp)) && (ok || !reflect.DeepEqual(v, dataPolicyTypeProp)) {
 		obj["dataPolicyType"] = dataPolicyTypeProp
 	}
 	dataMaskingPolicyProp, err := expandBigqueryDatapolicyDataPolicyDataMaskingPolicy(d.Get("data_masking_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("data_masking_policy"); !isEmptyValue(reflect.ValueOf(dataMaskingPolicyProp)) && (ok || !reflect.DeepEqual(v, dataMaskingPolicyProp)) {
+	} else if v, ok := d.GetOkExists("data_masking_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(dataMaskingPolicyProp)) && (ok || !reflect.DeepEqual(v, dataMaskingPolicyProp)) {
 		obj["dataMaskingPolicy"] = dataMaskingPolicyProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{BigqueryDatapolicyBasePath}}projects/{{project}}/locations/{{location}}/dataPolicies")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigqueryDatapolicyBasePath}}projects/{{project}}/locations/{{location}}/dataPolicies")
 	if err != nil {
 		return err
 	}
@@ -139,18 +143,18 @@ func resourceBigqueryDatapolicyDataPolicyCreate(d *schema.ResourceData, meta int
 	log.Printf("[DEBUG] Creating new DataPolicy: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for DataPolicy: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating DataPolicy: %s", err)
 	}
@@ -159,7 +163,7 @@ func resourceBigqueryDatapolicyDataPolicyCreate(d *schema.ResourceData, meta int
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/dataPolicies/{{data_policy_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/dataPolicies/{{data_policy_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -171,33 +175,33 @@ func resourceBigqueryDatapolicyDataPolicyCreate(d *schema.ResourceData, meta int
 }
 
 func resourceBigqueryDatapolicyDataPolicyRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{BigqueryDatapolicyBasePath}}projects/{{project}}/locations/{{location}}/dataPolicies/{{data_policy_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigqueryDatapolicyBasePath}}projects/{{project}}/locations/{{location}}/dataPolicies/{{data_policy_id}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for DataPolicy: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("BigqueryDatapolicyDataPolicy %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("BigqueryDatapolicyDataPolicy %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -224,15 +228,15 @@ func resourceBigqueryDatapolicyDataPolicyRead(d *schema.ResourceData, meta inter
 }
 
 func resourceBigqueryDatapolicyDataPolicyUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for DataPolicy: %s", err)
 	}
@@ -242,23 +246,23 @@ func resourceBigqueryDatapolicyDataPolicyUpdate(d *schema.ResourceData, meta int
 	policyTagProp, err := expandBigqueryDatapolicyDataPolicyPolicyTag(d.Get("policy_tag"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("policy_tag"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, policyTagProp)) {
+	} else if v, ok := d.GetOkExists("policy_tag"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, policyTagProp)) {
 		obj["policyTag"] = policyTagProp
 	}
 	dataPolicyTypeProp, err := expandBigqueryDatapolicyDataPolicyDataPolicyType(d.Get("data_policy_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("data_policy_type"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, dataPolicyTypeProp)) {
+	} else if v, ok := d.GetOkExists("data_policy_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, dataPolicyTypeProp)) {
 		obj["dataPolicyType"] = dataPolicyTypeProp
 	}
 	dataMaskingPolicyProp, err := expandBigqueryDatapolicyDataPolicyDataMaskingPolicy(d.Get("data_masking_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("data_masking_policy"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, dataMaskingPolicyProp)) {
+	} else if v, ok := d.GetOkExists("data_masking_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, dataMaskingPolicyProp)) {
 		obj["dataMaskingPolicy"] = dataMaskingPolicyProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{BigqueryDatapolicyBasePath}}projects/{{project}}/locations/{{location}}/dataPolicies/{{data_policy_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigqueryDatapolicyBasePath}}projects/{{project}}/locations/{{location}}/dataPolicies/{{data_policy_id}}")
 	if err != nil {
 		return err
 	}
@@ -279,17 +283,17 @@ func resourceBigqueryDatapolicyDataPolicyUpdate(d *schema.ResourceData, meta int
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating DataPolicy %q: %s", d.Id(), err)
@@ -301,21 +305,21 @@ func resourceBigqueryDatapolicyDataPolicyUpdate(d *schema.ResourceData, meta int
 }
 
 func resourceBigqueryDatapolicyDataPolicyDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for DataPolicy: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{BigqueryDatapolicyBasePath}}projects/{{project}}/locations/{{location}}/dataPolicies/{{data_policy_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigqueryDatapolicyBasePath}}projects/{{project}}/locations/{{location}}/dataPolicies/{{data_policy_id}}")
 	if err != nil {
 		return err
 	}
@@ -324,13 +328,13 @@ func resourceBigqueryDatapolicyDataPolicyDelete(d *schema.ResourceData, meta int
 	log.Printf("[DEBUG] Deleting DataPolicy %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "DataPolicy")
+		return transport_tpg.HandleNotFoundError(err, d, "DataPolicy")
 	}
 
 	log.Printf("[DEBUG] Finished deleting DataPolicy %q: %#v", d.Id(), res)
@@ -338,7 +342,7 @@ func resourceBigqueryDatapolicyDataPolicyDelete(d *schema.ResourceData, meta int
 }
 
 func resourceBigqueryDatapolicyDataPolicyImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/dataPolicies/(?P<data_policy_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<data_policy_id>[^/]+)",
@@ -348,7 +352,7 @@ func resourceBigqueryDatapolicyDataPolicyImport(d *schema.ResourceData, meta int
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/dataPolicies/{{data_policy_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/dataPolicies/{{data_policy_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -357,23 +361,23 @@ func resourceBigqueryDatapolicyDataPolicyImport(d *schema.ResourceData, meta int
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenBigqueryDatapolicyDataPolicyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryDatapolicyDataPolicyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigqueryDatapolicyDataPolicyDataPolicyId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryDatapolicyDataPolicyDataPolicyId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigqueryDatapolicyDataPolicyPolicyTag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryDatapolicyDataPolicyPolicyTag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigqueryDatapolicyDataPolicyDataPolicyType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryDatapolicyDataPolicyDataPolicyType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigqueryDatapolicyDataPolicyDataMaskingPolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryDatapolicyDataPolicyDataMaskingPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -386,23 +390,23 @@ func flattenBigqueryDatapolicyDataPolicyDataMaskingPolicy(v interface{}, d *sche
 		flattenBigqueryDatapolicyDataPolicyDataMaskingPolicyPredefinedExpression(original["predefinedExpression"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBigqueryDatapolicyDataPolicyDataMaskingPolicyPredefinedExpression(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryDatapolicyDataPolicyDataMaskingPolicyPredefinedExpression(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandBigqueryDatapolicyDataPolicyDataPolicyId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigqueryDatapolicyDataPolicyDataPolicyId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigqueryDatapolicyDataPolicyPolicyTag(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigqueryDatapolicyDataPolicyPolicyTag(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigqueryDatapolicyDataPolicyDataPolicyType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigqueryDatapolicyDataPolicyDataPolicyType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigqueryDatapolicyDataPolicyDataMaskingPolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigqueryDatapolicyDataPolicyDataMaskingPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -414,13 +418,13 @@ func expandBigqueryDatapolicyDataPolicyDataMaskingPolicy(v interface{}, d Terraf
 	transformedPredefinedExpression, err := expandBigqueryDatapolicyDataPolicyDataMaskingPolicyPredefinedExpression(original["predefined_expression"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPredefinedExpression); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPredefinedExpression); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["predefinedExpression"] = transformedPredefinedExpression
 	}
 
 	return transformed, nil
 }
 
-func expandBigqueryDatapolicyDataPolicyDataMaskingPolicyPredefinedExpression(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigqueryDatapolicyDataPolicyDataMaskingPolicyPredefinedExpression(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

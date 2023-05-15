@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"sort"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
 	compute "google.golang.org/api/compute/v0.beta"
@@ -11,7 +14,7 @@ import (
 
 func DataSourceGoogleComputeInstanceTemplate() *schema.Resource {
 	// Generate datasource schema from resource
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceComputeInstanceTemplate().Schema)
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceComputeInstanceTemplate().Schema)
 
 	dsSchema["filter"] = &schema.Schema{
 		Type:     schema.TypeString,
@@ -27,7 +30,7 @@ func DataSourceGoogleComputeInstanceTemplate() *schema.Resource {
 	}
 
 	// Set 'Optional' schema elements
-	addOptionalFieldsToSchema(dsSchema, "name", "filter", "most_recent", "project", "self_link_unique")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "name", "filter", "most_recent", "project", "self_link_unique")
 
 	mutuallyExclusive := []string{"name", "filter", "self_link_unique"}
 	for _, n := range mutuallyExclusive {
@@ -41,9 +44,9 @@ func DataSourceGoogleComputeInstanceTemplate() *schema.Resource {
 }
 
 func datasourceComputeInstanceTemplateRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -52,7 +55,7 @@ func datasourceComputeInstanceTemplateRead(d *schema.ResourceData, meta interfac
 		return retrieveInstance(d, meta, project, v.(string))
 	}
 	if v, ok := d.GetOk("filter"); ok {
-		userAgent, err := generateUserAgentString(d, config.UserAgent)
+		userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 		if err != nil {
 			return err
 		}

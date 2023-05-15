@@ -10,13 +10,15 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 )
 
 func TestAccDataSourceGoogleComputeInstanceGroup_basic(t *testing.T) {
 	t.Parallel()
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -33,7 +35,7 @@ func TestAccDataSourceGoogleComputeInstanceGroup_withNamedPort(t *testing.T) {
 	t.Parallel()
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -50,7 +52,7 @@ func TestAccDataSourceGoogleComputeInstanceGroup_fromIGM(t *testing.T) {
 	t.Parallel()
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -96,7 +98,7 @@ func testAccCheckDataSourceGoogleComputeInstanceGroup(dataSourceName string) res
 			}
 		}
 
-		if !compareSelfLinkOrResourceName("", dsAttrs["self_link"], rsAttrs["self_link"], nil) && dsAttrs["self_link"] != rsAttrs["self_link"] {
+		if !tpgresource.CompareSelfLinkOrResourceName("", dsAttrs["self_link"], rsAttrs["self_link"], nil) && dsAttrs["self_link"] != rsAttrs["self_link"] {
 			return fmt.Errorf("self link does not match: %s vs %s", dsAttrs["self_link"], rsAttrs["self_link"])
 		}
 
@@ -186,7 +188,7 @@ func testAccCheckDataSourceGoogleComputeInstanceGroup(dataSourceName string) res
 
 		for k, dsAttr := range dsInstancesValues {
 			rsAttr := rsInstancesValues[k]
-			if !compareSelfLinkOrResourceName("", dsAttr, rsAttr, nil) && dsAttr != rsAttr {
+			if !tpgresource.CompareSelfLinkOrResourceName("", dsAttr, rsAttr, nil) && dsAttr != rsAttr {
 				return fmt.Errorf("instance expected value %s did not match real value %s. expected list of instances %v, received %v", rsAttr, dsAttr, rsInstancesValues, dsInstancesValues)
 			}
 		}

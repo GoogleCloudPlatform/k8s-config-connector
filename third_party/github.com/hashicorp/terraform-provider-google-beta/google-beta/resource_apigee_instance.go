@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 // Supress diffs when the lists of project have the same number of entries to handle the case that
@@ -31,7 +34,7 @@ func projectListDiffSuppress(_, _, _ string, d *schema.ResourceData) bool {
 	return ProjectListDiffSuppressFunc(d)
 }
 
-func ProjectListDiffSuppressFunc(d TerraformResourceDataChange) bool {
+func ProjectListDiffSuppressFunc(d tpgresource.TerraformResourceDataChange) bool {
 	kLength := "consumer_accept_list.#"
 	oldLength, newLength := d.GetChange(kLength)
 
@@ -160,8 +163,8 @@ forward traffic to this service attachment using the PSC endpoints.`,
 }
 
 func resourceApigeeInstanceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -170,60 +173,60 @@ func resourceApigeeInstanceCreate(d *schema.ResourceData, meta interface{}) erro
 	nameProp, err := expandApigeeInstanceName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	locationProp, err := expandApigeeInstanceLocation(d.Get("location"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("location"); !isEmptyValue(reflect.ValueOf(locationProp)) && (ok || !reflect.DeepEqual(v, locationProp)) {
+	} else if v, ok := d.GetOkExists("location"); !tpgresource.IsEmptyValue(reflect.ValueOf(locationProp)) && (ok || !reflect.DeepEqual(v, locationProp)) {
 		obj["location"] = locationProp
 	}
 	peeringCidrRangeProp, err := expandApigeeInstancePeeringCidrRange(d.Get("peering_cidr_range"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("peering_cidr_range"); !isEmptyValue(reflect.ValueOf(peeringCidrRangeProp)) && (ok || !reflect.DeepEqual(v, peeringCidrRangeProp)) {
+	} else if v, ok := d.GetOkExists("peering_cidr_range"); !tpgresource.IsEmptyValue(reflect.ValueOf(peeringCidrRangeProp)) && (ok || !reflect.DeepEqual(v, peeringCidrRangeProp)) {
 		obj["peeringCidrRange"] = peeringCidrRangeProp
 	}
 	ipRangeProp, err := expandApigeeInstanceIpRange(d.Get("ip_range"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ip_range"); !isEmptyValue(reflect.ValueOf(ipRangeProp)) && (ok || !reflect.DeepEqual(v, ipRangeProp)) {
+	} else if v, ok := d.GetOkExists("ip_range"); !tpgresource.IsEmptyValue(reflect.ValueOf(ipRangeProp)) && (ok || !reflect.DeepEqual(v, ipRangeProp)) {
 		obj["ipRange"] = ipRangeProp
 	}
 	descriptionProp, err := expandApigeeInstanceDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	displayNameProp, err := expandApigeeInstanceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	diskEncryptionKeyNameProp, err := expandApigeeInstanceDiskEncryptionKeyName(d.Get("disk_encryption_key_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("disk_encryption_key_name"); !isEmptyValue(reflect.ValueOf(diskEncryptionKeyNameProp)) && (ok || !reflect.DeepEqual(v, diskEncryptionKeyNameProp)) {
+	} else if v, ok := d.GetOkExists("disk_encryption_key_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(diskEncryptionKeyNameProp)) && (ok || !reflect.DeepEqual(v, diskEncryptionKeyNameProp)) {
 		obj["diskEncryptionKeyName"] = diskEncryptionKeyNameProp
 	}
 	consumerAcceptListProp, err := expandApigeeInstanceConsumerAcceptList(d.Get("consumer_accept_list"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("consumer_accept_list"); !isEmptyValue(reflect.ValueOf(consumerAcceptListProp)) && (ok || !reflect.DeepEqual(v, consumerAcceptListProp)) {
+	} else if v, ok := d.GetOkExists("consumer_accept_list"); !tpgresource.IsEmptyValue(reflect.ValueOf(consumerAcceptListProp)) && (ok || !reflect.DeepEqual(v, consumerAcceptListProp)) {
 		obj["consumerAcceptList"] = consumerAcceptListProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "{{org_id}}/apigeeInstances")
+	lockName, err := tpgresource.ReplaceVars(d, config, "{{org_id}}/apigeeInstances")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/instances")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/instances")
 	if err != nil {
 		return err
 	}
@@ -232,17 +235,17 @@ func resourceApigeeInstanceCreate(d *schema.ResourceData, meta interface{}) erro
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), IsApigeeRetryableError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), transport_tpg.IsApigeeRetryableError)
 	if err != nil {
 		return fmt.Errorf("Error creating Instance: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{org_id}}/instances/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{org_id}}/instances/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -266,7 +269,7 @@ func resourceApigeeInstanceCreate(d *schema.ResourceData, meta interface{}) erro
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "{{org_id}}/instances/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "{{org_id}}/instances/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -278,13 +281,13 @@ func resourceApigeeInstanceCreate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceApigeeInstanceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -292,13 +295,13 @@ func resourceApigeeInstanceRead(d *schema.ResourceData, meta interface{}) error 
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, IsApigeeRetryableError)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil, transport_tpg.IsApigeeRetryableError)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ApigeeInstance %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ApigeeInstance %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenApigeeInstanceName(res["name"], d, config)); err != nil {
@@ -336,22 +339,22 @@ func resourceApigeeInstanceRead(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceApigeeInstanceDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	lockName, err := ReplaceVars(d, config, "{{org_id}}/apigeeInstances")
+	lockName, err := tpgresource.ReplaceVars(d, config, "{{org_id}}/apigeeInstances")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -360,13 +363,13 @@ func resourceApigeeInstanceDelete(d *schema.ResourceData, meta interface{}) erro
 	log.Printf("[DEBUG] Deleting Instance %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), IsApigeeRetryableError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), transport_tpg.IsApigeeRetryableError)
 	if err != nil {
-		return handleNotFoundError(err, d, "Instance")
+		return transport_tpg.HandleNotFoundError(err, d, "Instance")
 	}
 
 	err = ApigeeOperationWaitTime(
@@ -382,7 +385,7 @@ func resourceApigeeInstanceDelete(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceApigeeInstanceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats cannot import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
@@ -417,7 +420,7 @@ func resourceApigeeInstanceImport(d *schema.ResourceData, meta interface{}) ([]*
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{org_id}}/instances/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{org_id}}/instances/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -426,74 +429,74 @@ func resourceApigeeInstanceImport(d *schema.ResourceData, meta interface{}) ([]*
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenApigeeInstanceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeInstanceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeInstanceLocation(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeInstanceLocation(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeInstancePeeringCidrRange(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeInstancePeeringCidrRange(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeInstanceDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeInstanceDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeInstanceDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeInstanceDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeInstanceDiskEncryptionKeyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeInstanceDiskEncryptionKeyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeInstanceHost(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeInstanceHost(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeInstancePort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeInstancePort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeInstanceConsumerAcceptList(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeInstanceConsumerAcceptList(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeInstanceServiceAttachment(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeInstanceServiceAttachment(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandApigeeInstanceName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeInstanceName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeInstanceLocation(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeInstanceLocation(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeInstancePeeringCidrRange(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeInstancePeeringCidrRange(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeInstanceIpRange(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeInstanceIpRange(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeInstanceDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeInstanceDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeInstanceDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeInstanceDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeInstanceDiskEncryptionKeyName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeInstanceDiskEncryptionKeyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeInstanceConsumerAcceptList(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeInstanceConsumerAcceptList(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

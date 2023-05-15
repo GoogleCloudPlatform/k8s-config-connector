@@ -2,26 +2,29 @@ package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccFirebaseWebApp_firebaseWebAppFull(t *testing.T) {
 	// TODO: https://github.com/hashicorp/terraform-provider-google/issues/14158
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 		"display_name":  "tf-test Display Name N",
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
+		PreCheck: func() { acctest.AccTestPreCheck(t) },
 		Steps: []resource.TestStep{
 			{
 				ExternalProviders: map[string]resource.ExternalProvider{
@@ -101,13 +104,13 @@ func TestAccFirebaseWebApp_firebaseWebAppSkipDelete(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestProjectFromEnv(),
+		"project_id":    acctest.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 		"display_name":  "tf-test Display Name N",
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckFirebaseWebAppNotDestroyedProducer(t),
 		Steps: []resource.TestStep{
@@ -146,7 +149,7 @@ func testAccCheckFirebaseWebAppNotDestroyedProducer(t *testing.T) func(s *terraf
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{FirebaseBasePath}}{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{FirebaseBasePath}}{{name}}")
 			if err != nil {
 				return err
 			}
@@ -157,7 +160,7 @@ func testAccCheckFirebaseWebAppNotDestroyedProducer(t *testing.T) func(s *terraf
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err != nil {
 				return fmt.Errorf("FirebaseWebApp doesn't exists at %s", url)
 			}

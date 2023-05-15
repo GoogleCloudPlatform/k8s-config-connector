@@ -21,19 +21,23 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccIAM2DenyPolicy_iamDenyPolicyBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
+		"org_id":          acctest.GetTestOrgFromEnv(t),
+		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
 		"random_suffix":   RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckIAM2DenyPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -111,7 +115,7 @@ func testAccCheckIAM2DenyPolicyDestroyProducer(t *testing.T) func(s *terraform.S
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{IAM2BasePath}}policies/{{parent}}/denypolicies/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{IAM2BasePath}}policies/{{parent}}/denypolicies/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -122,7 +126,7 @@ func testAccCheckIAM2DenyPolicyDestroyProducer(t *testing.T) func(s *terraform.S
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("IAM2DenyPolicy still exists at %s", url)
 			}

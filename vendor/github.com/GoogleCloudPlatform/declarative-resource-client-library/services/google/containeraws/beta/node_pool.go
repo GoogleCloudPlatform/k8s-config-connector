@@ -165,6 +165,7 @@ type NodePoolConfig struct {
 	IamInstanceProfile           *string                                     `json:"iamInstanceProfile"`
 	ConfigEncryption             *NodePoolConfigConfigEncryption             `json:"configEncryption"`
 	SshConfig                    *NodePoolConfigSshConfig                    `json:"sshConfig"`
+	SpotConfig                   *NodePoolConfigSpotConfig                   `json:"spotConfig"`
 	SecurityGroupIds             []string                                    `json:"securityGroupIds"`
 	ProxyConfig                  *NodePoolConfigProxyConfig                  `json:"proxyConfig"`
 	InstancePlacement            *NodePoolConfigInstancePlacement            `json:"instancePlacement"`
@@ -202,6 +203,8 @@ func (r *NodePoolConfig) UnmarshalJSON(data []byte) error {
 		r.ConfigEncryption = res.ConfigEncryption
 
 		r.SshConfig = res.SshConfig
+
+		r.SpotConfig = res.SpotConfig
 
 		r.SecurityGroupIds = res.SecurityGroupIds
 
@@ -430,6 +433,52 @@ func (r *NodePoolConfigSshConfig) String() string {
 }
 
 func (r *NodePoolConfigSshConfig) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type NodePoolConfigSpotConfig struct {
+	empty         bool     `json:"-"`
+	InstanceTypes []string `json:"instanceTypes"`
+}
+
+type jsonNodePoolConfigSpotConfig NodePoolConfigSpotConfig
+
+func (r *NodePoolConfigSpotConfig) UnmarshalJSON(data []byte) error {
+	var res jsonNodePoolConfigSpotConfig
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyNodePoolConfigSpotConfig
+	} else {
+
+		r.InstanceTypes = res.InstanceTypes
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this NodePoolConfigSpotConfig is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyNodePoolConfigSpotConfig *NodePoolConfigSpotConfig = &NodePoolConfigSpotConfig{empty: true}
+
+func (r *NodePoolConfigSpotConfig) Empty() bool {
+	return r.empty
+}
+
+func (r *NodePoolConfigSpotConfig) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *NodePoolConfigSpotConfig) HashCode() string {
 	// Placeholder for a more complex hash method that handles ordering, etc
 	// Hash resource body for easy comparison later
 	hash := sha256.New().Sum([]byte(r.String()))

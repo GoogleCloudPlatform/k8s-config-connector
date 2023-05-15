@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"google.golang.org/api/googleapi"
@@ -154,14 +157,14 @@ func expandComputeMaxRunDuration(v interface{}) (*compute.Duration, error) {
 	transformedNanos, err := expandComputeMaxRunDurationNanos(original["nanos"])
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedNanos); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedNanos); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		duration.Nanos = int64(transformedNanos.(int))
 	}
 
 	transformedSeconds, err := expandComputeMaxRunDurationSeconds(original["seconds"])
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSeconds); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSeconds); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		duration.Seconds = int64(transformedSeconds.(int))
 	}
 
@@ -249,7 +252,7 @@ func flattenIpv6AccessConfigs(ipv6AccessConfigs []*compute.AccessConfig) []map[s
 	return flattened
 }
 
-func flattenNetworkInterfaces(d *schema.ResourceData, config *Config, networkInterfaces []*compute.NetworkInterface) ([]map[string]interface{}, string, string, string, error) {
+func flattenNetworkInterfaces(d *schema.ResourceData, config *transport_tpg.Config, networkInterfaces []*compute.NetworkInterface) ([]map[string]interface{}, string, string, string, error) {
 	flattened := make([]map[string]interface{}, len(networkInterfaces))
 	var region, internalIP, externalIP string
 
@@ -257,7 +260,7 @@ func flattenNetworkInterfaces(d *schema.ResourceData, config *Config, networkInt
 		var ac []map[string]interface{}
 		ac, externalIP = flattenAccessConfigs(iface.AccessConfigs)
 
-		subnet, err := ParseSubnetworkFieldValue(iface.Subnetwork, d, config)
+		subnet, err := tpgresource.ParseSubnetworkFieldValue(iface.Subnetwork, d, config)
 		if err != nil {
 			return nil, "", "", "", err
 		}
@@ -265,8 +268,8 @@ func flattenNetworkInterfaces(d *schema.ResourceData, config *Config, networkInt
 
 		flattened[i] = map[string]interface{}{
 			"network_ip":         iface.NetworkIP,
-			"network":            ConvertSelfLinkToV1(iface.Network),
-			"subnetwork":         ConvertSelfLinkToV1(iface.Subnetwork),
+			"network":            tpgresource.ConvertSelfLinkToV1(iface.Network),
+			"subnetwork":         tpgresource.ConvertSelfLinkToV1(iface.Subnetwork),
 			"subnetwork_project": subnet.Project,
 			"access_config":      ac,
 			"alias_ip_range":     flattenAliasIpRange(iface.AliasIpRanges),
@@ -323,7 +326,7 @@ func expandIpv6AccessConfigs(configs []interface{}) []*compute.AccessConfig {
 	return iacs
 }
 
-func expandNetworkInterfaces(d TerraformResourceData, config *Config) ([]*compute.NetworkInterface, error) {
+func expandNetworkInterfaces(d tpgresource.TerraformResourceData, config *transport_tpg.Config) ([]*compute.NetworkInterface, error) {
 	configs := d.Get("network_interface").([]interface{})
 	ifaces := make([]*compute.NetworkInterface, len(configs))
 	for i, raw := range configs {
@@ -335,13 +338,13 @@ func expandNetworkInterfaces(d TerraformResourceData, config *Config) ([]*comput
 			return nil, fmt.Errorf("exactly one of network or subnetwork must be provided")
 		}
 
-		nf, err := ParseNetworkFieldValue(network, d, config)
+		nf, err := tpgresource.ParseNetworkFieldValue(network, d, config)
 		if err != nil {
 			return nil, fmt.Errorf("cannot determine self_link for network %q: %s", network, err)
 		}
 
 		subnetProjectField := fmt.Sprintf("network_interface.%d.subnetwork_project", i)
-		sf, err := ParseSubnetworkFieldValueWithProjectField(subnetwork, subnetProjectField, d, config)
+		sf, err := tpgresource.ParseSubnetworkFieldValueWithProjectField(subnetwork, subnetProjectField, d, config)
 		if err != nil {
 			return nil, fmt.Errorf("cannot determine self_link for subnetwork %q: %s", subnetwork, err)
 		}
@@ -366,7 +369,7 @@ func flattenServiceAccounts(serviceAccounts []*compute.ServiceAccount) []map[str
 	for i, serviceAccount := range serviceAccounts {
 		result[i] = map[string]interface{}{
 			"email":  serviceAccount.Email,
-			"scopes": schema.NewSet(stringScopeHashcode, convertStringArrToInterface(serviceAccount.Scopes)),
+			"scopes": schema.NewSet(tpgresource.StringScopeHashcode, convertStringArrToInterface(serviceAccount.Scopes)),
 		}
 	}
 	return result
@@ -379,7 +382,7 @@ func expandServiceAccounts(configs []interface{}) []*compute.ServiceAccount {
 
 		accounts[i] = &compute.ServiceAccount{
 			Email:  data["email"].(string),
-			Scopes: canonicalizeServiceScopes(convertStringSet(data["scopes"].(*schema.Set))),
+			Scopes: tpgresource.CanonicalizeServiceScopes(convertStringSet(data["scopes"].(*schema.Set))),
 		}
 
 		if accounts[i].Email == "" {
@@ -400,7 +403,7 @@ func flattenGuestAccelerators(accelerators []*compute.AcceleratorConfig) []map[s
 	return acceleratorsSchema
 }
 
-func resourceInstanceTags(d TerraformResourceData) *compute.Tags {
+func resourceInstanceTags(d tpgresource.TerraformResourceData) *compute.Tags {
 	// Calculate the tags
 	var tags *compute.Tags
 	if v := d.Get("tags"); v != nil {
@@ -417,7 +420,7 @@ func resourceInstanceTags(d TerraformResourceData) *compute.Tags {
 	return tags
 }
 
-func expandShieldedVmConfigs(d TerraformResourceData) *compute.ShieldedInstanceConfig {
+func expandShieldedVmConfigs(d tpgresource.TerraformResourceData) *compute.ShieldedInstanceConfig {
 	if _, ok := d.GetOk("shielded_instance_config"); !ok {
 		return nil
 	}
@@ -431,7 +434,7 @@ func expandShieldedVmConfigs(d TerraformResourceData) *compute.ShieldedInstanceC
 	}
 }
 
-func expandConfidentialInstanceConfig(d TerraformResourceData) *compute.ConfidentialInstanceConfig {
+func expandConfidentialInstanceConfig(d tpgresource.TerraformResourceData) *compute.ConfidentialInstanceConfig {
 	if _, ok := d.GetOk("confidential_instance_config"); !ok {
 		return nil
 	}
@@ -452,7 +455,7 @@ func flattenConfidentialInstanceConfig(ConfidentialInstanceConfig *compute.Confi
 	}}
 }
 
-func expandAdvancedMachineFeatures(d TerraformResourceData) *compute.AdvancedMachineFeatures {
+func expandAdvancedMachineFeatures(d tpgresource.TerraformResourceData) *compute.AdvancedMachineFeatures {
 	if _, ok := d.GetOk("advanced_machine_features"); !ok {
 		return nil
 	}
@@ -488,7 +491,7 @@ func flattenShieldedVmConfig(shieldedVmConfig *compute.ShieldedInstanceConfig) [
 	}}
 }
 
-func expandDisplayDevice(d TerraformResourceData) *compute.DisplayDevice {
+func expandDisplayDevice(d tpgresource.TerraformResourceData) *compute.DisplayDevice {
 	if _, ok := d.GetOk("enable_display"); !ok {
 		return nil
 	}
@@ -634,7 +637,7 @@ func flattenReservationAffinity(affinity *compute.ReservationAffinity) []map[str
 	return []map[string]interface{}{flattened}
 }
 
-func expandNetworkPerformanceConfig(d TerraformResourceData, config *Config) (*compute.NetworkPerformanceConfig, error) {
+func expandNetworkPerformanceConfig(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (*compute.NetworkPerformanceConfig, error) {
 	configs, ok := d.GetOk("network_performance_config")
 	if !ok {
 		return nil, nil

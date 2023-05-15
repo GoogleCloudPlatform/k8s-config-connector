@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceGoogleComputeDefaultServiceAccount() *schema.Resource {
@@ -36,30 +38,30 @@ func DataSourceGoogleComputeDefaultServiceAccount() *schema.Resource {
 }
 
 func dataSourceGoogleComputeDefaultServiceAccountRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
 	projectCompResource, err := config.NewComputeClient(userAgent).Projects.Get(project).Do()
 	if err != nil {
-		return handleNotFoundError(err, d, "GCE default service account")
+		return transport_tpg.HandleNotFoundError(err, d, "GCE default service account")
 	}
 
-	serviceAccountName, err := serviceAccountFQN(projectCompResource.DefaultServiceAccount, d, config)
+	serviceAccountName, err := tpgresource.ServiceAccountFQN(projectCompResource.DefaultServiceAccount, d, config)
 	if err != nil {
 		return err
 	}
 
 	sa, err := config.NewIamClient(userAgent).Projects.ServiceAccounts.Get(serviceAccountName).Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Service Account %q", serviceAccountName))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Service Account %q", serviceAccountName))
 	}
 
 	d.SetId(sa.Name)

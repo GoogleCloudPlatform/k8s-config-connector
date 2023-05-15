@@ -2,6 +2,9 @@ package google
 
 import (
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestParseImportId(t *testing.T) {
@@ -24,7 +27,7 @@ func TestParseImportId(t *testing.T) {
 	cases := map[string]struct {
 		ImportId             string
 		IdRegexes            []string
-		Config               *Config
+		Config               *transport_tpg.Config
 		ExpectedSchemaValues map[string]interface{}
 		ExpectError          bool
 	}{
@@ -57,7 +60,7 @@ func TestParseImportId(t *testing.T) {
 		},
 		"short id with default project and region": {
 			ImportId: "my-subnetwork",
-			Config: &Config{
+			Config: &transport_tpg.Config{
 				Project: "default-project",
 				Region:  "default-region",
 			},
@@ -70,7 +73,7 @@ func TestParseImportId(t *testing.T) {
 		},
 		"short id with default project and zone": {
 			ImportId: "my-instance",
-			Config: &Config{
+			Config: &transport_tpg.Config{
 				Project: "default-project",
 				Zone:    "default-zone",
 			},
@@ -83,7 +86,7 @@ func TestParseImportId(t *testing.T) {
 		},
 		"short id with two nondefault fields with default project and zone": {
 			ImportId: "my-cluster/my-node-pool",
-			Config: &Config{
+			Config: &transport_tpg.Config{
 				Project: "default-project",
 				Zone:    "default-zone",
 			},
@@ -97,7 +100,7 @@ func TestParseImportId(t *testing.T) {
 		},
 		"short id with default project and region inferred from default zone": {
 			ImportId: "my-subnetwork",
-			Config: &Config{
+			Config: &transport_tpg.Config{
 				Project: "default-project",
 				Zone:    "us-east1-a",
 			},
@@ -121,13 +124,13 @@ func TestParseImportId(t *testing.T) {
 	}
 
 	for tn, tc := range cases {
-		d := &ResourceDataMock{
+		d := &tpgresource.ResourceDataMock{
 			FieldsInSchema: make(map[string]interface{}),
-			id:             tc.ImportId,
 		}
+		d.SetId(tc.ImportId)
 		config := tc.Config
 		if config == nil {
-			config = &Config{}
+			config = &transport_tpg.Config{}
 		}
 
 		if err := ParseImportId(tc.IdRegexes, d, config); err == nil {

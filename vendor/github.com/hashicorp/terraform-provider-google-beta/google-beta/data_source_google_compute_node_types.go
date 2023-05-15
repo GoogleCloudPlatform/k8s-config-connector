@@ -6,6 +6,8 @@ import (
 	"sort"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 
 	compute "google.golang.org/api/compute/v0.beta"
 )
@@ -34,18 +36,18 @@ func DataSourceGoogleComputeNodeTypes() *schema.Resource {
 }
 
 func dataSourceGoogleComputeNodeTypesRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	zone, err := getZone(d, config)
+	zone, err := tpgresource.GetZone(d, config)
 	if err != nil {
 		return fmt.Errorf("Please specify zone to get appropriate node types for zone. Unable to get zone: %s", err)
 	}

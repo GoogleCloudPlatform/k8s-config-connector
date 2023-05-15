@@ -20,6 +20,9 @@ import (
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"google.golang.org/api/cloudresourcemanager/v1"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 var CloudRunV2JobIamSchema = map[string]*schema.Schema{
@@ -47,11 +50,11 @@ type CloudRunV2JobIamUpdater struct {
 	project  string
 	location string
 	name     string
-	d        TerraformResourceData
-	Config   *Config
+	d        tpgresource.TerraformResourceData
+	Config   *transport_tpg.Config
 }
 
-func CloudRunV2JobIamUpdaterProducer(d TerraformResourceData, config *Config) (ResourceIamUpdater, error) {
+func CloudRunV2JobIamUpdaterProducer(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
 	values := make(map[string]string)
 
 	project, _ := getProject(d, config)
@@ -103,7 +106,7 @@ func CloudRunV2JobIamUpdaterProducer(d TerraformResourceData, config *Config) (R
 	return u, nil
 }
 
-func CloudRunV2JobIdParseFunc(d *schema.ResourceData, config *Config) error {
+func CloudRunV2JobIdParseFunc(d *schema.ResourceData, config *transport_tpg.Config) error {
 	values := make(map[string]string)
 
 	project, _ := getProject(d, config)
@@ -145,24 +148,24 @@ func (u *CloudRunV2JobIamUpdater) GetResourceIamPolicy() (*cloudresourcemanager.
 		return nil, err
 	}
 
-	project, err := getProject(u.d, u.Config)
+	project, err := tpgresource.GetProject(u.d, u.Config)
 	if err != nil {
 		return nil, err
 	}
 	var obj map[string]interface{}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
 
-	policy, err := SendRequest(u.Config, "GET", project, url, userAgent, obj)
+	policy, err := transport_tpg.SendRequest(u.Config, "GET", project, url, userAgent, obj)
 	if err != nil {
 		return nil, errwrap.Wrapf(fmt.Sprintf("Error retrieving IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
 
 	out := &cloudresourcemanager.Policy{}
-	err = Convert(policy, out)
+	err = tpgresource.Convert(policy, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a policy to a resource manager policy: {{err}}", err)
 	}
@@ -171,7 +174,7 @@ func (u *CloudRunV2JobIamUpdater) GetResourceIamPolicy() (*cloudresourcemanager.
 }
 
 func (u *CloudRunV2JobIamUpdater) SetResourceIamPolicy(policy *cloudresourcemanager.Policy) error {
-	json, err := ConvertToMap(policy)
+	json, err := tpgresource.ConvertToMap(policy)
 	if err != nil {
 		return err
 	}
@@ -183,17 +186,17 @@ func (u *CloudRunV2JobIamUpdater) SetResourceIamPolicy(policy *cloudresourcemana
 	if err != nil {
 		return err
 	}
-	project, err := getProject(u.d, u.Config)
+	project, err := tpgresource.GetProject(u.d, u.Config)
 	if err != nil {
 		return err
 	}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	_, err = SendRequestWithTimeout(u.Config, "POST", project, url, userAgent, obj, u.d.Timeout(schema.TimeoutCreate))
+	_, err = transport_tpg.SendRequestWithTimeout(u.Config, "POST", project, url, userAgent, obj, u.d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return errwrap.Wrapf(fmt.Sprintf("Error setting IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
@@ -203,7 +206,7 @@ func (u *CloudRunV2JobIamUpdater) SetResourceIamPolicy(policy *cloudresourcemana
 
 func (u *CloudRunV2JobIamUpdater) qualifyJobUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{CloudRunV2BasePath}}%s:%s", fmt.Sprintf("projects/%s/locations/%s/jobs/%s", u.project, u.location, u.name), methodIdentifier)
-	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
+	url, err := tpgresource.ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

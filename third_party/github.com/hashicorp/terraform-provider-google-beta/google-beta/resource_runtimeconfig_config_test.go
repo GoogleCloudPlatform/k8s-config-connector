@@ -2,6 +2,7 @@ package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -17,7 +18,7 @@ func TestAccRuntimeconfigConfig_basic(t *testing.T) {
 	description := "my test description"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRuntimeconfigConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -47,7 +48,7 @@ func TestAccRuntimeconfig_update(t *testing.T) {
 	secondDescription := "my updated test description"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRuntimeconfigConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -78,7 +79,7 @@ func TestAccRuntimeconfig_updateEmptyDescription(t *testing.T) {
 	description := "my test description"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRuntimeconfigConfigDestroyProducer(t),
 		Steps: []resource.TestStep{

@@ -6,6 +6,8 @@ import (
 	"sort"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
@@ -13,7 +15,7 @@ import (
 func TestAccHealthcareHl7V2StoreIamBinding(t *testing.T) {
 	t.Parallel()
 
-	projectId := GetTestProjectFromEnv()
+	projectId := acctest.GetTestProjectFromEnv()
 	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	roleId := "roles/healthcare.hl7V2StoreAdmin"
 	datasetName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -25,7 +27,7 @@ func TestAccHealthcareHl7V2StoreIamBinding(t *testing.T) {
 	hl7V2StoreName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -62,7 +64,7 @@ func TestAccHealthcareHl7V2StoreIamBinding(t *testing.T) {
 func TestAccHealthcareHl7V2StoreIamMember(t *testing.T) {
 	t.Parallel()
 
-	projectId := GetTestProjectFromEnv()
+	projectId := acctest.GetTestProjectFromEnv()
 	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	roleId := "roles/healthcare.hl7V2Editor"
 	datasetName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -74,7 +76,7 @@ func TestAccHealthcareHl7V2StoreIamMember(t *testing.T) {
 	hl7V2StoreName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -97,7 +99,7 @@ func TestAccHealthcareHl7V2StoreIamMember(t *testing.T) {
 func TestAccHealthcareHl7V2StoreIamPolicy(t *testing.T) {
 	t.Parallel()
 
-	projectId := GetTestProjectFromEnv()
+	projectId := acctest.GetTestProjectFromEnv()
 	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	roleId := "roles/healthcare.hl7V2Consumer"
 	datasetName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -109,7 +111,7 @@ func TestAccHealthcareHl7V2StoreIamPolicy(t *testing.T) {
 	hl7V2StoreName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{

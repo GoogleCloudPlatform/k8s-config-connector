@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"google.golang.org/api/storage/v1"
 )
 
@@ -36,8 +38,8 @@ func ResourceStorageDefaultObjectAcl() *schema.Resource {
 }
 
 func resourceStorageDefaultObjectAclCreateUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -52,12 +54,12 @@ func resourceStorageDefaultObjectAclCreateUpdate(d *schema.ResourceData, meta in
 		})
 	}
 
-	lockName, err := ReplaceVars(d, config, "storage/buckets/{{bucket}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "storage/buckets/{{bucket}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
 	res, err := config.NewStorageClient(userAgent).Buckets.Get(bucket).Do()
 	if err != nil {
@@ -82,8 +84,8 @@ func resourceStorageDefaultObjectAclCreateUpdate(d *schema.ResourceData, meta in
 }
 
 func resourceStorageDefaultObjectAclRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -91,7 +93,7 @@ func resourceStorageDefaultObjectAclRead(d *schema.ResourceData, meta interface{
 	bucket := d.Get("bucket").(string)
 	res, err := config.NewStorageClient(userAgent).Buckets.Get(bucket).Projection("full").Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Default Storage Object ACL for Bucket %q", d.Get("bucket").(string)))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Default Storage Object ACL for Bucket %q", d.Get("bucket").(string)))
 	}
 
 	var roleEntities []string
@@ -111,18 +113,18 @@ func resourceStorageDefaultObjectAclRead(d *schema.ResourceData, meta interface{
 }
 
 func resourceStorageDefaultObjectAclDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	lockName, err := ReplaceVars(d, config, "storage/buckets/{{bucket}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "storage/buckets/{{bucket}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
 	bucket := d.Get("bucket").(string)
 	res, err := config.NewStorageClient(userAgent).Buckets.Get(bucket).Do()

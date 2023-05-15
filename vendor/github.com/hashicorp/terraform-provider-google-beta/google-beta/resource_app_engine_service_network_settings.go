@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceAppEngineServiceNetworkSettings() *schema.Resource {
@@ -52,7 +56,7 @@ func ResourceAppEngineServiceNetworkSettings() *schema.Resource {
 						"ingress_traffic_allowed": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"INGRESS_TRAFFIC_ALLOWED_UNSPECIFIED", "INGRESS_TRAFFIC_ALLOWED_ALL", "INGRESS_TRAFFIC_ALLOWED_INTERNAL_ONLY", "INGRESS_TRAFFIC_ALLOWED_INTERNAL_AND_LB", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"INGRESS_TRAFFIC_ALLOWED_UNSPECIFIED", "INGRESS_TRAFFIC_ALLOWED_ALL", "INGRESS_TRAFFIC_ALLOWED_INTERNAL_ONLY", "INGRESS_TRAFFIC_ALLOWED_INTERNAL_AND_LB", ""}),
 							Description:  `The ingress settings for version or service. Default value: "INGRESS_TRAFFIC_ALLOWED_UNSPECIFIED" Possible values: ["INGRESS_TRAFFIC_ALLOWED_UNSPECIFIED", "INGRESS_TRAFFIC_ALLOWED_ALL", "INGRESS_TRAFFIC_ALLOWED_INTERNAL_ONLY", "INGRESS_TRAFFIC_ALLOWED_INTERNAL_AND_LB"]`,
 							Default:      "INGRESS_TRAFFIC_ALLOWED_UNSPECIFIED",
 						},
@@ -76,8 +80,8 @@ func ResourceAppEngineServiceNetworkSettings() *schema.Resource {
 }
 
 func resourceAppEngineServiceNetworkSettingsCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -86,24 +90,24 @@ func resourceAppEngineServiceNetworkSettingsCreate(d *schema.ResourceData, meta 
 	idProp, err := expandAppEngineServiceNetworkSettingsService(d.Get("service"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("service"); !isEmptyValue(reflect.ValueOf(idProp)) && (ok || !reflect.DeepEqual(v, idProp)) {
+	} else if v, ok := d.GetOkExists("service"); !tpgresource.IsEmptyValue(reflect.ValueOf(idProp)) && (ok || !reflect.DeepEqual(v, idProp)) {
 		obj["id"] = idProp
 	}
 	networkSettingsProp, err := expandAppEngineServiceNetworkSettingsNetworkSettings(d.Get("network_settings"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network_settings"); !isEmptyValue(reflect.ValueOf(networkSettingsProp)) && (ok || !reflect.DeepEqual(v, networkSettingsProp)) {
+	} else if v, ok := d.GetOkExists("network_settings"); !tpgresource.IsEmptyValue(reflect.ValueOf(networkSettingsProp)) && (ok || !reflect.DeepEqual(v, networkSettingsProp)) {
 		obj["networkSettings"] = networkSettingsProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "apps/{{project}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}?updateMask=networkSettings")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}?updateMask=networkSettings")
 	if err != nil {
 		return err
 	}
@@ -111,24 +115,24 @@ func resourceAppEngineServiceNetworkSettingsCreate(d *schema.ResourceData, meta 
 	log.Printf("[DEBUG] Creating new ServiceNetworkSettings: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for ServiceNetworkSettings: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating ServiceNetworkSettings: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "apps/{{project}}/services/{{service}}")
+	id, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}/services/{{service}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -150,33 +154,33 @@ func resourceAppEngineServiceNetworkSettingsCreate(d *schema.ResourceData, meta 
 }
 
 func resourceAppEngineServiceNetworkSettingsRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for ServiceNetworkSettings: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("AppEngineServiceNetworkSettings %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("AppEngineServiceNetworkSettings %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -194,15 +198,15 @@ func resourceAppEngineServiceNetworkSettingsRead(d *schema.ResourceData, meta in
 }
 
 func resourceAppEngineServiceNetworkSettingsUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for ServiceNetworkSettings: %s", err)
 	}
@@ -212,24 +216,24 @@ func resourceAppEngineServiceNetworkSettingsUpdate(d *schema.ResourceData, meta 
 	idProp, err := expandAppEngineServiceNetworkSettingsService(d.Get("service"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("service"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, idProp)) {
+	} else if v, ok := d.GetOkExists("service"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, idProp)) {
 		obj["id"] = idProp
 	}
 	networkSettingsProp, err := expandAppEngineServiceNetworkSettingsNetworkSettings(d.Get("network_settings"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network_settings"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, networkSettingsProp)) {
+	} else if v, ok := d.GetOkExists("network_settings"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, networkSettingsProp)) {
 		obj["networkSettings"] = networkSettingsProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "apps/{{project}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}")
 	if err != nil {
 		return err
 	}
@@ -246,17 +250,17 @@ func resourceAppEngineServiceNetworkSettingsUpdate(d *schema.ResourceData, meta 
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating ServiceNetworkSettings %q: %s", d.Id(), err)
@@ -285,7 +289,7 @@ func resourceAppEngineServiceNetworkSettingsDelete(d *schema.ResourceData, meta 
 }
 
 func resourceAppEngineServiceNetworkSettingsImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"apps/(?P<project>[^/]+)/services/(?P<service>[^/]+)",
 		"(?P<project>[^/]+)/(?P<service>[^/]+)",
@@ -295,7 +299,7 @@ func resourceAppEngineServiceNetworkSettingsImport(d *schema.ResourceData, meta 
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "apps/{{project}}/services/{{service}}")
+	id, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}/services/{{service}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -304,11 +308,11 @@ func resourceAppEngineServiceNetworkSettingsImport(d *schema.ResourceData, meta 
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenAppEngineServiceNetworkSettingsService(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineServiceNetworkSettingsService(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineServiceNetworkSettingsNetworkSettings(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineServiceNetworkSettingsNetworkSettings(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -321,15 +325,15 @@ func flattenAppEngineServiceNetworkSettingsNetworkSettings(v interface{}, d *sch
 		flattenAppEngineServiceNetworkSettingsNetworkSettingsIngressTrafficAllowed(original["ingressTrafficAllowed"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineServiceNetworkSettingsNetworkSettingsIngressTrafficAllowed(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineServiceNetworkSettingsNetworkSettingsIngressTrafficAllowed(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandAppEngineServiceNetworkSettingsService(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineServiceNetworkSettingsService(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineServiceNetworkSettingsNetworkSettings(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineServiceNetworkSettingsNetworkSettings(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -341,13 +345,13 @@ func expandAppEngineServiceNetworkSettingsNetworkSettings(v interface{}, d Terra
 	transformedIngressTrafficAllowed, err := expandAppEngineServiceNetworkSettingsNetworkSettingsIngressTrafficAllowed(original["ingress_traffic_allowed"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedIngressTrafficAllowed); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedIngressTrafficAllowed); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["ingressTrafficAllowed"] = transformedIngressTrafficAllowed
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineServiceNetworkSettingsNetworkSettingsIngressTrafficAllowed(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineServiceNetworkSettingsNetworkSettingsIngressTrafficAllowed(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

@@ -8,6 +8,9 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func init() {
@@ -22,7 +25,7 @@ func testSweepCloudIdentityGroup(region string) error {
 	resourceName := "CloudIdentityGroup"
 	log.Printf("[INFO][SWEEPER_LOG] Starting sweeper for %s", resourceName)
 
-	config, err := SharedConfigForRegion(region)
+	config, err := acctest.SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -35,10 +38,10 @@ func testSweepCloudIdentityGroup(region string) error {
 	}
 
 	t := &testing.T{}
-	custId := GetTestCustIdFromEnv(t)
+	custId := acctest.GetTestCustIdFromEnv(t)
 
 	// Setup variables to replace in list template
-	d := &ResourceDataMock{
+	d := &tpgresource.ResourceDataMock{
 		FieldsInSchema: map[string]interface{}{
 			"project":  config.Project,
 			"region":   region,
@@ -49,13 +52,13 @@ func testSweepCloudIdentityGroup(region string) error {
 	}
 
 	listTemplate := "https://cloudidentity.googleapis.com/v1beta1/groups?parent={{parent}}"
-	listUrl, err := ReplaceVars(d, config, listTemplate)
+	listUrl, err := tpgresource.ReplaceVars(d, config, listTemplate)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error preparing sweeper list url: %s", err)
 		return nil
 	}
 
-	res, err := SendRequest(config, "GET", config.Project, listUrl, config.UserAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", config.Project, listUrl, config.UserAgent, nil)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] Error in response from request %s: %s", listUrl, err)
 		return nil
@@ -81,13 +84,13 @@ func testSweepCloudIdentityGroup(region string) error {
 
 		name := obj["name"].(string)
 		// Skip resources that shouldn't be sweeped
-		if !IsSweepableTestResource(obj["displayName"].(string)) {
+		if !acctest.IsSweepableTestResource(obj["displayName"].(string)) {
 			nonPrefixCount++
 			continue
 		}
 
 		deleteTemplate := "https://cloudidentity.googleapis.com/v1beta1/{{name}}"
-		deleteUrl, err := ReplaceVars(d, config, deleteTemplate)
+		deleteUrl, err := tpgresource.ReplaceVars(d, config, deleteTemplate)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] error preparing delete url: %s", err)
 			return nil
@@ -95,7 +98,7 @@ func testSweepCloudIdentityGroup(region string) error {
 		deleteUrl = deleteUrl + name
 
 		// Don't wait on operations as we may have a lot to delete
-		_, err = SendRequest(config, "DELETE", config.Project, deleteUrl, config.UserAgent, nil)
+		_, err = transport_tpg.SendRequest(config, "DELETE", config.Project, deleteUrl, config.UserAgent, nil)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] Error deleting for url %s : %s", deleteUrl, err)
 		} else {

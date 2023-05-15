@@ -18,13 +18,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"time"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 type DatastoreOperationWaiter struct {
-	Config    *Config
+	Config    *transport_tpg.Config
 	UserAgent string
 	Project   string
-	CommonOperationWaiter
+	tpgresource.CommonOperationWaiter
 }
 
 func (w *DatastoreOperationWaiter) QueryOp() (interface{}, error) {
@@ -34,10 +37,10 @@ func (w *DatastoreOperationWaiter) QueryOp() (interface{}, error) {
 	// Returns the proper get.
 	url := fmt.Sprintf("%s%s", w.Config.DatastoreBasePath, w.CommonOperationWaiter.Op.Name)
 
-	return SendRequest(w.Config, "GET", w.Project, url, w.UserAgent, nil, DatastoreIndex409Contention)
+	return transport_tpg.SendRequest(w.Config, "GET", w.Project, url, w.UserAgent, nil, transport_tpg.DatastoreIndex409Contention)
 }
 
-func createDatastoreWaiter(config *Config, op map[string]interface{}, project, activity, userAgent string) (*DatastoreOperationWaiter, error) {
+func createDatastoreWaiter(config *transport_tpg.Config, op map[string]interface{}, project, activity, userAgent string) (*DatastoreOperationWaiter, error) {
 	w := &DatastoreOperationWaiter{
 		Config:    config,
 		UserAgent: userAgent,
@@ -50,18 +53,18 @@ func createDatastoreWaiter(config *Config, op map[string]interface{}, project, a
 }
 
 // nolint: deadcode,unused
-func DatastoreOperationWaitTimeWithResponse(config *Config, op map[string]interface{}, response *map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
+func DatastoreOperationWaitTimeWithResponse(config *transport_tpg.Config, op map[string]interface{}, response *map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
 	w, err := createDatastoreWaiter(config, op, project, activity, userAgent)
 	if err != nil {
 		return err
 	}
-	if err := OperationWait(w, activity, timeout, config.PollInterval); err != nil {
+	if err := tpgresource.OperationWait(w, activity, timeout, config.PollInterval); err != nil {
 		return err
 	}
 	return json.Unmarshal([]byte(w.CommonOperationWaiter.Op.Response), response)
 }
 
-func DatastoreOperationWaitTime(config *Config, op map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
+func DatastoreOperationWaitTime(config *transport_tpg.Config, op map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
 	if val, ok := op["name"]; !ok || val == "" {
 		// This was a synchronous call - there is no operation to wait for.
 		return nil
@@ -71,5 +74,5 @@ func DatastoreOperationWaitTime(config *Config, op map[string]interface{}, proje
 		// If w is nil, the op was synchronous.
 		return err
 	}
-	return OperationWait(w, activity, timeout, config.PollInterval)
+	return tpgresource.OperationWait(w, activity, timeout, config.PollInterval)
 }

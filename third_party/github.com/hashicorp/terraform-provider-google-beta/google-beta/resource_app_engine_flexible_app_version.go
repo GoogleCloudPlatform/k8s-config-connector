@@ -21,6 +21,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceAppEngineFlexibleAppVersion() *schema.Resource {
@@ -168,21 +172,21 @@ replies to a healthcheck until it is ready to serve traffic. Default: "300s"`,
 						"auth_fail_action": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"AUTH_FAIL_ACTION_REDIRECT", "AUTH_FAIL_ACTION_UNAUTHORIZED", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"AUTH_FAIL_ACTION_REDIRECT", "AUTH_FAIL_ACTION_UNAUTHORIZED", ""}),
 							Description:  `Action to take when users access resources that require authentication. Default value: "AUTH_FAIL_ACTION_REDIRECT" Possible values: ["AUTH_FAIL_ACTION_REDIRECT", "AUTH_FAIL_ACTION_UNAUTHORIZED"]`,
 							Default:      "AUTH_FAIL_ACTION_REDIRECT",
 						},
 						"login": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"LOGIN_OPTIONAL", "LOGIN_ADMIN", "LOGIN_REQUIRED", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"LOGIN_OPTIONAL", "LOGIN_ADMIN", "LOGIN_REQUIRED", ""}),
 							Description:  `Level of login required to access this resource. Default value: "LOGIN_OPTIONAL" Possible values: ["LOGIN_OPTIONAL", "LOGIN_ADMIN", "LOGIN_REQUIRED"]`,
 							Default:      "LOGIN_OPTIONAL",
 						},
 						"security_level": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"SECURE_DEFAULT", "SECURE_NEVER", "SECURE_OPTIONAL", "SECURE_ALWAYS", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"SECURE_DEFAULT", "SECURE_NEVER", "SECURE_OPTIONAL", "SECURE_ALWAYS", ""}),
 							Description:  `Security (HTTPS) enforcement for this URL. Possible values: ["SECURE_DEFAULT", "SECURE_NEVER", "SECURE_OPTIONAL", "SECURE_ALWAYS"]`,
 						},
 						"url": {
@@ -505,7 +509,7 @@ the configuration ID. In this case, configId must be omitted.`,
 						"rollout_strategy": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"FIXED", "MANAGED", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"FIXED", "MANAGED", ""}),
 							Description:  `Endpoints rollout strategy. If FIXED, configId must be specified. If MANAGED, configId must be omitted. Default value: "FIXED" Possible values: ["FIXED", "MANAGED"]`,
 							Default:      "FIXED",
 						},
@@ -544,19 +548,19 @@ The first matching URL handles the request and other request handlers are not at
 						"auth_fail_action": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"AUTH_FAIL_ACTION_REDIRECT", "AUTH_FAIL_ACTION_UNAUTHORIZED", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"AUTH_FAIL_ACTION_REDIRECT", "AUTH_FAIL_ACTION_UNAUTHORIZED", ""}),
 							Description:  `Actions to take when the user is not logged in. Possible values: ["AUTH_FAIL_ACTION_REDIRECT", "AUTH_FAIL_ACTION_UNAUTHORIZED"]`,
 						},
 						"login": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"LOGIN_OPTIONAL", "LOGIN_ADMIN", "LOGIN_REQUIRED", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"LOGIN_OPTIONAL", "LOGIN_ADMIN", "LOGIN_REQUIRED", ""}),
 							Description:  `Methods to restrict access to a URL based on login status. Possible values: ["LOGIN_OPTIONAL", "LOGIN_ADMIN", "LOGIN_REQUIRED"]`,
 						},
 						"redirect_http_response_code": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"REDIRECT_HTTP_RESPONSE_CODE_301", "REDIRECT_HTTP_RESPONSE_CODE_302", "REDIRECT_HTTP_RESPONSE_CODE_303", "REDIRECT_HTTP_RESPONSE_CODE_307", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"REDIRECT_HTTP_RESPONSE_CODE_301", "REDIRECT_HTTP_RESPONSE_CODE_302", "REDIRECT_HTTP_RESPONSE_CODE_303", "REDIRECT_HTTP_RESPONSE_CODE_307", ""}),
 							Description:  `30x code to use when performing redirects for the secure field. Possible values: ["REDIRECT_HTTP_RESPONSE_CODE_301", "REDIRECT_HTTP_RESPONSE_CODE_302", "REDIRECT_HTTP_RESPONSE_CODE_303", "REDIRECT_HTTP_RESPONSE_CODE_307"]`,
 						},
 						"script": {
@@ -578,7 +582,7 @@ Only the auto value is supported for Node.js in the App Engine standard environm
 						"security_level": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"SECURE_DEFAULT", "SECURE_NEVER", "SECURE_OPTIONAL", "SECURE_ALWAYS", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"SECURE_DEFAULT", "SECURE_NEVER", "SECURE_OPTIONAL", "SECURE_ALWAYS", ""}),
 							Description:  `Security (HTTPS) enforcement for this URL. Possible values: ["SECURE_DEFAULT", "SECURE_NEVER", "SECURE_OPTIONAL", "SECURE_ALWAYS"]`,
 						},
 						"static_files": {
@@ -651,7 +655,7 @@ All URLs that begin with this prefix are handled by this handler, using the port
 				Description: `A list of the types of messages that this application is able to receive. Possible values: ["INBOUND_SERVICE_MAIL", "INBOUND_SERVICE_MAIL_BOUNCE", "INBOUND_SERVICE_XMPP_ERROR", "INBOUND_SERVICE_XMPP_MESSAGE", "INBOUND_SERVICE_XMPP_SUBSCRIBE", "INBOUND_SERVICE_XMPP_PRESENCE", "INBOUND_SERVICE_CHANNEL_PRESENCE", "INBOUND_SERVICE_WARMUP"]`,
 				Elem: &schema.Schema{
 					Type:         schema.TypeString,
-					ValidateFunc: validateEnum([]string{"INBOUND_SERVICE_MAIL", "INBOUND_SERVICE_MAIL_BOUNCE", "INBOUND_SERVICE_XMPP_ERROR", "INBOUND_SERVICE_XMPP_MESSAGE", "INBOUND_SERVICE_XMPP_SUBSCRIBE", "INBOUND_SERVICE_XMPP_PRESENCE", "INBOUND_SERVICE_CHANNEL_PRESENCE", "INBOUND_SERVICE_WARMUP"}),
+					ValidateFunc: verify.ValidateEnum([]string{"INBOUND_SERVICE_MAIL", "INBOUND_SERVICE_MAIL_BOUNCE", "INBOUND_SERVICE_XMPP_ERROR", "INBOUND_SERVICE_XMPP_MESSAGE", "INBOUND_SERVICE_XMPP_SUBSCRIBE", "INBOUND_SERVICE_XMPP_PRESENCE", "INBOUND_SERVICE_CHANNEL_PRESENCE", "INBOUND_SERVICE_WARMUP"}),
 				},
 				Set: schema.HashString,
 			},
@@ -811,7 +815,7 @@ default if this field is neither provided in app.yaml file nor through CLI flag.
 			"serving_status": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"SERVING", "STOPPED", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"SERVING", "STOPPED", ""}),
 				Description:  `Current serving status of this version. Only the versions with a SERVING status create instances and can be billed. Default value: "SERVING" Possible values: ["SERVING", "STOPPED"]`,
 				Default:      "SERVING",
 			},
@@ -866,8 +870,8 @@ Reserved names,"default", "latest", and any name with the prefix "ah-".`,
 }
 
 func resourceAppEngineFlexibleAppVersionCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -876,151 +880,151 @@ func resourceAppEngineFlexibleAppVersionCreate(d *schema.ResourceData, meta inte
 	idProp, err := expandAppEngineFlexibleAppVersionVersionId(d.Get("version_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("version_id"); !isEmptyValue(reflect.ValueOf(idProp)) && (ok || !reflect.DeepEqual(v, idProp)) {
+	} else if v, ok := d.GetOkExists("version_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(idProp)) && (ok || !reflect.DeepEqual(v, idProp)) {
 		obj["id"] = idProp
 	}
 	inboundServicesProp, err := expandAppEngineFlexibleAppVersionInboundServices(d.Get("inbound_services"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("inbound_services"); !isEmptyValue(reflect.ValueOf(inboundServicesProp)) && (ok || !reflect.DeepEqual(v, inboundServicesProp)) {
+	} else if v, ok := d.GetOkExists("inbound_services"); !tpgresource.IsEmptyValue(reflect.ValueOf(inboundServicesProp)) && (ok || !reflect.DeepEqual(v, inboundServicesProp)) {
 		obj["inboundServices"] = inboundServicesProp
 	}
 	instanceClassProp, err := expandAppEngineFlexibleAppVersionInstanceClass(d.Get("instance_class"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("instance_class"); !isEmptyValue(reflect.ValueOf(instanceClassProp)) && (ok || !reflect.DeepEqual(v, instanceClassProp)) {
+	} else if v, ok := d.GetOkExists("instance_class"); !tpgresource.IsEmptyValue(reflect.ValueOf(instanceClassProp)) && (ok || !reflect.DeepEqual(v, instanceClassProp)) {
 		obj["instanceClass"] = instanceClassProp
 	}
 	networkProp, err := expandAppEngineFlexibleAppVersionNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 	resourcesProp, err := expandAppEngineFlexibleAppVersionResources(d.Get("resources"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("resources"); !isEmptyValue(reflect.ValueOf(resourcesProp)) && (ok || !reflect.DeepEqual(v, resourcesProp)) {
+	} else if v, ok := d.GetOkExists("resources"); !tpgresource.IsEmptyValue(reflect.ValueOf(resourcesProp)) && (ok || !reflect.DeepEqual(v, resourcesProp)) {
 		obj["resources"] = resourcesProp
 	}
 	runtimeProp, err := expandAppEngineFlexibleAppVersionRuntime(d.Get("runtime"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("runtime"); !isEmptyValue(reflect.ValueOf(runtimeProp)) && (ok || !reflect.DeepEqual(v, runtimeProp)) {
+	} else if v, ok := d.GetOkExists("runtime"); !tpgresource.IsEmptyValue(reflect.ValueOf(runtimeProp)) && (ok || !reflect.DeepEqual(v, runtimeProp)) {
 		obj["runtime"] = runtimeProp
 	}
 	runtimeChannelProp, err := expandAppEngineFlexibleAppVersionRuntimeChannel(d.Get("runtime_channel"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("runtime_channel"); !isEmptyValue(reflect.ValueOf(runtimeChannelProp)) && (ok || !reflect.DeepEqual(v, runtimeChannelProp)) {
+	} else if v, ok := d.GetOkExists("runtime_channel"); !tpgresource.IsEmptyValue(reflect.ValueOf(runtimeChannelProp)) && (ok || !reflect.DeepEqual(v, runtimeChannelProp)) {
 		obj["runtimeChannel"] = runtimeChannelProp
 	}
 	betaSettingsProp, err := expandAppEngineFlexibleAppVersionBetaSettings(d.Get("beta_settings"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("beta_settings"); !isEmptyValue(reflect.ValueOf(betaSettingsProp)) && (ok || !reflect.DeepEqual(v, betaSettingsProp)) {
+	} else if v, ok := d.GetOkExists("beta_settings"); !tpgresource.IsEmptyValue(reflect.ValueOf(betaSettingsProp)) && (ok || !reflect.DeepEqual(v, betaSettingsProp)) {
 		obj["betaSettings"] = betaSettingsProp
 	}
 	servingStatusProp, err := expandAppEngineFlexibleAppVersionServingStatus(d.Get("serving_status"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("serving_status"); !isEmptyValue(reflect.ValueOf(servingStatusProp)) && (ok || !reflect.DeepEqual(v, servingStatusProp)) {
+	} else if v, ok := d.GetOkExists("serving_status"); !tpgresource.IsEmptyValue(reflect.ValueOf(servingStatusProp)) && (ok || !reflect.DeepEqual(v, servingStatusProp)) {
 		obj["servingStatus"] = servingStatusProp
 	}
 	runtimeApiVersionProp, err := expandAppEngineFlexibleAppVersionRuntimeApiVersion(d.Get("runtime_api_version"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("runtime_api_version"); !isEmptyValue(reflect.ValueOf(runtimeApiVersionProp)) && (ok || !reflect.DeepEqual(v, runtimeApiVersionProp)) {
+	} else if v, ok := d.GetOkExists("runtime_api_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(runtimeApiVersionProp)) && (ok || !reflect.DeepEqual(v, runtimeApiVersionProp)) {
 		obj["runtimeApiVersion"] = runtimeApiVersionProp
 	}
 	handlersProp, err := expandAppEngineFlexibleAppVersionHandlers(d.Get("handlers"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("handlers"); !isEmptyValue(reflect.ValueOf(handlersProp)) && (ok || !reflect.DeepEqual(v, handlersProp)) {
+	} else if v, ok := d.GetOkExists("handlers"); !tpgresource.IsEmptyValue(reflect.ValueOf(handlersProp)) && (ok || !reflect.DeepEqual(v, handlersProp)) {
 		obj["handlers"] = handlersProp
 	}
 	runtimeMainExecutablePathProp, err := expandAppEngineFlexibleAppVersionRuntimeMainExecutablePath(d.Get("runtime_main_executable_path"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("runtime_main_executable_path"); !isEmptyValue(reflect.ValueOf(runtimeMainExecutablePathProp)) && (ok || !reflect.DeepEqual(v, runtimeMainExecutablePathProp)) {
+	} else if v, ok := d.GetOkExists("runtime_main_executable_path"); !tpgresource.IsEmptyValue(reflect.ValueOf(runtimeMainExecutablePathProp)) && (ok || !reflect.DeepEqual(v, runtimeMainExecutablePathProp)) {
 		obj["runtimeMainExecutablePath"] = runtimeMainExecutablePathProp
 	}
 	serviceAccountProp, err := expandAppEngineFlexibleAppVersionServiceAccount(d.Get("service_account"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("service_account"); !isEmptyValue(reflect.ValueOf(serviceAccountProp)) && (ok || !reflect.DeepEqual(v, serviceAccountProp)) {
+	} else if v, ok := d.GetOkExists("service_account"); !tpgresource.IsEmptyValue(reflect.ValueOf(serviceAccountProp)) && (ok || !reflect.DeepEqual(v, serviceAccountProp)) {
 		obj["serviceAccount"] = serviceAccountProp
 	}
 	apiConfigProp, err := expandAppEngineFlexibleAppVersionApiConfig(d.Get("api_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("api_config"); !isEmptyValue(reflect.ValueOf(apiConfigProp)) && (ok || !reflect.DeepEqual(v, apiConfigProp)) {
+	} else if v, ok := d.GetOkExists("api_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(apiConfigProp)) && (ok || !reflect.DeepEqual(v, apiConfigProp)) {
 		obj["apiConfig"] = apiConfigProp
 	}
 	envVariablesProp, err := expandAppEngineFlexibleAppVersionEnvVariables(d.Get("env_variables"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("env_variables"); !isEmptyValue(reflect.ValueOf(envVariablesProp)) && (ok || !reflect.DeepEqual(v, envVariablesProp)) {
+	} else if v, ok := d.GetOkExists("env_variables"); !tpgresource.IsEmptyValue(reflect.ValueOf(envVariablesProp)) && (ok || !reflect.DeepEqual(v, envVariablesProp)) {
 		obj["envVariables"] = envVariablesProp
 	}
 	defaultExpirationProp, err := expandAppEngineFlexibleAppVersionDefaultExpiration(d.Get("default_expiration"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_expiration"); !isEmptyValue(reflect.ValueOf(defaultExpirationProp)) && (ok || !reflect.DeepEqual(v, defaultExpirationProp)) {
+	} else if v, ok := d.GetOkExists("default_expiration"); !tpgresource.IsEmptyValue(reflect.ValueOf(defaultExpirationProp)) && (ok || !reflect.DeepEqual(v, defaultExpirationProp)) {
 		obj["defaultExpiration"] = defaultExpirationProp
 	}
 	readinessCheckProp, err := expandAppEngineFlexibleAppVersionReadinessCheck(d.Get("readiness_check"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("readiness_check"); !isEmptyValue(reflect.ValueOf(readinessCheckProp)) && (ok || !reflect.DeepEqual(v, readinessCheckProp)) {
+	} else if v, ok := d.GetOkExists("readiness_check"); !tpgresource.IsEmptyValue(reflect.ValueOf(readinessCheckProp)) && (ok || !reflect.DeepEqual(v, readinessCheckProp)) {
 		obj["readinessCheck"] = readinessCheckProp
 	}
 	livenessCheckProp, err := expandAppEngineFlexibleAppVersionLivenessCheck(d.Get("liveness_check"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("liveness_check"); !isEmptyValue(reflect.ValueOf(livenessCheckProp)) && (ok || !reflect.DeepEqual(v, livenessCheckProp)) {
+	} else if v, ok := d.GetOkExists("liveness_check"); !tpgresource.IsEmptyValue(reflect.ValueOf(livenessCheckProp)) && (ok || !reflect.DeepEqual(v, livenessCheckProp)) {
 		obj["livenessCheck"] = livenessCheckProp
 	}
 	nobuildFilesRegexProp, err := expandAppEngineFlexibleAppVersionNobuildFilesRegex(d.Get("nobuild_files_regex"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("nobuild_files_regex"); !isEmptyValue(reflect.ValueOf(nobuildFilesRegexProp)) && (ok || !reflect.DeepEqual(v, nobuildFilesRegexProp)) {
+	} else if v, ok := d.GetOkExists("nobuild_files_regex"); !tpgresource.IsEmptyValue(reflect.ValueOf(nobuildFilesRegexProp)) && (ok || !reflect.DeepEqual(v, nobuildFilesRegexProp)) {
 		obj["nobuildFilesRegex"] = nobuildFilesRegexProp
 	}
 	deploymentProp, err := expandAppEngineFlexibleAppVersionDeployment(d.Get("deployment"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("deployment"); !isEmptyValue(reflect.ValueOf(deploymentProp)) && (ok || !reflect.DeepEqual(v, deploymentProp)) {
+	} else if v, ok := d.GetOkExists("deployment"); !tpgresource.IsEmptyValue(reflect.ValueOf(deploymentProp)) && (ok || !reflect.DeepEqual(v, deploymentProp)) {
 		obj["deployment"] = deploymentProp
 	}
 	endpointsApiServiceProp, err := expandAppEngineFlexibleAppVersionEndpointsApiService(d.Get("endpoints_api_service"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("endpoints_api_service"); !isEmptyValue(reflect.ValueOf(endpointsApiServiceProp)) && (ok || !reflect.DeepEqual(v, endpointsApiServiceProp)) {
+	} else if v, ok := d.GetOkExists("endpoints_api_service"); !tpgresource.IsEmptyValue(reflect.ValueOf(endpointsApiServiceProp)) && (ok || !reflect.DeepEqual(v, endpointsApiServiceProp)) {
 		obj["endpointsApiService"] = endpointsApiServiceProp
 	}
 	entrypointProp, err := expandAppEngineFlexibleAppVersionEntrypoint(d.Get("entrypoint"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("entrypoint"); !isEmptyValue(reflect.ValueOf(entrypointProp)) && (ok || !reflect.DeepEqual(v, entrypointProp)) {
+	} else if v, ok := d.GetOkExists("entrypoint"); !tpgresource.IsEmptyValue(reflect.ValueOf(entrypointProp)) && (ok || !reflect.DeepEqual(v, entrypointProp)) {
 		obj["entrypoint"] = entrypointProp
 	}
 	vpcAccessConnectorProp, err := expandAppEngineFlexibleAppVersionVpcAccessConnector(d.Get("vpc_access_connector"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("vpc_access_connector"); !isEmptyValue(reflect.ValueOf(vpcAccessConnectorProp)) && (ok || !reflect.DeepEqual(v, vpcAccessConnectorProp)) {
+	} else if v, ok := d.GetOkExists("vpc_access_connector"); !tpgresource.IsEmptyValue(reflect.ValueOf(vpcAccessConnectorProp)) && (ok || !reflect.DeepEqual(v, vpcAccessConnectorProp)) {
 		obj["vpcAccessConnector"] = vpcAccessConnectorProp
 	}
 	automaticScalingProp, err := expandAppEngineFlexibleAppVersionAutomaticScaling(d.Get("automatic_scaling"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("automatic_scaling"); !isEmptyValue(reflect.ValueOf(automaticScalingProp)) && (ok || !reflect.DeepEqual(v, automaticScalingProp)) {
+	} else if v, ok := d.GetOkExists("automatic_scaling"); !tpgresource.IsEmptyValue(reflect.ValueOf(automaticScalingProp)) && (ok || !reflect.DeepEqual(v, automaticScalingProp)) {
 		obj["automaticScaling"] = automaticScalingProp
 	}
 	manualScalingProp, err := expandAppEngineFlexibleAppVersionManualScaling(d.Get("manual_scaling"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("manual_scaling"); !isEmptyValue(reflect.ValueOf(manualScalingProp)) && (ok || !reflect.DeepEqual(v, manualScalingProp)) {
+	} else if v, ok := d.GetOkExists("manual_scaling"); !tpgresource.IsEmptyValue(reflect.ValueOf(manualScalingProp)) && (ok || !reflect.DeepEqual(v, manualScalingProp)) {
 		obj["manualScaling"] = manualScalingProp
 	}
 
@@ -1029,14 +1033,14 @@ func resourceAppEngineFlexibleAppVersionCreate(d *schema.ResourceData, meta inte
 		return err
 	}
 
-	lockName, err := ReplaceVars(d, config, "apps/{{project}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}/versions")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}/versions")
 	if err != nil {
 		return err
 	}
@@ -1044,24 +1048,24 @@ func resourceAppEngineFlexibleAppVersionCreate(d *schema.ResourceData, meta inte
 	log.Printf("[DEBUG] Creating new FlexibleAppVersion: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for FlexibleAppVersion: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), IsAppEngineRetryableError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), transport_tpg.IsAppEngineRetryableError)
 	if err != nil {
 		return fmt.Errorf("Error creating FlexibleAppVersion: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "apps/{{project}}/services/{{service}}/versions/{{version_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}/services/{{service}}/versions/{{version_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1083,33 +1087,33 @@ func resourceAppEngineFlexibleAppVersionCreate(d *schema.ResourceData, meta inte
 }
 
 func resourceAppEngineFlexibleAppVersionRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}/versions/{{version_id}}?view=FULL")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}/versions/{{version_id}}?view=FULL")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for FlexibleAppVersion: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, IsAppEngineRetryableError)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil, transport_tpg.IsAppEngineRetryableError)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("AppEngineFlexibleAppVersion %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("AppEngineFlexibleAppVersion %q", d.Id()))
 	}
 
 	// Explicitly set virtual fields to default values if unset
@@ -1201,15 +1205,15 @@ func resourceAppEngineFlexibleAppVersionRead(d *schema.ResourceData, meta interf
 }
 
 func resourceAppEngineFlexibleAppVersionUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for FlexibleAppVersion: %s", err)
 	}
@@ -1219,151 +1223,151 @@ func resourceAppEngineFlexibleAppVersionUpdate(d *schema.ResourceData, meta inte
 	idProp, err := expandAppEngineFlexibleAppVersionVersionId(d.Get("version_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("version_id"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, idProp)) {
+	} else if v, ok := d.GetOkExists("version_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, idProp)) {
 		obj["id"] = idProp
 	}
 	inboundServicesProp, err := expandAppEngineFlexibleAppVersionInboundServices(d.Get("inbound_services"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("inbound_services"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, inboundServicesProp)) {
+	} else if v, ok := d.GetOkExists("inbound_services"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, inboundServicesProp)) {
 		obj["inboundServices"] = inboundServicesProp
 	}
 	instanceClassProp, err := expandAppEngineFlexibleAppVersionInstanceClass(d.Get("instance_class"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("instance_class"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, instanceClassProp)) {
+	} else if v, ok := d.GetOkExists("instance_class"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, instanceClassProp)) {
 		obj["instanceClass"] = instanceClassProp
 	}
 	networkProp, err := expandAppEngineFlexibleAppVersionNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 	resourcesProp, err := expandAppEngineFlexibleAppVersionResources(d.Get("resources"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("resources"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, resourcesProp)) {
+	} else if v, ok := d.GetOkExists("resources"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, resourcesProp)) {
 		obj["resources"] = resourcesProp
 	}
 	runtimeProp, err := expandAppEngineFlexibleAppVersionRuntime(d.Get("runtime"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("runtime"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, runtimeProp)) {
+	} else if v, ok := d.GetOkExists("runtime"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, runtimeProp)) {
 		obj["runtime"] = runtimeProp
 	}
 	runtimeChannelProp, err := expandAppEngineFlexibleAppVersionRuntimeChannel(d.Get("runtime_channel"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("runtime_channel"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, runtimeChannelProp)) {
+	} else if v, ok := d.GetOkExists("runtime_channel"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, runtimeChannelProp)) {
 		obj["runtimeChannel"] = runtimeChannelProp
 	}
 	betaSettingsProp, err := expandAppEngineFlexibleAppVersionBetaSettings(d.Get("beta_settings"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("beta_settings"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, betaSettingsProp)) {
+	} else if v, ok := d.GetOkExists("beta_settings"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, betaSettingsProp)) {
 		obj["betaSettings"] = betaSettingsProp
 	}
 	servingStatusProp, err := expandAppEngineFlexibleAppVersionServingStatus(d.Get("serving_status"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("serving_status"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, servingStatusProp)) {
+	} else if v, ok := d.GetOkExists("serving_status"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, servingStatusProp)) {
 		obj["servingStatus"] = servingStatusProp
 	}
 	runtimeApiVersionProp, err := expandAppEngineFlexibleAppVersionRuntimeApiVersion(d.Get("runtime_api_version"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("runtime_api_version"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, runtimeApiVersionProp)) {
+	} else if v, ok := d.GetOkExists("runtime_api_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, runtimeApiVersionProp)) {
 		obj["runtimeApiVersion"] = runtimeApiVersionProp
 	}
 	handlersProp, err := expandAppEngineFlexibleAppVersionHandlers(d.Get("handlers"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("handlers"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, handlersProp)) {
+	} else if v, ok := d.GetOkExists("handlers"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, handlersProp)) {
 		obj["handlers"] = handlersProp
 	}
 	runtimeMainExecutablePathProp, err := expandAppEngineFlexibleAppVersionRuntimeMainExecutablePath(d.Get("runtime_main_executable_path"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("runtime_main_executable_path"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, runtimeMainExecutablePathProp)) {
+	} else if v, ok := d.GetOkExists("runtime_main_executable_path"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, runtimeMainExecutablePathProp)) {
 		obj["runtimeMainExecutablePath"] = runtimeMainExecutablePathProp
 	}
 	serviceAccountProp, err := expandAppEngineFlexibleAppVersionServiceAccount(d.Get("service_account"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("service_account"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, serviceAccountProp)) {
+	} else if v, ok := d.GetOkExists("service_account"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, serviceAccountProp)) {
 		obj["serviceAccount"] = serviceAccountProp
 	}
 	apiConfigProp, err := expandAppEngineFlexibleAppVersionApiConfig(d.Get("api_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("api_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, apiConfigProp)) {
+	} else if v, ok := d.GetOkExists("api_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, apiConfigProp)) {
 		obj["apiConfig"] = apiConfigProp
 	}
 	envVariablesProp, err := expandAppEngineFlexibleAppVersionEnvVariables(d.Get("env_variables"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("env_variables"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, envVariablesProp)) {
+	} else if v, ok := d.GetOkExists("env_variables"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, envVariablesProp)) {
 		obj["envVariables"] = envVariablesProp
 	}
 	defaultExpirationProp, err := expandAppEngineFlexibleAppVersionDefaultExpiration(d.Get("default_expiration"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_expiration"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultExpirationProp)) {
+	} else if v, ok := d.GetOkExists("default_expiration"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultExpirationProp)) {
 		obj["defaultExpiration"] = defaultExpirationProp
 	}
 	readinessCheckProp, err := expandAppEngineFlexibleAppVersionReadinessCheck(d.Get("readiness_check"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("readiness_check"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, readinessCheckProp)) {
+	} else if v, ok := d.GetOkExists("readiness_check"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, readinessCheckProp)) {
 		obj["readinessCheck"] = readinessCheckProp
 	}
 	livenessCheckProp, err := expandAppEngineFlexibleAppVersionLivenessCheck(d.Get("liveness_check"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("liveness_check"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, livenessCheckProp)) {
+	} else if v, ok := d.GetOkExists("liveness_check"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, livenessCheckProp)) {
 		obj["livenessCheck"] = livenessCheckProp
 	}
 	nobuildFilesRegexProp, err := expandAppEngineFlexibleAppVersionNobuildFilesRegex(d.Get("nobuild_files_regex"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("nobuild_files_regex"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nobuildFilesRegexProp)) {
+	} else if v, ok := d.GetOkExists("nobuild_files_regex"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nobuildFilesRegexProp)) {
 		obj["nobuildFilesRegex"] = nobuildFilesRegexProp
 	}
 	deploymentProp, err := expandAppEngineFlexibleAppVersionDeployment(d.Get("deployment"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("deployment"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, deploymentProp)) {
+	} else if v, ok := d.GetOkExists("deployment"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, deploymentProp)) {
 		obj["deployment"] = deploymentProp
 	}
 	endpointsApiServiceProp, err := expandAppEngineFlexibleAppVersionEndpointsApiService(d.Get("endpoints_api_service"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("endpoints_api_service"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, endpointsApiServiceProp)) {
+	} else if v, ok := d.GetOkExists("endpoints_api_service"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, endpointsApiServiceProp)) {
 		obj["endpointsApiService"] = endpointsApiServiceProp
 	}
 	entrypointProp, err := expandAppEngineFlexibleAppVersionEntrypoint(d.Get("entrypoint"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("entrypoint"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, entrypointProp)) {
+	} else if v, ok := d.GetOkExists("entrypoint"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, entrypointProp)) {
 		obj["entrypoint"] = entrypointProp
 	}
 	vpcAccessConnectorProp, err := expandAppEngineFlexibleAppVersionVpcAccessConnector(d.Get("vpc_access_connector"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("vpc_access_connector"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, vpcAccessConnectorProp)) {
+	} else if v, ok := d.GetOkExists("vpc_access_connector"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, vpcAccessConnectorProp)) {
 		obj["vpcAccessConnector"] = vpcAccessConnectorProp
 	}
 	automaticScalingProp, err := expandAppEngineFlexibleAppVersionAutomaticScaling(d.Get("automatic_scaling"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("automatic_scaling"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, automaticScalingProp)) {
+	} else if v, ok := d.GetOkExists("automatic_scaling"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, automaticScalingProp)) {
 		obj["automaticScaling"] = automaticScalingProp
 	}
 	manualScalingProp, err := expandAppEngineFlexibleAppVersionManualScaling(d.Get("manual_scaling"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("manual_scaling"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, manualScalingProp)) {
+	} else if v, ok := d.GetOkExists("manual_scaling"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, manualScalingProp)) {
 		obj["manualScaling"] = manualScalingProp
 	}
 
@@ -1372,14 +1376,14 @@ func resourceAppEngineFlexibleAppVersionUpdate(d *schema.ResourceData, meta inte
 		return err
 	}
 
-	lockName, err := ReplaceVars(d, config, "apps/{{project}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}/versions")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}/versions")
 	if err != nil {
 		return err
 	}
@@ -1387,11 +1391,11 @@ func resourceAppEngineFlexibleAppVersionUpdate(d *schema.ResourceData, meta inte
 	log.Printf("[DEBUG] Updating FlexibleAppVersion %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate), IsAppEngineRetryableError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate), transport_tpg.IsAppEngineRetryableError)
 
 	if err != nil {
 		return fmt.Errorf("Error updating FlexibleAppVersion %q: %s", d.Id(), err)
@@ -1411,8 +1415,8 @@ func resourceAppEngineFlexibleAppVersionUpdate(d *schema.ResourceData, meta inte
 }
 
 func resourceAppEngineFlexibleAppVersionDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -1422,28 +1426,28 @@ func resourceAppEngineFlexibleAppVersionDelete(d *schema.ResourceData, meta inte
 		return nil
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	lockName, err := ReplaceVars(d, config, "apps/{{project}}/services/{{service}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}/services/{{service}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
 	if d.Get("delete_service_on_destroy") == true {
-		url, err := ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}")
+		url, err := tpgresource.ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}")
 		if err != nil {
 			return err
 		}
 		var obj map[string]interface{}
 		log.Printf("[DEBUG] Deleting Service %q", d.Id())
-		res, err := SendRequestWithTimeout(config, "DELETE", project, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), IsAppEngineRetryableError)
+		res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", project, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), transport_tpg.IsAppEngineRetryableError)
 		if err != nil {
-			return handleNotFoundError(err, d, "Service")
+			return transport_tpg.HandleNotFoundError(err, d, "Service")
 		}
 		err = AppEngineOperationWaitTime(
 			config, res, project, "Deleting Service", userAgent,
@@ -1455,15 +1459,15 @@ func resourceAppEngineFlexibleAppVersionDelete(d *schema.ResourceData, meta inte
 		log.Printf("[DEBUG] Finished deleting Service %q: %#v", d.Id(), res)
 		return nil
 	} else {
-		url, err := ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}/versions/{{version_id}}")
+		url, err := tpgresource.ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}/versions/{{version_id}}")
 		if err != nil {
 			return err
 		}
 		var obj map[string]interface{}
 		log.Printf("[DEBUG] Deleting AppVersion %q", d.Id())
-		res, err := SendRequestWithTimeout(config, "DELETE", project, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), IsAppEngineRetryableError)
+		res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", project, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), transport_tpg.IsAppEngineRetryableError)
 		if err != nil {
-			return handleNotFoundError(err, d, "AppVersion")
+			return transport_tpg.HandleNotFoundError(err, d, "AppVersion")
 		}
 		err = AppEngineOperationWaitTime(
 			config, res, project, "Deleting AppVersion", userAgent,
@@ -1479,7 +1483,7 @@ func resourceAppEngineFlexibleAppVersionDelete(d *schema.ResourceData, meta inte
 }
 
 func resourceAppEngineFlexibleAppVersionImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"apps/(?P<project>[^/]+)/services/(?P<service>[^/]+)/versions/(?P<version_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<service>[^/]+)/(?P<version_id>[^/]+)",
@@ -1489,7 +1493,7 @@ func resourceAppEngineFlexibleAppVersionImport(d *schema.ResourceData, meta inte
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "apps/{{project}}/services/{{service}}/versions/{{version_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}/services/{{service}}/versions/{{version_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1506,26 +1510,26 @@ func resourceAppEngineFlexibleAppVersionImport(d *schema.ResourceData, meta inte
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenAppEngineFlexibleAppVersionName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionVersionId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionVersionId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionInboundServices(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionInboundServices(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
 	return schema.NewSet(schema.HashString, v.([]interface{}))
 }
 
-func flattenAppEngineFlexibleAppVersionInstanceClass(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionInstanceClass(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1546,27 +1550,27 @@ func flattenAppEngineFlexibleAppVersionNetwork(v interface{}, d *schema.Resource
 		flattenAppEngineFlexibleAppVersionNetworkSessionAffinity(original["sessionAffinity"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionNetworkForwardedPorts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionNetworkForwardedPorts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionNetworkInstanceTag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionNetworkInstanceTag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionNetworkName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionNetworkName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionNetworkSubnetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionNetworkSubnetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionNetworkSessionAffinity(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionNetworkSessionAffinity(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionResources(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionResources(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1585,7 +1589,7 @@ func flattenAppEngineFlexibleAppVersionResources(v interface{}, d *schema.Resour
 		flattenAppEngineFlexibleAppVersionResourcesVolumes(original["volumes"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionResourcesCpu(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionResourcesCpu(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1602,7 +1606,7 @@ func flattenAppEngineFlexibleAppVersionResourcesCpu(v interface{}, d *schema.Res
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionResourcesDiskGb(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionResourcesDiskGb(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1619,11 +1623,11 @@ func flattenAppEngineFlexibleAppVersionResourcesDiskGb(v interface{}, d *schema.
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionResourcesMemoryGb(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionResourcesMemoryGb(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionResourcesVolumes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionResourcesVolumes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1643,15 +1647,15 @@ func flattenAppEngineFlexibleAppVersionResourcesVolumes(v interface{}, d *schema
 	}
 	return transformed
 }
-func flattenAppEngineFlexibleAppVersionResourcesVolumesName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionResourcesVolumesName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionResourcesVolumesVolumeType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionResourcesVolumesVolumeType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionResourcesVolumesSizeGb(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionResourcesVolumesSizeGb(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1668,23 +1672,23 @@ func flattenAppEngineFlexibleAppVersionResourcesVolumesSizeGb(v interface{}, d *
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionRuntime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionRuntime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionRuntimeChannel(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionRuntimeChannel(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionServingStatus(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionServingStatus(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionRuntimeApiVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionRuntimeApiVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlers(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlers(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1708,27 +1712,27 @@ func flattenAppEngineFlexibleAppVersionHandlers(v interface{}, d *schema.Resourc
 	}
 	return transformed
 }
-func flattenAppEngineFlexibleAppVersionHandlersUrlRegex(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersUrlRegex(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlersSecurityLevel(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersSecurityLevel(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlersLogin(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersLogin(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlersAuthFailAction(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersAuthFailAction(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlersRedirectHttpResponseCode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersRedirectHttpResponseCode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlersScript(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersScript(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1741,11 +1745,11 @@ func flattenAppEngineFlexibleAppVersionHandlersScript(v interface{}, d *schema.R
 		flattenAppEngineFlexibleAppVersionHandlersScriptScriptPath(original["scriptPath"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionHandlersScriptScriptPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersScriptScriptPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlersStaticFiles(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersStaticFiles(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1770,43 +1774,43 @@ func flattenAppEngineFlexibleAppVersionHandlersStaticFiles(v interface{}, d *sch
 		flattenAppEngineFlexibleAppVersionHandlersStaticFilesApplicationReadable(original["applicationReadable"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionHandlersStaticFilesPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersStaticFilesPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlersStaticFilesUploadPathRegex(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersStaticFilesUploadPathRegex(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlersStaticFilesHttpHeaders(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersStaticFilesHttpHeaders(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlersStaticFilesMimeType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersStaticFilesMimeType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlersStaticFilesExpiration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersStaticFilesExpiration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlersStaticFilesRequireMatchingFile(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersStaticFilesRequireMatchingFile(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionHandlersStaticFilesApplicationReadable(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionHandlersStaticFilesApplicationReadable(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionRuntimeMainExecutablePath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionRuntimeMainExecutablePath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionServiceAccount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionServiceAccount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionApiConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionApiConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1827,31 +1831,31 @@ func flattenAppEngineFlexibleAppVersionApiConfig(v interface{}, d *schema.Resour
 		flattenAppEngineFlexibleAppVersionApiConfigUrl(original["url"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionApiConfigAuthFailAction(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionApiConfigAuthFailAction(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionApiConfigLogin(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionApiConfigLogin(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionApiConfigScript(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionApiConfigScript(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionApiConfigSecurityLevel(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionApiConfigSecurityLevel(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionApiConfigUrl(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionApiConfigUrl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionDefaultExpiration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionDefaultExpiration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionReadinessCheck(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionReadinessCheck(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1876,35 +1880,35 @@ func flattenAppEngineFlexibleAppVersionReadinessCheck(v interface{}, d *schema.R
 		flattenAppEngineFlexibleAppVersionReadinessCheckAppStartTimeout(original["appStartTimeout"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionReadinessCheckPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionReadinessCheckPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionReadinessCheckHost(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionReadinessCheckHost(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionReadinessCheckFailureThreshold(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionReadinessCheckFailureThreshold(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionReadinessCheckSuccessThreshold(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionReadinessCheckSuccessThreshold(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionReadinessCheckCheckInterval(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionReadinessCheckCheckInterval(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionReadinessCheckTimeout(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionReadinessCheckTimeout(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionReadinessCheckAppStartTimeout(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionReadinessCheckAppStartTimeout(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionLivenessCheck(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionLivenessCheck(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1929,39 +1933,39 @@ func flattenAppEngineFlexibleAppVersionLivenessCheck(v interface{}, d *schema.Re
 		flattenAppEngineFlexibleAppVersionLivenessCheckInitialDelay(original["initialDelay"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionLivenessCheckPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionLivenessCheckPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionLivenessCheckHost(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionLivenessCheckHost(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionLivenessCheckFailureThreshold(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionLivenessCheckFailureThreshold(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionLivenessCheckSuccessThreshold(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionLivenessCheckSuccessThreshold(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionLivenessCheckCheckInterval(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionLivenessCheckCheckInterval(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionLivenessCheckTimeout(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionLivenessCheckTimeout(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionLivenessCheckInitialDelay(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionLivenessCheckInitialDelay(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionNobuildFilesRegex(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionNobuildFilesRegex(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionDeployment(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionDeployment(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	original := v.(map[string]interface{})
 	transformed := make(map[string]interface{})
 	transformed["zip"] = d.Get("deployment.0.zip")
@@ -1974,7 +1978,7 @@ func flattenAppEngineFlexibleAppVersionDeployment(v interface{}, d *schema.Resou
 	return []interface{}{transformed}
 }
 
-func flattenAppEngineFlexibleAppVersionDeploymentContainer(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionDeploymentContainer(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1988,11 +1992,11 @@ func flattenAppEngineFlexibleAppVersionDeploymentContainer(v interface{}, d *sch
 	return []interface{}{transformed}
 }
 
-func flattenAppEngineFlexibleAppVersionDeploymentContainerImage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionDeploymentContainerImage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionDeploymentCloudBuildOptions(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionDeploymentCloudBuildOptions(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2008,15 +2012,15 @@ func flattenAppEngineFlexibleAppVersionDeploymentCloudBuildOptions(v interface{}
 	return []interface{}{transformed}
 }
 
-func flattenAppEngineFlexibleAppVersionDeploymentCloudBuildOptionsAppYamlPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionDeploymentCloudBuildOptionsAppYamlPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionDeploymentCloudBuildOptionsCloudBuildTimeout(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionDeploymentCloudBuildOptionsCloudBuildTimeout(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionEndpointsApiService(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionEndpointsApiService(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2035,23 +2039,23 @@ func flattenAppEngineFlexibleAppVersionEndpointsApiService(v interface{}, d *sch
 		flattenAppEngineFlexibleAppVersionEndpointsApiServiceDisableTraceSampling(original["disableTraceSampling"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionEndpointsApiServiceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionEndpointsApiServiceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionEndpointsApiServiceConfigId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionEndpointsApiServiceConfigId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionEndpointsApiServiceRolloutStrategy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionEndpointsApiServiceRolloutStrategy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionEndpointsApiServiceDisableTraceSampling(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionEndpointsApiServiceDisableTraceSampling(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionVpcAccessConnector(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionVpcAccessConnector(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2064,11 +2068,11 @@ func flattenAppEngineFlexibleAppVersionVpcAccessConnector(v interface{}, d *sche
 		flattenAppEngineFlexibleAppVersionVpcAccessConnectorName(original["name"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionVpcAccessConnectorName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionVpcAccessConnectorName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScaling(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScaling(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2103,11 +2107,11 @@ func flattenAppEngineFlexibleAppVersionAutomaticScaling(v interface{}, d *schema
 		flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilization(original["networkUtilization"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionAutomaticScalingCoolDownPeriod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingCoolDownPeriod(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingCpuUtilization(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingCpuUtilization(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2122,15 +2126,15 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingCpuUtilization(v interfac
 		flattenAppEngineFlexibleAppVersionAutomaticScalingCpuUtilizationTargetUtilization(original["targetUtilization"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionAutomaticScalingCpuUtilizationAggregationWindowLength(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingCpuUtilizationAggregationWindowLength(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingCpuUtilizationTargetUtilization(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingCpuUtilizationTargetUtilization(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingMaxConcurrentRequests(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingMaxConcurrentRequests(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2147,7 +2151,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingMaxConcurrentRequests(v i
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingMaxIdleInstances(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingMaxIdleInstances(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2164,7 +2168,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingMaxIdleInstances(v interf
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingMaxTotalInstances(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingMaxTotalInstances(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2181,11 +2185,11 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingMaxTotalInstances(v inter
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingMaxPendingLatency(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingMaxPendingLatency(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingMinIdleInstances(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingMinIdleInstances(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2202,7 +2206,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingMinIdleInstances(v interf
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingMinTotalInstances(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingMinTotalInstances(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2219,11 +2223,11 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingMinTotalInstances(v inter
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingMinPendingLatency(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingMinPendingLatency(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingRequestUtilization(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingRequestUtilization(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2238,15 +2242,15 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingRequestUtilization(v inte
 		flattenAppEngineFlexibleAppVersionAutomaticScalingRequestUtilizationTargetConcurrentRequests(original["targetConcurrentRequests"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionAutomaticScalingRequestUtilizationTargetRequestCountPerSecond(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingRequestUtilizationTargetRequestCountPerSecond(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingRequestUtilizationTargetConcurrentRequests(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingRequestUtilizationTargetConcurrentRequests(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilization(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilization(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2265,7 +2269,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilization(v interfa
 		flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetReadOpsPerSecond(original["targetReadOpsPerSecond"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetWriteBytesPerSecond(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetWriteBytesPerSecond(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2282,7 +2286,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetWrit
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetWriteOpsPerSecond(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetWriteOpsPerSecond(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2299,7 +2303,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetWrit
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetReadBytesPerSecond(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetReadBytesPerSecond(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2316,7 +2320,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetRead
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetReadOpsPerSecond(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetReadOpsPerSecond(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2333,7 +2337,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetRead
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilization(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilization(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2352,7 +2356,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilization(v inte
 		flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetReceivedPacketsPerSecond(original["targetReceivedPacketsPerSecond"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetSentBytesPerSecond(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetSentBytesPerSecond(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2369,7 +2373,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetS
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetSentPacketsPerSecond(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetSentPacketsPerSecond(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2386,7 +2390,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetS
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetReceivedBytesPerSecond(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetReceivedBytesPerSecond(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2403,7 +2407,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetR
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetReceivedPacketsPerSecond(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetReceivedPacketsPerSecond(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2420,7 +2424,7 @@ func flattenAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetR
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAppEngineFlexibleAppVersionManualScaling(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionManualScaling(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2433,7 +2437,7 @@ func flattenAppEngineFlexibleAppVersionManualScaling(v interface{}, d *schema.Re
 		flattenAppEngineFlexibleAppVersionManualScalingInstances(original["instances"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAppEngineFlexibleAppVersionManualScalingInstances(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineFlexibleAppVersionManualScalingInstances(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2450,20 +2454,20 @@ func flattenAppEngineFlexibleAppVersionManualScalingInstances(v interface{}, d *
 	return v // let terraform core handle it otherwise
 }
 
-func expandAppEngineFlexibleAppVersionVersionId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionVersionId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionInboundServices(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionInboundServices(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionInstanceClass(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionInstanceClass(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2475,62 +2479,62 @@ func expandAppEngineFlexibleAppVersionNetwork(v interface{}, d TerraformResource
 	transformedForwardedPorts, err := expandAppEngineFlexibleAppVersionNetworkForwardedPorts(original["forwarded_ports"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedForwardedPorts); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedForwardedPorts); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["forwardedPorts"] = transformedForwardedPorts
 	}
 
 	transformedInstanceTag, err := expandAppEngineFlexibleAppVersionNetworkInstanceTag(original["instance_tag"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInstanceTag); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInstanceTag); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["instanceTag"] = transformedInstanceTag
 	}
 
 	transformedName, err := expandAppEngineFlexibleAppVersionNetworkName(original["name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["name"] = transformedName
 	}
 
 	transformedSubnetwork, err := expandAppEngineFlexibleAppVersionNetworkSubnetwork(original["subnetwork"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSubnetwork); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSubnetwork); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["subnetworkName"] = transformedSubnetwork
 	}
 
 	transformedSessionAffinity, err := expandAppEngineFlexibleAppVersionNetworkSessionAffinity(original["session_affinity"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSessionAffinity); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSessionAffinity); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["sessionAffinity"] = transformedSessionAffinity
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionNetworkForwardedPorts(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionNetworkForwardedPorts(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionNetworkInstanceTag(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionNetworkInstanceTag(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionNetworkName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionNetworkName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionNetworkSubnetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionNetworkSubnetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionNetworkSessionAffinity(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionNetworkSessionAffinity(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionResources(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionResources(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2542,47 +2546,47 @@ func expandAppEngineFlexibleAppVersionResources(v interface{}, d TerraformResour
 	transformedCpu, err := expandAppEngineFlexibleAppVersionResourcesCpu(original["cpu"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCpu); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCpu); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["cpu"] = transformedCpu
 	}
 
 	transformedDiskGb, err := expandAppEngineFlexibleAppVersionResourcesDiskGb(original["disk_gb"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDiskGb); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDiskGb); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["diskGb"] = transformedDiskGb
 	}
 
 	transformedMemoryGb, err := expandAppEngineFlexibleAppVersionResourcesMemoryGb(original["memory_gb"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMemoryGb); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMemoryGb); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["memoryGb"] = transformedMemoryGb
 	}
 
 	transformedVolumes, err := expandAppEngineFlexibleAppVersionResourcesVolumes(original["volumes"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedVolumes); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedVolumes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["volumes"] = transformedVolumes
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionResourcesCpu(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionResourcesCpu(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionResourcesDiskGb(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionResourcesDiskGb(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionResourcesMemoryGb(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionResourcesMemoryGb(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionResourcesVolumes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionResourcesVolumes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -2595,21 +2599,21 @@ func expandAppEngineFlexibleAppVersionResourcesVolumes(v interface{}, d Terrafor
 		transformedName, err := expandAppEngineFlexibleAppVersionResourcesVolumesName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
 		transformedVolumeType, err := expandAppEngineFlexibleAppVersionResourcesVolumesVolumeType(original["volume_type"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedVolumeType); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedVolumeType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["volumeType"] = transformedVolumeType
 		}
 
 		transformedSizeGb, err := expandAppEngineFlexibleAppVersionResourcesVolumesSizeGb(original["size_gb"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSizeGb); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSizeGb); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["sizeGb"] = transformedSizeGb
 		}
 
@@ -2618,27 +2622,27 @@ func expandAppEngineFlexibleAppVersionResourcesVolumes(v interface{}, d Terrafor
 	return req, nil
 }
 
-func expandAppEngineFlexibleAppVersionResourcesVolumesName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionResourcesVolumesName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionResourcesVolumesVolumeType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionResourcesVolumesVolumeType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionResourcesVolumesSizeGb(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionResourcesVolumesSizeGb(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionRuntime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionRuntime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionRuntimeChannel(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionRuntimeChannel(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionBetaSettings(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandAppEngineFlexibleAppVersionBetaSettings(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -2649,15 +2653,15 @@ func expandAppEngineFlexibleAppVersionBetaSettings(v interface{}, d TerraformRes
 	return m, nil
 }
 
-func expandAppEngineFlexibleAppVersionServingStatus(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionServingStatus(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionRuntimeApiVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionRuntimeApiVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlers(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlers(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -2670,49 +2674,49 @@ func expandAppEngineFlexibleAppVersionHandlers(v interface{}, d TerraformResourc
 		transformedUrlRegex, err := expandAppEngineFlexibleAppVersionHandlersUrlRegex(original["url_regex"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedUrlRegex); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedUrlRegex); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["urlRegex"] = transformedUrlRegex
 		}
 
 		transformedSecurityLevel, err := expandAppEngineFlexibleAppVersionHandlersSecurityLevel(original["security_level"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSecurityLevel); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSecurityLevel); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["securityLevel"] = transformedSecurityLevel
 		}
 
 		transformedLogin, err := expandAppEngineFlexibleAppVersionHandlersLogin(original["login"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedLogin); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedLogin); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["login"] = transformedLogin
 		}
 
 		transformedAuthFailAction, err := expandAppEngineFlexibleAppVersionHandlersAuthFailAction(original["auth_fail_action"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedAuthFailAction); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedAuthFailAction); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["authFailAction"] = transformedAuthFailAction
 		}
 
 		transformedRedirectHttpResponseCode, err := expandAppEngineFlexibleAppVersionHandlersRedirectHttpResponseCode(original["redirect_http_response_code"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedRedirectHttpResponseCode); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedRedirectHttpResponseCode); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["redirectHttpResponseCode"] = transformedRedirectHttpResponseCode
 		}
 
 		transformedScript, err := expandAppEngineFlexibleAppVersionHandlersScript(original["script"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedScript); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedScript); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["script"] = transformedScript
 		}
 
 		transformedStaticFiles, err := expandAppEngineFlexibleAppVersionHandlersStaticFiles(original["static_files"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedStaticFiles); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedStaticFiles); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["staticFiles"] = transformedStaticFiles
 		}
 
@@ -2721,27 +2725,27 @@ func expandAppEngineFlexibleAppVersionHandlers(v interface{}, d TerraformResourc
 	return req, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersUrlRegex(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersUrlRegex(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersSecurityLevel(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersSecurityLevel(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersLogin(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersLogin(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersAuthFailAction(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersAuthFailAction(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersRedirectHttpResponseCode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersRedirectHttpResponseCode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersScript(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersScript(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2753,18 +2757,18 @@ func expandAppEngineFlexibleAppVersionHandlersScript(v interface{}, d TerraformR
 	transformedScriptPath, err := expandAppEngineFlexibleAppVersionHandlersScriptScriptPath(original["script_path"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedScriptPath); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedScriptPath); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["scriptPath"] = transformedScriptPath
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersScriptScriptPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersScriptScriptPath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersStaticFiles(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersStaticFiles(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2776,64 +2780,64 @@ func expandAppEngineFlexibleAppVersionHandlersStaticFiles(v interface{}, d Terra
 	transformedPath, err := expandAppEngineFlexibleAppVersionHandlersStaticFilesPath(original["path"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["path"] = transformedPath
 	}
 
 	transformedUploadPathRegex, err := expandAppEngineFlexibleAppVersionHandlersStaticFilesUploadPathRegex(original["upload_path_regex"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedUploadPathRegex); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedUploadPathRegex); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["uploadPathRegex"] = transformedUploadPathRegex
 	}
 
 	transformedHttpHeaders, err := expandAppEngineFlexibleAppVersionHandlersStaticFilesHttpHeaders(original["http_headers"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedHttpHeaders); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedHttpHeaders); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["httpHeaders"] = transformedHttpHeaders
 	}
 
 	transformedMimeType, err := expandAppEngineFlexibleAppVersionHandlersStaticFilesMimeType(original["mime_type"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMimeType); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMimeType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["mimeType"] = transformedMimeType
 	}
 
 	transformedExpiration, err := expandAppEngineFlexibleAppVersionHandlersStaticFilesExpiration(original["expiration"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedExpiration); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedExpiration); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["expiration"] = transformedExpiration
 	}
 
 	transformedRequireMatchingFile, err := expandAppEngineFlexibleAppVersionHandlersStaticFilesRequireMatchingFile(original["require_matching_file"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRequireMatchingFile); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRequireMatchingFile); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["requireMatchingFile"] = transformedRequireMatchingFile
 	}
 
 	transformedApplicationReadable, err := expandAppEngineFlexibleAppVersionHandlersStaticFilesApplicationReadable(original["application_readable"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedApplicationReadable); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedApplicationReadable); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["applicationReadable"] = transformedApplicationReadable
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersStaticFilesPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersStaticFilesPath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersStaticFilesUploadPathRegex(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersStaticFilesUploadPathRegex(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersStaticFilesHttpHeaders(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandAppEngineFlexibleAppVersionHandlersStaticFilesHttpHeaders(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -2844,31 +2848,31 @@ func expandAppEngineFlexibleAppVersionHandlersStaticFilesHttpHeaders(v interface
 	return m, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersStaticFilesMimeType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersStaticFilesMimeType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersStaticFilesExpiration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersStaticFilesExpiration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersStaticFilesRequireMatchingFile(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersStaticFilesRequireMatchingFile(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionHandlersStaticFilesApplicationReadable(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionHandlersStaticFilesApplicationReadable(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionRuntimeMainExecutablePath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionRuntimeMainExecutablePath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionServiceAccount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionServiceAccount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionApiConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionApiConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2880,62 +2884,62 @@ func expandAppEngineFlexibleAppVersionApiConfig(v interface{}, d TerraformResour
 	transformedAuthFailAction, err := expandAppEngineFlexibleAppVersionApiConfigAuthFailAction(original["auth_fail_action"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAuthFailAction); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAuthFailAction); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["authFailAction"] = transformedAuthFailAction
 	}
 
 	transformedLogin, err := expandAppEngineFlexibleAppVersionApiConfigLogin(original["login"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLogin); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLogin); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["login"] = transformedLogin
 	}
 
 	transformedScript, err := expandAppEngineFlexibleAppVersionApiConfigScript(original["script"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedScript); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedScript); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["script"] = transformedScript
 	}
 
 	transformedSecurityLevel, err := expandAppEngineFlexibleAppVersionApiConfigSecurityLevel(original["security_level"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSecurityLevel); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSecurityLevel); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["securityLevel"] = transformedSecurityLevel
 	}
 
 	transformedUrl, err := expandAppEngineFlexibleAppVersionApiConfigUrl(original["url"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedUrl); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedUrl); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["url"] = transformedUrl
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionApiConfigAuthFailAction(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionApiConfigAuthFailAction(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionApiConfigLogin(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionApiConfigLogin(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionApiConfigScript(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionApiConfigScript(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionApiConfigSecurityLevel(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionApiConfigSecurityLevel(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionApiConfigUrl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionApiConfigUrl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionEnvVariables(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandAppEngineFlexibleAppVersionEnvVariables(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -2946,11 +2950,11 @@ func expandAppEngineFlexibleAppVersionEnvVariables(v interface{}, d TerraformRes
 	return m, nil
 }
 
-func expandAppEngineFlexibleAppVersionDefaultExpiration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionDefaultExpiration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionReadinessCheck(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionReadinessCheck(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2962,84 +2966,84 @@ func expandAppEngineFlexibleAppVersionReadinessCheck(v interface{}, d TerraformR
 	transformedPath, err := expandAppEngineFlexibleAppVersionReadinessCheckPath(original["path"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["path"] = transformedPath
 	}
 
 	transformedHost, err := expandAppEngineFlexibleAppVersionReadinessCheckHost(original["host"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedHost); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedHost); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["host"] = transformedHost
 	}
 
 	transformedFailureThreshold, err := expandAppEngineFlexibleAppVersionReadinessCheckFailureThreshold(original["failure_threshold"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedFailureThreshold); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedFailureThreshold); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["failureThreshold"] = transformedFailureThreshold
 	}
 
 	transformedSuccessThreshold, err := expandAppEngineFlexibleAppVersionReadinessCheckSuccessThreshold(original["success_threshold"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSuccessThreshold); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSuccessThreshold); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["successThreshold"] = transformedSuccessThreshold
 	}
 
 	transformedCheckInterval, err := expandAppEngineFlexibleAppVersionReadinessCheckCheckInterval(original["check_interval"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCheckInterval); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCheckInterval); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["checkInterval"] = transformedCheckInterval
 	}
 
 	transformedTimeout, err := expandAppEngineFlexibleAppVersionReadinessCheckTimeout(original["timeout"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTimeout); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTimeout); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["timeout"] = transformedTimeout
 	}
 
 	transformedAppStartTimeout, err := expandAppEngineFlexibleAppVersionReadinessCheckAppStartTimeout(original["app_start_timeout"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAppStartTimeout); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAppStartTimeout); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["appStartTimeout"] = transformedAppStartTimeout
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionReadinessCheckPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionReadinessCheckPath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionReadinessCheckHost(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionReadinessCheckHost(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionReadinessCheckFailureThreshold(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionReadinessCheckFailureThreshold(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionReadinessCheckSuccessThreshold(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionReadinessCheckSuccessThreshold(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionReadinessCheckCheckInterval(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionReadinessCheckCheckInterval(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionReadinessCheckTimeout(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionReadinessCheckTimeout(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionReadinessCheckAppStartTimeout(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionReadinessCheckAppStartTimeout(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionLivenessCheck(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionLivenessCheck(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3051,88 +3055,88 @@ func expandAppEngineFlexibleAppVersionLivenessCheck(v interface{}, d TerraformRe
 	transformedPath, err := expandAppEngineFlexibleAppVersionLivenessCheckPath(original["path"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["path"] = transformedPath
 	}
 
 	transformedHost, err := expandAppEngineFlexibleAppVersionLivenessCheckHost(original["host"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedHost); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedHost); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["host"] = transformedHost
 	}
 
 	transformedFailureThreshold, err := expandAppEngineFlexibleAppVersionLivenessCheckFailureThreshold(original["failure_threshold"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedFailureThreshold); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedFailureThreshold); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["failureThreshold"] = transformedFailureThreshold
 	}
 
 	transformedSuccessThreshold, err := expandAppEngineFlexibleAppVersionLivenessCheckSuccessThreshold(original["success_threshold"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSuccessThreshold); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSuccessThreshold); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["successThreshold"] = transformedSuccessThreshold
 	}
 
 	transformedCheckInterval, err := expandAppEngineFlexibleAppVersionLivenessCheckCheckInterval(original["check_interval"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCheckInterval); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCheckInterval); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["checkInterval"] = transformedCheckInterval
 	}
 
 	transformedTimeout, err := expandAppEngineFlexibleAppVersionLivenessCheckTimeout(original["timeout"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTimeout); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTimeout); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["timeout"] = transformedTimeout
 	}
 
 	transformedInitialDelay, err := expandAppEngineFlexibleAppVersionLivenessCheckInitialDelay(original["initial_delay"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInitialDelay); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInitialDelay); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["initialDelay"] = transformedInitialDelay
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionLivenessCheckPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionLivenessCheckPath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionLivenessCheckHost(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionLivenessCheckHost(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionLivenessCheckFailureThreshold(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionLivenessCheckFailureThreshold(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionLivenessCheckSuccessThreshold(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionLivenessCheckSuccessThreshold(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionLivenessCheckCheckInterval(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionLivenessCheckCheckInterval(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionLivenessCheckTimeout(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionLivenessCheckTimeout(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionLivenessCheckInitialDelay(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionLivenessCheckInitialDelay(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionNobuildFilesRegex(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionNobuildFilesRegex(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionDeployment(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionDeployment(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3144,35 +3148,35 @@ func expandAppEngineFlexibleAppVersionDeployment(v interface{}, d TerraformResou
 	transformedZip, err := expandAppEngineFlexibleAppVersionDeploymentZip(original["zip"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedZip); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedZip); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["zip"] = transformedZip
 	}
 
 	transformedFiles, err := expandAppEngineFlexibleAppVersionDeploymentFiles(original["files"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedFiles); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedFiles); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["files"] = transformedFiles
 	}
 
 	transformedContainer, err := expandAppEngineFlexibleAppVersionDeploymentContainer(original["container"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedContainer); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedContainer); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["container"] = transformedContainer
 	}
 
 	transformedCloudBuildOptions, err := expandAppEngineFlexibleAppVersionDeploymentCloudBuildOptions(original["cloud_build_options"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCloudBuildOptions); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCloudBuildOptions); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["cloudBuildOptions"] = transformedCloudBuildOptions
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionDeploymentZip(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionDeploymentZip(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3184,29 +3188,29 @@ func expandAppEngineFlexibleAppVersionDeploymentZip(v interface{}, d TerraformRe
 	transformedSourceUrl, err := expandAppEngineFlexibleAppVersionDeploymentZipSourceUrl(original["source_url"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSourceUrl); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSourceUrl); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["sourceUrl"] = transformedSourceUrl
 	}
 
 	transformedFilesCount, err := expandAppEngineFlexibleAppVersionDeploymentZipFilesCount(original["files_count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedFilesCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedFilesCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["filesCount"] = transformedFilesCount
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionDeploymentZipSourceUrl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionDeploymentZipSourceUrl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionDeploymentZipFilesCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionDeploymentZipFilesCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionDeploymentFiles(v interface{}, d TerraformResourceData, config *Config) (map[string]interface{}, error) {
+func expandAppEngineFlexibleAppVersionDeploymentFiles(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]interface{}, error) {
 	if v == nil {
 		return map[string]interface{}{}, nil
 	}
@@ -3218,14 +3222,14 @@ func expandAppEngineFlexibleAppVersionDeploymentFiles(v interface{}, d Terraform
 		transformedSha1Sum, err := expandAppEngineFlexibleAppVersionDeploymentFilesSha1Sum(original["sha1_sum"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSha1Sum); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSha1Sum); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["sha1Sum"] = transformedSha1Sum
 		}
 
 		transformedSourceUrl, err := expandAppEngineFlexibleAppVersionDeploymentFilesSourceUrl(original["source_url"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSourceUrl); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSourceUrl); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["sourceUrl"] = transformedSourceUrl
 		}
 
@@ -3238,15 +3242,15 @@ func expandAppEngineFlexibleAppVersionDeploymentFiles(v interface{}, d Terraform
 	return m, nil
 }
 
-func expandAppEngineFlexibleAppVersionDeploymentFilesSha1Sum(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionDeploymentFilesSha1Sum(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionDeploymentFilesSourceUrl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionDeploymentFilesSourceUrl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionDeploymentContainer(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionDeploymentContainer(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3258,18 +3262,18 @@ func expandAppEngineFlexibleAppVersionDeploymentContainer(v interface{}, d Terra
 	transformedImage, err := expandAppEngineFlexibleAppVersionDeploymentContainerImage(original["image"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedImage); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedImage); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["image"] = transformedImage
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionDeploymentContainerImage(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionDeploymentContainerImage(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionDeploymentCloudBuildOptions(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionDeploymentCloudBuildOptions(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3281,29 +3285,29 @@ func expandAppEngineFlexibleAppVersionDeploymentCloudBuildOptions(v interface{},
 	transformedAppYamlPath, err := expandAppEngineFlexibleAppVersionDeploymentCloudBuildOptionsAppYamlPath(original["app_yaml_path"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAppYamlPath); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAppYamlPath); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["appYamlPath"] = transformedAppYamlPath
 	}
 
 	transformedCloudBuildTimeout, err := expandAppEngineFlexibleAppVersionDeploymentCloudBuildOptionsCloudBuildTimeout(original["cloud_build_timeout"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCloudBuildTimeout); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCloudBuildTimeout); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["cloudBuildTimeout"] = transformedCloudBuildTimeout
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionDeploymentCloudBuildOptionsAppYamlPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionDeploymentCloudBuildOptionsAppYamlPath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionDeploymentCloudBuildOptionsCloudBuildTimeout(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionDeploymentCloudBuildOptionsCloudBuildTimeout(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionEndpointsApiService(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionEndpointsApiService(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3315,51 +3319,51 @@ func expandAppEngineFlexibleAppVersionEndpointsApiService(v interface{}, d Terra
 	transformedName, err := expandAppEngineFlexibleAppVersionEndpointsApiServiceName(original["name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["name"] = transformedName
 	}
 
 	transformedConfigId, err := expandAppEngineFlexibleAppVersionEndpointsApiServiceConfigId(original["config_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedConfigId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedConfigId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["configId"] = transformedConfigId
 	}
 
 	transformedRolloutStrategy, err := expandAppEngineFlexibleAppVersionEndpointsApiServiceRolloutStrategy(original["rollout_strategy"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRolloutStrategy); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRolloutStrategy); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["rolloutStrategy"] = transformedRolloutStrategy
 	}
 
 	transformedDisableTraceSampling, err := expandAppEngineFlexibleAppVersionEndpointsApiServiceDisableTraceSampling(original["disable_trace_sampling"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDisableTraceSampling); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDisableTraceSampling); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["disableTraceSampling"] = transformedDisableTraceSampling
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionEndpointsApiServiceName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionEndpointsApiServiceName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionEndpointsApiServiceConfigId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionEndpointsApiServiceConfigId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionEndpointsApiServiceRolloutStrategy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionEndpointsApiServiceRolloutStrategy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionEndpointsApiServiceDisableTraceSampling(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionEndpointsApiServiceDisableTraceSampling(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionEntrypoint(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionEntrypoint(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3371,18 +3375,18 @@ func expandAppEngineFlexibleAppVersionEntrypoint(v interface{}, d TerraformResou
 	transformedShell, err := expandAppEngineFlexibleAppVersionEntrypointShell(original["shell"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedShell); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedShell); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["shell"] = transformedShell
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionEntrypointShell(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionEntrypointShell(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionVpcAccessConnector(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionVpcAccessConnector(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3394,18 +3398,18 @@ func expandAppEngineFlexibleAppVersionVpcAccessConnector(v interface{}, d Terraf
 	transformedName, err := expandAppEngineFlexibleAppVersionVpcAccessConnectorName(original["name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["name"] = transformedName
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionVpcAccessConnectorName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionVpcAccessConnectorName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScaling(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScaling(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3417,95 +3421,95 @@ func expandAppEngineFlexibleAppVersionAutomaticScaling(v interface{}, d Terrafor
 	transformedCoolDownPeriod, err := expandAppEngineFlexibleAppVersionAutomaticScalingCoolDownPeriod(original["cool_down_period"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCoolDownPeriod); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCoolDownPeriod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["coolDownPeriod"] = transformedCoolDownPeriod
 	}
 
 	transformedCpuUtilization, err := expandAppEngineFlexibleAppVersionAutomaticScalingCpuUtilization(original["cpu_utilization"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCpuUtilization); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCpuUtilization); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["cpuUtilization"] = transformedCpuUtilization
 	}
 
 	transformedMaxConcurrentRequests, err := expandAppEngineFlexibleAppVersionAutomaticScalingMaxConcurrentRequests(original["max_concurrent_requests"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMaxConcurrentRequests); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMaxConcurrentRequests); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["maxConcurrentRequests"] = transformedMaxConcurrentRequests
 	}
 
 	transformedMaxIdleInstances, err := expandAppEngineFlexibleAppVersionAutomaticScalingMaxIdleInstances(original["max_idle_instances"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMaxIdleInstances); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMaxIdleInstances); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["maxIdleInstances"] = transformedMaxIdleInstances
 	}
 
 	transformedMaxTotalInstances, err := expandAppEngineFlexibleAppVersionAutomaticScalingMaxTotalInstances(original["max_total_instances"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMaxTotalInstances); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMaxTotalInstances); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["maxTotalInstances"] = transformedMaxTotalInstances
 	}
 
 	transformedMaxPendingLatency, err := expandAppEngineFlexibleAppVersionAutomaticScalingMaxPendingLatency(original["max_pending_latency"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMaxPendingLatency); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMaxPendingLatency); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["maxPendingLatency"] = transformedMaxPendingLatency
 	}
 
 	transformedMinIdleInstances, err := expandAppEngineFlexibleAppVersionAutomaticScalingMinIdleInstances(original["min_idle_instances"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMinIdleInstances); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMinIdleInstances); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["minIdleInstances"] = transformedMinIdleInstances
 	}
 
 	transformedMinTotalInstances, err := expandAppEngineFlexibleAppVersionAutomaticScalingMinTotalInstances(original["min_total_instances"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMinTotalInstances); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMinTotalInstances); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["minTotalInstances"] = transformedMinTotalInstances
 	}
 
 	transformedMinPendingLatency, err := expandAppEngineFlexibleAppVersionAutomaticScalingMinPendingLatency(original["min_pending_latency"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMinPendingLatency); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMinPendingLatency); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["minPendingLatency"] = transformedMinPendingLatency
 	}
 
 	transformedRequestUtilization, err := expandAppEngineFlexibleAppVersionAutomaticScalingRequestUtilization(original["request_utilization"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRequestUtilization); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRequestUtilization); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["requestUtilization"] = transformedRequestUtilization
 	}
 
 	transformedDiskUtilization, err := expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilization(original["disk_utilization"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDiskUtilization); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDiskUtilization); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["diskUtilization"] = transformedDiskUtilization
 	}
 
 	transformedNetworkUtilization, err := expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilization(original["network_utilization"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedNetworkUtilization); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedNetworkUtilization); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["networkUtilization"] = transformedNetworkUtilization
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingCoolDownPeriod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingCoolDownPeriod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingCpuUtilization(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingCpuUtilization(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3517,57 +3521,57 @@ func expandAppEngineFlexibleAppVersionAutomaticScalingCpuUtilization(v interface
 	transformedAggregationWindowLength, err := expandAppEngineFlexibleAppVersionAutomaticScalingCpuUtilizationAggregationWindowLength(original["aggregation_window_length"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAggregationWindowLength); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAggregationWindowLength); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["aggregationWindowLength"] = transformedAggregationWindowLength
 	}
 
 	transformedTargetUtilization, err := expandAppEngineFlexibleAppVersionAutomaticScalingCpuUtilizationTargetUtilization(original["target_utilization"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetUtilization); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetUtilization); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetUtilization"] = transformedTargetUtilization
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingCpuUtilizationAggregationWindowLength(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingCpuUtilizationAggregationWindowLength(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingCpuUtilizationTargetUtilization(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingCpuUtilizationTargetUtilization(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingMaxConcurrentRequests(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingMaxConcurrentRequests(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingMaxIdleInstances(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingMaxIdleInstances(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingMaxTotalInstances(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingMaxTotalInstances(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingMaxPendingLatency(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingMaxPendingLatency(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingMinIdleInstances(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingMinIdleInstances(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingMinTotalInstances(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingMinTotalInstances(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingMinPendingLatency(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingMinPendingLatency(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingRequestUtilization(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingRequestUtilization(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3579,29 +3583,29 @@ func expandAppEngineFlexibleAppVersionAutomaticScalingRequestUtilization(v inter
 	transformedTargetRequestCountPerSecond, err := expandAppEngineFlexibleAppVersionAutomaticScalingRequestUtilizationTargetRequestCountPerSecond(original["target_request_count_per_second"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetRequestCountPerSecond); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetRequestCountPerSecond); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetRequestCountPerSecond"] = transformedTargetRequestCountPerSecond
 	}
 
 	transformedTargetConcurrentRequests, err := expandAppEngineFlexibleAppVersionAutomaticScalingRequestUtilizationTargetConcurrentRequests(original["target_concurrent_requests"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetConcurrentRequests); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetConcurrentRequests); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetConcurrentRequests"] = transformedTargetConcurrentRequests
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingRequestUtilizationTargetRequestCountPerSecond(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingRequestUtilizationTargetRequestCountPerSecond(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingRequestUtilizationTargetConcurrentRequests(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingRequestUtilizationTargetConcurrentRequests(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilization(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilization(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3613,51 +3617,51 @@ func expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilization(v interfac
 	transformedTargetWriteBytesPerSecond, err := expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetWriteBytesPerSecond(original["target_write_bytes_per_second"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetWriteBytesPerSecond); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetWriteBytesPerSecond); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetWriteBytesPerSecond"] = transformedTargetWriteBytesPerSecond
 	}
 
 	transformedTargetWriteOpsPerSecond, err := expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetWriteOpsPerSecond(original["target_write_ops_per_second"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetWriteOpsPerSecond); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetWriteOpsPerSecond); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetWriteOpsPerSecond"] = transformedTargetWriteOpsPerSecond
 	}
 
 	transformedTargetReadBytesPerSecond, err := expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetReadBytesPerSecond(original["target_read_bytes_per_second"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetReadBytesPerSecond); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetReadBytesPerSecond); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetReadBytesPerSecond"] = transformedTargetReadBytesPerSecond
 	}
 
 	transformedTargetReadOpsPerSecond, err := expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetReadOpsPerSecond(original["target_read_ops_per_second"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetReadOpsPerSecond); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetReadOpsPerSecond); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetReadOpsPerSecond"] = transformedTargetReadOpsPerSecond
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetWriteBytesPerSecond(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetWriteBytesPerSecond(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetWriteOpsPerSecond(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetWriteOpsPerSecond(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetReadBytesPerSecond(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetReadBytesPerSecond(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetReadOpsPerSecond(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingDiskUtilizationTargetReadOpsPerSecond(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilization(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilization(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3669,51 +3673,51 @@ func expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilization(v inter
 	transformedTargetSentBytesPerSecond, err := expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetSentBytesPerSecond(original["target_sent_bytes_per_second"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetSentBytesPerSecond); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetSentBytesPerSecond); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetSentBytesPerSecond"] = transformedTargetSentBytesPerSecond
 	}
 
 	transformedTargetSentPacketsPerSecond, err := expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetSentPacketsPerSecond(original["target_sent_packets_per_second"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetSentPacketsPerSecond); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetSentPacketsPerSecond); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetSentPacketsPerSecond"] = transformedTargetSentPacketsPerSecond
 	}
 
 	transformedTargetReceivedBytesPerSecond, err := expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetReceivedBytesPerSecond(original["target_received_bytes_per_second"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetReceivedBytesPerSecond); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetReceivedBytesPerSecond); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetReceivedBytesPerSecond"] = transformedTargetReceivedBytesPerSecond
 	}
 
 	transformedTargetReceivedPacketsPerSecond, err := expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetReceivedPacketsPerSecond(original["target_received_packets_per_second"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetReceivedPacketsPerSecond); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetReceivedPacketsPerSecond); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetReceivedPacketsPerSecond"] = transformedTargetReceivedPacketsPerSecond
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetSentBytesPerSecond(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetSentBytesPerSecond(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetSentPacketsPerSecond(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetSentPacketsPerSecond(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetReceivedBytesPerSecond(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetReceivedBytesPerSecond(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetReceivedPacketsPerSecond(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionAutomaticScalingNetworkUtilizationTargetReceivedPacketsPerSecond(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineFlexibleAppVersionManualScaling(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionManualScaling(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3725,14 +3729,14 @@ func expandAppEngineFlexibleAppVersionManualScaling(v interface{}, d TerraformRe
 	transformedInstances, err := expandAppEngineFlexibleAppVersionManualScalingInstances(original["instances"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInstances); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInstances); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["instances"] = transformedInstances
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineFlexibleAppVersionManualScalingInstances(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineFlexibleAppVersionManualScalingInstances(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

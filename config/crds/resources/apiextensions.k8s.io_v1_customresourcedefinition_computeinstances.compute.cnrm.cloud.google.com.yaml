@@ -925,7 +925,11 @@ spec:
                 description: The CPU platform used by this instance.
                 type: string
               currentStatus:
-                description: Current status of the instance.
+                description: "\n\t\t\t\t\tCurrent status of the instance.\n\t\t\t\t\tThis
+                  could be one of the following values: PROVISIONING, STAGING, RUNNING,
+                  STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED.\n\t\t\t\t\tFor
+                  more information about the status of the instance, see [Instance
+                  life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle)."
                 type: string
               instanceId:
                 description: The server-assigned unique identifier of this instance.

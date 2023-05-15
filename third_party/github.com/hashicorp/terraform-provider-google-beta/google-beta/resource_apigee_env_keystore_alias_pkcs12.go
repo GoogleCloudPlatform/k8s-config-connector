@@ -11,6 +11,8 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceApigeeKeystoresAliasesPkcs12() *schema.Resource {
@@ -159,8 +161,8 @@ Flag is set to Yes if the certificate is valid, No if expired, or Not yet if not
 }
 
 func ResourceApigeeKeystoresAliasesPkcs12Create(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -180,7 +182,7 @@ func ResourceApigeeKeystoresAliasesPkcs12Create(d *schema.ResourceData, meta int
 	_, err = io.Copy(certFilePartWriter, file)
 	bw.Close()
 	file.Close()
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}organizations/{{org_id}}/environments/{{environment}}/keystores/{{keystore}}/aliases?format=pkcs12&alias={{alias}}&ignoreExpiryValidation=true")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}organizations/{{org_id}}/environments/{{environment}}/keystores/{{keystore}}/aliases?format=pkcs12&alias={{alias}}&ignoreExpiryValidation=true")
 	if err != nil {
 		return err
 	}
@@ -189,7 +191,7 @@ func ResourceApigeeKeystoresAliasesPkcs12Create(d *schema.ResourceData, meta int
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
@@ -199,7 +201,7 @@ func ResourceApigeeKeystoresAliasesPkcs12Create(d *schema.ResourceData, meta int
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "organizations/{{org_id}}/environments/{{environment}}/keystores/{{keystore}}/aliases/{{alias}}")
+	id, err := tpgresource.ReplaceVars(d, config, "organizations/{{org_id}}/environments/{{environment}}/keystores/{{keystore}}/aliases/{{alias}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -211,13 +213,13 @@ func ResourceApigeeKeystoresAliasesPkcs12Create(d *schema.ResourceData, meta int
 }
 
 func ResourceApigeeKeystoresAliasesPkcs12Read(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}organizations/{{org_id}}/environments/{{environment}}/keystores/{{keystore}}/aliases/{{alias}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}organizations/{{org_id}}/environments/{{environment}}/keystores/{{keystore}}/aliases/{{alias}}")
 	if err != nil {
 		return err
 	}
@@ -225,13 +227,13 @@ func ResourceApigeeKeystoresAliasesPkcs12Read(d *schema.ResourceData, meta inter
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ApigeeKeystoreAliasesPkcs %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ApigeeKeystoreAliasesPkcs %q", d.Id()))
 	}
 
 	if err := d.Set("alias", flattenApigeeKeystoreAliasesPkcsAlias(res["alias"], d, config)); err != nil {
@@ -250,15 +252,15 @@ func ResourceApigeeKeystoresAliasesPkcs12Read(d *schema.ResourceData, meta inter
 }
 
 func ResourceApigeeKeystoresAliasesPkcs12Delete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}organizations/{{org_id}}/environments/{{environment}}/keystores/{{keystore}}/aliases/{{alias}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}organizations/{{org_id}}/environments/{{environment}}/keystores/{{keystore}}/aliases/{{alias}}")
 	if err != nil {
 		return err
 	}
@@ -267,13 +269,13 @@ func ResourceApigeeKeystoresAliasesPkcs12Delete(d *schema.ResourceData, meta int
 	log.Printf("[DEBUG] Deleting KeystoreAliasesPkcs %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "KeystoreAliasesPkcs")
+		return transport_tpg.HandleNotFoundError(err, d, "KeystoreAliasesPkcs")
 	}
 
 	log.Printf("[DEBUG] Finished deleting KeystoreAliasesPkcs %q: %#v", d.Id(), res)
@@ -281,7 +283,7 @@ func ResourceApigeeKeystoresAliasesPkcs12Delete(d *schema.ResourceData, meta int
 }
 
 func ResourceApigeeKeystoresAliasesPkcs12Import(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"organizations/(?P<org_id>[^/]+)/environments/(?P<environment>[^/]+)/keystores/(?P<keystore>[^/]+)/aliases/(?P<alias>[^/]+)",
 		"(?P<org_id>[^/]+)/(?P<environment>[^/]+)/(?P<keystore>[^/]+)/(?P<alias>[^/]+)",
@@ -290,7 +292,7 @@ func ResourceApigeeKeystoresAliasesPkcs12Import(d *schema.ResourceData, meta int
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "organizations/{{org_id}}/environments/{{environment}}/keystores/{{keystore}}/aliases/{{alias}}")
+	id, err := tpgresource.ReplaceVars(d, config, "organizations/{{org_id}}/environments/{{environment}}/keystores/{{keystore}}/aliases/{{alias}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -299,35 +301,35 @@ func ResourceApigeeKeystoresAliasesPkcs12Import(d *schema.ResourceData, meta int
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenApigeeKeystoreAliasesPkcsOrgId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsOrgId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsEnvironment(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsEnvironment(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsKeystore(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsKeystore(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsAlias(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsAlias(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsPassword(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsPassword(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsCert(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCert(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsCertsInfo(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfo(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -340,7 +342,7 @@ func flattenApigeeKeystoreAliasesPkcsCertsInfo(v interface{}, d *schema.Resource
 		flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfo(original["certInfo"], d, config)
 	return []interface{}{transformed}
 }
-func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfo(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfo(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -368,7 +370,7 @@ func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfo(v interface{}, d *schema.
 	}
 	return transformed
 }
-func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -385,79 +387,79 @@ func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoVersion(v interface{}, d *
 	return v // let terraform core handle it otherwise
 }
 
-func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoSubject(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoSubject(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoIssuer(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoIssuer(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoExpiryDate(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoExpiryDate(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoValidFrom(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoValidFrom(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoIsValid(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoIsValid(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoSubjectAlternativeNames(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoSubjectAlternativeNames(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoSigAlgName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoSigAlgName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoPublicKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoPublicKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoBasicConstraints(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoBasicConstraints(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoSerialNumber(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsCertsInfoCertInfoSerialNumber(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeKeystoreAliasesPkcsType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeKeystoreAliasesPkcsType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandApigeeKeystoreAliasesPkcsOrgId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsOrgId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsEnvironment(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsEnvironment(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsKeystore(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsKeystore(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsAlias(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsAlias(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsPassword(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsPassword(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCert(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCert(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfo(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfo(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -469,14 +471,14 @@ func expandApigeeKeystoreAliasesPkcsCertsInfo(v interface{}, d TerraformResource
 	transformedCertInfo, err := expandApigeeKeystoreAliasesPkcsCertsInfoCertInfo(original["cert_info"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCertInfo); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCertInfo); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["certInfo"] = transformedCertInfo
 	}
 
 	return transformed, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfo(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfo(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -489,77 +491,77 @@ func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfo(v interface{}, d Terraform
 		transformedVersion, err := expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoVersion(original["version"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["version"] = transformedVersion
 		}
 
 		transformedSubject, err := expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoSubject(original["subject"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSubject); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSubject); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["subject"] = transformedSubject
 		}
 
 		transformedIssuer, err := expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoIssuer(original["issuer"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedIssuer); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedIssuer); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["issuer"] = transformedIssuer
 		}
 
 		transformedExpiryDate, err := expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoExpiryDate(original["expiry_date"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedExpiryDate); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedExpiryDate); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["expiryDate"] = transformedExpiryDate
 		}
 
 		transformedValidFrom, err := expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoValidFrom(original["valid_from"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedValidFrom); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedValidFrom); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["validFrom"] = transformedValidFrom
 		}
 
 		transformedIsValid, err := expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoIsValid(original["is_valid"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedIsValid); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedIsValid); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["isValid"] = transformedIsValid
 		}
 
 		transformedSubjectAlternativeNames, err := expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoSubjectAlternativeNames(original["subject_alternative_names"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSubjectAlternativeNames); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSubjectAlternativeNames); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["subjectAlternativeNames"] = transformedSubjectAlternativeNames
 		}
 
 		transformedSigAlgName, err := expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoSigAlgName(original["sig_alg_name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSigAlgName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSigAlgName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["sigAlgName"] = transformedSigAlgName
 		}
 
 		transformedPublicKey, err := expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoPublicKey(original["public_key"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPublicKey); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPublicKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["publicKey"] = transformedPublicKey
 		}
 
 		transformedBasicConstraints, err := expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoBasicConstraints(original["basic_constraints"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedBasicConstraints); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedBasicConstraints); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["basicConstraints"] = transformedBasicConstraints
 		}
 
 		transformedSerialNumber, err := expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoSerialNumber(original["serial_number"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSerialNumber); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSerialNumber); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["serialNumber"] = transformedSerialNumber
 		}
 
@@ -568,46 +570,46 @@ func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfo(v interface{}, d Terraform
 	return req, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoSubject(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoSubject(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoIssuer(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoIssuer(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoExpiryDate(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoExpiryDate(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoValidFrom(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoValidFrom(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoIsValid(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoIsValid(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoSubjectAlternativeNames(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoSubjectAlternativeNames(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoSigAlgName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoSigAlgName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoPublicKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoPublicKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoBasicConstraints(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoBasicConstraints(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoSerialNumber(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeKeystoreAliasesPkcsCertsInfoCertInfoSerialNumber(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

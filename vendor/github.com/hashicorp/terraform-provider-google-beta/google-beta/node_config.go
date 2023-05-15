@@ -5,6 +5,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+
 	container "google.golang.org/api/container/v1beta1"
 )
 
@@ -96,7 +99,7 @@ func schemaNodeConfig() *schema.Schema {
 								Type:             schema.TypeString,
 								Required:         true,
 								ForceNew:         true,
-								DiffSuppressFunc: compareSelfLinkOrResourceName,
+								DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 								Description:      `The accelerator type resource name.`,
 							},
 							"gpu_partition_size": {
@@ -137,7 +140,7 @@ func schemaNodeConfig() *schema.Schema {
 					Type:             schema.TypeString,
 					Optional:         true,
 					Computed:         true,
-					DiffSuppressFunc: CaseDiffSuppress,
+					DiffSuppressFunc: tpgresource.CaseDiffSuppress,
 					Description:      `The image type to use for this node. Note that for a given image type, the latest version of it will be used.`,
 				},
 
@@ -280,11 +283,11 @@ func schemaNodeConfig() *schema.Schema {
 					Elem: &schema.Schema{
 						Type: schema.TypeString,
 						StateFunc: func(v interface{}) string {
-							return canonicalizeServiceScope(v.(string))
+							return tpgresource.CanonicalizeServiceScope(v.(string))
 						},
 					},
 					DiffSuppressFunc: containerClusterAddedScopesSuppress,
-					Set:              stringScopeHashcode,
+					Set:              tpgresource.StringScopeHashcode,
 				},
 
 				"preemptible": {
@@ -682,7 +685,7 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 		scopesSet := scopes.(*schema.Set)
 		scopes := make([]string, scopesSet.Len())
 		for i, scope := range scopesSet.List() {
-			scopes[i] = canonicalizeServiceScope(scope.(string))
+			scopes[i] = tpgresource.CanonicalizeServiceScope(scope.(string))
 		}
 
 		nc.OauthScopes = scopes
@@ -927,7 +930,7 @@ func flattenNodeConfig(c *container.NodeConfig) []map[string]interface{} {
 	})
 
 	if len(c.OauthScopes) > 0 {
-		config[0]["oauth_scopes"] = schema.NewSet(stringScopeHashcode, convertStringArrToInterface(c.OauthScopes))
+		config[0]["oauth_scopes"] = schema.NewSet(tpgresource.StringScopeHashcode, convertStringArrToInterface(c.OauthScopes))
 	}
 
 	return config

@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceHealthcareConsentStore() *schema.Resource {
@@ -92,8 +95,8 @@ Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }.`,
 }
 
 func resourceHealthcareConsentStoreCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -102,23 +105,23 @@ func resourceHealthcareConsentStoreCreate(d *schema.ResourceData, meta interface
 	defaultConsentTtlProp, err := expandHealthcareConsentStoreDefaultConsentTtl(d.Get("default_consent_ttl"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_consent_ttl"); !isEmptyValue(reflect.ValueOf(defaultConsentTtlProp)) && (ok || !reflect.DeepEqual(v, defaultConsentTtlProp)) {
+	} else if v, ok := d.GetOkExists("default_consent_ttl"); !tpgresource.IsEmptyValue(reflect.ValueOf(defaultConsentTtlProp)) && (ok || !reflect.DeepEqual(v, defaultConsentTtlProp)) {
 		obj["defaultConsentTtl"] = defaultConsentTtlProp
 	}
 	enableConsentCreateOnUpdateProp, err := expandHealthcareConsentStoreEnableConsentCreateOnUpdate(d.Get("enable_consent_create_on_update"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enable_consent_create_on_update"); !isEmptyValue(reflect.ValueOf(enableConsentCreateOnUpdateProp)) && (ok || !reflect.DeepEqual(v, enableConsentCreateOnUpdateProp)) {
+	} else if v, ok := d.GetOkExists("enable_consent_create_on_update"); !tpgresource.IsEmptyValue(reflect.ValueOf(enableConsentCreateOnUpdateProp)) && (ok || !reflect.DeepEqual(v, enableConsentCreateOnUpdateProp)) {
 		obj["enableConsentCreateOnUpdate"] = enableConsentCreateOnUpdateProp
 	}
 	labelsProp, err := expandHealthcareConsentStoreLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/consentStores?consentStoreId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/consentStores?consentStoreId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -127,17 +130,17 @@ func resourceHealthcareConsentStoreCreate(d *schema.ResourceData, meta interface
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating ConsentStore: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{dataset}}/consentStores/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{dataset}}/consentStores/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -149,13 +152,13 @@ func resourceHealthcareConsentStoreCreate(d *schema.ResourceData, meta interface
 }
 
 func resourceHealthcareConsentStoreRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/consentStores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/consentStores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -163,13 +166,13 @@ func resourceHealthcareConsentStoreRead(d *schema.ResourceData, meta interface{}
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("HealthcareConsentStore %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("HealthcareConsentStore %q", d.Id()))
 	}
 
 	if err := d.Set("default_consent_ttl", flattenHealthcareConsentStoreDefaultConsentTtl(res["defaultConsentTtl"], d, config)); err != nil {
@@ -186,8 +189,8 @@ func resourceHealthcareConsentStoreRead(d *schema.ResourceData, meta interface{}
 }
 
 func resourceHealthcareConsentStoreUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -198,23 +201,23 @@ func resourceHealthcareConsentStoreUpdate(d *schema.ResourceData, meta interface
 	defaultConsentTtlProp, err := expandHealthcareConsentStoreDefaultConsentTtl(d.Get("default_consent_ttl"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_consent_ttl"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultConsentTtlProp)) {
+	} else if v, ok := d.GetOkExists("default_consent_ttl"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultConsentTtlProp)) {
 		obj["defaultConsentTtl"] = defaultConsentTtlProp
 	}
 	enableConsentCreateOnUpdateProp, err := expandHealthcareConsentStoreEnableConsentCreateOnUpdate(d.Get("enable_consent_create_on_update"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enable_consent_create_on_update"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enableConsentCreateOnUpdateProp)) {
+	} else if v, ok := d.GetOkExists("enable_consent_create_on_update"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enableConsentCreateOnUpdateProp)) {
 		obj["enableConsentCreateOnUpdate"] = enableConsentCreateOnUpdateProp
 	}
 	labelsProp, err := expandHealthcareConsentStoreLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/consentStores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/consentStores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -235,17 +238,17 @@ func resourceHealthcareConsentStoreUpdate(d *schema.ResourceData, meta interface
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating ConsentStore %q: %s", d.Id(), err)
@@ -257,15 +260,15 @@ func resourceHealthcareConsentStoreUpdate(d *schema.ResourceData, meta interface
 }
 
 func resourceHealthcareConsentStoreDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/consentStores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/consentStores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -274,13 +277,13 @@ func resourceHealthcareConsentStoreDelete(d *schema.ResourceData, meta interface
 	log.Printf("[DEBUG] Deleting ConsentStore %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "ConsentStore")
+		return transport_tpg.HandleNotFoundError(err, d, "ConsentStore")
 	}
 
 	log.Printf("[DEBUG] Finished deleting ConsentStore %q: %#v", d.Id(), res)
@@ -288,7 +291,7 @@ func resourceHealthcareConsentStoreDelete(d *schema.ResourceData, meta interface
 }
 
 func resourceHealthcareConsentStoreImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"(?P<dataset>.+)/consentStores/(?P<name>[^/]+)",
 	}, d, config); err != nil {
@@ -296,7 +299,7 @@ func resourceHealthcareConsentStoreImport(d *schema.ResourceData, meta interface
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{dataset}}/consentStores/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{dataset}}/consentStores/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -305,27 +308,27 @@ func resourceHealthcareConsentStoreImport(d *schema.ResourceData, meta interface
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenHealthcareConsentStoreDefaultConsentTtl(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareConsentStoreDefaultConsentTtl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenHealthcareConsentStoreEnableConsentCreateOnUpdate(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareConsentStoreEnableConsentCreateOnUpdate(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenHealthcareConsentStoreLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareConsentStoreLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandHealthcareConsentStoreDefaultConsentTtl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareConsentStoreDefaultConsentTtl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandHealthcareConsentStoreEnableConsentCreateOnUpdate(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareConsentStoreEnableConsentCreateOnUpdate(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandHealthcareConsentStoreLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandHealthcareConsentStoreLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}

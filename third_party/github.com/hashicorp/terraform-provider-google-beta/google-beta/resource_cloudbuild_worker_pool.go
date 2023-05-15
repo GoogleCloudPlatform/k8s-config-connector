@@ -25,6 +25,9 @@ import (
 
 	dcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	cloudbuild "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/cloudbuild/beta"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceCloudbuildWorkerPool() *schema.Resource {
@@ -179,7 +182,7 @@ func CloudbuildWorkerPoolWorkerConfigSchema() *schema.Resource {
 }
 
 func resourceCloudbuildWorkerPoolCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -201,17 +204,17 @@ func resourceCloudbuildWorkerPoolCreate(d *schema.ResourceData, meta interface{}
 	}
 	d.SetId(id)
 	directive := CreateDirective
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := project
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLCloudbuildClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutCreate))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLCloudbuildClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutCreate))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -233,7 +236,7 @@ func resourceCloudbuildWorkerPoolCreate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceCloudbuildWorkerPoolRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -249,17 +252,17 @@ func resourceCloudbuildWorkerPoolRead(d *schema.ResourceData, meta interface{}) 
 		WorkerConfig:  expandCloudbuildWorkerPoolWorkerConfig(d.Get("worker_config")),
 	}
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := project
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLCloudbuildClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutRead))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLCloudbuildClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutRead))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -311,7 +314,7 @@ func resourceCloudbuildWorkerPoolRead(d *schema.ResourceData, meta interface{}) 
 	return nil
 }
 func resourceCloudbuildWorkerPoolUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -327,18 +330,18 @@ func resourceCloudbuildWorkerPoolUpdate(d *schema.ResourceData, meta interface{}
 		WorkerConfig:  expandCloudbuildWorkerPoolWorkerConfig(d.Get("worker_config")),
 	}
 	directive := UpdateDirective
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLCloudbuildClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutUpdate))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLCloudbuildClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutUpdate))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -360,7 +363,7 @@ func resourceCloudbuildWorkerPoolUpdate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceCloudbuildWorkerPoolDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -377,17 +380,17 @@ func resourceCloudbuildWorkerPoolDelete(d *schema.ResourceData, meta interface{}
 	}
 
 	log.Printf("[DEBUG] Deleting WorkerPool %q", d.Id())
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := project
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLCloudbuildClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutDelete))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLCloudbuildClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutDelete))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -402,7 +405,7 @@ func resourceCloudbuildWorkerPoolDelete(d *schema.ResourceData, meta interface{}
 }
 
 func resourceCloudbuildWorkerPoolImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/workerPools/(?P<name>[^/]+)",

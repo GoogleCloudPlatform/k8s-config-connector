@@ -5,6 +5,8 @@ import (
 
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"google.golang.org/api/cloudkms/v1"
 	"google.golang.org/api/cloudresourcemanager/v1"
 )
@@ -19,11 +21,11 @@ var IamKmsKeyRingSchema = map[string]*schema.Schema{
 
 type KmsKeyRingIamUpdater struct {
 	resourceId string
-	d          TerraformResourceData
-	Config     *Config
+	d          tpgresource.TerraformResourceData
+	Config     *transport_tpg.Config
 }
 
-func NewKmsKeyRingIamUpdater(d TerraformResourceData, config *Config) (ResourceIamUpdater, error) {
+func NewKmsKeyRingIamUpdater(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
 	keyRing := d.Get("key_ring_id").(string)
 	keyRingId, err := parseKmsKeyRingId(keyRing, config)
 
@@ -38,7 +40,7 @@ func NewKmsKeyRingIamUpdater(d TerraformResourceData, config *Config) (ResourceI
 	}, nil
 }
 
-func KeyRingIdParseFunc(d *schema.ResourceData, config *Config) error {
+func KeyRingIdParseFunc(d *schema.ResourceData, config *transport_tpg.Config) error {
 	keyRingId, err := parseKmsKeyRingId(d.Id(), config)
 	if err != nil {
 		return err
@@ -52,7 +54,7 @@ func KeyRingIdParseFunc(d *schema.ResourceData, config *Config) error {
 }
 
 func (u *KmsKeyRingIamUpdater) GetResourceIamPolicy() (*cloudresourcemanager.Policy, error) {
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +81,7 @@ func (u *KmsKeyRingIamUpdater) SetResourceIamPolicy(policy *cloudresourcemanager
 		return errwrap.Wrapf(fmt.Sprintf("Invalid IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -109,7 +111,7 @@ func (u *KmsKeyRingIamUpdater) DescribeResource() string {
 
 func resourceManagerToKmsPolicy(p *cloudresourcemanager.Policy) (*cloudkms.Policy, error) {
 	out := &cloudkms.Policy{}
-	err := Convert(p, out)
+	err := tpgresource.Convert(p, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a v1 policy to a kms policy: {{err}}", err)
 	}
@@ -118,7 +120,7 @@ func resourceManagerToKmsPolicy(p *cloudresourcemanager.Policy) (*cloudkms.Polic
 
 func kmsToResourceManagerPolicy(p *cloudkms.Policy) (*cloudresourcemanager.Policy, error) {
 	out := &cloudresourcemanager.Policy{}
-	err := Convert(p, out)
+	err := tpgresource.Convert(p, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a kms policy to a v1 policy: {{err}}", err)
 	}

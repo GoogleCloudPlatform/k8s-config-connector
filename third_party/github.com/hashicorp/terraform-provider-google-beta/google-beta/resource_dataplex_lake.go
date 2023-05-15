@@ -25,6 +25,9 @@ import (
 
 	dcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	dataplex "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/dataplex/beta"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceDataplexLake() *schema.Resource {
@@ -209,7 +212,7 @@ func DataplexLakeMetastoreStatusSchema() *schema.Resource {
 }
 
 func resourceDataplexLakeCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -231,17 +234,17 @@ func resourceDataplexLakeCreate(d *schema.ResourceData, meta interface{}) error 
 	}
 	d.SetId(id)
 	directive := CreateDirective
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := project
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLDataplexClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutCreate))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLDataplexClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutCreate))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -263,7 +266,7 @@ func resourceDataplexLakeCreate(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceDataplexLakeRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -279,17 +282,17 @@ func resourceDataplexLakeRead(d *schema.ResourceData, meta interface{}) error {
 		Project:     dcl.String(project),
 	}
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := project
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLDataplexClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutRead))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLDataplexClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutRead))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -347,7 +350,7 @@ func resourceDataplexLakeRead(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 func resourceDataplexLakeUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -363,18 +366,18 @@ func resourceDataplexLakeUpdate(d *schema.ResourceData, meta interface{}) error 
 		Project:     dcl.String(project),
 	}
 	directive := UpdateDirective
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLDataplexClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutUpdate))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLDataplexClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutUpdate))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -396,7 +399,7 @@ func resourceDataplexLakeUpdate(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceDataplexLakeDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -413,17 +416,17 @@ func resourceDataplexLakeDelete(d *schema.ResourceData, meta interface{}) error 
 	}
 
 	log.Printf("[DEBUG] Deleting Lake %q", d.Id())
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := project
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLDataplexClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutDelete))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLDataplexClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutDelete))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -438,7 +441,7 @@ func resourceDataplexLakeDelete(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceDataplexLakeImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/lakes/(?P<name>[^/]+)",

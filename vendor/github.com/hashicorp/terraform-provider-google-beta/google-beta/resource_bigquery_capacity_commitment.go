@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceBigqueryReservationCapacityCommitment() *schema.Resource {
@@ -119,8 +122,8 @@ Examples: US, EU, asia-northeast1. The default value is US.`,
 }
 
 func resourceBigqueryReservationCapacityCommitmentCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -129,29 +132,29 @@ func resourceBigqueryReservationCapacityCommitmentCreate(d *schema.ResourceData,
 	slotCountProp, err := expandBigqueryReservationCapacityCommitmentSlotCount(d.Get("slot_count"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("slot_count"); !isEmptyValue(reflect.ValueOf(slotCountProp)) && (ok || !reflect.DeepEqual(v, slotCountProp)) {
+	} else if v, ok := d.GetOkExists("slot_count"); !tpgresource.IsEmptyValue(reflect.ValueOf(slotCountProp)) && (ok || !reflect.DeepEqual(v, slotCountProp)) {
 		obj["slotCount"] = slotCountProp
 	}
 	planProp, err := expandBigqueryReservationCapacityCommitmentPlan(d.Get("plan"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("plan"); !isEmptyValue(reflect.ValueOf(planProp)) && (ok || !reflect.DeepEqual(v, planProp)) {
+	} else if v, ok := d.GetOkExists("plan"); !tpgresource.IsEmptyValue(reflect.ValueOf(planProp)) && (ok || !reflect.DeepEqual(v, planProp)) {
 		obj["plan"] = planProp
 	}
 	renewalPlanProp, err := expandBigqueryReservationCapacityCommitmentRenewalPlan(d.Get("renewal_plan"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("renewal_plan"); !isEmptyValue(reflect.ValueOf(renewalPlanProp)) && (ok || !reflect.DeepEqual(v, renewalPlanProp)) {
+	} else if v, ok := d.GetOkExists("renewal_plan"); !tpgresource.IsEmptyValue(reflect.ValueOf(renewalPlanProp)) && (ok || !reflect.DeepEqual(v, renewalPlanProp)) {
 		obj["renewalPlan"] = renewalPlanProp
 	}
 	editionProp, err := expandBigqueryReservationCapacityCommitmentEdition(d.Get("edition"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("edition"); !isEmptyValue(reflect.ValueOf(editionProp)) && (ok || !reflect.DeepEqual(v, editionProp)) {
+	} else if v, ok := d.GetOkExists("edition"); !tpgresource.IsEmptyValue(reflect.ValueOf(editionProp)) && (ok || !reflect.DeepEqual(v, editionProp)) {
 		obj["edition"] = editionProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments?capacityCommitmentId={{capacity_commitment_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments?capacityCommitmentId={{capacity_commitment_id}}")
 	if err != nil {
 		return err
 	}
@@ -159,18 +162,18 @@ func resourceBigqueryReservationCapacityCommitmentCreate(d *schema.ResourceData,
 	log.Printf("[DEBUG] Creating new CapacityCommitment: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for CapacityCommitment: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating CapacityCommitment: %s", err)
 	}
@@ -179,7 +182,7 @@ func resourceBigqueryReservationCapacityCommitmentCreate(d *schema.ResourceData,
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -191,33 +194,33 @@ func resourceBigqueryReservationCapacityCommitmentCreate(d *schema.ResourceData,
 }
 
 func resourceBigqueryReservationCapacityCommitmentRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for CapacityCommitment: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("BigqueryReservationCapacityCommitment %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("BigqueryReservationCapacityCommitment %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -253,15 +256,15 @@ func resourceBigqueryReservationCapacityCommitmentRead(d *schema.ResourceData, m
 }
 
 func resourceBigqueryReservationCapacityCommitmentUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for CapacityCommitment: %s", err)
 	}
@@ -271,17 +274,17 @@ func resourceBigqueryReservationCapacityCommitmentUpdate(d *schema.ResourceData,
 	planProp, err := expandBigqueryReservationCapacityCommitmentPlan(d.Get("plan"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("plan"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, planProp)) {
+	} else if v, ok := d.GetOkExists("plan"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, planProp)) {
 		obj["plan"] = planProp
 	}
 	renewalPlanProp, err := expandBigqueryReservationCapacityCommitmentRenewalPlan(d.Get("renewal_plan"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("renewal_plan"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, renewalPlanProp)) {
+	} else if v, ok := d.GetOkExists("renewal_plan"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, renewalPlanProp)) {
 		obj["renewalPlan"] = renewalPlanProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
 	if err != nil {
 		return err
 	}
@@ -298,17 +301,17 @@ func resourceBigqueryReservationCapacityCommitmentUpdate(d *schema.ResourceData,
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating CapacityCommitment %q: %s", d.Id(), err)
@@ -320,21 +323,21 @@ func resourceBigqueryReservationCapacityCommitmentUpdate(d *schema.ResourceData,
 }
 
 func resourceBigqueryReservationCapacityCommitmentDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for CapacityCommitment: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
 	if err != nil {
 		return err
 	}
@@ -343,13 +346,13 @@ func resourceBigqueryReservationCapacityCommitmentDelete(d *schema.ResourceData,
 	log.Printf("[DEBUG] Deleting CapacityCommitment %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "CapacityCommitment")
+		return transport_tpg.HandleNotFoundError(err, d, "CapacityCommitment")
 	}
 
 	log.Printf("[DEBUG] Finished deleting CapacityCommitment %q: %#v", d.Id(), res)
@@ -357,7 +360,7 @@ func resourceBigqueryReservationCapacityCommitmentDelete(d *schema.ResourceData,
 }
 
 func resourceBigqueryReservationCapacityCommitmentImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/capacityCommitments/(?P<capacity_commitment_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<capacity_commitment_id>[^/]+)",
@@ -367,7 +370,7 @@ func resourceBigqueryReservationCapacityCommitmentImport(d *schema.ResourceData,
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -376,11 +379,11 @@ func resourceBigqueryReservationCapacityCommitmentImport(d *schema.ResourceData,
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenBigqueryReservationCapacityCommitmentName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryReservationCapacityCommitmentName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigqueryReservationCapacityCommitmentSlotCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryReservationCapacityCommitmentSlotCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -397,42 +400,42 @@ func flattenBigqueryReservationCapacityCommitmentSlotCount(v interface{}, d *sch
 	return v // let terraform core handle it otherwise
 }
 
-func flattenBigqueryReservationCapacityCommitmentPlan(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryReservationCapacityCommitmentPlan(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigqueryReservationCapacityCommitmentState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryReservationCapacityCommitmentState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigqueryReservationCapacityCommitmentCommitmentStartTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryReservationCapacityCommitmentCommitmentStartTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigqueryReservationCapacityCommitmentCommitmentEndTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryReservationCapacityCommitmentCommitmentEndTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigqueryReservationCapacityCommitmentRenewalPlan(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryReservationCapacityCommitmentRenewalPlan(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigqueryReservationCapacityCommitmentEdition(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigqueryReservationCapacityCommitmentEdition(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandBigqueryReservationCapacityCommitmentSlotCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigqueryReservationCapacityCommitmentSlotCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigqueryReservationCapacityCommitmentPlan(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigqueryReservationCapacityCommitmentPlan(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigqueryReservationCapacityCommitmentRenewalPlan(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigqueryReservationCapacityCommitmentRenewalPlan(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigqueryReservationCapacityCommitmentEdition(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigqueryReservationCapacityCommitmentEdition(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

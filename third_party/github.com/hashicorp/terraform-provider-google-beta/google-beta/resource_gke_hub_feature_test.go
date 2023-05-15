@@ -2,26 +2,29 @@ package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccGKEHubFeature_gkehubFeatureMciUpdate(t *testing.T) {
 	// VCR fails to handle batched project services
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
 		"random_suffix":   RandString(t, 10),
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
+		"org_id":          acctest.GetTestOrgFromEnv(t),
+		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGKEHubFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -167,18 +170,18 @@ resource "google_gke_hub_feature" "feature" {
 
 func TestAccGKEHubFeature_gkehubFeatureMcsd(t *testing.T) {
 	// VCR fails to handle batched project services
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
 		"random_suffix":   RandString(t, 10),
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
+		"org_id":          acctest.GetTestOrgFromEnv(t),
+		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGKEHubFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -301,7 +304,7 @@ func testAccCheckGKEHubFeatureDestroyProducer(t *testing.T) func(s *terraform.St
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{GkeHubBasePath}}projects/{{project}}/locations/{{location}}/features/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{GkeHubBasePath}}projects/{{project}}/locations/{{location}}/features/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -312,7 +315,7 @@ func testAccCheckGKEHubFeatureDestroyProducer(t *testing.T) func(s *terraform.St
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("GKEHubFeature still exists at %s", url)
 			}

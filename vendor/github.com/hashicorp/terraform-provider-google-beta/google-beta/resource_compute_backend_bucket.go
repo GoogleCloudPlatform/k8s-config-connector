@@ -22,6 +22,10 @@ import (
 
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceComputeBackendBucket() *schema.Resource {
@@ -51,7 +55,7 @@ func ResourceComputeBackendBucket() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateRegexp(`^(?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)$`),
+				ValidateFunc: verify.ValidateRegexp(`^(?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)$`),
 				Description: `Name of the resource. Provided by the client when the resource is
 created. The name must be 1-63 characters long, and comply with
 RFC1035.  Specifically, the name must be 1-63 characters long and
@@ -118,7 +122,7 @@ be percent encoded and not treated as delimiters.`,
 							Type:         schema.TypeString,
 							Computed:     true,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC", ""}),
 							Description: `Specifies the cache setting for all responses from this backend.
 The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"]`,
 						},
@@ -198,7 +202,7 @@ header. The actual headers served in responses will not be altered.`,
 			"compression_mode": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"AUTOMATIC", "DISABLED", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"AUTOMATIC", "DISABLED", ""}),
 				Description:  `Compress text responses using Brotli or gzip compression, based on the client's Accept-Encoding header. Possible values: ["AUTOMATIC", "DISABLED"]`,
 			},
 			"custom_response_headers": {
@@ -218,7 +222,7 @@ client when the resource is created.`,
 			"edge_security_policy": {
 				Type:             schema.TypeString,
 				Optional:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description:      `The security policy associated with this backend bucket.`,
 			},
 			"enable_cdn": {
@@ -247,8 +251,8 @@ client when the resource is created.`,
 }
 
 func resourceComputeBackendBucketCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -257,53 +261,58 @@ func resourceComputeBackendBucketCreate(d *schema.ResourceData, meta interface{}
 	bucketNameProp, err := expandComputeBackendBucketBucketName(d.Get("bucket_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("bucket_name"); !isEmptyValue(reflect.ValueOf(bucketNameProp)) && (ok || !reflect.DeepEqual(v, bucketNameProp)) {
+	} else if v, ok := d.GetOkExists("bucket_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(bucketNameProp)) && (ok || !reflect.DeepEqual(v, bucketNameProp)) {
 		obj["bucketName"] = bucketNameProp
 	}
 	cdnPolicyProp, err := expandComputeBackendBucketCdnPolicy(d.Get("cdn_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("cdn_policy"); !isEmptyValue(reflect.ValueOf(cdnPolicyProp)) && (ok || !reflect.DeepEqual(v, cdnPolicyProp)) {
+	} else if v, ok := d.GetOkExists("cdn_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(cdnPolicyProp)) && (ok || !reflect.DeepEqual(v, cdnPolicyProp)) {
 		obj["cdnPolicy"] = cdnPolicyProp
 	}
 	compressionModeProp, err := expandComputeBackendBucketCompressionMode(d.Get("compression_mode"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("compression_mode"); !isEmptyValue(reflect.ValueOf(compressionModeProp)) && (ok || !reflect.DeepEqual(v, compressionModeProp)) {
+	} else if v, ok := d.GetOkExists("compression_mode"); !tpgresource.IsEmptyValue(reflect.ValueOf(compressionModeProp)) && (ok || !reflect.DeepEqual(v, compressionModeProp)) {
 		obj["compressionMode"] = compressionModeProp
 	}
 	edgeSecurityPolicyProp, err := expandComputeBackendBucketEdgeSecurityPolicy(d.Get("edge_security_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("edge_security_policy"); !isEmptyValue(reflect.ValueOf(edgeSecurityPolicyProp)) && (ok || !reflect.DeepEqual(v, edgeSecurityPolicyProp)) {
+	} else if v, ok := d.GetOkExists("edge_security_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(edgeSecurityPolicyProp)) && (ok || !reflect.DeepEqual(v, edgeSecurityPolicyProp)) {
 		obj["edgeSecurityPolicy"] = edgeSecurityPolicyProp
 	}
 	customResponseHeadersProp, err := expandComputeBackendBucketCustomResponseHeaders(d.Get("custom_response_headers"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("custom_response_headers"); !isEmptyValue(reflect.ValueOf(customResponseHeadersProp)) && (ok || !reflect.DeepEqual(v, customResponseHeadersProp)) {
+	} else if v, ok := d.GetOkExists("custom_response_headers"); !tpgresource.IsEmptyValue(reflect.ValueOf(customResponseHeadersProp)) && (ok || !reflect.DeepEqual(v, customResponseHeadersProp)) {
 		obj["customResponseHeaders"] = customResponseHeadersProp
 	}
 	descriptionProp, err := expandComputeBackendBucketDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	enableCdnProp, err := expandComputeBackendBucketEnableCdn(d.Get("enable_cdn"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enable_cdn"); !isEmptyValue(reflect.ValueOf(enableCdnProp)) && (ok || !reflect.DeepEqual(v, enableCdnProp)) {
+	} else if v, ok := d.GetOkExists("enable_cdn"); !tpgresource.IsEmptyValue(reflect.ValueOf(enableCdnProp)) && (ok || !reflect.DeepEqual(v, enableCdnProp)) {
 		obj["enableCdn"] = enableCdnProp
 	}
 	nameProp, err := expandComputeBackendBucketName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets")
+	obj, err = resourceComputeBackendBucketEncoder(d, meta, obj)
+	if err != nil {
+		return err
+	}
+
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets")
 	if err != nil {
 		return err
 	}
@@ -311,24 +320,24 @@ func resourceComputeBackendBucketCreate(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Creating new BackendBucket: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for BackendBucket: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating BackendBucket: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/backendBuckets/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/backendBuckets/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -346,7 +355,7 @@ func resourceComputeBackendBucketCreate(d *schema.ResourceData, meta interface{}
 
 	// security_policy isn't set by Create / Update
 	if o, n := d.GetChange("edge_security_policy"); o.(string) != n.(string) {
-		pol, err := ParseSecurityPolicyFieldValue(n.(string), d, config)
+		pol, err := tpgresource.ParseSecurityPolicyFieldValue(n.(string), d, config)
 		if err != nil {
 			return errwrap.Wrapf("Error parsing Backend Service security policy: {{err}}", err)
 		}
@@ -370,33 +379,33 @@ func resourceComputeBackendBucketCreate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceComputeBackendBucketRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for BackendBucket: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeBackendBucket %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeBackendBucket %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -430,7 +439,7 @@ func resourceComputeBackendBucketRead(d *schema.ResourceData, meta interface{}) 
 	if err := d.Set("name", flattenComputeBackendBucketName(res["name"], d, config)); err != nil {
 		return fmt.Errorf("Error reading BackendBucket: %s", err)
 	}
-	if err := d.Set("self_link", ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
+	if err := d.Set("self_link", tpgresource.ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
 		return fmt.Errorf("Error reading BackendBucket: %s", err)
 	}
 
@@ -438,15 +447,15 @@ func resourceComputeBackendBucketRead(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceComputeBackendBucketUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for BackendBucket: %s", err)
 	}
@@ -456,53 +465,58 @@ func resourceComputeBackendBucketUpdate(d *schema.ResourceData, meta interface{}
 	bucketNameProp, err := expandComputeBackendBucketBucketName(d.Get("bucket_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("bucket_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, bucketNameProp)) {
+	} else if v, ok := d.GetOkExists("bucket_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, bucketNameProp)) {
 		obj["bucketName"] = bucketNameProp
 	}
 	cdnPolicyProp, err := expandComputeBackendBucketCdnPolicy(d.Get("cdn_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("cdn_policy"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, cdnPolicyProp)) {
+	} else if v, ok := d.GetOkExists("cdn_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, cdnPolicyProp)) {
 		obj["cdnPolicy"] = cdnPolicyProp
 	}
 	compressionModeProp, err := expandComputeBackendBucketCompressionMode(d.Get("compression_mode"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("compression_mode"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, compressionModeProp)) {
+	} else if v, ok := d.GetOkExists("compression_mode"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, compressionModeProp)) {
 		obj["compressionMode"] = compressionModeProp
 	}
 	edgeSecurityPolicyProp, err := expandComputeBackendBucketEdgeSecurityPolicy(d.Get("edge_security_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("edge_security_policy"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, edgeSecurityPolicyProp)) {
+	} else if v, ok := d.GetOkExists("edge_security_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, edgeSecurityPolicyProp)) {
 		obj["edgeSecurityPolicy"] = edgeSecurityPolicyProp
 	}
 	customResponseHeadersProp, err := expandComputeBackendBucketCustomResponseHeaders(d.Get("custom_response_headers"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("custom_response_headers"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, customResponseHeadersProp)) {
+	} else if v, ok := d.GetOkExists("custom_response_headers"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, customResponseHeadersProp)) {
 		obj["customResponseHeaders"] = customResponseHeadersProp
 	}
 	descriptionProp, err := expandComputeBackendBucketDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	enableCdnProp, err := expandComputeBackendBucketEnableCdn(d.Get("enable_cdn"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enable_cdn"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enableCdnProp)) {
+	} else if v, ok := d.GetOkExists("enable_cdn"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enableCdnProp)) {
 		obj["enableCdn"] = enableCdnProp
 	}
 	nameProp, err := expandComputeBackendBucketName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{name}}")
+	obj, err = resourceComputeBackendBucketEncoder(d, meta, obj)
+	if err != nil {
+		return err
+	}
+
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -510,11 +524,11 @@ func resourceComputeBackendBucketUpdate(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Updating BackendBucket %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating BackendBucket %q: %s", d.Id(), err)
@@ -532,7 +546,7 @@ func resourceComputeBackendBucketUpdate(d *schema.ResourceData, meta interface{}
 
 	// security_policy isn't set by Create / Update
 	if o, n := d.GetChange("edge_security_policy"); o.(string) != n.(string) {
-		pol, err := ParseSecurityPolicyFieldValue(n.(string), d, config)
+		pol, err := tpgresource.ParseSecurityPolicyFieldValue(n.(string), d, config)
 		if err != nil {
 			return errwrap.Wrapf("Error parsing Backend Service security policy: {{err}}", err)
 		}
@@ -553,21 +567,21 @@ func resourceComputeBackendBucketUpdate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceComputeBackendBucketDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for BackendBucket: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -576,13 +590,13 @@ func resourceComputeBackendBucketDelete(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Deleting BackendBucket %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "BackendBucket")
+		return transport_tpg.HandleNotFoundError(err, d, "BackendBucket")
 	}
 
 	err = ComputeOperationWaitTime(
@@ -598,7 +612,7 @@ func resourceComputeBackendBucketDelete(d *schema.ResourceData, meta interface{}
 }
 
 func resourceComputeBackendBucketImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/global/backendBuckets/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
@@ -608,7 +622,7 @@ func resourceComputeBackendBucketImport(d *schema.ResourceData, meta interface{}
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/backendBuckets/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/backendBuckets/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -617,11 +631,11 @@ func resourceComputeBackendBucketImport(d *schema.ResourceData, meta interface{}
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenComputeBackendBucketBucketName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketBucketName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketCdnPolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -654,7 +668,7 @@ func flattenComputeBackendBucketCdnPolicy(v interface{}, d *schema.ResourceData,
 		flattenComputeBackendBucketCdnPolicyBypassCacheOnRequestHeaders(original["bypassCacheOnRequestHeaders"], d, config)
 	return []interface{}{transformed}
 }
-func flattenComputeBackendBucketCdnPolicyCacheKeyPolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyCacheKeyPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -669,15 +683,15 @@ func flattenComputeBackendBucketCdnPolicyCacheKeyPolicy(v interface{}, d *schema
 		flattenComputeBackendBucketCdnPolicyCacheKeyPolicyIncludeHttpHeaders(original["includeHttpHeaders"], d, config)
 	return []interface{}{transformed}
 }
-func flattenComputeBackendBucketCdnPolicyCacheKeyPolicyQueryStringWhitelist(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyCacheKeyPolicyQueryStringWhitelist(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketCdnPolicyCacheKeyPolicyIncludeHttpHeaders(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyCacheKeyPolicyIncludeHttpHeaders(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketCdnPolicySignedUrlCacheMaxAgeSec(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicySignedUrlCacheMaxAgeSec(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -694,7 +708,7 @@ func flattenComputeBackendBucketCdnPolicySignedUrlCacheMaxAgeSec(v interface{}, 
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeBackendBucketCdnPolicyDefaultTtl(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyDefaultTtl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -711,7 +725,7 @@ func flattenComputeBackendBucketCdnPolicyDefaultTtl(v interface{}, d *schema.Res
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeBackendBucketCdnPolicyMaxTtl(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyMaxTtl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -728,7 +742,7 @@ func flattenComputeBackendBucketCdnPolicyMaxTtl(v interface{}, d *schema.Resourc
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeBackendBucketCdnPolicyClientTtl(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyClientTtl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -745,11 +759,11 @@ func flattenComputeBackendBucketCdnPolicyClientTtl(v interface{}, d *schema.Reso
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeBackendBucketCdnPolicyNegativeCaching(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyNegativeCaching(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketCdnPolicyNegativeCachingPolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyNegativeCachingPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -768,7 +782,7 @@ func flattenComputeBackendBucketCdnPolicyNegativeCachingPolicy(v interface{}, d 
 	}
 	return transformed
 }
-func flattenComputeBackendBucketCdnPolicyNegativeCachingPolicyCode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyNegativeCachingPolicyCode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -785,7 +799,7 @@ func flattenComputeBackendBucketCdnPolicyNegativeCachingPolicyCode(v interface{}
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeBackendBucketCdnPolicyNegativeCachingPolicyTtl(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyNegativeCachingPolicyTtl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -802,11 +816,11 @@ func flattenComputeBackendBucketCdnPolicyNegativeCachingPolicyTtl(v interface{},
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeBackendBucketCdnPolicyCacheMode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyCacheMode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketCdnPolicyServeWhileStale(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyServeWhileStale(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -823,11 +837,11 @@ func flattenComputeBackendBucketCdnPolicyServeWhileStale(v interface{}, d *schem
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeBackendBucketCdnPolicyRequestCoalescing(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyRequestCoalescing(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketCdnPolicyBypassCacheOnRequestHeaders(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyBypassCacheOnRequestHeaders(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -845,43 +859,43 @@ func flattenComputeBackendBucketCdnPolicyBypassCacheOnRequestHeaders(v interface
 	}
 	return transformed
 }
-func flattenComputeBackendBucketCdnPolicyBypassCacheOnRequestHeadersHeaderName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCdnPolicyBypassCacheOnRequestHeadersHeaderName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketCompressionMode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCompressionMode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketEdgeSecurityPolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketEdgeSecurityPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketCustomResponseHeaders(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCustomResponseHeaders(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketCreationTimestamp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketCreationTimestamp(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketEnableCdn(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketEnableCdn(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeBackendBucketName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeBackendBucketName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandComputeBackendBucketBucketName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketBucketName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -893,7 +907,7 @@ func expandComputeBackendBucketCdnPolicy(v interface{}, d TerraformResourceData,
 	transformedCacheKeyPolicy, err := expandComputeBackendBucketCdnPolicyCacheKeyPolicy(original["cache_key_policy"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCacheKeyPolicy); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCacheKeyPolicy); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["cacheKeyPolicy"] = transformedCacheKeyPolicy
 	}
 
@@ -914,7 +928,7 @@ func expandComputeBackendBucketCdnPolicy(v interface{}, d TerraformResourceData,
 	transformedMaxTtl, err := expandComputeBackendBucketCdnPolicyMaxTtl(original["max_ttl"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMaxTtl); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMaxTtl); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["maxTtl"] = transformedMaxTtl
 	}
 
@@ -935,14 +949,14 @@ func expandComputeBackendBucketCdnPolicy(v interface{}, d TerraformResourceData,
 	transformedNegativeCachingPolicy, err := expandComputeBackendBucketCdnPolicyNegativeCachingPolicy(original["negative_caching_policy"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedNegativeCachingPolicy); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedNegativeCachingPolicy); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["negativeCachingPolicy"] = transformedNegativeCachingPolicy
 	}
 
 	transformedCacheMode, err := expandComputeBackendBucketCdnPolicyCacheMode(original["cache_mode"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCacheMode); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCacheMode); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["cacheMode"] = transformedCacheMode
 	}
 
@@ -963,14 +977,14 @@ func expandComputeBackendBucketCdnPolicy(v interface{}, d TerraformResourceData,
 	transformedBypassCacheOnRequestHeaders, err := expandComputeBackendBucketCdnPolicyBypassCacheOnRequestHeaders(original["bypass_cache_on_request_headers"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBypassCacheOnRequestHeaders); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBypassCacheOnRequestHeaders); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["bypassCacheOnRequestHeaders"] = transformedBypassCacheOnRequestHeaders
 	}
 
 	return transformed, nil
 }
 
-func expandComputeBackendBucketCdnPolicyCacheKeyPolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyCacheKeyPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -996,35 +1010,35 @@ func expandComputeBackendBucketCdnPolicyCacheKeyPolicy(v interface{}, d Terrafor
 	return transformed, nil
 }
 
-func expandComputeBackendBucketCdnPolicyCacheKeyPolicyQueryStringWhitelist(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyCacheKeyPolicyQueryStringWhitelist(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicyCacheKeyPolicyIncludeHttpHeaders(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyCacheKeyPolicyIncludeHttpHeaders(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicySignedUrlCacheMaxAgeSec(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicySignedUrlCacheMaxAgeSec(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicyDefaultTtl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyDefaultTtl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicyMaxTtl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyMaxTtl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicyClientTtl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyClientTtl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicyNegativeCaching(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyNegativeCaching(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicyNegativeCachingPolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyNegativeCachingPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -1037,7 +1051,7 @@ func expandComputeBackendBucketCdnPolicyNegativeCachingPolicy(v interface{}, d T
 		transformedCode, err := expandComputeBackendBucketCdnPolicyNegativeCachingPolicyCode(original["code"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedCode); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedCode); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["code"] = transformedCode
 		}
 
@@ -1053,27 +1067,27 @@ func expandComputeBackendBucketCdnPolicyNegativeCachingPolicy(v interface{}, d T
 	return req, nil
 }
 
-func expandComputeBackendBucketCdnPolicyNegativeCachingPolicyCode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyNegativeCachingPolicyCode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicyNegativeCachingPolicyTtl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyNegativeCachingPolicyTtl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicyCacheMode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyCacheMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicyServeWhileStale(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyServeWhileStale(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicyRequestCoalescing(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyRequestCoalescing(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCdnPolicyBypassCacheOnRequestHeaders(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyBypassCacheOnRequestHeaders(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -1086,7 +1100,7 @@ func expandComputeBackendBucketCdnPolicyBypassCacheOnRequestHeaders(v interface{
 		transformedHeaderName, err := expandComputeBackendBucketCdnPolicyBypassCacheOnRequestHeadersHeaderName(original["header_name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedHeaderName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedHeaderName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["headerName"] = transformedHeaderName
 		}
 
@@ -1095,30 +1109,73 @@ func expandComputeBackendBucketCdnPolicyBypassCacheOnRequestHeaders(v interface{
 	return req, nil
 }
 
-func expandComputeBackendBucketCdnPolicyBypassCacheOnRequestHeadersHeaderName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCdnPolicyBypassCacheOnRequestHeadersHeaderName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCompressionMode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCompressionMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketEdgeSecurityPolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketEdgeSecurityPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketCustomResponseHeaders(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketCustomResponseHeaders(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketEnableCdn(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketEnableCdn(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeBackendBucketName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeBackendBucketName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
+}
+
+func resourceComputeBackendBucketEncoder(d *schema.ResourceData, meta interface{}, obj map[string]interface{}) (map[string]interface{}, error) {
+	// This custom encoder helps prevent sending 0 for clientTtl, defaultTtl and
+	// maxTtl in API calls to update these values  when unset in the provider
+	// (doing so results in an API level error)
+	c, cdnPolicyOk := d.GetOk("cdn_policy")
+
+	// Only apply during updates
+	if !cdnPolicyOk || obj["cdnPolicy"] == nil {
+		return obj, nil
+	}
+
+	currentCdnPolicies := c.([]interface{})
+
+	// state does not contain cdnPolicy, so we can return early here as well
+	if len(currentCdnPolicies) == 0 {
+		return obj, nil
+	}
+
+	futureCdnPolicy := obj["cdnPolicy"].(map[string]interface{})
+	currentCdnPolicy := currentCdnPolicies[0].(map[string]interface{})
+
+	cacheMode, ok := futureCdnPolicy["cache_mode"].(string)
+	// Fallback to state if doesn't exist in object
+	if !ok {
+		cacheMode = currentCdnPolicy["cache_mode"].(string)
+	}
+
+	switch cacheMode {
+	case "USE_ORIGIN_HEADERS":
+		if _, ok := futureCdnPolicy["clientTtl"]; ok {
+			delete(futureCdnPolicy, "clientTtl")
+		}
+		if _, ok := futureCdnPolicy["defaultTtl"]; ok {
+			delete(futureCdnPolicy, "defaultTtl")
+		}
+		if _, ok := futureCdnPolicy["maxTtl"]; ok {
+			delete(futureCdnPolicy, "maxTtl")
+		}
+	}
+
+	return obj, nil
 }

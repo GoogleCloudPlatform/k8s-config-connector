@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceFirebaseHostingChannel() *schema.Resource {
@@ -97,8 +100,8 @@ sites/SITE_ID/channels/CHANNEL_ID`,
 }
 
 func resourceFirebaseHostingChannelCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -107,29 +110,29 @@ func resourceFirebaseHostingChannelCreate(d *schema.ResourceData, meta interface
 	retainedReleaseCountProp, err := expandFirebaseHostingChannelRetainedReleaseCount(d.Get("retained_release_count"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("retained_release_count"); !isEmptyValue(reflect.ValueOf(retainedReleaseCountProp)) && (ok || !reflect.DeepEqual(v, retainedReleaseCountProp)) {
+	} else if v, ok := d.GetOkExists("retained_release_count"); !tpgresource.IsEmptyValue(reflect.ValueOf(retainedReleaseCountProp)) && (ok || !reflect.DeepEqual(v, retainedReleaseCountProp)) {
 		obj["retainedReleaseCount"] = retainedReleaseCountProp
 	}
 	labelsProp, err := expandFirebaseHostingChannelLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	expireTimeProp, err := expandFirebaseHostingChannelExpireTime(d.Get("expire_time"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("expire_time"); !isEmptyValue(reflect.ValueOf(expireTimeProp)) && (ok || !reflect.DeepEqual(v, expireTimeProp)) {
+	} else if v, ok := d.GetOkExists("expire_time"); !tpgresource.IsEmptyValue(reflect.ValueOf(expireTimeProp)) && (ok || !reflect.DeepEqual(v, expireTimeProp)) {
 		obj["expireTime"] = expireTimeProp
 	}
 	ttlProp, err := expandFirebaseHostingChannelTtl(d.Get("ttl"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ttl"); !isEmptyValue(reflect.ValueOf(ttlProp)) && (ok || !reflect.DeepEqual(v, ttlProp)) {
+	} else if v, ok := d.GetOkExists("ttl"); !tpgresource.IsEmptyValue(reflect.ValueOf(ttlProp)) && (ok || !reflect.DeepEqual(v, ttlProp)) {
 		obj["ttl"] = ttlProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels?channelId={{channel_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels?channelId={{channel_id}}")
 	if err != nil {
 		return err
 	}
@@ -138,11 +141,11 @@ func resourceFirebaseHostingChannelCreate(d *schema.ResourceData, meta interface
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Channel: %s", err)
 	}
@@ -151,7 +154,7 @@ func resourceFirebaseHostingChannelCreate(d *schema.ResourceData, meta interface
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -163,13 +166,13 @@ func resourceFirebaseHostingChannelCreate(d *schema.ResourceData, meta interface
 }
 
 func resourceFirebaseHostingChannelRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
 	if err != nil {
 		return err
 	}
@@ -177,13 +180,13 @@ func resourceFirebaseHostingChannelRead(d *schema.ResourceData, meta interface{}
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseHostingChannel %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("FirebaseHostingChannel %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenFirebaseHostingChannelName(res["name"], d, config)); err != nil {
@@ -203,8 +206,8 @@ func resourceFirebaseHostingChannelRead(d *schema.ResourceData, meta interface{}
 }
 
 func resourceFirebaseHostingChannelUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -215,23 +218,23 @@ func resourceFirebaseHostingChannelUpdate(d *schema.ResourceData, meta interface
 	retainedReleaseCountProp, err := expandFirebaseHostingChannelRetainedReleaseCount(d.Get("retained_release_count"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("retained_release_count"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, retainedReleaseCountProp)) {
+	} else if v, ok := d.GetOkExists("retained_release_count"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, retainedReleaseCountProp)) {
 		obj["retainedReleaseCount"] = retainedReleaseCountProp
 	}
 	labelsProp, err := expandFirebaseHostingChannelLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	expireTimeProp, err := expandFirebaseHostingChannelExpireTime(d.Get("expire_time"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("expire_time"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, expireTimeProp)) {
+	} else if v, ok := d.GetOkExists("expire_time"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, expireTimeProp)) {
 		obj["expireTime"] = expireTimeProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
 	if err != nil {
 		return err
 	}
@@ -252,17 +255,17 @@ func resourceFirebaseHostingChannelUpdate(d *schema.ResourceData, meta interface
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Channel %q: %s", d.Id(), err)
@@ -274,15 +277,15 @@ func resourceFirebaseHostingChannelUpdate(d *schema.ResourceData, meta interface
 }
 
 func resourceFirebaseHostingChannelDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
 	if err != nil {
 		return err
 	}
@@ -291,13 +294,13 @@ func resourceFirebaseHostingChannelDelete(d *schema.ResourceData, meta interface
 	log.Printf("[DEBUG] Deleting Channel %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Channel")
+		return transport_tpg.HandleNotFoundError(err, d, "Channel")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Channel %q: %#v", d.Id(), res)
@@ -305,7 +308,7 @@ func resourceFirebaseHostingChannelDelete(d *schema.ResourceData, meta interface
 }
 
 func resourceFirebaseHostingChannelImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"sites/(?P<site_id>[^/]+)/channels/(?P<channel_id>[^/]+)",
 		"(?P<site_id>[^/]+)/(?P<channel_id>[^/]+)",
@@ -314,7 +317,7 @@ func resourceFirebaseHostingChannelImport(d *schema.ResourceData, meta interface
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -323,11 +326,11 @@ func resourceFirebaseHostingChannelImport(d *schema.ResourceData, meta interface
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenFirebaseHostingChannelName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseHostingChannelName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseHostingChannelRetainedReleaseCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseHostingChannelRetainedReleaseCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -344,19 +347,19 @@ func flattenFirebaseHostingChannelRetainedReleaseCount(v interface{}, d *schema.
 	return v // let terraform core handle it otherwise
 }
 
-func flattenFirebaseHostingChannelLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseHostingChannelLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseHostingChannelExpireTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseHostingChannelExpireTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandFirebaseHostingChannelRetainedReleaseCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseHostingChannelRetainedReleaseCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandFirebaseHostingChannelLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandFirebaseHostingChannelLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -367,10 +370,10 @@ func expandFirebaseHostingChannelLabels(v interface{}, d TerraformResourceData, 
 	return m, nil
 }
 
-func expandFirebaseHostingChannelExpireTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseHostingChannelExpireTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandFirebaseHostingChannelTtl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseHostingChannelTtl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

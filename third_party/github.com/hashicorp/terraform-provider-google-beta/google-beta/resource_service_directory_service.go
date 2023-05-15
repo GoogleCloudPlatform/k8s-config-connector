@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceServiceDirectoryService() *schema.Resource {
@@ -51,7 +55,7 @@ func ResourceServiceDirectoryService() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateRFC1035Name(2, 63),
+				ValidateFunc: verify.ValidateRFC1035Name(2, 63),
 				Description: `The Resource ID must be 1-63 characters long, including digits,
 lowercase letters or the hyphen character.`,
 			},
@@ -76,8 +80,8 @@ format 'projects/*/locations/*/namespaces/*/services/*'.`,
 }
 
 func resourceServiceDirectoryServiceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -86,11 +90,11 @@ func resourceServiceDirectoryServiceCreate(d *schema.ResourceData, meta interfac
 	metadataProp, err := expandServiceDirectoryServiceMetadata(d.Get("metadata"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("metadata"); !isEmptyValue(reflect.ValueOf(metadataProp)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
+	} else if v, ok := d.GetOkExists("metadata"); !tpgresource.IsEmptyValue(reflect.ValueOf(metadataProp)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
 		obj["metadata"] = metadataProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{namespace}}/services?serviceId={{service_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{namespace}}/services?serviceId={{service_id}}")
 	if err != nil {
 		return err
 	}
@@ -99,11 +103,11 @@ func resourceServiceDirectoryServiceCreate(d *schema.ResourceData, meta interfac
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Service: %s", err)
 	}
@@ -112,7 +116,7 @@ func resourceServiceDirectoryServiceCreate(d *schema.ResourceData, meta interfac
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -124,13 +128,13 @@ func resourceServiceDirectoryServiceCreate(d *schema.ResourceData, meta interfac
 }
 
 func resourceServiceDirectoryServiceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -138,13 +142,13 @@ func resourceServiceDirectoryServiceRead(d *schema.ResourceData, meta interface{
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ServiceDirectoryService %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ServiceDirectoryService %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenServiceDirectoryServiceName(res["name"], d, config)); err != nil {
@@ -158,8 +162,8 @@ func resourceServiceDirectoryServiceRead(d *schema.ResourceData, meta interface{
 }
 
 func resourceServiceDirectoryServiceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -170,11 +174,11 @@ func resourceServiceDirectoryServiceUpdate(d *schema.ResourceData, meta interfac
 	metadataProp, err := expandServiceDirectoryServiceMetadata(d.Get("metadata"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("metadata"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
+	} else if v, ok := d.GetOkExists("metadata"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
 		obj["metadata"] = metadataProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -187,17 +191,17 @@ func resourceServiceDirectoryServiceUpdate(d *schema.ResourceData, meta interfac
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Service %q: %s", d.Id(), err)
@@ -209,15 +213,15 @@ func resourceServiceDirectoryServiceUpdate(d *schema.ResourceData, meta interfac
 }
 
 func resourceServiceDirectoryServiceDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -226,13 +230,13 @@ func resourceServiceDirectoryServiceDelete(d *schema.ResourceData, meta interfac
 	log.Printf("[DEBUG] Deleting Service %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Service")
+		return transport_tpg.HandleNotFoundError(err, d, "Service")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Service %q: %#v", d.Id(), res)
@@ -240,7 +244,7 @@ func resourceServiceDirectoryServiceDelete(d *schema.ResourceData, meta interfac
 }
 
 func resourceServiceDirectoryServiceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats cannot import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
@@ -271,7 +275,7 @@ func resourceServiceDirectoryServiceImport(d *schema.ResourceData, meta interfac
 		d.SetId(id)
 	} else if len(nameParts) == 3 {
 		// `{{location}}/{{namespace_id}}/{{service_id}}`
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return nil, err
 		}
@@ -297,15 +301,15 @@ func resourceServiceDirectoryServiceImport(d *schema.ResourceData, meta interfac
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenServiceDirectoryServiceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenServiceDirectoryServiceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenServiceDirectoryServiceMetadata(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenServiceDirectoryServiceMetadata(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandServiceDirectoryServiceMetadata(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandServiceDirectoryServiceMetadata(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}

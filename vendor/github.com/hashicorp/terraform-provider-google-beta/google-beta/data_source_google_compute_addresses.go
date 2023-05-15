@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	compute "google.golang.org/api/compute/v0.beta"
@@ -108,13 +111,13 @@ AND (scheduling.automaticRestart = true) """`,
 }
 
 func dataSourceGoogleComputeAddressesRead(context context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return diag.FromErr(err)
 	}

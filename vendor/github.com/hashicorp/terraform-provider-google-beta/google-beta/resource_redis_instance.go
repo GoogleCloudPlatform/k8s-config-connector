@@ -27,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/customdiff"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 // Is the new redis version less than the old one?
@@ -97,7 +101,7 @@ func ResourceRedisInstance() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateRegexp(`^[a-z][a-z0-9-]{0,39}[a-z0-9]$`),
+				ValidateFunc: verify.ValidateRegexp(`^[a-z][a-z0-9-]{0,39}[a-z0-9]$`),
 				Description:  `The ID of the instance or a fully qualified identifier for the instance.`,
 			},
 			"alternative_location_id": {
@@ -123,7 +127,7 @@ Default value is "false" meaning AUTH is disabled.`,
 				Computed:         true,
 				Optional:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description: `The full name of the Google Compute Engine network to which the
 instance is connected. If left unspecified, the default network
 will be used.`,
@@ -132,7 +136,7 @@ will be used.`,
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"DIRECT_PEERING", "PRIVATE_SERVICE_ACCESS", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"DIRECT_PEERING", "PRIVATE_SERVICE_ACCESS", ""}),
 				Description:  `The connection mode of the Redis instance. Default value: "DIRECT_PEERING" Possible values: ["DIRECT_PEERING", "PRIVATE_SERVICE_ACCESS"]`,
 				Default:      "DIRECT_PEERING",
 			},
@@ -190,7 +194,7 @@ of weekly_window is expected to be one.`,
 									"day": {
 										Type:         schema.TypeString,
 										Required:     true,
-										ValidateFunc: validateEnum([]string{"DAY_OF_WEEK_UNSPECIFIED", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"}),
+										ValidateFunc: verify.ValidateEnum([]string{"DAY_OF_WEEK_UNSPECIFIED", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"}),
 										Description: `Required. The day of week that maintenance updates occur.
 
 - DAY_OF_WEEK_UNSPECIFIED: The day of the week is unspecified.
@@ -310,7 +314,7 @@ resolution and up to nine fractional digits.`,
 							Type:         schema.TypeString,
 							Computed:     true,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"DISABLED", "RDB"}),
+							ValidateFunc: verify.ValidateEnum([]string{"DISABLED", "RDB"}),
 							Description: `Optional. Controls whether Persistence features are enabled. If not provided, the existing value will be used.
 
 - DISABLED: 	Persistence is disabled for the instance, and any existing snapshots are deleted.
@@ -319,7 +323,7 @@ resolution and up to nine fractional digits.`,
 						"rdb_snapshot_period": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"ONE_HOUR", "SIX_HOURS", "TWELVE_HOURS", "TWENTY_FOUR_HOURS", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"ONE_HOUR", "SIX_HOURS", "TWELVE_HOURS", "TWENTY_FOUR_HOURS", ""}),
 							Description: `Optional. Available snapshot periods for scheduling.
 
 - ONE_HOUR:	Snapshot every 1 hour.
@@ -353,7 +357,7 @@ Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".`,
 				Type:         schema.TypeString,
 				Computed:     true,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"READ_REPLICAS_DISABLED", "READ_REPLICAS_ENABLED", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"READ_REPLICAS_DISABLED", "READ_REPLICAS_ENABLED", ""}),
 				Description: `Optional. Read replica mode. Can only be specified when trying to create the instance.
 If not set, Memorystore Redis backend will default to READ_REPLICAS_DISABLED.
 - READ_REPLICAS_DISABLED: If disabled, read endpoint will not be provided and the
@@ -418,7 +422,7 @@ range associated with the private service access connection, or "auto".`,
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"BASIC", "STANDARD_HA", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"BASIC", "STANDARD_HA", ""}),
 				Description: `The service tier of the instance. Must be one of these values:
 
 - BASIC: standalone instance
@@ -429,7 +433,7 @@ range associated with the private service access connection, or "auto".`,
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"SERVER_AUTHENTICATION", "DISABLED", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"SERVER_AUTHENTICATION", "DISABLED", ""}),
 				Description: `The TLS mode of the Redis instance, If not provided, TLS is disabled for the instance.
 
 - SERVER_AUTHENTICATION: Client to Server traffic encryption enabled with server authentication Default value: "DISABLED" Possible values: ["SERVER_AUTHENTICATION", "DISABLED"]`,
@@ -553,8 +557,8 @@ Write requests should target 'port'.`,
 }
 
 func resourceRedisInstanceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -563,127 +567,127 @@ func resourceRedisInstanceCreate(d *schema.ResourceData, meta interface{}) error
 	alternativeLocationIdProp, err := expandRedisInstanceAlternativeLocationId(d.Get("alternative_location_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("alternative_location_id"); !isEmptyValue(reflect.ValueOf(alternativeLocationIdProp)) && (ok || !reflect.DeepEqual(v, alternativeLocationIdProp)) {
+	} else if v, ok := d.GetOkExists("alternative_location_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(alternativeLocationIdProp)) && (ok || !reflect.DeepEqual(v, alternativeLocationIdProp)) {
 		obj["alternativeLocationId"] = alternativeLocationIdProp
 	}
 	authEnabledProp, err := expandRedisInstanceAuthEnabled(d.Get("auth_enabled"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("auth_enabled"); !isEmptyValue(reflect.ValueOf(authEnabledProp)) && (ok || !reflect.DeepEqual(v, authEnabledProp)) {
+	} else if v, ok := d.GetOkExists("auth_enabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(authEnabledProp)) && (ok || !reflect.DeepEqual(v, authEnabledProp)) {
 		obj["authEnabled"] = authEnabledProp
 	}
 	authorizedNetworkProp, err := expandRedisInstanceAuthorizedNetwork(d.Get("authorized_network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("authorized_network"); !isEmptyValue(reflect.ValueOf(authorizedNetworkProp)) && (ok || !reflect.DeepEqual(v, authorizedNetworkProp)) {
+	} else if v, ok := d.GetOkExists("authorized_network"); !tpgresource.IsEmptyValue(reflect.ValueOf(authorizedNetworkProp)) && (ok || !reflect.DeepEqual(v, authorizedNetworkProp)) {
 		obj["authorizedNetwork"] = authorizedNetworkProp
 	}
 	connectModeProp, err := expandRedisInstanceConnectMode(d.Get("connect_mode"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("connect_mode"); !isEmptyValue(reflect.ValueOf(connectModeProp)) && (ok || !reflect.DeepEqual(v, connectModeProp)) {
+	} else if v, ok := d.GetOkExists("connect_mode"); !tpgresource.IsEmptyValue(reflect.ValueOf(connectModeProp)) && (ok || !reflect.DeepEqual(v, connectModeProp)) {
 		obj["connectMode"] = connectModeProp
 	}
 	displayNameProp, err := expandRedisInstanceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	labelsProp, err := expandRedisInstanceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	redisConfigsProp, err := expandRedisInstanceRedisConfigs(d.Get("redis_configs"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("redis_configs"); !isEmptyValue(reflect.ValueOf(redisConfigsProp)) && (ok || !reflect.DeepEqual(v, redisConfigsProp)) {
+	} else if v, ok := d.GetOkExists("redis_configs"); !tpgresource.IsEmptyValue(reflect.ValueOf(redisConfigsProp)) && (ok || !reflect.DeepEqual(v, redisConfigsProp)) {
 		obj["redisConfigs"] = redisConfigsProp
 	}
 	locationIdProp, err := expandRedisInstanceLocationId(d.Get("location_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("location_id"); !isEmptyValue(reflect.ValueOf(locationIdProp)) && (ok || !reflect.DeepEqual(v, locationIdProp)) {
+	} else if v, ok := d.GetOkExists("location_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(locationIdProp)) && (ok || !reflect.DeepEqual(v, locationIdProp)) {
 		obj["locationId"] = locationIdProp
 	}
 	nameProp, err := expandRedisInstanceName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	persistenceConfigProp, err := expandRedisInstancePersistenceConfig(d.Get("persistence_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("persistence_config"); !isEmptyValue(reflect.ValueOf(persistenceConfigProp)) && (ok || !reflect.DeepEqual(v, persistenceConfigProp)) {
+	} else if v, ok := d.GetOkExists("persistence_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(persistenceConfigProp)) && (ok || !reflect.DeepEqual(v, persistenceConfigProp)) {
 		obj["persistenceConfig"] = persistenceConfigProp
 	}
 	maintenancePolicyProp, err := expandRedisInstanceMaintenancePolicy(d.Get("maintenance_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("maintenance_policy"); !isEmptyValue(reflect.ValueOf(maintenancePolicyProp)) && (ok || !reflect.DeepEqual(v, maintenancePolicyProp)) {
+	} else if v, ok := d.GetOkExists("maintenance_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(maintenancePolicyProp)) && (ok || !reflect.DeepEqual(v, maintenancePolicyProp)) {
 		obj["maintenancePolicy"] = maintenancePolicyProp
 	}
 	maintenanceScheduleProp, err := expandRedisInstanceMaintenanceSchedule(d.Get("maintenance_schedule"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("maintenance_schedule"); !isEmptyValue(reflect.ValueOf(maintenanceScheduleProp)) && (ok || !reflect.DeepEqual(v, maintenanceScheduleProp)) {
+	} else if v, ok := d.GetOkExists("maintenance_schedule"); !tpgresource.IsEmptyValue(reflect.ValueOf(maintenanceScheduleProp)) && (ok || !reflect.DeepEqual(v, maintenanceScheduleProp)) {
 		obj["maintenanceSchedule"] = maintenanceScheduleProp
 	}
 	memorySizeGbProp, err := expandRedisInstanceMemorySizeGb(d.Get("memory_size_gb"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("memory_size_gb"); !isEmptyValue(reflect.ValueOf(memorySizeGbProp)) && (ok || !reflect.DeepEqual(v, memorySizeGbProp)) {
+	} else if v, ok := d.GetOkExists("memory_size_gb"); !tpgresource.IsEmptyValue(reflect.ValueOf(memorySizeGbProp)) && (ok || !reflect.DeepEqual(v, memorySizeGbProp)) {
 		obj["memorySizeGb"] = memorySizeGbProp
 	}
 	redisVersionProp, err := expandRedisInstanceRedisVersion(d.Get("redis_version"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("redis_version"); !isEmptyValue(reflect.ValueOf(redisVersionProp)) && (ok || !reflect.DeepEqual(v, redisVersionProp)) {
+	} else if v, ok := d.GetOkExists("redis_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(redisVersionProp)) && (ok || !reflect.DeepEqual(v, redisVersionProp)) {
 		obj["redisVersion"] = redisVersionProp
 	}
 	reservedIpRangeProp, err := expandRedisInstanceReservedIpRange(d.Get("reserved_ip_range"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("reserved_ip_range"); !isEmptyValue(reflect.ValueOf(reservedIpRangeProp)) && (ok || !reflect.DeepEqual(v, reservedIpRangeProp)) {
+	} else if v, ok := d.GetOkExists("reserved_ip_range"); !tpgresource.IsEmptyValue(reflect.ValueOf(reservedIpRangeProp)) && (ok || !reflect.DeepEqual(v, reservedIpRangeProp)) {
 		obj["reservedIpRange"] = reservedIpRangeProp
 	}
 	tierProp, err := expandRedisInstanceTier(d.Get("tier"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("tier"); !isEmptyValue(reflect.ValueOf(tierProp)) && (ok || !reflect.DeepEqual(v, tierProp)) {
+	} else if v, ok := d.GetOkExists("tier"); !tpgresource.IsEmptyValue(reflect.ValueOf(tierProp)) && (ok || !reflect.DeepEqual(v, tierProp)) {
 		obj["tier"] = tierProp
 	}
 	transitEncryptionModeProp, err := expandRedisInstanceTransitEncryptionMode(d.Get("transit_encryption_mode"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("transit_encryption_mode"); !isEmptyValue(reflect.ValueOf(transitEncryptionModeProp)) && (ok || !reflect.DeepEqual(v, transitEncryptionModeProp)) {
+	} else if v, ok := d.GetOkExists("transit_encryption_mode"); !tpgresource.IsEmptyValue(reflect.ValueOf(transitEncryptionModeProp)) && (ok || !reflect.DeepEqual(v, transitEncryptionModeProp)) {
 		obj["transitEncryptionMode"] = transitEncryptionModeProp
 	}
 	replicaCountProp, err := expandRedisInstanceReplicaCount(d.Get("replica_count"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("replica_count"); !isEmptyValue(reflect.ValueOf(replicaCountProp)) && (ok || !reflect.DeepEqual(v, replicaCountProp)) {
+	} else if v, ok := d.GetOkExists("replica_count"); !tpgresource.IsEmptyValue(reflect.ValueOf(replicaCountProp)) && (ok || !reflect.DeepEqual(v, replicaCountProp)) {
 		obj["replicaCount"] = replicaCountProp
 	}
 	readReplicasModeProp, err := expandRedisInstanceReadReplicasMode(d.Get("read_replicas_mode"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("read_replicas_mode"); !isEmptyValue(reflect.ValueOf(readReplicasModeProp)) && (ok || !reflect.DeepEqual(v, readReplicasModeProp)) {
+	} else if v, ok := d.GetOkExists("read_replicas_mode"); !tpgresource.IsEmptyValue(reflect.ValueOf(readReplicasModeProp)) && (ok || !reflect.DeepEqual(v, readReplicasModeProp)) {
 		obj["readReplicasMode"] = readReplicasModeProp
 	}
 	secondaryIpRangeProp, err := expandRedisInstanceSecondaryIpRange(d.Get("secondary_ip_range"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("secondary_ip_range"); !isEmptyValue(reflect.ValueOf(secondaryIpRangeProp)) && (ok || !reflect.DeepEqual(v, secondaryIpRangeProp)) {
+	} else if v, ok := d.GetOkExists("secondary_ip_range"); !tpgresource.IsEmptyValue(reflect.ValueOf(secondaryIpRangeProp)) && (ok || !reflect.DeepEqual(v, secondaryIpRangeProp)) {
 		obj["secondaryIpRange"] = secondaryIpRangeProp
 	}
 	customerManagedKeyProp, err := expandRedisInstanceCustomerManagedKey(d.Get("customer_managed_key"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("customer_managed_key"); !isEmptyValue(reflect.ValueOf(customerManagedKeyProp)) && (ok || !reflect.DeepEqual(v, customerManagedKeyProp)) {
+	} else if v, ok := d.GetOkExists("customer_managed_key"); !tpgresource.IsEmptyValue(reflect.ValueOf(customerManagedKeyProp)) && (ok || !reflect.DeepEqual(v, customerManagedKeyProp)) {
 		obj["customerManagedKey"] = customerManagedKeyProp
 	}
 
@@ -692,7 +696,7 @@ func resourceRedisInstanceCreate(d *schema.ResourceData, meta interface{}) error
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{RedisBasePath}}projects/{{project}}/locations/{{region}}/instances?instanceId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{RedisBasePath}}projects/{{project}}/locations/{{region}}/instances?instanceId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -700,24 +704,24 @@ func resourceRedisInstanceCreate(d *schema.ResourceData, meta interface{}) error
 	log.Printf("[DEBUG] Creating new Instance: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Instance: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -749,7 +753,7 @@ func resourceRedisInstanceCreate(d *schema.ResourceData, meta interface{}) error
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -761,33 +765,33 @@ func resourceRedisInstanceCreate(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceRedisInstanceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{RedisBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{RedisBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("RedisInstance %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("RedisInstance %q", d.Id()))
 	}
 
 	res, err = resourceRedisInstanceDecoder(d, meta, res)
@@ -806,7 +810,7 @@ func resourceRedisInstanceRead(d *schema.ResourceData, meta interface{}) error {
 		return fmt.Errorf("Error reading Instance: %s", err)
 	}
 
-	region, err := getRegion(d, config)
+	region, err := tpgresource.GetRegion(d, config)
 	if err != nil {
 		return err
 	}
@@ -906,15 +910,15 @@ func resourceRedisInstanceRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceRedisInstanceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
@@ -924,67 +928,67 @@ func resourceRedisInstanceUpdate(d *schema.ResourceData, meta interface{}) error
 	authEnabledProp, err := expandRedisInstanceAuthEnabled(d.Get("auth_enabled"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("auth_enabled"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, authEnabledProp)) {
+	} else if v, ok := d.GetOkExists("auth_enabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, authEnabledProp)) {
 		obj["authEnabled"] = authEnabledProp
 	}
 	displayNameProp, err := expandRedisInstanceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	labelsProp, err := expandRedisInstanceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	redisConfigsProp, err := expandRedisInstanceRedisConfigs(d.Get("redis_configs"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("redis_configs"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, redisConfigsProp)) {
+	} else if v, ok := d.GetOkExists("redis_configs"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, redisConfigsProp)) {
 		obj["redisConfigs"] = redisConfigsProp
 	}
 	persistenceConfigProp, err := expandRedisInstancePersistenceConfig(d.Get("persistence_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("persistence_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, persistenceConfigProp)) {
+	} else if v, ok := d.GetOkExists("persistence_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, persistenceConfigProp)) {
 		obj["persistenceConfig"] = persistenceConfigProp
 	}
 	maintenancePolicyProp, err := expandRedisInstanceMaintenancePolicy(d.Get("maintenance_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("maintenance_policy"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, maintenancePolicyProp)) {
+	} else if v, ok := d.GetOkExists("maintenance_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, maintenancePolicyProp)) {
 		obj["maintenancePolicy"] = maintenancePolicyProp
 	}
 	maintenanceScheduleProp, err := expandRedisInstanceMaintenanceSchedule(d.Get("maintenance_schedule"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("maintenance_schedule"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, maintenanceScheduleProp)) {
+	} else if v, ok := d.GetOkExists("maintenance_schedule"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, maintenanceScheduleProp)) {
 		obj["maintenanceSchedule"] = maintenanceScheduleProp
 	}
 	memorySizeGbProp, err := expandRedisInstanceMemorySizeGb(d.Get("memory_size_gb"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("memory_size_gb"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, memorySizeGbProp)) {
+	} else if v, ok := d.GetOkExists("memory_size_gb"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, memorySizeGbProp)) {
 		obj["memorySizeGb"] = memorySizeGbProp
 	}
 	replicaCountProp, err := expandRedisInstanceReplicaCount(d.Get("replica_count"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("replica_count"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, replicaCountProp)) {
+	} else if v, ok := d.GetOkExists("replica_count"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, replicaCountProp)) {
 		obj["replicaCount"] = replicaCountProp
 	}
 	readReplicasModeProp, err := expandRedisInstanceReadReplicasMode(d.Get("read_replicas_mode"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("read_replicas_mode"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, readReplicasModeProp)) {
+	} else if v, ok := d.GetOkExists("read_replicas_mode"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, readReplicasModeProp)) {
 		obj["readReplicasMode"] = readReplicasModeProp
 	}
 	secondaryIpRangeProp, err := expandRedisInstanceSecondaryIpRange(d.Get("secondary_ip_range"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("secondary_ip_range"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, secondaryIpRangeProp)) {
+	} else if v, ok := d.GetOkExists("secondary_ip_range"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, secondaryIpRangeProp)) {
 		obj["secondaryIpRange"] = secondaryIpRangeProp
 	}
 
@@ -993,7 +997,7 @@ func resourceRedisInstanceUpdate(d *schema.ResourceData, meta interface{}) error
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{RedisBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{RedisBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1046,19 +1050,19 @@ func resourceRedisInstanceUpdate(d *schema.ResourceData, meta interface{}) error
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
 	// if updateMask is empty we are not updating anything so skip the post
 	if len(updateMask) > 0 {
-		res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 		if err != nil {
 			return fmt.Errorf("Error updating Instance %q: %s", d.Id(), err)
@@ -1082,21 +1086,21 @@ func resourceRedisInstanceUpdate(d *schema.ResourceData, meta interface{}) error
 		redisVersionProp, err := expandRedisInstanceRedisVersion(d.Get("redis_version"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("redis_version"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, redisVersionProp)) {
+		} else if v, ok := d.GetOkExists("redis_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, redisVersionProp)) {
 			obj["redisVersion"] = redisVersionProp
 		}
 
-		url, err := ReplaceVars(d, config, "{{RedisBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}:upgrade")
+		url, err := tpgresource.ReplaceVars(d, config, "{{RedisBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}:upgrade")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Instance %q: %s", d.Id(), err)
 		} else {
@@ -1117,21 +1121,21 @@ func resourceRedisInstanceUpdate(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceRedisInstanceDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{RedisBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{RedisBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1140,13 +1144,13 @@ func resourceRedisInstanceDelete(d *schema.ResourceData, meta interface{}) error
 	log.Printf("[DEBUG] Deleting Instance %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Instance")
+		return transport_tpg.HandleNotFoundError(err, d, "Instance")
 	}
 
 	err = RedisOperationWaitTime(
@@ -1162,7 +1166,7 @@ func resourceRedisInstanceDelete(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceRedisInstanceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/instances/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)",
@@ -1173,7 +1177,7 @@ func resourceRedisInstanceImport(d *schema.ResourceData, meta interface{}) ([]*s
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1182,58 +1186,58 @@ func resourceRedisInstanceImport(d *schema.ResourceData, meta interface{}) ([]*s
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenRedisInstanceAlternativeLocationId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceAlternativeLocationId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceAuthEnabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceAuthEnabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceAuthorizedNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceAuthorizedNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceConnectMode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceConnectMode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceCurrentLocationId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceCurrentLocationId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceHost(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceHost(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceRedisConfigs(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceRedisConfigs(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceLocationId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceLocationId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenRedisInstancePersistenceConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstancePersistenceConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1252,23 +1256,23 @@ func flattenRedisInstancePersistenceConfig(v interface{}, d *schema.ResourceData
 		flattenRedisInstancePersistenceConfigRdbSnapshotStartTime(original["rdbSnapshotStartTime"], d, config)
 	return []interface{}{transformed}
 }
-func flattenRedisInstancePersistenceConfigPersistenceMode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstancePersistenceConfigPersistenceMode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstancePersistenceConfigRdbSnapshotPeriod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstancePersistenceConfigRdbSnapshotPeriod(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstancePersistenceConfigRdbNextSnapshotTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstancePersistenceConfigRdbNextSnapshotTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstancePersistenceConfigRdbSnapshotStartTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstancePersistenceConfigRdbSnapshotStartTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceMaintenancePolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenancePolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1287,19 +1291,19 @@ func flattenRedisInstanceMaintenancePolicy(v interface{}, d *schema.ResourceData
 		flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindow(original["weeklyMaintenanceWindow"], d, config)
 	return []interface{}{transformed}
 }
-func flattenRedisInstanceMaintenancePolicyCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenancePolicyCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceMaintenancePolicyUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenancePolicyUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceMaintenancePolicyDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenancePolicyDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1319,15 +1323,15 @@ func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{},
 	}
 	return transformed
 }
-func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDay(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDay(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDuration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDuration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1343,7 +1347,7 @@ func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime(v int
 		flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(original["nanos"], d, config)
 	return []interface{}{transformed}
 }
-func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeHours(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeHours(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1360,7 +1364,7 @@ func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeHours(
 	return v // let terraform core handle it otherwise
 }
 
-func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeMinutes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeMinutes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1377,7 +1381,7 @@ func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeMinute
 	return v // let terraform core handle it otherwise
 }
 
-func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeSeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeSeconds(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1394,7 +1398,7 @@ func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeSecond
 	return v // let terraform core handle it otherwise
 }
 
-func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1411,7 +1415,7 @@ func flattenRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(
 	return v // let terraform core handle it otherwise
 }
 
-func flattenRedisInstanceMaintenanceSchedule(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenanceSchedule(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1428,19 +1432,19 @@ func flattenRedisInstanceMaintenanceSchedule(v interface{}, d *schema.ResourceDa
 		flattenRedisInstanceMaintenanceScheduleScheduleDeadlineTime(original["scheduleDeadlineTime"], d, config)
 	return []interface{}{transformed}
 }
-func flattenRedisInstanceMaintenanceScheduleStartTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenanceScheduleStartTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceMaintenanceScheduleEndTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenanceScheduleEndTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceMaintenanceScheduleScheduleDeadlineTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMaintenanceScheduleScheduleDeadlineTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceMemorySizeGb(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceMemorySizeGb(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1457,7 +1461,7 @@ func flattenRedisInstanceMemorySizeGb(v interface{}, d *schema.ResourceData, con
 	return v // let terraform core handle it otherwise
 }
 
-func flattenRedisInstancePort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstancePort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1474,23 +1478,23 @@ func flattenRedisInstancePort(v interface{}, d *schema.ResourceData, config *Con
 	return v // let terraform core handle it otherwise
 }
 
-func flattenRedisInstancePersistenceIamIdentity(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstancePersistenceIamIdentity(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceRedisVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceRedisVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceTier(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceTier(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceTransitEncryptionMode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceTransitEncryptionMode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceServerCaCerts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceServerCaCerts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1512,27 +1516,27 @@ func flattenRedisInstanceServerCaCerts(v interface{}, d *schema.ResourceData, co
 	}
 	return transformed
 }
-func flattenRedisInstanceServerCaCertsSerialNumber(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceServerCaCertsSerialNumber(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceServerCaCertsCert(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceServerCaCertsCert(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceServerCaCertsCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceServerCaCertsCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceServerCaCertsExpireTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceServerCaCertsExpireTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceServerCaCertsSha1Fingerprint(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceServerCaCertsSha1Fingerprint(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceReplicaCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceReplicaCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1549,7 +1553,7 @@ func flattenRedisInstanceReplicaCount(v interface{}, d *schema.ResourceData, con
 	return v // let terraform core handle it otherwise
 }
 
-func flattenRedisInstanceNodes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceNodes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1568,19 +1572,19 @@ func flattenRedisInstanceNodes(v interface{}, d *schema.ResourceData, config *Co
 	}
 	return transformed
 }
-func flattenRedisInstanceNodesId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceNodesId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceNodesZone(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceNodesZone(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceReadEndpoint(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceReadEndpoint(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceReadEndpointPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceReadEndpointPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1597,43 +1601,43 @@ func flattenRedisInstanceReadEndpointPort(v interface{}, d *schema.ResourceData,
 	return v // let terraform core handle it otherwise
 }
 
-func flattenRedisInstanceReadReplicasMode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceReadReplicasMode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceSecondaryIpRange(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceSecondaryIpRange(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenRedisInstanceCustomerManagedKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenRedisInstanceCustomerManagedKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandRedisInstanceAlternativeLocationId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceAlternativeLocationId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceAuthEnabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceAuthEnabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceAuthorizedNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	fv, err := ParseNetworkFieldValue(v.(string), d, config)
+func expandRedisInstanceAuthorizedNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	fv, err := tpgresource.ParseNetworkFieldValue(v.(string), d, config)
 	if err != nil {
 		return nil, err
 	}
 	return fv.RelativeLink(), nil
 }
 
-func expandRedisInstanceConnectMode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceConnectMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandRedisInstanceLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1644,7 +1648,7 @@ func expandRedisInstanceLabels(v interface{}, d TerraformResourceData, config *C
 	return m, nil
 }
 
-func expandRedisInstanceRedisConfigs(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandRedisInstanceRedisConfigs(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1655,15 +1659,15 @@ func expandRedisInstanceRedisConfigs(v interface{}, d TerraformResourceData, con
 	return m, nil
 }
 
-func expandRedisInstanceLocationId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceLocationId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	return ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
+func expandRedisInstanceName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
 }
 
-func expandRedisInstancePersistenceConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstancePersistenceConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1675,51 +1679,51 @@ func expandRedisInstancePersistenceConfig(v interface{}, d TerraformResourceData
 	transformedPersistenceMode, err := expandRedisInstancePersistenceConfigPersistenceMode(original["persistence_mode"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPersistenceMode); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPersistenceMode); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["persistenceMode"] = transformedPersistenceMode
 	}
 
 	transformedRdbSnapshotPeriod, err := expandRedisInstancePersistenceConfigRdbSnapshotPeriod(original["rdb_snapshot_period"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRdbSnapshotPeriod); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRdbSnapshotPeriod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["rdbSnapshotPeriod"] = transformedRdbSnapshotPeriod
 	}
 
 	transformedRdbNextSnapshotTime, err := expandRedisInstancePersistenceConfigRdbNextSnapshotTime(original["rdb_next_snapshot_time"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRdbNextSnapshotTime); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRdbNextSnapshotTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["rdbNextSnapshotTime"] = transformedRdbNextSnapshotTime
 	}
 
 	transformedRdbSnapshotStartTime, err := expandRedisInstancePersistenceConfigRdbSnapshotStartTime(original["rdb_snapshot_start_time"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRdbSnapshotStartTime); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRdbSnapshotStartTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["rdbSnapshotStartTime"] = transformedRdbSnapshotStartTime
 	}
 
 	return transformed, nil
 }
 
-func expandRedisInstancePersistenceConfigPersistenceMode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstancePersistenceConfigPersistenceMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstancePersistenceConfigRdbSnapshotPeriod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstancePersistenceConfigRdbSnapshotPeriod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstancePersistenceConfigRdbNextSnapshotTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstancePersistenceConfigRdbNextSnapshotTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstancePersistenceConfigRdbSnapshotStartTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstancePersistenceConfigRdbSnapshotStartTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMaintenancePolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenancePolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1731,47 +1735,47 @@ func expandRedisInstanceMaintenancePolicy(v interface{}, d TerraformResourceData
 	transformedCreateTime, err := expandRedisInstanceMaintenancePolicyCreateTime(original["create_time"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCreateTime); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCreateTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["createTime"] = transformedCreateTime
 	}
 
 	transformedUpdateTime, err := expandRedisInstanceMaintenancePolicyUpdateTime(original["update_time"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedUpdateTime); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedUpdateTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["updateTime"] = transformedUpdateTime
 	}
 
 	transformedDescription, err := expandRedisInstanceMaintenancePolicyDescription(original["description"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDescription); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDescription); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["description"] = transformedDescription
 	}
 
 	transformedWeeklyMaintenanceWindow, err := expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindow(original["weekly_maintenance_window"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedWeeklyMaintenanceWindow); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedWeeklyMaintenanceWindow); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["weeklyMaintenanceWindow"] = transformedWeeklyMaintenanceWindow
 	}
 
 	return transformed, nil
 }
 
-func expandRedisInstanceMaintenancePolicyCreateTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenancePolicyCreateTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMaintenancePolicyUpdateTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenancePolicyUpdateTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMaintenancePolicyDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenancePolicyDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -1784,14 +1788,14 @@ func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{}, 
 		transformedDay, err := expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDay(original["day"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedDay); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedDay); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["day"] = transformedDay
 		}
 
 		transformedDuration, err := expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDuration(original["duration"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedDuration); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedDuration); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["duration"] = transformedDuration
 		}
 
@@ -1807,15 +1811,15 @@ func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{}, 
 	return req, nil
 }
 
-func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDay(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDay(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDuration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowDuration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 {
 		return nil, nil
@@ -1832,51 +1836,51 @@ func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime(v inte
 	transformedHours, err := expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeHours(original["hours"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedHours); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedHours); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["hours"] = transformedHours
 	}
 
 	transformedMinutes, err := expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeMinutes(original["minutes"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMinutes); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMinutes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["minutes"] = transformedMinutes
 	}
 
 	transformedSeconds, err := expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeSeconds(original["seconds"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSeconds); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSeconds); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["seconds"] = transformedSeconds
 	}
 
 	transformedNanos, err := expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(original["nanos"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedNanos); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedNanos); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["nanos"] = transformedNanos
 	}
 
 	return transformed, nil
 }
 
-func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeHours(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeHours(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeMinutes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeMinutes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeSeconds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeSeconds(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMaintenanceSchedule(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenanceSchedule(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1888,78 +1892,78 @@ func expandRedisInstanceMaintenanceSchedule(v interface{}, d TerraformResourceDa
 	transformedStartTime, err := expandRedisInstanceMaintenanceScheduleStartTime(original["start_time"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedStartTime); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedStartTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["startTime"] = transformedStartTime
 	}
 
 	transformedEndTime, err := expandRedisInstanceMaintenanceScheduleEndTime(original["end_time"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEndTime); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEndTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["endTime"] = transformedEndTime
 	}
 
 	transformedScheduleDeadlineTime, err := expandRedisInstanceMaintenanceScheduleScheduleDeadlineTime(original["schedule_deadline_time"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedScheduleDeadlineTime); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedScheduleDeadlineTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["scheduleDeadlineTime"] = transformedScheduleDeadlineTime
 	}
 
 	return transformed, nil
 }
 
-func expandRedisInstanceMaintenanceScheduleStartTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenanceScheduleStartTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMaintenanceScheduleEndTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenanceScheduleEndTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMaintenanceScheduleScheduleDeadlineTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMaintenanceScheduleScheduleDeadlineTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceMemorySizeGb(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceMemorySizeGb(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceRedisVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceRedisVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceReservedIpRange(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceReservedIpRange(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceTier(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceTier(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceTransitEncryptionMode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceTransitEncryptionMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceReplicaCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceReplicaCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceReadReplicasMode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceReadReplicasMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceSecondaryIpRange(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceSecondaryIpRange(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandRedisInstanceCustomerManagedKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandRedisInstanceCustomerManagedKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
 func resourceRedisInstanceEncoder(d *schema.ResourceData, meta interface{}, obj map[string]interface{}) (map[string]interface{}, error) {
-	config := meta.(*Config)
-	region, err := getRegionFromSchema("region", "location_id", d, config)
+	config := meta.(*transport_tpg.Config)
+	region, err := tpgresource.GetRegionFromSchema("region", "location_id", d, config)
 	if err != nil {
 		return nil, err
 	}
@@ -1970,23 +1974,23 @@ func resourceRedisInstanceEncoder(d *schema.ResourceData, meta interface{}, obj 
 }
 
 func resourceRedisInstanceDecoder(d *schema.ResourceData, meta interface{}, res map[string]interface{}) (map[string]interface{}, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
 
 	if v, ok := res["authEnabled"].(bool); ok {
 		if v {
-			url, err := ReplaceVars(d, config, "{{RedisBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}/authString")
+			url, err := tpgresource.ReplaceVars(d, config, "{{RedisBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}/authString")
 			if err != nil {
 				return nil, err
 			}
 
 			billingProject := ""
 
-			project, err := getProject(d, config)
+			project, err := tpgresource.GetProject(d, config)
 			if err != nil {
 				return nil, fmt.Errorf("Error fetching project for Instance: %s", err)
 			}
@@ -1994,11 +1998,11 @@ func resourceRedisInstanceDecoder(d *schema.ResourceData, meta interface{}, res 
 			billingProject = project
 
 			// err == nil indicates that the billing_project value was found
-			if bp, err := getBillingProject(d, config); err == nil {
+			if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 				billingProject = bp
 			}
 
-			res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+			res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 			if err != nil {
 				return nil, fmt.Errorf("Error reading AuthString: %s", err)
 			}

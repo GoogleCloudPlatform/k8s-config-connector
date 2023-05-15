@@ -3,6 +3,10 @@ package google
 import (
 	"fmt"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
+
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"google.golang.org/api/cloudresourcemanager/v1"
@@ -14,17 +18,17 @@ var IamServiceAccountSchema = map[string]*schema.Schema{
 		Type:         schema.TypeString,
 		Required:     true,
 		ForceNew:     true,
-		ValidateFunc: validateRegexp(ServiceAccountLinkRegex),
+		ValidateFunc: verify.ValidateRegexp(verify.ServiceAccountLinkRegex),
 	},
 }
 
 type ServiceAccountIamUpdater struct {
 	serviceAccountId string
-	d                TerraformResourceData
-	Config           *Config
+	d                tpgresource.TerraformResourceData
+	Config           *transport_tpg.Config
 }
 
-func NewServiceAccountIamUpdater(d TerraformResourceData, config *Config) (ResourceIamUpdater, error) {
+func NewServiceAccountIamUpdater(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
 	return &ServiceAccountIamUpdater{
 		serviceAccountId: d.Get("service_account_id").(string),
 		d:                d,
@@ -32,7 +36,7 @@ func NewServiceAccountIamUpdater(d TerraformResourceData, config *Config) (Resou
 	}, nil
 }
 
-func ServiceAccountIdParseFunc(d *schema.ResourceData, _ *Config) error {
+func ServiceAccountIdParseFunc(d *schema.ResourceData, _ *transport_tpg.Config) error {
 	if err := d.Set("service_account_id", d.Id()); err != nil {
 		return fmt.Errorf("Error setting service_account_id: %s", err)
 	}
@@ -40,7 +44,7 @@ func ServiceAccountIdParseFunc(d *schema.ResourceData, _ *Config) error {
 }
 
 func (u *ServiceAccountIamUpdater) GetResourceIamPolicy() (*cloudresourcemanager.Policy, error) {
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +69,7 @@ func (u *ServiceAccountIamUpdater) SetResourceIamPolicy(policy *cloudresourceman
 		return err
 	}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -95,7 +99,7 @@ func (u *ServiceAccountIamUpdater) DescribeResource() string {
 
 func resourceManagerToIamPolicy(p *cloudresourcemanager.Policy) (*iam.Policy, error) {
 	out := &iam.Policy{}
-	err := Convert(p, out)
+	err := tpgresource.Convert(p, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a v1 policy to a iam policy: {{err}}", err)
 	}
@@ -104,7 +108,7 @@ func resourceManagerToIamPolicy(p *cloudresourcemanager.Policy) (*iam.Policy, er
 
 func iamToResourceManagerPolicy(p *iam.Policy) (*cloudresourcemanager.Policy, error) {
 	out := &cloudresourcemanager.Policy{}
-	err := Convert(p, out)
+	err := tpgresource.Convert(p, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a iam policy to a v1 policy: {{err}}", err)
 	}

@@ -155,6 +155,11 @@ type BackendserviceBaseEjectionTime struct {
 	Seconds int `json:"seconds"`
 }
 
+type BackendserviceBypassCacheOnRequestHeaders struct {
+	/* The header field name to match on when bypassing cache. Values are case-insensitive. */
+	HeaderName string `json:"headerName"`
+}
+
 type BackendserviceCacheKeyPolicy struct {
 	/* If true requests to different hosts will be cached separately. */
 	// +optional
@@ -203,6 +208,11 @@ type BackendserviceCacheKeyPolicy struct {
 }
 
 type BackendserviceCdnPolicy struct {
+	/* Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified.
+	The cache is bypassed for all cdnPolicy.cacheMode settings. */
+	// +optional
+	BypassCacheOnRequestHeaders []BackendserviceBypassCacheOnRequestHeaders `json:"bypassCacheOnRequestHeaders,omitempty"`
+
 	/* The CacheKeyPolicy for this CdnPolicy. */
 	// +optional
 	CacheKeyPolicy *BackendserviceCacheKeyPolicy `json:"cacheKeyPolicy,omitempty"`

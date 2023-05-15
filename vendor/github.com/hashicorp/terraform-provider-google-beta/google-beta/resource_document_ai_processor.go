@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceDocumentAIProcessor() *schema.Resource {
@@ -80,8 +83,8 @@ func ResourceDocumentAIProcessor() *schema.Resource {
 }
 
 func resourceDocumentAIProcessorCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -90,23 +93,23 @@ func resourceDocumentAIProcessorCreate(d *schema.ResourceData, meta interface{})
 	typeProp, err := expandDocumentAIProcessorType(d.Get("type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("type"); !isEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
+	} else if v, ok := d.GetOkExists("type"); !tpgresource.IsEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
 		obj["type"] = typeProp
 	}
 	displayNameProp, err := expandDocumentAIProcessorDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	kmsKeyNameProp, err := expandDocumentAIProcessorKmsKeyName(d.Get("kms_key_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("kms_key_name"); !isEmptyValue(reflect.ValueOf(kmsKeyNameProp)) && (ok || !reflect.DeepEqual(v, kmsKeyNameProp)) {
+	} else if v, ok := d.GetOkExists("kms_key_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(kmsKeyNameProp)) && (ok || !reflect.DeepEqual(v, kmsKeyNameProp)) {
 		obj["kmsKeyName"] = kmsKeyNameProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DocumentAIBasePath}}projects/{{project}}/locations/{{location}}/processors")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DocumentAIBasePath}}projects/{{project}}/locations/{{location}}/processors")
 	if err != nil {
 		return err
 	}
@@ -114,18 +117,18 @@ func resourceDocumentAIProcessorCreate(d *schema.ResourceData, meta interface{})
 	log.Printf("[DEBUG] Creating new Processor: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Processor: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Processor: %s", err)
 	}
@@ -134,7 +137,7 @@ func resourceDocumentAIProcessorCreate(d *schema.ResourceData, meta interface{})
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/processors/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/processors/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -146,33 +149,33 @@ func resourceDocumentAIProcessorCreate(d *schema.ResourceData, meta interface{})
 }
 
 func resourceDocumentAIProcessorRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{DocumentAIBasePath}}projects/{{project}}/locations/{{location}}/processors/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DocumentAIBasePath}}projects/{{project}}/locations/{{location}}/processors/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Processor: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("DocumentAIProcessor %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("DocumentAIProcessor %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -196,21 +199,21 @@ func resourceDocumentAIProcessorRead(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceDocumentAIProcessorDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Processor: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{DocumentAIBasePath}}projects/{{project}}/locations/{{location}}/processors/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DocumentAIBasePath}}projects/{{project}}/locations/{{location}}/processors/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -219,13 +222,13 @@ func resourceDocumentAIProcessorDelete(d *schema.ResourceData, meta interface{})
 	log.Printf("[DEBUG] Deleting Processor %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Processor")
+		return transport_tpg.HandleNotFoundError(err, d, "Processor")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Processor %q: %#v", d.Id(), res)
@@ -233,7 +236,7 @@ func resourceDocumentAIProcessorDelete(d *schema.ResourceData, meta interface{})
 }
 
 func resourceDocumentAIProcessorImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/processors/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -243,7 +246,7 @@ func resourceDocumentAIProcessorImport(d *schema.ResourceData, meta interface{})
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/processors/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/processors/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -252,33 +255,33 @@ func resourceDocumentAIProcessorImport(d *schema.ResourceData, meta interface{})
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenDocumentAIProcessorName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDocumentAIProcessorName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenDocumentAIProcessorType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDocumentAIProcessorType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDocumentAIProcessorDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDocumentAIProcessorDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDocumentAIProcessorKmsKeyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDocumentAIProcessorKmsKeyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandDocumentAIProcessorType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDocumentAIProcessorType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDocumentAIProcessorDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDocumentAIProcessorDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDocumentAIProcessorKmsKeyName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDocumentAIProcessorKmsKeyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

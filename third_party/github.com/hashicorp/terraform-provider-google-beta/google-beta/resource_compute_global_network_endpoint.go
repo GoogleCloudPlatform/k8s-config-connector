@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceComputeGlobalNetworkEndpoint() *schema.Resource {
@@ -43,7 +46,7 @@ func ResourceComputeGlobalNetworkEndpoint() *schema.Resource {
 				Type:             schema.TypeString,
 				Required:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareResourceNames,
+				DiffSuppressFunc: tpgresource.CompareResourceNames,
 				Description:      `The global network endpoint group this endpoint is part of.`,
 			},
 			"port": {
@@ -78,8 +81,8 @@ This can only be specified when network_endpoint_type of the NEG is INTERNET_FQD
 }
 
 func resourceComputeGlobalNetworkEndpointCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -88,19 +91,19 @@ func resourceComputeGlobalNetworkEndpointCreate(d *schema.ResourceData, meta int
 	portProp, err := expandNestedComputeGlobalNetworkEndpointPort(d.Get("port"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("port"); !isEmptyValue(reflect.ValueOf(portProp)) && (ok || !reflect.DeepEqual(v, portProp)) {
+	} else if v, ok := d.GetOkExists("port"); !tpgresource.IsEmptyValue(reflect.ValueOf(portProp)) && (ok || !reflect.DeepEqual(v, portProp)) {
 		obj["port"] = portProp
 	}
 	ipAddressProp, err := expandNestedComputeGlobalNetworkEndpointIpAddress(d.Get("ip_address"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ip_address"); !isEmptyValue(reflect.ValueOf(ipAddressProp)) && (ok || !reflect.DeepEqual(v, ipAddressProp)) {
+	} else if v, ok := d.GetOkExists("ip_address"); !tpgresource.IsEmptyValue(reflect.ValueOf(ipAddressProp)) && (ok || !reflect.DeepEqual(v, ipAddressProp)) {
 		obj["ipAddress"] = ipAddressProp
 	}
 	fqdnProp, err := expandNestedComputeGlobalNetworkEndpointFqdn(d.Get("fqdn"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("fqdn"); !isEmptyValue(reflect.ValueOf(fqdnProp)) && (ok || !reflect.DeepEqual(v, fqdnProp)) {
+	} else if v, ok := d.GetOkExists("fqdn"); !tpgresource.IsEmptyValue(reflect.ValueOf(fqdnProp)) && (ok || !reflect.DeepEqual(v, fqdnProp)) {
 		obj["fqdn"] = fqdnProp
 	}
 
@@ -109,14 +112,14 @@ func resourceComputeGlobalNetworkEndpointCreate(d *schema.ResourceData, meta int
 		return err
 	}
 
-	lockName, err := ReplaceVars(d, config, "networkEndpoint/{{project}}/{{global_network_endpoint_group}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "networkEndpoint/{{project}}/{{global_network_endpoint_group}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/networkEndpointGroups/{{global_network_endpoint_group}}/attachNetworkEndpoints")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/networkEndpointGroups/{{global_network_endpoint_group}}/attachNetworkEndpoints")
 	if err != nil {
 		return err
 	}
@@ -124,24 +127,24 @@ func resourceComputeGlobalNetworkEndpointCreate(d *schema.ResourceData, meta int
 	log.Printf("[DEBUG] Creating new GlobalNetworkEndpoint: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for GlobalNetworkEndpoint: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating GlobalNetworkEndpoint: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{project}}/{{global_network_endpoint_group}}/{{ip_address}}/{{fqdn}}/{{port}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{project}}/{{global_network_endpoint_group}}/{{ip_address}}/{{fqdn}}/{{port}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -163,33 +166,33 @@ func resourceComputeGlobalNetworkEndpointCreate(d *schema.ResourceData, meta int
 }
 
 func resourceComputeGlobalNetworkEndpointRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/networkEndpointGroups/{{global_network_endpoint_group}}/listNetworkEndpoints")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/networkEndpointGroups/{{global_network_endpoint_group}}/listNetworkEndpoints")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for GlobalNetworkEndpoint: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "POST", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "POST", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeGlobalNetworkEndpoint %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeGlobalNetworkEndpoint %q", d.Id()))
 	}
 
 	res, err = flattenNestedComputeGlobalNetworkEndpoint(d, meta, res)
@@ -234,28 +237,28 @@ func resourceComputeGlobalNetworkEndpointRead(d *schema.ResourceData, meta inter
 }
 
 func resourceComputeGlobalNetworkEndpointDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for GlobalNetworkEndpoint: %s", err)
 	}
 	billingProject = project
 
-	lockName, err := ReplaceVars(d, config, "networkEndpoint/{{project}}/{{global_network_endpoint_group}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "networkEndpoint/{{project}}/{{global_network_endpoint_group}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/networkEndpointGroups/{{global_network_endpoint_group}}/detachNetworkEndpoints")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/networkEndpointGroups/{{global_network_endpoint_group}}/detachNetworkEndpoints")
 	if err != nil {
 		return err
 	}
@@ -292,13 +295,13 @@ func resourceComputeGlobalNetworkEndpointDelete(d *schema.ResourceData, meta int
 	log.Printf("[DEBUG] Deleting GlobalNetworkEndpoint %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "GlobalNetworkEndpoint")
+		return transport_tpg.HandleNotFoundError(err, d, "GlobalNetworkEndpoint")
 	}
 
 	err = ComputeOperationWaitTime(
@@ -314,7 +317,7 @@ func resourceComputeGlobalNetworkEndpointDelete(d *schema.ResourceData, meta int
 }
 
 func resourceComputeGlobalNetworkEndpointImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	// FQDN, port and ip_address are optional, so use * instead of + when reading the import id
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/global/networkEndpointGroups/(?P<global_network_endpoint_group>[^/]+)/(?P<ip_address>[^/]*)/(?P<fqdn>[^/]*)/(?P<port>[^/]+)",
@@ -325,7 +328,7 @@ func resourceComputeGlobalNetworkEndpointImport(d *schema.ResourceData, meta int
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{project}}/{{global_network_endpoint_group}}/{{ip_address}}/{{fqdn}}/{{port}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{project}}/{{global_network_endpoint_group}}/{{ip_address}}/{{fqdn}}/{{port}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -334,7 +337,7 @@ func resourceComputeGlobalNetworkEndpointImport(d *schema.ResourceData, meta int
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenNestedComputeGlobalNetworkEndpointPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedComputeGlobalNetworkEndpointPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles int given in float64 format
 	if floatVal, ok := v.(float64); ok {
 		return int(floatVal)
@@ -342,29 +345,29 @@ func flattenNestedComputeGlobalNetworkEndpointPort(v interface{}, d *schema.Reso
 	return v
 }
 
-func flattenNestedComputeGlobalNetworkEndpointIpAddress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedComputeGlobalNetworkEndpointIpAddress(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedComputeGlobalNetworkEndpointFqdn(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedComputeGlobalNetworkEndpointFqdn(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandNestedComputeGlobalNetworkEndpointPort(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedComputeGlobalNetworkEndpointPort(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedComputeGlobalNetworkEndpointIpAddress(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedComputeGlobalNetworkEndpointIpAddress(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedComputeGlobalNetworkEndpointFqdn(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedComputeGlobalNetworkEndpointFqdn(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
 func resourceComputeGlobalNetworkEndpointEncoder(d *schema.ResourceData, meta interface{}, obj map[string]interface{}) (map[string]interface{}, error) {
 	// Network Endpoint Group is a URL parameter only, so replace self-link/path with resource name only.
-	if err := d.Set("global_network_endpoint_group", GetResourceNameFromSelfLink(d.Get("global_network_endpoint_group").(string))); err != nil {
+	if err := d.Set("global_network_endpoint_group", tpgresource.GetResourceNameFromSelfLink(d.Get("global_network_endpoint_group").(string))); err != nil {
 		return nil, fmt.Errorf("Error setting global_network_endpoint_group: %s", err)
 	}
 
@@ -401,21 +404,21 @@ func flattenNestedComputeGlobalNetworkEndpoint(d *schema.ResourceData, meta inte
 }
 
 func resourceComputeGlobalNetworkEndpointFindNestedObjectInList(d *schema.ResourceData, meta interface{}, items []interface{}) (index int, item map[string]interface{}, err error) {
-	expectedIpAddress, err := expandNestedComputeGlobalNetworkEndpointIpAddress(d.Get("ip_address"), d, meta.(*Config))
+	expectedIpAddress, err := expandNestedComputeGlobalNetworkEndpointIpAddress(d.Get("ip_address"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedIpAddress := flattenNestedComputeGlobalNetworkEndpointIpAddress(expectedIpAddress, d, meta.(*Config))
-	expectedFqdn, err := expandNestedComputeGlobalNetworkEndpointFqdn(d.Get("fqdn"), d, meta.(*Config))
+	expectedFlattenedIpAddress := flattenNestedComputeGlobalNetworkEndpointIpAddress(expectedIpAddress, d, meta.(*transport_tpg.Config))
+	expectedFqdn, err := expandNestedComputeGlobalNetworkEndpointFqdn(d.Get("fqdn"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedFqdn := flattenNestedComputeGlobalNetworkEndpointFqdn(expectedFqdn, d, meta.(*Config))
-	expectedPort, err := expandNestedComputeGlobalNetworkEndpointPort(d.Get("port"), d, meta.(*Config))
+	expectedFlattenedFqdn := flattenNestedComputeGlobalNetworkEndpointFqdn(expectedFqdn, d, meta.(*transport_tpg.Config))
+	expectedPort, err := expandNestedComputeGlobalNetworkEndpointPort(d.Get("port"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedPort := flattenNestedComputeGlobalNetworkEndpointPort(expectedPort, d, meta.(*Config))
+	expectedFlattenedPort := flattenNestedComputeGlobalNetworkEndpointPort(expectedPort, d, meta.(*transport_tpg.Config))
 
 	// Search list for this resource.
 	for idx, itemRaw := range items {
@@ -430,21 +433,21 @@ func resourceComputeGlobalNetworkEndpointFindNestedObjectInList(d *schema.Resour
 			return -1, nil, err
 		}
 
-		itemIpAddress := flattenNestedComputeGlobalNetworkEndpointIpAddress(item["ipAddress"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemIpAddress)) && isEmptyValue(reflect.ValueOf(expectedFlattenedIpAddress))) && !reflect.DeepEqual(itemIpAddress, expectedFlattenedIpAddress) {
+		itemIpAddress := flattenNestedComputeGlobalNetworkEndpointIpAddress(item["ipAddress"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemIpAddress)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedIpAddress))) && !reflect.DeepEqual(itemIpAddress, expectedFlattenedIpAddress) {
 			log.Printf("[DEBUG] Skipping item with ipAddress= %#v, looking for %#v)", itemIpAddress, expectedFlattenedIpAddress)
 			continue
 		}
-		itemFqdn := flattenNestedComputeGlobalNetworkEndpointFqdn(item["fqdn"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemFqdn)) && isEmptyValue(reflect.ValueOf(expectedFlattenedFqdn))) && !reflect.DeepEqual(itemFqdn, expectedFlattenedFqdn) {
+		itemFqdn := flattenNestedComputeGlobalNetworkEndpointFqdn(item["fqdn"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemFqdn)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedFqdn))) && !reflect.DeepEqual(itemFqdn, expectedFlattenedFqdn) {
 			log.Printf("[DEBUG] Skipping item with fqdn= %#v, looking for %#v)", itemFqdn, expectedFlattenedFqdn)
 			continue
 		}
-		itemPort := flattenNestedComputeGlobalNetworkEndpointPort(item["port"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemPort)) && isEmptyValue(reflect.ValueOf(expectedFlattenedPort))) && !reflect.DeepEqual(itemPort, expectedFlattenedPort) {
+		itemPort := flattenNestedComputeGlobalNetworkEndpointPort(item["port"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemPort)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedPort))) && !reflect.DeepEqual(itemPort, expectedFlattenedPort) {
 			log.Printf("[DEBUG] Skipping item with port= %#v, looking for %#v)", itemPort, expectedFlattenedPort)
 			continue
 		}

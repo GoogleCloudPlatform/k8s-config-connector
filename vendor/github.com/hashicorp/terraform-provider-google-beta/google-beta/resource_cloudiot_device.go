@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceCloudIotDevice() *schema.Resource {
@@ -76,7 +80,7 @@ func ResourceCloudIotDevice() *schema.Resource {
 									"format": {
 										Type:         schema.TypeString,
 										Required:     true,
-										ValidateFunc: validateEnum([]string{"RSA_PEM", "RSA_X509_PEM", "ES256_PEM", "ES256_X509_PEM"}),
+										ValidateFunc: verify.ValidateEnum([]string{"RSA_PEM", "RSA_X509_PEM", "ES256_PEM", "ES256_X509_PEM"}),
 										Description:  `The format of the key. Possible values: ["RSA_PEM", "RSA_X509_PEM", "ES256_PEM", "ES256_X509_PEM"]`,
 									},
 									"key": {
@@ -106,14 +110,14 @@ func ResourceCloudIotDevice() *schema.Resource {
 						"gateway_auth_method": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"ASSOCIATION_ONLY", "DEVICE_AUTH_TOKEN_ONLY", "ASSOCIATION_AND_DEVICE_AUTH_TOKEN", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"ASSOCIATION_ONLY", "DEVICE_AUTH_TOKEN_ONLY", "ASSOCIATION_AND_DEVICE_AUTH_TOKEN", ""}),
 							Description:  `Indicates whether the device is a gateway. Possible values: ["ASSOCIATION_ONLY", "DEVICE_AUTH_TOKEN_ONLY", "ASSOCIATION_AND_DEVICE_AUTH_TOKEN"]`,
 						},
 						"gateway_type": {
 							Type:         schema.TypeString,
 							Optional:     true,
 							ForceNew:     true,
-							ValidateFunc: validateEnum([]string{"GATEWAY", "NON_GATEWAY", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"GATEWAY", "NON_GATEWAY", ""}),
 							Description:  `Indicates whether the device is a gateway. Default value: "NON_GATEWAY" Possible values: ["GATEWAY", "NON_GATEWAY"]`,
 							Default:      "NON_GATEWAY",
 						},
@@ -133,7 +137,7 @@ func ResourceCloudIotDevice() *schema.Resource {
 			"log_level": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"NONE", "ERROR", "INFO", "DEBUG", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"NONE", "ERROR", "INFO", "DEBUG", ""}),
 				Description:  `The logging verbosity for device activity. Possible values: ["NONE", "ERROR", "INFO", "DEBUG"]`,
 			},
 			"metadata": {
@@ -260,8 +264,8 @@ This is a more compact way to identify devices, and it is globally unique.`,
 }
 
 func resourceCloudIotDeviceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -270,41 +274,41 @@ func resourceCloudIotDeviceCreate(d *schema.ResourceData, meta interface{}) erro
 	idProp, err := expandCloudIotDeviceName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(idProp)) && (ok || !reflect.DeepEqual(v, idProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(idProp)) && (ok || !reflect.DeepEqual(v, idProp)) {
 		obj["id"] = idProp
 	}
 	credentialsProp, err := expandCloudIotDeviceCredentials(d.Get("credentials"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("credentials"); !isEmptyValue(reflect.ValueOf(credentialsProp)) && (ok || !reflect.DeepEqual(v, credentialsProp)) {
+	} else if v, ok := d.GetOkExists("credentials"); !tpgresource.IsEmptyValue(reflect.ValueOf(credentialsProp)) && (ok || !reflect.DeepEqual(v, credentialsProp)) {
 		obj["credentials"] = credentialsProp
 	}
 	blockedProp, err := expandCloudIotDeviceBlocked(d.Get("blocked"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("blocked"); !isEmptyValue(reflect.ValueOf(blockedProp)) && (ok || !reflect.DeepEqual(v, blockedProp)) {
+	} else if v, ok := d.GetOkExists("blocked"); !tpgresource.IsEmptyValue(reflect.ValueOf(blockedProp)) && (ok || !reflect.DeepEqual(v, blockedProp)) {
 		obj["blocked"] = blockedProp
 	}
 	logLevelProp, err := expandCloudIotDeviceLogLevel(d.Get("log_level"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("log_level"); !isEmptyValue(reflect.ValueOf(logLevelProp)) && (ok || !reflect.DeepEqual(v, logLevelProp)) {
+	} else if v, ok := d.GetOkExists("log_level"); !tpgresource.IsEmptyValue(reflect.ValueOf(logLevelProp)) && (ok || !reflect.DeepEqual(v, logLevelProp)) {
 		obj["logLevel"] = logLevelProp
 	}
 	metadataProp, err := expandCloudIotDeviceMetadata(d.Get("metadata"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("metadata"); !isEmptyValue(reflect.ValueOf(metadataProp)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
+	} else if v, ok := d.GetOkExists("metadata"); !tpgresource.IsEmptyValue(reflect.ValueOf(metadataProp)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
 		obj["metadata"] = metadataProp
 	}
 	gatewayConfigProp, err := expandCloudIotDeviceGatewayConfig(d.Get("gateway_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("gateway_config"); !isEmptyValue(reflect.ValueOf(gatewayConfigProp)) && (ok || !reflect.DeepEqual(v, gatewayConfigProp)) {
+	} else if v, ok := d.GetOkExists("gateway_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(gatewayConfigProp)) && (ok || !reflect.DeepEqual(v, gatewayConfigProp)) {
 		obj["gatewayConfig"] = gatewayConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudIotBasePath}}{{registry}}/devices")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudIotBasePath}}{{registry}}/devices")
 	if err != nil {
 		return err
 	}
@@ -313,17 +317,17 @@ func resourceCloudIotDeviceCreate(d *schema.ResourceData, meta interface{}) erro
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Device: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{registry}}/devices/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{registry}}/devices/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -335,13 +339,13 @@ func resourceCloudIotDeviceCreate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceCloudIotDeviceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudIotBasePath}}{{registry}}/devices/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudIotBasePath}}{{registry}}/devices/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -349,13 +353,13 @@ func resourceCloudIotDeviceRead(d *schema.ResourceData, meta interface{}) error 
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("CloudIotDevice %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("CloudIotDevice %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenCloudIotDeviceName(res["id"], d, config)); err != nil {
@@ -411,8 +415,8 @@ func resourceCloudIotDeviceRead(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceCloudIotDeviceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -423,35 +427,35 @@ func resourceCloudIotDeviceUpdate(d *schema.ResourceData, meta interface{}) erro
 	credentialsProp, err := expandCloudIotDeviceCredentials(d.Get("credentials"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("credentials"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, credentialsProp)) {
+	} else if v, ok := d.GetOkExists("credentials"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, credentialsProp)) {
 		obj["credentials"] = credentialsProp
 	}
 	blockedProp, err := expandCloudIotDeviceBlocked(d.Get("blocked"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("blocked"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, blockedProp)) {
+	} else if v, ok := d.GetOkExists("blocked"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, blockedProp)) {
 		obj["blocked"] = blockedProp
 	}
 	logLevelProp, err := expandCloudIotDeviceLogLevel(d.Get("log_level"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("log_level"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, logLevelProp)) {
+	} else if v, ok := d.GetOkExists("log_level"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, logLevelProp)) {
 		obj["logLevel"] = logLevelProp
 	}
 	metadataProp, err := expandCloudIotDeviceMetadata(d.Get("metadata"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("metadata"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
+	} else if v, ok := d.GetOkExists("metadata"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, metadataProp)) {
 		obj["metadata"] = metadataProp
 	}
 	gatewayConfigProp, err := expandCloudIotDeviceGatewayConfig(d.Get("gateway_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("gateway_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, gatewayConfigProp)) {
+	} else if v, ok := d.GetOkExists("gateway_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, gatewayConfigProp)) {
 		obj["gatewayConfig"] = gatewayConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudIotBasePath}}{{registry}}/devices/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudIotBasePath}}{{registry}}/devices/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -480,17 +484,17 @@ func resourceCloudIotDeviceUpdate(d *schema.ResourceData, meta interface{}) erro
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Device %q: %s", d.Id(), err)
@@ -502,15 +506,15 @@ func resourceCloudIotDeviceUpdate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceCloudIotDeviceDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{CloudIotBasePath}}{{registry}}/devices/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudIotBasePath}}{{registry}}/devices/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -519,13 +523,13 @@ func resourceCloudIotDeviceDelete(d *schema.ResourceData, meta interface{}) erro
 	log.Printf("[DEBUG] Deleting Device %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Device")
+		return transport_tpg.HandleNotFoundError(err, d, "Device")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Device %q: %#v", d.Id(), res)
@@ -533,7 +537,7 @@ func resourceCloudIotDeviceDelete(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceCloudIotDeviceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"(?P<registry>.+)/devices/(?P<name>[^/]+)",
 	}, d, config); err != nil {
@@ -541,7 +545,7 @@ func resourceCloudIotDeviceImport(d *schema.ResourceData, meta interface{}) ([]*
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{registry}}/devices/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{registry}}/devices/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -550,15 +554,15 @@ func resourceCloudIotDeviceImport(d *schema.ResourceData, meta interface{}) ([]*
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenCloudIotDeviceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceNumId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceNumId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceCredentials(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceCredentials(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -577,11 +581,11 @@ func flattenCloudIotDeviceCredentials(v interface{}, d *schema.ResourceData, con
 	}
 	return transformed
 }
-func flattenCloudIotDeviceCredentialsExpirationTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceCredentialsExpirationTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceCredentialsPublicKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceCredentialsPublicKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -596,43 +600,43 @@ func flattenCloudIotDeviceCredentialsPublicKey(v interface{}, d *schema.Resource
 		flattenCloudIotDeviceCredentialsPublicKeyKey(original["key"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudIotDeviceCredentialsPublicKeyFormat(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceCredentialsPublicKeyFormat(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceCredentialsPublicKeyKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceCredentialsPublicKeyKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceLastHeartbeatTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceLastHeartbeatTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceLastEventTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceLastEventTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceLastStateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceLastStateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceLastConfigAckTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceLastConfigAckTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceLastConfigSendTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceLastConfigSendTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceBlocked(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceBlocked(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceLastErrorTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceLastErrorTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceLastErrorStatus(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceLastErrorStatus(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -649,7 +653,7 @@ func flattenCloudIotDeviceLastErrorStatus(v interface{}, d *schema.ResourceData,
 		flattenCloudIotDeviceLastErrorStatusDetails(original["details"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudIotDeviceLastErrorStatusNumber(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceLastErrorStatusNumber(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -666,15 +670,15 @@ func flattenCloudIotDeviceLastErrorStatusNumber(v interface{}, d *schema.Resourc
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudIotDeviceLastErrorStatusMessage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceLastErrorStatusMessage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceLastErrorStatusDetails(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceLastErrorStatusDetails(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -693,23 +697,23 @@ func flattenCloudIotDeviceConfig(v interface{}, d *schema.ResourceData, config *
 		flattenCloudIotDeviceConfigBinaryData(original["binaryData"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudIotDeviceConfigVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceConfigVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceConfigCloudUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceConfigCloudUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceConfigDeviceAckTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceConfigDeviceAckTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceConfigBinaryData(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceConfigBinaryData(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -724,23 +728,23 @@ func flattenCloudIotDeviceState(v interface{}, d *schema.ResourceData, config *C
 		flattenCloudIotDeviceStateBinaryData(original["binaryData"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudIotDeviceStateUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceStateUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceStateBinaryData(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceStateBinaryData(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceLogLevel(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceLogLevel(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceMetadata(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceMetadata(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceGatewayConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceGatewayConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -759,27 +763,27 @@ func flattenCloudIotDeviceGatewayConfig(v interface{}, d *schema.ResourceData, c
 		flattenCloudIotDeviceGatewayConfigLastAccessedGatewayTime(original["lastAccessedGatewayTime"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudIotDeviceGatewayConfigGatewayType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceGatewayConfigGatewayType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceGatewayConfigGatewayAuthMethod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceGatewayConfigGatewayAuthMethod(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceGatewayConfigLastAccessedGatewayId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceGatewayConfigLastAccessedGatewayId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudIotDeviceGatewayConfigLastAccessedGatewayTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudIotDeviceGatewayConfigLastAccessedGatewayTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandCloudIotDeviceName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudIotDeviceCredentials(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceCredentials(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -792,14 +796,14 @@ func expandCloudIotDeviceCredentials(v interface{}, d TerraformResourceData, con
 		transformedExpirationTime, err := expandCloudIotDeviceCredentialsExpirationTime(original["expiration_time"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedExpirationTime); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedExpirationTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["expirationTime"] = transformedExpirationTime
 		}
 
 		transformedPublicKey, err := expandCloudIotDeviceCredentialsPublicKey(original["public_key"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPublicKey); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPublicKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["publicKey"] = transformedPublicKey
 		}
 
@@ -808,11 +812,11 @@ func expandCloudIotDeviceCredentials(v interface{}, d TerraformResourceData, con
 	return req, nil
 }
 
-func expandCloudIotDeviceCredentialsExpirationTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceCredentialsExpirationTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudIotDeviceCredentialsPublicKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceCredentialsPublicKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -824,37 +828,37 @@ func expandCloudIotDeviceCredentialsPublicKey(v interface{}, d TerraformResource
 	transformedFormat, err := expandCloudIotDeviceCredentialsPublicKeyFormat(original["format"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedFormat); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedFormat); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["format"] = transformedFormat
 	}
 
 	transformedKey, err := expandCloudIotDeviceCredentialsPublicKeyKey(original["key"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKey); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["key"] = transformedKey
 	}
 
 	return transformed, nil
 }
 
-func expandCloudIotDeviceCredentialsPublicKeyFormat(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceCredentialsPublicKeyFormat(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudIotDeviceCredentialsPublicKeyKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceCredentialsPublicKeyKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudIotDeviceBlocked(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceBlocked(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudIotDeviceLogLevel(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceLogLevel(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudIotDeviceMetadata(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudIotDeviceMetadata(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -865,7 +869,7 @@ func expandCloudIotDeviceMetadata(v interface{}, d TerraformResourceData, config
 	return m, nil
 }
 
-func expandCloudIotDeviceGatewayConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceGatewayConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -877,46 +881,46 @@ func expandCloudIotDeviceGatewayConfig(v interface{}, d TerraformResourceData, c
 	transformedGatewayType, err := expandCloudIotDeviceGatewayConfigGatewayType(original["gateway_type"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedGatewayType); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedGatewayType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["gatewayType"] = transformedGatewayType
 	}
 
 	transformedGatewayAuthMethod, err := expandCloudIotDeviceGatewayConfigGatewayAuthMethod(original["gateway_auth_method"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedGatewayAuthMethod); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedGatewayAuthMethod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["gatewayAuthMethod"] = transformedGatewayAuthMethod
 	}
 
 	transformedLastAccessedGatewayId, err := expandCloudIotDeviceGatewayConfigLastAccessedGatewayId(original["last_accessed_gateway_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLastAccessedGatewayId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLastAccessedGatewayId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["lastAccessedGatewayId"] = transformedLastAccessedGatewayId
 	}
 
 	transformedLastAccessedGatewayTime, err := expandCloudIotDeviceGatewayConfigLastAccessedGatewayTime(original["last_accessed_gateway_time"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLastAccessedGatewayTime); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLastAccessedGatewayTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["lastAccessedGatewayTime"] = transformedLastAccessedGatewayTime
 	}
 
 	return transformed, nil
 }
 
-func expandCloudIotDeviceGatewayConfigGatewayType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceGatewayConfigGatewayType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudIotDeviceGatewayConfigGatewayAuthMethod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceGatewayConfigGatewayAuthMethod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudIotDeviceGatewayConfigLastAccessedGatewayId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceGatewayConfigLastAccessedGatewayId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudIotDeviceGatewayConfigLastAccessedGatewayTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudIotDeviceGatewayConfigLastAccessedGatewayTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

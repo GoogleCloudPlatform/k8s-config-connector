@@ -6,6 +6,8 @@ import (
 	"log"
 	"strings"
 
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"google.golang.org/api/cloudresourcemanager/v1"
 )
@@ -64,7 +66,7 @@ func ResourceIamAuditConfigWithBatching(parentSpecificSchema map[string]*schema.
 
 func resourceIamAuditConfigRead(newUpdaterFunc newResourceIamUpdaterFunc) schema.ReadFunc {
 	return func(d *schema.ResourceData, meta interface{}) error {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 		updater, err := newUpdaterFunc(d, config)
 		if err != nil {
 			return err
@@ -73,7 +75,7 @@ func resourceIamAuditConfigRead(newUpdaterFunc newResourceIamUpdaterFunc) schema
 		eAuditConfig := getResourceIamAuditConfig(d)
 		p, err := iamPolicyReadWithRetry(updater)
 		if err != nil {
-			return handleNotFoundError(err, d, fmt.Sprintf("AuditConfig for %s on %q", eAuditConfig.Service, updater.DescribeResource()))
+			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("AuditConfig for %s on %q", eAuditConfig.Service, updater.DescribeResource()))
 		}
 		log.Printf("[DEBUG]: Retrieved policy for %s: %+v", updater.DescribeResource(), p)
 
@@ -110,7 +112,7 @@ func iamAuditConfigImport(resourceIdParser resourceIdParserFunc) schema.StateFun
 		if resourceIdParser == nil {
 			return nil, errors.New("Import not supported for this IAM resource.")
 		}
-		config := m.(*Config)
+		config := m.(*transport_tpg.Config)
 		s := strings.Fields(d.Id())
 		if len(s) != 2 {
 			d.SetId("")
@@ -137,7 +139,7 @@ func iamAuditConfigImport(resourceIdParser resourceIdParserFunc) schema.StateFun
 
 func resourceIamAuditConfigCreateUpdate(newUpdaterFunc newResourceIamUpdaterFunc, enableBatching bool) func(*schema.ResourceData, interface{}) error {
 	return func(d *schema.ResourceData, meta interface{}) error {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 
 		updater, err := newUpdaterFunc(d, config)
 		if err != nil {
@@ -166,7 +168,7 @@ func resourceIamAuditConfigCreateUpdate(newUpdaterFunc newResourceIamUpdaterFunc
 
 func resourceIamAuditConfigDelete(newUpdaterFunc newResourceIamUpdaterFunc, enableBatching bool) schema.DeleteFunc {
 	return func(d *schema.ResourceData, meta interface{}) error {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 
 		updater, err := newUpdaterFunc(d, config)
 		if err != nil {
@@ -185,7 +187,7 @@ func resourceIamAuditConfigDelete(newUpdaterFunc newResourceIamUpdaterFunc, enab
 			err = iamPolicyReadModifyWrite(updater, modifyF)
 		}
 		if err != nil {
-			return handleNotFoundError(err, d, fmt.Sprintf("Resource %s with IAM audit config %q", updater.DescribeResource(), d.Id()))
+			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Resource %s with IAM audit config %q", updater.DescribeResource(), d.Id()))
 		}
 
 		return resourceIamAuditConfigRead(newUpdaterFunc)(d, meta)

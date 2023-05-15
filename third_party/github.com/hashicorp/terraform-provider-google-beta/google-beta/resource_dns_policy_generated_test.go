@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccDNSPolicy_dnsPolicyBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccDNSPolicy_dnsPolicyBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -97,7 +101,7 @@ func testAccCheckDNSPolicyDestroyProducer(t *testing.T) func(s *terraform.State)
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{DNSBasePath}}projects/{{project}}/policies/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DNSBasePath}}projects/{{project}}/policies/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -108,7 +112,7 @@ func testAccCheckDNSPolicyDestroyProducer(t *testing.T) func(s *terraform.State)
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("DNSPolicy still exists at %s", url)
 			}

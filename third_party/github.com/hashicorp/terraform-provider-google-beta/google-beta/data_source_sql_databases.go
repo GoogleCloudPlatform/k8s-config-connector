@@ -5,6 +5,9 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	sqladmin "google.golang.org/api/sqladmin/v1beta4"
 )
@@ -29,7 +32,7 @@ func DataSourceSqlDatabases() *schema.Resource {
 				Type:     schema.TypeList,
 				Computed: true,
 				Elem: &schema.Resource{
-					Schema: datasourceSchemaFromResourceSchema(ResourceSQLDatabase().Schema),
+					Schema: tpgresource.DatasourceSchemaFromResourceSchema(ResourceSQLDatabase().Schema),
 				},
 			},
 		},
@@ -37,23 +40,23 @@ func DataSourceSqlDatabases() *schema.Resource {
 }
 
 func dataSourceSqlDatabasesRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 	var databases *sqladmin.DatabasesListResponse
-	err = RetryTimeDuration(func() (rerr error) {
+	err = transport_tpg.RetryTimeDuration(func() (rerr error) {
 		databases, rerr = config.NewSqlAdminClient(userAgent).Databases.List(project, d.Get("instance").(string)).Do()
 		return rerr
-	}, d.Timeout(schema.TimeoutRead), IsSqlOperationInProgressError)
+	}, d.Timeout(schema.TimeoutRead), transport_tpg.IsSqlOperationInProgressError)
 
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Databases in %q instance", d.Get("instance").(string)))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Databases in %q instance", d.Get("instance").(string)))
 	}
 	flattenedDatabases := flattenDatabases(databases.Items)
 

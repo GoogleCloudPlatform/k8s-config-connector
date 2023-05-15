@@ -6,6 +6,8 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 // Stackdriver tests cannot be run in parallel otherwise they will error out with:
@@ -39,7 +41,7 @@ func testAccMonitoringAlertPolicy_basic(t *testing.T) {
 	filter := `metric.type=\"compute.googleapis.com/instance/disk/write_bytes_count\" AND resource.type=\"gce_instance\"`
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAlertPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -65,7 +67,7 @@ func testAccMonitoringAlertPolicy_update(t *testing.T) {
 	aligner2 := "ALIGN_MAX"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAlertPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -96,7 +98,7 @@ func testAccMonitoringAlertPolicy_full(t *testing.T) {
 	conditionName2 := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAlertPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -118,7 +120,7 @@ func testAccMonitoringAlertPolicy_mql(t *testing.T) {
 	conditionName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAlertPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -140,7 +142,7 @@ func testAccMonitoringAlertPolicy_log(t *testing.T) {
 	conditionName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAlertPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -168,7 +170,7 @@ func testAccCheckAlertPolicyDestroyProducer(t *testing.T) func(s *terraform.Stat
 			name := rs.Primary.Attributes["name"]
 
 			url := fmt.Sprintf("https://monitoring.googleapis.com/v3/%s", name)
-			_, err := SendRequest(config, "GET", "", url, config.UserAgent, nil)
+			_, err := transport_tpg.SendRequest(config, "GET", "", url, config.UserAgent, nil)
 
 			if err == nil {
 				return fmt.Errorf("Error, alert policy %s still exists", name)

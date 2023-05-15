@@ -5,8 +5,11 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
@@ -18,7 +21,7 @@ func TestAccComputeRegionDisk_basic(t *testing.T) {
 	var disk compute.Disk
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -58,7 +61,7 @@ func TestAccComputeRegionDisk_basicUpdate(t *testing.T) {
 	var disk compute.Disk
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -101,7 +104,7 @@ func TestAccComputeRegionDisk_encryption(t *testing.T) {
 	var disk compute.Disk
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -128,7 +131,7 @@ func TestAccComputeRegionDisk_deleteDetach(t *testing.T) {
 	var disk compute.Disk
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -182,7 +185,7 @@ func TestAccComputeRegionDisk_cloneDisk(t *testing.T) {
 	var disk compute.Disk
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -204,7 +207,7 @@ func TestAccComputeRegionDisk_cloneDisk(t *testing.T) {
 
 func testAccCheckComputeRegionDiskExists(t *testing.T, n string, disk *compute.Disk) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		p := GetTestProjectFromEnv()
+		p := acctest.GetTestProjectFromEnv()
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
 			return fmt.Errorf("Not found: %s", n)
@@ -294,7 +297,7 @@ func testAccCheckComputeRegionDiskInstances(n string, disk *compute.Disk) resour
 		}
 
 		for pos, user := range disk.Users {
-			if ConvertSelfLinkToV1(rs.Primary.Attributes["users."+strconv.Itoa(pos)]) != ConvertSelfLinkToV1(user) {
+			if tpgresource.ConvertSelfLinkToV1(rs.Primary.Attributes["users."+strconv.Itoa(pos)]) != tpgresource.ConvertSelfLinkToV1(user) {
 				return fmt.Errorf("RegionDisk %s has mismatched users.\nTF State: %+v.\nGCP State: %+v",
 					n, rs.Primary.Attributes["users"], disk.Users)
 			}

@@ -5,6 +5,8 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
@@ -16,7 +18,7 @@ func TestAccComputeProjectMetadataItem_basic(t *testing.T) {
 	key := "myKey" + RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckProjectMetadataItemDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -34,7 +36,7 @@ func TestAccComputeProjectMetadataItem_basic(t *testing.T) {
 
 func TestAccComputeProjectMetadataItem_basicMultiple(t *testing.T) {
 	// Multiple fine grained items applied in same config
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	// Generate a config of two config keys
@@ -44,7 +46,7 @@ func TestAccComputeProjectMetadataItem_basicMultiple(t *testing.T) {
 		testAccProjectMetadataItem_basic("foobar2", key2, "myOtherValue")
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckProjectMetadataItemDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -72,7 +74,7 @@ func TestAccComputeProjectMetadataItem_basicWithEmptyVal(t *testing.T) {
 	key := "myKey" + RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckProjectMetadataItemDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -95,7 +97,7 @@ func TestAccComputeProjectMetadataItem_basicUpdate(t *testing.T) {
 	key := "myKey" + RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckProjectMetadataItemDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -127,7 +129,7 @@ func TestAccComputeProjectMetadataItem_exists(t *testing.T) {
 	originalConfig := testAccProjectMetadataItem_basic("foobar", key, "myValue")
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckProjectMetadataItemDestroyProducer(t),
 		Steps: []resource.TestStep{

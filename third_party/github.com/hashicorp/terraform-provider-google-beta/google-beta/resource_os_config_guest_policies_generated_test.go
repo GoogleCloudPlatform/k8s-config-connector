@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccOSConfigGuestPolicies_osConfigGuestPoliciesBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccOSConfigGuestPolicies_osConfigGuestPoliciesBasicExample(t *testing.T
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckOSConfigGuestPoliciesDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -103,7 +107,7 @@ func TestAccOSConfigGuestPolicies_osConfigGuestPoliciesPackagesExample(t *testin
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckOSConfigGuestPoliciesDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -187,7 +191,7 @@ func TestAccOSConfigGuestPolicies_osConfigGuestPoliciesRecipesExample(t *testing
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckOSConfigGuestPoliciesDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -250,7 +254,7 @@ func testAccCheckOSConfigGuestPoliciesDestroyProducer(t *testing.T) func(s *terr
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{OSConfigBasePath}}projects/{{project}}/guestPolicies/{{guest_policy_id}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{OSConfigBasePath}}projects/{{project}}/guestPolicies/{{guest_policy_id}}")
 			if err != nil {
 				return err
 			}
@@ -261,7 +265,7 @@ func testAccCheckOSConfigGuestPoliciesDestroyProducer(t *testing.T) func(s *terr
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("OSConfigGuestPolicies still exists at %s", url)
 			}

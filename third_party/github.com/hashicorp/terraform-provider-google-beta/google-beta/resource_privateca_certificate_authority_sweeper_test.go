@@ -7,6 +7,9 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func init() {
@@ -21,7 +24,7 @@ func testSweepCertificateAuthority(region string) error {
 	resourceName := "CertificateAuthority"
 	log.Printf("[INFO][SWEEPER_LOG] Starting sweeper for %s", resourceName)
 
-	config, err := SharedConfigForRegion(region)
+	config, err := acctest.SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -34,19 +37,19 @@ func testSweepCertificateAuthority(region string) error {
 	}
 
 	// Setup variables to replace in list template
-	d := &ResourceDataMock{
+	d := &tpgresource.ResourceDataMock{
 		FieldsInSchema: map[string]interface{}{
 			"project":  config.Project,
 			"location": region,
 		},
 	}
 
-	caPoolsUrl, err := ReplaceVars(d, config, "{{PrivatecaBasePath}}projects/{{project}}/locations/{{location}}/caPools")
+	caPoolsUrl, err := tpgresource.ReplaceVars(d, config, "{{PrivatecaBasePath}}projects/{{project}}/locations/{{location}}/caPools")
 	if err != nil {
 		return err
 	}
 
-	res, err := SendRequest(config, "GET", config.Project, caPoolsUrl, config.UserAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", config.Project, caPoolsUrl, config.UserAgent, nil)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] Error in response from request %s: %s", caPoolsUrl, err)
 		return nil
@@ -70,7 +73,7 @@ func testSweepCertificateAuthority(region string) error {
 
 		caListUrl := config.PrivatecaBasePath + poolName + "/certificateAuthorities"
 
-		res, err := SendRequest(config, "GET", config.Project, caListUrl, config.UserAgent, nil)
+		res, err := transport_tpg.SendRequest(config, "GET", config.Project, caListUrl, config.UserAgent, nil)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] Error in response from request %s: %s", caPoolsUrl, err)
 			return nil
@@ -90,7 +93,7 @@ func testSweepCertificateAuthority(region string) error {
 			// Increment count and skip if resource is not sweepable.
 			nameParts := strings.Split(caName, "/")
 			id := nameParts[len(nameParts)-1]
-			if !IsSweepableTestResource(id) {
+			if !acctest.IsSweepableTestResource(id) {
 				nonPrefixCount++
 				continue
 			}
@@ -101,7 +104,7 @@ func testSweepCertificateAuthority(region string) error {
 
 			if obj["state"] == "ENABLED" {
 				disableUrl := fmt.Sprintf("%s%s:disable", config.PrivatecaBasePath, caName)
-				_, err = SendRequest(config, "POST", config.Project, disableUrl, config.UserAgent, nil)
+				_, err = transport_tpg.SendRequest(config, "POST", config.Project, disableUrl, config.UserAgent, nil)
 				if err != nil {
 					log.Printf("[INFO][SWEEPER_LOG] Error disabling for url %s : %s", disableUrl, err)
 				} else {
@@ -110,7 +113,7 @@ func testSweepCertificateAuthority(region string) error {
 			}
 
 			deleteUrl := config.PrivatecaBasePath + caName
-			_, err = SendRequest(config, "DELETE", config.Project, deleteUrl, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "DELETE", config.Project, deleteUrl, config.UserAgent, nil)
 			if err != nil {
 				log.Printf("[INFO][SWEEPER_LOG] Error deleting for url %s : %s", deleteUrl, err)
 			} else {

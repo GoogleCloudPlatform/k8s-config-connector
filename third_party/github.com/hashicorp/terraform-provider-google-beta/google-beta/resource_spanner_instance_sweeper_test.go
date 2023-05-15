@@ -6,6 +6,8 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func init() {
@@ -20,7 +22,7 @@ func testSweepSpannerInstance(region string) error {
 	resourceName := "SpannerInstance"
 	log.Printf("[INFO][SWEEPER_LOG] Starting sweeper for %s", resourceName)
 
-	config, err := SharedConfigForRegion(region)
+	config, err := acctest.SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -34,7 +36,7 @@ func testSweepSpannerInstance(region string) error {
 
 	spannerUrl := "https://spanner.googleapis.com/v1"
 	listUrl := spannerUrl + "/projects/" + config.Project + "/instances"
-	res, err := SendRequest(config, "GET", config.Project, listUrl, config.UserAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", config.Project, listUrl, config.UserAgent, nil)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] Error in response from request %s: %s", listUrl, err)
 		return nil
@@ -62,14 +64,14 @@ func testSweepSpannerInstance(region string) error {
 		shortName := name[strings.LastIndex(name, "/")+1:]
 
 		// Increment count and skip if resource is not sweepable.
-		if !IsSweepableTestResource(shortName) {
+		if !acctest.IsSweepableTestResource(shortName) {
 			nonPrefixCount++
 			continue
 		}
 
 		deleteUrl := spannerUrl + "/" + name
 		// Don't wait on operations as we may have a lot to delete
-		_, err = SendRequest(config, "DELETE", config.Project, deleteUrl, config.UserAgent, nil)
+		_, err = transport_tpg.SendRequest(config, "DELETE", config.Project, deleteUrl, config.UserAgent, nil)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] Error deleting for url %s : %s", deleteUrl, err)
 		} else {

@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceGoogleFolder() *schema.Resource {
@@ -53,8 +55,8 @@ func DataSourceGoogleFolder() *schema.Resource {
 }
 
 func dataSourceFolderRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -90,7 +92,7 @@ func canonicalFolderName(ba string) string {
 	return "folders/" + ba
 }
 
-func lookupOrganizationName(parent, userAgent string, d *schema.ResourceData, config *Config) (string, error) {
+func lookupOrganizationName(parent, userAgent string, d *schema.ResourceData, config *transport_tpg.Config) (string, error) {
 	if parent == "" || strings.HasPrefix(parent, "organizations/") {
 		return parent, nil
 	} else if strings.HasPrefix(parent, "folders/") {

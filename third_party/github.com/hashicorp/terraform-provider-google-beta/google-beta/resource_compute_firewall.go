@@ -27,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/customdiff"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func resourceComputeFirewallRuleHash(v interface{}) int {
@@ -45,7 +49,7 @@ func resourceComputeFirewallRuleHash(v interface{}) int {
 		}
 	}
 
-	return hashcode(buf.String())
+	return tpgresource.Hashcode(buf.String())
 }
 
 func compareCaseInsensitive(k, old, new string, d *schema.ResourceData) bool {
@@ -150,7 +154,7 @@ func ResourceComputeFirewall() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateGCEName,
+				ValidateFunc: verify.ValidateGCEName,
 				Description: `Name of the resource. Provided by the client when the resource is
 created. The name must be 1-63 characters long, and comply with
 RFC1035. Specifically, the name must be 1-63 characters long and match
@@ -207,11 +211,9 @@ must be expressed in CIDR format. IPv4 or IPv6 ranges are supported.`,
 				Computed:     true,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"INGRESS", "EGRESS", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"INGRESS", "EGRESS", ""}),
 				Description: `Direction of traffic to which this firewall applies; default is
-INGRESS. Note: For INGRESS traffic, it is NOT supported to specify
-destinationRanges; For EGRESS traffic, it is NOT supported to specify
-'source_ranges' OR 'source_tags'. For INGRESS traffic, one of 'source_ranges',
+INGRESS. Note: For INGRESS traffic, one of 'source_ranges',
 'source_tags' or 'source_service_accounts' is required. Possible values: ["INGRESS", "EGRESS"]`,
 			},
 			"disabled": {
@@ -234,7 +236,7 @@ If defined, logging is enabled, and logs will be exported to Cloud Logging.`,
 						"metadata": {
 							Type:         schema.TypeString,
 							Required:     true,
-							ValidateFunc: validateEnum([]string{"EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA"}),
+							ValidateFunc: verify.ValidateEnum([]string{"EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA"}),
 							Description:  `This field denotes whether to include or exclude metadata for firewall logs. Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA"]`,
 						},
 					},
@@ -428,8 +430,8 @@ Example inputs include: ["22"], ["80","443"], and
 }
 
 func resourceComputeFirewallCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -438,31 +440,31 @@ func resourceComputeFirewallCreate(d *schema.ResourceData, meta interface{}) err
 	allowedProp, err := expandComputeFirewallAllow(d.Get("allow"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("allow"); !isEmptyValue(reflect.ValueOf(allowedProp)) && (ok || !reflect.DeepEqual(v, allowedProp)) {
+	} else if v, ok := d.GetOkExists("allow"); !tpgresource.IsEmptyValue(reflect.ValueOf(allowedProp)) && (ok || !reflect.DeepEqual(v, allowedProp)) {
 		obj["allowed"] = allowedProp
 	}
 	deniedProp, err := expandComputeFirewallDeny(d.Get("deny"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("deny"); !isEmptyValue(reflect.ValueOf(deniedProp)) && (ok || !reflect.DeepEqual(v, deniedProp)) {
+	} else if v, ok := d.GetOkExists("deny"); !tpgresource.IsEmptyValue(reflect.ValueOf(deniedProp)) && (ok || !reflect.DeepEqual(v, deniedProp)) {
 		obj["denied"] = deniedProp
 	}
 	descriptionProp, err := expandComputeFirewallDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	destinationRangesProp, err := expandComputeFirewallDestinationRanges(d.Get("destination_ranges"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("destination_ranges"); !isEmptyValue(reflect.ValueOf(destinationRangesProp)) && (ok || !reflect.DeepEqual(v, destinationRangesProp)) {
+	} else if v, ok := d.GetOkExists("destination_ranges"); !tpgresource.IsEmptyValue(reflect.ValueOf(destinationRangesProp)) && (ok || !reflect.DeepEqual(v, destinationRangesProp)) {
 		obj["destinationRanges"] = destinationRangesProp
 	}
 	directionProp, err := expandComputeFirewallDirection(d.Get("direction"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("direction"); !isEmptyValue(reflect.ValueOf(directionProp)) && (ok || !reflect.DeepEqual(v, directionProp)) {
+	} else if v, ok := d.GetOkExists("direction"); !tpgresource.IsEmptyValue(reflect.ValueOf(directionProp)) && (ok || !reflect.DeepEqual(v, directionProp)) {
 		obj["direction"] = directionProp
 	}
 	disabledProp, err := expandComputeFirewallDisabled(d.Get("disabled"), d, config)
@@ -480,13 +482,13 @@ func resourceComputeFirewallCreate(d *schema.ResourceData, meta interface{}) err
 	nameProp, err := expandComputeFirewallName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	networkProp, err := expandComputeFirewallNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 	priorityProp, err := expandComputeFirewallPriority(d.Get("priority"), d, config)
@@ -498,35 +500,35 @@ func resourceComputeFirewallCreate(d *schema.ResourceData, meta interface{}) err
 	sourceRangesProp, err := expandComputeFirewallSourceRanges(d.Get("source_ranges"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("source_ranges"); !isEmptyValue(reflect.ValueOf(sourceRangesProp)) && (ok || !reflect.DeepEqual(v, sourceRangesProp)) {
+	} else if v, ok := d.GetOkExists("source_ranges"); !tpgresource.IsEmptyValue(reflect.ValueOf(sourceRangesProp)) && (ok || !reflect.DeepEqual(v, sourceRangesProp)) {
 		obj["sourceRanges"] = sourceRangesProp
 	}
 	sourceServiceAccountsProp, err := expandComputeFirewallSourceServiceAccounts(d.Get("source_service_accounts"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("source_service_accounts"); !isEmptyValue(reflect.ValueOf(sourceServiceAccountsProp)) && (ok || !reflect.DeepEqual(v, sourceServiceAccountsProp)) {
+	} else if v, ok := d.GetOkExists("source_service_accounts"); !tpgresource.IsEmptyValue(reflect.ValueOf(sourceServiceAccountsProp)) && (ok || !reflect.DeepEqual(v, sourceServiceAccountsProp)) {
 		obj["sourceServiceAccounts"] = sourceServiceAccountsProp
 	}
 	sourceTagsProp, err := expandComputeFirewallSourceTags(d.Get("source_tags"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("source_tags"); !isEmptyValue(reflect.ValueOf(sourceTagsProp)) && (ok || !reflect.DeepEqual(v, sourceTagsProp)) {
+	} else if v, ok := d.GetOkExists("source_tags"); !tpgresource.IsEmptyValue(reflect.ValueOf(sourceTagsProp)) && (ok || !reflect.DeepEqual(v, sourceTagsProp)) {
 		obj["sourceTags"] = sourceTagsProp
 	}
 	targetServiceAccountsProp, err := expandComputeFirewallTargetServiceAccounts(d.Get("target_service_accounts"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("target_service_accounts"); !isEmptyValue(reflect.ValueOf(targetServiceAccountsProp)) && (ok || !reflect.DeepEqual(v, targetServiceAccountsProp)) {
+	} else if v, ok := d.GetOkExists("target_service_accounts"); !tpgresource.IsEmptyValue(reflect.ValueOf(targetServiceAccountsProp)) && (ok || !reflect.DeepEqual(v, targetServiceAccountsProp)) {
 		obj["targetServiceAccounts"] = targetServiceAccountsProp
 	}
 	targetTagsProp, err := expandComputeFirewallTargetTags(d.Get("target_tags"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("target_tags"); !isEmptyValue(reflect.ValueOf(targetTagsProp)) && (ok || !reflect.DeepEqual(v, targetTagsProp)) {
+	} else if v, ok := d.GetOkExists("target_tags"); !tpgresource.IsEmptyValue(reflect.ValueOf(targetTagsProp)) && (ok || !reflect.DeepEqual(v, targetTagsProp)) {
 		obj["targetTags"] = targetTagsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/firewalls")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/firewalls")
 	if err != nil {
 		return err
 	}
@@ -534,24 +536,24 @@ func resourceComputeFirewallCreate(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Creating new Firewall: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Firewall: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Firewall: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/firewalls/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/firewalls/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -573,33 +575,33 @@ func resourceComputeFirewallCreate(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceComputeFirewallRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/firewalls/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/firewalls/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Firewall: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeFirewall %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeFirewall %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -654,7 +656,7 @@ func resourceComputeFirewallRead(d *schema.ResourceData, meta interface{}) error
 	if err := d.Set("target_tags", flattenComputeFirewallTargetTags(res["targetTags"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Firewall: %s", err)
 	}
-	if err := d.Set("self_link", ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
+	if err := d.Set("self_link", tpgresource.ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
 		return fmt.Errorf("Error reading Firewall: %s", err)
 	}
 
@@ -662,15 +664,15 @@ func resourceComputeFirewallRead(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceComputeFirewallUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Firewall: %s", err)
 	}
@@ -680,25 +682,25 @@ func resourceComputeFirewallUpdate(d *schema.ResourceData, meta interface{}) err
 	allowedProp, err := expandComputeFirewallAllow(d.Get("allow"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("allow"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, allowedProp)) {
+	} else if v, ok := d.GetOkExists("allow"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, allowedProp)) {
 		obj["allowed"] = allowedProp
 	}
 	deniedProp, err := expandComputeFirewallDeny(d.Get("deny"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("deny"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, deniedProp)) {
+	} else if v, ok := d.GetOkExists("deny"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, deniedProp)) {
 		obj["denied"] = deniedProp
 	}
 	descriptionProp, err := expandComputeFirewallDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	destinationRangesProp, err := expandComputeFirewallDestinationRanges(d.Get("destination_ranges"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("destination_ranges"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, destinationRangesProp)) {
+	} else if v, ok := d.GetOkExists("destination_ranges"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, destinationRangesProp)) {
 		obj["destinationRanges"] = destinationRangesProp
 	}
 	disabledProp, err := expandComputeFirewallDisabled(d.Get("disabled"), d, config)
@@ -716,7 +718,7 @@ func resourceComputeFirewallUpdate(d *schema.ResourceData, meta interface{}) err
 	networkProp, err := expandComputeFirewallNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 	priorityProp, err := expandComputeFirewallPriority(d.Get("priority"), d, config)
@@ -728,35 +730,35 @@ func resourceComputeFirewallUpdate(d *schema.ResourceData, meta interface{}) err
 	sourceRangesProp, err := expandComputeFirewallSourceRanges(d.Get("source_ranges"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("source_ranges"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sourceRangesProp)) {
+	} else if v, ok := d.GetOkExists("source_ranges"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sourceRangesProp)) {
 		obj["sourceRanges"] = sourceRangesProp
 	}
 	sourceServiceAccountsProp, err := expandComputeFirewallSourceServiceAccounts(d.Get("source_service_accounts"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("source_service_accounts"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sourceServiceAccountsProp)) {
+	} else if v, ok := d.GetOkExists("source_service_accounts"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sourceServiceAccountsProp)) {
 		obj["sourceServiceAccounts"] = sourceServiceAccountsProp
 	}
 	sourceTagsProp, err := expandComputeFirewallSourceTags(d.Get("source_tags"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("source_tags"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sourceTagsProp)) {
+	} else if v, ok := d.GetOkExists("source_tags"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sourceTagsProp)) {
 		obj["sourceTags"] = sourceTagsProp
 	}
 	targetServiceAccountsProp, err := expandComputeFirewallTargetServiceAccounts(d.Get("target_service_accounts"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("target_service_accounts"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, targetServiceAccountsProp)) {
+	} else if v, ok := d.GetOkExists("target_service_accounts"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, targetServiceAccountsProp)) {
 		obj["targetServiceAccounts"] = targetServiceAccountsProp
 	}
 	targetTagsProp, err := expandComputeFirewallTargetTags(d.Get("target_tags"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("target_tags"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, targetTagsProp)) {
+	} else if v, ok := d.GetOkExists("target_tags"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, targetTagsProp)) {
 		obj["targetTags"] = targetTagsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/firewalls/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/firewalls/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -764,11 +766,11 @@ func resourceComputeFirewallUpdate(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Updating Firewall %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Firewall %q: %s", d.Id(), err)
@@ -788,21 +790,21 @@ func resourceComputeFirewallUpdate(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceComputeFirewallDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Firewall: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/firewalls/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/firewalls/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -811,13 +813,13 @@ func resourceComputeFirewallDelete(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Deleting Firewall %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Firewall")
+		return transport_tpg.HandleNotFoundError(err, d, "Firewall")
 	}
 
 	err = ComputeOperationWaitTime(
@@ -833,7 +835,7 @@ func resourceComputeFirewallDelete(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceComputeFirewallImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/global/firewalls/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
@@ -843,7 +845,7 @@ func resourceComputeFirewallImport(d *schema.ResourceData, meta interface{}) ([]
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/global/firewalls/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/global/firewalls/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -852,7 +854,7 @@ func resourceComputeFirewallImport(d *schema.ResourceData, meta interface{}) ([]
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenComputeFirewallAllow(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallAllow(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -871,19 +873,19 @@ func flattenComputeFirewallAllow(v interface{}, d *schema.ResourceData, config *
 	}
 	return transformed
 }
-func flattenComputeFirewallAllowProtocol(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallAllowProtocol(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeFirewallAllowPorts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallAllowPorts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeFirewallCreationTimestamp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallCreationTimestamp(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeFirewallDeny(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallDeny(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -902,34 +904,34 @@ func flattenComputeFirewallDeny(v interface{}, d *schema.ResourceData, config *C
 	}
 	return transformed
 }
-func flattenComputeFirewallDenyProtocol(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallDenyProtocol(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeFirewallDenyPorts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallDenyPorts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeFirewallDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeFirewallDestinationRanges(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallDestinationRanges(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
 	return schema.NewSet(schema.HashString, v.([]interface{}))
 }
 
-func flattenComputeFirewallDirection(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallDirection(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeFirewallDisabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallDisabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeFirewallLogConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallLogConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -948,18 +950,18 @@ func flattenComputeFirewallLogConfig(v interface{}, d *schema.ResourceData, conf
 	return []interface{}{transformed}
 }
 
-func flattenComputeFirewallName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeFirewallNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return ConvertSelfLinkToV1(v.(string))
+	return tpgresource.ConvertSelfLinkToV1(v.(string))
 }
 
-func flattenComputeFirewallPriority(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallPriority(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -976,42 +978,42 @@ func flattenComputeFirewallPriority(v interface{}, d *schema.ResourceData, confi
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeFirewallSourceRanges(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallSourceRanges(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
 	return schema.NewSet(schema.HashString, v.([]interface{}))
 }
 
-func flattenComputeFirewallSourceServiceAccounts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallSourceServiceAccounts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
 	return schema.NewSet(schema.HashString, v.([]interface{}))
 }
 
-func flattenComputeFirewallSourceTags(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallSourceTags(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
 	return schema.NewSet(schema.HashString, v.([]interface{}))
 }
 
-func flattenComputeFirewallTargetServiceAccounts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallTargetServiceAccounts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
 	return schema.NewSet(schema.HashString, v.([]interface{}))
 }
 
-func flattenComputeFirewallTargetTags(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeFirewallTargetTags(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
 	return schema.NewSet(schema.HashString, v.([]interface{}))
 }
 
-func expandComputeFirewallAllow(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallAllow(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
@@ -1025,14 +1027,14 @@ func expandComputeFirewallAllow(v interface{}, d TerraformResourceData, config *
 		transformedProtocol, err := expandComputeFirewallAllowProtocol(original["protocol"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedProtocol); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedProtocol); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["IPProtocol"] = transformedProtocol
 		}
 
 		transformedPorts, err := expandComputeFirewallAllowPorts(original["ports"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPorts); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPorts); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["ports"] = transformedPorts
 		}
 
@@ -1041,15 +1043,15 @@ func expandComputeFirewallAllow(v interface{}, d TerraformResourceData, config *
 	return req, nil
 }
 
-func expandComputeFirewallAllowProtocol(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallAllowProtocol(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeFirewallAllowPorts(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallAllowPorts(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeFirewallDeny(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallDeny(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
@@ -1063,14 +1065,14 @@ func expandComputeFirewallDeny(v interface{}, d TerraformResourceData, config *C
 		transformedProtocol, err := expandComputeFirewallDenyProtocol(original["protocol"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedProtocol); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedProtocol); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["IPProtocol"] = transformedProtocol
 		}
 
 		transformedPorts, err := expandComputeFirewallDenyPorts(original["ports"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPorts); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPorts); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["ports"] = transformedPorts
 		}
 
@@ -1079,32 +1081,32 @@ func expandComputeFirewallDeny(v interface{}, d TerraformResourceData, config *C
 	return req, nil
 }
 
-func expandComputeFirewallDenyProtocol(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallDenyProtocol(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeFirewallDenyPorts(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallDenyPorts(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeFirewallDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeFirewallDestinationRanges(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallDestinationRanges(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	return v, nil
 }
 
-func expandComputeFirewallDirection(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallDirection(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeFirewallDisabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallDisabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeFirewallLogConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallLogConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	transformed := make(map[string]interface{})
 
@@ -1124,43 +1126,43 @@ func expandComputeFirewallLogConfig(v interface{}, d TerraformResourceData, conf
 	return transformed, nil
 }
 
-func expandComputeFirewallName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeFirewallNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	f, err := parseGlobalFieldValue("networks", v.(string), "project", d, config, true)
+func expandComputeFirewallNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	f, err := tpgresource.ParseGlobalFieldValue("networks", v.(string), "project", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for network: %s", err)
 	}
 	return f.RelativeLink(), nil
 }
 
-func expandComputeFirewallPriority(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallPriority(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeFirewallSourceRanges(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallSourceRanges(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	return v, nil
 }
 
-func expandComputeFirewallSourceServiceAccounts(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallSourceServiceAccounts(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	return v, nil
 }
 
-func expandComputeFirewallSourceTags(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallSourceTags(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	return v, nil
 }
 
-func expandComputeFirewallTargetServiceAccounts(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallTargetServiceAccounts(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	return v, nil
 }
 
-func expandComputeFirewallTargetTags(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeFirewallTargetTags(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	return v, nil
 }

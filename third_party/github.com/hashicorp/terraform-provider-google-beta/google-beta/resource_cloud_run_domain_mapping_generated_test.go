@@ -21,18 +21,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccCloudRunDomainMapping_cloudRunDomainMappingBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"namespace":     GetTestProjectFromEnv(),
+		"namespace":     acctest.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunDomainMappingDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -96,7 +100,7 @@ func testAccCheckCloudRunDomainMappingDestroyProducer(t *testing.T) func(s *terr
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{CloudRunBasePath}}apis/domains.cloudrun.com/v1/namespaces/{{project}}/domainmappings/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CloudRunBasePath}}apis/domains.cloudrun.com/v1/namespaces/{{project}}/domainmappings/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -107,7 +111,7 @@ func testAccCheckCloudRunDomainMappingDestroyProducer(t *testing.T) func(s *terr
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, IsCloudRunCreationConflict)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, transport_tpg.IsCloudRunCreationConflict)
 			if err == nil {
 				return fmt.Errorf("CloudRunDomainMapping still exists at %s", url)
 			}

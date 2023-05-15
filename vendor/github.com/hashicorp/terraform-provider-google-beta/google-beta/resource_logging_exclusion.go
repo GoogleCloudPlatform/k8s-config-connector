@@ -5,6 +5,8 @@ import (
 	"regexp"
 	"strings"
 
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"google.golang.org/api/logging/v2"
 )
@@ -51,7 +53,7 @@ func ResourceLoggingExclusion(parentSpecificSchema map[string]*schema.Schema, ne
 
 func resourceLoggingExclusionCreate(newUpdaterFunc newResourceLoggingExclusionUpdaterFunc) schema.CreateFunc {
 	return func(d *schema.ResourceData, meta interface{}) error {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 		updater, err := newUpdaterFunc(d, config)
 		if err != nil {
 			return err
@@ -61,8 +63,8 @@ func resourceLoggingExclusionCreate(newUpdaterFunc newResourceLoggingExclusionUp
 
 		// Logging exclusions don't seem to be able to be mutated in parallel, see
 		// https://github.com/hashicorp/terraform-provider-google/issues/4796
-		mutexKV.Lock(id.parent())
-		defer mutexKV.Unlock(id.parent())
+		transport_tpg.MutexStore.Lock(id.parent())
+		defer transport_tpg.MutexStore.Unlock(id.parent())
 
 		err = updater.CreateLoggingExclusion(id.parent(), exclusion)
 		if err != nil {
@@ -77,7 +79,7 @@ func resourceLoggingExclusionCreate(newUpdaterFunc newResourceLoggingExclusionUp
 
 func resourceLoggingExclusionRead(newUpdaterFunc newResourceLoggingExclusionUpdaterFunc) schema.ReadFunc {
 	return func(d *schema.ResourceData, meta interface{}) error {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 		updater, err := newUpdaterFunc(d, config)
 		if err != nil {
 			return err
@@ -86,7 +88,7 @@ func resourceLoggingExclusionRead(newUpdaterFunc newResourceLoggingExclusionUpda
 		exclusion, err := updater.ReadLoggingExclusion(d.Id())
 
 		if err != nil {
-			return handleNotFoundError(err, d, fmt.Sprintf("Logging Exclusion %s", d.Get("name").(string)))
+			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Logging Exclusion %s", d.Get("name").(string)))
 		}
 
 		if err := flattenResourceLoggingExclusion(d, exclusion); err != nil {
@@ -105,7 +107,7 @@ func resourceLoggingExclusionRead(newUpdaterFunc newResourceLoggingExclusionUpda
 
 func resourceLoggingExclusionUpdate(newUpdaterFunc newResourceLoggingExclusionUpdaterFunc) schema.UpdateFunc {
 	return func(d *schema.ResourceData, meta interface{}) error {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 		updater, err := newUpdaterFunc(d, config)
 		if err != nil {
 			return err
@@ -116,8 +118,8 @@ func resourceLoggingExclusionUpdate(newUpdaterFunc newResourceLoggingExclusionUp
 
 		// Logging exclusions don't seem to be able to be mutated in parallel, see
 		// https://github.com/hashicorp/terraform-provider-google/issues/4796
-		mutexKV.Lock(id.parent())
-		defer mutexKV.Unlock(id.parent())
+		transport_tpg.MutexStore.Lock(id.parent())
+		defer transport_tpg.MutexStore.Unlock(id.parent())
 
 		err = updater.UpdateLoggingExclusion(d.Id(), exclusion, updateMask)
 		if err != nil {
@@ -130,7 +132,7 @@ func resourceLoggingExclusionUpdate(newUpdaterFunc newResourceLoggingExclusionUp
 
 func resourceLoggingExclusionDelete(newUpdaterFunc newResourceLoggingExclusionUpdaterFunc) schema.DeleteFunc {
 	return func(d *schema.ResourceData, meta interface{}) error {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 		updater, err := newUpdaterFunc(d, config)
 		if err != nil {
 			return err
@@ -139,8 +141,8 @@ func resourceLoggingExclusionDelete(newUpdaterFunc newResourceLoggingExclusionUp
 		id, _ := expandResourceLoggingExclusion(d, updater.GetResourceType(), updater.GetResourceId())
 		// Logging exclusions don't seem to be able to be mutated in parallel, see
 		// https://github.com/hashicorp/terraform-provider-google/issues/4796
-		mutexKV.Lock(id.parent())
-		defer mutexKV.Unlock(id.parent())
+		transport_tpg.MutexStore.Lock(id.parent())
+		defer transport_tpg.MutexStore.Unlock(id.parent())
 
 		err = updater.DeleteLoggingExclusion(d.Id())
 		if err != nil {
@@ -154,7 +156,7 @@ func resourceLoggingExclusionDelete(newUpdaterFunc newResourceLoggingExclusionUp
 
 func resourceLoggingExclusionImportState(resourceIdParser resourceIdParserFunc) schema.StateFunc {
 	return func(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-		config := meta.(*Config)
+		config := meta.(*transport_tpg.Config)
 		err := resourceIdParser(d, config)
 		if err != nil {
 			return nil, err
@@ -244,7 +246,7 @@ type ResourceLoggingExclusionUpdater interface {
 	DescribeResource() string
 }
 
-type newResourceLoggingExclusionUpdaterFunc func(d *schema.ResourceData, config *Config) (ResourceLoggingExclusionUpdater, error)
+type newResourceLoggingExclusionUpdaterFunc func(d *schema.ResourceData, config *transport_tpg.Config) (ResourceLoggingExclusionUpdater, error)
 
 // loggingExclusionResourceTypes contains all the possible Stackdriver Logging resource types. Used to parse ids safely.
 var loggingExclusionResourceTypes = []string{

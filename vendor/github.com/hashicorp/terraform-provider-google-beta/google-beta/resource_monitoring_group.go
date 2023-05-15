@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceMonitoringGroup() *schema.Resource {
@@ -63,7 +66,7 @@ groups that are clusters.`,
 			"parent_name": {
 				Type:             schema.TypeString,
 				Optional:         true,
-				DiffSuppressFunc: compareSelfLinkRelativePaths,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkRelativePaths,
 				Description: `The name of the group's parent, if it has one. The format is
 "projects/{project_id_or_number}/groups/{group_id}". For
 groups with no parent, parentName is the empty string, "".`,
@@ -86,8 +89,8 @@ groups with no parent, parentName is the empty string, "".`,
 }
 
 func resourceMonitoringGroupCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -96,36 +99,36 @@ func resourceMonitoringGroupCreate(d *schema.ResourceData, meta interface{}) err
 	parentNameProp, err := expandMonitoringGroupParentName(d.Get("parent_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("parent_name"); !isEmptyValue(reflect.ValueOf(parentNameProp)) && (ok || !reflect.DeepEqual(v, parentNameProp)) {
+	} else if v, ok := d.GetOkExists("parent_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(parentNameProp)) && (ok || !reflect.DeepEqual(v, parentNameProp)) {
 		obj["parentName"] = parentNameProp
 	}
 	isClusterProp, err := expandMonitoringGroupIsCluster(d.Get("is_cluster"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("is_cluster"); !isEmptyValue(reflect.ValueOf(isClusterProp)) && (ok || !reflect.DeepEqual(v, isClusterProp)) {
+	} else if v, ok := d.GetOkExists("is_cluster"); !tpgresource.IsEmptyValue(reflect.ValueOf(isClusterProp)) && (ok || !reflect.DeepEqual(v, isClusterProp)) {
 		obj["isCluster"] = isClusterProp
 	}
 	displayNameProp, err := expandMonitoringGroupDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	filterProp, err := expandMonitoringGroupFilter(d.Get("filter"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("filter"); !isEmptyValue(reflect.ValueOf(filterProp)) && (ok || !reflect.DeepEqual(v, filterProp)) {
+	} else if v, ok := d.GetOkExists("filter"); !tpgresource.IsEmptyValue(reflect.ValueOf(filterProp)) && (ok || !reflect.DeepEqual(v, filterProp)) {
 		obj["filter"] = filterProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "stackdriver/groups/{{project}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "stackdriver/groups/{{project}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/projects/{{project}}/groups")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/projects/{{project}}/groups")
 	if err != nil {
 		return err
 	}
@@ -133,18 +136,18 @@ func resourceMonitoringGroupCreate(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Creating new Group: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Group: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), transport_tpg.IsMonitoringConcurrentEditError)
 	if err != nil {
 		return fmt.Errorf("Error creating Group: %s", err)
 	}
@@ -153,7 +156,7 @@ func resourceMonitoringGroupCreate(d *schema.ResourceData, meta interface{}) err
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -183,33 +186,33 @@ func resourceMonitoringGroupCreate(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceMonitoringGroupRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Group: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil, transport_tpg.IsMonitoringConcurrentEditError)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("MonitoringGroup %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("MonitoringGroup %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -236,15 +239,15 @@ func resourceMonitoringGroupRead(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceMonitoringGroupUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Group: %s", err)
 	}
@@ -254,36 +257,36 @@ func resourceMonitoringGroupUpdate(d *schema.ResourceData, meta interface{}) err
 	parentNameProp, err := expandMonitoringGroupParentName(d.Get("parent_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("parent_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, parentNameProp)) {
+	} else if v, ok := d.GetOkExists("parent_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, parentNameProp)) {
 		obj["parentName"] = parentNameProp
 	}
 	isClusterProp, err := expandMonitoringGroupIsCluster(d.Get("is_cluster"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("is_cluster"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, isClusterProp)) {
+	} else if v, ok := d.GetOkExists("is_cluster"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, isClusterProp)) {
 		obj["isCluster"] = isClusterProp
 	}
 	displayNameProp, err := expandMonitoringGroupDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	filterProp, err := expandMonitoringGroupFilter(d.Get("filter"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("filter"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, filterProp)) {
+	} else if v, ok := d.GetOkExists("filter"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, filterProp)) {
 		obj["filter"] = filterProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "stackdriver/groups/{{project}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "stackdriver/groups/{{project}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -291,11 +294,11 @@ func resourceMonitoringGroupUpdate(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Updating Group %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate), IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate), transport_tpg.IsMonitoringConcurrentEditError)
 
 	if err != nil {
 		return fmt.Errorf("Error updating Group %q: %s", d.Id(), err)
@@ -307,28 +310,28 @@ func resourceMonitoringGroupUpdate(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceMonitoringGroupDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Group: %s", err)
 	}
 	billingProject = project
 
-	lockName, err := ReplaceVars(d, config, "stackdriver/groups/{{project}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "stackdriver/groups/{{project}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -337,13 +340,13 @@ func resourceMonitoringGroupDelete(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Deleting Group %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), transport_tpg.IsMonitoringConcurrentEditError)
 	if err != nil {
-		return handleNotFoundError(err, d, "Group")
+		return transport_tpg.HandleNotFoundError(err, d, "Group")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Group %q: %#v", d.Id(), res)
@@ -352,7 +355,7 @@ func resourceMonitoringGroupDelete(d *schema.ResourceData, meta interface{}) err
 
 func resourceMonitoringGroupImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<project>[^ ]+) (?P<name>[^ ]+)", "(?P<name>[^ ]+)"}, d, config); err != nil {
@@ -362,38 +365,38 @@ func resourceMonitoringGroupImport(d *schema.ResourceData, meta interface{}) ([]
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenMonitoringGroupParentName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringGroupParentName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringGroupName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringGroupName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringGroupIsCluster(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringGroupIsCluster(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringGroupDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringGroupDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringGroupFilter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringGroupFilter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandMonitoringGroupParentName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringGroupParentName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringGroupIsCluster(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringGroupIsCluster(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringGroupDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringGroupDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringGroupFilter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringGroupFilter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

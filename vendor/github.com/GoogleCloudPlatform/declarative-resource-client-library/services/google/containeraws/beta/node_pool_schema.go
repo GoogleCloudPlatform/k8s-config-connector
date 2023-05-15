@@ -362,6 +362,30 @@ func DCLNodePoolSchema() *dcl.Schema {
 											GoType: "string",
 										},
 									},
+									"spotConfig": &dcl.Property{
+										Type:        "object",
+										GoName:      "SpotConfig",
+										GoType:      "NodePoolConfigSpotConfig",
+										Description: "Optional. When specified, the node pool will provision Spot instances from the set of spot_config.instance_types. This field is mutually exclusive with `instance_type`",
+										Immutable:   true,
+										Required: []string{
+											"instanceTypes",
+										},
+										Properties: map[string]*dcl.Property{
+											"instanceTypes": &dcl.Property{
+												Type:        "array",
+												GoName:      "InstanceTypes",
+												Description: "List of AWS EC2 instance types for creating a spot node pool's nodes. The specified instance types must have the same number of CPUs and memory. You can use the Amazon EC2 Instance Selector tool (https://github.com/aws/amazon-ec2-instance-selector) to choose instance types with matching CPU and memory",
+												Immutable:   true,
+												SendEmpty:   true,
+												ListType:    "list",
+												Items: &dcl.Property{
+													Type:   "string",
+													GoType: "string",
+												},
+											},
+										},
+									},
 									"sshConfig": &dcl.Property{
 										Type:        "object",
 										GoName:      "SshConfig",

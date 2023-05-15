@@ -106,6 +106,11 @@ use the name of a zone or region respectively.
 ### Spec
 #### Schema
 ```yaml
+asyncPrimaryDisk:
+  diskRef:
+    external: string
+    name: string
+    namespace: string
 description: string
 diskEncryptionKey:
   kmsKeyRef:
@@ -190,6 +195,56 @@ type: string
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>asyncPrimaryDisk</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. A nested object resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>asyncPrimaryDisk.diskRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Primary disk for asynchronous disk replication.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>asyncPrimaryDisk.diskRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeDisk` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>asyncPrimaryDisk.diskRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>asyncPrimaryDisk.diskRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>description</code></p>
@@ -376,8 +431,8 @@ RFC 4648 base64 to either encrypt or decrypt this resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit 
-customer-supplied encryption key to either encrypt or decrypt 
+            <p>{% verbatim %}Immutable. Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit
+customer-supplied encryption key to either encrypt or decrypt
 this resource. You can provide either the rawKey or the rsaEncryptedKey.{% endverbatim %}</p>
         </td>
     </tr>

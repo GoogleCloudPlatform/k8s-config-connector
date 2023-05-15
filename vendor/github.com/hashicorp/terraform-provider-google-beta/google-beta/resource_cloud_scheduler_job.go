@@ -24,6 +24,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 // Both oidc and oauth headers cannot be set
@@ -58,7 +62,7 @@ func authHeaderDiffSuppress(k, old, new string, d *schema.ResourceData) bool {
 		attr := b[4]
 
 		if block == "oauth_token" && attr == "scope" {
-			if old == canonicalizeServiceScope("cloud-platform") && new == "" {
+			if old == tpgresource.CanonicalizeServiceScope("cloud-platform") && new == "" {
 				return true
 			}
 		}
@@ -124,7 +128,7 @@ func ResourceCloudSchedulerJob() *schema.Resource {
 				Type:     schema.TypeList,
 				Optional: true,
 				Description: `App Engine HTTP target.
-If the job providers a App Engine HTTP target the cron will 
+If the job providers a App Engine HTTP target the cron will
 send a request to the service instance`,
 				MaxItems: 1,
 				Elem: &schema.Resource{
@@ -133,9 +137,9 @@ send a request to the service instance`,
 							Type:     schema.TypeString,
 							Required: true,
 							Description: `The relative URI.
-The relative URL must begin with "/" and must be a valid HTTP relative URL. 
-It can contain a path, query string arguments, and \# fragments. 
-If the relative URL is empty, then the root path "/" will be used. 
+The relative URL must begin with "/" and must be a valid HTTP relative URL.
+It can contain a path, query string arguments, and \# fragments.
+If the relative URL is empty, then the root path "/" will be used.
 No spaces are allowed, and the maximum length allowed is 2083 characters`,
 						},
 						"app_engine_routing": {
@@ -172,9 +176,9 @@ By default, the job is sent to the version which is the default version when the
 						"body": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateBase64String,
-							Description: `HTTP request body. 
-A request body is allowed only if the HTTP method is POST or PUT. 
+							ValidateFunc: verify.ValidateBase64String,
+							Description: `HTTP request body.
+A request body is allowed only if the HTTP method is POST or PUT.
 It will result in invalid argument error to set a body on a job with an incompatible HttpMethod.
 
 A base64-encoded string.`,
@@ -184,7 +188,7 @@ A base64-encoded string.`,
 							Optional:     true,
 							ValidateFunc: validateHttpHeaders(),
 							Description: `HTTP request headers.
-This map contains the header field names and values. 
+This map contains the header field names and values.
 Headers can be set when the job is created.`,
 							Elem: &schema.Schema{Type: schema.TypeString},
 						},
@@ -200,7 +204,7 @@ Headers can be set when the job is created.`,
 			"attempt_deadline": {
 				Type:             schema.TypeString,
 				Optional:         true,
-				DiffSuppressFunc: EmptyOrDefaultStringSuppress("180s"),
+				DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress("180s"),
 				Description: `The deadline for job attempts. If the request handler does not respond by this deadline then the request is
 cancelled and the attempt is marked as a DEADLINE_EXCEEDED failure. The failed attempt can be viewed in
 execution logs. Cloud Scheduler will retry the job according to the RetryConfig.
@@ -214,14 +218,14 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
 			"description": {
 				Type:     schema.TypeString,
 				Optional: true,
-				Description: `A human-readable description for the job. 
+				Description: `A human-readable description for the job.
 This string must not contain more than 500 characters.`,
 			},
 			"http_target": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Description: `HTTP target.
-If the job providers a http_target the cron will 
+If the job providers a http_target the cron will
 send a request to the targeted url`,
 				MaxItems: 1,
 				Elem: &schema.Resource{
@@ -229,15 +233,15 @@ send a request to the targeted url`,
 						"uri": {
 							Type:             schema.TypeString,
 							Required:         true,
-							DiffSuppressFunc: LastSlashDiffSuppress,
+							DiffSuppressFunc: tpgresource.LastSlashDiffSuppress,
 							Description:      `The full URI path that the request will be sent to.`,
 						},
 						"body": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateBase64String,
-							Description: `HTTP request body. 
-A request body is allowed only if the HTTP method is POST, PUT, or PATCH. 
+							ValidateFunc: verify.ValidateBase64String,
+							Description: `HTTP request body.
+A request body is allowed only if the HTTP method is POST, PUT, or PATCH.
 It is an error to set body on a job with an incompatible HttpMethod.
 
 A base64-encoded string.`,
@@ -246,7 +250,7 @@ A base64-encoded string.`,
 							Type:         schema.TypeMap,
 							Optional:     true,
 							ValidateFunc: validateHttpHeaders(),
-							Description: `This map contains the header field names and values. 
+							Description: `This map contains the header field names and values.
 Repeated headers are not supported, but a header value can contain commas.`,
 							Elem: &schema.Schema{Type: schema.TypeString},
 						},
@@ -340,7 +344,7 @@ Pubsub message must contain either non-empty data, or at least one attribute.`,
 						"data": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateBase64String,
+							ValidateFunc: verify.ValidateBase64String,
 							Description: `The message payload for PubsubMessage.
 Pubsub message must contain either non-empty data, or at least one attribute.
 
@@ -360,8 +364,8 @@ Pubsub message must contain either non-empty data, or at least one attribute.
 			"retry_config": {
 				Type:     schema.TypeList,
 				Optional: true,
-				Description: `By default, if a job does not complete successfully, 
-meaning that an acknowledgement is not received from the handler, 
+				Description: `By default, if a job does not complete successfully,
+meaning that an acknowledgement is not received from the handler,
 then it will be retried with exponential backoff according to the settings`,
 				MaxItems: 1,
 				Elem: &schema.Resource{
@@ -379,8 +383,8 @@ A duration in seconds with up to nine fractional digits, terminated by 's'.`,
 							Computed: true,
 							Optional: true,
 							Description: `The time between retries will double maxDoublings times.
-A job's retry interval starts at minBackoffDuration, 
-then doubles maxDoublings times, then increases linearly, 
+A job's retry interval starts at minBackoffDuration,
+then doubles maxDoublings times, then increases linearly,
 and finally retries retries at intervals of maxBackoffDuration up to retryCount times.`,
 							AtLeastOneOf: []string{"retry_config.0.retry_count", "retry_config.0.max_retry_duration", "retry_config.0.min_backoff_duration", "retry_config.0.max_backoff_duration", "retry_config.0.max_doublings"},
 						},
@@ -388,7 +392,7 @@ and finally retries retries at intervals of maxBackoffDuration up to retryCount 
 							Type:     schema.TypeString,
 							Computed: true,
 							Optional: true,
-							Description: `The time limit for retrying a failed job, measured from time when an execution was first attempted. 
+							Description: `The time limit for retrying a failed job, measured from time when an execution was first attempted.
 If specified with retryCount, the job will be retried until both limits are reached.
 A duration in seconds with up to nine fractional digits, terminated by 's'.`,
 							AtLeastOneOf: []string{"retry_config.0.retry_count", "retry_config.0.max_retry_duration", "retry_config.0.min_backoff_duration", "retry_config.0.max_backoff_duration", "retry_config.0.max_doublings"},
@@ -405,7 +409,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'.`,
 							Type:     schema.TypeInt,
 							Computed: true,
 							Optional: true,
-							Description: `The number of attempts that the system will make to run a 
+							Description: `The number of attempts that the system will make to run a
 job using the exponential backoff procedure described by maxDoublings.
 Values greater than 5 and negative values are not allowed.`,
 							AtLeastOneOf: []string{"retry_config.0.retry_count", "retry_config.0.max_retry_duration", "retry_config.0.min_backoff_duration", "retry_config.0.max_backoff_duration", "retry_config.0.max_doublings"},
@@ -442,8 +446,8 @@ The value of this field must be a time zone name from the tz database.`,
 }
 
 func resourceCloudSchedulerJobCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -452,61 +456,61 @@ func resourceCloudSchedulerJobCreate(d *schema.ResourceData, meta interface{}) e
 	nameProp, err := expandCloudSchedulerJobName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	descriptionProp, err := expandCloudSchedulerJobDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	scheduleProp, err := expandCloudSchedulerJobSchedule(d.Get("schedule"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("schedule"); !isEmptyValue(reflect.ValueOf(scheduleProp)) && (ok || !reflect.DeepEqual(v, scheduleProp)) {
+	} else if v, ok := d.GetOkExists("schedule"); !tpgresource.IsEmptyValue(reflect.ValueOf(scheduleProp)) && (ok || !reflect.DeepEqual(v, scheduleProp)) {
 		obj["schedule"] = scheduleProp
 	}
 	timeZoneProp, err := expandCloudSchedulerJobTimeZone(d.Get("time_zone"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("time_zone"); !isEmptyValue(reflect.ValueOf(timeZoneProp)) && (ok || !reflect.DeepEqual(v, timeZoneProp)) {
+	} else if v, ok := d.GetOkExists("time_zone"); !tpgresource.IsEmptyValue(reflect.ValueOf(timeZoneProp)) && (ok || !reflect.DeepEqual(v, timeZoneProp)) {
 		obj["timeZone"] = timeZoneProp
 	}
 	pausedProp, err := expandCloudSchedulerJobPaused(d.Get("paused"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("paused"); !isEmptyValue(reflect.ValueOf(pausedProp)) && (ok || !reflect.DeepEqual(v, pausedProp)) {
+	} else if v, ok := d.GetOkExists("paused"); !tpgresource.IsEmptyValue(reflect.ValueOf(pausedProp)) && (ok || !reflect.DeepEqual(v, pausedProp)) {
 		obj["paused"] = pausedProp
 	}
 	attemptDeadlineProp, err := expandCloudSchedulerJobAttemptDeadline(d.Get("attempt_deadline"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("attempt_deadline"); !isEmptyValue(reflect.ValueOf(attemptDeadlineProp)) && (ok || !reflect.DeepEqual(v, attemptDeadlineProp)) {
+	} else if v, ok := d.GetOkExists("attempt_deadline"); !tpgresource.IsEmptyValue(reflect.ValueOf(attemptDeadlineProp)) && (ok || !reflect.DeepEqual(v, attemptDeadlineProp)) {
 		obj["attemptDeadline"] = attemptDeadlineProp
 	}
 	retryConfigProp, err := expandCloudSchedulerJobRetryConfig(d.Get("retry_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("retry_config"); !isEmptyValue(reflect.ValueOf(retryConfigProp)) && (ok || !reflect.DeepEqual(v, retryConfigProp)) {
+	} else if v, ok := d.GetOkExists("retry_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(retryConfigProp)) && (ok || !reflect.DeepEqual(v, retryConfigProp)) {
 		obj["retryConfig"] = retryConfigProp
 	}
 	pubsubTargetProp, err := expandCloudSchedulerJobPubsubTarget(d.Get("pubsub_target"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("pubsub_target"); !isEmptyValue(reflect.ValueOf(pubsubTargetProp)) && (ok || !reflect.DeepEqual(v, pubsubTargetProp)) {
+	} else if v, ok := d.GetOkExists("pubsub_target"); !tpgresource.IsEmptyValue(reflect.ValueOf(pubsubTargetProp)) && (ok || !reflect.DeepEqual(v, pubsubTargetProp)) {
 		obj["pubsubTarget"] = pubsubTargetProp
 	}
 	appEngineHttpTargetProp, err := expandCloudSchedulerJobAppEngineHttpTarget(d.Get("app_engine_http_target"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("app_engine_http_target"); !isEmptyValue(reflect.ValueOf(appEngineHttpTargetProp)) && (ok || !reflect.DeepEqual(v, appEngineHttpTargetProp)) {
+	} else if v, ok := d.GetOkExists("app_engine_http_target"); !tpgresource.IsEmptyValue(reflect.ValueOf(appEngineHttpTargetProp)) && (ok || !reflect.DeepEqual(v, appEngineHttpTargetProp)) {
 		obj["appEngineHttpTarget"] = appEngineHttpTargetProp
 	}
 	httpTargetProp, err := expandCloudSchedulerJobHttpTarget(d.Get("http_target"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("http_target"); !isEmptyValue(reflect.ValueOf(httpTargetProp)) && (ok || !reflect.DeepEqual(v, httpTargetProp)) {
+	} else if v, ok := d.GetOkExists("http_target"); !tpgresource.IsEmptyValue(reflect.ValueOf(httpTargetProp)) && (ok || !reflect.DeepEqual(v, httpTargetProp)) {
 		obj["httpTarget"] = httpTargetProp
 	}
 
@@ -515,7 +519,7 @@ func resourceCloudSchedulerJobCreate(d *schema.ResourceData, meta interface{}) e
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudSchedulerBasePath}}projects/{{project}}/locations/{{region}}/jobs")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudSchedulerBasePath}}projects/{{project}}/locations/{{region}}/jobs")
 	if err != nil {
 		return err
 	}
@@ -523,24 +527,24 @@ func resourceCloudSchedulerJobCreate(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Creating new Job: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Job: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Job: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/jobs/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/jobs/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -554,14 +558,14 @@ func resourceCloudSchedulerJobCreate(d *schema.ResourceData, meta interface{}) e
 	}
 
 	linkTmpl := fmt.Sprintf("{{CloudSchedulerBasePath}}projects/{{project}}/locations/{{region}}/jobs/{{name}}:%s", endpoint)
-	url, err = ReplaceVars(d, config, linkTmpl)
+	url, err = tpgresource.ReplaceVars(d, config, linkTmpl)
 	if err != nil {
 		return err
 	}
 
 	emptyReqBody := make(map[string]interface{})
 
-	_, err = SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, emptyReqBody, d.Timeout(schema.TimeoutUpdate))
+	_, err = transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, emptyReqBody, d.Timeout(schema.TimeoutUpdate))
 	if err != nil {
 		return fmt.Errorf("Error setting Cloud Scheduler Job status: %s", err)
 	}
@@ -574,40 +578,40 @@ func resourceCloudSchedulerJobCreate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceCloudSchedulerJobRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudSchedulerBasePath}}projects/{{project}}/locations/{{region}}/jobs/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudSchedulerBasePath}}projects/{{project}}/locations/{{region}}/jobs/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Job: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("CloudSchedulerJob %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("CloudSchedulerJob %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
 		return fmt.Errorf("Error reading Job: %s", err)
 	}
 
-	region, err := getRegion(d, config)
+	region, err := tpgresource.GetRegion(d, config)
 	if err != nil {
 		return err
 	}
@@ -653,15 +657,15 @@ func resourceCloudSchedulerJobRead(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceCloudSchedulerJobUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Job: %s", err)
 	}
@@ -671,55 +675,55 @@ func resourceCloudSchedulerJobUpdate(d *schema.ResourceData, meta interface{}) e
 	descriptionProp, err := expandCloudSchedulerJobDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	scheduleProp, err := expandCloudSchedulerJobSchedule(d.Get("schedule"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("schedule"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, scheduleProp)) {
+	} else if v, ok := d.GetOkExists("schedule"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, scheduleProp)) {
 		obj["schedule"] = scheduleProp
 	}
 	timeZoneProp, err := expandCloudSchedulerJobTimeZone(d.Get("time_zone"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("time_zone"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, timeZoneProp)) {
+	} else if v, ok := d.GetOkExists("time_zone"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, timeZoneProp)) {
 		obj["timeZone"] = timeZoneProp
 	}
 	pausedProp, err := expandCloudSchedulerJobPaused(d.Get("paused"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("paused"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, pausedProp)) {
+	} else if v, ok := d.GetOkExists("paused"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, pausedProp)) {
 		obj["paused"] = pausedProp
 	}
 	attemptDeadlineProp, err := expandCloudSchedulerJobAttemptDeadline(d.Get("attempt_deadline"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("attempt_deadline"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, attemptDeadlineProp)) {
+	} else if v, ok := d.GetOkExists("attempt_deadline"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, attemptDeadlineProp)) {
 		obj["attemptDeadline"] = attemptDeadlineProp
 	}
 	retryConfigProp, err := expandCloudSchedulerJobRetryConfig(d.Get("retry_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("retry_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, retryConfigProp)) {
+	} else if v, ok := d.GetOkExists("retry_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, retryConfigProp)) {
 		obj["retryConfig"] = retryConfigProp
 	}
 	pubsubTargetProp, err := expandCloudSchedulerJobPubsubTarget(d.Get("pubsub_target"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("pubsub_target"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, pubsubTargetProp)) {
+	} else if v, ok := d.GetOkExists("pubsub_target"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, pubsubTargetProp)) {
 		obj["pubsubTarget"] = pubsubTargetProp
 	}
 	appEngineHttpTargetProp, err := expandCloudSchedulerJobAppEngineHttpTarget(d.Get("app_engine_http_target"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("app_engine_http_target"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, appEngineHttpTargetProp)) {
+	} else if v, ok := d.GetOkExists("app_engine_http_target"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, appEngineHttpTargetProp)) {
 		obj["appEngineHttpTarget"] = appEngineHttpTargetProp
 	}
 	httpTargetProp, err := expandCloudSchedulerJobHttpTarget(d.Get("http_target"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("http_target"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, httpTargetProp)) {
+	} else if v, ok := d.GetOkExists("http_target"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, httpTargetProp)) {
 		obj["httpTarget"] = httpTargetProp
 	}
 
@@ -728,7 +732,7 @@ func resourceCloudSchedulerJobUpdate(d *schema.ResourceData, meta interface{}) e
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudSchedulerBasePath}}projects/{{project}}/locations/{{region}}/jobs/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudSchedulerBasePath}}projects/{{project}}/locations/{{region}}/jobs/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -736,11 +740,11 @@ func resourceCloudSchedulerJobUpdate(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Updating Job %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Job %q: %s", d.Id(), err)
@@ -759,14 +763,14 @@ func resourceCloudSchedulerJobUpdate(d *schema.ResourceData, meta interface{}) e
 		}
 
 		linkTmpl := fmt.Sprintf("{{CloudSchedulerBasePath}}projects/{{project}}/locations/{{region}}/jobs/{{name}}:%s", endpoint)
-		url, err = ReplaceVars(d, config, linkTmpl)
+		url, err = tpgresource.ReplaceVars(d, config, linkTmpl)
 		if err != nil {
 			return err
 		}
 
 		emptyReqBody := make(map[string]interface{})
 
-		_, err = SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, emptyReqBody, d.Timeout(schema.TimeoutUpdate))
+		_, err = transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, emptyReqBody, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error setting Cloud Scheduler Job status: %s", err)
 		}
@@ -777,21 +781,21 @@ func resourceCloudSchedulerJobUpdate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceCloudSchedulerJobDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Job: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{CloudSchedulerBasePath}}projects/{{project}}/locations/{{region}}/jobs/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudSchedulerBasePath}}projects/{{project}}/locations/{{region}}/jobs/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -800,13 +804,13 @@ func resourceCloudSchedulerJobDelete(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Deleting Job %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Job")
+		return transport_tpg.HandleNotFoundError(err, d, "Job")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Job %q: %#v", d.Id(), res)
@@ -814,7 +818,7 @@ func resourceCloudSchedulerJobDelete(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceCloudSchedulerJobImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/jobs/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)",
@@ -825,7 +829,7 @@ func resourceCloudSchedulerJobImport(d *schema.ResourceData, meta interface{}) (
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/jobs/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/jobs/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -834,30 +838,30 @@ func resourceCloudSchedulerJobImport(d *schema.ResourceData, meta interface{}) (
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenCloudSchedulerJobName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenCloudSchedulerJobDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobSchedule(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobSchedule(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobTimeZone(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobTimeZone(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobPaused(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobPaused(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	state := d.Get("state")
 	if state == "PAUSED" {
 		return true
@@ -868,11 +872,11 @@ func flattenCloudSchedulerJobPaused(v interface{}, d *schema.ResourceData, confi
 	return false // Job has an error state that's not paused or enabled
 }
 
-func flattenCloudSchedulerJobAttemptDeadline(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobAttemptDeadline(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobRetryConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobRetryConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -893,7 +897,7 @@ func flattenCloudSchedulerJobRetryConfig(v interface{}, d *schema.ResourceData, 
 		flattenCloudSchedulerJobRetryConfigMaxDoublings(original["maxDoublings"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudSchedulerJobRetryConfigRetryCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobRetryConfigRetryCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -910,19 +914,19 @@ func flattenCloudSchedulerJobRetryConfigRetryCount(v interface{}, d *schema.Reso
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudSchedulerJobRetryConfigMaxRetryDuration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobRetryConfigMaxRetryDuration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobRetryConfigMinBackoffDuration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobRetryConfigMinBackoffDuration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobRetryConfigMaxBackoffDuration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobRetryConfigMaxBackoffDuration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobRetryConfigMaxDoublings(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobRetryConfigMaxDoublings(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -939,7 +943,7 @@ func flattenCloudSchedulerJobRetryConfigMaxDoublings(v interface{}, d *schema.Re
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudSchedulerJobPubsubTarget(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobPubsubTarget(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -956,19 +960,19 @@ func flattenCloudSchedulerJobPubsubTarget(v interface{}, d *schema.ResourceData,
 		flattenCloudSchedulerJobPubsubTargetAttributes(original["attributes"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudSchedulerJobPubsubTargetTopicName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobPubsubTargetTopicName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobPubsubTargetData(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobPubsubTargetData(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobPubsubTargetAttributes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobPubsubTargetAttributes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobAppEngineHttpTarget(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobAppEngineHttpTarget(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -989,12 +993,12 @@ func flattenCloudSchedulerJobAppEngineHttpTarget(v interface{}, d *schema.Resour
 		flattenCloudSchedulerJobAppEngineHttpTargetHeaders(original["headers"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudSchedulerJobAppEngineHttpTargetHttpMethod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobAppEngineHttpTargetHttpMethod(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
 // An `appEngineRouting` in API response is useless, so we set config values rather than api response to state.
-func flattenCloudSchedulerJobAppEngineHttpTargetAppEngineRouting(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobAppEngineHttpTargetAppEngineRouting(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1012,15 +1016,15 @@ func flattenCloudSchedulerJobAppEngineHttpTargetAppEngineRouting(v interface{}, 
 	return []interface{}{transformed}
 }
 
-func flattenCloudSchedulerJobAppEngineHttpTargetRelativeUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobAppEngineHttpTargetRelativeUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobAppEngineHttpTargetBody(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobAppEngineHttpTargetBody(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobAppEngineHttpTargetHeaders(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobAppEngineHttpTargetHeaders(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	var headers = v.(map[string]interface{})
 	if v, ok := headers["User-Agent"]; ok {
 		if v.(string) == "AppEngine-Google; (+http://code.google.com/appengine)" {
@@ -1045,7 +1049,7 @@ func flattenCloudSchedulerJobAppEngineHttpTargetHeaders(v interface{}, d *schema
 	return headers
 }
 
-func flattenCloudSchedulerJobHttpTarget(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobHttpTarget(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1068,19 +1072,19 @@ func flattenCloudSchedulerJobHttpTarget(v interface{}, d *schema.ResourceData, c
 		flattenCloudSchedulerJobHttpTargetOidcToken(original["oidcToken"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudSchedulerJobHttpTargetUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobHttpTargetUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobHttpTargetHttpMethod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobHttpTargetHttpMethod(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobHttpTargetBody(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobHttpTargetBody(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobHttpTargetHeaders(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobHttpTargetHeaders(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	var headers = v.(map[string]interface{})
 	if v, ok := headers["User-Agent"]; ok {
 		if v.(string) == "AppEngine-Google; (+http://code.google.com/appengine)" {
@@ -1105,7 +1109,7 @@ func flattenCloudSchedulerJobHttpTargetHeaders(v interface{}, d *schema.Resource
 	return headers
 }
 
-func flattenCloudSchedulerJobHttpTargetOauthToken(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobHttpTargetOauthToken(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1120,15 +1124,15 @@ func flattenCloudSchedulerJobHttpTargetOauthToken(v interface{}, d *schema.Resou
 		flattenCloudSchedulerJobHttpTargetOauthTokenScope(original["scope"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudSchedulerJobHttpTargetOauthTokenServiceAccountEmail(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobHttpTargetOauthTokenServiceAccountEmail(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobHttpTargetOauthTokenScope(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobHttpTargetOauthTokenScope(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobHttpTargetOidcToken(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobHttpTargetOidcToken(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1143,39 +1147,39 @@ func flattenCloudSchedulerJobHttpTargetOidcToken(v interface{}, d *schema.Resour
 		flattenCloudSchedulerJobHttpTargetOidcTokenAudience(original["audience"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudSchedulerJobHttpTargetOidcTokenServiceAccountEmail(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobHttpTargetOidcTokenServiceAccountEmail(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudSchedulerJobHttpTargetOidcTokenAudience(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudSchedulerJobHttpTargetOidcTokenAudience(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandCloudSchedulerJobName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	return ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/jobs/{{name}}")
+func expandCloudSchedulerJobName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/jobs/{{name}}")
 }
 
-func expandCloudSchedulerJobDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobSchedule(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobSchedule(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobTimeZone(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobTimeZone(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobPaused(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobPaused(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobAttemptDeadline(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobAttemptDeadline(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobRetryConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobRetryConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1187,62 +1191,62 @@ func expandCloudSchedulerJobRetryConfig(v interface{}, d TerraformResourceData, 
 	transformedRetryCount, err := expandCloudSchedulerJobRetryConfigRetryCount(original["retry_count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRetryCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRetryCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["retryCount"] = transformedRetryCount
 	}
 
 	transformedMaxRetryDuration, err := expandCloudSchedulerJobRetryConfigMaxRetryDuration(original["max_retry_duration"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMaxRetryDuration); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMaxRetryDuration); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["maxRetryDuration"] = transformedMaxRetryDuration
 	}
 
 	transformedMinBackoffDuration, err := expandCloudSchedulerJobRetryConfigMinBackoffDuration(original["min_backoff_duration"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMinBackoffDuration); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMinBackoffDuration); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["minBackoffDuration"] = transformedMinBackoffDuration
 	}
 
 	transformedMaxBackoffDuration, err := expandCloudSchedulerJobRetryConfigMaxBackoffDuration(original["max_backoff_duration"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMaxBackoffDuration); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMaxBackoffDuration); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["maxBackoffDuration"] = transformedMaxBackoffDuration
 	}
 
 	transformedMaxDoublings, err := expandCloudSchedulerJobRetryConfigMaxDoublings(original["max_doublings"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMaxDoublings); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMaxDoublings); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["maxDoublings"] = transformedMaxDoublings
 	}
 
 	return transformed, nil
 }
 
-func expandCloudSchedulerJobRetryConfigRetryCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobRetryConfigRetryCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobRetryConfigMaxRetryDuration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobRetryConfigMaxRetryDuration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobRetryConfigMinBackoffDuration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobRetryConfigMinBackoffDuration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobRetryConfigMaxBackoffDuration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobRetryConfigMaxBackoffDuration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobRetryConfigMaxDoublings(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobRetryConfigMaxDoublings(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobPubsubTarget(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobPubsubTarget(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1254,36 +1258,36 @@ func expandCloudSchedulerJobPubsubTarget(v interface{}, d TerraformResourceData,
 	transformedTopicName, err := expandCloudSchedulerJobPubsubTargetTopicName(original["topic_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTopicName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTopicName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["topicName"] = transformedTopicName
 	}
 
 	transformedData, err := expandCloudSchedulerJobPubsubTargetData(original["data"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedData); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedData); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["data"] = transformedData
 	}
 
 	transformedAttributes, err := expandCloudSchedulerJobPubsubTargetAttributes(original["attributes"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAttributes); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAttributes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["attributes"] = transformedAttributes
 	}
 
 	return transformed, nil
 }
 
-func expandCloudSchedulerJobPubsubTargetTopicName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobPubsubTargetTopicName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobPubsubTargetData(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobPubsubTargetData(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobPubsubTargetAttributes(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudSchedulerJobPubsubTargetAttributes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1294,7 +1298,7 @@ func expandCloudSchedulerJobPubsubTargetAttributes(v interface{}, d TerraformRes
 	return m, nil
 }
 
-func expandCloudSchedulerJobAppEngineHttpTarget(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobAppEngineHttpTarget(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1306,46 +1310,46 @@ func expandCloudSchedulerJobAppEngineHttpTarget(v interface{}, d TerraformResour
 	transformedHttpMethod, err := expandCloudSchedulerJobAppEngineHttpTargetHttpMethod(original["http_method"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedHttpMethod); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedHttpMethod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["httpMethod"] = transformedHttpMethod
 	}
 
 	transformedAppEngineRouting, err := expandCloudSchedulerJobAppEngineHttpTargetAppEngineRouting(original["app_engine_routing"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAppEngineRouting); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAppEngineRouting); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["appEngineRouting"] = transformedAppEngineRouting
 	}
 
 	transformedRelativeUri, err := expandCloudSchedulerJobAppEngineHttpTargetRelativeUri(original["relative_uri"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRelativeUri); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRelativeUri); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["relativeUri"] = transformedRelativeUri
 	}
 
 	transformedBody, err := expandCloudSchedulerJobAppEngineHttpTargetBody(original["body"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBody); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBody); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["body"] = transformedBody
 	}
 
 	transformedHeaders, err := expandCloudSchedulerJobAppEngineHttpTargetHeaders(original["headers"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedHeaders); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedHeaders); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["headers"] = transformedHeaders
 	}
 
 	return transformed, nil
 }
 
-func expandCloudSchedulerJobAppEngineHttpTargetHttpMethod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobAppEngineHttpTargetHttpMethod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobAppEngineHttpTargetAppEngineRouting(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobAppEngineHttpTargetAppEngineRouting(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1357,48 +1361,48 @@ func expandCloudSchedulerJobAppEngineHttpTargetAppEngineRouting(v interface{}, d
 	transformedService, err := expandCloudSchedulerJobAppEngineHttpTargetAppEngineRoutingService(original["service"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedService); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedService); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["service"] = transformedService
 	}
 
 	transformedVersion, err := expandCloudSchedulerJobAppEngineHttpTargetAppEngineRoutingVersion(original["version"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["version"] = transformedVersion
 	}
 
 	transformedInstance, err := expandCloudSchedulerJobAppEngineHttpTargetAppEngineRoutingInstance(original["instance"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInstance); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInstance); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["instance"] = transformedInstance
 	}
 
 	return transformed, nil
 }
 
-func expandCloudSchedulerJobAppEngineHttpTargetAppEngineRoutingService(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobAppEngineHttpTargetAppEngineRoutingService(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobAppEngineHttpTargetAppEngineRoutingVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobAppEngineHttpTargetAppEngineRoutingVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobAppEngineHttpTargetAppEngineRoutingInstance(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobAppEngineHttpTargetAppEngineRoutingInstance(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobAppEngineHttpTargetRelativeUri(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobAppEngineHttpTargetRelativeUri(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobAppEngineHttpTargetBody(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobAppEngineHttpTargetBody(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobAppEngineHttpTargetHeaders(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudSchedulerJobAppEngineHttpTargetHeaders(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1409,7 +1413,7 @@ func expandCloudSchedulerJobAppEngineHttpTargetHeaders(v interface{}, d Terrafor
 	return m, nil
 }
 
-func expandCloudSchedulerJobHttpTarget(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobHttpTarget(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1421,61 +1425,61 @@ func expandCloudSchedulerJobHttpTarget(v interface{}, d TerraformResourceData, c
 	transformedUri, err := expandCloudSchedulerJobHttpTargetUri(original["uri"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedUri); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedUri); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["uri"] = transformedUri
 	}
 
 	transformedHttpMethod, err := expandCloudSchedulerJobHttpTargetHttpMethod(original["http_method"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedHttpMethod); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedHttpMethod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["httpMethod"] = transformedHttpMethod
 	}
 
 	transformedBody, err := expandCloudSchedulerJobHttpTargetBody(original["body"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBody); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBody); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["body"] = transformedBody
 	}
 
 	transformedHeaders, err := expandCloudSchedulerJobHttpTargetHeaders(original["headers"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedHeaders); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedHeaders); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["headers"] = transformedHeaders
 	}
 
 	transformedOauthToken, err := expandCloudSchedulerJobHttpTargetOauthToken(original["oauth_token"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedOauthToken); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedOauthToken); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["oauthToken"] = transformedOauthToken
 	}
 
 	transformedOidcToken, err := expandCloudSchedulerJobHttpTargetOidcToken(original["oidc_token"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedOidcToken); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedOidcToken); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["oidcToken"] = transformedOidcToken
 	}
 
 	return transformed, nil
 }
 
-func expandCloudSchedulerJobHttpTargetUri(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobHttpTargetUri(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobHttpTargetHttpMethod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobHttpTargetHttpMethod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobHttpTargetBody(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobHttpTargetBody(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobHttpTargetHeaders(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudSchedulerJobHttpTargetHeaders(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1486,7 +1490,7 @@ func expandCloudSchedulerJobHttpTargetHeaders(v interface{}, d TerraformResource
 	return m, nil
 }
 
-func expandCloudSchedulerJobHttpTargetOauthToken(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobHttpTargetOauthToken(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1498,29 +1502,29 @@ func expandCloudSchedulerJobHttpTargetOauthToken(v interface{}, d TerraformResou
 	transformedServiceAccountEmail, err := expandCloudSchedulerJobHttpTargetOauthTokenServiceAccountEmail(original["service_account_email"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedServiceAccountEmail); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedServiceAccountEmail); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["serviceAccountEmail"] = transformedServiceAccountEmail
 	}
 
 	transformedScope, err := expandCloudSchedulerJobHttpTargetOauthTokenScope(original["scope"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedScope); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedScope); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["scope"] = transformedScope
 	}
 
 	return transformed, nil
 }
 
-func expandCloudSchedulerJobHttpTargetOauthTokenServiceAccountEmail(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobHttpTargetOauthTokenServiceAccountEmail(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobHttpTargetOauthTokenScope(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobHttpTargetOauthTokenScope(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobHttpTargetOidcToken(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobHttpTargetOidcToken(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1532,25 +1536,25 @@ func expandCloudSchedulerJobHttpTargetOidcToken(v interface{}, d TerraformResour
 	transformedServiceAccountEmail, err := expandCloudSchedulerJobHttpTargetOidcTokenServiceAccountEmail(original["service_account_email"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedServiceAccountEmail); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedServiceAccountEmail); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["serviceAccountEmail"] = transformedServiceAccountEmail
 	}
 
 	transformedAudience, err := expandCloudSchedulerJobHttpTargetOidcTokenAudience(original["audience"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAudience); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAudience); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["audience"] = transformedAudience
 	}
 
 	return transformed, nil
 }
 
-func expandCloudSchedulerJobHttpTargetOidcTokenServiceAccountEmail(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobHttpTargetOidcTokenServiceAccountEmail(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudSchedulerJobHttpTargetOidcTokenAudience(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudSchedulerJobHttpTargetOidcTokenAudience(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

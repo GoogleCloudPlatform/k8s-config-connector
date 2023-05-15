@@ -11,6 +11,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
+
 	container "google.golang.org/api/container/v1beta1"
 )
 
@@ -350,7 +355,7 @@ var schemaNodePool = map[string]*schema.Schema{
 					Optional:     true,
 					ForceNew:     true,
 					Computed:     true,
-					ValidateFunc: validateIpCidrRange,
+					ValidateFunc: verify.ValidateIpCidrRange,
 					Description:  `The IP address range for pod IPs in this node pool. Only applicable if create_pod_range is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) to pick a specific range to use.`,
 				},
 				"pod_cidr_overprovision_config": {
@@ -414,7 +419,7 @@ func (nodePoolInformation *NodePoolInformation) nodePoolLockKey(nodePoolName str
 	)
 }
 
-func extractNodePoolInformation(d *schema.ResourceData, config *Config) (*NodePoolInformation, error) {
+func extractNodePoolInformation(d *schema.ResourceData, config *transport_tpg.Config) (*NodePoolInformation, error) {
 	cluster := d.Get("cluster").(string)
 
 	if fieldValues := clusterIdRegex.FindStringSubmatch(cluster); fieldValues != nil {
@@ -427,12 +432,12 @@ func extractNodePoolInformation(d *schema.ResourceData, config *Config) (*NodePo
 	}
 	log.Printf("[DEBUG] parent cluster %s does not match regex %s", cluster, clusterIdRegex.String())
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return nil, err
 	}
 
-	location, err := getLocation(d, config)
+	location, err := tpgresource.GetLocation(d, config)
 	if err != nil {
 		return nil, err
 	}
@@ -445,8 +450,8 @@ func extractNodePoolInformation(d *schema.ResourceData, config *Config) (*NodePo
 }
 
 func resourceContainerNodePoolCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -463,13 +468,13 @@ func resourceContainerNodePoolCreate(d *schema.ResourceData, meta interface{}) e
 
 	// Acquire read-lock on cluster.
 	clusterLockKey := nodePoolInfo.clusterLockKey()
-	mutexKV.RLock(clusterLockKey)
-	defer mutexKV.RUnlock(clusterLockKey)
+	transport_tpg.MutexStore.RLock(clusterLockKey)
+	defer transport_tpg.MutexStore.RUnlock(clusterLockKey)
 
 	// Acquire write-lock on nodepool.
 	npLockKey := nodePoolInfo.nodePoolLockKey(nodePool.Name)
-	mutexKV.Lock(npLockKey)
-	defer mutexKV.Unlock(npLockKey)
+	transport_tpg.MutexStore.Lock(npLockKey)
+	defer transport_tpg.MutexStore.Unlock(npLockKey)
 
 	req := &container.CreateNodePoolRequest{
 		NodePool: nodePool,
@@ -486,7 +491,7 @@ func resourceContainerNodePoolCreate(d *schema.ResourceData, meta interface{}) e
 		clusterNodePoolsGetCall.Header().Add("X-Goog-User-Project", nodePoolInfo.project)
 	}
 	_, err = clusterNodePoolsGetCall.Do()
-	if err != nil && IsGoogleApiErrorWithCode(err, 404) {
+	if err != nil && transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 		// Set the ID before we attempt to create if the resource doesn't exist. That
 		// way, if we receive an error but the resource is created anyway, it will be
 		// refreshed on the next call to apply.
@@ -504,7 +509,7 @@ func resourceContainerNodePoolCreate(d *schema.ResourceData, meta interface{}) e
 		operation, err = clusterNodePoolsCreateCall.Do()
 
 		if err != nil {
-			if isFailedPreconditionError(err) {
+			if tpgresource.IsFailedPreconditionError(err) {
 				// We get failed precondition errors if the cluster is updating
 				// while we try to add the node pool.
 				return resource.RetryableError(err)
@@ -528,7 +533,7 @@ func resourceContainerNodePoolCreate(d *schema.ResourceData, meta interface{}) e
 		// before attempting to Read the state of the cluster. This allows a graceful resumption of a Create that was killed
 		// by the upstream Terraform process exiting early such as a sigterm.
 		select {
-		case <-config.context.Done():
+		case <-config.Context.Done():
 			log.Printf("[DEBUG] Persisting %s so this operation can be resumed \n", operation.Name)
 			if err := d.Set("operation", operation.Name); err != nil {
 				return fmt.Errorf("Error setting operation: %s", err)
@@ -566,8 +571,8 @@ func resourceContainerNodePoolCreate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceContainerNodePoolRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -600,7 +605,7 @@ func resourceContainerNodePoolRead(d *schema.ResourceData, meta interface{}) err
 	}
 	nodePool, err := clusterNodePoolsGetCall.Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("NodePool %q from cluster %q", name, nodePoolInfo.cluster))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("NodePool %q from cluster %q", name, nodePoolInfo.cluster))
 	}
 
 	npMap, err := flattenNodePool(d, config, nodePool, "")
@@ -625,8 +630,8 @@ func resourceContainerNodePoolRead(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceContainerNodePoolUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -662,8 +667,8 @@ func resourceContainerNodePoolUpdate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceContainerNodePoolDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -679,7 +684,7 @@ func resourceContainerNodePoolDelete(d *schema.ResourceData, meta interface{}) e
 	if err != nil {
 		// If the node pool doesn't get created and then we try to delete it, we get an error,
 		// but I don't think we need an error during delete if it doesn't exist
-		if IsGoogleApiErrorWithCode(err, 404) {
+		if transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 			log.Printf("node pool %q not found, doesn't need to be cleaned up", name)
 			return nil
 		} else {
@@ -689,13 +694,13 @@ func resourceContainerNodePoolDelete(d *schema.ResourceData, meta interface{}) e
 
 	// Acquire read-lock on cluster.
 	clusterLockKey := nodePoolInfo.clusterLockKey()
-	mutexKV.RLock(clusterLockKey)
-	defer mutexKV.RUnlock(clusterLockKey)
+	transport_tpg.MutexStore.RLock(clusterLockKey)
+	defer transport_tpg.MutexStore.RUnlock(clusterLockKey)
 
 	// Acquire write-lock on nodepool.
 	npLockKey := nodePoolInfo.nodePoolLockKey(name)
-	mutexKV.Lock(npLockKey)
-	defer mutexKV.Unlock(npLockKey)
+	transport_tpg.MutexStore.Lock(npLockKey)
+	defer transport_tpg.MutexStore.Unlock(npLockKey)
 
 	timeout := d.Timeout(schema.TimeoutDelete)
 	startTime := time.Now()
@@ -709,7 +714,7 @@ func resourceContainerNodePoolDelete(d *schema.ResourceData, meta interface{}) e
 		operation, err = clusterNodePoolsDeleteCall.Do()
 
 		if err != nil {
-			if isFailedPreconditionError(err) {
+			if tpgresource.IsFailedPreconditionError(err) {
 				// We get failed precondition errors if the cluster is updating
 				// while we try to delete the node pool.
 				return resource.RetryableError(err)
@@ -740,13 +745,13 @@ func resourceContainerNodePoolDelete(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceContainerNodePoolExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	nodePoolInfo, err := extractNodePoolInformation(d, config)
 	if err != nil {
 		return false, err
 	}
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return false, err
 	}
@@ -759,7 +764,7 @@ func resourceContainerNodePoolExists(d *schema.ResourceData, meta interface{}) (
 	_, err = clusterNodePoolsGetCall.Do()
 
 	if err != nil {
-		if err = handleNotFoundError(err, d, fmt.Sprintf("Container NodePool %s", name)); err == nil {
+		if err = transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Container NodePool %s", name)); err == nil {
 			return false, nil
 		}
 		// There was some other error in reading the resource
@@ -769,7 +774,7 @@ func resourceContainerNodePoolExists(d *schema.ResourceData, meta interface{}) (
 }
 
 func resourceContainerNodePoolStateImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	idRegexes := []string{
 		"projects/(?P<project>[^/]+)/zones/(?P<location>[^/]+)/clusters/(?P<cluster>[^/]+)/nodePools/(?P<name>[^/]+)",
@@ -781,7 +786,7 @@ func resourceContainerNodePoolStateImporter(d *schema.ResourceData, meta interfa
 		return nil, err
 	}
 
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/clusters/{{cluster}}/nodePools/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/clusters/{{cluster}}/nodePools/{{name}}")
 	if err != nil {
 		return nil, err
 	}
@@ -971,8 +976,8 @@ func flattenNodePoolUpgradeSettings(us *container.UpgradeSettings) []map[string]
 	return []map[string]interface{}{upgradeSettings}
 }
 
-func flattenNodePool(d *schema.ResourceData, config *Config, np *container.NodePool, prefix string) (map[string]interface{}, error) {
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+func flattenNodePool(d *schema.ResourceData, config *transport_tpg.Config, np *container.NodePool, prefix string) (map[string]interface{}, error) {
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -990,7 +995,7 @@ func flattenNodePool(d *schema.ResourceData, config *Config, np *container.NodeP
 			return nil, fmt.Errorf("Error reading instance group manage URL '%q'", url)
 		}
 		igm, err := config.NewComputeClient(userAgent).InstanceGroupManagers.Get(matches[1], matches[2], matches[3]).Do()
-		if IsGoogleApiErrorWithCode(err, 404) {
+		if transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 			// The IGM URL in is stale; don't include it
 			continue
 		}
@@ -1110,18 +1115,18 @@ func expandNodeNetworkConfig(v interface{}) *container.NodeNetworkConfig {
 }
 
 func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *NodePoolInformation, prefix string, timeout time.Duration) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	name := d.Get(prefix + "name").(string)
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	// Acquire read-lock on cluster.
 	clusterLockKey := nodePoolInfo.clusterLockKey()
-	mutexKV.RLock(clusterLockKey)
-	defer mutexKV.RUnlock(clusterLockKey)
+	transport_tpg.MutexStore.RLock(clusterLockKey)
+	defer transport_tpg.MutexStore.RUnlock(clusterLockKey)
 
 	// Nodepool write-lock will be acquired when update function is called.
 	npLockKey := nodePoolInfo.nodePoolLockKey(name)
@@ -1729,7 +1734,7 @@ var containerNodePoolRestingStates = RestingStates{
 
 // takes in a config object, full node pool name, project name and the current CRUD action timeout
 // returns a state with no error if the state is a resting state, and the last state with an error otherwise
-func containerNodePoolAwaitRestingState(config *Config, name, project, userAgent string, timeout time.Duration) (state string, err error) {
+func containerNodePoolAwaitRestingState(config *transport_tpg.Config, name, project, userAgent string, timeout time.Duration) (state string, err error) {
 	err = resource.Retry(timeout, func() *resource.RetryError {
 		clusterNodePoolsGetCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.NodePools.Get(name)
 		if config.UserProjectOverride {

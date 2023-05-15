@@ -1,20 +1,20 @@
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_storage_bucket.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_storage_bucket.go
-index 4e1025dc5..9630c86c4 100644
+index 5dd1e6df6..cd0f89b13 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_storage_bucket.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_storage_bucket.go
-@@ -750,14 +750,7 @@ func resourceStorageBucketRead(d *schema.ResourceData, meta interface{}) error {
+@@ -753,14 +753,7 @@ func resourceStorageBucketRead(d *schema.ResourceData, meta interface{}) error {
  	// Get the bucket and acl
  	bucket := d.Get("name").(string)
  
 -	var res *storage.Bucket
 -	// There seems to be some eventual consistency errors in some cases, so we want to check a few times
 -	// to make sure it exists before moving on
--	err = RetryTimeDuration(func() (operr error) {
+-	err = transport_tpg.RetryTimeDuration(func() (operr error) {
 -		var retryErr error
 -		res, retryErr = config.NewStorageClient(userAgent).Buckets.Get(bucket).Do()
 -		return retryErr
--	}, d.Timeout(schema.TimeoutRead), IsNotFoundRetryableError("bucket read"))
+-	}, d.Timeout(schema.TimeoutRead), transport_tpg.IsNotFoundRetryableError("bucket read"))
 +	res, err := config.NewStorageClient(userAgent).Buckets.Get(bucket).Do()
  
  	if err != nil {
- 		return handleNotFoundError(err, d, fmt.Sprintf("Storage Bucket %q", d.Get("name").(string)))
+ 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Storage Bucket %q", d.Get("name").(string)))

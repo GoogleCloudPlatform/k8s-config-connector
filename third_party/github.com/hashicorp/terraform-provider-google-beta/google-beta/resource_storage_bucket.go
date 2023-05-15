@@ -12,6 +12,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/gammazero/workerpool"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/customdiff"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -453,13 +456,13 @@ func isPolicyLocked(_ context.Context, old, new, _ interface{}) bool {
 }
 
 func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -474,7 +477,7 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 	// Create a bucket, setting the labels, location and name.
 	sb := &storage.Bucket{
 		Name:             bucket,
-		Labels:           expandLabels(d),
+		Labels:           tpgresource.ExpandLabels(d),
 		Location:         location,
 		IamConfiguration: expandIamConfiguration(d),
 	}
@@ -544,7 +547,7 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 
 	var res *storage.Bucket
 
-	err = retry(func() error {
+	err = transport_tpg.Retry(func() error {
 		res, err = config.NewStorageClient(userAgent).Buckets.Insert(project, sb).Do()
 		return err
 	})
@@ -559,10 +562,10 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 
 	// There seems to be some eventual consistency errors in some cases, so we want to check a few times
 	// to make sure it exists before moving on
-	err = RetryTimeDuration(func() (operr error) {
+	err = transport_tpg.RetryTimeDuration(func() (operr error) {
 		_, retryErr := config.NewStorageClient(userAgent).Buckets.Get(res.Name).Do()
 		return retryErr
-	}, d.Timeout(schema.TimeoutCreate), IsNotFoundRetryableError("bucket creation"))
+	}, d.Timeout(schema.TimeoutCreate), transport_tpg.IsNotFoundRetryableError("bucket creation"))
 
 	if err != nil {
 		return fmt.Errorf("Error reading bucket after creation: %s", err)
@@ -591,8 +594,8 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -670,7 +673,7 @@ func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error
 	}
 
 	if d.HasChange("labels") {
-		sb.Labels = expandLabels(d)
+		sb.Labels = tpgresource.ExpandLabels(d)
 		if len(sb.Labels) == 0 {
 			sb.NullFields = append(sb.NullFields, "Labels")
 		}
@@ -707,10 +710,10 @@ func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error
 
 	// There seems to be some eventual consistency errors in some cases, so we want to check a few times
 	// to make sure it exists before moving on
-	err = RetryTimeDuration(func() (operr error) {
+	err = transport_tpg.RetryTimeDuration(func() (operr error) {
 		_, retryErr := config.NewStorageClient(userAgent).Buckets.Get(res.Name).Do()
 		return retryErr
-	}, d.Timeout(schema.TimeoutUpdate), IsNotFoundRetryableError("bucket update"))
+	}, d.Timeout(schema.TimeoutUpdate), transport_tpg.IsNotFoundRetryableError("bucket update"))
 
 	if err != nil {
 		return fmt.Errorf("Error reading bucket after update: %s", err)
@@ -741,8 +744,8 @@ func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceStorageBucketRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -753,7 +756,7 @@ func resourceStorageBucketRead(d *schema.ResourceData, meta interface{}) error {
 	res, err := config.NewStorageClient(userAgent).Buckets.Get(bucket).Do()
 
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Storage Bucket %q", d.Get("name").(string)))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Storage Bucket %q", d.Get("name").(string)))
 	}
 	log.Printf("[DEBUG] Read bucket %v at location %v\n\n", res.Name, res.SelfLink)
 
@@ -761,8 +764,8 @@ func resourceStorageBucketRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceStorageBucketDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -1401,7 +1404,7 @@ func resourceGCSBucketLifecycleRuleActionHash(v interface{}) int {
 		buf.WriteString(fmt.Sprintf("%s-", v.(string)))
 	}
 
-	return hashcode(buf.String())
+	return tpgresource.Hashcode(buf.String())
 }
 
 func resourceGCSBucketLifecycleRuleConditionHash(v interface{}) int {
@@ -1462,7 +1465,7 @@ func resourceGCSBucketLifecycleRuleConditionHash(v interface{}) int {
 		}
 	}
 
-	return hashcode(buf.String())
+	return tpgresource.Hashcode(buf.String())
 }
 
 func lockRetentionPolicy(bucketsService *storage.BucketsService, bucketName string, metageneration int64) error {
@@ -1495,7 +1498,7 @@ func detectLifecycleChange(d *schema.ResourceData) bool {
 
 // Resource Read and DataSource Read both need to set attributes, but Data Sources don't support Timeouts
 // so we pulled this portion out separately (https://github.com/hashicorp/terraform-provider-google/issues/11264)
-func setStorageBucket(d *schema.ResourceData, config *Config, res *storage.Bucket, bucket, userAgent string) error {
+func setStorageBucket(d *schema.ResourceData, config *transport_tpg.Config, res *storage.Bucket, bucket, userAgent string) error {
 	// We are trying to support several different use cases for bucket. Buckets are globally
 	// unique but they are associated with projects internally, but some users want to use
 	// buckets in a project agnostic way. Thus we will check to see if the project ID has been
@@ -1506,7 +1509,7 @@ func setStorageBucket(d *schema.ResourceData, config *Config, res *storage.Bucke
 	// block, or the resource or an environment variable, we use the compute API to lookup the projectID
 	// from the projectNumber which is included in the bucket API response
 	if d.Get("project") == "" {
-		project, _ := getProject(d, config)
+		project, _ := tpgresource.GetProject(d, config)
 		if err := d.Set("project", project); err != nil {
 			return fmt.Errorf("Error setting project: %s", err)
 		}

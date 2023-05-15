@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceApigeeEndpointAttachment() *schema.Resource {
@@ -87,8 +90,8 @@ organizations/{organization}/endpointAttachments/{endpointAttachment}.`,
 }
 
 func resourceApigeeEndpointAttachmentCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -97,17 +100,17 @@ func resourceApigeeEndpointAttachmentCreate(d *schema.ResourceData, meta interfa
 	locationProp, err := expandApigeeEndpointAttachmentLocation(d.Get("location"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("location"); !isEmptyValue(reflect.ValueOf(locationProp)) && (ok || !reflect.DeepEqual(v, locationProp)) {
+	} else if v, ok := d.GetOkExists("location"); !tpgresource.IsEmptyValue(reflect.ValueOf(locationProp)) && (ok || !reflect.DeepEqual(v, locationProp)) {
 		obj["location"] = locationProp
 	}
 	serviceAttachmentProp, err := expandApigeeEndpointAttachmentServiceAttachment(d.Get("service_attachment"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("service_attachment"); !isEmptyValue(reflect.ValueOf(serviceAttachmentProp)) && (ok || !reflect.DeepEqual(v, serviceAttachmentProp)) {
+	} else if v, ok := d.GetOkExists("service_attachment"); !tpgresource.IsEmptyValue(reflect.ValueOf(serviceAttachmentProp)) && (ok || !reflect.DeepEqual(v, serviceAttachmentProp)) {
 		obj["serviceAttachment"] = serviceAttachmentProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/endpointAttachments?endpointAttachmentId={{endpoint_attachment_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/endpointAttachments?endpointAttachmentId={{endpoint_attachment_id}}")
 	if err != nil {
 		return err
 	}
@@ -116,17 +119,17 @@ func resourceApigeeEndpointAttachmentCreate(d *schema.ResourceData, meta interfa
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating EndpointAttachment: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{org_id}}/endpointAttachments/{{endpoint_attachment_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{org_id}}/endpointAttachments/{{endpoint_attachment_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -150,7 +153,7 @@ func resourceApigeeEndpointAttachmentCreate(d *schema.ResourceData, meta interfa
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "{{org_id}}/endpointAttachments/{{endpoint_attachment_id}}")
+	id, err = tpgresource.ReplaceVars(d, config, "{{org_id}}/endpointAttachments/{{endpoint_attachment_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -162,13 +165,13 @@ func resourceApigeeEndpointAttachmentCreate(d *schema.ResourceData, meta interfa
 }
 
 func resourceApigeeEndpointAttachmentRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/endpointAttachments/{{endpoint_attachment_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/endpointAttachments/{{endpoint_attachment_id}}")
 	if err != nil {
 		return err
 	}
@@ -176,13 +179,13 @@ func resourceApigeeEndpointAttachmentRead(d *schema.ResourceData, meta interface
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ApigeeEndpointAttachment %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ApigeeEndpointAttachment %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenApigeeEndpointAttachmentName(res["name"], d, config)); err != nil {
@@ -205,15 +208,15 @@ func resourceApigeeEndpointAttachmentRead(d *schema.ResourceData, meta interface
 }
 
 func resourceApigeeEndpointAttachmentDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/endpointAttachments/{{endpoint_attachment_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{org_id}}/endpointAttachments/{{endpoint_attachment_id}}")
 	if err != nil {
 		return err
 	}
@@ -222,13 +225,13 @@ func resourceApigeeEndpointAttachmentDelete(d *schema.ResourceData, meta interfa
 	log.Printf("[DEBUG] Deleting EndpointAttachment %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "EndpointAttachment")
+		return transport_tpg.HandleNotFoundError(err, d, "EndpointAttachment")
 	}
 
 	err = ApigeeOperationWaitTime(
@@ -244,7 +247,7 @@ func resourceApigeeEndpointAttachmentDelete(d *schema.ResourceData, meta interfa
 }
 
 func resourceApigeeEndpointAttachmentImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats cannot import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
@@ -269,7 +272,7 @@ func resourceApigeeEndpointAttachmentImport(d *schema.ResourceData, meta interfa
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -278,30 +281,30 @@ func resourceApigeeEndpointAttachmentImport(d *schema.ResourceData, meta interfa
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenApigeeEndpointAttachmentName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeEndpointAttachmentName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeEndpointAttachmentLocation(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeEndpointAttachmentLocation(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeEndpointAttachmentHost(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeEndpointAttachmentHost(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeEndpointAttachmentServiceAttachment(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeEndpointAttachmentServiceAttachment(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeEndpointAttachmentConnectionState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeEndpointAttachmentConnectionState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandApigeeEndpointAttachmentLocation(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeEndpointAttachmentLocation(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeEndpointAttachmentServiceAttachment(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeEndpointAttachmentServiceAttachment(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

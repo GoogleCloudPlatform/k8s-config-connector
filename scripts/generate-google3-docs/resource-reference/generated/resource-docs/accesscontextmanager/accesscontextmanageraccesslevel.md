@@ -549,7 +549,7 @@ condition to be true.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Custom access level conditions are set using the Cloud Common Expression Language to represent the necessary conditions for the level to apply to a request. 
+            <p>{% verbatim %}Custom access level conditions are set using the Cloud Common Expression Language to represent the necessary conditions for the level to apply to a request.
 See CEL spec at: https://github.com/google/cel-spec.{% endverbatim %}</p>
         </td>
     </tr>
@@ -561,7 +561,7 @@ See CEL spec at: https://github.com/google/cel-spec.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language.
-This page details the objects and attributes that are used to the build the CEL expressions for 
+This page details the objects and attributes that are used to the build the CEL expressions for
 custom access levels - https://cloud.google.com/access-context-manager/docs/custom-access-level-spec.{% endverbatim %}</p>
         </td>
     </tr>

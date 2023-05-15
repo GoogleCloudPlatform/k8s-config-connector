@@ -21,18 +21,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -75,12 +79,12 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlFu
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -127,12 +131,12 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcBa
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -167,6 +171,10 @@ resource "google_iam_workforce_pool_provider" "example" {
   oidc {
     issuer_uri       = "https://accounts.thirdparty.com"
     client_id        = "client-id"
+    web_sso_config {
+      response_type             = "ID_TOKEN"
+      assertion_claims_behavior = "ONLY_ID_TOKEN_CLAIMS"
+    }
   }
 }
 `, context)
@@ -176,12 +184,12 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcFu
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -216,6 +224,10 @@ resource "google_iam_workforce_pool_provider" "example" {
   oidc {
     issuer_uri        = "https://accounts.thirdparty.com"
     client_id         = "client-id"
+    web_sso_config {
+      response_type             = "ID_TOKEN"
+      assertion_claims_behavior = "ONLY_ID_TOKEN_CLAIMS"
+    }
   }
   display_name        = "Display name"
   description         = "A sample OIDC workforce pool provider."
@@ -237,7 +249,7 @@ func testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t *testing
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{IAMWorkforcePoolBasePath}}locations/{{location}}/workforcePools/{{workforce_pool_id}}/providers/{{provider_id}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{IAMWorkforcePoolBasePath}}locations/{{location}}/workforcePools/{{workforce_pool_id}}/providers/{{provider_id}}")
 			if err != nil {
 				return err
 			}
@@ -248,7 +260,7 @@ func testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t *testing
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("IAMWorkforcePoolWorkforcePoolProvider still exists at %s", url)
 			}

@@ -19,6 +19,8 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccCloudRunV2JobIamBindingGenerated(t *testing.T) {
@@ -30,7 +32,7 @@ func TestAccCloudRunV2JobIamBindingGenerated(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -38,7 +40,7 @@ func TestAccCloudRunV2JobIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_cloud_run_v2_job_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/jobs/%s roles/viewer", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-job%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/jobs/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-job%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -48,7 +50,7 @@ func TestAccCloudRunV2JobIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_cloud_run_v2_job_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/jobs/%s roles/viewer", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-job%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/jobs/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-job%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -65,7 +67,7 @@ func TestAccCloudRunV2JobIamMemberGenerated(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -74,7 +76,7 @@ func TestAccCloudRunV2JobIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_cloud_run_v2_job_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/jobs/%s roles/viewer user:admin@hashicorptest.com", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-job%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/jobs/%s roles/viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-job%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,7 +93,7 @@ func TestAccCloudRunV2JobIamPolicyGenerated(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -99,7 +101,7 @@ func TestAccCloudRunV2JobIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_cloud_run_v2_job_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/jobs/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-job%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/jobs/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-job%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -108,7 +110,7 @@ func TestAccCloudRunV2JobIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_cloud_run_v2_job_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/jobs/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-job%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/jobs/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-job%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -121,7 +123,6 @@ func testAccCloudRunV2JobIamMember_basicGenerated(context map[string]interface{}
 resource "google_cloud_run_v2_job" "default" {
   name     = "tf-test-cloudrun-job%{random_suffix}"
   location = "us-central1"
-  launch_stage = "BETA"
 
   template {
     template {
@@ -153,7 +154,6 @@ func testAccCloudRunV2JobIamPolicy_basicGenerated(context map[string]interface{}
 resource "google_cloud_run_v2_job" "default" {
   name     = "tf-test-cloudrun-job%{random_suffix}"
   location = "us-central1"
-  launch_stage = "BETA"
 
   template {
     template {
@@ -191,7 +191,6 @@ func testAccCloudRunV2JobIamPolicy_emptyBinding(context map[string]interface{}) 
 resource "google_cloud_run_v2_job" "default" {
   name     = "tf-test-cloudrun-job%{random_suffix}"
   location = "us-central1"
-  launch_stage = "BETA"
 
   template {
     template {
@@ -225,7 +224,6 @@ func testAccCloudRunV2JobIamBinding_basicGenerated(context map[string]interface{
 resource "google_cloud_run_v2_job" "default" {
   name     = "tf-test-cloudrun-job%{random_suffix}"
   location = "us-central1"
-  launch_stage = "BETA"
 
   template {
     template {
@@ -257,7 +255,6 @@ func testAccCloudRunV2JobIamBinding_updateGenerated(context map[string]interface
 resource "google_cloud_run_v2_job" "default" {
   name     = "tf-test-cloudrun-job%{random_suffix}"
   location = "us-central1"
-  launch_stage = "BETA"
 
   template {
     template {

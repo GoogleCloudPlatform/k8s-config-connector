@@ -4,13 +4,14 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccDataSourceGoogleFirebaseAndroidApp(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":   GetTestProjectFromEnv(),
+		"project_id":   acctest.GetTestProjectFromEnv(),
 		"package_name": "android.package.app" + RandString(t, 4),
 		"display_name": "tf-test Display Name AndroidApp DataSource",
 	}
@@ -18,13 +19,13 @@ func TestAccDataSourceGoogleFirebaseAndroidApp(t *testing.T) {
 	resourceName := "data.google_firebase_android_app.my_app"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleFirebaseAndroidApp(context),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceStateWithIgnores(
+					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						resourceName,
 						"google_firebase_android_app.my_app",
 						map[string]struct{}{

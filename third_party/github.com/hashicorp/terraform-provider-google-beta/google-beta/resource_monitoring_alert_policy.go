@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 // API does not return a value for REDUCE_NONE
@@ -50,7 +54,7 @@ func ResourceMonitoringAlertPolicy() *schema.Resource {
 			"combiner": {
 				Type:         schema.TypeString,
 				Required:     true,
-				ValidateFunc: validateEnum([]string{"AND", "OR", "AND_WITH_MATCHING_RESOURCE"}),
+				ValidateFunc: verify.ValidateEnum([]string{"AND", "OR", "AND_WITH_MATCHING_RESOURCE"}),
 				Description: `How to combine the results of multiple conditions to
 determine if an incident should be opened. Possible values: ["AND", "OR", "AND_WITH_MATCHING_RESOURCE"]`,
 			},
@@ -124,7 +128,7 @@ otherwise an error is returned.`,
 												"cross_series_reducer": {
 													Type:             schema.TypeString,
 													Optional:         true,
-													ValidateFunc:     validateEnum([]string{"REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05", ""}),
+													ValidateFunc:     verify.ValidateEnum([]string{"REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05", ""}),
 													DiffSuppressFunc: crossSeriesReducerDiffSuppress,
 													Description: `The approach to be used to combine
 time series. Not all reducer
@@ -179,7 +183,7 @@ ignored.`,
 												"per_series_aligner": {
 													Type:         schema.TypeString,
 													Optional:     true,
-													ValidateFunc: validateEnum([]string{"ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE", ""}),
+													ValidateFunc: verify.ValidateEnum([]string{"ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE", ""}),
 													Description: `The approach to be used to align
 individual time series. Not all
 alignment functions may be applied
@@ -311,7 +315,7 @@ alerted on quickly.`,
 									"evaluation_missing_data": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP", ""}),
 										Description: `A condition control that determines how
 metric-threshold conditions are evaluated when
 data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"]`,
@@ -361,7 +365,7 @@ threshold.`,
 									"comparison": {
 										Type:         schema.TypeString,
 										Required:     true,
-										ValidateFunc: validateEnum([]string{"COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"}),
+										ValidateFunc: verify.ValidateEnum([]string{"COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"}),
 										Description: `The comparison to apply between the time
 series (indicated by filter and aggregation)
 and the threshold (indicated by
@@ -429,7 +433,7 @@ otherwise an error is returned.`,
 												"cross_series_reducer": {
 													Type:             schema.TypeString,
 													Optional:         true,
-													ValidateFunc:     validateEnum([]string{"REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05", ""}),
+													ValidateFunc:     verify.ValidateEnum([]string{"REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05", ""}),
 													DiffSuppressFunc: crossSeriesReducerDiffSuppress,
 													Description: `The approach to be used to combine
 time series. Not all reducer
@@ -484,7 +488,7 @@ ignored.`,
 												"per_series_aligner": {
 													Type:         schema.TypeString,
 													Optional:     true,
-													ValidateFunc: validateEnum([]string{"ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE", ""}),
+													ValidateFunc: verify.ValidateEnum([]string{"ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE", ""}),
 													Description: `The approach to be used to align
 individual time series. Not all
 alignment functions may be applied
@@ -548,7 +552,7 @@ otherwise an error is returned.`,
 												"cross_series_reducer": {
 													Type:             schema.TypeString,
 													Optional:         true,
-													ValidateFunc:     validateEnum([]string{"REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05", ""}),
+													ValidateFunc:     verify.ValidateEnum([]string{"REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05", ""}),
 													DiffSuppressFunc: crossSeriesReducerDiffSuppress,
 													Description: `The approach to be used to combine
 time series. Not all reducer
@@ -603,7 +607,7 @@ ignored.`,
 												"per_series_aligner": {
 													Type:         schema.TypeString,
 													Optional:     true,
-													ValidateFunc: validateEnum([]string{"ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE", ""}),
+													ValidateFunc: verify.ValidateEnum([]string{"ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE", ""}),
 													Description: `The approach to be used to align
 individual time series. Not all
 alignment functions may be applied
@@ -647,7 +651,7 @@ in length.`,
 									"evaluation_missing_data": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP", ""}),
 										Description: `A condition control that determines how
 metric-threshold conditions are evaluated when
 data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"]`,
@@ -860,8 +864,8 @@ Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]`,
 }
 
 func resourceMonitoringAlertPolicyCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -870,13 +874,13 @@ func resourceMonitoringAlertPolicyCreate(d *schema.ResourceData, meta interface{
 	displayNameProp, err := expandMonitoringAlertPolicyDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	combinerProp, err := expandMonitoringAlertPolicyCombiner(d.Get("combiner"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("combiner"); !isEmptyValue(reflect.ValueOf(combinerProp)) && (ok || !reflect.DeepEqual(v, combinerProp)) {
+	} else if v, ok := d.GetOkExists("combiner"); !tpgresource.IsEmptyValue(reflect.ValueOf(combinerProp)) && (ok || !reflect.DeepEqual(v, combinerProp)) {
 		obj["combiner"] = combinerProp
 	}
 	enabledProp, err := expandMonitoringAlertPolicyEnabled(d.Get("enabled"), d, config)
@@ -888,42 +892,42 @@ func resourceMonitoringAlertPolicyCreate(d *schema.ResourceData, meta interface{
 	conditionsProp, err := expandMonitoringAlertPolicyConditions(d.Get("conditions"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("conditions"); !isEmptyValue(reflect.ValueOf(conditionsProp)) && (ok || !reflect.DeepEqual(v, conditionsProp)) {
+	} else if v, ok := d.GetOkExists("conditions"); !tpgresource.IsEmptyValue(reflect.ValueOf(conditionsProp)) && (ok || !reflect.DeepEqual(v, conditionsProp)) {
 		obj["conditions"] = conditionsProp
 	}
 	notificationChannelsProp, err := expandMonitoringAlertPolicyNotificationChannels(d.Get("notification_channels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("notification_channels"); !isEmptyValue(reflect.ValueOf(notificationChannelsProp)) && (ok || !reflect.DeepEqual(v, notificationChannelsProp)) {
+	} else if v, ok := d.GetOkExists("notification_channels"); !tpgresource.IsEmptyValue(reflect.ValueOf(notificationChannelsProp)) && (ok || !reflect.DeepEqual(v, notificationChannelsProp)) {
 		obj["notificationChannels"] = notificationChannelsProp
 	}
 	alertStrategyProp, err := expandMonitoringAlertPolicyAlertStrategy(d.Get("alert_strategy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("alert_strategy"); !isEmptyValue(reflect.ValueOf(alertStrategyProp)) && (ok || !reflect.DeepEqual(v, alertStrategyProp)) {
+	} else if v, ok := d.GetOkExists("alert_strategy"); !tpgresource.IsEmptyValue(reflect.ValueOf(alertStrategyProp)) && (ok || !reflect.DeepEqual(v, alertStrategyProp)) {
 		obj["alertStrategy"] = alertStrategyProp
 	}
 	userLabelsProp, err := expandMonitoringAlertPolicyUserLabels(d.Get("user_labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("user_labels"); !isEmptyValue(reflect.ValueOf(userLabelsProp)) && (ok || !reflect.DeepEqual(v, userLabelsProp)) {
+	} else if v, ok := d.GetOkExists("user_labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(userLabelsProp)) && (ok || !reflect.DeepEqual(v, userLabelsProp)) {
 		obj["userLabels"] = userLabelsProp
 	}
 	documentationProp, err := expandMonitoringAlertPolicyDocumentation(d.Get("documentation"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("documentation"); !isEmptyValue(reflect.ValueOf(documentationProp)) && (ok || !reflect.DeepEqual(v, documentationProp)) {
+	} else if v, ok := d.GetOkExists("documentation"); !tpgresource.IsEmptyValue(reflect.ValueOf(documentationProp)) && (ok || !reflect.DeepEqual(v, documentationProp)) {
 		obj["documentation"] = documentationProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "alertPolicy/{{project}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "alertPolicy/{{project}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/projects/{{project}}/alertPolicies")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/projects/{{project}}/alertPolicies")
 	if err != nil {
 		return err
 	}
@@ -931,18 +935,18 @@ func resourceMonitoringAlertPolicyCreate(d *schema.ResourceData, meta interface{
 	log.Printf("[DEBUG] Creating new AlertPolicy: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AlertPolicy: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), transport_tpg.IsMonitoringConcurrentEditError)
 	if err != nil {
 		return fmt.Errorf("Error creating AlertPolicy: %s", err)
 	}
@@ -951,7 +955,7 @@ func resourceMonitoringAlertPolicyCreate(d *schema.ResourceData, meta interface{
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -981,33 +985,33 @@ func resourceMonitoringAlertPolicyCreate(d *schema.ResourceData, meta interface{
 }
 
 func resourceMonitoringAlertPolicyRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AlertPolicy: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil, transport_tpg.IsMonitoringConcurrentEditError)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("MonitoringAlertPolicy %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("MonitoringAlertPolicy %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -1049,15 +1053,15 @@ func resourceMonitoringAlertPolicyRead(d *schema.ResourceData, meta interface{})
 }
 
 func resourceMonitoringAlertPolicyUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AlertPolicy: %s", err)
 	}
@@ -1067,13 +1071,13 @@ func resourceMonitoringAlertPolicyUpdate(d *schema.ResourceData, meta interface{
 	displayNameProp, err := expandMonitoringAlertPolicyDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	combinerProp, err := expandMonitoringAlertPolicyCombiner(d.Get("combiner"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("combiner"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, combinerProp)) {
+	} else if v, ok := d.GetOkExists("combiner"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, combinerProp)) {
 		obj["combiner"] = combinerProp
 	}
 	enabledProp, err := expandMonitoringAlertPolicyEnabled(d.Get("enabled"), d, config)
@@ -1085,42 +1089,42 @@ func resourceMonitoringAlertPolicyUpdate(d *schema.ResourceData, meta interface{
 	conditionsProp, err := expandMonitoringAlertPolicyConditions(d.Get("conditions"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("conditions"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, conditionsProp)) {
+	} else if v, ok := d.GetOkExists("conditions"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, conditionsProp)) {
 		obj["conditions"] = conditionsProp
 	}
 	notificationChannelsProp, err := expandMonitoringAlertPolicyNotificationChannels(d.Get("notification_channels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("notification_channels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationChannelsProp)) {
+	} else if v, ok := d.GetOkExists("notification_channels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationChannelsProp)) {
 		obj["notificationChannels"] = notificationChannelsProp
 	}
 	alertStrategyProp, err := expandMonitoringAlertPolicyAlertStrategy(d.Get("alert_strategy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("alert_strategy"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, alertStrategyProp)) {
+	} else if v, ok := d.GetOkExists("alert_strategy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, alertStrategyProp)) {
 		obj["alertStrategy"] = alertStrategyProp
 	}
 	userLabelsProp, err := expandMonitoringAlertPolicyUserLabels(d.Get("user_labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("user_labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, userLabelsProp)) {
+	} else if v, ok := d.GetOkExists("user_labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, userLabelsProp)) {
 		obj["userLabels"] = userLabelsProp
 	}
 	documentationProp, err := expandMonitoringAlertPolicyDocumentation(d.Get("documentation"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("documentation"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, documentationProp)) {
+	} else if v, ok := d.GetOkExists("documentation"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, documentationProp)) {
 		obj["documentation"] = documentationProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "alertPolicy/{{project}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "alertPolicy/{{project}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1161,17 +1165,17 @@ func resourceMonitoringAlertPolicyUpdate(d *schema.ResourceData, meta interface{
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate), IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate), transport_tpg.IsMonitoringConcurrentEditError)
 
 	if err != nil {
 		return fmt.Errorf("Error updating AlertPolicy %q: %s", d.Id(), err)
@@ -1183,28 +1187,28 @@ func resourceMonitoringAlertPolicyUpdate(d *schema.ResourceData, meta interface{
 }
 
 func resourceMonitoringAlertPolicyDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AlertPolicy: %s", err)
 	}
 	billingProject = project
 
-	lockName, err := ReplaceVars(d, config, "alertPolicy/{{project}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "alertPolicy/{{project}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MonitoringBasePath}}v3/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1213,13 +1217,13 @@ func resourceMonitoringAlertPolicyDelete(d *schema.ResourceData, meta interface{
 	log.Printf("[DEBUG] Deleting AlertPolicy %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), IsMonitoringConcurrentEditError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), transport_tpg.IsMonitoringConcurrentEditError)
 	if err != nil {
-		return handleNotFoundError(err, d, "AlertPolicy")
+		return transport_tpg.HandleNotFoundError(err, d, "AlertPolicy")
 	}
 
 	log.Printf("[DEBUG] Finished deleting AlertPolicy %q: %#v", d.Id(), res)
@@ -1228,7 +1232,7 @@ func resourceMonitoringAlertPolicyDelete(d *schema.ResourceData, meta interface{
 
 func resourceMonitoringAlertPolicyImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<project>[^ ]+) (?P<name>[^ ]+)", "(?P<name>[^ ]+)"}, d, config); err != nil {
@@ -1238,19 +1242,19 @@ func resourceMonitoringAlertPolicyImport(d *schema.ResourceData, meta interface{
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenMonitoringAlertPolicyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyCombiner(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyCombiner(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyCreationRecord(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyCreationRecord(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1265,19 +1269,19 @@ func flattenMonitoringAlertPolicyCreationRecord(v interface{}, d *schema.Resourc
 		flattenMonitoringAlertPolicyCreationRecordMutatedBy(original["mutatedBy"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMonitoringAlertPolicyCreationRecordMutateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyCreationRecordMutateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyCreationRecordMutatedBy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyCreationRecordMutatedBy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyEnabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyEnabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditions(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditions(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1300,7 +1304,7 @@ func flattenMonitoringAlertPolicyConditions(v interface{}, d *schema.ResourceDat
 	}
 	return transformed
 }
-func flattenMonitoringAlertPolicyConditionsConditionAbsent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionAbsent(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1319,7 +1323,7 @@ func flattenMonitoringAlertPolicyConditionsConditionAbsent(v interface{}, d *sch
 		flattenMonitoringAlertPolicyConditionsConditionAbsentFilter(original["filter"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMonitoringAlertPolicyConditionsConditionAbsentAggregations(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionAbsentAggregations(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1340,23 +1344,23 @@ func flattenMonitoringAlertPolicyConditionsConditionAbsentAggregations(v interfa
 	}
 	return transformed
 }
-func flattenMonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAligner(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAligner(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionAbsentAggregationsGroupByFields(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionAbsentAggregationsGroupByFields(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionAbsentAggregationsAlignmentPeriod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionAbsentAggregationsAlignmentPeriod(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducer(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducer(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionAbsentTrigger(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionAbsentTrigger(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1371,11 +1375,11 @@ func flattenMonitoringAlertPolicyConditionsConditionAbsentTrigger(v interface{},
 		flattenMonitoringAlertPolicyConditionsConditionAbsentTriggerCount(original["count"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMonitoringAlertPolicyConditionsConditionAbsentTriggerPercent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionAbsentTriggerPercent(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionAbsentTriggerCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionAbsentTriggerCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1392,19 +1396,19 @@ func flattenMonitoringAlertPolicyConditionsConditionAbsentTriggerCount(v interfa
 	return v // let terraform core handle it otherwise
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionAbsentDuration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionAbsentDuration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionAbsentFilter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionAbsentFilter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1423,15 +1427,15 @@ func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguage(v in
 		flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageEvaluationMissingData(original["evaluationMissingData"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageQuery(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageQuery(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageDuration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageDuration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTrigger(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTrigger(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1446,11 +1450,11 @@ func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTrigg
 		flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTriggerCount(original["count"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTriggerPercent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTriggerPercent(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTriggerCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTriggerCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1467,11 +1471,11 @@ func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTrigg
 	return v // let terraform core handle it otherwise
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageEvaluationMissingData(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageEvaluationMissingData(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThreshold(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThreshold(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1500,15 +1504,15 @@ func flattenMonitoringAlertPolicyConditionsConditionThreshold(v interface{}, d *
 		flattenMonitoringAlertPolicyConditionsConditionThresholdEvaluationMissingData(original["evaluationMissingData"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMonitoringAlertPolicyConditionsConditionThresholdThresholdValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdThresholdValue(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorFilter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorFilter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregations(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregations(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1529,31 +1533,31 @@ func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregat
 	}
 	return transformed
 }
-func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAligner(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAligner(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsGroupByFields(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsGroupByFields(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsAlignmentPeriod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsAlignmentPeriod(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducer(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducer(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdDuration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdDuration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdComparison(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdComparison(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdTrigger(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdTrigger(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1568,11 +1572,11 @@ func flattenMonitoringAlertPolicyConditionsConditionThresholdTrigger(v interface
 		flattenMonitoringAlertPolicyConditionsConditionThresholdTriggerCount(original["count"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMonitoringAlertPolicyConditionsConditionThresholdTriggerPercent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdTriggerPercent(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdTriggerCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdTriggerCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1589,7 +1593,7 @@ func flattenMonitoringAlertPolicyConditionsConditionThresholdTriggerCount(v inte
 	return v // let terraform core handle it otherwise
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdAggregations(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdAggregations(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1610,35 +1614,35 @@ func flattenMonitoringAlertPolicyConditionsConditionThresholdAggregations(v inte
 	}
 	return transformed
 }
-func flattenMonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAligner(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAligner(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdAggregationsGroupByFields(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdAggregationsGroupByFields(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdAggregationsAlignmentPeriod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdAggregationsAlignmentPeriod(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducer(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducer(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdFilter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdFilter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionThresholdEvaluationMissingData(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionThresholdEvaluationMissingData(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionMatchedLog(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionMatchedLog(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1653,19 +1657,19 @@ func flattenMonitoringAlertPolicyConditionsConditionMatchedLog(v interface{}, d 
 		flattenMonitoringAlertPolicyConditionsConditionMatchedLogLabelExtractors(original["labelExtractors"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMonitoringAlertPolicyConditionsConditionMatchedLogFilter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionMatchedLogFilter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyConditionsConditionMatchedLogLabelExtractors(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyConditionsConditionMatchedLogLabelExtractors(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyNotificationChannels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyNotificationChannels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyAlertStrategy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyAlertStrategy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1680,7 +1684,7 @@ func flattenMonitoringAlertPolicyAlertStrategy(v interface{}, d *schema.Resource
 		flattenMonitoringAlertPolicyAlertStrategyAutoClose(original["autoClose"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMonitoringAlertPolicyAlertStrategyNotificationRateLimit(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyAlertStrategyNotificationRateLimit(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1693,19 +1697,19 @@ func flattenMonitoringAlertPolicyAlertStrategyNotificationRateLimit(v interface{
 		flattenMonitoringAlertPolicyAlertStrategyNotificationRateLimitPeriod(original["period"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMonitoringAlertPolicyAlertStrategyNotificationRateLimitPeriod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyAlertStrategyNotificationRateLimitPeriod(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyAlertStrategyAutoClose(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyAlertStrategyAutoClose(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyUserLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyUserLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyDocumentation(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyDocumentation(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1720,27 +1724,27 @@ func flattenMonitoringAlertPolicyDocumentation(v interface{}, d *schema.Resource
 		flattenMonitoringAlertPolicyDocumentationMimeType(original["mimeType"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMonitoringAlertPolicyDocumentationContent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyDocumentationContent(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMonitoringAlertPolicyDocumentationMimeType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMonitoringAlertPolicyDocumentationMimeType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandMonitoringAlertPolicyDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyCombiner(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyCombiner(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyEnabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyEnabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditions(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditions(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -1753,42 +1757,42 @@ func expandMonitoringAlertPolicyConditions(v interface{}, d TerraformResourceDat
 		transformedConditionAbsent, err := expandMonitoringAlertPolicyConditionsConditionAbsent(original["condition_absent"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedConditionAbsent); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedConditionAbsent); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["conditionAbsent"] = transformedConditionAbsent
 		}
 
 		transformedName, err := expandMonitoringAlertPolicyConditionsName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
 		transformedConditionMonitoringQueryLanguage, err := expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguage(original["condition_monitoring_query_language"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedConditionMonitoringQueryLanguage); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedConditionMonitoringQueryLanguage); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["conditionMonitoringQueryLanguage"] = transformedConditionMonitoringQueryLanguage
 		}
 
 		transformedConditionThreshold, err := expandMonitoringAlertPolicyConditionsConditionThreshold(original["condition_threshold"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedConditionThreshold); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedConditionThreshold); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["conditionThreshold"] = transformedConditionThreshold
 		}
 
 		transformedDisplayName, err := expandMonitoringAlertPolicyConditionsDisplayName(original["display_name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedDisplayName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedDisplayName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["displayName"] = transformedDisplayName
 		}
 
 		transformedConditionMatchedLog, err := expandMonitoringAlertPolicyConditionsConditionMatchedLog(original["condition_matched_log"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedConditionMatchedLog); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedConditionMatchedLog); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["conditionMatchedLog"] = transformedConditionMatchedLog
 		}
 
@@ -1797,7 +1801,7 @@ func expandMonitoringAlertPolicyConditions(v interface{}, d TerraformResourceDat
 	return req, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionAbsent(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionAbsent(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1809,35 +1813,35 @@ func expandMonitoringAlertPolicyConditionsConditionAbsent(v interface{}, d Terra
 	transformedAggregations, err := expandMonitoringAlertPolicyConditionsConditionAbsentAggregations(original["aggregations"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAggregations); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAggregations); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["aggregations"] = transformedAggregations
 	}
 
 	transformedTrigger, err := expandMonitoringAlertPolicyConditionsConditionAbsentTrigger(original["trigger"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTrigger); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTrigger); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["trigger"] = transformedTrigger
 	}
 
 	transformedDuration, err := expandMonitoringAlertPolicyConditionsConditionAbsentDuration(original["duration"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDuration); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDuration); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["duration"] = transformedDuration
 	}
 
 	transformedFilter, err := expandMonitoringAlertPolicyConditionsConditionAbsentFilter(original["filter"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedFilter); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedFilter); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["filter"] = transformedFilter
 	}
 
 	return transformed, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionAbsentAggregations(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionAbsentAggregations(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -1850,28 +1854,28 @@ func expandMonitoringAlertPolicyConditionsConditionAbsentAggregations(v interfac
 		transformedPerSeriesAligner, err := expandMonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAligner(original["per_series_aligner"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPerSeriesAligner); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPerSeriesAligner); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["perSeriesAligner"] = transformedPerSeriesAligner
 		}
 
 		transformedGroupByFields, err := expandMonitoringAlertPolicyConditionsConditionAbsentAggregationsGroupByFields(original["group_by_fields"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedGroupByFields); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedGroupByFields); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["groupByFields"] = transformedGroupByFields
 		}
 
 		transformedAlignmentPeriod, err := expandMonitoringAlertPolicyConditionsConditionAbsentAggregationsAlignmentPeriod(original["alignment_period"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedAlignmentPeriod); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedAlignmentPeriod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["alignmentPeriod"] = transformedAlignmentPeriod
 		}
 
 		transformedCrossSeriesReducer, err := expandMonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducer(original["cross_series_reducer"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedCrossSeriesReducer); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedCrossSeriesReducer); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["crossSeriesReducer"] = transformedCrossSeriesReducer
 		}
 
@@ -1880,23 +1884,23 @@ func expandMonitoringAlertPolicyConditionsConditionAbsentAggregations(v interfac
 	return req, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAligner(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionAbsentAggregationsPerSeriesAligner(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionAbsentAggregationsGroupByFields(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionAbsentAggregationsGroupByFields(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionAbsentAggregationsAlignmentPeriod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionAbsentAggregationsAlignmentPeriod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducer(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionAbsentAggregationsCrossSeriesReducer(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionAbsentTrigger(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionAbsentTrigger(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1908,41 +1912,41 @@ func expandMonitoringAlertPolicyConditionsConditionAbsentTrigger(v interface{}, 
 	transformedPercent, err := expandMonitoringAlertPolicyConditionsConditionAbsentTriggerPercent(original["percent"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPercent); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPercent); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["percent"] = transformedPercent
 	}
 
 	transformedCount, err := expandMonitoringAlertPolicyConditionsConditionAbsentTriggerCount(original["count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["count"] = transformedCount
 	}
 
 	return transformed, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionAbsentTriggerPercent(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionAbsentTriggerPercent(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionAbsentTriggerCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionAbsentTriggerCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionAbsentDuration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionAbsentDuration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionAbsentFilter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionAbsentFilter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguage(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguage(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1954,43 +1958,43 @@ func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguage(v int
 	transformedQuery, err := expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageQuery(original["query"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedQuery); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedQuery); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["query"] = transformedQuery
 	}
 
 	transformedDuration, err := expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageDuration(original["duration"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDuration); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDuration); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["duration"] = transformedDuration
 	}
 
 	transformedTrigger, err := expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTrigger(original["trigger"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTrigger); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTrigger); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["trigger"] = transformedTrigger
 	}
 
 	transformedEvaluationMissingData, err := expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageEvaluationMissingData(original["evaluation_missing_data"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEvaluationMissingData); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEvaluationMissingData); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["evaluationMissingData"] = transformedEvaluationMissingData
 	}
 
 	return transformed, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageQuery(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageQuery(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageDuration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageDuration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTrigger(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTrigger(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2002,33 +2006,33 @@ func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTrigge
 	transformedPercent, err := expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTriggerPercent(original["percent"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPercent); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPercent); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["percent"] = transformedPercent
 	}
 
 	transformedCount, err := expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTriggerCount(original["count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["count"] = transformedCount
 	}
 
 	return transformed, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTriggerPercent(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTriggerPercent(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTriggerCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageTriggerCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageEvaluationMissingData(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionMonitoringQueryLanguageEvaluationMissingData(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThreshold(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThreshold(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2040,78 +2044,78 @@ func expandMonitoringAlertPolicyConditionsConditionThreshold(v interface{}, d Te
 	transformedThresholdValue, err := expandMonitoringAlertPolicyConditionsConditionThresholdThresholdValue(original["threshold_value"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedThresholdValue); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedThresholdValue); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["thresholdValue"] = transformedThresholdValue
 	}
 
 	transformedDenominatorFilter, err := expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorFilter(original["denominator_filter"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDenominatorFilter); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDenominatorFilter); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["denominatorFilter"] = transformedDenominatorFilter
 	}
 
 	transformedDenominatorAggregations, err := expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregations(original["denominator_aggregations"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDenominatorAggregations); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDenominatorAggregations); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["denominatorAggregations"] = transformedDenominatorAggregations
 	}
 
 	transformedDuration, err := expandMonitoringAlertPolicyConditionsConditionThresholdDuration(original["duration"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDuration); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDuration); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["duration"] = transformedDuration
 	}
 
 	transformedComparison, err := expandMonitoringAlertPolicyConditionsConditionThresholdComparison(original["comparison"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedComparison); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedComparison); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["comparison"] = transformedComparison
 	}
 
 	transformedTrigger, err := expandMonitoringAlertPolicyConditionsConditionThresholdTrigger(original["trigger"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTrigger); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTrigger); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["trigger"] = transformedTrigger
 	}
 
 	transformedAggregations, err := expandMonitoringAlertPolicyConditionsConditionThresholdAggregations(original["aggregations"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAggregations); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAggregations); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["aggregations"] = transformedAggregations
 	}
 
 	transformedFilter, err := expandMonitoringAlertPolicyConditionsConditionThresholdFilter(original["filter"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedFilter); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedFilter); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["filter"] = transformedFilter
 	}
 
 	transformedEvaluationMissingData, err := expandMonitoringAlertPolicyConditionsConditionThresholdEvaluationMissingData(original["evaluation_missing_data"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEvaluationMissingData); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEvaluationMissingData); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["evaluationMissingData"] = transformedEvaluationMissingData
 	}
 
 	return transformed, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdThresholdValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdThresholdValue(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorFilter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorFilter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregations(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregations(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -2124,28 +2128,28 @@ func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregati
 		transformedPerSeriesAligner, err := expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAligner(original["per_series_aligner"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPerSeriesAligner); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPerSeriesAligner); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["perSeriesAligner"] = transformedPerSeriesAligner
 		}
 
 		transformedGroupByFields, err := expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsGroupByFields(original["group_by_fields"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedGroupByFields); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedGroupByFields); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["groupByFields"] = transformedGroupByFields
 		}
 
 		transformedAlignmentPeriod, err := expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsAlignmentPeriod(original["alignment_period"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedAlignmentPeriod); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedAlignmentPeriod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["alignmentPeriod"] = transformedAlignmentPeriod
 		}
 
 		transformedCrossSeriesReducer, err := expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducer(original["cross_series_reducer"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedCrossSeriesReducer); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedCrossSeriesReducer); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["crossSeriesReducer"] = transformedCrossSeriesReducer
 		}
 
@@ -2154,31 +2158,31 @@ func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregati
 	return req, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAligner(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsPerSeriesAligner(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsGroupByFields(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsGroupByFields(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsAlignmentPeriod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsAlignmentPeriod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducer(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdDenominatorAggregationsCrossSeriesReducer(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdDuration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdDuration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdComparison(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdComparison(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdTrigger(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdTrigger(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2190,29 +2194,29 @@ func expandMonitoringAlertPolicyConditionsConditionThresholdTrigger(v interface{
 	transformedPercent, err := expandMonitoringAlertPolicyConditionsConditionThresholdTriggerPercent(original["percent"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPercent); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPercent); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["percent"] = transformedPercent
 	}
 
 	transformedCount, err := expandMonitoringAlertPolicyConditionsConditionThresholdTriggerCount(original["count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["count"] = transformedCount
 	}
 
 	return transformed, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdTriggerPercent(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdTriggerPercent(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdTriggerCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdTriggerCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdAggregations(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdAggregations(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -2225,28 +2229,28 @@ func expandMonitoringAlertPolicyConditionsConditionThresholdAggregations(v inter
 		transformedPerSeriesAligner, err := expandMonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAligner(original["per_series_aligner"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPerSeriesAligner); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPerSeriesAligner); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["perSeriesAligner"] = transformedPerSeriesAligner
 		}
 
 		transformedGroupByFields, err := expandMonitoringAlertPolicyConditionsConditionThresholdAggregationsGroupByFields(original["group_by_fields"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedGroupByFields); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedGroupByFields); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["groupByFields"] = transformedGroupByFields
 		}
 
 		transformedAlignmentPeriod, err := expandMonitoringAlertPolicyConditionsConditionThresholdAggregationsAlignmentPeriod(original["alignment_period"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedAlignmentPeriod); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedAlignmentPeriod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["alignmentPeriod"] = transformedAlignmentPeriod
 		}
 
 		transformedCrossSeriesReducer, err := expandMonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducer(original["cross_series_reducer"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedCrossSeriesReducer); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedCrossSeriesReducer); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["crossSeriesReducer"] = transformedCrossSeriesReducer
 		}
 
@@ -2255,35 +2259,35 @@ func expandMonitoringAlertPolicyConditionsConditionThresholdAggregations(v inter
 	return req, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAligner(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdAggregationsPerSeriesAligner(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdAggregationsGroupByFields(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdAggregationsGroupByFields(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdAggregationsAlignmentPeriod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdAggregationsAlignmentPeriod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducer(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdAggregationsCrossSeriesReducer(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdFilter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdFilter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionThresholdEvaluationMissingData(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionThresholdEvaluationMissingData(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionMatchedLog(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionMatchedLog(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2295,25 +2299,25 @@ func expandMonitoringAlertPolicyConditionsConditionMatchedLog(v interface{}, d T
 	transformedFilter, err := expandMonitoringAlertPolicyConditionsConditionMatchedLogFilter(original["filter"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedFilter); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedFilter); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["filter"] = transformedFilter
 	}
 
 	transformedLabelExtractors, err := expandMonitoringAlertPolicyConditionsConditionMatchedLogLabelExtractors(original["label_extractors"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLabelExtractors); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLabelExtractors); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["labelExtractors"] = transformedLabelExtractors
 	}
 
 	return transformed, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionMatchedLogFilter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyConditionsConditionMatchedLogFilter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyConditionsConditionMatchedLogLabelExtractors(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandMonitoringAlertPolicyConditionsConditionMatchedLogLabelExtractors(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -2324,11 +2328,11 @@ func expandMonitoringAlertPolicyConditionsConditionMatchedLogLabelExtractors(v i
 	return m, nil
 }
 
-func expandMonitoringAlertPolicyNotificationChannels(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyNotificationChannels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyAlertStrategy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyAlertStrategy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2340,21 +2344,21 @@ func expandMonitoringAlertPolicyAlertStrategy(v interface{}, d TerraformResource
 	transformedNotificationRateLimit, err := expandMonitoringAlertPolicyAlertStrategyNotificationRateLimit(original["notification_rate_limit"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedNotificationRateLimit); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedNotificationRateLimit); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["notificationRateLimit"] = transformedNotificationRateLimit
 	}
 
 	transformedAutoClose, err := expandMonitoringAlertPolicyAlertStrategyAutoClose(original["auto_close"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAutoClose); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAutoClose); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["autoClose"] = transformedAutoClose
 	}
 
 	return transformed, nil
 }
 
-func expandMonitoringAlertPolicyAlertStrategyNotificationRateLimit(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyAlertStrategyNotificationRateLimit(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2366,22 +2370,22 @@ func expandMonitoringAlertPolicyAlertStrategyNotificationRateLimit(v interface{}
 	transformedPeriod, err := expandMonitoringAlertPolicyAlertStrategyNotificationRateLimitPeriod(original["period"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPeriod); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPeriod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["period"] = transformedPeriod
 	}
 
 	return transformed, nil
 }
 
-func expandMonitoringAlertPolicyAlertStrategyNotificationRateLimitPeriod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyAlertStrategyNotificationRateLimitPeriod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyAlertStrategyAutoClose(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyAlertStrategyAutoClose(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyUserLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandMonitoringAlertPolicyUserLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -2392,7 +2396,7 @@ func expandMonitoringAlertPolicyUserLabels(v interface{}, d TerraformResourceDat
 	return m, nil
 }
 
-func expandMonitoringAlertPolicyDocumentation(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyDocumentation(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2404,24 +2408,24 @@ func expandMonitoringAlertPolicyDocumentation(v interface{}, d TerraformResource
 	transformedContent, err := expandMonitoringAlertPolicyDocumentationContent(original["content"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedContent); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedContent); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["content"] = transformedContent
 	}
 
 	transformedMimeType, err := expandMonitoringAlertPolicyDocumentationMimeType(original["mime_type"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMimeType); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMimeType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["mimeType"] = transformedMimeType
 	}
 
 	return transformed, nil
 }
 
-func expandMonitoringAlertPolicyDocumentationContent(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyDocumentationContent(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMonitoringAlertPolicyDocumentationMimeType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMonitoringAlertPolicyDocumentationMimeType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

@@ -25,6 +25,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceComputeReservation() *schema.Resource {
@@ -129,7 +133,7 @@ reserves disks of type 'local-ssd'.`,
 													Type:         schema.TypeString,
 													Optional:     true,
 													ForceNew:     true,
-													ValidateFunc: validateEnum([]string{"SCSI", "NVME", ""}),
+													ValidateFunc: verify.ValidateEnum([]string{"SCSI", "NVME", ""}),
 													Description:  `The disk interface to use for attaching this disk. Default value: "SCSI" Possible values: ["SCSI", "NVME"]`,
 													Default:      "SCSI",
 												},
@@ -199,7 +203,7 @@ for information on available CPU platforms.`,
 							Type:         schema.TypeString,
 							Computed:     true,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"LOCAL", "SPECIFIC_PROJECTS", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"LOCAL", "SPECIFIC_PROJECTS", ""}),
 							Description:  `Type of sharing for this shared-reservation Possible values: ["LOCAL", "SPECIFIC_PROJECTS"]`,
 						},
 					},
@@ -246,8 +250,8 @@ reservations that are tied to a commitment.`,
 }
 
 func resourceComputeReservationCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -256,41 +260,41 @@ func resourceComputeReservationCreate(d *schema.ResourceData, meta interface{}) 
 	descriptionProp, err := expandComputeReservationDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	nameProp, err := expandComputeReservationName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	specificReservationRequiredProp, err := expandComputeReservationSpecificReservationRequired(d.Get("specific_reservation_required"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("specific_reservation_required"); !isEmptyValue(reflect.ValueOf(specificReservationRequiredProp)) && (ok || !reflect.DeepEqual(v, specificReservationRequiredProp)) {
+	} else if v, ok := d.GetOkExists("specific_reservation_required"); !tpgresource.IsEmptyValue(reflect.ValueOf(specificReservationRequiredProp)) && (ok || !reflect.DeepEqual(v, specificReservationRequiredProp)) {
 		obj["specificReservationRequired"] = specificReservationRequiredProp
 	}
 	shareSettingsProp, err := expandComputeReservationShareSettings(d.Get("share_settings"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("share_settings"); !isEmptyValue(reflect.ValueOf(shareSettingsProp)) && (ok || !reflect.DeepEqual(v, shareSettingsProp)) {
+	} else if v, ok := d.GetOkExists("share_settings"); !tpgresource.IsEmptyValue(reflect.ValueOf(shareSettingsProp)) && (ok || !reflect.DeepEqual(v, shareSettingsProp)) {
 		obj["shareSettings"] = shareSettingsProp
 	}
 	specificReservationProp, err := expandComputeReservationSpecificReservation(d.Get("specific_reservation"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("specific_reservation"); !isEmptyValue(reflect.ValueOf(specificReservationProp)) && (ok || !reflect.DeepEqual(v, specificReservationProp)) {
+	} else if v, ok := d.GetOkExists("specific_reservation"); !tpgresource.IsEmptyValue(reflect.ValueOf(specificReservationProp)) && (ok || !reflect.DeepEqual(v, specificReservationProp)) {
 		obj["specificReservation"] = specificReservationProp
 	}
 	zoneProp, err := expandComputeReservationZone(d.Get("zone"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("zone"); !isEmptyValue(reflect.ValueOf(zoneProp)) && (ok || !reflect.DeepEqual(v, zoneProp)) {
+	} else if v, ok := d.GetOkExists("zone"); !tpgresource.IsEmptyValue(reflect.ValueOf(zoneProp)) && (ok || !reflect.DeepEqual(v, zoneProp)) {
 		obj["zone"] = zoneProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations")
 	if err != nil {
 		return err
 	}
@@ -298,24 +302,24 @@ func resourceComputeReservationCreate(d *schema.ResourceData, meta interface{}) 
 	log.Printf("[DEBUG] Creating new Reservation: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Reservation: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Reservation: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -337,33 +341,33 @@ func resourceComputeReservationCreate(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceComputeReservationRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Reservation: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeReservation %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeReservation %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -394,7 +398,7 @@ func resourceComputeReservationRead(d *schema.ResourceData, meta interface{}) er
 	if err := d.Set("zone", flattenComputeReservationZone(res["zone"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Reservation: %s", err)
 	}
-	if err := d.Set("self_link", ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
+	if err := d.Set("self_link", tpgresource.ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
 		return fmt.Errorf("Error reading Reservation: %s", err)
 	}
 
@@ -402,15 +406,15 @@ func resourceComputeReservationRead(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceComputeReservationUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Reservation: %s", err)
 	}
@@ -420,7 +424,7 @@ func resourceComputeReservationUpdate(d *schema.ResourceData, meta interface{}) 
 	shareSettingsProp, err := expandComputeReservationShareSettings(d.Get("share_settings"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("share_settings"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, shareSettingsProp)) {
+	} else if v, ok := d.GetOkExists("share_settings"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, shareSettingsProp)) {
 		obj["shareSettings"] = shareSettingsProp
 	}
 
@@ -429,7 +433,7 @@ func resourceComputeReservationUpdate(d *schema.ResourceData, meta interface{}) 
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -442,12 +446,12 @@ func resourceComputeReservationUpdate(d *schema.ResourceData, meta interface{}) 
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 	if d.HasChange("share_settings") {
-		url, err = ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
+		url, err = tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
 		if err != nil {
 			return err
 		}
@@ -459,13 +463,13 @@ func resourceComputeReservationUpdate(d *schema.ResourceData, meta interface{}) 
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
 	// if updateMask is empty we are not updating anything so skip the post
 	if len(updateMask) > 0 {
-		res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 		if err != nil {
 			return fmt.Errorf("Error updating Reservation %q: %s", d.Id(), err)
@@ -489,7 +493,7 @@ func resourceComputeReservationUpdate(d *schema.ResourceData, meta interface{}) 
 		specificReservationProp, err := expandComputeReservationSpecificReservation(d.Get("specific_reservation"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("specific_reservation"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, specificReservationProp)) {
+		} else if v, ok := d.GetOkExists("specific_reservation"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, specificReservationProp)) {
 			obj["specificReservation"] = specificReservationProp
 		}
 
@@ -498,13 +502,13 @@ func resourceComputeReservationUpdate(d *schema.ResourceData, meta interface{}) 
 			return err
 		}
 
-		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations/{{name}}/resize")
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations/{{name}}/resize")
 		if err != nil {
 			return err
 		}
 
 		if d.HasChange("share_settings") {
-			url, err = ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
+			url, err = tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -516,11 +520,11 @@ func resourceComputeReservationUpdate(d *schema.ResourceData, meta interface{}) 
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Reservation %q: %s", d.Id(), err)
 		} else {
@@ -541,21 +545,21 @@ func resourceComputeReservationUpdate(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceComputeReservationDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Reservation: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -564,13 +568,13 @@ func resourceComputeReservationDelete(d *schema.ResourceData, meta interface{}) 
 	log.Printf("[DEBUG] Deleting Reservation %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Reservation")
+		return transport_tpg.HandleNotFoundError(err, d, "Reservation")
 	}
 
 	err = ComputeOperationWaitTime(
@@ -586,7 +590,7 @@ func resourceComputeReservationDelete(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceComputeReservationImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/zones/(?P<zone>[^/]+)/reservations/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<zone>[^/]+)/(?P<name>[^/]+)",
@@ -597,7 +601,7 @@ func resourceComputeReservationImport(d *schema.ResourceData, meta interface{}) 
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/reservations/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -606,31 +610,31 @@ func resourceComputeReservationImport(d *schema.ResourceData, meta interface{}) 
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenComputeReservationCreationTimestamp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationCreationTimestamp(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeReservationDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeReservationName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeReservationCommitment(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationCommitment(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeReservationSpecificReservationRequired(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservationRequired(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeReservationStatus(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationStatus(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeReservationSpecificReservation(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservation(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -647,7 +651,7 @@ func flattenComputeReservationSpecificReservation(v interface{}, d *schema.Resou
 		flattenComputeReservationSpecificReservationInstanceProperties(original["instanceProperties"], d, config)
 	return []interface{}{transformed}
 }
-func flattenComputeReservationSpecificReservationCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservationCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -664,7 +668,7 @@ func flattenComputeReservationSpecificReservationCount(v interface{}, d *schema.
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeReservationSpecificReservationInUseCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservationInUseCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -681,7 +685,7 @@ func flattenComputeReservationSpecificReservationInUseCount(v interface{}, d *sc
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeReservationSpecificReservationInstanceProperties(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservationInstanceProperties(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -700,15 +704,15 @@ func flattenComputeReservationSpecificReservationInstanceProperties(v interface{
 		flattenComputeReservationSpecificReservationInstancePropertiesLocalSsds(original["localSsds"], d, config)
 	return []interface{}{transformed}
 }
-func flattenComputeReservationSpecificReservationInstancePropertiesMachineType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservationInstancePropertiesMachineType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeReservationSpecificReservationInstancePropertiesMinCpuPlatform(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservationInstancePropertiesMinCpuPlatform(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeReservationSpecificReservationInstancePropertiesGuestAccelerators(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservationInstancePropertiesGuestAccelerators(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -727,11 +731,11 @@ func flattenComputeReservationSpecificReservationInstancePropertiesGuestAccelera
 	}
 	return transformed
 }
-func flattenComputeReservationSpecificReservationInstancePropertiesGuestAcceleratorsAcceleratorType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservationInstancePropertiesGuestAcceleratorsAcceleratorType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeReservationSpecificReservationInstancePropertiesGuestAcceleratorsAcceleratorCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservationInstancePropertiesGuestAcceleratorsAcceleratorCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -748,7 +752,7 @@ func flattenComputeReservationSpecificReservationInstancePropertiesGuestAccelera
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeReservationSpecificReservationInstancePropertiesLocalSsds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservationInstancePropertiesLocalSsds(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -767,11 +771,11 @@ func flattenComputeReservationSpecificReservationInstancePropertiesLocalSsds(v i
 	}
 	return transformed
 }
-func flattenComputeReservationSpecificReservationInstancePropertiesLocalSsdsInterface(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservationInstancePropertiesLocalSsdsInterface(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeReservationSpecificReservationInstancePropertiesLocalSsdsDiskSizeGb(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationSpecificReservationInstancePropertiesLocalSsdsDiskSizeGb(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -788,26 +792,26 @@ func flattenComputeReservationSpecificReservationInstancePropertiesLocalSsdsDisk
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeReservationZone(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeReservationZone(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return ConvertSelfLinkToV1(v.(string))
+	return tpgresource.ConvertSelfLinkToV1(v.(string))
 }
 
-func expandComputeReservationDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationSpecificReservationRequired(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservationRequired(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationShareSettings(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationShareSettings(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -819,25 +823,25 @@ func expandComputeReservationShareSettings(v interface{}, d TerraformResourceDat
 	transformedShareType, err := expandComputeReservationShareSettingsShareType(original["share_type"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedShareType); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedShareType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["shareType"] = transformedShareType
 	}
 
 	transformedProjectMap, err := expandComputeReservationShareSettingsProjectMap(original["project_map"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProjectMap); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProjectMap); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["projectMap"] = transformedProjectMap
 	}
 
 	return transformed, nil
 }
 
-func expandComputeReservationShareSettingsShareType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationShareSettingsShareType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationShareSettingsProjectMap(v interface{}, d TerraformResourceData, config *Config) (map[string]interface{}, error) {
+func expandComputeReservationShareSettingsProjectMap(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]interface{}, error) {
 	if v == nil {
 		return map[string]interface{}{}, nil
 	}
@@ -849,7 +853,7 @@ func expandComputeReservationShareSettingsProjectMap(v interface{}, d TerraformR
 		transformedProjectId, err := expandComputeReservationShareSettingsProjectMapProjectId(original["project_id"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["projectId"] = transformedProjectId
 		}
 
@@ -862,11 +866,11 @@ func expandComputeReservationShareSettingsProjectMap(v interface{}, d TerraformR
 	return m, nil
 }
 
-func expandComputeReservationShareSettingsProjectMapProjectId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationShareSettingsProjectMapProjectId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationSpecificReservation(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservation(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -878,36 +882,36 @@ func expandComputeReservationSpecificReservation(v interface{}, d TerraformResou
 	transformedCount, err := expandComputeReservationSpecificReservationCount(original["count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["count"] = transformedCount
 	}
 
 	transformedInUseCount, err := expandComputeReservationSpecificReservationInUseCount(original["in_use_count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInUseCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInUseCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["inUseCount"] = transformedInUseCount
 	}
 
 	transformedInstanceProperties, err := expandComputeReservationSpecificReservationInstanceProperties(original["instance_properties"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInstanceProperties); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInstanceProperties); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["instanceProperties"] = transformedInstanceProperties
 	}
 
 	return transformed, nil
 }
 
-func expandComputeReservationSpecificReservationCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservationCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationSpecificReservationInUseCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservationInUseCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationSpecificReservationInstanceProperties(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservationInstanceProperties(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -919,43 +923,43 @@ func expandComputeReservationSpecificReservationInstanceProperties(v interface{}
 	transformedMachineType, err := expandComputeReservationSpecificReservationInstancePropertiesMachineType(original["machine_type"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMachineType); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMachineType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["machineType"] = transformedMachineType
 	}
 
 	transformedMinCpuPlatform, err := expandComputeReservationSpecificReservationInstancePropertiesMinCpuPlatform(original["min_cpu_platform"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMinCpuPlatform); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMinCpuPlatform); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["minCpuPlatform"] = transformedMinCpuPlatform
 	}
 
 	transformedGuestAccelerators, err := expandComputeReservationSpecificReservationInstancePropertiesGuestAccelerators(original["guest_accelerators"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedGuestAccelerators); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedGuestAccelerators); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["guestAccelerators"] = transformedGuestAccelerators
 	}
 
 	transformedLocalSsds, err := expandComputeReservationSpecificReservationInstancePropertiesLocalSsds(original["local_ssds"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLocalSsds); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLocalSsds); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["localSsds"] = transformedLocalSsds
 	}
 
 	return transformed, nil
 }
 
-func expandComputeReservationSpecificReservationInstancePropertiesMachineType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservationInstancePropertiesMachineType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationSpecificReservationInstancePropertiesMinCpuPlatform(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservationInstancePropertiesMinCpuPlatform(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationSpecificReservationInstancePropertiesGuestAccelerators(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservationInstancePropertiesGuestAccelerators(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -968,14 +972,14 @@ func expandComputeReservationSpecificReservationInstancePropertiesGuestAccelerat
 		transformedAcceleratorType, err := expandComputeReservationSpecificReservationInstancePropertiesGuestAcceleratorsAcceleratorType(original["accelerator_type"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedAcceleratorType); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedAcceleratorType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["acceleratorType"] = transformedAcceleratorType
 		}
 
 		transformedAcceleratorCount, err := expandComputeReservationSpecificReservationInstancePropertiesGuestAcceleratorsAcceleratorCount(original["accelerator_count"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedAcceleratorCount); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedAcceleratorCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["acceleratorCount"] = transformedAcceleratorCount
 		}
 
@@ -984,15 +988,15 @@ func expandComputeReservationSpecificReservationInstancePropertiesGuestAccelerat
 	return req, nil
 }
 
-func expandComputeReservationSpecificReservationInstancePropertiesGuestAcceleratorsAcceleratorType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservationInstancePropertiesGuestAcceleratorsAcceleratorType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationSpecificReservationInstancePropertiesGuestAcceleratorsAcceleratorCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservationInstancePropertiesGuestAcceleratorsAcceleratorCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationSpecificReservationInstancePropertiesLocalSsds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservationInstancePropertiesLocalSsds(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -1005,14 +1009,14 @@ func expandComputeReservationSpecificReservationInstancePropertiesLocalSsds(v in
 		transformedInterface, err := expandComputeReservationSpecificReservationInstancePropertiesLocalSsdsInterface(original["interface"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedInterface); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedInterface); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["interface"] = transformedInterface
 		}
 
 		transformedDiskSizeGb, err := expandComputeReservationSpecificReservationInstancePropertiesLocalSsdsDiskSizeGb(original["disk_size_gb"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedDiskSizeGb); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedDiskSizeGb); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["diskSizeGb"] = transformedDiskSizeGb
 		}
 
@@ -1021,16 +1025,16 @@ func expandComputeReservationSpecificReservationInstancePropertiesLocalSsds(v in
 	return req, nil
 }
 
-func expandComputeReservationSpecificReservationInstancePropertiesLocalSsdsInterface(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservationInstancePropertiesLocalSsdsInterface(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationSpecificReservationInstancePropertiesLocalSsdsDiskSizeGb(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeReservationSpecificReservationInstancePropertiesLocalSsdsDiskSizeGb(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeReservationZone(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	f, err := parseGlobalFieldValue("zones", v.(string), "project", d, config, true)
+func expandComputeReservationZone(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	f, err := tpgresource.ParseGlobalFieldValue("zones", v.(string), "project", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for zone: %s", err)
 	}
@@ -1039,7 +1043,7 @@ func expandComputeReservationZone(v interface{}, d TerraformResourceData, config
 
 func resourceComputeReservationUpdateEncoder(d *schema.ResourceData, meta interface{}, obj map[string]interface{}) (map[string]interface{}, error) {
 	newObj := make(map[string]interface{})
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	maskId := ""
 	firstProject := true
 	urlUpdateMask := ""
@@ -1049,14 +1053,14 @@ func resourceComputeReservationUpdateEncoder(d *schema.ResourceData, meta interf
 		nameProp, err := expandComputeReservationName(d.Get("name"), d, config)
 		if err != nil {
 			return nil, fmt.Errorf("Invalid value for name: %s", err)
-		} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+		} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 			newObj["name"] = nameProp
 		}
 		// 	Get zone.
 		zoneProp, err := expandComputeReservationZone(d.Get("zone"), d, config)
 		if err != nil {
 			return nil, fmt.Errorf("Invalid value for zone: %s", err)
-		} else if v, ok := d.GetOkExists("zone"); !isEmptyValue(reflect.ValueOf(zoneProp)) && (ok || !reflect.DeepEqual(v, zoneProp)) {
+		} else if v, ok := d.GetOkExists("zone"); !tpgresource.IsEmptyValue(reflect.ValueOf(zoneProp)) && (ok || !reflect.DeepEqual(v, zoneProp)) {
 			newObj["zone"] = zoneProp
 		}
 		transformed := make(map[string]interface{})
@@ -1075,10 +1079,10 @@ func resourceComputeReservationUpdateEncoder(d *schema.ResourceData, meta interf
 			singleProject := make(map[string]interface{})
 			// set up project_map.
 			transformedProjectId := original["project_id"]
-			if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !isEmptyValue(val) {
+			if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 				singleProject["projectId"] = transformedProjectId
 			}
-			transformedId, err := expandString(original["id"], d, config)
+			transformedId, err := tpgresource.ExpandString(original["id"], d, config)
 			if err != nil {
 				return nil, fmt.Errorf("Invalid value for id: %s", err)
 			}
@@ -1106,7 +1110,7 @@ func resourceComputeReservationUpdateEncoder(d *schema.ResourceData, meta interf
 			_, err := strconv.Atoi(projectId)
 			// convert id to number.
 			if err != nil {
-				config := meta.(*Config)
+				config := meta.(*transport_tpg.Config)
 				project, err := config.NewResourceManagerClient(config.UserAgent).Projects.Get(projectId).Do()
 				if err != nil {
 					return nil, fmt.Errorf("Invalid value for projectId: %s", err)

@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	runtimeconfig "google.golang.org/api/runtimeconfig/v1beta1"
 )
@@ -67,13 +70,13 @@ func ResourceRuntimeconfigVariable() *schema.Resource {
 }
 
 func resourceRuntimeconfigVariableCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -93,8 +96,8 @@ func resourceRuntimeconfigVariableCreate(d *schema.ResourceData, meta interface{
 }
 
 func resourceRuntimeconfigVariableRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -109,12 +112,12 @@ func resourceRuntimeconfigVariableRead(d *schema.ResourceData, meta interface{})
 }
 
 func resourceRuntimeconfigVariableUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -137,8 +140,8 @@ func resourceRuntimeconfigVariableUpdate(d *schema.ResourceData, meta interface{
 }
 
 func resourceRuntimeconfigVariableDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -155,13 +158,13 @@ func resourceRuntimeconfigVariableDelete(d *schema.ResourceData, meta interface{
 }
 
 func resourceRuntimeconfigVariableImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{"projects/(?P<project>[^/]+)/configs/(?P<parent>[^/]+)/variables/(?P<name>[^/]+)", "(?P<parent>[^/]+)/(?P<name>[^/]+)"}, d, config); err != nil {
 		return nil, err
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/configs/{{parent}}/variables/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/configs/{{parent}}/variables/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

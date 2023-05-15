@@ -173,7 +173,7 @@ func DCLConnectionSchema() *dcl.Schema {
 												Type:        "string",
 												GoName:      "Username",
 												ReadOnly:    true,
-												Description: "The username associated to this token.",
+												Description: "Output only. The username associated to this token.",
 											},
 										},
 									},

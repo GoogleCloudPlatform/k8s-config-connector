@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceActiveDirectoryPeering() *schema.Resource {
@@ -88,8 +91,8 @@ func ResourceActiveDirectoryPeering() *schema.Resource {
 }
 
 func resourceActiveDirectoryPeeringCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -98,29 +101,29 @@ func resourceActiveDirectoryPeeringCreate(d *schema.ResourceData, meta interface
 	labelsProp, err := expandActiveDirectoryPeeringLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	authorizedNetworkProp, err := expandActiveDirectoryPeeringAuthorizedNetwork(d.Get("authorized_network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("authorized_network"); !isEmptyValue(reflect.ValueOf(authorizedNetworkProp)) && (ok || !reflect.DeepEqual(v, authorizedNetworkProp)) {
+	} else if v, ok := d.GetOkExists("authorized_network"); !tpgresource.IsEmptyValue(reflect.ValueOf(authorizedNetworkProp)) && (ok || !reflect.DeepEqual(v, authorizedNetworkProp)) {
 		obj["authorizedNetwork"] = authorizedNetworkProp
 	}
 	domainResourceProp, err := expandActiveDirectoryPeeringDomainResource(d.Get("domain_resource"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("domain_resource"); !isEmptyValue(reflect.ValueOf(domainResourceProp)) && (ok || !reflect.DeepEqual(v, domainResourceProp)) {
+	} else if v, ok := d.GetOkExists("domain_resource"); !tpgresource.IsEmptyValue(reflect.ValueOf(domainResourceProp)) && (ok || !reflect.DeepEqual(v, domainResourceProp)) {
 		obj["domainResource"] = domainResourceProp
 	}
 	statusMessageProp, err := expandActiveDirectoryPeeringStatusMessage(d.Get("status_message"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("status_message"); !isEmptyValue(reflect.ValueOf(statusMessageProp)) && (ok || !reflect.DeepEqual(v, statusMessageProp)) {
+	} else if v, ok := d.GetOkExists("status_message"); !tpgresource.IsEmptyValue(reflect.ValueOf(statusMessageProp)) && (ok || !reflect.DeepEqual(v, statusMessageProp)) {
 		obj["statusMessage"] = statusMessageProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ActiveDirectoryBasePath}}projects/{{project}}/locations/global/peerings?peeringId={{peering_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ActiveDirectoryBasePath}}projects/{{project}}/locations/global/peerings?peeringId={{peering_id}}")
 	if err != nil {
 		return err
 	}
@@ -128,24 +131,24 @@ func resourceActiveDirectoryPeeringCreate(d *schema.ResourceData, meta interface
 	log.Printf("[DEBUG] Creating new Peering: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Peering: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Peering: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/domains/{{peering_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/global/domains/{{peering_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -169,7 +172,7 @@ func resourceActiveDirectoryPeeringCreate(d *schema.ResourceData, meta interface
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/global/domains/{{peering_id}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/global/domains/{{peering_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -181,33 +184,33 @@ func resourceActiveDirectoryPeeringCreate(d *schema.ResourceData, meta interface
 }
 
 func resourceActiveDirectoryPeeringRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ActiveDirectoryBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ActiveDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Peering: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ActiveDirectoryPeering %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ActiveDirectoryPeering %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -231,15 +234,15 @@ func resourceActiveDirectoryPeeringRead(d *schema.ResourceData, meta interface{}
 }
 
 func resourceActiveDirectoryPeeringUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Peering: %s", err)
 	}
@@ -249,17 +252,17 @@ func resourceActiveDirectoryPeeringUpdate(d *schema.ResourceData, meta interface
 	labelsProp, err := expandActiveDirectoryPeeringLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	statusMessageProp, err := expandActiveDirectoryPeeringStatusMessage(d.Get("status_message"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("status_message"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, statusMessageProp)) {
+	} else if v, ok := d.GetOkExists("status_message"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, statusMessageProp)) {
 		obj["statusMessage"] = statusMessageProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ActiveDirectoryBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ActiveDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -267,11 +270,11 @@ func resourceActiveDirectoryPeeringUpdate(d *schema.ResourceData, meta interface
 	log.Printf("[DEBUG] Updating Peering %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Peering %q: %s", d.Id(), err)
@@ -291,21 +294,21 @@ func resourceActiveDirectoryPeeringUpdate(d *schema.ResourceData, meta interface
 }
 
 func resourceActiveDirectoryPeeringDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Peering: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{ActiveDirectoryBasePath}}projects/{{project}}/locations/global/peerings/{{peering_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ActiveDirectoryBasePath}}projects/{{project}}/locations/global/peerings/{{peering_id}}")
 	if err != nil {
 		return err
 	}
@@ -314,13 +317,13 @@ func resourceActiveDirectoryPeeringDelete(d *schema.ResourceData, meta interface
 	log.Printf("[DEBUG] Deleting Peering %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Peering")
+		return transport_tpg.HandleNotFoundError(err, d, "Peering")
 	}
 
 	err = ActiveDirectoryOperationWaitTime(
@@ -335,23 +338,23 @@ func resourceActiveDirectoryPeeringDelete(d *schema.ResourceData, meta interface
 	return nil
 }
 
-func flattenActiveDirectoryPeeringName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenActiveDirectoryPeeringName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenActiveDirectoryPeeringLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenActiveDirectoryPeeringLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenActiveDirectoryPeeringAuthorizedNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenActiveDirectoryPeeringAuthorizedNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenActiveDirectoryPeeringDomainResource(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenActiveDirectoryPeeringDomainResource(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandActiveDirectoryPeeringLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandActiveDirectoryPeeringLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -362,14 +365,14 @@ func expandActiveDirectoryPeeringLabels(v interface{}, d TerraformResourceData, 
 	return m, nil
 }
 
-func expandActiveDirectoryPeeringAuthorizedNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandActiveDirectoryPeeringAuthorizedNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandActiveDirectoryPeeringDomainResource(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandActiveDirectoryPeeringDomainResource(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandActiveDirectoryPeeringStatusMessage(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandActiveDirectoryPeeringStatusMessage(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

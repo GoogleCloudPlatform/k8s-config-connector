@@ -91,6 +91,7 @@ the `spec.location` field. To manage a regional ComputeForwardingRule, use a reg
 ```yaml
 allPorts: boolean
 allowGlobalAccess: boolean
+allowPscGlobalAccess: boolean
 backendServiceRef:
   external: string
   name: string
@@ -125,6 +126,8 @@ serviceDirectoryRegistrations:
 - namespace: string
   service: string
 serviceLabel: string
+sourceIpRanges:
+- string
 subnetworkRef:
   external: string
   name: string
@@ -170,7 +173,19 @@ target:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. This field is used along with the `backend_service` field for internal load balancing or with the `target` field for internal TargetInstance. This field cannot be used with `port` or `portRange` fields. When the load balancing scheme is `INTERNAL` and protocol is TCP/UDP, specify this field to allow packets addressed to any ports will be forwarded to the backends configured with this forwarding rule.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. This field can only be used:
+* If 'IPProtocol' is one of TCP, UDP, or SCTP.
+* By internal TCP/UDP load balancers, backend service-based network load
+balancers, and internal and external protocol forwarding.
+
+
+Set this field to true to allow packets addressed to any port or packets
+lacking destination port information (for example, UDP fragments after the
+first fragment) to be forwarded to the backends configured with this
+forwarding rule.
+
+The 'ports', 'port_range', and
+'allPorts' fields are mutually exclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -180,7 +195,25 @@ target:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}This field is used along with the `backend_service` field for internal load balancing or with the `target` field for internal TargetInstance. If the field is set to `TRUE`, clients can access ILB from all regions. Otherwise only allows access from clients in the same region as the internal load balancer.{% endverbatim %}</p>
+            <p>{% verbatim %}This field is used along with the 'backend_service' field for
+internal load balancing or with the 'target' field for internal
+TargetInstance.
+
+If the field is set to 'TRUE', clients can access ILB from all
+regions.
+
+Otherwise only allows access from clients in the same region as the
+internal load balancer.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>allowPscGlobalAccess</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. This is used in PSC consumer ForwardingRule to control whether the PSC endpoint can be accessed from another region.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -231,7 +264,8 @@ used only for internal load balancing.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. An optional description of this resource. Provide this property when you create the resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. An optional description of this resource. Provide this property when
+you create the resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -319,7 +353,16 @@ range of the subnet or network configured for this forwarding rule.{% endverbati
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The IP protocol to which this rule applies. For protocol forwarding, valid options are `TCP`, `UDP`, `ESP`, `AH`, `SCTP` or `ICMP`. For Internal TCP/UDP Load Balancing, the load balancing scheme is `INTERNAL`, and one of `TCP` or `UDP` are valid. For Traffic Director, the load balancing scheme is `INTERNAL_SELF_MANAGED`, and only `TCP`is valid. For Internal HTTP(S) Load Balancing, the load balancing scheme is `INTERNAL_MANAGED`, and only `TCP` is valid. For HTTP(S), SSL Proxy, and TCP Proxy Load Balancing, the load balancing scheme is `EXTERNAL` and only `TCP` is valid. For Network TCP/UDP Load Balancing, the load balancing scheme is `EXTERNAL`, and one of `TCP` or `UDP` is valid.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The IP protocol to which this rule applies.
+
+For protocol forwarding, valid
+options are 'TCP', 'UDP', 'ESP',
+'AH', 'SCTP', 'ICMP' and
+'L3_DEFAULT'.
+
+The valid IP protocols are different for different load balancing products
+as described in [Load balancing
+features](https://cloud.google.com/load-balancing/docs/features#protocols_from_the_load_balancer_to_the_backends). Possible values: ["TCP", "UDP", "ESP", "AH", "SCTP", "ICMP", "L3_DEFAULT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -329,7 +372,7 @@ range of the subnet or network configured for this forwarding rule.{% endverbati
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The IP Version that will be used by this forwarding rule. Valid options are `IPV4` or `IPV6`. This can only be specified for an external global forwarding rule. Possible values: UNSPECIFIED_VERSION, IPV4, IPV6.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The IP Version that will be used by this global forwarding rule. Possible values: ["IPV4", "IPV6"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -339,7 +382,13 @@ range of the subnet or network configured for this forwarding rule.{% endverbati
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Indicates whether or not this load balancer can be used as a collector for packet mirroring. To prevent mirroring loops, instances behind this load balancer will not have their traffic mirrored even if a `PacketMirroring` rule applies to them. This can only be set to true for load balancers that have their `loadBalancingScheme` set to `INTERNAL`.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Indicates whether or not this load balancer can be used as a collector for
+packet mirroring. To prevent mirroring loops, instances behind this
+load balancer will not have their traffic mirrored even if a
+'PacketMirroring' rule applies to them.
+
+This can only be set to true for load balancers that have their
+'loadBalancingScheme' set to 'INTERNAL'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -351,21 +400,8 @@ range of the subnet or network configured for this forwarding rule.{% endverbati
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Specifies the forwarding rule type.
 
-*   `EXTERNAL` is used for:
-    *   Classic Cloud VPN gateways
-    *   Protocol forwarding to VMs from an external IP address
-    *   The following load balancers: HTTP(S), SSL Proxy, TCP Proxy, and Network TCP/UDP
-*   `INTERNAL` is used for:
-    *   Protocol forwarding to VMs from an internal IP address
-    *   Internal TCP/UDP load balancers
-*   `INTERNAL_MANAGED` is used for:
-    *   Internal HTTP(S) load balancers
-*   `INTERNAL_SELF_MANAGED` is used for:
-    *   Traffic Director
-*   `EXTERNAL_MANAGED` is used for:
-    *   Global external HTTP(S) load balancers 
-
-For more information about forwarding rules, refer to [Forwarding rule concepts](/load-balancing/docs/forwarding-rule-concepts). Possible values: INVALID, INTERNAL, INTERNAL_MANAGED, INTERNAL_SELF_MANAGED, EXTERNAL, EXTERNAL_MANAGED.{% endverbatim %}</p>
+For more information about forwarding rules, refer to
+[Forwarding rule concepts](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "EXTERNAL_MANAGED", "INTERNAL", "INTERNAL_MANAGED"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -385,13 +421,23 @@ For more information about forwarding rules, refer to [Forwarding rule concepts]
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. Opaque filter criteria used by Loadbalancer to restrict routing configuration to a limited set of [xDS](https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md) compliant clients. In their xDS requests to Loadbalancer, xDS clients present [node metadata](https://github.com/envoyproxy/data-plane-api/search?q=%22message+Node%22+in%3A%2Fenvoy%2Fapi%2Fv2%2Fcore%2Fbase.proto&). If a match takes place, the relevant configuration is made available to those proxies. Otherwise, all the resources (e.g. `TargetHttpProxy`, `UrlMap`) referenced by the `ForwardingRule` will not be visible to those proxies.
+            <p>{% verbatim %}Immutable. Opaque filter criteria used by Loadbalancer to restrict routing
+configuration to a limited set xDS compliant clients. In their xDS
+requests to Loadbalancer, xDS clients present node metadata. If a
+match takes place, the relevant routing configuration is made available
+to those proxies.
 
-For each `metadataFilter` in this list, if its `filterMatchCriteria` is set to MATCH_ANY, at least one of the `filterLabel`s must match the corresponding label provided in the metadata. If its `filterMatchCriteria` is set to MATCH_ALL, then all of its `filterLabel`s must match with corresponding labels provided in the metadata.
+For each metadataFilter in this list, if its filterMatchCriteria is set
+to MATCH_ANY, at least one of the filterLabels must match the
+corresponding label provided in the metadata. If its filterMatchCriteria
+is set to MATCH_ALL, then all of its filterLabels must match with
+corresponding labels in the provided metadata.
 
-`metadataFilters` specified here will be applifed before those specified in the `UrlMap` that this `ForwardingRule` references.
+metadataFilters specified here can be overridden by those specified in
+the UrlMap that this ForwardingRule references.
 
-`metadataFilters` only applies to Loadbalancers that have their loadBalancingScheme set to `INTERNAL_SELF_MANAGED`.{% endverbatim %}</p>
+metadataFilters only applies to Loadbalancers that have their
+loadBalancingScheme set to INTERNAL_SELF_MANAGED.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -411,7 +457,8 @@ For each `metadataFilter` in this list, if its `filterMatchCriteria` is set to M
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. The list of label value pairs that must match labels in the provided metadata based on `filterMatchCriteria`
+            <p>{% verbatim %}Immutable. The list of label value pairs that must match labels in the
+provided metadata based on filterMatchCriteria
 
 This list must not be empty and can have at the most 64 entries.{% endverbatim %}</p>
         </td>
@@ -433,9 +480,8 @@ This list must not be empty and can have at the most 64 entries.{% endverbatim %
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Name of metadata label.
-
-The name can have a maximum length of 1024 characters and must be at least 1 character long.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Name of the metadata label. The length must be between
+1 and 1024 characters, inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -445,9 +491,8 @@ The name can have a maximum length of 1024 characters and must be at least 1 cha
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The value of the label must match the specified value.
-
-value can have a maximum length of 1024 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The value that the label must match. The value has a maximum
+length of 1024 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -457,12 +502,13 @@ value can have a maximum length of 1024 characters.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Specifies how individual `filterLabel` matches within the list of `filterLabel`s contribute towards the overall `metadataFilter` match.
+            <p>{% verbatim %}Immutable. Specifies how individual filterLabel matches within the list of
+filterLabels contribute towards the overall metadataFilter match.
 
-Supported values are:
-
-*   MATCH_ANY: At least one of the `filterLabels` must have a matching label in the provided metadata.
-*   MATCH_ALL: All `filterLabels` must have matching labels in the provided metadata. Possible values: NOT_SET, MATCH_ALL, MATCH_ANY.{% endverbatim %}</p>
+MATCH_ANY - At least one of the filterLabels must have a matching
+label in the provided metadata.
+MATCH_ALL - All filterLabels must have matching labels in the
+provided metadata. Possible values: ["MATCH_ANY", "MATCH_ALL"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -515,7 +561,17 @@ field is not specified, the default network will be used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. This signifies the networking tier used for configuring this load balancer and can only take the following values: `PREMIUM`, `STANDARD`. For regional ForwardingRule, the valid values are `PREMIUM` and `STANDARD`. For GlobalForwardingRule, the valid value is `PREMIUM`. If this field is not specified, it is assumed to be `PREMIUM`. If `IPAddress` is specified, this value must be equal to the networkTier of the Address.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. This signifies the networking tier used for configuring
+this load balancer and can only take the following values:
+'PREMIUM', 'STANDARD'.
+
+For regional ForwardingRule, the valid values are 'PREMIUM' and
+'STANDARD'. For GlobalForwardingRule, the valid value is
+'PREMIUM'.
+
+If this field is not specified, it is assumed to be 'PREMIUM'.
+If 'IPAddress' is specified, this value must be equal to the
+networkTier of the Address. Possible values: ["PREMIUM", "STANDARD"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -525,15 +581,29 @@ field is not specified, the default network will be used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. When the load balancing scheme is `EXTERNAL`, `INTERNAL_SELF_MANAGED` and `INTERNAL_MANAGED`, you can specify a `port_range`. Use with a forwarding rule that points to a target proxy or a target pool. Do not use with a forwarding rule that points to a backend service. This field is used along with the `target` field for TargetHttpProxy, TargetHttpsProxy, TargetSslProxy, TargetTcpProxy, TargetVpnGateway, TargetPool, TargetInstance. Applicable only when `IPProtocol` is `TCP`, `UDP`, or `SCTP`, only packets addressed to ports in the specified range will be forwarded to `target`. Forwarding rules with the same `[IPAddress, IPProtocol]` pair must have disjoint port ranges. Some types of forwarding target have constraints on the acceptable ports:
+            <p>{% verbatim %}Immutable. This field can only be used:
 
-*   TargetHttpProxy: 80, 8080
-*   TargetHttpsProxy: 443
-*   TargetTcpProxy: 25, 43, 110, 143, 195, 443, 465, 587, 700, 993, 995, 1688, 1883, 5222
-*   TargetSslProxy: 25, 43, 110, 143, 195, 443, 465, 587, 700, 993, 995, 1688, 1883, 5222
-*   TargetVpnGateway: 500, 4500
+* If 'IPProtocol' is one of TCP, UDP, or SCTP.
+* By backend service-based network load balancers, target pool-based
+network load balancers, internal proxy load balancers, external proxy load
+balancers, Traffic Director, external protocol forwarding, and Classic VPN.
+Some products have restrictions on what ports can be used. See
+[port specifications](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#port_specifications)
+for details.
 
-@pattern: d+(?:-d+)?.{% endverbatim %}</p>
+
+Only packets addressed to ports in the specified range will be forwarded to
+the backends configured with this forwarding rule.
+
+The 'ports' and 'port_range' fields are mutually exclusive.
+
+For external forwarding rules, two or more forwarding rules cannot use the
+same '[IPAddress, IPProtocol]' pair, and cannot have
+overlapping 'portRange's.
+
+For internal forwarding rules within the same VPC network, two or more
+forwarding rules cannot use the same '[IPAddress, IPProtocol]'
+pair, and cannot have overlapping 'portRange's.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -543,7 +613,27 @@ field is not specified, the default network will be used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. This field is used along with the `backend_service` field for internal load balancing. When the load balancing scheme is `INTERNAL`, a list of ports can be configured, for example, ['80'], ['8000','9000']. Only packets addressed to these ports are forwarded to the backends configured with the forwarding rule. If the forwarding rule's loadBalancingScheme is INTERNAL, you can specify ports in one of the following ways: * A list of up to five ports, which can be non-contiguous * Keyword `ALL`, which causes the forwarding rule to forward traffic on any port of the forwarding rule's protocol. @pattern: d+(?:-d+)? For more information, refer to [Port specifications](/load-balancing/docs/forwarding-rule-concepts#port_specifications).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. This field can only be used:
+
+* If 'IPProtocol' is one of TCP, UDP, or SCTP.
+* By internal TCP/UDP load balancers, backend service-based network load
+balancers, and internal protocol forwarding.
+
+
+You can specify a list of up to five ports by number, separated by commas.
+The ports can be contiguous or discontiguous. Only packets addressed to
+these ports will be forwarded to the backends configured with this
+forwarding rule.
+
+For external forwarding rules, two or more forwarding rules cannot use the
+same '[IPAddress, IPProtocol]' pair, and cannot share any values
+defined in 'ports'.
+
+For internal forwarding rules within the same VPC network, two or more
+forwarding rules cannot use the same '[IPAddress, IPProtocol]'
+pair, and cannot share any values defined in 'ports'.
+
+The 'ports' and 'port_range' fields are mutually exclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -573,7 +663,9 @@ field is not specified, the default network will be used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. Service Directory resources to register this forwarding rule with. Currently, only supports a single Service Directory resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Service Directory resources to register this forwarding rule with.
+
+Currently, only supports a single Service Directory resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -613,7 +705,38 @@ field is not specified, the default network will be used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. An optional prefix to the service name for this Forwarding Rule. If specified, the prefix is the first label of the fully qualified service name. The label must be 1-63 characters long, and comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt). Specifically, the label must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash. This field is only used for internal load balancing.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. An optional prefix to the service name for this Forwarding Rule.
+If specified, will be the first label of the fully qualified service
+name.
+
+The label must be 1-63 characters long, and comply with RFC1035.
+Specifically, the label must be 1-63 characters long and match the
+regular expression '[a-z]([-a-z0-9]*[a-z0-9])?' which means the first
+character must be a lowercase letter, and all following characters
+must be a dash, lowercase letter, or digit, except the last
+character, which cannot be a dash.
+
+This field is only used for INTERNAL load balancing.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceIpRanges</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Immutable. If not empty, this Forwarding Rule will only forward the traffic when the source IP address matches one of the IP addresses or CIDR ranges set here. Note that a Forwarding Rule can only have up to 64 source IP ranges, and this field can only be used with a regional Forwarding Rule whose scheme is EXTERNAL. Each sourceIpRange entry should be either an IP address (for example, 1.2.3.4) or a CIDR range (for example, 1.2.3.0/24).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceIpRanges[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -925,6 +1048,7 @@ are valid.{% endverbatim %}</p>
 ### Status
 #### Schema
 ```yaml
+baseForwardingRule: string
 conditions:
 - lastTransitionTime: string
   message: string
@@ -947,6 +1071,13 @@ serviceName: string
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td><code>baseForwardingRule</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}[Output Only] The URL for the corresponding base Forwarding Rule. By base Forwarding Rule, we mean the Forwarding Rule that has the same IP address, protocol, and port settings with the current Forwarding Rule, but without sourceIPRanges specified. Always empty if the current Forwarding Rule does not have sourceIPRanges specified.{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td><code>conditions</code></td>
         <td>
@@ -1000,14 +1131,15 @@ serviceName: string
         <td><code>creationTimestamp</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[Output Only] Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.{% endverbatim %}</p>
+            <p>{% verbatim %}Creation timestamp in RFC3339 text format.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>labelFingerprint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Used internally during label updates.{% endverbatim %}</p>
+            <p>{% verbatim %}The fingerprint used for optimistic locking of this resource.  Used
+internally during updates.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1028,21 +1160,23 @@ serviceName: string
         <td><code>pscConnectionStatus</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The PSC connection status of the PSC Forwarding Rule. Possible values: STATUS_UNSPECIFIED, PENDING, ACCEPTED, REJECTED, CLOSED.{% endverbatim %}</p>
+            <p>{% verbatim %}The PSC connection status of the PSC Forwarding Rule. Possible values: 'STATUS_UNSPECIFIED', 'PENDING', 'ACCEPTED', 'REJECTED', 'CLOSED'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[Output Only] Server-defined URL for the resource.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>serviceName</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[Output Only] The internal fully qualified service name for this Forwarding Rule. This field is only used for internal load balancing.{% endverbatim %}</p>
+            <p>{% verbatim %}The internal fully qualified service name for this Forwarding Rule.
+
+This field is only used for INTERNAL load balancing.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

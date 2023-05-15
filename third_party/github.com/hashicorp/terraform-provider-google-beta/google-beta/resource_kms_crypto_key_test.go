@@ -6,6 +6,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
@@ -18,7 +21,7 @@ func TestCryptoKeyIdParsing(t *testing.T) {
 		ExpectedError       bool
 		ExpectedTerraformId string
 		ExpectedCryptoKeyId string
-		Config              *Config
+		Config              *transport_tpg.Config
 	}{
 		"id is in project/location/keyRingName/cryptoKeyName format": {
 			ImportId:            "test-project/us-central1/test-key-ring/test-key-name",
@@ -41,12 +44,12 @@ func TestCryptoKeyIdParsing(t *testing.T) {
 			ExpectedError:       false,
 			ExpectedTerraformId: "test-project/us-central1/test-key-ring/test-key-name",
 			ExpectedCryptoKeyId: "projects/test-project/locations/us-central1/keyRings/test-key-ring/cryptoKeys/test-key-name",
-			Config:              &Config{Project: "test-project"},
+			Config:              &transport_tpg.Config{Project: "test-project"},
 		},
 		"id is in location/keyRingName/cryptoKeyName format without project in config": {
 			ImportId:      "us-central1/test-key-ring/test-key-name",
 			ExpectedError: true,
-			Config:        &Config{Project: ""},
+			Config:        &transport_tpg.Config{Project: ""},
 		},
 	}
 
@@ -124,7 +127,7 @@ func TestCryptoKeyStateUpgradeV0(t *testing.T) {
 			Expected: map[string]string{
 				"key_ring": "projects/my-project/locations/my-location/keyRings/my-key-ring",
 			},
-			Meta: &Config{},
+			Meta: &transport_tpg.Config{},
 		},
 		"key_ring link fmt stays as link fmt": {
 			Attributes: map[string]interface{}{
@@ -133,7 +136,7 @@ func TestCryptoKeyStateUpgradeV0(t *testing.T) {
 			Expected: map[string]string{
 				"key_ring": "projects/my-project/locations/my-location/keyRings/my-key-ring",
 			},
-			Meta: &Config{},
+			Meta: &transport_tpg.Config{},
 		},
 		"key_ring without project to link fmt": {
 			Attributes: map[string]interface{}{
@@ -142,7 +145,7 @@ func TestCryptoKeyStateUpgradeV0(t *testing.T) {
 			Expected: map[string]string{
 				"key_ring": "projects/my-project/locations/my-location/keyRings/my-key-ring",
 			},
-			Meta: &Config{
+			Meta: &transport_tpg.Config{
 				Project: "my-project",
 			},
 		},
@@ -169,14 +172,14 @@ func TestAccKmsCryptoKey_basic(t *testing.T) {
 	t.Parallel()
 
 	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	projectOrg := GetTestOrgFromEnv(t)
-	location := GetTestRegionFromEnv()
-	projectBillingAccount := GetTestBillingAccountFromEnv(t)
+	projectOrg := acctest.GetTestOrgFromEnv(t)
+	location := acctest.GetTestRegionFromEnv()
+	projectBillingAccount := acctest.GetTestBillingAccountFromEnv(t)
 	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -209,20 +212,20 @@ func TestAccKmsCryptoKey_basic(t *testing.T) {
 
 func TestAccKmsCryptoKey_rotation(t *testing.T) {
 	// when rotation is set, next rotation time is set using time.Now
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	projectOrg := GetTestOrgFromEnv(t)
-	location := GetTestRegionFromEnv()
-	projectBillingAccount := GetTestBillingAccountFromEnv(t)
+	projectOrg := acctest.GetTestOrgFromEnv(t)
+	location := acctest.GetTestRegionFromEnv()
+	projectBillingAccount := acctest.GetTestBillingAccountFromEnv(t)
 	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	rotationPeriod := "100000s"
 	updatedRotationPeriod := "7776000s"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -266,16 +269,16 @@ func TestAccKmsCryptoKey_template(t *testing.T) {
 	t.Parallel()
 
 	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	projectOrg := GetTestOrgFromEnv(t)
-	location := GetTestRegionFromEnv()
-	projectBillingAccount := GetTestBillingAccountFromEnv(t)
+	projectOrg := acctest.GetTestOrgFromEnv(t)
+	location := acctest.GetTestRegionFromEnv()
+	projectBillingAccount := acctest.GetTestBillingAccountFromEnv(t)
 	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	algorithm := "EC_SIGN_P256_SHA256"
 	updatedAlgorithm := "EC_SIGN_P384_SHA384"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -311,14 +314,14 @@ func TestAccKmsCryptoKey_destroyDuration(t *testing.T) {
 	t.Parallel()
 
 	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	projectOrg := GetTestOrgFromEnv(t)
-	location := GetTestRegionFromEnv()
-	projectBillingAccount := GetTestBillingAccountFromEnv(t)
+	projectOrg := acctest.GetTestOrgFromEnv(t)
+	location := acctest.GetTestRegionFromEnv()
+	projectBillingAccount := acctest.GetTestBillingAccountFromEnv(t)
 	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -346,14 +349,14 @@ func TestAccKmsCryptoKey_importOnly(t *testing.T) {
 	t.Parallel()
 
 	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	projectOrg := GetTestOrgFromEnv(t)
-	location := GetTestRegionFromEnv()
-	projectBillingAccount := GetTestBillingAccountFromEnv(t)
+	projectOrg := acctest.GetTestOrgFromEnv(t)
+	location := acctest.GetTestRegionFromEnv()
+	projectBillingAccount := acctest.GetTestBillingAccountFromEnv(t)
 	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -444,13 +447,13 @@ func TestAccKmsCryptoKeyVersion_basic(t *testing.T) {
 	t.Parallel()
 
 	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	projectOrg := GetTestOrgFromEnv(t)
-	projectBillingAccount := GetTestBillingAccountFromEnv(t)
+	projectOrg := acctest.GetTestOrgFromEnv(t)
+	projectBillingAccount := acctest.GetTestBillingAccountFromEnv(t)
 	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -472,13 +475,13 @@ func TestAccKmsCryptoKeyVersion_skipInitialVersion(t *testing.T) {
 	t.Parallel()
 
 	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	projectOrg := GetTestOrgFromEnv(t)
-	projectBillingAccount := GetTestBillingAccountFromEnv(t)
+	projectOrg := acctest.GetTestOrgFromEnv(t)
+	projectBillingAccount := acctest.GetTestBillingAccountFromEnv(t)
 	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -497,14 +500,14 @@ func TestAccKmsCryptoKeyVersion_patch(t *testing.T) {
 	t.Parallel()
 
 	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	projectOrg := GetTestOrgFromEnv(t)
-	projectBillingAccount := GetTestBillingAccountFromEnv(t)
+	projectOrg := acctest.GetTestOrgFromEnv(t)
+	projectBillingAccount := acctest.GetTestBillingAccountFromEnv(t)
 	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	state := "DISABLED"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{

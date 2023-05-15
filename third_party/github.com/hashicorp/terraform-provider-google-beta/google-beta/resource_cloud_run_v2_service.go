@@ -21,6 +21,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceCloudRunV2Service() *schema.Resource {
@@ -45,7 +49,7 @@ func ResourceCloudRunV2Service() *schema.Resource {
 				Type:             schema.TypeString,
 				Required:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description:      `Name of the Service.`,
 			},
 			"template": {
@@ -64,7 +68,7 @@ func ResourceCloudRunV2Service() *schema.Resource {
 						"containers": {
 							Type:        schema.TypeList,
 							Optional:    true,
-							Description: `Holds the single container that defines the unit of execution for this task.`,
+							Description: `Holds the containers that define the unit of execution for this Service.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"image": {
@@ -84,6 +88,14 @@ func ResourceCloudRunV2Service() *schema.Resource {
 										Type:        schema.TypeList,
 										Optional:    true,
 										Description: `Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell`,
+										Elem: &schema.Schema{
+											Type: schema.TypeString,
+										},
+									},
+									"depends_on": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										Description: `Containers which should be started before this container. If specified the container will wait to start until all containers with the listed names are healthy.`,
 										Elem: &schema.Schema{
 											Type: schema.TypeString,
 										},
@@ -159,10 +171,11 @@ func ResourceCloudRunV2Service() *schema.Resource {
 													Elem: &schema.Resource{
 														Schema: map[string]*schema.Schema{
 															"port": {
-																Type:        schema.TypeInt,
-																Computed:    true,
-																Optional:    true,
-																Description: `Port number to access on the container. Number must be in the range 1 to 65535. If not specified, defaults to the same value as container.ports[0].containerPort.`,
+																Type:     schema.TypeInt,
+																Computed: true,
+																Optional: true,
+																Description: `Port number to access on the container. Number must be in the range 1 to 65535.
+If not specified, defaults to the same value as container.ports[0].containerPort.`,
 															},
 															"service": {
 																Type:     schema.TypeString,
@@ -206,6 +219,13 @@ If this is not specified, the default behavior is defined by gRPC.`,
 																Optional:    true,
 																Description: `Path to access on the HTTP server. Defaults to '/'.`,
 																Default:     "/",
+															},
+															"port": {
+																Type:     schema.TypeInt,
+																Computed: true,
+																Optional: true,
+																Description: `Port number to access on the container. Number must be in the range 1 to 65535.
+If not specified, defaults to the same value as container.ports[0].containerPort.`,
 															},
 														},
 													},
@@ -295,6 +315,11 @@ If omitted, a port number will be chosen and passed to the container through the
 													Description: `Only memory and CPU are supported. Note: The only supported values for CPU are '1', '2', '4', and '8'. Setting 4 CPU requires at least 2Gi of memory. The values of the map is string form of the 'quantity' k8s type: https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go`,
 													Elem:        &schema.Schema{Type: schema.TypeString},
 												},
+												"startup_cpu_boost": {
+													Type:        schema.TypeBool,
+													Optional:    true,
+													Description: `Determines whether CPU should be boosted on startup of a new container instance above the requested CPU threshold, this can help reduce cold-start latency.`,
+												},
 											},
 										},
 									},
@@ -320,10 +345,11 @@ If omitted, a port number will be chosen and passed to the container through the
 													Elem: &schema.Resource{
 														Schema: map[string]*schema.Schema{
 															"port": {
-																Type:        schema.TypeInt,
-																Computed:    true,
-																Optional:    true,
-																Description: `Port number to access on the container. Number must be in the range 1 to 65535. If not specified, defaults to the same value as container.ports[0].containerPort.`,
+																Type:     schema.TypeInt,
+																Computed: true,
+																Optional: true,
+																Description: `Port number to access on the container. Number must be in the range 1 to 65535.
+If not specified, defaults to the same value as container.ports[0].containerPort.`,
 															},
 															"service": {
 																Type:     schema.TypeString,
@@ -368,6 +394,13 @@ If this is not specified, the default behavior is defined by gRPC.`,
 																Description: `Path to access on the HTTP server. Defaults to '/'.`,
 																Default:     "/",
 															},
+															"port": {
+																Type:     schema.TypeInt,
+																Computed: true,
+																Optional: true,
+																Description: `Port number to access on the container. Must be in the range 1 to 65535.
+If not specified, defaults to the same value as container.ports[0].containerPort.`,
+															},
 														},
 													},
 												},
@@ -391,10 +424,11 @@ If this is not specified, the default behavior is defined by gRPC.`,
 													Elem: &schema.Resource{
 														Schema: map[string]*schema.Schema{
 															"port": {
-																Type:        schema.TypeInt,
-																Computed:    true,
-																Optional:    true,
-																Description: `Port number to access on the container. Must be in the range 1 to 65535. If not specified, defaults to 8080.`,
+																Type:     schema.TypeInt,
+																Computed: true,
+																Optional: true,
+																Description: `Port number to access on the container. Must be in the range 1 to 65535.
+If not specified, defaults to the same value as container.ports[0].containerPort.`,
 															},
 														},
 													},
@@ -443,7 +477,7 @@ If this is not specified, the default behavior is defined by gRPC.`,
 						"execution_environment": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"EXECUTION_ENVIRONMENT_GEN1", "EXECUTION_ENVIRONMENT_GEN2", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"EXECUTION_ENVIRONMENT_GEN1", "EXECUTION_ENVIRONMENT_GEN2", ""}),
 							Description:  `The sandbox environment to host this Revision. Possible values: ["EXECUTION_ENVIRONMENT_GEN1", "EXECUTION_ENVIRONMENT_GEN2"]`,
 						},
 						"labels": {
@@ -490,6 +524,11 @@ If this is not specified, the default behavior is defined by gRPC.`,
 							Optional:    true,
 							Description: `Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account.`,
 						},
+						"session_affinity": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Enables session affinity. For more information, go to https://cloud.google.com/run/docs/configuring/session-affinity`,
+						},
 						"timeout": {
 							Type:     schema.TypeString,
 							Computed: true,
@@ -523,6 +562,28 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
 													Elem: &schema.Schema{
 														Type: schema.TypeString,
 													},
+												},
+											},
+										},
+									},
+									"empty_dir": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										Description: `Ephemeral storage used as a shared volume.`,
+										MaxItems:    1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"medium": {
+													Type:         schema.TypeString,
+													Optional:     true,
+													ValidateFunc: verify.ValidateEnum([]string{"MEMORY", ""}),
+													Description:  `The different types of medium supported for EmptyDir. Default value: "MEMORY" Possible values: ["MEMORY"]`,
+													Default:      "MEMORY",
+												},
+												"size_limit": {
+													Type:        schema.TypeString,
+													Optional:    true,
+													Description: `Limit on the storage usable by this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. This field's values are of the 'Quantity' k8s type: https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir.`,
 												},
 											},
 										},
@@ -589,7 +650,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
 									"egress": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"ALL_TRAFFIC", "PRIVATE_RANGES_ONLY", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"ALL_TRAFFIC", "PRIVATE_RANGES_ONLY", ""}),
 										Description:  `Traffic VPC egress settings. Possible values: ["ALL_TRAFFIC", "PRIVATE_RANGES_ONLY"]`,
 									},
 								},
@@ -643,7 +704,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
 				Type:         schema.TypeString,
 				Computed:     true,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"INGRESS_TRAFFIC_ALL", "INGRESS_TRAFFIC_INTERNAL_ONLY", "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"INGRESS_TRAFFIC_ALL", "INGRESS_TRAFFIC_INTERNAL_ONLY", "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER", ""}),
 				Description:  `Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active. Possible values: ["INGRESS_TRAFFIC_ALL", "INGRESS_TRAFFIC_INTERNAL_ONLY", "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"]`,
 			},
 			"labels": {
@@ -656,8 +717,11 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
 				Type:         schema.TypeString,
 				Computed:     true,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"UNIMPLEMENTED", "PRELAUNCH", "EARLY_ACCESS", "ALPHA", "BETA", "GA", "DEPRECATED", ""}),
-				Description:  `The launch stage as defined by Google Cloud Platform Launch Stages. Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed. Possible values: ["UNIMPLEMENTED", "PRELAUNCH", "EARLY_ACCESS", "ALPHA", "BETA", "GA", "DEPRECATED"]`,
+				ValidateFunc: verify.ValidateEnum([]string{"UNIMPLEMENTED", "PRELAUNCH", "EARLY_ACCESS", "ALPHA", "BETA", "GA", "DEPRECATED", ""}),
+				Description: `The launch stage as defined by [Google Cloud Platform Launch Stages](https://cloud.google.com/products#product-launch-stages). Cloud Run supports ALPHA, BETA, and GA.
+If no value is specified, GA is assumed. Set the launch stage to a preview stage on input to allow use of preview features in that stage. On read (or output), describes whether the resource uses preview features.
+
+For example, if ALPHA is provided as input, but only BETA and GA-level features are used, this field will be BETA on output. Possible values: ["UNIMPLEMENTED", "PRELAUNCH", "EARLY_ACCESS", "ALPHA", "BETA", "GA", "DEPRECATED"]`,
 			},
 			"location": {
 				Type:        schema.TypeString,
@@ -691,7 +755,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
 						"type": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST", "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST", "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION", ""}),
 							Description:  `The allocation type for this traffic target. Possible values: ["TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST", "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"]`,
 						},
 					},
@@ -889,8 +953,8 @@ If reconciliation failed, trafficStatuses, observedGeneration, and latestReadyRe
 }
 
 func resourceCloudRunV2ServiceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -899,65 +963,65 @@ func resourceCloudRunV2ServiceCreate(d *schema.ResourceData, meta interface{}) e
 	descriptionProp, err := expandCloudRunV2ServiceDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	labelsProp, err := expandCloudRunV2ServiceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	annotationsProp, err := expandCloudRunV2ServiceAnnotations(d.Get("annotations"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("annotations"); !isEmptyValue(reflect.ValueOf(annotationsProp)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
+	} else if v, ok := d.GetOkExists("annotations"); !tpgresource.IsEmptyValue(reflect.ValueOf(annotationsProp)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
 		obj["annotations"] = annotationsProp
 	}
 	clientProp, err := expandCloudRunV2ServiceClient(d.Get("client"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("client"); !isEmptyValue(reflect.ValueOf(clientProp)) && (ok || !reflect.DeepEqual(v, clientProp)) {
+	} else if v, ok := d.GetOkExists("client"); !tpgresource.IsEmptyValue(reflect.ValueOf(clientProp)) && (ok || !reflect.DeepEqual(v, clientProp)) {
 		obj["client"] = clientProp
 	}
 	clientVersionProp, err := expandCloudRunV2ServiceClientVersion(d.Get("client_version"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("client_version"); !isEmptyValue(reflect.ValueOf(clientVersionProp)) && (ok || !reflect.DeepEqual(v, clientVersionProp)) {
+	} else if v, ok := d.GetOkExists("client_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(clientVersionProp)) && (ok || !reflect.DeepEqual(v, clientVersionProp)) {
 		obj["clientVersion"] = clientVersionProp
 	}
 	ingressProp, err := expandCloudRunV2ServiceIngress(d.Get("ingress"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ingress"); !isEmptyValue(reflect.ValueOf(ingressProp)) && (ok || !reflect.DeepEqual(v, ingressProp)) {
+	} else if v, ok := d.GetOkExists("ingress"); !tpgresource.IsEmptyValue(reflect.ValueOf(ingressProp)) && (ok || !reflect.DeepEqual(v, ingressProp)) {
 		obj["ingress"] = ingressProp
 	}
 	launchStageProp, err := expandCloudRunV2ServiceLaunchStage(d.Get("launch_stage"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("launch_stage"); !isEmptyValue(reflect.ValueOf(launchStageProp)) && (ok || !reflect.DeepEqual(v, launchStageProp)) {
+	} else if v, ok := d.GetOkExists("launch_stage"); !tpgresource.IsEmptyValue(reflect.ValueOf(launchStageProp)) && (ok || !reflect.DeepEqual(v, launchStageProp)) {
 		obj["launchStage"] = launchStageProp
 	}
 	binaryAuthorizationProp, err := expandCloudRunV2ServiceBinaryAuthorization(d.Get("binary_authorization"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("binary_authorization"); !isEmptyValue(reflect.ValueOf(binaryAuthorizationProp)) && (ok || !reflect.DeepEqual(v, binaryAuthorizationProp)) {
+	} else if v, ok := d.GetOkExists("binary_authorization"); !tpgresource.IsEmptyValue(reflect.ValueOf(binaryAuthorizationProp)) && (ok || !reflect.DeepEqual(v, binaryAuthorizationProp)) {
 		obj["binaryAuthorization"] = binaryAuthorizationProp
 	}
 	templateProp, err := expandCloudRunV2ServiceTemplate(d.Get("template"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("template"); !isEmptyValue(reflect.ValueOf(templateProp)) && (ok || !reflect.DeepEqual(v, templateProp)) {
+	} else if v, ok := d.GetOkExists("template"); !tpgresource.IsEmptyValue(reflect.ValueOf(templateProp)) && (ok || !reflect.DeepEqual(v, templateProp)) {
 		obj["template"] = templateProp
 	}
 	trafficProp, err := expandCloudRunV2ServiceTraffic(d.Get("traffic"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("traffic"); !isEmptyValue(reflect.ValueOf(trafficProp)) && (ok || !reflect.DeepEqual(v, trafficProp)) {
+	} else if v, ok := d.GetOkExists("traffic"); !tpgresource.IsEmptyValue(reflect.ValueOf(trafficProp)) && (ok || !reflect.DeepEqual(v, trafficProp)) {
 		obj["traffic"] = trafficProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services?serviceId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services?serviceId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -965,24 +1029,24 @@ func resourceCloudRunV2ServiceCreate(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Creating new Service: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Service: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Service: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1002,7 +1066,7 @@ func resourceCloudRunV2ServiceCreate(d *schema.ResourceData, meta interface{}) e
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1014,33 +1078,33 @@ func resourceCloudRunV2ServiceCreate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceCloudRunV2ServiceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Service: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("CloudRunV2Service %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("CloudRunV2Service %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -1115,15 +1179,15 @@ func resourceCloudRunV2ServiceRead(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceCloudRunV2ServiceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Service: %s", err)
 	}
@@ -1133,65 +1197,65 @@ func resourceCloudRunV2ServiceUpdate(d *schema.ResourceData, meta interface{}) e
 	descriptionProp, err := expandCloudRunV2ServiceDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	labelsProp, err := expandCloudRunV2ServiceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	annotationsProp, err := expandCloudRunV2ServiceAnnotations(d.Get("annotations"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("annotations"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
+	} else if v, ok := d.GetOkExists("annotations"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
 		obj["annotations"] = annotationsProp
 	}
 	clientProp, err := expandCloudRunV2ServiceClient(d.Get("client"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("client"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, clientProp)) {
+	} else if v, ok := d.GetOkExists("client"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, clientProp)) {
 		obj["client"] = clientProp
 	}
 	clientVersionProp, err := expandCloudRunV2ServiceClientVersion(d.Get("client_version"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("client_version"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, clientVersionProp)) {
+	} else if v, ok := d.GetOkExists("client_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, clientVersionProp)) {
 		obj["clientVersion"] = clientVersionProp
 	}
 	ingressProp, err := expandCloudRunV2ServiceIngress(d.Get("ingress"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ingress"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, ingressProp)) {
+	} else if v, ok := d.GetOkExists("ingress"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, ingressProp)) {
 		obj["ingress"] = ingressProp
 	}
 	launchStageProp, err := expandCloudRunV2ServiceLaunchStage(d.Get("launch_stage"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("launch_stage"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, launchStageProp)) {
+	} else if v, ok := d.GetOkExists("launch_stage"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, launchStageProp)) {
 		obj["launchStage"] = launchStageProp
 	}
 	binaryAuthorizationProp, err := expandCloudRunV2ServiceBinaryAuthorization(d.Get("binary_authorization"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("binary_authorization"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, binaryAuthorizationProp)) {
+	} else if v, ok := d.GetOkExists("binary_authorization"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, binaryAuthorizationProp)) {
 		obj["binaryAuthorization"] = binaryAuthorizationProp
 	}
 	templateProp, err := expandCloudRunV2ServiceTemplate(d.Get("template"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("template"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, templateProp)) {
+	} else if v, ok := d.GetOkExists("template"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, templateProp)) {
 		obj["template"] = templateProp
 	}
 	trafficProp, err := expandCloudRunV2ServiceTraffic(d.Get("traffic"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("traffic"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, trafficProp)) {
+	} else if v, ok := d.GetOkExists("traffic"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, trafficProp)) {
 		obj["traffic"] = trafficProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1199,11 +1263,11 @@ func resourceCloudRunV2ServiceUpdate(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Updating Service %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Service %q: %s", d.Id(), err)
@@ -1223,21 +1287,21 @@ func resourceCloudRunV2ServiceUpdate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceCloudRunV2ServiceDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Service: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1246,13 +1310,13 @@ func resourceCloudRunV2ServiceDelete(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Deleting Service %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Service")
+		return transport_tpg.HandleNotFoundError(err, d, "Service")
 	}
 
 	err = CloudRunV2OperationWaitTime(
@@ -1268,7 +1332,7 @@ func resourceCloudRunV2ServiceDelete(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceCloudRunV2ServiceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/services/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -1278,7 +1342,7 @@ func resourceCloudRunV2ServiceImport(d *schema.ResourceData, meta interface{}) (
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1287,43 +1351,43 @@ func resourceCloudRunV2ServiceImport(d *schema.ResourceData, meta interface{}) (
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenCloudRunV2ServiceDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceUid(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceUid(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceGeneration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceGeneration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceAnnotations(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceAnnotations(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceClient(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceClient(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceClientVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceClientVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceIngress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceIngress(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceLaunchStage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceLaunchStage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceBinaryAuthorization(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceBinaryAuthorization(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1338,15 +1402,15 @@ func flattenCloudRunV2ServiceBinaryAuthorization(v interface{}, d *schema.Resour
 		flattenCloudRunV2ServiceBinaryAuthorizationUseDefault(original["useDefault"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceBinaryAuthorizationBreakglassJustification(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceBinaryAuthorizationBreakglassJustification(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceBinaryAuthorizationUseDefault(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceBinaryAuthorizationUseDefault(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplate(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplate(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1379,21 +1443,23 @@ func flattenCloudRunV2ServiceTemplate(v interface{}, d *schema.ResourceData, con
 		flattenCloudRunV2ServiceTemplateEncryptionKey(original["encryptionKey"], d, config)
 	transformed["max_instance_request_concurrency"] =
 		flattenCloudRunV2ServiceTemplateMaxInstanceRequestConcurrency(original["maxInstanceRequestConcurrency"], d, config)
+	transformed["session_affinity"] =
+		flattenCloudRunV2ServiceTemplateSessionAffinity(original["sessionAffinity"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateRevision(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateRevision(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateAnnotations(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateAnnotations(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateScaling(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateScaling(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1408,7 +1474,7 @@ func flattenCloudRunV2ServiceTemplateScaling(v interface{}, d *schema.ResourceDa
 		flattenCloudRunV2ServiceTemplateScalingMaxInstanceCount(original["maxInstanceCount"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateScalingMinInstanceCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateScalingMinInstanceCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1425,7 +1491,7 @@ func flattenCloudRunV2ServiceTemplateScalingMinInstanceCount(v interface{}, d *s
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateScalingMaxInstanceCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateScalingMaxInstanceCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1442,7 +1508,7 @@ func flattenCloudRunV2ServiceTemplateScalingMaxInstanceCount(v interface{}, d *s
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateVpcAccess(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVpcAccess(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1457,23 +1523,23 @@ func flattenCloudRunV2ServiceTemplateVpcAccess(v interface{}, d *schema.Resource
 		flattenCloudRunV2ServiceTemplateVpcAccessEgress(original["egress"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateVpcAccessConnector(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVpcAccessConnector(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateVpcAccessEgress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVpcAccessEgress(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateTimeout(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateTimeout(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateServiceAccount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateServiceAccount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainers(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainers(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1497,27 +1563,28 @@ func flattenCloudRunV2ServiceTemplateContainers(v interface{}, d *schema.Resourc
 			"working_dir":    flattenCloudRunV2ServiceTemplateContainersWorkingDir(original["workingDir"], d, config),
 			"liveness_probe": flattenCloudRunV2ServiceTemplateContainersLivenessProbe(original["livenessProbe"], d, config),
 			"startup_probe":  flattenCloudRunV2ServiceTemplateContainersStartupProbe(original["startupProbe"], d, config),
+			"depends_on":     flattenCloudRunV2ServiceTemplateContainersDependsOn(original["dependsOn"], d, config),
 		})
 	}
 	return transformed
 }
-func flattenCloudRunV2ServiceTemplateContainersName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersImage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersImage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersCommand(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersCommand(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersArgs(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersArgs(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersEnv(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersEnv(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1537,15 +1604,15 @@ func flattenCloudRunV2ServiceTemplateContainersEnv(v interface{}, d *schema.Reso
 	}
 	return transformed
 }
-func flattenCloudRunV2ServiceTemplateContainersEnvName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersEnvName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersEnvValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersEnvValue(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersEnvValueSource(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersEnvValueSource(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1558,7 +1625,7 @@ func flattenCloudRunV2ServiceTemplateContainersEnvValueSource(v interface{}, d *
 		flattenCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRef(original["secretKeyRef"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRef(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRef(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1573,15 +1640,15 @@ func flattenCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRef(v inte
 		flattenCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRefVersion(original["version"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRefSecret(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRefSecret(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRefVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRefVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersResources(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersResources(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1594,17 +1661,23 @@ func flattenCloudRunV2ServiceTemplateContainersResources(v interface{}, d *schem
 		flattenCloudRunV2ServiceTemplateContainersResourcesLimits(original["limits"], d, config)
 	transformed["cpu_idle"] =
 		flattenCloudRunV2ServiceTemplateContainersResourcesCpuIdle(original["cpuIdle"], d, config)
+	transformed["startup_cpu_boost"] =
+		flattenCloudRunV2ServiceTemplateContainersResourcesStartupCpuBoost(original["startupCpuBoost"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateContainersResourcesLimits(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersResourcesLimits(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersResourcesCpuIdle(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersResourcesCpuIdle(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersPorts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersResourcesStartupCpuBoost(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2ServiceTemplateContainersPorts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1623,11 +1696,11 @@ func flattenCloudRunV2ServiceTemplateContainersPorts(v interface{}, d *schema.Re
 	}
 	return transformed
 }
-func flattenCloudRunV2ServiceTemplateContainersPortsName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersPortsName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersPortsContainerPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersPortsContainerPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1644,7 +1717,7 @@ func flattenCloudRunV2ServiceTemplateContainersPortsContainerPort(v interface{},
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersVolumeMounts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersVolumeMounts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1663,19 +1736,19 @@ func flattenCloudRunV2ServiceTemplateContainersVolumeMounts(v interface{}, d *sc
 	}
 	return transformed
 }
-func flattenCloudRunV2ServiceTemplateContainersVolumeMountsName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersVolumeMountsName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersVolumeMountsMountPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersVolumeMountsMountPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersWorkingDir(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersWorkingDir(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbe(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbe(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1700,7 +1773,7 @@ func flattenCloudRunV2ServiceTemplateContainersLivenessProbe(v interface{}, d *s
 		flattenCloudRunV2ServiceTemplateContainersLivenessProbeGrpc(original["grpc"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeInitialDelaySeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeInitialDelaySeconds(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1717,7 +1790,7 @@ func flattenCloudRunV2ServiceTemplateContainersLivenessProbeInitialDelaySeconds(
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeTimeoutSeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeTimeoutSeconds(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1734,7 +1807,7 @@ func flattenCloudRunV2ServiceTemplateContainersLivenessProbeTimeoutSeconds(v int
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbePeriodSeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbePeriodSeconds(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1751,7 +1824,7 @@ func flattenCloudRunV2ServiceTemplateContainersLivenessProbePeriodSeconds(v inte
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeFailureThreshold(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeFailureThreshold(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1768,7 +1841,7 @@ func flattenCloudRunV2ServiceTemplateContainersLivenessProbeFailureThreshold(v i
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGet(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGet(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1776,15 +1849,34 @@ func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGet(v interface{
 	transformed := make(map[string]interface{})
 	transformed["path"] =
 		flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetPath(original["path"], d, config)
+	transformed["port"] =
+		flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetPort(original["port"], d, config)
 	transformed["http_headers"] =
 		flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeaders(original["httpHeaders"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeaders(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := StringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeaders(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1803,15 +1895,15 @@ func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeaders(v
 	}
 	return transformed
 }
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeadersName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeadersName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeadersValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeadersValue(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocket(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocket(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1821,7 +1913,7 @@ func flattenCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocket(v interfac
 		flattenCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocketPort(original["port"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocketPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocketPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1838,7 +1930,7 @@ func flattenCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocketPort(v inte
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeGrpc(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeGrpc(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1850,7 +1942,7 @@ func flattenCloudRunV2ServiceTemplateContainersLivenessProbeGrpc(v interface{}, 
 		flattenCloudRunV2ServiceTemplateContainersLivenessProbeGrpcService(original["service"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeGrpcPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeGrpcPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1867,11 +1959,11 @@ func flattenCloudRunV2ServiceTemplateContainersLivenessProbeGrpcPort(v interface
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersLivenessProbeGrpcService(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersLivenessProbeGrpcService(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersStartupProbe(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbe(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1896,7 +1988,7 @@ func flattenCloudRunV2ServiceTemplateContainersStartupProbe(v interface{}, d *sc
 		flattenCloudRunV2ServiceTemplateContainersStartupProbeGrpc(original["grpc"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeInitialDelaySeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeInitialDelaySeconds(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1913,7 +2005,7 @@ func flattenCloudRunV2ServiceTemplateContainersStartupProbeInitialDelaySeconds(v
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeTimeoutSeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeTimeoutSeconds(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1930,7 +2022,7 @@ func flattenCloudRunV2ServiceTemplateContainersStartupProbeTimeoutSeconds(v inte
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersStartupProbePeriodSeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbePeriodSeconds(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1947,7 +2039,7 @@ func flattenCloudRunV2ServiceTemplateContainersStartupProbePeriodSeconds(v inter
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeFailureThreshold(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeFailureThreshold(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1964,7 +2056,7 @@ func flattenCloudRunV2ServiceTemplateContainersStartupProbeFailureThreshold(v in
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGet(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGet(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1972,15 +2064,34 @@ func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGet(v interface{}
 	transformed := make(map[string]interface{})
 	transformed["path"] =
 		flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetPath(original["path"], d, config)
+	transformed["port"] =
+		flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetPort(original["port"], d, config)
 	transformed["http_headers"] =
 		flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeaders(original["httpHeaders"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeaders(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := StringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeaders(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1999,15 +2110,15 @@ func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeaders(v 
 	}
 	return transformed
 }
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeadersName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeadersName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeadersValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeadersValue(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeTcpSocket(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeTcpSocket(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2017,7 +2128,7 @@ func flattenCloudRunV2ServiceTemplateContainersStartupProbeTcpSocket(v interface
 		flattenCloudRunV2ServiceTemplateContainersStartupProbeTcpSocketPort(original["port"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeTcpSocketPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeTcpSocketPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2034,7 +2145,7 @@ func flattenCloudRunV2ServiceTemplateContainersStartupProbeTcpSocketPort(v inter
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeGrpc(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeGrpc(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2046,7 +2157,7 @@ func flattenCloudRunV2ServiceTemplateContainersStartupProbeGrpc(v interface{}, d
 		flattenCloudRunV2ServiceTemplateContainersStartupProbeGrpcService(original["service"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeGrpcPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeGrpcPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2063,11 +2174,15 @@ func flattenCloudRunV2ServiceTemplateContainersStartupProbeGrpcPort(v interface{
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateContainersStartupProbeGrpcService(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersStartupProbeGrpcService(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateVolumes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateContainersDependsOn(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2ServiceTemplateVolumes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -2083,15 +2198,16 @@ func flattenCloudRunV2ServiceTemplateVolumes(v interface{}, d *schema.ResourceDa
 			"name":               flattenCloudRunV2ServiceTemplateVolumesName(original["name"], d, config),
 			"secret":             flattenCloudRunV2ServiceTemplateVolumesSecret(original["secret"], d, config),
 			"cloud_sql_instance": flattenCloudRunV2ServiceTemplateVolumesCloudSqlInstance(original["cloudSqlInstance"], d, config),
+			"empty_dir":          flattenCloudRunV2ServiceTemplateVolumesEmptyDir(original["emptyDir"], d, config),
 		})
 	}
 	return transformed
 }
-func flattenCloudRunV2ServiceTemplateVolumesName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVolumesName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateVolumesSecret(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVolumesSecret(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2108,11 +2224,11 @@ func flattenCloudRunV2ServiceTemplateVolumesSecret(v interface{}, d *schema.Reso
 		flattenCloudRunV2ServiceTemplateVolumesSecretItems(original["items"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateVolumesSecretSecret(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVolumesSecretSecret(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateVolumesSecretDefaultMode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVolumesSecretDefaultMode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2129,7 +2245,7 @@ func flattenCloudRunV2ServiceTemplateVolumesSecretDefaultMode(v interface{}, d *
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateVolumesSecretItems(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVolumesSecretItems(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -2149,15 +2265,15 @@ func flattenCloudRunV2ServiceTemplateVolumesSecretItems(v interface{}, d *schema
 	}
 	return transformed
 }
-func flattenCloudRunV2ServiceTemplateVolumesSecretItemsPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVolumesSecretItemsPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateVolumesSecretItemsVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVolumesSecretItemsVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateVolumesSecretItemsMode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVolumesSecretItemsMode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2174,7 +2290,7 @@ func flattenCloudRunV2ServiceTemplateVolumesSecretItemsMode(v interface{}, d *sc
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateVolumesCloudSqlInstance(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVolumesCloudSqlInstance(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2187,19 +2303,42 @@ func flattenCloudRunV2ServiceTemplateVolumesCloudSqlInstance(v interface{}, d *s
 		flattenCloudRunV2ServiceTemplateVolumesCloudSqlInstanceInstances(original["instances"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateVolumesCloudSqlInstanceInstances(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVolumesCloudSqlInstanceInstances(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateExecutionEnvironment(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVolumesEmptyDir(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["medium"] =
+		flattenCloudRunV2ServiceTemplateVolumesEmptyDirMedium(original["medium"], d, config)
+	transformed["size_limit"] =
+		flattenCloudRunV2ServiceTemplateVolumesEmptyDirSizeLimit(original["sizeLimit"], d, config)
+	return []interface{}{transformed}
+}
+func flattenCloudRunV2ServiceTemplateVolumesEmptyDirMedium(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateEncryptionKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVolumesEmptyDirSizeLimit(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateMaxInstanceRequestConcurrency(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateExecutionEnvironment(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2ServiceTemplateEncryptionKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2ServiceTemplateMaxInstanceRequestConcurrency(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2216,7 +2355,11 @@ func flattenCloudRunV2ServiceTemplateMaxInstanceRequestConcurrency(v interface{}
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTraffic(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateSessionAffinity(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2ServiceTraffic(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -2237,15 +2380,15 @@ func flattenCloudRunV2ServiceTraffic(v interface{}, d *schema.ResourceData, conf
 	}
 	return transformed
 }
-func flattenCloudRunV2ServiceTrafficType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTrafficType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTrafficRevision(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTrafficRevision(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTrafficPercent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTrafficPercent(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2262,15 +2405,15 @@ func flattenCloudRunV2ServiceTrafficPercent(v interface{}, d *schema.ResourceDat
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTrafficTag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTrafficTag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceObservedGeneration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceObservedGeneration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTerminalCondition(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTerminalCondition(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2297,39 +2440,39 @@ func flattenCloudRunV2ServiceTerminalCondition(v interface{}, d *schema.Resource
 		flattenCloudRunV2ServiceTerminalConditionExecutionReason(original["executionReason"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTerminalConditionType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTerminalConditionType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTerminalConditionState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTerminalConditionState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTerminalConditionMessage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTerminalConditionMessage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTerminalConditionLastTransitionTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTerminalConditionLastTransitionTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTerminalConditionSeverity(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTerminalConditionSeverity(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTerminalConditionReason(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTerminalConditionReason(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTerminalConditionRevisionReason(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTerminalConditionRevisionReason(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTerminalConditionExecutionReason(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTerminalConditionExecutionReason(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceConditions(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceConditions(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -2354,47 +2497,47 @@ func flattenCloudRunV2ServiceConditions(v interface{}, d *schema.ResourceData, c
 	}
 	return transformed
 }
-func flattenCloudRunV2ServiceConditionsType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceConditionsType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceConditionsState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceConditionsState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceConditionsMessage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceConditionsMessage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceConditionsLastTransitionTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceConditionsLastTransitionTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceConditionsSeverity(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceConditionsSeverity(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceConditionsReason(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceConditionsReason(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceConditionsRevisionReason(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceConditionsRevisionReason(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceConditionsExecutionReason(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceConditionsExecutionReason(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceLatestReadyRevision(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceLatestReadyRevision(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceLatestCreatedRevision(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceLatestCreatedRevision(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTrafficStatuses(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTrafficStatuses(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -2416,15 +2559,15 @@ func flattenCloudRunV2ServiceTrafficStatuses(v interface{}, d *schema.ResourceDa
 	}
 	return transformed
 }
-func flattenCloudRunV2ServiceTrafficStatusesType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTrafficStatusesType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTrafficStatusesRevision(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTrafficStatusesRevision(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTrafficStatusesPercent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTrafficStatusesPercent(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2441,31 +2584,31 @@ func flattenCloudRunV2ServiceTrafficStatusesPercent(v interface{}, d *schema.Res
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTrafficStatusesTag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTrafficStatusesTag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTrafficStatusesUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTrafficStatusesUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceReconciling(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceReconciling(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceEtag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceEtag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandCloudRunV2ServiceDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudRunV2ServiceLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -2476,7 +2619,7 @@ func expandCloudRunV2ServiceLabels(v interface{}, d TerraformResourceData, confi
 	return m, nil
 }
 
-func expandCloudRunV2ServiceAnnotations(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudRunV2ServiceAnnotations(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -2487,23 +2630,23 @@ func expandCloudRunV2ServiceAnnotations(v interface{}, d TerraformResourceData, 
 	return m, nil
 }
 
-func expandCloudRunV2ServiceClient(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceClient(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceClientVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceClientVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceIngress(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceIngress(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceLaunchStage(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceLaunchStage(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceBinaryAuthorization(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceBinaryAuthorization(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2515,29 +2658,29 @@ func expandCloudRunV2ServiceBinaryAuthorization(v interface{}, d TerraformResour
 	transformedBreakglassJustification, err := expandCloudRunV2ServiceBinaryAuthorizationBreakglassJustification(original["breakglass_justification"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBreakglassJustification); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBreakglassJustification); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["breakglassJustification"] = transformedBreakglassJustification
 	}
 
 	transformedUseDefault, err := expandCloudRunV2ServiceBinaryAuthorizationUseDefault(original["use_default"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedUseDefault); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedUseDefault); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["useDefault"] = transformedUseDefault
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceBinaryAuthorizationBreakglassJustification(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceBinaryAuthorizationBreakglassJustification(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceBinaryAuthorizationUseDefault(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceBinaryAuthorizationUseDefault(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplate(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplate(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2549,95 +2692,102 @@ func expandCloudRunV2ServiceTemplate(v interface{}, d TerraformResourceData, con
 	transformedRevision, err := expandCloudRunV2ServiceTemplateRevision(original["revision"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRevision); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRevision); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["revision"] = transformedRevision
 	}
 
 	transformedLabels, err := expandCloudRunV2ServiceTemplateLabels(original["labels"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLabels); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLabels); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["labels"] = transformedLabels
 	}
 
 	transformedAnnotations, err := expandCloudRunV2ServiceTemplateAnnotations(original["annotations"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAnnotations); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAnnotations); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["annotations"] = transformedAnnotations
 	}
 
 	transformedScaling, err := expandCloudRunV2ServiceTemplateScaling(original["scaling"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedScaling); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedScaling); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["scaling"] = transformedScaling
 	}
 
 	transformedVpcAccess, err := expandCloudRunV2ServiceTemplateVpcAccess(original["vpc_access"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedVpcAccess); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedVpcAccess); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["vpcAccess"] = transformedVpcAccess
 	}
 
 	transformedTimeout, err := expandCloudRunV2ServiceTemplateTimeout(original["timeout"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTimeout); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTimeout); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["timeout"] = transformedTimeout
 	}
 
 	transformedServiceAccount, err := expandCloudRunV2ServiceTemplateServiceAccount(original["service_account"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedServiceAccount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedServiceAccount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["serviceAccount"] = transformedServiceAccount
 	}
 
 	transformedContainers, err := expandCloudRunV2ServiceTemplateContainers(original["containers"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedContainers); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedContainers); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["containers"] = transformedContainers
 	}
 
 	transformedVolumes, err := expandCloudRunV2ServiceTemplateVolumes(original["volumes"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedVolumes); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedVolumes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["volumes"] = transformedVolumes
 	}
 
 	transformedExecutionEnvironment, err := expandCloudRunV2ServiceTemplateExecutionEnvironment(original["execution_environment"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedExecutionEnvironment); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedExecutionEnvironment); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["executionEnvironment"] = transformedExecutionEnvironment
 	}
 
 	transformedEncryptionKey, err := expandCloudRunV2ServiceTemplateEncryptionKey(original["encryption_key"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEncryptionKey); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEncryptionKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["encryptionKey"] = transformedEncryptionKey
 	}
 
 	transformedMaxInstanceRequestConcurrency, err := expandCloudRunV2ServiceTemplateMaxInstanceRequestConcurrency(original["max_instance_request_concurrency"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMaxInstanceRequestConcurrency); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMaxInstanceRequestConcurrency); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["maxInstanceRequestConcurrency"] = transformedMaxInstanceRequestConcurrency
+	}
+
+	transformedSessionAffinity, err := expandCloudRunV2ServiceTemplateSessionAffinity(original["session_affinity"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedSessionAffinity); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["sessionAffinity"] = transformedSessionAffinity
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateRevision(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateRevision(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudRunV2ServiceTemplateLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -2648,7 +2798,7 @@ func expandCloudRunV2ServiceTemplateLabels(v interface{}, d TerraformResourceDat
 	return m, nil
 }
 
-func expandCloudRunV2ServiceTemplateAnnotations(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudRunV2ServiceTemplateAnnotations(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -2659,7 +2809,7 @@ func expandCloudRunV2ServiceTemplateAnnotations(v interface{}, d TerraformResour
 	return m, nil
 }
 
-func expandCloudRunV2ServiceTemplateScaling(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateScaling(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2671,29 +2821,29 @@ func expandCloudRunV2ServiceTemplateScaling(v interface{}, d TerraformResourceDa
 	transformedMinInstanceCount, err := expandCloudRunV2ServiceTemplateScalingMinInstanceCount(original["min_instance_count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMinInstanceCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMinInstanceCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["minInstanceCount"] = transformedMinInstanceCount
 	}
 
 	transformedMaxInstanceCount, err := expandCloudRunV2ServiceTemplateScalingMaxInstanceCount(original["max_instance_count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMaxInstanceCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMaxInstanceCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["maxInstanceCount"] = transformedMaxInstanceCount
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateScalingMinInstanceCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateScalingMinInstanceCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateScalingMaxInstanceCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateScalingMaxInstanceCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateVpcAccess(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVpcAccess(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2705,37 +2855,37 @@ func expandCloudRunV2ServiceTemplateVpcAccess(v interface{}, d TerraformResource
 	transformedConnector, err := expandCloudRunV2ServiceTemplateVpcAccessConnector(original["connector"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedConnector); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedConnector); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["connector"] = transformedConnector
 	}
 
 	transformedEgress, err := expandCloudRunV2ServiceTemplateVpcAccessEgress(original["egress"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEgress); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEgress); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["egress"] = transformedEgress
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateVpcAccessConnector(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVpcAccessConnector(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateVpcAccessEgress(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVpcAccessEgress(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateTimeout(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateTimeout(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateServiceAccount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateServiceAccount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainers(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainers(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -2748,78 +2898,85 @@ func expandCloudRunV2ServiceTemplateContainers(v interface{}, d TerraformResourc
 		transformedName, err := expandCloudRunV2ServiceTemplateContainersName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
 		transformedImage, err := expandCloudRunV2ServiceTemplateContainersImage(original["image"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedImage); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedImage); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["image"] = transformedImage
 		}
 
 		transformedCommand, err := expandCloudRunV2ServiceTemplateContainersCommand(original["command"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedCommand); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedCommand); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["command"] = transformedCommand
 		}
 
 		transformedArgs, err := expandCloudRunV2ServiceTemplateContainersArgs(original["args"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedArgs); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedArgs); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["args"] = transformedArgs
 		}
 
 		transformedEnv, err := expandCloudRunV2ServiceTemplateContainersEnv(original["env"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedEnv); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedEnv); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["env"] = transformedEnv
 		}
 
 		transformedResources, err := expandCloudRunV2ServiceTemplateContainersResources(original["resources"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedResources); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedResources); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["resources"] = transformedResources
 		}
 
 		transformedPorts, err := expandCloudRunV2ServiceTemplateContainersPorts(original["ports"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPorts); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPorts); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["ports"] = transformedPorts
 		}
 
 		transformedVolumeMounts, err := expandCloudRunV2ServiceTemplateContainersVolumeMounts(original["volume_mounts"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedVolumeMounts); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedVolumeMounts); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["volumeMounts"] = transformedVolumeMounts
 		}
 
 		transformedWorkingDir, err := expandCloudRunV2ServiceTemplateContainersWorkingDir(original["working_dir"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedWorkingDir); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedWorkingDir); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["workingDir"] = transformedWorkingDir
 		}
 
 		transformedLivenessProbe, err := expandCloudRunV2ServiceTemplateContainersLivenessProbe(original["liveness_probe"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedLivenessProbe); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedLivenessProbe); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["livenessProbe"] = transformedLivenessProbe
 		}
 
 		transformedStartupProbe, err := expandCloudRunV2ServiceTemplateContainersStartupProbe(original["startup_probe"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedStartupProbe); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedStartupProbe); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["startupProbe"] = transformedStartupProbe
+		}
+
+		transformedDependsOn, err := expandCloudRunV2ServiceTemplateContainersDependsOn(original["depends_on"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedDependsOn); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["dependsOn"] = transformedDependsOn
 		}
 
 		req = append(req, transformed)
@@ -2827,23 +2984,23 @@ func expandCloudRunV2ServiceTemplateContainers(v interface{}, d TerraformResourc
 	return req, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersImage(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersImage(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersCommand(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersCommand(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersArgs(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersArgs(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersEnv(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersEnv(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -2856,21 +3013,21 @@ func expandCloudRunV2ServiceTemplateContainersEnv(v interface{}, d TerraformReso
 		transformedName, err := expandCloudRunV2ServiceTemplateContainersEnvName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
 		transformedValue, err := expandCloudRunV2ServiceTemplateContainersEnvValue(original["value"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedValue); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedValue); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["value"] = transformedValue
 		}
 
 		transformedValueSource, err := expandCloudRunV2ServiceTemplateContainersEnvValueSource(original["value_source"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedValueSource); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedValueSource); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["valueSource"] = transformedValueSource
 		}
 
@@ -2879,15 +3036,15 @@ func expandCloudRunV2ServiceTemplateContainersEnv(v interface{}, d TerraformReso
 	return req, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersEnvName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersEnvName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersEnvValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersEnvValue(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersEnvValueSource(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersEnvValueSource(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2899,14 +3056,14 @@ func expandCloudRunV2ServiceTemplateContainersEnvValueSource(v interface{}, d Te
 	transformedSecretKeyRef, err := expandCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRef(original["secret_key_ref"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSecretKeyRef); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSecretKeyRef); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["secretKeyRef"] = transformedSecretKeyRef
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRef(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRef(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2918,29 +3075,29 @@ func expandCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRef(v inter
 	transformedSecret, err := expandCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRefSecret(original["secret"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSecret); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSecret); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["secret"] = transformedSecret
 	}
 
 	transformedVersion, err := expandCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRefVersion(original["version"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["version"] = transformedVersion
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRefSecret(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRefSecret(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRefVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersEnvValueSourceSecretKeyRefVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersResources(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersResources(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2952,21 +3109,28 @@ func expandCloudRunV2ServiceTemplateContainersResources(v interface{}, d Terrafo
 	transformedLimits, err := expandCloudRunV2ServiceTemplateContainersResourcesLimits(original["limits"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLimits); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLimits); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["limits"] = transformedLimits
 	}
 
 	transformedCpuIdle, err := expandCloudRunV2ServiceTemplateContainersResourcesCpuIdle(original["cpu_idle"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCpuIdle); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCpuIdle); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["cpuIdle"] = transformedCpuIdle
+	}
+
+	transformedStartupCpuBoost, err := expandCloudRunV2ServiceTemplateContainersResourcesStartupCpuBoost(original["startup_cpu_boost"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedStartupCpuBoost); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["startupCpuBoost"] = transformedStartupCpuBoost
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersResourcesLimits(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudRunV2ServiceTemplateContainersResourcesLimits(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -2977,11 +3141,15 @@ func expandCloudRunV2ServiceTemplateContainersResourcesLimits(v interface{}, d T
 	return m, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersResourcesCpuIdle(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersResourcesCpuIdle(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersPorts(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersResourcesStartupCpuBoost(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunV2ServiceTemplateContainersPorts(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -2994,14 +3162,14 @@ func expandCloudRunV2ServiceTemplateContainersPorts(v interface{}, d TerraformRe
 		transformedName, err := expandCloudRunV2ServiceTemplateContainersPortsName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
 		transformedContainerPort, err := expandCloudRunV2ServiceTemplateContainersPortsContainerPort(original["container_port"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedContainerPort); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedContainerPort); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["containerPort"] = transformedContainerPort
 		}
 
@@ -3010,15 +3178,15 @@ func expandCloudRunV2ServiceTemplateContainersPorts(v interface{}, d TerraformRe
 	return req, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersPortsName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersPortsName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersPortsContainerPort(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersPortsContainerPort(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersVolumeMounts(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersVolumeMounts(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -3031,14 +3199,14 @@ func expandCloudRunV2ServiceTemplateContainersVolumeMounts(v interface{}, d Terr
 		transformedName, err := expandCloudRunV2ServiceTemplateContainersVolumeMountsName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
 		transformedMountPath, err := expandCloudRunV2ServiceTemplateContainersVolumeMountsMountPath(original["mount_path"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedMountPath); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedMountPath); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["mountPath"] = transformedMountPath
 		}
 
@@ -3047,19 +3215,19 @@ func expandCloudRunV2ServiceTemplateContainersVolumeMounts(v interface{}, d Terr
 	return req, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersVolumeMountsName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersVolumeMountsName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersVolumeMountsMountPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersVolumeMountsMountPath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersWorkingDir(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersWorkingDir(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbe(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbe(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3071,28 +3239,28 @@ func expandCloudRunV2ServiceTemplateContainersLivenessProbe(v interface{}, d Ter
 	transformedInitialDelaySeconds, err := expandCloudRunV2ServiceTemplateContainersLivenessProbeInitialDelaySeconds(original["initial_delay_seconds"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInitialDelaySeconds); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInitialDelaySeconds); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["initialDelaySeconds"] = transformedInitialDelaySeconds
 	}
 
 	transformedTimeoutSeconds, err := expandCloudRunV2ServiceTemplateContainersLivenessProbeTimeoutSeconds(original["timeout_seconds"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTimeoutSeconds); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTimeoutSeconds); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["timeoutSeconds"] = transformedTimeoutSeconds
 	}
 
 	transformedPeriodSeconds, err := expandCloudRunV2ServiceTemplateContainersLivenessProbePeriodSeconds(original["period_seconds"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPeriodSeconds); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPeriodSeconds); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["periodSeconds"] = transformedPeriodSeconds
 	}
 
 	transformedFailureThreshold, err := expandCloudRunV2ServiceTemplateContainersLivenessProbeFailureThreshold(original["failure_threshold"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedFailureThreshold); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedFailureThreshold); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["failureThreshold"] = transformedFailureThreshold
 	}
 
@@ -3120,23 +3288,23 @@ func expandCloudRunV2ServiceTemplateContainersLivenessProbe(v interface{}, d Ter
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeInitialDelaySeconds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeInitialDelaySeconds(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeTimeoutSeconds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeTimeoutSeconds(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbePeriodSeconds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbePeriodSeconds(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeFailureThreshold(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeFailureThreshold(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGet(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGet(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 {
 		return nil, nil
@@ -3153,25 +3321,36 @@ func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGet(v interface{}
 	transformedPath, err := expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetPath(original["path"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["path"] = transformedPath
+	}
+
+	transformedPort, err := expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetPort(original["port"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["port"] = transformedPort
 	}
 
 	transformedHttpHeaders, err := expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeaders(original["http_headers"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedHttpHeaders); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedHttpHeaders); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["httpHeaders"] = transformedHttpHeaders
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetPath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeaders(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetPort(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeaders(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -3184,7 +3363,7 @@ func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeaders(v 
 		transformedName, err := expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeadersName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
@@ -3200,15 +3379,15 @@ func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeaders(v 
 	return req, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeadersName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeadersName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeadersValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeHttpGetHttpHeadersValue(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocket(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocket(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 {
 		return nil, nil
@@ -3225,18 +3404,18 @@ func expandCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocket(v interface
 	transformedPort, err := expandCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocketPort(original["port"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["port"] = transformedPort
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocketPort(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeTcpSocketPort(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeGrpc(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeGrpc(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 {
 		return nil, nil
@@ -3253,29 +3432,29 @@ func expandCloudRunV2ServiceTemplateContainersLivenessProbeGrpc(v interface{}, d
 	transformedPort, err := expandCloudRunV2ServiceTemplateContainersLivenessProbeGrpcPort(original["port"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["port"] = transformedPort
 	}
 
 	transformedService, err := expandCloudRunV2ServiceTemplateContainersLivenessProbeGrpcService(original["service"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedService); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedService); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["service"] = transformedService
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeGrpcPort(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeGrpcPort(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersLivenessProbeGrpcService(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersLivenessProbeGrpcService(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbe(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbe(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3287,28 +3466,28 @@ func expandCloudRunV2ServiceTemplateContainersStartupProbe(v interface{}, d Terr
 	transformedInitialDelaySeconds, err := expandCloudRunV2ServiceTemplateContainersStartupProbeInitialDelaySeconds(original["initial_delay_seconds"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInitialDelaySeconds); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInitialDelaySeconds); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["initialDelaySeconds"] = transformedInitialDelaySeconds
 	}
 
 	transformedTimeoutSeconds, err := expandCloudRunV2ServiceTemplateContainersStartupProbeTimeoutSeconds(original["timeout_seconds"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTimeoutSeconds); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTimeoutSeconds); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["timeoutSeconds"] = transformedTimeoutSeconds
 	}
 
 	transformedPeriodSeconds, err := expandCloudRunV2ServiceTemplateContainersStartupProbePeriodSeconds(original["period_seconds"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPeriodSeconds); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPeriodSeconds); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["periodSeconds"] = transformedPeriodSeconds
 	}
 
 	transformedFailureThreshold, err := expandCloudRunV2ServiceTemplateContainersStartupProbeFailureThreshold(original["failure_threshold"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedFailureThreshold); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedFailureThreshold); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["failureThreshold"] = transformedFailureThreshold
 	}
 
@@ -3336,23 +3515,23 @@ func expandCloudRunV2ServiceTemplateContainersStartupProbe(v interface{}, d Terr
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeInitialDelaySeconds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeInitialDelaySeconds(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeTimeoutSeconds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeTimeoutSeconds(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbePeriodSeconds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbePeriodSeconds(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeFailureThreshold(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeFailureThreshold(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGet(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGet(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 {
 		return nil, nil
@@ -3369,25 +3548,36 @@ func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGet(v interface{},
 	transformedPath, err := expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetPath(original["path"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["path"] = transformedPath
+	}
+
+	transformedPort, err := expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetPort(original["port"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["port"] = transformedPort
 	}
 
 	transformedHttpHeaders, err := expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeaders(original["http_headers"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedHttpHeaders); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedHttpHeaders); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["httpHeaders"] = transformedHttpHeaders
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetPath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeaders(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetPort(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeaders(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -3400,7 +3590,7 @@ func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeaders(v i
 		transformedName, err := expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeadersName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
@@ -3416,15 +3606,15 @@ func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeaders(v i
 	return req, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeadersName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeadersName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeadersValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeHttpGetHttpHeadersValue(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeTcpSocket(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeTcpSocket(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 {
 		return nil, nil
@@ -3441,18 +3631,18 @@ func expandCloudRunV2ServiceTemplateContainersStartupProbeTcpSocket(v interface{
 	transformedPort, err := expandCloudRunV2ServiceTemplateContainersStartupProbeTcpSocketPort(original["port"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["port"] = transformedPort
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeTcpSocketPort(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeTcpSocketPort(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeGrpc(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeGrpc(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 {
 		return nil, nil
@@ -3469,29 +3659,33 @@ func expandCloudRunV2ServiceTemplateContainersStartupProbeGrpc(v interface{}, d 
 	transformedPort, err := expandCloudRunV2ServiceTemplateContainersStartupProbeGrpcPort(original["port"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["port"] = transformedPort
 	}
 
 	transformedService, err := expandCloudRunV2ServiceTemplateContainersStartupProbeGrpcService(original["service"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedService); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedService); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["service"] = transformedService
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeGrpcPort(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeGrpcPort(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateContainersStartupProbeGrpcService(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersStartupProbeGrpcService(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateVolumes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateContainersDependsOn(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunV2ServiceTemplateVolumes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -3504,22 +3698,29 @@ func expandCloudRunV2ServiceTemplateVolumes(v interface{}, d TerraformResourceDa
 		transformedName, err := expandCloudRunV2ServiceTemplateVolumesName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
 		transformedSecret, err := expandCloudRunV2ServiceTemplateVolumesSecret(original["secret"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSecret); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSecret); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["secret"] = transformedSecret
 		}
 
 		transformedCloudSqlInstance, err := expandCloudRunV2ServiceTemplateVolumesCloudSqlInstance(original["cloud_sql_instance"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedCloudSqlInstance); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedCloudSqlInstance); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["cloudSqlInstance"] = transformedCloudSqlInstance
+		}
+
+		transformedEmptyDir, err := expandCloudRunV2ServiceTemplateVolumesEmptyDir(original["empty_dir"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedEmptyDir); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["emptyDir"] = transformedEmptyDir
 		}
 
 		req = append(req, transformed)
@@ -3527,11 +3728,11 @@ func expandCloudRunV2ServiceTemplateVolumes(v interface{}, d TerraformResourceDa
 	return req, nil
 }
 
-func expandCloudRunV2ServiceTemplateVolumesName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVolumesName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateVolumesSecret(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVolumesSecret(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3543,36 +3744,36 @@ func expandCloudRunV2ServiceTemplateVolumesSecret(v interface{}, d TerraformReso
 	transformedSecret, err := expandCloudRunV2ServiceTemplateVolumesSecretSecret(original["secret"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSecret); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSecret); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["secret"] = transformedSecret
 	}
 
 	transformedDefaultMode, err := expandCloudRunV2ServiceTemplateVolumesSecretDefaultMode(original["default_mode"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDefaultMode); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDefaultMode); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["defaultMode"] = transformedDefaultMode
 	}
 
 	transformedItems, err := expandCloudRunV2ServiceTemplateVolumesSecretItems(original["items"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedItems); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedItems); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["items"] = transformedItems
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateVolumesSecretSecret(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVolumesSecretSecret(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateVolumesSecretDefaultMode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVolumesSecretDefaultMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateVolumesSecretItems(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVolumesSecretItems(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -3585,21 +3786,21 @@ func expandCloudRunV2ServiceTemplateVolumesSecretItems(v interface{}, d Terrafor
 		transformedPath, err := expandCloudRunV2ServiceTemplateVolumesSecretItemsPath(original["path"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["path"] = transformedPath
 		}
 
 		transformedVersion, err := expandCloudRunV2ServiceTemplateVolumesSecretItemsVersion(original["version"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["version"] = transformedVersion
 		}
 
 		transformedMode, err := expandCloudRunV2ServiceTemplateVolumesSecretItemsMode(original["mode"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedMode); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedMode); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["mode"] = transformedMode
 		}
 
@@ -3608,19 +3809,19 @@ func expandCloudRunV2ServiceTemplateVolumesSecretItems(v interface{}, d Terrafor
 	return req, nil
 }
 
-func expandCloudRunV2ServiceTemplateVolumesSecretItemsPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVolumesSecretItemsPath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateVolumesSecretItemsVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVolumesSecretItemsVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateVolumesSecretItemsMode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVolumesSecretItemsMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateVolumesCloudSqlInstance(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVolumesCloudSqlInstance(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3632,30 +3833,68 @@ func expandCloudRunV2ServiceTemplateVolumesCloudSqlInstance(v interface{}, d Ter
 	transformedInstances, err := expandCloudRunV2ServiceTemplateVolumesCloudSqlInstanceInstances(original["instances"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInstances); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInstances); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["instances"] = transformedInstances
 	}
 
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateVolumesCloudSqlInstanceInstances(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVolumesCloudSqlInstanceInstances(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateExecutionEnvironment(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVolumesEmptyDir(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedMedium, err := expandCloudRunV2ServiceTemplateVolumesEmptyDirMedium(original["medium"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedMedium); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["medium"] = transformedMedium
+	}
+
+	transformedSizeLimit, err := expandCloudRunV2ServiceTemplateVolumesEmptyDirSizeLimit(original["size_limit"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedSizeLimit); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["sizeLimit"] = transformedSizeLimit
+	}
+
+	return transformed, nil
+}
+
+func expandCloudRunV2ServiceTemplateVolumesEmptyDirMedium(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateEncryptionKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVolumesEmptyDirSizeLimit(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateMaxInstanceRequestConcurrency(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateExecutionEnvironment(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTraffic(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateEncryptionKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunV2ServiceTemplateMaxInstanceRequestConcurrency(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunV2ServiceTemplateSessionAffinity(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunV2ServiceTraffic(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -3668,28 +3907,28 @@ func expandCloudRunV2ServiceTraffic(v interface{}, d TerraformResourceData, conf
 		transformedType, err := expandCloudRunV2ServiceTrafficType(original["type"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedType); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["type"] = transformedType
 		}
 
 		transformedRevision, err := expandCloudRunV2ServiceTrafficRevision(original["revision"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedRevision); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedRevision); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["revision"] = transformedRevision
 		}
 
 		transformedPercent, err := expandCloudRunV2ServiceTrafficPercent(original["percent"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPercent); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPercent); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["percent"] = transformedPercent
 		}
 
 		transformedTag, err := expandCloudRunV2ServiceTrafficTag(original["tag"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedTag); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedTag); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["tag"] = transformedTag
 		}
 
@@ -3698,18 +3937,18 @@ func expandCloudRunV2ServiceTraffic(v interface{}, d TerraformResourceData, conf
 	return req, nil
 }
 
-func expandCloudRunV2ServiceTrafficType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTrafficType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTrafficRevision(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTrafficRevision(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTrafficPercent(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTrafficPercent(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTrafficTag(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTrafficTag(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

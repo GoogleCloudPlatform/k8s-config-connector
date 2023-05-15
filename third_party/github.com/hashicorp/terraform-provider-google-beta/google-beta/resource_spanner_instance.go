@@ -24,9 +24,13 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
-func deleteSpannerBackups(d *schema.ResourceData, config *Config, res map[string]interface{}, userAgent string, billingProject string) error {
+func deleteSpannerBackups(d *schema.ResourceData, config *transport_tpg.Config, res map[string]interface{}, userAgent string, billingProject string) error {
 	var v interface{}
 	var ok bool
 
@@ -48,12 +52,12 @@ func deleteSpannerBackups(d *schema.ResourceData, config *Config, res map[string
 
 		path := "{{SpannerBasePath}}" + backupName
 
-		url, err := ReplaceVars(d, config, path)
+		url, err := tpgresource.ReplaceVars(d, config, path)
 		if err != nil {
 			return err
 		}
 
-		_, err = SendRequest(config, "DELETE", billingProject, url, userAgent, nil)
+		_, err = transport_tpg.SendRequest(config, "DELETE", billingProject, url, userAgent, nil)
 		if err != nil {
 			return err
 		}
@@ -118,7 +122,7 @@ unique per project and between 4 and 30 characters in length.`,
 				Computed:     true,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateRegexp(`^[a-z][-a-z0-9]*[a-z0-9]$`),
+				ValidateFunc: verify.ValidateRegexp(`^[a-z][-a-z0-9]*[a-z0-9]$`),
 				Description: `A unique identifier for the instance, which cannot be changed after
 the instance is created. The name must be between 6 and 30 characters
 in length.
@@ -145,7 +149,7 @@ must be present in terraform.`,
 				Type:     schema.TypeInt,
 				Computed: true,
 				Optional: true,
-				Description: `The number of processing units allocated to this instance. Exactly one of processing_units 
+				Description: `The number of processing units allocated to this instance. Exactly one of processing_units
 or node_count must be present in terraform.`,
 				ExactlyOneOf: []string{"num_nodes", "processing_units"},
 			},
@@ -173,8 +177,8 @@ This must be set to true if you created a backup manually in the console.`,
 }
 
 func resourceSpannerInstanceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -183,37 +187,37 @@ func resourceSpannerInstanceCreate(d *schema.ResourceData, meta interface{}) err
 	nameProp, err := expandSpannerInstanceName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	configProp, err := expandSpannerInstanceConfig(d.Get("config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("config"); !isEmptyValue(reflect.ValueOf(configProp)) && (ok || !reflect.DeepEqual(v, configProp)) {
+	} else if v, ok := d.GetOkExists("config"); !tpgresource.IsEmptyValue(reflect.ValueOf(configProp)) && (ok || !reflect.DeepEqual(v, configProp)) {
 		obj["config"] = configProp
 	}
 	displayNameProp, err := expandSpannerInstanceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	nodeCountProp, err := expandSpannerInstanceNumNodes(d.Get("num_nodes"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("num_nodes"); !isEmptyValue(reflect.ValueOf(nodeCountProp)) && (ok || !reflect.DeepEqual(v, nodeCountProp)) {
+	} else if v, ok := d.GetOkExists("num_nodes"); !tpgresource.IsEmptyValue(reflect.ValueOf(nodeCountProp)) && (ok || !reflect.DeepEqual(v, nodeCountProp)) {
 		obj["nodeCount"] = nodeCountProp
 	}
 	processingUnitsProp, err := expandSpannerInstanceProcessingUnits(d.Get("processing_units"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("processing_units"); !isEmptyValue(reflect.ValueOf(processingUnitsProp)) && (ok || !reflect.DeepEqual(v, processingUnitsProp)) {
+	} else if v, ok := d.GetOkExists("processing_units"); !tpgresource.IsEmptyValue(reflect.ValueOf(processingUnitsProp)) && (ok || !reflect.DeepEqual(v, processingUnitsProp)) {
 		obj["processingUnits"] = processingUnitsProp
 	}
 	labelsProp, err := expandSpannerInstanceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 
@@ -222,7 +226,7 @@ func resourceSpannerInstanceCreate(d *schema.ResourceData, meta interface{}) err
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{SpannerBasePath}}projects/{{project}}/instances")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SpannerBasePath}}projects/{{project}}/instances")
 	if err != nil {
 		return err
 	}
@@ -230,24 +234,24 @@ func resourceSpannerInstanceCreate(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Creating new Instance: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Instance: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{project}}/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{project}}/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -279,7 +283,7 @@ func resourceSpannerInstanceCreate(d *schema.ResourceData, meta interface{}) err
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "{{project}}/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "{{project}}/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -296,33 +300,33 @@ func resourceSpannerInstanceCreate(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceSpannerInstanceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{SpannerBasePath}}projects/{{project}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SpannerBasePath}}projects/{{project}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("SpannerInstance %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("SpannerInstance %q", d.Id()))
 	}
 
 	res, err = resourceSpannerInstanceDecoder(d, meta, res)
@@ -373,15 +377,15 @@ func resourceSpannerInstanceRead(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceSpannerInstanceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
@@ -391,25 +395,25 @@ func resourceSpannerInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 	displayNameProp, err := expandSpannerInstanceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	nodeCountProp, err := expandSpannerInstanceNumNodes(d.Get("num_nodes"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("num_nodes"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nodeCountProp)) {
+	} else if v, ok := d.GetOkExists("num_nodes"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nodeCountProp)) {
 		obj["nodeCount"] = nodeCountProp
 	}
 	processingUnitsProp, err := expandSpannerInstanceProcessingUnits(d.Get("processing_units"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("processing_units"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, processingUnitsProp)) {
+	} else if v, ok := d.GetOkExists("processing_units"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, processingUnitsProp)) {
 		obj["processingUnits"] = processingUnitsProp
 	}
 	labelsProp, err := expandSpannerInstanceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 
@@ -418,7 +422,7 @@ func resourceSpannerInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{SpannerBasePath}}projects/{{project}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SpannerBasePath}}projects/{{project}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -434,11 +438,11 @@ func resourceSpannerInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Instance %q: %s", d.Id(), err)
@@ -458,21 +462,21 @@ func resourceSpannerInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceSpannerInstanceDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{SpannerBasePath}}projects/{{project}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SpannerBasePath}}projects/{{project}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -480,15 +484,15 @@ func resourceSpannerInstanceDelete(d *schema.ResourceData, meta interface{}) err
 	var obj map[string]interface{}
 
 	if d.Get("force_destroy").(bool) {
-		backupsUrl, err := ReplaceVars(d, config, "{{SpannerBasePath}}projects/{{project}}/instances/{{name}}/backups")
+		backupsUrl, err := tpgresource.ReplaceVars(d, config, "{{SpannerBasePath}}projects/{{project}}/instances/{{name}}/backups")
 		if err != nil {
 			return err
 		}
 
-		resp, err := SendRequest(config, "GET", billingProject, backupsUrl, userAgent, nil)
+		resp, err := transport_tpg.SendRequest(config, "GET", billingProject, backupsUrl, userAgent, nil)
 		if err != nil {
 			// API returns 200 if no backups exist but the instance still exists, hence the error check.
-			return handleNotFoundError(err, d, fmt.Sprintf("SpannerInstance %q", d.Id()))
+			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("SpannerInstance %q", d.Id()))
 		}
 
 		err = deleteSpannerBackups(d, config, resp, billingProject, userAgent)
@@ -499,13 +503,13 @@ func resourceSpannerInstanceDelete(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Deleting Instance %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Instance")
+		return transport_tpg.HandleNotFoundError(err, d, "Instance")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Instance %q: %#v", d.Id(), res)
@@ -513,7 +517,7 @@ func resourceSpannerInstanceDelete(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceSpannerInstanceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/instances/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
@@ -523,7 +527,7 @@ func resourceSpannerInstanceImport(d *schema.ResourceData, meta interface{}) ([]
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{project}}/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{project}}/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -537,25 +541,25 @@ func resourceSpannerInstanceImport(d *schema.ResourceData, meta interface{}) ([]
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenSpannerInstanceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSpannerInstanceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenSpannerInstanceConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSpannerInstanceConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return ConvertSelfLinkToV1(v.(string))
+	return tpgresource.ConvertSelfLinkToV1(v.(string))
 }
 
-func flattenSpannerInstanceDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSpannerInstanceDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSpannerInstanceNumNodes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSpannerInstanceNumNodes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -572,7 +576,7 @@ func flattenSpannerInstanceNumNodes(v interface{}, d *schema.ResourceData, confi
 	return v // let terraform core handle it otherwise
 }
 
-func flattenSpannerInstanceProcessingUnits(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSpannerInstanceProcessingUnits(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -589,25 +593,25 @@ func flattenSpannerInstanceProcessingUnits(v interface{}, d *schema.ResourceData
 	return v // let terraform core handle it otherwise
 }
 
-func flattenSpannerInstanceLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSpannerInstanceLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSpannerInstanceState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSpannerInstanceState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandSpannerInstanceName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSpannerInstanceName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandSpannerInstanceConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSpannerInstanceConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	r := regexp.MustCompile("projects/(.+)/instanceConfigs/(.+)")
 	if r.MatchString(v.(string)) {
 		return v.(string), nil
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return nil, err
 	}
@@ -615,19 +619,19 @@ func expandSpannerInstanceConfig(v interface{}, d TerraformResourceData, config 
 	return fmt.Sprintf("projects/%s/instanceConfigs/%s", project, v.(string)), nil
 }
 
-func expandSpannerInstanceDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSpannerInstanceDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandSpannerInstanceNumNodes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSpannerInstanceNumNodes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandSpannerInstanceProcessingUnits(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSpannerInstanceProcessingUnits(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandSpannerInstanceLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandSpannerInstanceLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -658,7 +662,7 @@ func resourceSpannerInstanceEncoder(d *schema.ResourceData, meta interface{}, ob
 }
 
 func resourceSpannerInstanceUpdateEncoder(d *schema.ResourceData, meta interface{}, obj map[string]interface{}) (map[string]interface{}, error) {
-	project, err := getProject(d, meta.(*Config))
+	project, err := tpgresource.GetProject(d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return nil, err
 	}
@@ -683,14 +687,14 @@ func resourceSpannerInstanceUpdateEncoder(d *schema.ResourceData, meta interface
 }
 
 func resourceSpannerInstanceDecoder(d *schema.ResourceData, meta interface{}, res map[string]interface{}) (map[string]interface{}, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	d.SetId(res["name"].(string))
 	if err := ParseImportId([]string{"projects/(?P<project>[^/]+)/instances/(?P<name>[^/]+)"}, d, config); err != nil {
 		return nil, err
 	}
 	res["project"] = d.Get("project").(string)
 	res["name"] = d.Get("name").(string)
-	id, err := ReplaceVars(d, config, "{{project}}/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{project}}/{{name}}")
 	if err != nil {
 		return nil, err
 	}

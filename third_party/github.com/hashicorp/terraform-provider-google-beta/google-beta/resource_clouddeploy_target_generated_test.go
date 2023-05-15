@@ -24,19 +24,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccClouddeployTarget_MultiTarget(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  acctest.GetTestProjectFromEnv(),
+		"region":        acctest.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
+		PreCheck: func() { acctest.AccTestPreCheck(t) },
 
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckClouddeployTargetDestroyProducer(t),
@@ -64,13 +67,13 @@ func TestAccClouddeployTarget_RunTarget(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  acctest.GetTestProjectFromEnv(),
+		"region":        acctest.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
+		PreCheck: func() { acctest.AccTestPreCheck(t) },
 
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckClouddeployTargetDestroyProducer(t),
@@ -98,13 +101,13 @@ func TestAccClouddeployTarget_Target(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  acctest.GetTestProjectFromEnv(),
+		"region":        acctest.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckClouddeployTargetDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -518,7 +521,7 @@ func testAccCheckClouddeployTargetDestroyProducer(t *testing.T) func(s *terrafor
 				UpdateTime:      dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLClouddeployClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLClouddeployClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetTarget(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_clouddeploy_target still exists %v", obj)

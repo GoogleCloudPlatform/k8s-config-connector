@@ -5,6 +5,9 @@ import (
 	"log"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -49,13 +52,13 @@ func ResourceComputeProjectDefaultNetworkTier() *schema.Resource {
 }
 
 func resourceComputeProjectDefaultNetworkTierCreateOrUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	projectID, err := getProject(d, config)
+	projectID, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -80,8 +83,8 @@ func resourceComputeProjectDefaultNetworkTierCreateOrUpdate(d *schema.ResourceDa
 }
 
 func resourceComputeProjectDefaultNetworkTierRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -90,7 +93,7 @@ func resourceComputeProjectDefaultNetworkTierRead(d *schema.ResourceData, meta i
 
 	project, err := config.NewComputeClient(userAgent).Projects.Get(projectId).Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Project data for project %q", projectId))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Project data for project %q", projectId))
 	}
 
 	err = d.Set("network_tier", project.DefaultNetworkTier)

@@ -5,6 +5,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
@@ -32,14 +34,14 @@ func TestAccAccessApprovalSettings(t *testing.T) {
 
 func testAccAccessApprovalOrganizationSettings(t *testing.T) {
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
-		"org_id":        GetTestOrgFromEnv(t),
-		"location":      GetTestRegionFromEnv(),
+		"project":       acctest.GetTestProjectFromEnv(),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"location":      acctest.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAccessApprovalOrganizationSettingsDestroyProducer(t),
 		Steps: []resource.TestStep{

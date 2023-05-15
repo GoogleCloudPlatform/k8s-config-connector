@@ -2,7 +2,10 @@ package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -21,7 +24,7 @@ func TestAccComputeTargetHttpsProxy_update(t *testing.T) {
 	resourceSuffix := RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeTargetHttpsProxyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -56,7 +59,7 @@ func TestAccComputeTargetHttpsProxy_certificateMap(t *testing.T) {
 	resourceSuffix := RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeTargetHttpsProxyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -118,7 +121,7 @@ func testAccComputeTargetHttpsProxyHasSslCertificate(t *testing.T, cert string, 
 		certUrl := fmt.Sprintf(canonicalSslCertificateTemplate, config.Project, cert)
 
 		for _, sslCertificate := range proxy.SslCertificates {
-			if ConvertSelfLinkToV1(sslCertificate) == certUrl {
+			if tpgresource.ConvertSelfLinkToV1(sslCertificate) == certUrl {
 				return nil
 			}
 		}
@@ -132,7 +135,7 @@ func testAccComputeTargetHttpsProxyHasCertificateMap(t *testing.T, certificateMa
 		config := GoogleProviderConfig(t)
 		certificateMapUrl := fmt.Sprintf(canonicalCertificateMapTemplate, config.Project, certificateMap)
 
-		if ConvertSelfLinkToV1(proxy.CertificateMap) == certificateMapUrl {
+		if tpgresource.ConvertSelfLinkToV1(proxy.CertificateMap) == certificateMapUrl {
 			return nil
 		}
 

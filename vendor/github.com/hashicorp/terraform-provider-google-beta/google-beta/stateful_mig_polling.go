@@ -5,27 +5,29 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 // PerInstanceConfig needs both regular operation polling AND custom polling for deletion which is why this is not generated
-func resourceComputePerInstanceConfigPollRead(d *schema.ResourceData, meta interface{}) PollReadFunc {
+func resourceComputePerInstanceConfigPollRead(d *schema.ResourceData, meta interface{}) transport_tpg.PollReadFunc {
 	return func() (map[string]interface{}, error) {
-		config := meta.(*Config)
-		userAgent, err := generateUserAgentString(d, config.UserAgent)
+		config := meta.(*transport_tpg.Config)
+		userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 		if err != nil {
 			return nil, err
 		}
 
-		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/instanceGroupManagers/{{instance_group_manager}}/listPerInstanceConfigs")
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/instanceGroupManagers/{{instance_group_manager}}/listPerInstanceConfigs")
 		if err != nil {
 			return nil, err
 		}
 
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return nil, err
 		}
-		res, err := SendRequest(config, "POST", project, url, userAgent, nil)
+		res, err := transport_tpg.SendRequest(config, "POST", project, url, userAgent, nil)
 		if err != nil {
 			return res, err
 		}
@@ -40,24 +42,24 @@ func resourceComputePerInstanceConfigPollRead(d *schema.ResourceData, meta inter
 }
 
 // RegionPerInstanceConfig needs both regular operation polling AND custom polling for deletion which is why this is not generated
-func resourceComputeRegionPerInstanceConfigPollRead(d *schema.ResourceData, meta interface{}) PollReadFunc {
+func resourceComputeRegionPerInstanceConfigPollRead(d *schema.ResourceData, meta interface{}) transport_tpg.PollReadFunc {
 	return func() (map[string]interface{}, error) {
-		config := meta.(*Config)
-		userAgent, err := generateUserAgentString(d, config.UserAgent)
+		config := meta.(*transport_tpg.Config)
+		userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 		if err != nil {
 			return nil, err
 		}
 
-		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/instanceGroupManagers/{{region_instance_group_manager}}/listPerInstanceConfigs")
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/instanceGroupManagers/{{region_instance_group_manager}}/listPerInstanceConfigs")
 		if err != nil {
 			return nil, err
 		}
 
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return nil, err
 		}
-		res, err := SendRequest(config, "POST", project, url, userAgent, nil)
+		res, err := transport_tpg.SendRequest(config, "POST", project, url, userAgent, nil)
 		if err != nil {
 			return res, err
 		}
@@ -73,18 +75,18 @@ func resourceComputeRegionPerInstanceConfigPollRead(d *schema.ResourceData, meta
 
 // Returns an instance name in the form zones/{zone}/instances/{instance} for the managed
 // instance matching the name of a PerInstanceConfig
-func findInstanceName(d *schema.ResourceData, config *Config) (string, error) {
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/instanceGroupManagers/{{region_instance_group_manager}}/listManagedInstances")
+func findInstanceName(d *schema.ResourceData, config *transport_tpg.Config) (string, error) {
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/instanceGroupManagers/{{region_instance_group_manager}}/listManagedInstances")
 	if err != nil {
 		return "", err
 	}
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return "", err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return "", err
 	}
@@ -98,7 +100,7 @@ func findInstanceName(d *schema.ResourceData, config *Config) (string, error) {
 		} else {
 			urlWithToken = fmt.Sprintf("%s?maxResults=1", url)
 		}
-		res, err := SendRequest(config, "POST", project, urlWithToken, userAgent, nil)
+		res, err := transport_tpg.SendRequest(config, "POST", project, urlWithToken, userAgent, nil)
 		if err != nil {
 			return "", err
 		}
@@ -129,7 +131,7 @@ func findInstanceName(d *schema.ResourceData, config *Config) (string, error) {
 	return "", fmt.Errorf("Failed to find managed instance with name: %s", instanceNameToFind)
 }
 
-func PollCheckInstanceConfigDeleted(resp map[string]interface{}, respErr error) PollResult {
+func PollCheckInstanceConfigDeleted(resp map[string]interface{}, respErr error) transport_tpg.PollResult {
 	if respErr != nil {
 		return ErrorPollResult(respErr)
 	}

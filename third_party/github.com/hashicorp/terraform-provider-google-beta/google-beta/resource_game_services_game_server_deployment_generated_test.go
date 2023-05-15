@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccGameServicesGameServerDeployment_gameServiceDeploymentBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccGameServicesGameServerDeployment_gameServiceDeploymentBasicExample(t
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckGameServicesGameServerDeploymentDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -69,7 +73,7 @@ func testAccCheckGameServicesGameServerDeploymentDestroyProducer(t *testing.T) f
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{GameServicesBasePath}}projects/{{project}}/locations/{{location}}/gameServerDeployments/{{deployment_id}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{GameServicesBasePath}}projects/{{project}}/locations/{{location}}/gameServerDeployments/{{deployment_id}}")
 			if err != nil {
 				return err
 			}
@@ -80,7 +84,7 @@ func testAccCheckGameServicesGameServerDeploymentDestroyProducer(t *testing.T) f
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("GameServicesGameServerDeployment still exists at %s", url)
 			}

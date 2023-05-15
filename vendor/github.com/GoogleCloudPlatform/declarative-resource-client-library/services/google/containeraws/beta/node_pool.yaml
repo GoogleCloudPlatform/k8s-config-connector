@@ -305,6 +305,31 @@ components:
               items:
                 type: string
                 x-dcl-go-type: string
+            spotConfig:
+              type: object
+              x-dcl-go-name: SpotConfig
+              x-dcl-go-type: NodePoolConfigSpotConfig
+              description: Optional. When specified, the node pool will provision
+                Spot instances from the set of spot_config.instance_types. This field
+                is mutually exclusive with `instance_type`
+              x-kubernetes-immutable: true
+              required:
+              - instanceTypes
+              properties:
+                instanceTypes:
+                  type: array
+                  x-dcl-go-name: InstanceTypes
+                  description: List of AWS EC2 instance types for creating a spot
+                    node pool's nodes. The specified instance types must have the
+                    same number of CPUs and memory. You can use the Amazon EC2 Instance
+                    Selector tool (https://github.com/aws/amazon-ec2-instance-selector)
+                    to choose instance types with matching CPU and memory
+                  x-kubernetes-immutable: true
+                  x-dcl-send-empty: true
+                  x-dcl-list-type: list
+                  items:
+                    type: string
+                    x-dcl-go-type: string
             sshConfig:
               type: object
               x-dcl-go-name: SshConfig

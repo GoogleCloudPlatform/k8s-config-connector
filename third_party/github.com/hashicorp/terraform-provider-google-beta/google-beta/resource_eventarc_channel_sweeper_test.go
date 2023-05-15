@@ -22,6 +22,8 @@ import (
 
 	eventarc "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/eventarc/beta"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func init() {
@@ -34,7 +36,7 @@ func init() {
 func testSweepEventarcChannel(region string) error {
 	log.Print("[INFO][SWEEPER_LOG] Starting sweeper for EventarcChannel")
 
-	config, err := SharedConfigForRegion(region)
+	config, err := acctest.SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -47,7 +49,7 @@ func testSweepEventarcChannel(region string) error {
 	}
 
 	t := &testing.T{}
-	billingId := GetTestBillingAccountFromEnv(t)
+	billingId := acctest.GetTestBillingAccountFromEnv(t)
 
 	// Setup variables to be used for Delete arguments.
 	d := map[string]string{
@@ -58,7 +60,7 @@ func testSweepEventarcChannel(region string) error {
 		"billing_account": billingId,
 	}
 
-	client := NewDCLEventarcClient(config, config.UserAgent, "", 0)
+	client := transport_tpg.NewDCLEventarcClient(config, config.UserAgent, "", 0)
 	err = client.DeleteAllChannel(context.Background(), d["project"], d["location"], isDeletableEventarcChannel)
 	if err != nil {
 		return err
@@ -67,5 +69,5 @@ func testSweepEventarcChannel(region string) error {
 }
 
 func isDeletableEventarcChannel(r *eventarc.Channel) bool {
-	return IsSweepableTestResource(*r.Name)
+	return acctest.IsSweepableTestResource(*r.Name)
 }

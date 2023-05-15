@@ -21,18 +21,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccFirestoreDocument_firestoreDocumentBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestFirestoreProjectFromEnv(t),
+		"project_id":    acctest.GetTestFirestoreProjectFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckFirestoreDocumentDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -54,7 +58,7 @@ func testAccFirestoreDocument_firestoreDocumentBasicExample(context map[string]i
 resource "google_firestore_document" "mydoc" {
   project     = "%{project_id}"
   collection  = "somenewcollection"
-  document_id = "my-doc-%{random_suffix}"
+  document_id = "tf-test-my-doc-id%{random_suffix}"
   fields      = "{\"something\":{\"mapValue\":{\"fields\":{\"akey\":{\"stringValue\":\"avalue\"}}}}}"
 }
 `, context)
@@ -64,12 +68,12 @@ func TestAccFirestoreDocument_firestoreDocumentNestedDocumentExample(t *testing.
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestFirestoreProjectFromEnv(t),
+		"project_id":    acctest.GetTestFirestoreProjectFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckFirestoreDocumentDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -91,7 +95,7 @@ func testAccFirestoreDocument_firestoreDocumentNestedDocumentExample(context map
 resource "google_firestore_document" "mydoc" {
   project     = "%{project_id}"
   collection  = "somenewcollection"
-  document_id = "my-doc-%{random_suffix}"
+  document_id = "tf-test-my-doc-id%{random_suffix}"
   fields      = "{\"something\":{\"mapValue\":{\"fields\":{\"akey\":{\"stringValue\":\"avalue\"}}}}}"
 }
 
@@ -123,7 +127,7 @@ func testAccCheckFirestoreDocumentDestroyProducer(t *testing.T) func(s *terrafor
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{FirestoreBasePath}}{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{FirestoreBasePath}}{{name}}")
 			if err != nil {
 				return err
 			}
@@ -134,7 +138,7 @@ func testAccCheckFirestoreDocumentDestroyProducer(t *testing.T) func(s *terrafor
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("FirestoreDocument still exists at %s", url)
 			}

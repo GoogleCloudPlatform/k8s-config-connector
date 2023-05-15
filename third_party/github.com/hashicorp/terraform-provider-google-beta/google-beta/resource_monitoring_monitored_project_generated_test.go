@@ -24,19 +24,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccMonitoringMonitoredProject_BasicMonitoredProject(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgFromEnv(t),
-		"project_name":  GetTestProjectFromEnv(),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"project_name":  acctest.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckMonitoringMonitoredProjectDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -92,7 +95,7 @@ func testAccCheckMonitoringMonitoredProjectDestroyProducer(t *testing.T) func(s 
 				CreateTime:   dcl.StringOrNil(rs.Primary.Attributes["create_time"]),
 			}
 
-			client := NewDCLMonitoringClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLMonitoringClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetMonitoredProject(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_monitoring_monitored_project still exists %v", obj)

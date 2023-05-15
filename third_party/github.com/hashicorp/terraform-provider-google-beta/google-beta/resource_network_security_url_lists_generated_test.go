@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccNetworkSecurityUrlLists_networkSecurityUrlListsBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccNetworkSecurityUrlLists_networkSecurityUrlListsBasicExample(t *testi
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityUrlListsDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -67,7 +71,7 @@ func TestAccNetworkSecurityUrlLists_networkSecurityUrlListsAdvancedExample(t *te
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityUrlListsDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -108,7 +112,7 @@ func testAccCheckNetworkSecurityUrlListsDestroyProducer(t *testing.T) func(s *te
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -119,7 +123,7 @@ func testAccCheckNetworkSecurityUrlListsDestroyProducer(t *testing.T) func(s *te
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("NetworkSecurityUrlLists still exists at %s", url)
 			}

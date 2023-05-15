@@ -28,7 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
-	tfgooglebeta "github.com/hashicorp/terraform-provider-google-beta/google-beta"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -67,14 +67,14 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 
 	h.Ctx = context.WithValue(h.Ctx, httpRoundTripperKey, roundTripper)
 
-	tfgooglebeta.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		t := ctx.Value(httpRoundTripperKey)
 		if t != nil {
 			return &http.Client{Transport: t.(http.RoundTripper)}
 		}
 		return inner
 	}
-	tfgooglebeta.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		t := ctx.Value(httpRoundTripperKey)
 		if t != nil {
 			return &http.Client{Transport: t.(http.RoundTripper)}

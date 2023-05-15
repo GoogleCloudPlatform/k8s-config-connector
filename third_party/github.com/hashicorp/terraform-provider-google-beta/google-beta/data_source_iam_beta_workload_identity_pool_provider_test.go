@@ -1,6 +1,7 @@
 package google
 
 import (
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -14,14 +15,14 @@ func TestAccDataSourceIAMBetaWorkloadIdentityPoolProvider_basic(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMBetaWorkloadIdentityPoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceIAMBetaWorkloadIdentityPoolProviderBasic(context),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceState("data.google_iam_workload_identity_pool_provider.foo", "google_iam_workload_identity_pool_provider.bar"),
+					acctest.CheckDataSourceStateMatchesResourceState("data.google_iam_workload_identity_pool_provider.foo", "google_iam_workload_identity_pool_provider.bar"),
 				),
 			},
 		},

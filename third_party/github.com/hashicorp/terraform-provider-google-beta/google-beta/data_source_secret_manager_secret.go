@@ -4,13 +4,15 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceSecretManagerSecret() *schema.Resource {
 
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceSecretManagerSecret().Schema)
-	addRequiredFieldsToSchema(dsSchema, "secret_id")
-	addOptionalFieldsToSchema(dsSchema, "project")
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceSecretManagerSecret().Schema)
+	tpgresource.AddRequiredFieldsToSchema(dsSchema, "secret_id")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "project")
 
 	return &schema.Resource{
 		Read:   dataSourceSecretManagerSecretRead,
@@ -19,7 +21,7 @@ func DataSourceSecretManagerSecret() *schema.Resource {
 }
 
 func dataSourceSecretManagerSecretRead(d *schema.ResourceData, meta interface{}) error {
-	id, err := ReplaceVars(d, meta.(*Config), "projects/{{project}}/secrets/{{secret_id}}")
+	id, err := tpgresource.ReplaceVars(d, meta.(*transport_tpg.Config), "projects/{{project}}/secrets/{{secret_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}

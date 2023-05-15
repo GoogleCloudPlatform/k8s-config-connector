@@ -6,6 +6,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"google.golang.org/api/googleapi"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -60,7 +63,7 @@ func ResourceComputeInstanceGroup() *schema.Resource {
 				Optional:    true,
 				Computed:    true,
 				Elem:        &schema.Schema{Type: schema.TypeString},
-				Set:         selfLinkRelativePathHash,
+				Set:         tpgresource.SelfLinkRelativePathHash,
 				Description: `The list of instances in the group, in self_link format. When adding instances they must all be in the same network and zone as the instance group.`,
 			},
 
@@ -89,7 +92,7 @@ func ResourceComputeInstanceGroup() *schema.Resource {
 				Type:             schema.TypeString,
 				Optional:         true,
 				Computed:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				ForceNew:         true,
 				Description:      `The URL of the network the instance group is in. If this is different from the network where the instances are in, the creation fails. Defaults to the network where the instances are in (if neither network nor instances is specified, this field will be blank).`,
 			},
@@ -137,18 +140,18 @@ func validInstanceURLs(instanceUrls []string) bool {
 }
 
 func resourceComputeInstanceGroupCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	zone, err := getZone(d, config)
+	zone, err := tpgresource.GetZone(d, config)
 	if err != nil {
 		return err
 	}
@@ -197,7 +200,7 @@ func resourceComputeInstanceGroupCreate(d *schema.ResourceData, meta interface{}
 			if strings.HasPrefix(v, "https://") {
 				instanceUrls = append(instanceUrls, v)
 			} else {
-				url, err := ReplaceVars(d, config, "{{ComputeBasePath}}"+v)
+				url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}"+v)
 				if err != nil {
 					return err
 				}
@@ -227,18 +230,18 @@ func resourceComputeInstanceGroupCreate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceComputeInstanceGroupRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	zone, err := getZone(d, config)
+	zone, err := tpgresource.GetZone(d, config)
 	if err != nil {
 		return err
 	}
@@ -248,7 +251,7 @@ func resourceComputeInstanceGroupRead(d *schema.ResourceData, meta interface{}) 
 	instanceGroup, err := config.NewComputeClient(userAgent).InstanceGroups.Get(
 		project, zone, name).Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Instance Group %q", name))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Instance Group %q", name))
 	}
 
 	// retrieve instance group members
@@ -304,18 +307,18 @@ func resourceComputeInstanceGroupRead(d *schema.ResourceData, meta interface{}) 
 	return nil
 }
 func resourceComputeInstanceGroupUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	zone, err := getZone(d, config)
+	zone, err := tpgresource.GetZone(d, config)
 	if err != nil {
 		return err
 	}
@@ -337,7 +340,7 @@ func resourceComputeInstanceGroupUpdate(d *schema.ResourceData, meta interface{}
 			return fmt.Errorf("Error invalid instance URLs: %v", to)
 		}
 
-		add, remove := calcAddRemove(from, to)
+		add, remove := tpgresource.CalcAddRemove(from, to)
 
 		if len(remove) > 0 {
 			removeReq := &compute.InstanceGroupsRemoveInstancesRequest{
@@ -409,18 +412,18 @@ func resourceComputeInstanceGroupUpdate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceComputeInstanceGroupDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	zone, err := getZone(d, config)
+	zone, err := tpgresource.GetZone(d, config)
 	if err != nil {
 		return err
 	}
@@ -440,7 +443,7 @@ func resourceComputeInstanceGroupDelete(d *schema.ResourceData, meta interface{}
 }
 
 func resourceComputeInstanceGroupImportState(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/zones/(?P<zone>[^/]+)/instanceGroups/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<zone>[^/]+)/(?P<name>[^/]+)",
@@ -448,7 +451,7 @@ func resourceComputeInstanceGroupImportState(d *schema.ResourceData, meta interf
 	}, d, config); err != nil {
 		return nil, err
 	}
-	id, err := ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/instanceGroups/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/instanceGroups/{{name}}")
 	if err != nil {
 		return nil, err
 	}

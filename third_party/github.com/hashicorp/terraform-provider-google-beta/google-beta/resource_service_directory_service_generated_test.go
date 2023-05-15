@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccServiceDirectoryService_serviceDirectoryServiceBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccServiceDirectoryService_serviceDirectoryServiceBasicExample(t *testi
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckServiceDirectoryServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -81,7 +85,7 @@ func testAccCheckServiceDirectoryServiceDestroyProducer(t *testing.T) func(s *te
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ServiceDirectoryBasePath}}{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ServiceDirectoryBasePath}}{{name}}")
 			if err != nil {
 				return err
 			}
@@ -92,7 +96,7 @@ func testAccCheckServiceDirectoryServiceDestroyProducer(t *testing.T) func(s *te
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("ServiceDirectoryService still exists at %s", url)
 			}

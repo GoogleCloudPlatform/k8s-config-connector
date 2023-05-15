@@ -5,6 +5,8 @@ import (
 	neturl "net/url"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 type monitoringServiceTypeStateSetter func(map[string]interface{}, *schema.ResourceData, interface{}) error
@@ -19,8 +21,8 @@ func dataSourceMonitoringServiceType(
 	typeStateSetter monitoringServiceTypeStateSetter) *schema.Resource {
 
 	// Convert monitoring schema to ds schema
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceMonitoringService().Schema)
-	addOptionalFieldsToSchema(dsSchema, "project")
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceMonitoringService().Schema)
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "project")
 
 	// Add schema specific to the service type
 	dsSchema = mergeSchemas(typeSchema, dsSchema)
@@ -36,29 +38,29 @@ func dataSourceMonitoringServiceType(
 // It takes the list query filter (i.e. ?filter=$listFilter) and a ReadFunc to handle reading any type-specific schema.
 func dataSourceMonitoringServiceTypeReadFromList(listFilter string, typeStateSetter monitoringServiceTypeStateSetter) schema.ReadFunc {
 	return func(d *schema.ResourceData, meta interface{}) error {
-		config := meta.(*Config)
-		userAgent, err := generateUserAgentString(d, config.UserAgent)
+		config := meta.(*transport_tpg.Config)
+		userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 		if err != nil {
 			return err
 		}
 
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return err
 		}
 
-		filters, err := ReplaceVars(d, config, listFilter)
+		filters, err := tpgresource.ReplaceVars(d, config, listFilter)
 		if err != nil {
 			return err
 		}
 
 		listUrlTmpl := "{{MonitoringBasePath}}v3/projects/{{project}}/services?filter=" + neturl.QueryEscape(filters)
-		url, err := ReplaceVars(d, config, listUrlTmpl)
+		url, err := tpgresource.ReplaceVars(d, config, listUrlTmpl)
 		if err != nil {
 			return err
 		}
 
-		resp, err := SendRequest(config, "GET", project, url, userAgent, nil, IsMonitoringConcurrentEditError)
+		resp, err := transport_tpg.SendRequest(config, "GET", project, url, userAgent, nil, transport_tpg.IsMonitoringConcurrentEditError)
 		if err != nil {
 			return fmt.Errorf("unable to list Monitoring Service for data source: %v", err)
 		}

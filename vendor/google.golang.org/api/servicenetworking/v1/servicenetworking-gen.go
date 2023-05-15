@@ -4267,7 +4267,7 @@ type Publishing struct {
 	// methods that use the long-running operation pattern.
 	MethodSettings []*MethodSettings `json:"methodSettings,omitempty"`
 
-	// NewIssueUri: Link to a place that API users can report issues.
+	// NewIssueUri: Link to a *public* URI where users can report issues.
 	// Example:
 	// https://issuetracker.google.com/issues/new?component=190865&template=1161103
 	NewIssueUri string `json:"newIssueUri,omitempty"`
@@ -4280,6 +4280,7 @@ type Publishing struct {
 	//   "ADS" - Ads (Advertising) Org.
 	//   "PHOTOS" - Photos Org.
 	//   "STREET_VIEW" - Street View Org.
+	//   "SHOPPING" - Shopping Org.
 	Organization string `json:"organization,omitempty"`
 
 	// ProtoReferenceDocumentationUri: Optional link to proto reference

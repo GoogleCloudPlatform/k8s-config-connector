@@ -13,17 +13,17 @@
 # limitations under the License.
 
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-index 04b78afc1..4711ad825 100644
+index 6da49da09..d3f635318 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-@@ -1689,6 +1689,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
- 			"google_sql_user":                              ResourceSqlUser(),
- 			"google_organization_iam_custom_role":          ResourceGoogleOrganizationIamCustomRole(),
- 			"google_organization_policy":                   ResourceGoogleOrganizationPolicy(),
-+			"google_org_policy":                            ResourceOrgPolicy(),
- 			"google_project":                               ResourceGoogleProject(),
- 			"google_project_default_service_accounts":      ResourceGoogleProjectDefaultServiceAccounts(),
- 			"google_project_service":                       ResourceGoogleProjectService(),
+@@ -1446,6 +1446,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
+ 			"google_sql_user":                               ResourceSqlUser(),
+ 			"google_organization_iam_custom_role":           ResourceGoogleOrganizationIamCustomRole(),
+ 			"google_organization_policy":                    ResourceGoogleOrganizationPolicy(),
++			"google_org_policy":                             ResourceOrgPolicy(),
+ 			"google_project":                                ResourceGoogleProject(),
+ 			"google_project_default_service_accounts":       ResourceGoogleProjectDefaultServiceAccounts(),
+ 			"google_project_service":                        ResourceGoogleProjectService(),
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_org_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_org_policy.go
 new file mode 100644
 index 000000000..c2c58161a

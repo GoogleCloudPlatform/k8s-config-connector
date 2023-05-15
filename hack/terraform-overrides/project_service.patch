@@ -28,7 +28,7 @@ index e89a6f4c1..07614a3b9 100644
 -	if err := d.Set("project", parts[0]); err != nil {
 -		return nil, fmt.Errorf("Error setting project: %s", err)
 +func resourceGoogleProjectServiceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-+	config := meta.(*Config)
++	config := meta.(*transport_tpg.Config)
 +	if err := ParseImportId([]string{
 +		"projects/(?P<project>[^/]+)/services/(?P<service>[^/]+)",
 +		"(?P<project>[^/]+)/(?P<service>[^/]+)",

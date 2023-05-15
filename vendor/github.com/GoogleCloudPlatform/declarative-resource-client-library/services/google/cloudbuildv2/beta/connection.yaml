@@ -136,7 +136,7 @@ components:
                   type: string
                   x-dcl-go-name: Username
                   readOnly: true
-                  description: The username associated to this token.
+                  description: Output only. The username associated to this token.
         githubEnterpriseConfig:
           type: object
           x-dcl-go-name: GithubEnterpriseConfig

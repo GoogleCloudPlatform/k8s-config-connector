@@ -6,6 +6,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 
 	compute "google.golang.org/api/compute/v0.beta"
 )
@@ -17,7 +18,7 @@ func TestAccComputeRegionSslPolicy_update(t *testing.T) {
 	sslPolicyName := fmt.Sprintf("test-ssl-policy-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSslPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -64,7 +65,7 @@ func TestAccComputeRegionSslPolicy_update_to_custom(t *testing.T) {
 	sslPolicyName := fmt.Sprintf("test-ssl-policy-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSslPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -111,7 +112,7 @@ func TestAccComputeRegionSslPolicy_update_from_custom(t *testing.T) {
 	sslPolicyName := fmt.Sprintf("test-ssl-policy-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSslPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -164,7 +165,7 @@ func testAccCheckComputeRegionSslPolicyExists(t *testing.T, n string, sslPolicy 
 
 		config := GoogleProviderConfig(t)
 
-		project, err := GetTestProject(rs.Primary, config)
+		project, err := acctest.GetTestProject(rs.Primary, config)
 		if err != nil {
 			return err
 		}

@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 var bigqueryAccessRoleToPrimitiveMap = map[string]string{
@@ -75,17 +78,17 @@ func resourceBigQueryDatasetAccessIamMemberDiffSuppress(k, old, new string, d *s
 // this function will go through a response's access list and see if the iam_member has been reassigned to a different member_type
 // if it has, it will return the member type, and the member
 func resourceBigQueryDatasetAccessReassignIamMemberInNestedObjectList(d *schema.ResourceData, meta interface{}, items []interface{}) (member_type string, member interface{}, err error) {
-	expectedRole, err := expandNestedBigQueryDatasetAccessRole(d.Get("role"), d, meta.(*Config))
+	expectedRole, err := expandNestedBigQueryDatasetAccessRole(d.Get("role"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return "", nil, err
 	}
-	expectedFlattenedRole := flattenNestedBigQueryDatasetAccessRole(expectedRole, d, meta.(*Config))
+	expectedFlattenedRole := flattenNestedBigQueryDatasetAccessRole(expectedRole, d, meta.(*transport_tpg.Config))
 
-	expectedIamMember, err := expandNestedBigQueryDatasetAccessIamMember(d.Get("iam_member"), d, meta.(*Config))
+	expectedIamMember, err := expandNestedBigQueryDatasetAccessIamMember(d.Get("iam_member"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return "", nil, err
 	}
-	expectedFlattenedIamMember := flattenNestedBigQueryDatasetAccessIamMember(expectedIamMember, d, meta.(*Config))
+	expectedFlattenedIamMember := flattenNestedBigQueryDatasetAccessIamMember(expectedIamMember, d, meta.(*transport_tpg.Config))
 
 	parts := strings.SplitAfter(expectedFlattenedIamMember.(string), ":")
 
@@ -101,34 +104,34 @@ func resourceBigQueryDatasetAccessReassignIamMemberInNestedObjectList(d *schema.
 		}
 		item := itemRaw.(map[string]interface{})
 
-		itemRole := flattenNestedBigQueryDatasetAccessRole(item["role"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemRole)) && isEmptyValue(reflect.ValueOf(expectedFlattenedRole))) && !reflect.DeepEqual(itemRole, expectedFlattenedRole) {
+		itemRole := flattenNestedBigQueryDatasetAccessRole(item["role"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemRole)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedRole))) && !reflect.DeepEqual(itemRole, expectedFlattenedRole) {
 			log.Printf("[DEBUG] Skipping item with role= %#v, looking for %#v)", itemRole, expectedFlattenedRole)
 			continue
 		}
 
-		itemUserByEmail := flattenNestedBigQueryDatasetAccessUserByEmail(item["userByEmail"], d, meta.(*Config))
+		itemUserByEmail := flattenNestedBigQueryDatasetAccessUserByEmail(item["userByEmail"], d, meta.(*transport_tpg.Config))
 		if reflect.DeepEqual(itemUserByEmail, expectedStrippedIamMember) {
 			log.Printf("[DEBUG] Iam Member changed to userByEmail= %#v)", itemUserByEmail)
 			return "user_by_email", itemUserByEmail, nil
 		}
-		itemGroupByEmail := flattenNestedBigQueryDatasetAccessGroupByEmail(item["groupByEmail"], d, meta.(*Config))
+		itemGroupByEmail := flattenNestedBigQueryDatasetAccessGroupByEmail(item["groupByEmail"], d, meta.(*transport_tpg.Config))
 		if reflect.DeepEqual(itemGroupByEmail, expectedStrippedIamMember) {
 			log.Printf("[DEBUG] Iam Member changed to groupByEmail= %#v)", itemGroupByEmail)
 			return "group_by_email", itemGroupByEmail, nil
 		}
-		itemDomain := flattenNestedBigQueryDatasetAccessDomain(item["domain"], d, meta.(*Config))
+		itemDomain := flattenNestedBigQueryDatasetAccessDomain(item["domain"], d, meta.(*transport_tpg.Config))
 		if reflect.DeepEqual(itemDomain, expectedStrippedIamMember) {
 			log.Printf("[DEBUG] Iam Member changed to domain= %#v)", itemDomain)
 			return "domain", itemDomain, nil
 		}
-		itemSpecialGroup := flattenNestedBigQueryDatasetAccessSpecialGroup(item["specialGroup"], d, meta.(*Config))
+		itemSpecialGroup := flattenNestedBigQueryDatasetAccessSpecialGroup(item["specialGroup"], d, meta.(*transport_tpg.Config))
 		if reflect.DeepEqual(itemSpecialGroup, expectedStrippedIamMember) {
 			log.Printf("[DEBUG] Iam Member changed to specialGroup= %#v)", itemSpecialGroup)
 			return "special_group", itemSpecialGroup, nil
 		}
-		itemIamMember := flattenNestedBigQueryDatasetAccessIamMember(item["iamMember"], d, meta.(*Config))
+		itemIamMember := flattenNestedBigQueryDatasetAccessIamMember(item["iamMember"], d, meta.(*transport_tpg.Config))
 		if reflect.DeepEqual(itemIamMember, expectedFlattenedIamMember) {
 			log.Printf("[DEBUG] Iam Member stayed as iamMember= %#v)", itemIamMember)
 			return "", nil, nil
@@ -360,8 +363,8 @@ is 1,024 characters.`,
 }
 
 func resourceBigQueryDatasetAccessCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -370,72 +373,72 @@ func resourceBigQueryDatasetAccessCreate(d *schema.ResourceData, meta interface{
 	datasetIdProp, err := expandNestedBigQueryDatasetAccessDatasetId(d.Get("dataset_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("dataset_id"); !isEmptyValue(reflect.ValueOf(datasetIdProp)) && (ok || !reflect.DeepEqual(v, datasetIdProp)) {
+	} else if v, ok := d.GetOkExists("dataset_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(datasetIdProp)) && (ok || !reflect.DeepEqual(v, datasetIdProp)) {
 		obj["datasetId"] = datasetIdProp
 	}
 	roleProp, err := expandNestedBigQueryDatasetAccessRole(d.Get("role"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("role"); !isEmptyValue(reflect.ValueOf(roleProp)) && (ok || !reflect.DeepEqual(v, roleProp)) {
+	} else if v, ok := d.GetOkExists("role"); !tpgresource.IsEmptyValue(reflect.ValueOf(roleProp)) && (ok || !reflect.DeepEqual(v, roleProp)) {
 		obj["role"] = roleProp
 	}
 	userByEmailProp, err := expandNestedBigQueryDatasetAccessUserByEmail(d.Get("user_by_email"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("user_by_email"); !isEmptyValue(reflect.ValueOf(userByEmailProp)) && (ok || !reflect.DeepEqual(v, userByEmailProp)) {
+	} else if v, ok := d.GetOkExists("user_by_email"); !tpgresource.IsEmptyValue(reflect.ValueOf(userByEmailProp)) && (ok || !reflect.DeepEqual(v, userByEmailProp)) {
 		obj["userByEmail"] = userByEmailProp
 	}
 	groupByEmailProp, err := expandNestedBigQueryDatasetAccessGroupByEmail(d.Get("group_by_email"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("group_by_email"); !isEmptyValue(reflect.ValueOf(groupByEmailProp)) && (ok || !reflect.DeepEqual(v, groupByEmailProp)) {
+	} else if v, ok := d.GetOkExists("group_by_email"); !tpgresource.IsEmptyValue(reflect.ValueOf(groupByEmailProp)) && (ok || !reflect.DeepEqual(v, groupByEmailProp)) {
 		obj["groupByEmail"] = groupByEmailProp
 	}
 	domainProp, err := expandNestedBigQueryDatasetAccessDomain(d.Get("domain"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("domain"); !isEmptyValue(reflect.ValueOf(domainProp)) && (ok || !reflect.DeepEqual(v, domainProp)) {
+	} else if v, ok := d.GetOkExists("domain"); !tpgresource.IsEmptyValue(reflect.ValueOf(domainProp)) && (ok || !reflect.DeepEqual(v, domainProp)) {
 		obj["domain"] = domainProp
 	}
 	specialGroupProp, err := expandNestedBigQueryDatasetAccessSpecialGroup(d.Get("special_group"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("special_group"); !isEmptyValue(reflect.ValueOf(specialGroupProp)) && (ok || !reflect.DeepEqual(v, specialGroupProp)) {
+	} else if v, ok := d.GetOkExists("special_group"); !tpgresource.IsEmptyValue(reflect.ValueOf(specialGroupProp)) && (ok || !reflect.DeepEqual(v, specialGroupProp)) {
 		obj["specialGroup"] = specialGroupProp
 	}
 	iamMemberProp, err := expandNestedBigQueryDatasetAccessIamMember(d.Get("iam_member"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("iam_member"); !isEmptyValue(reflect.ValueOf(iamMemberProp)) && (ok || !reflect.DeepEqual(v, iamMemberProp)) {
+	} else if v, ok := d.GetOkExists("iam_member"); !tpgresource.IsEmptyValue(reflect.ValueOf(iamMemberProp)) && (ok || !reflect.DeepEqual(v, iamMemberProp)) {
 		obj["iamMember"] = iamMemberProp
 	}
 	viewProp, err := expandNestedBigQueryDatasetAccessView(d.Get("view"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("view"); !isEmptyValue(reflect.ValueOf(viewProp)) && (ok || !reflect.DeepEqual(v, viewProp)) {
+	} else if v, ok := d.GetOkExists("view"); !tpgresource.IsEmptyValue(reflect.ValueOf(viewProp)) && (ok || !reflect.DeepEqual(v, viewProp)) {
 		obj["view"] = viewProp
 	}
 	datasetProp, err := expandNestedBigQueryDatasetAccessDataset(d.Get("dataset"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("dataset"); !isEmptyValue(reflect.ValueOf(datasetProp)) && (ok || !reflect.DeepEqual(v, datasetProp)) {
+	} else if v, ok := d.GetOkExists("dataset"); !tpgresource.IsEmptyValue(reflect.ValueOf(datasetProp)) && (ok || !reflect.DeepEqual(v, datasetProp)) {
 		obj["dataset"] = datasetProp
 	}
 	routineProp, err := expandNestedBigQueryDatasetAccessRoutine(d.Get("routine"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("routine"); !isEmptyValue(reflect.ValueOf(routineProp)) && (ok || !reflect.DeepEqual(v, routineProp)) {
+	} else if v, ok := d.GetOkExists("routine"); !tpgresource.IsEmptyValue(reflect.ValueOf(routineProp)) && (ok || !reflect.DeepEqual(v, routineProp)) {
 		obj["routine"] = routineProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "{{dataset_id}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "{{dataset_id}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
 	if err != nil {
 		return err
 	}
@@ -448,24 +451,24 @@ func resourceBigQueryDatasetAccessCreate(d *schema.ResourceData, meta interface{
 	}
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for DatasetAccess: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), IsBigqueryIAMQuotaError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), transport_tpg.IsBigqueryIAMQuotaError)
 	if err != nil {
 		return fmt.Errorf("Error creating DatasetAccess: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/datasets/{{dataset_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/datasets/{{dataset_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -505,33 +508,33 @@ func resourceBigQueryDatasetAccessCreate(d *schema.ResourceData, meta interface{
 }
 
 func resourceBigQueryDatasetAccessRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for DatasetAccess: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, IsBigqueryIAMQuotaError)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil, transport_tpg.IsBigqueryIAMQuotaError)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("BigQueryDatasetAccess %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("BigQueryDatasetAccess %q", d.Id()))
 	}
 
 	res, err = flattenNestedBigQueryDatasetAccess(d, meta, res)
@@ -582,28 +585,28 @@ func resourceBigQueryDatasetAccessRead(d *schema.ResourceData, meta interface{})
 }
 
 func resourceBigQueryDatasetAccessDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for DatasetAccess: %s", err)
 	}
 	billingProject = project
 
-	lockName, err := ReplaceVars(d, config, "{{dataset_id}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "{{dataset_id}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
 	if err != nil {
 		return err
 	}
@@ -612,49 +615,49 @@ func resourceBigQueryDatasetAccessDelete(d *schema.ResourceData, meta interface{
 
 	obj, err = resourceBigQueryDatasetAccessPatchDeleteEncoder(d, meta, obj)
 	if err != nil {
-		return handleNotFoundError(err, d, "DatasetAccess")
+		return transport_tpg.HandleNotFoundError(err, d, "DatasetAccess")
 	}
 	log.Printf("[DEBUG] Deleting DatasetAccess %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), IsBigqueryIAMQuotaError)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), transport_tpg.IsBigqueryIAMQuotaError)
 	if err != nil {
-		return handleNotFoundError(err, d, "DatasetAccess")
+		return transport_tpg.HandleNotFoundError(err, d, "DatasetAccess")
 	}
 
 	log.Printf("[DEBUG] Finished deleting DatasetAccess %q: %#v", d.Id(), res)
 	return nil
 }
 
-func flattenNestedBigQueryDatasetAccessRole(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessRole(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessUserByEmail(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessUserByEmail(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessGroupByEmail(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessGroupByEmail(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessDomain(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessDomain(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessSpecialGroup(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessSpecialGroup(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessIamMember(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessIamMember(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessView(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessView(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -671,19 +674,19 @@ func flattenNestedBigQueryDatasetAccessView(v interface{}, d *schema.ResourceDat
 		flattenNestedBigQueryDatasetAccessViewTableId(original["tableId"], d, config)
 	return []interface{}{transformed}
 }
-func flattenNestedBigQueryDatasetAccessViewDatasetId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessViewDatasetId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessViewProjectId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessViewProjectId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessViewTableId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessViewTableId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessDataset(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessDataset(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -698,7 +701,7 @@ func flattenNestedBigQueryDatasetAccessDataset(v interface{}, d *schema.Resource
 		flattenNestedBigQueryDatasetAccessDatasetTargetTypes(original["targetTypes"], d, config)
 	return []interface{}{transformed}
 }
-func flattenNestedBigQueryDatasetAccessDatasetDataset(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessDatasetDataset(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -713,19 +716,19 @@ func flattenNestedBigQueryDatasetAccessDatasetDataset(v interface{}, d *schema.R
 		flattenNestedBigQueryDatasetAccessDatasetDatasetProjectId(original["projectId"], d, config)
 	return []interface{}{transformed}
 }
-func flattenNestedBigQueryDatasetAccessDatasetDatasetDatasetId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessDatasetDatasetDatasetId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessDatasetDatasetProjectId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessDatasetDatasetProjectId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessDatasetTargetTypes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessDatasetTargetTypes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessRoutine(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessRoutine(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -742,23 +745,23 @@ func flattenNestedBigQueryDatasetAccessRoutine(v interface{}, d *schema.Resource
 		flattenNestedBigQueryDatasetAccessRoutineRoutineId(original["routineId"], d, config)
 	return []interface{}{transformed}
 }
-func flattenNestedBigQueryDatasetAccessRoutineDatasetId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessRoutineDatasetId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessRoutineProjectId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessRoutineProjectId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedBigQueryDatasetAccessRoutineRoutineId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedBigQueryDatasetAccessRoutineRoutineId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandNestedBigQueryDatasetAccessDatasetId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessDatasetId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessRole(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessRole(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -769,27 +772,27 @@ func expandNestedBigQueryDatasetAccessRole(v interface{}, d TerraformResourceDat
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessUserByEmail(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessUserByEmail(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessGroupByEmail(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessGroupByEmail(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessDomain(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessDomain(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessSpecialGroup(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessSpecialGroup(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessIamMember(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessIamMember(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessView(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessView(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -801,40 +804,40 @@ func expandNestedBigQueryDatasetAccessView(v interface{}, d TerraformResourceDat
 	transformedDatasetId, err := expandNestedBigQueryDatasetAccessViewDatasetId(original["dataset_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["datasetId"] = transformedDatasetId
 	}
 
 	transformedProjectId, err := expandNestedBigQueryDatasetAccessViewProjectId(original["project_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["projectId"] = transformedProjectId
 	}
 
 	transformedTableId, err := expandNestedBigQueryDatasetAccessViewTableId(original["table_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTableId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTableId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["tableId"] = transformedTableId
 	}
 
 	return transformed, nil
 }
 
-func expandNestedBigQueryDatasetAccessViewDatasetId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessViewDatasetId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessViewProjectId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessViewProjectId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessViewTableId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessViewTableId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessDataset(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessDataset(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -846,21 +849,21 @@ func expandNestedBigQueryDatasetAccessDataset(v interface{}, d TerraformResource
 	transformedDataset, err := expandNestedBigQueryDatasetAccessDatasetDataset(original["dataset"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDataset); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDataset); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["dataset"] = transformedDataset
 	}
 
 	transformedTargetTypes, err := expandNestedBigQueryDatasetAccessDatasetTargetTypes(original["target_types"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetTypes); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetTypes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetTypes"] = transformedTargetTypes
 	}
 
 	return transformed, nil
 }
 
-func expandNestedBigQueryDatasetAccessDatasetDataset(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessDatasetDataset(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -872,33 +875,33 @@ func expandNestedBigQueryDatasetAccessDatasetDataset(v interface{}, d TerraformR
 	transformedDatasetId, err := expandNestedBigQueryDatasetAccessDatasetDatasetDatasetId(original["dataset_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["datasetId"] = transformedDatasetId
 	}
 
 	transformedProjectId, err := expandNestedBigQueryDatasetAccessDatasetDatasetProjectId(original["project_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["projectId"] = transformedProjectId
 	}
 
 	return transformed, nil
 }
 
-func expandNestedBigQueryDatasetAccessDatasetDatasetDatasetId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessDatasetDatasetDatasetId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessDatasetDatasetProjectId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessDatasetDatasetProjectId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessDatasetTargetTypes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessDatasetTargetTypes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessRoutine(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessRoutine(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -910,36 +913,36 @@ func expandNestedBigQueryDatasetAccessRoutine(v interface{}, d TerraformResource
 	transformedDatasetId, err := expandNestedBigQueryDatasetAccessRoutineDatasetId(original["dataset_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["datasetId"] = transformedDatasetId
 	}
 
 	transformedProjectId, err := expandNestedBigQueryDatasetAccessRoutineProjectId(original["project_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["projectId"] = transformedProjectId
 	}
 
 	transformedRoutineId, err := expandNestedBigQueryDatasetAccessRoutineRoutineId(original["routine_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRoutineId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRoutineId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["routineId"] = transformedRoutineId
 	}
 
 	return transformed, nil
 }
 
-func expandNestedBigQueryDatasetAccessRoutineDatasetId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessRoutineDatasetId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessRoutineProjectId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessRoutineProjectId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedBigQueryDatasetAccessRoutineRoutineId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedBigQueryDatasetAccessRoutineRoutineId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
@@ -970,51 +973,51 @@ func flattenNestedBigQueryDatasetAccess(d *schema.ResourceData, meta interface{}
 }
 
 func resourceBigQueryDatasetAccessFindNestedObjectInList(d *schema.ResourceData, meta interface{}, items []interface{}) (index int, item map[string]interface{}, err error) {
-	expectedRole, err := expandNestedBigQueryDatasetAccessRole(d.Get("role"), d, meta.(*Config))
+	expectedRole, err := expandNestedBigQueryDatasetAccessRole(d.Get("role"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedRole := flattenNestedBigQueryDatasetAccessRole(expectedRole, d, meta.(*Config))
-	expectedUserByEmail, err := expandNestedBigQueryDatasetAccessUserByEmail(d.Get("user_by_email"), d, meta.(*Config))
+	expectedFlattenedRole := flattenNestedBigQueryDatasetAccessRole(expectedRole, d, meta.(*transport_tpg.Config))
+	expectedUserByEmail, err := expandNestedBigQueryDatasetAccessUserByEmail(d.Get("user_by_email"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedUserByEmail := flattenNestedBigQueryDatasetAccessUserByEmail(expectedUserByEmail, d, meta.(*Config))
-	expectedGroupByEmail, err := expandNestedBigQueryDatasetAccessGroupByEmail(d.Get("group_by_email"), d, meta.(*Config))
+	expectedFlattenedUserByEmail := flattenNestedBigQueryDatasetAccessUserByEmail(expectedUserByEmail, d, meta.(*transport_tpg.Config))
+	expectedGroupByEmail, err := expandNestedBigQueryDatasetAccessGroupByEmail(d.Get("group_by_email"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedGroupByEmail := flattenNestedBigQueryDatasetAccessGroupByEmail(expectedGroupByEmail, d, meta.(*Config))
-	expectedDomain, err := expandNestedBigQueryDatasetAccessDomain(d.Get("domain"), d, meta.(*Config))
+	expectedFlattenedGroupByEmail := flattenNestedBigQueryDatasetAccessGroupByEmail(expectedGroupByEmail, d, meta.(*transport_tpg.Config))
+	expectedDomain, err := expandNestedBigQueryDatasetAccessDomain(d.Get("domain"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedDomain := flattenNestedBigQueryDatasetAccessDomain(expectedDomain, d, meta.(*Config))
-	expectedSpecialGroup, err := expandNestedBigQueryDatasetAccessSpecialGroup(d.Get("special_group"), d, meta.(*Config))
+	expectedFlattenedDomain := flattenNestedBigQueryDatasetAccessDomain(expectedDomain, d, meta.(*transport_tpg.Config))
+	expectedSpecialGroup, err := expandNestedBigQueryDatasetAccessSpecialGroup(d.Get("special_group"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedSpecialGroup := flattenNestedBigQueryDatasetAccessSpecialGroup(expectedSpecialGroup, d, meta.(*Config))
-	expectedIamMember, err := expandNestedBigQueryDatasetAccessIamMember(d.Get("iam_member"), d, meta.(*Config))
+	expectedFlattenedSpecialGroup := flattenNestedBigQueryDatasetAccessSpecialGroup(expectedSpecialGroup, d, meta.(*transport_tpg.Config))
+	expectedIamMember, err := expandNestedBigQueryDatasetAccessIamMember(d.Get("iam_member"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedIamMember := flattenNestedBigQueryDatasetAccessIamMember(expectedIamMember, d, meta.(*Config))
-	expectedView, err := expandNestedBigQueryDatasetAccessView(d.Get("view"), d, meta.(*Config))
+	expectedFlattenedIamMember := flattenNestedBigQueryDatasetAccessIamMember(expectedIamMember, d, meta.(*transport_tpg.Config))
+	expectedView, err := expandNestedBigQueryDatasetAccessView(d.Get("view"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedView := flattenNestedBigQueryDatasetAccessView(expectedView, d, meta.(*Config))
-	expectedDataset, err := expandNestedBigQueryDatasetAccessDataset(d.Get("dataset"), d, meta.(*Config))
+	expectedFlattenedView := flattenNestedBigQueryDatasetAccessView(expectedView, d, meta.(*transport_tpg.Config))
+	expectedDataset, err := expandNestedBigQueryDatasetAccessDataset(d.Get("dataset"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedDataset := flattenNestedBigQueryDatasetAccessDataset(expectedDataset, d, meta.(*Config))
-	expectedRoutine, err := expandNestedBigQueryDatasetAccessRoutine(d.Get("routine"), d, meta.(*Config))
+	expectedFlattenedDataset := flattenNestedBigQueryDatasetAccessDataset(expectedDataset, d, meta.(*transport_tpg.Config))
+	expectedRoutine, err := expandNestedBigQueryDatasetAccessRoutine(d.Get("routine"), d, meta.(*transport_tpg.Config))
 	if err != nil {
 		return -1, nil, err
 	}
-	expectedFlattenedRoutine := flattenNestedBigQueryDatasetAccessRoutine(expectedRoutine, d, meta.(*Config))
+	expectedFlattenedRoutine := flattenNestedBigQueryDatasetAccessRoutine(expectedRoutine, d, meta.(*transport_tpg.Config))
 
 	// Search list for this resource.
 	for idx, itemRaw := range items {
@@ -1023,57 +1026,57 @@ func resourceBigQueryDatasetAccessFindNestedObjectInList(d *schema.ResourceData,
 		}
 		item := itemRaw.(map[string]interface{})
 
-		itemRole := flattenNestedBigQueryDatasetAccessRole(item["role"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemRole)) && isEmptyValue(reflect.ValueOf(expectedFlattenedRole))) && !reflect.DeepEqual(itemRole, expectedFlattenedRole) {
+		itemRole := flattenNestedBigQueryDatasetAccessRole(item["role"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemRole)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedRole))) && !reflect.DeepEqual(itemRole, expectedFlattenedRole) {
 			log.Printf("[DEBUG] Skipping item with role= %#v, looking for %#v)", itemRole, expectedFlattenedRole)
 			continue
 		}
-		itemUserByEmail := flattenNestedBigQueryDatasetAccessUserByEmail(item["userByEmail"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemUserByEmail)) && isEmptyValue(reflect.ValueOf(expectedFlattenedUserByEmail))) && !reflect.DeepEqual(itemUserByEmail, expectedFlattenedUserByEmail) {
+		itemUserByEmail := flattenNestedBigQueryDatasetAccessUserByEmail(item["userByEmail"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemUserByEmail)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedUserByEmail))) && !reflect.DeepEqual(itemUserByEmail, expectedFlattenedUserByEmail) {
 			log.Printf("[DEBUG] Skipping item with userByEmail= %#v, looking for %#v)", itemUserByEmail, expectedFlattenedUserByEmail)
 			continue
 		}
-		itemGroupByEmail := flattenNestedBigQueryDatasetAccessGroupByEmail(item["groupByEmail"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemGroupByEmail)) && isEmptyValue(reflect.ValueOf(expectedFlattenedGroupByEmail))) && !reflect.DeepEqual(itemGroupByEmail, expectedFlattenedGroupByEmail) {
+		itemGroupByEmail := flattenNestedBigQueryDatasetAccessGroupByEmail(item["groupByEmail"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemGroupByEmail)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedGroupByEmail))) && !reflect.DeepEqual(itemGroupByEmail, expectedFlattenedGroupByEmail) {
 			log.Printf("[DEBUG] Skipping item with groupByEmail= %#v, looking for %#v)", itemGroupByEmail, expectedFlattenedGroupByEmail)
 			continue
 		}
-		itemDomain := flattenNestedBigQueryDatasetAccessDomain(item["domain"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemDomain)) && isEmptyValue(reflect.ValueOf(expectedFlattenedDomain))) && !reflect.DeepEqual(itemDomain, expectedFlattenedDomain) {
+		itemDomain := flattenNestedBigQueryDatasetAccessDomain(item["domain"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemDomain)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedDomain))) && !reflect.DeepEqual(itemDomain, expectedFlattenedDomain) {
 			log.Printf("[DEBUG] Skipping item with domain= %#v, looking for %#v)", itemDomain, expectedFlattenedDomain)
 			continue
 		}
-		itemSpecialGroup := flattenNestedBigQueryDatasetAccessSpecialGroup(item["specialGroup"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemSpecialGroup)) && isEmptyValue(reflect.ValueOf(expectedFlattenedSpecialGroup))) && !reflect.DeepEqual(itemSpecialGroup, expectedFlattenedSpecialGroup) {
+		itemSpecialGroup := flattenNestedBigQueryDatasetAccessSpecialGroup(item["specialGroup"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemSpecialGroup)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedSpecialGroup))) && !reflect.DeepEqual(itemSpecialGroup, expectedFlattenedSpecialGroup) {
 			log.Printf("[DEBUG] Skipping item with specialGroup= %#v, looking for %#v)", itemSpecialGroup, expectedFlattenedSpecialGroup)
 			continue
 		}
-		itemIamMember := flattenNestedBigQueryDatasetAccessIamMember(item["iamMember"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemIamMember)) && isEmptyValue(reflect.ValueOf(expectedFlattenedIamMember))) && !reflect.DeepEqual(itemIamMember, expectedFlattenedIamMember) {
+		itemIamMember := flattenNestedBigQueryDatasetAccessIamMember(item["iamMember"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemIamMember)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedIamMember))) && !reflect.DeepEqual(itemIamMember, expectedFlattenedIamMember) {
 			log.Printf("[DEBUG] Skipping item with iamMember= %#v, looking for %#v)", itemIamMember, expectedFlattenedIamMember)
 			continue
 		}
-		itemView := flattenNestedBigQueryDatasetAccessView(item["view"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemView)) && isEmptyValue(reflect.ValueOf(expectedFlattenedView))) && !reflect.DeepEqual(itemView, expectedFlattenedView) {
+		itemView := flattenNestedBigQueryDatasetAccessView(item["view"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemView)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedView))) && !reflect.DeepEqual(itemView, expectedFlattenedView) {
 			log.Printf("[DEBUG] Skipping item with view= %#v, looking for %#v)", itemView, expectedFlattenedView)
 			continue
 		}
-		itemDataset := flattenNestedBigQueryDatasetAccessDataset(item["dataset"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemDataset)) && isEmptyValue(reflect.ValueOf(expectedFlattenedDataset))) && !reflect.DeepEqual(itemDataset, expectedFlattenedDataset) {
+		itemDataset := flattenNestedBigQueryDatasetAccessDataset(item["dataset"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemDataset)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedDataset))) && !reflect.DeepEqual(itemDataset, expectedFlattenedDataset) {
 			log.Printf("[DEBUG] Skipping item with dataset= %#v, looking for %#v)", itemDataset, expectedFlattenedDataset)
 			continue
 		}
-		itemRoutine := flattenNestedBigQueryDatasetAccessRoutine(item["routine"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemRoutine)) && isEmptyValue(reflect.ValueOf(expectedFlattenedRoutine))) && !reflect.DeepEqual(itemRoutine, expectedFlattenedRoutine) {
+		itemRoutine := flattenNestedBigQueryDatasetAccessRoutine(item["routine"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemRoutine)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedRoutine))) && !reflect.DeepEqual(itemRoutine, expectedFlattenedRoutine) {
 			log.Printf("[DEBUG] Skipping item with routine= %#v, looking for %#v)", itemRoutine, expectedFlattenedRoutine)
 			continue
 		}
@@ -1137,22 +1140,22 @@ func resourceBigQueryDatasetAccessPatchDeleteEncoder(d *schema.ResourceData, met
 // ListForPatch handles making API request to get parent resource and
 // extracting list of objects.
 func resourceBigQueryDatasetAccessListForPatch(d *schema.ResourceData, meta interface{}) ([]interface{}, error) {
-	config := meta.(*Config)
-	url, err := ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
+	config := meta.(*transport_tpg.Config)
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
 	if err != nil {
 		return nil, err
 	}
-	project, err := getProject(d, config)
-	if err != nil {
-		return nil, err
-	}
-
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := SendRequest(config, "GET", project, url, userAgent, nil, IsBigqueryIAMQuotaError)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := transport_tpg.SendRequest(config, "GET", project, url, userAgent, nil, transport_tpg.IsBigqueryIAMQuotaError)
 	if err != nil {
 		return nil, err
 	}

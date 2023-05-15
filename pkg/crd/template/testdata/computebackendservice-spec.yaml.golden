@@ -21,6 +21,8 @@ backend:
   maxRatePerInstance: float
   maxUtilization: float
 cdnPolicy:
+  bypassCacheOnRequestHeaders:
+  - headerName: string
   cacheKeyPolicy:
     includeHost: boolean
     includeHttpHeaders:

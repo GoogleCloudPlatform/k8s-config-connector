@@ -5,6 +5,8 @@ import (
 
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/dataproc/v1"
 )
@@ -33,17 +35,17 @@ type DataprocJobIamUpdater struct {
 	project string
 	region  string
 	jobId   string
-	d       TerraformResourceData
-	Config  *Config
+	d       tpgresource.TerraformResourceData
+	Config  *transport_tpg.Config
 }
 
-func NewDataprocJobUpdater(d TerraformResourceData, config *Config) (ResourceIamUpdater, error) {
-	project, err := getProject(d, config)
+func NewDataprocJobUpdater(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return nil, err
 	}
 
-	region, err := getRegion(d, config)
+	region, err := tpgresource.GetRegion(d, config)
 	if err != nil {
 		return nil, err
 	}
@@ -64,8 +66,8 @@ func NewDataprocJobUpdater(d TerraformResourceData, config *Config) (ResourceIam
 	}, nil
 }
 
-func DataprocJobIdParseFunc(d *schema.ResourceData, config *Config) error {
-	fv, err := parseRegionalFieldValue("jobs", d.Id(), "project", "region", "zone", d, config, true)
+func DataprocJobIdParseFunc(d *schema.ResourceData, config *transport_tpg.Config) error {
+	fv, err := tpgresource.ParseRegionalFieldValue("jobs", d.Id(), "project", "region", "zone", d, config, true)
 	if err != nil {
 		return err
 	}
@@ -88,7 +90,7 @@ func DataprocJobIdParseFunc(d *schema.ResourceData, config *Config) error {
 func (u *DataprocJobIamUpdater) GetResourceIamPolicy() (*cloudresourcemanager.Policy, error) {
 	req := &dataproc.GetIamPolicyRequest{}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +114,7 @@ func (u *DataprocJobIamUpdater) SetResourceIamPolicy(policy *cloudresourcemanage
 		return errwrap.Wrapf(fmt.Sprintf("Invalid IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -140,7 +142,7 @@ func (u *DataprocJobIamUpdater) DescribeResource() string {
 
 func resourceManagerToDataprocPolicy(p *cloudresourcemanager.Policy) (*dataproc.Policy, error) {
 	out := &dataproc.Policy{}
-	err := Convert(p, out)
+	err := tpgresource.Convert(p, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a dataproc policy to a cloudresourcemanager policy: {{err}}", err)
 	}
@@ -149,7 +151,7 @@ func resourceManagerToDataprocPolicy(p *cloudresourcemanager.Policy) (*dataproc.
 
 func dataprocToResourceManagerPolicy(p *dataproc.Policy) (*cloudresourcemanager.Policy, error) {
 	out := &cloudresourcemanager.Policy{}
-	err := Convert(p, out)
+	err := tpgresource.Convert(p, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a cloudresourcemanager policy to a dataproc policy: {{err}}", err)
 	}

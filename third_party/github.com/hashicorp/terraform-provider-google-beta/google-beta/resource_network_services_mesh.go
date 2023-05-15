@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceNetworkServicesMesh() *schema.Resource {
@@ -55,10 +58,10 @@ func ResourceNetworkServicesMesh() *schema.Resource {
 			"interception_port": {
 				Type:     schema.TypeInt,
 				Optional: true,
-				Description: `Optional. If set to a valid TCP port (1-65535), instructs the SIDECAR proxy to listen on the 
-specified port of localhost (127.0.0.1) address. The SIDECAR proxy will expect all traffic to 
-be redirected to this port regardless of its actual ip:port destination. If unset, a port 
-'15001' is used as the interception port. This will is applicable only for sidecar proxy 
+				Description: `Optional. If set to a valid TCP port (1-65535), instructs the SIDECAR proxy to listen on the
+specified port of localhost (127.0.0.1) address. The SIDECAR proxy will expect all traffic to
+be redirected to this port regardless of its actual ip:port destination. If unset, a port
+'15001' is used as the interception port. This will is applicable only for sidecar proxy
 deployments.`,
 			},
 			"labels": {
@@ -94,8 +97,8 @@ deployments.`,
 }
 
 func resourceNetworkServicesMeshCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -104,23 +107,23 @@ func resourceNetworkServicesMeshCreate(d *schema.ResourceData, meta interface{})
 	labelsProp, err := expandNetworkServicesMeshLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	descriptionProp, err := expandNetworkServicesMeshDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	interceptionPortProp, err := expandNetworkServicesMeshInterceptionPort(d.Get("interception_port"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("interception_port"); !isEmptyValue(reflect.ValueOf(interceptionPortProp)) && (ok || !reflect.DeepEqual(v, interceptionPortProp)) {
+	} else if v, ok := d.GetOkExists("interception_port"); !tpgresource.IsEmptyValue(reflect.ValueOf(interceptionPortProp)) && (ok || !reflect.DeepEqual(v, interceptionPortProp)) {
 		obj["interceptionPort"] = interceptionPortProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/meshes?meshId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/meshes?meshId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -128,24 +131,24 @@ func resourceNetworkServicesMeshCreate(d *schema.ResourceData, meta interface{})
 	log.Printf("[DEBUG] Creating new Mesh: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Mesh: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Mesh: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/meshes/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/global/meshes/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -167,33 +170,33 @@ func resourceNetworkServicesMeshCreate(d *schema.ResourceData, meta interface{})
 }
 
 func resourceNetworkServicesMeshRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/meshes/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/meshes/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Mesh: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("NetworkServicesMesh %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("NetworkServicesMesh %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -223,15 +226,15 @@ func resourceNetworkServicesMeshRead(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceNetworkServicesMeshUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Mesh: %s", err)
 	}
@@ -241,23 +244,23 @@ func resourceNetworkServicesMeshUpdate(d *schema.ResourceData, meta interface{})
 	labelsProp, err := expandNetworkServicesMeshLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	descriptionProp, err := expandNetworkServicesMeshDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	interceptionPortProp, err := expandNetworkServicesMeshInterceptionPort(d.Get("interception_port"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("interception_port"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, interceptionPortProp)) {
+	} else if v, ok := d.GetOkExists("interception_port"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, interceptionPortProp)) {
 		obj["interceptionPort"] = interceptionPortProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/meshes/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/meshes/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -278,17 +281,17 @@ func resourceNetworkServicesMeshUpdate(d *schema.ResourceData, meta interface{})
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Mesh %q: %s", d.Id(), err)
@@ -308,21 +311,21 @@ func resourceNetworkServicesMeshUpdate(d *schema.ResourceData, meta interface{})
 }
 
 func resourceNetworkServicesMeshDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Mesh: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/meshes/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/meshes/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -331,13 +334,13 @@ func resourceNetworkServicesMeshDelete(d *schema.ResourceData, meta interface{})
 	log.Printf("[DEBUG] Deleting Mesh %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Mesh")
+		return transport_tpg.HandleNotFoundError(err, d, "Mesh")
 	}
 
 	err = NetworkServicesOperationWaitTime(
@@ -353,7 +356,7 @@ func resourceNetworkServicesMeshDelete(d *schema.ResourceData, meta interface{})
 }
 
 func resourceNetworkServicesMeshImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/global/meshes/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
@@ -363,7 +366,7 @@ func resourceNetworkServicesMeshImport(d *schema.ResourceData, meta interface{})
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/meshes/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/global/meshes/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -372,27 +375,27 @@ func resourceNetworkServicesMeshImport(d *schema.ResourceData, meta interface{})
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenNetworkServicesMeshSelfLink(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkServicesMeshSelfLink(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNetworkServicesMeshCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkServicesMeshCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNetworkServicesMeshUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkServicesMeshUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNetworkServicesMeshLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkServicesMeshLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNetworkServicesMeshDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkServicesMeshDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNetworkServicesMeshInterceptionPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNetworkServicesMeshInterceptionPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -409,7 +412,7 @@ func flattenNetworkServicesMeshInterceptionPort(v interface{}, d *schema.Resourc
 	return v // let terraform core handle it otherwise
 }
 
-func expandNetworkServicesMeshLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandNetworkServicesMeshLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -420,10 +423,10 @@ func expandNetworkServicesMeshLabels(v interface{}, d TerraformResourceData, con
 	return m, nil
 }
 
-func expandNetworkServicesMeshDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNetworkServicesMeshDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNetworkServicesMeshInterceptionPort(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNetworkServicesMeshInterceptionPort(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

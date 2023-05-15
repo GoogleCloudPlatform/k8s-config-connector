@@ -24,6 +24,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 // Check to see if a specified value in the config exists and suppress diffs if so. Otherwise run EmptyOrDefaultStringSuppress.
@@ -188,7 +192,7 @@ spend against the budget.`,
 						"calendar_period": {
 							Type:             schema.TypeString,
 							Optional:         true,
-							ValidateFunc:     validateEnum([]string{"MONTH", "QUARTER", "YEAR", "CALENDAR_PERIOD_UNSPECIFIED", ""}),
+							ValidateFunc:     verify.ValidateEnum([]string{"MONTH", "QUARTER", "YEAR", "CALENDAR_PERIOD_UNSPECIFIED", ""}),
 							DiffSuppressFunc: checkValAndDefaultStringSuppress("MONTH", "budget_filter.0.custom_period.0.start_date"),
 							Description: `A CalendarPeriod represents the abstract concept of a recurring time period that has a
 canonical start. Grammatically, "the start of the current CalendarPeriod".
@@ -214,7 +218,7 @@ If creditTypesTreatment is not INCLUDE_SPECIFIED_CREDITS, this field must be emp
 						"credit_types_treatment": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"INCLUDE_ALL_CREDITS", "EXCLUDE_ALL_CREDITS", "INCLUDE_SPECIFIED_CREDITS", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"INCLUDE_ALL_CREDITS", "EXCLUDE_ALL_CREDITS", "INCLUDE_SPECIFIED_CREDITS", ""}),
 							Description: `Specifies how credits should be treated when determining spend
 for threshold calculations. Default value: "INCLUDE_ALL_CREDITS" Possible values: ["INCLUDE_ALL_CREDITS", "EXCLUDE_ALL_CREDITS", "INCLUDE_SPECIFIED_CREDITS"]`,
 							Default:      "INCLUDE_ALL_CREDITS",
@@ -261,7 +265,7 @@ Exactly one of 'calendar_period', 'custom_period' must be provided.`,
 									"end_date": {
 										Type:     schema.TypeList,
 										Optional: true,
-										Description: `Optional. The end date of the time period. Budgets with elapsed end date won't be processed. 
+										Description: `Optional. The end date of the time period. Budgets with elapsed end date won't be processed.
 If unset, specifies to track all usage incurred since the startDate.`,
 										MaxItems: 1,
 										Elem: &schema.Resource{
@@ -371,7 +375,7 @@ budget.`,
 						"spend_basis": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"CURRENT_SPEND", "FORECASTED_SPEND", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"CURRENT_SPEND", "FORECASTED_SPEND", ""}),
 							Description: `The type of basis used to determine if spend has passed
 the threshold. Default value: "CURRENT_SPEND" Possible values: ["CURRENT_SPEND", "FORECASTED_SPEND"]`,
 							Default: "CURRENT_SPEND",
@@ -392,8 +396,8 @@ billingAccounts/{billingAccountId}/budgets/{budgetId}.`,
 }
 
 func resourceBillingBudgetCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -402,35 +406,35 @@ func resourceBillingBudgetCreate(d *schema.ResourceData, meta interface{}) error
 	displayNameProp, err := expandBillingBudgetDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	budgetFilterProp, err := expandBillingBudgetBudgetFilter(d.Get("budget_filter"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("budget_filter"); !isEmptyValue(reflect.ValueOf(budgetFilterProp)) && (ok || !reflect.DeepEqual(v, budgetFilterProp)) {
+	} else if v, ok := d.GetOkExists("budget_filter"); !tpgresource.IsEmptyValue(reflect.ValueOf(budgetFilterProp)) && (ok || !reflect.DeepEqual(v, budgetFilterProp)) {
 		obj["budgetFilter"] = budgetFilterProp
 	}
 	amountProp, err := expandBillingBudgetAmount(d.Get("amount"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("amount"); !isEmptyValue(reflect.ValueOf(amountProp)) && (ok || !reflect.DeepEqual(v, amountProp)) {
+	} else if v, ok := d.GetOkExists("amount"); !tpgresource.IsEmptyValue(reflect.ValueOf(amountProp)) && (ok || !reflect.DeepEqual(v, amountProp)) {
 		obj["amount"] = amountProp
 	}
 	thresholdRulesProp, err := expandBillingBudgetThresholdRules(d.Get("threshold_rules"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("threshold_rules"); !isEmptyValue(reflect.ValueOf(thresholdRulesProp)) && (ok || !reflect.DeepEqual(v, thresholdRulesProp)) {
+	} else if v, ok := d.GetOkExists("threshold_rules"); !tpgresource.IsEmptyValue(reflect.ValueOf(thresholdRulesProp)) && (ok || !reflect.DeepEqual(v, thresholdRulesProp)) {
 		obj["thresholdRules"] = thresholdRulesProp
 	}
 	notificationsRuleProp, err := expandBillingBudgetAllUpdatesRule(d.Get("all_updates_rule"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("all_updates_rule"); !isEmptyValue(reflect.ValueOf(notificationsRuleProp)) && (ok || !reflect.DeepEqual(v, notificationsRuleProp)) {
+	} else if v, ok := d.GetOkExists("all_updates_rule"); !tpgresource.IsEmptyValue(reflect.ValueOf(notificationsRuleProp)) && (ok || !reflect.DeepEqual(v, notificationsRuleProp)) {
 		obj["notificationsRule"] = notificationsRuleProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{BillingBasePath}}billingAccounts/{{billing_account}}/budgets")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BillingBasePath}}billingAccounts/{{billing_account}}/budgets")
 	if err != nil {
 		return err
 	}
@@ -439,11 +443,11 @@ func resourceBillingBudgetCreate(d *schema.ResourceData, meta interface{}) error
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Budget: %s", err)
 	}
@@ -452,7 +456,7 @@ func resourceBillingBudgetCreate(d *schema.ResourceData, meta interface{}) error
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "billingAccounts/{{billing_account}}/budgets/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "billingAccounts/{{billing_account}}/budgets/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -464,13 +468,13 @@ func resourceBillingBudgetCreate(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceBillingBudgetRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{BillingBasePath}}billingAccounts/{{billing_account}}/budgets/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BillingBasePath}}billingAccounts/{{billing_account}}/budgets/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -478,13 +482,13 @@ func resourceBillingBudgetRead(d *schema.ResourceData, meta interface{}) error {
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("BillingBudget %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("BillingBudget %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenBillingBudgetName(res["name"], d, config)); err != nil {
@@ -510,8 +514,8 @@ func resourceBillingBudgetRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceBillingBudgetUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -522,35 +526,35 @@ func resourceBillingBudgetUpdate(d *schema.ResourceData, meta interface{}) error
 	displayNameProp, err := expandBillingBudgetDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	budgetFilterProp, err := expandBillingBudgetBudgetFilter(d.Get("budget_filter"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("budget_filter"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, budgetFilterProp)) {
+	} else if v, ok := d.GetOkExists("budget_filter"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, budgetFilterProp)) {
 		obj["budgetFilter"] = budgetFilterProp
 	}
 	amountProp, err := expandBillingBudgetAmount(d.Get("amount"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("amount"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, amountProp)) {
+	} else if v, ok := d.GetOkExists("amount"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, amountProp)) {
 		obj["amount"] = amountProp
 	}
 	thresholdRulesProp, err := expandBillingBudgetThresholdRules(d.Get("threshold_rules"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("threshold_rules"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, thresholdRulesProp)) {
+	} else if v, ok := d.GetOkExists("threshold_rules"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, thresholdRulesProp)) {
 		obj["thresholdRules"] = thresholdRulesProp
 	}
 	notificationsRuleProp, err := expandBillingBudgetAllUpdatesRule(d.Get("all_updates_rule"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("all_updates_rule"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationsRuleProp)) {
+	} else if v, ok := d.GetOkExists("all_updates_rule"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationsRuleProp)) {
 		obj["notificationsRule"] = notificationsRuleProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{BillingBasePath}}billingAccounts/{{billing_account}}/budgets/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BillingBasePath}}billingAccounts/{{billing_account}}/budgets/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -591,17 +595,17 @@ func resourceBillingBudgetUpdate(d *schema.ResourceData, meta interface{}) error
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Budget %q: %s", d.Id(), err)
@@ -613,15 +617,15 @@ func resourceBillingBudgetUpdate(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceBillingBudgetDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{BillingBasePath}}billingAccounts/{{billing_account}}/budgets/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BillingBasePath}}billingAccounts/{{billing_account}}/budgets/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -630,13 +634,13 @@ func resourceBillingBudgetDelete(d *schema.ResourceData, meta interface{}) error
 	log.Printf("[DEBUG] Deleting Budget %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Budget")
+		return transport_tpg.HandleNotFoundError(err, d, "Budget")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Budget %q: %#v", d.Id(), res)
@@ -644,7 +648,7 @@ func resourceBillingBudgetDelete(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceBillingBudgetImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"billingAccounts/(?P<billing_account>[^/]+)/budgets/(?P<name>[^/]+)",
 		"(?P<billing_account>[^/]+)/(?P<name>[^/]+)",
@@ -654,7 +658,7 @@ func resourceBillingBudgetImport(d *schema.ResourceData, meta interface{}) ([]*s
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "billingAccounts/{{billing_account}}/budgets/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "billingAccounts/{{billing_account}}/budgets/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -663,18 +667,18 @@ func resourceBillingBudgetImport(d *schema.ResourceData, meta interface{}) ([]*s
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenBillingBudgetName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenBillingBudgetDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBillingBudgetBudgetFilter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -701,30 +705,30 @@ func flattenBillingBudgetBudgetFilter(v interface{}, d *schema.ResourceData, con
 		flattenBillingBudgetBudgetFilterCustomPeriod(original["customPeriod"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBillingBudgetBudgetFilterProjects(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterProjects(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
 	return schema.NewSet(schema.HashString, v.([]interface{}))
 }
 
-func flattenBillingBudgetBudgetFilterCreditTypesTreatment(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterCreditTypesTreatment(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBillingBudgetBudgetFilterServices(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterServices(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBillingBudgetBudgetFilterCreditTypes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterCreditTypes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBillingBudgetBudgetFilterSubaccounts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterSubaccounts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBillingBudgetBudgetFilterLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	/*
 	   note: api only accepts below format. Also only takes a single element in the array
 	   labels = {
@@ -749,11 +753,11 @@ func flattenBillingBudgetBudgetFilterLabels(v interface{}, d *schema.ResourceDat
 	return transformed
 }
 
-func flattenBillingBudgetBudgetFilterCalendarPeriod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterCalendarPeriod(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBillingBudgetBudgetFilterCustomPeriod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterCustomPeriod(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -768,7 +772,7 @@ func flattenBillingBudgetBudgetFilterCustomPeriod(v interface{}, d *schema.Resou
 		flattenBillingBudgetBudgetFilterCustomPeriodEndDate(original["endDate"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBillingBudgetBudgetFilterCustomPeriodStartDate(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterCustomPeriodStartDate(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -785,7 +789,7 @@ func flattenBillingBudgetBudgetFilterCustomPeriodStartDate(v interface{}, d *sch
 		flattenBillingBudgetBudgetFilterCustomPeriodStartDateDay(original["day"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBillingBudgetBudgetFilterCustomPeriodStartDateYear(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterCustomPeriodStartDateYear(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -802,7 +806,7 @@ func flattenBillingBudgetBudgetFilterCustomPeriodStartDateYear(v interface{}, d 
 	return v // let terraform core handle it otherwise
 }
 
-func flattenBillingBudgetBudgetFilterCustomPeriodStartDateMonth(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterCustomPeriodStartDateMonth(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -819,7 +823,7 @@ func flattenBillingBudgetBudgetFilterCustomPeriodStartDateMonth(v interface{}, d
 	return v // let terraform core handle it otherwise
 }
 
-func flattenBillingBudgetBudgetFilterCustomPeriodStartDateDay(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterCustomPeriodStartDateDay(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -836,7 +840,7 @@ func flattenBillingBudgetBudgetFilterCustomPeriodStartDateDay(v interface{}, d *
 	return v // let terraform core handle it otherwise
 }
 
-func flattenBillingBudgetBudgetFilterCustomPeriodEndDate(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterCustomPeriodEndDate(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -853,7 +857,7 @@ func flattenBillingBudgetBudgetFilterCustomPeriodEndDate(v interface{}, d *schem
 		flattenBillingBudgetBudgetFilterCustomPeriodEndDateDay(original["day"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBillingBudgetBudgetFilterCustomPeriodEndDateYear(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterCustomPeriodEndDateYear(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -870,7 +874,7 @@ func flattenBillingBudgetBudgetFilterCustomPeriodEndDateYear(v interface{}, d *s
 	return v // let terraform core handle it otherwise
 }
 
-func flattenBillingBudgetBudgetFilterCustomPeriodEndDateMonth(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterCustomPeriodEndDateMonth(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -887,7 +891,7 @@ func flattenBillingBudgetBudgetFilterCustomPeriodEndDateMonth(v interface{}, d *
 	return v // let terraform core handle it otherwise
 }
 
-func flattenBillingBudgetBudgetFilterCustomPeriodEndDateDay(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetBudgetFilterCustomPeriodEndDateDay(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -904,7 +908,7 @@ func flattenBillingBudgetBudgetFilterCustomPeriodEndDateDay(v interface{}, d *sc
 	return v // let terraform core handle it otherwise
 }
 
-func flattenBillingBudgetAmount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetAmount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -919,7 +923,7 @@ func flattenBillingBudgetAmount(v interface{}, d *schema.ResourceData, config *C
 		flattenBillingBudgetAmountLastPeriodAmount(original["lastPeriodAmount"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBillingBudgetAmountSpecifiedAmount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetAmountSpecifiedAmount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -936,15 +940,15 @@ func flattenBillingBudgetAmountSpecifiedAmount(v interface{}, d *schema.Resource
 		flattenBillingBudgetAmountSpecifiedAmountNanos(original["nanos"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBillingBudgetAmountSpecifiedAmountCurrencyCode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetAmountSpecifiedAmountCurrencyCode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBillingBudgetAmountSpecifiedAmountUnits(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetAmountSpecifiedAmountUnits(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBillingBudgetAmountSpecifiedAmountNanos(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetAmountSpecifiedAmountNanos(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -961,11 +965,11 @@ func flattenBillingBudgetAmountSpecifiedAmountNanos(v interface{}, d *schema.Res
 	return v // let terraform core handle it otherwise
 }
 
-func flattenBillingBudgetAmountLastPeriodAmount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetAmountLastPeriodAmount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v != nil
 }
 
-func flattenBillingBudgetThresholdRules(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetThresholdRules(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -984,15 +988,15 @@ func flattenBillingBudgetThresholdRules(v interface{}, d *schema.ResourceData, c
 	}
 	return transformed
 }
-func flattenBillingBudgetThresholdRulesThresholdPercent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetThresholdRulesThresholdPercent(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBillingBudgetThresholdRulesSpendBasis(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetThresholdRulesSpendBasis(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBillingBudgetAllUpdatesRule(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetAllUpdatesRule(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1011,31 +1015,31 @@ func flattenBillingBudgetAllUpdatesRule(v interface{}, d *schema.ResourceData, c
 		flattenBillingBudgetAllUpdatesRuleDisableDefaultIamRecipients(original["disableDefaultIamRecipients"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBillingBudgetAllUpdatesRulePubsubTopic(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetAllUpdatesRulePubsubTopic(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBillingBudgetAllUpdatesRuleSchemaVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
-	if v == nil || isEmptyValue(reflect.ValueOf(v)) {
+func flattenBillingBudgetAllUpdatesRuleSchemaVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil || tpgresource.IsEmptyValue(reflect.ValueOf(v)) {
 		return "1.0"
 	}
 
 	return v
 }
 
-func flattenBillingBudgetAllUpdatesRuleMonitoringNotificationChannels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetAllUpdatesRuleMonitoringNotificationChannels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBillingBudgetAllUpdatesRuleDisableDefaultIamRecipients(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBillingBudgetAllUpdatesRuleDisableDefaultIamRecipients(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandBillingBudgetDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetBudgetFilter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1047,84 +1051,84 @@ func expandBillingBudgetBudgetFilter(v interface{}, d TerraformResourceData, con
 	transformedProjects, err := expandBillingBudgetBudgetFilterProjects(original["projects"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProjects); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProjects); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["projects"] = transformedProjects
 	}
 
 	transformedCreditTypesTreatment, err := expandBillingBudgetBudgetFilterCreditTypesTreatment(original["credit_types_treatment"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCreditTypesTreatment); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCreditTypesTreatment); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["creditTypesTreatment"] = transformedCreditTypesTreatment
 	}
 
 	transformedServices, err := expandBillingBudgetBudgetFilterServices(original["services"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedServices); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedServices); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["services"] = transformedServices
 	}
 
 	transformedCreditTypes, err := expandBillingBudgetBudgetFilterCreditTypes(original["credit_types"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCreditTypes); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCreditTypes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["creditTypes"] = transformedCreditTypes
 	}
 
 	transformedSubaccounts, err := expandBillingBudgetBudgetFilterSubaccounts(original["subaccounts"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSubaccounts); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSubaccounts); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["subaccounts"] = transformedSubaccounts
 	}
 
 	transformedLabels, err := expandBillingBudgetBudgetFilterLabels(original["labels"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLabels); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLabels); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["labels"] = transformedLabels
 	}
 
 	transformedCalendarPeriod, err := expandBillingBudgetBudgetFilterCalendarPeriod(original["calendar_period"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCalendarPeriod); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCalendarPeriod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["calendarPeriod"] = transformedCalendarPeriod
 	}
 
 	transformedCustomPeriod, err := expandBillingBudgetBudgetFilterCustomPeriod(original["custom_period"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCustomPeriod); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCustomPeriod); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["customPeriod"] = transformedCustomPeriod
 	}
 
 	return transformed, nil
 }
 
-func expandBillingBudgetBudgetFilterProjects(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterProjects(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	return v, nil
 }
 
-func expandBillingBudgetBudgetFilterCreditTypesTreatment(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterCreditTypesTreatment(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetBudgetFilterServices(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterServices(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetBudgetFilterCreditTypes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterCreditTypes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetBudgetFilterSubaccounts(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterSubaccounts(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetBudgetFilterLabels(v interface{}, d TerraformResourceData, config *Config) (map[string][]string, error) {
+func expandBillingBudgetBudgetFilterLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string][]string, error) {
 	if v == nil {
 		return map[string][]string{}, nil
 	}
@@ -1135,11 +1139,11 @@ func expandBillingBudgetBudgetFilterLabels(v interface{}, d TerraformResourceDat
 	return m, nil
 }
 
-func expandBillingBudgetBudgetFilterCalendarPeriod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterCalendarPeriod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetBudgetFilterCustomPeriod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterCustomPeriod(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1151,21 +1155,21 @@ func expandBillingBudgetBudgetFilterCustomPeriod(v interface{}, d TerraformResou
 	transformedStartDate, err := expandBillingBudgetBudgetFilterCustomPeriodStartDate(original["start_date"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedStartDate); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedStartDate); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["startDate"] = transformedStartDate
 	}
 
 	transformedEndDate, err := expandBillingBudgetBudgetFilterCustomPeriodEndDate(original["end_date"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEndDate); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEndDate); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["endDate"] = transformedEndDate
 	}
 
 	return transformed, nil
 }
 
-func expandBillingBudgetBudgetFilterCustomPeriodStartDate(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterCustomPeriodStartDate(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1177,40 +1181,40 @@ func expandBillingBudgetBudgetFilterCustomPeriodStartDate(v interface{}, d Terra
 	transformedYear, err := expandBillingBudgetBudgetFilterCustomPeriodStartDateYear(original["year"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedYear); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedYear); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["year"] = transformedYear
 	}
 
 	transformedMonth, err := expandBillingBudgetBudgetFilterCustomPeriodStartDateMonth(original["month"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMonth); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMonth); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["month"] = transformedMonth
 	}
 
 	transformedDay, err := expandBillingBudgetBudgetFilterCustomPeriodStartDateDay(original["day"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDay); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDay); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["day"] = transformedDay
 	}
 
 	return transformed, nil
 }
 
-func expandBillingBudgetBudgetFilterCustomPeriodStartDateYear(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterCustomPeriodStartDateYear(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetBudgetFilterCustomPeriodStartDateMonth(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterCustomPeriodStartDateMonth(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetBudgetFilterCustomPeriodStartDateDay(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterCustomPeriodStartDateDay(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetBudgetFilterCustomPeriodEndDate(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterCustomPeriodEndDate(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1222,40 +1226,40 @@ func expandBillingBudgetBudgetFilterCustomPeriodEndDate(v interface{}, d Terrafo
 	transformedYear, err := expandBillingBudgetBudgetFilterCustomPeriodEndDateYear(original["year"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedYear); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedYear); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["year"] = transformedYear
 	}
 
 	transformedMonth, err := expandBillingBudgetBudgetFilterCustomPeriodEndDateMonth(original["month"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMonth); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMonth); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["month"] = transformedMonth
 	}
 
 	transformedDay, err := expandBillingBudgetBudgetFilterCustomPeriodEndDateDay(original["day"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDay); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDay); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["day"] = transformedDay
 	}
 
 	return transformed, nil
 }
 
-func expandBillingBudgetBudgetFilterCustomPeriodEndDateYear(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterCustomPeriodEndDateYear(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetBudgetFilterCustomPeriodEndDateMonth(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterCustomPeriodEndDateMonth(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetBudgetFilterCustomPeriodEndDateDay(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetBudgetFilterCustomPeriodEndDateDay(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetAmount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetAmount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1267,21 +1271,21 @@ func expandBillingBudgetAmount(v interface{}, d TerraformResourceData, config *C
 	transformedSpecifiedAmount, err := expandBillingBudgetAmountSpecifiedAmount(original["specified_amount"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSpecifiedAmount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSpecifiedAmount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["specifiedAmount"] = transformedSpecifiedAmount
 	}
 
 	transformedLastPeriodAmount, err := expandBillingBudgetAmountLastPeriodAmount(original["last_period_amount"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLastPeriodAmount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLastPeriodAmount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["lastPeriodAmount"] = transformedLastPeriodAmount
 	}
 
 	return transformed, nil
 }
 
-func expandBillingBudgetAmountSpecifiedAmount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetAmountSpecifiedAmount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1293,40 +1297,40 @@ func expandBillingBudgetAmountSpecifiedAmount(v interface{}, d TerraformResource
 	transformedCurrencyCode, err := expandBillingBudgetAmountSpecifiedAmountCurrencyCode(original["currency_code"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCurrencyCode); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCurrencyCode); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["currencyCode"] = transformedCurrencyCode
 	}
 
 	transformedUnits, err := expandBillingBudgetAmountSpecifiedAmountUnits(original["units"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedUnits); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedUnits); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["units"] = transformedUnits
 	}
 
 	transformedNanos, err := expandBillingBudgetAmountSpecifiedAmountNanos(original["nanos"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedNanos); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedNanos); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["nanos"] = transformedNanos
 	}
 
 	return transformed, nil
 }
 
-func expandBillingBudgetAmountSpecifiedAmountCurrencyCode(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetAmountSpecifiedAmountCurrencyCode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetAmountSpecifiedAmountUnits(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetAmountSpecifiedAmountUnits(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetAmountSpecifiedAmountNanos(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetAmountSpecifiedAmountNanos(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetAmountLastPeriodAmount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetAmountLastPeriodAmount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	if v == nil || !v.(bool) {
 		return nil, nil
 	}
@@ -1334,7 +1338,7 @@ func expandBillingBudgetAmountLastPeriodAmount(v interface{}, d TerraformResourc
 	return struct{}{}, nil
 }
 
-func expandBillingBudgetThresholdRules(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetThresholdRules(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -1354,7 +1358,7 @@ func expandBillingBudgetThresholdRules(v interface{}, d TerraformResourceData, c
 		transformedSpendBasis, err := expandBillingBudgetThresholdRulesSpendBasis(original["spend_basis"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSpendBasis); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSpendBasis); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["spendBasis"] = transformedSpendBasis
 		}
 
@@ -1363,15 +1367,15 @@ func expandBillingBudgetThresholdRules(v interface{}, d TerraformResourceData, c
 	return req, nil
 }
 
-func expandBillingBudgetThresholdRulesThresholdPercent(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetThresholdRulesThresholdPercent(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetThresholdRulesSpendBasis(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetThresholdRulesSpendBasis(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetAllUpdatesRule(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetAllUpdatesRule(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1383,47 +1387,47 @@ func expandBillingBudgetAllUpdatesRule(v interface{}, d TerraformResourceData, c
 	transformedPubsubTopic, err := expandBillingBudgetAllUpdatesRulePubsubTopic(original["pubsub_topic"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPubsubTopic); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPubsubTopic); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["pubsubTopic"] = transformedPubsubTopic
 	}
 
 	transformedSchemaVersion, err := expandBillingBudgetAllUpdatesRuleSchemaVersion(original["schema_version"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSchemaVersion); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSchemaVersion); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["schemaVersion"] = transformedSchemaVersion
 	}
 
 	transformedMonitoringNotificationChannels, err := expandBillingBudgetAllUpdatesRuleMonitoringNotificationChannels(original["monitoring_notification_channels"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMonitoringNotificationChannels); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMonitoringNotificationChannels); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["monitoringNotificationChannels"] = transformedMonitoringNotificationChannels
 	}
 
 	transformedDisableDefaultIamRecipients, err := expandBillingBudgetAllUpdatesRuleDisableDefaultIamRecipients(original["disable_default_iam_recipients"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDisableDefaultIamRecipients); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDisableDefaultIamRecipients); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["disableDefaultIamRecipients"] = transformedDisableDefaultIamRecipients
 	}
 
 	return transformed, nil
 }
 
-func expandBillingBudgetAllUpdatesRulePubsubTopic(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetAllUpdatesRulePubsubTopic(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetAllUpdatesRuleSchemaVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetAllUpdatesRuleSchemaVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetAllUpdatesRuleMonitoringNotificationChannels(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetAllUpdatesRuleMonitoringNotificationChannels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBillingBudgetAllUpdatesRuleDisableDefaultIamRecipients(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBillingBudgetAllUpdatesRuleDisableDefaultIamRecipients(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
@@ -1673,7 +1677,7 @@ billingAccounts/{billingAccountId}/budgets/{budgetId}.`,
 func ResourceBillingBudgetUpgradeV0(_ context.Context, rawState map[string]interface{}, meta interface{}) (map[string]interface{}, error) {
 	log.Printf("[DEBUG] Attributes before migration: %#v", rawState)
 
-	rawState["name"] = GetResourceNameFromSelfLink(rawState["name"].(string))
+	rawState["name"] = tpgresource.GetResourceNameFromSelfLink(rawState["name"].(string))
 
 	log.Printf("[DEBUG] Attributes after migration: %#v", rawState)
 	return rawState, nil

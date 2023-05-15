@@ -5,6 +5,8 @@ import (
 
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"google.golang.org/api/cloudresourcemanager/v1"
 )
 
@@ -19,11 +21,11 @@ var IamOrganizationSchema = map[string]*schema.Schema{
 
 type OrganizationIamUpdater struct {
 	resourceId string
-	d          TerraformResourceData
-	Config     *Config
+	d          tpgresource.TerraformResourceData
+	Config     *transport_tpg.Config
 }
 
-func NewOrganizationIamUpdater(d TerraformResourceData, config *Config) (ResourceIamUpdater, error) {
+func NewOrganizationIamUpdater(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
 	return &OrganizationIamUpdater{
 		resourceId: d.Get("org_id").(string),
 		d:          d,
@@ -31,7 +33,7 @@ func NewOrganizationIamUpdater(d TerraformResourceData, config *Config) (Resourc
 	}, nil
 }
 
-func OrgIdParseFunc(d *schema.ResourceData, _ *Config) error {
+func OrgIdParseFunc(d *schema.ResourceData, _ *transport_tpg.Config) error {
 	if err := d.Set("org_id", d.Id()); err != nil {
 		return fmt.Errorf("Error setting org_id: %s", err)
 	}
@@ -39,7 +41,7 @@ func OrgIdParseFunc(d *schema.ResourceData, _ *Config) error {
 }
 
 func (u *OrganizationIamUpdater) GetResourceIamPolicy() (*cloudresourcemanager.Policy, error) {
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +62,7 @@ func (u *OrganizationIamUpdater) GetResourceIamPolicy() (*cloudresourcemanager.P
 }
 
 func (u *OrganizationIamUpdater) SetResourceIamPolicy(policy *cloudresourcemanager.Policy) error {
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return err
 	}

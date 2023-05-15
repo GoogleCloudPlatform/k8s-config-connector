@@ -4,18 +4,20 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceGoogleRegionComputeSslCertificate() *schema.Resource {
 	// Generate datasource schema from resource
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceComputeRegionSslCertificate().Schema)
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceComputeRegionSslCertificate().Schema)
 
 	// Set 'Required' schema elements
-	addRequiredFieldsToSchema(dsSchema, "name")
+	tpgresource.AddRequiredFieldsToSchema(dsSchema, "name")
 
 	// Set 'Optional' schema elements
-	addOptionalFieldsToSchema(dsSchema, "project")
-	addOptionalFieldsToSchema(dsSchema, "region")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "project")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "region")
 
 	return &schema.Resource{
 		Read:   dataSourceComputeRegionSslCertificateRead,
@@ -24,7 +26,7 @@ func DataSourceGoogleRegionComputeSslCertificate() *schema.Resource {
 }
 
 func dataSourceComputeRegionSslCertificateRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	project, region, name, err := GetRegionalResourcePropertiesFromSelfLinkOrSchema(d, config)
 	if err != nil {

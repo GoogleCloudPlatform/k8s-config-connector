@@ -6,6 +6,8 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccPubsubSubscription_emptyTTL(t *testing.T) {
@@ -15,7 +17,7 @@ func TestAccPubsubSubscription_emptyTTL(t *testing.T) {
 	subscription := fmt.Sprintf("tf-test-sub-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPubsubSubscriptionDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -39,7 +41,7 @@ func TestAccPubsubSubscription_basic(t *testing.T) {
 	subscription := fmt.Sprintf("tf-test-sub-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPubsubSubscriptionDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -63,7 +65,7 @@ func TestAccPubsubSubscription_update(t *testing.T) {
 	subscriptionShort := fmt.Sprintf("tf-test-sub-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPubsubSubscriptionDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -97,7 +99,7 @@ func TestAccPubsubSubscription_push(t *testing.T) {
 	saAccount := fmt.Sprintf("tf-test-pubsub-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPubsubSubscriptionDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -125,7 +127,7 @@ func TestAccPubsubSubscription_pollOnCreate(t *testing.T) {
 	subscription := fmt.Sprintf("tf-test-topic-foo-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPubsubSubscriptionDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -283,12 +285,12 @@ func TestGetComputedTopicName(t *testing.T) {
 func testAccCheckPubsubSubscriptionCache404(t *testing.T, subName string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		config := GoogleProviderConfig(t)
-		url := fmt.Sprintf("%sprojects/%s/subscriptions/%s", config.PubsubBasePath, GetTestProjectFromEnv(), subName)
-		resp, err := SendRequest(config, "GET", "", url, config.UserAgent, nil)
+		url := fmt.Sprintf("%sprojects/%s/subscriptions/%s", config.PubsubBasePath, acctest.GetTestProjectFromEnv(), subName)
+		resp, err := transport_tpg.SendRequest(config, "GET", "", url, config.UserAgent, nil)
 		if err == nil {
 			return fmt.Errorf("Expected Pubsub Subscription %q not to exist, was found", resp["name"])
 		}
-		if !IsGoogleApiErrorWithCode(err, 404) {
+		if !transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 			return fmt.Errorf("Got non-404 error while trying to read Pubsub Subscription %q: %v", subName, err)
 		}
 		return nil

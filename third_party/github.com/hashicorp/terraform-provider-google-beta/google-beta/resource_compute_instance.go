@@ -18,6 +18,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"github.com/mitchellh/hashstructure"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
@@ -66,7 +69,7 @@ func forceNewIfNetworkIPNotUpdatable(ctx context.Context, d *schema.ResourceDiff
 	return forceNewIfNetworkIPNotUpdatableFunc(d)
 }
 
-func forceNewIfNetworkIPNotUpdatableFunc(d TerraformResourceDiff) error {
+func forceNewIfNetworkIPNotUpdatableFunc(d tpgresource.TerraformResourceDiff) error {
 	oldCount, newCount := d.GetChange("network_interface.#")
 	if oldCount.(int) != newCount.(int) {
 		return nil
@@ -161,7 +164,7 @@ func ResourceComputeInstance() *schema.Resource {
 							AtLeastOneOf:     bootDiskKeys,
 							ForceNew:         true,
 							ConflictsWith:    []string{"boot_disk.0.disk_encryption_key_raw"},
-							DiffSuppressFunc: compareSelfLinkRelativePaths,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkRelativePaths,
 							Computed:         true,
 							Description:      `The self_link of the encryption key that is stored in Google Cloud KMS to encrypt this disk. Only one of kms_key_self_link and disk_encryption_key_raw may be set.`,
 						},
@@ -234,7 +237,7 @@ func ResourceComputeInstance() *schema.Resource {
 							Computed:         true,
 							ForceNew:         true,
 							ConflictsWith:    []string{"boot_disk.initialize_params"},
-							DiffSuppressFunc: compareSelfLinkOrResourceName,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 							Description:      `The name or self_link of the disk attached to this instance.`,
 						},
 					},
@@ -265,7 +268,7 @@ func ResourceComputeInstance() *schema.Resource {
 							Type:             schema.TypeString,
 							Optional:         true,
 							Computed:         true,
-							DiffSuppressFunc: compareSelfLinkOrResourceName,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 							Description:      `The name or self_link of the network attached to this interface.`,
 						},
 
@@ -273,7 +276,7 @@ func ResourceComputeInstance() *schema.Resource {
 							Type:             schema.TypeString,
 							Optional:         true,
 							Computed:         true,
-							DiffSuppressFunc: compareSelfLinkOrResourceName,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 							Description:      `The name or self_link of the subnetwork attached to this interface.`,
 						},
 
@@ -341,7 +344,7 @@ func ResourceComputeInstance() *schema.Resource {
 									"ip_cidr_range": {
 										Type:             schema.TypeString,
 										Required:         true,
-										DiffSuppressFunc: IpCidrRangeDiffSuppress,
+										DiffSuppressFunc: tpgresource.IpCidrRangeDiffSuppress,
 										Description:      `The IP CIDR range represented by this alias IP range.`,
 									},
 									"subnetwork_range_name": {
@@ -439,7 +442,7 @@ func ResourceComputeInstance() *schema.Resource {
 						"source": {
 							Type:             schema.TypeString,
 							Required:         true,
-							DiffSuppressFunc: compareSelfLinkOrResourceName,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 							Description:      `The name or self_link of the disk attached to this instance.`,
 						},
 
@@ -468,7 +471,7 @@ func ResourceComputeInstance() *schema.Resource {
 						"kms_key_self_link": {
 							Type:             schema.TypeString,
 							Optional:         true,
-							DiffSuppressFunc: compareSelfLinkRelativePaths,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkRelativePaths,
 							Computed:         true,
 							Description:      `The self_link of the encryption key that is stored in Google Cloud KMS to encrypt this disk. Only one of kms_key_self_link and disk_encryption_key_raw may be set.`,
 						},
@@ -528,7 +531,7 @@ func ResourceComputeInstance() *schema.Resource {
 							Type:             schema.TypeString,
 							Required:         true,
 							ForceNew:         true,
-							DiffSuppressFunc: compareSelfLinkOrResourceName,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 							Description:      `The accelerator type resource exposed to this instance. E.g. nvidia-tesla-k80.`,
 						},
 					},
@@ -613,7 +616,7 @@ func ResourceComputeInstance() *schema.Resource {
 							Optional:         true,
 							AtLeastOneOf:     schedulingKeys,
 							Elem:             instanceSchedulingNodeAffinitiesElemSchema(),
-							DiffSuppressFunc: EmptyOrDefaultStringSuppress(""),
+							DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress(""),
 							Description:      `Specifies node affinities or anti-affinities to determine which sole-tenant nodes your instances and managed instance groups will use as host systems.`,
 						},
 
@@ -722,10 +725,10 @@ be from 0 to 999,999,999 inclusive.`,
 							Elem: &schema.Schema{
 								Type: schema.TypeString,
 								StateFunc: func(v interface{}) string {
-									return canonicalizeServiceScope(v.(string))
+									return tpgresource.CanonicalizeServiceScope(v.(string))
 								},
 							},
-							Set: stringScopeHashcode,
+							Set: tpgresource.StringScopeHashcode,
 						},
 					},
 				},
@@ -738,7 +741,7 @@ be from 0 to 999,999,999 inclusive.`,
 				// Since this block is used by the API based on which
 				// image being used, the field needs to be marked as Computed.
 				Computed:         true,
-				DiffSuppressFunc: EmptyOrDefaultStringSuppress(""),
+				DiffSuppressFunc: tpgresource.EmptyOrDefaultStringSuppress(""),
 				Description:      `The shielded vm config being used by the instance.`,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -820,9 +823,12 @@ be from 0 to 999,999,999 inclusive.`,
 				Description:  `Desired status of the instance. Either "RUNNING" or "TERMINATED".`,
 			},
 			"current_status": {
-				Type:        schema.TypeString,
-				Computed:    true,
-				Description: `Current status of the instance.`,
+				Type:     schema.TypeString,
+				Computed: true,
+				Description: `
+					Current status of the instance.
+					This could be one of the following values: PROVISIONING, STAGING, RUNNING, STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED.
+					For more information about the status of the instance, see [Instance life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle).`,
 			},
 			"tags": {
 				Type:        schema.TypeSet,
@@ -886,7 +892,7 @@ be from 0 to 999,999,999 inclusive.`,
 			"resource_policies": {
 				Type:             schema.TypeList,
 				Elem:             &schema.Schema{Type: schema.TypeString},
-				DiffSuppressFunc: compareSelfLinkRelativePaths,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkRelativePaths,
 				Optional:         true,
 				MaxItems:         1,
 				Description:      `A list of self_links of resource policies to attach to the instance. Currently a max of 1 resource policy is supported.`,
@@ -952,33 +958,33 @@ be from 0 to 999,999,999 inclusive.`,
 	}
 }
 
-func getInstance(config *Config, d *schema.ResourceData) (*compute.Instance, error) {
-	project, err := getProject(d, config)
+func getInstance(config *transport_tpg.Config, d *schema.ResourceData) (*compute.Instance, error) {
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return nil, err
 	}
-	zone, err := getZone(d, config)
+	zone, err := tpgresource.GetZone(d, config)
 	if err != nil {
 		return nil, err
 	}
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
 	instance, err := config.NewComputeClient(userAgent).Instances.Get(project, zone, d.Get("name").(string)).Do()
 	if err != nil {
-		return nil, handleNotFoundError(err, d, fmt.Sprintf("Instance %s", d.Get("name").(string)))
+		return nil, transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Instance %s", d.Get("name").(string)))
 	}
 	return instance, nil
 }
 
-func getDisk(diskUri string, d *schema.ResourceData, config *Config) (*compute.Disk, error) {
-	source, err := ParseDiskFieldValue(diskUri, d, config)
+func getDisk(diskUri string, d *schema.ResourceData, config *transport_tpg.Config) (*compute.Disk, error) {
+	source, err := tpgresource.ParseDiskFieldValue(diskUri, d, config)
 	if err != nil {
 		return nil, err
 	}
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -991,11 +997,11 @@ func getDisk(diskUri string, d *schema.ResourceData, config *Config) (*compute.D
 	return disk, err
 }
 
-func expandComputeInstance(project string, d *schema.ResourceData, config *Config) (*compute.Instance, error) {
+func expandComputeInstance(project string, d *schema.ResourceData, config *transport_tpg.Config) (*compute.Instance, error) {
 	// Get the machine type
 	var machineTypeUrl string
 	if mt, ok := d.GetOk("machine_type"); ok {
-		machineType, err := ParseMachineTypesFieldValue(mt.(string), d, config)
+		machineType, err := tpgresource.ParseMachineTypesFieldValue(mt.(string), d, config)
 		if err != nil {
 			return nil, fmt.Errorf(
 				"Error loading machine type: %s",
@@ -1074,7 +1080,7 @@ func expandComputeInstance(project string, d *schema.ResourceData, config *Confi
 		NetworkInterfaces:          networkInterfaces,
 		NetworkPerformanceConfig:   networkPerformanceConfig,
 		Tags:                       resourceInstanceTags(d),
-		Labels:                     expandLabels(d),
+		Labels:                     tpgresource.ExpandLabels(d),
 		ServiceAccounts:            expandServiceAccounts(d.Get("service_account").([]interface{})),
 		GuestAccelerators:          accels,
 		MinCpuPlatform:             d.Get("min_cpu_platform").(string),
@@ -1113,7 +1119,7 @@ func getAllStatusBut(status string) []string {
 	return computeInstanceStatus
 }
 
-func waitUntilInstanceHasDesiredStatus(config *Config, d *schema.ResourceData) error {
+func waitUntilInstanceHasDesiredStatus(config *transport_tpg.Config, d *schema.ResourceData) error {
 	desiredStatus := d.Get("desired_status").(string)
 
 	if desiredStatus != "" {
@@ -1145,19 +1151,19 @@ func waitUntilInstanceHasDesiredStatus(config *Config, d *schema.ResourceData) e
 }
 
 func resourceComputeInstanceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
 	// Get the zone
-	z, err := getZone(d, config)
+	z, err := tpgresource.GetZone(d, config)
 	if err != nil {
 		return err
 	}
@@ -1199,9 +1205,9 @@ func resourceComputeInstanceCreate(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceComputeInstanceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -1234,7 +1240,7 @@ func resourceComputeInstanceRead(d *schema.ResourceData, meta interface{}) error
 	if err := d.Set("can_ip_forward", instance.CanIpForward); err != nil {
 		return fmt.Errorf("Error setting can_ip_forward: %s", err)
 	}
-	if err := d.Set("machine_type", GetResourceNameFromSelfLink(instance.MachineType)); err != nil {
+	if err := d.Set("machine_type", tpgresource.GetResourceNameFromSelfLink(instance.MachineType)); err != nil {
 		return fmt.Errorf("Error setting machine_type: %s", err)
 	}
 	if err := d.Set("network_performance_config", flattenNetworkPerformanceConfig(instance.NetworkPerformanceConfig)); err != nil {
@@ -1296,13 +1302,13 @@ func resourceComputeInstanceRead(d *schema.ResourceData, meta interface{}) error
 		s := disk["source"].(string)
 		var sourceLink string
 		if strings.Contains(s, "regions/") {
-			source, err := ParseRegionDiskFieldValue(disk["source"].(string), d, config)
+			source, err := tpgresource.ParseRegionDiskFieldValue(disk["source"].(string), d, config)
 			if err != nil {
 				return err
 			}
 			sourceLink = source.RelativeLink()
 		} else {
-			source, err := ParseDiskFieldValue(disk["source"].(string), d, config)
+			source, err := tpgresource.ParseDiskFieldValue(disk["source"].(string), d, config)
 			if err != nil {
 				return err
 			}
@@ -1323,13 +1329,13 @@ func resourceComputeInstanceRead(d *schema.ResourceData, meta interface{}) error
 		} else {
 			var sourceLink string
 			if strings.Contains(disk.Source, "regions/") {
-				source, err := ParseRegionDiskFieldValue(disk.Source, d, config)
+				source, err := tpgresource.ParseRegionDiskFieldValue(disk.Source, d, config)
 				if err != nil {
 					return err
 				}
 				sourceLink = source.RelativeLink()
 			} else {
-				source, err := ParseDiskFieldValue(disk.Source, d, config)
+				source, err := tpgresource.ParseDiskFieldValue(disk.Source, d, config)
 				if err != nil {
 					return err
 				}
@@ -1337,7 +1343,7 @@ func resourceComputeInstanceRead(d *schema.ResourceData, meta interface{}) error
 			}
 			adIndex, inConfig := attachedDiskSources[sourceLink]
 			di := map[string]interface{}{
-				"source":      ConvertSelfLinkToV1(disk.Source),
+				"source":      tpgresource.ConvertSelfLinkToV1(disk.Source),
 				"device_name": disk.DeviceName,
 				"mode":        disk.Mode,
 			}
@@ -1380,7 +1386,7 @@ func resourceComputeInstanceRead(d *schema.ResourceData, meta interface{}) error
 		}
 	}
 
-	zone := GetResourceNameFromSelfLink(instance.Zone)
+	zone := tpgresource.GetResourceNameFromSelfLink(instance.Zone)
 
 	if err := d.Set("service_account", flattenServiceAccounts(instance.ServiceAccounts)); err != nil {
 		return fmt.Errorf("Error setting service_account: %s", err)
@@ -1420,7 +1426,7 @@ func resourceComputeInstanceRead(d *schema.ResourceData, meta interface{}) error
 	if err := d.Set("deletion_protection", instance.DeletionProtection); err != nil {
 		return fmt.Errorf("Error setting deletion_protection: %s", err)
 	}
-	if err := d.Set("self_link", ConvertSelfLinkToV1(instance.SelfLink)); err != nil {
+	if err := d.Set("self_link", tpgresource.ConvertSelfLinkToV1(instance.SelfLink)); err != nil {
 		return fmt.Errorf("Error setting self_link: %s", err)
 	}
 	if err := d.Set("instance_id", fmt.Sprintf("%d", instance.Id)); err != nil {
@@ -1465,18 +1471,18 @@ func resourceComputeInstanceRead(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	zone, err := getZone(d, config)
+	zone, err := tpgresource.GetZone(d, config)
 	if err != nil {
 		return err
 	}
@@ -1485,7 +1491,7 @@ func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 	// Change back to getInstance(config, d) once updating alias ips is GA.
 	instance, err := config.NewComputeClient(userAgent).Instances.Get(project, zone, d.Get("name").(string)).Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Instance %s", d.Get("name").(string)))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Instance %s", d.Get("name").(string)))
 	}
 
 	// Enable partial mode for the resource since it is possible
@@ -1498,12 +1504,12 @@ func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 		}
 
 		metadataV1 := &compute.Metadata{}
-		if err := Convert(metadata, metadataV1); err != nil {
+		if err := tpgresource.Convert(metadata, metadataV1); err != nil {
 			return err
 		}
 
 		// We're retrying for an error 412 where the metadata fingerprint is out of date
-		err = retry(
+		err = transport_tpg.Retry(
 			func() error {
 				// retrieve up-to-date metadata from the API in case several updates hit simultaneously. instances
 				// sometimes but not always share metadata fingerprints.
@@ -1536,7 +1542,7 @@ func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 	if d.HasChange("tags") {
 		tags := resourceInstanceTags(d)
 		tagsV1 := &compute.Tags{}
-		if err := Convert(tags, tagsV1); err != nil {
+		if err := tpgresource.Convert(tags, tagsV1); err != nil {
 			return err
 		}
 		op, err := config.NewComputeClient(userAgent).Instances.SetTags(
@@ -1552,7 +1558,7 @@ func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 	}
 
 	if d.HasChange("labels") {
-		labels := expandLabels(d)
+		labels := tpgresource.ExpandLabels(d)
 		labelFingerprint := d.Get("label_fingerprint").(string)
 		req := compute.InstancesSetLabelsRequest{Labels: labels, LabelFingerprint: labelFingerprint}
 
@@ -1655,7 +1661,7 @@ func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 		if d.HasChange(prefix + ".subnetwork") {
 			if !d.HasChange(prefix + ".network") {
 				subnetProjectField := prefix + ".subnetwork_project"
-				sf, err := ParseSubnetworkFieldValueWithProjectField(subnetwork, subnetProjectField, d, config)
+				sf, err := tpgresource.ParseSubnetworkFieldValueWithProjectField(subnetwork, subnetProjectField, d, config)
 				if err != nil {
 					return fmt.Errorf("Cannot determine self_link for subnetwork %q: %s", subnetwork, err)
 				}
@@ -1663,7 +1669,7 @@ func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 				if err != nil {
 					return errwrap.Wrapf("Error getting subnetwork value: {{err}}", err)
 				}
-				nf, err := ParseNetworkFieldValue(resp.Network, d, config)
+				nf, err := tpgresource.ParseNetworkFieldValue(resp.Network, d, config)
 				if err != nil {
 					return fmt.Errorf("Cannot determine self_link for network %q: %s", resp.Network, err)
 				}
@@ -1815,7 +1821,7 @@ func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 
 			if _, ok := oDisks[hash]; !ok {
 				computeDiskV1 := &compute.AttachedDisk{}
-				err = Convert(computeDisk, computeDiskV1)
+				err = tpgresource.Convert(computeDisk, computeDiskV1)
 				if err != nil {
 					return err
 				}
@@ -1886,7 +1892,7 @@ func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 	}
 
 	if d.HasChange("can_ip_forward") {
-		err = retry(
+		err = transport_tpg.Retry(
 			func() error {
 				instance, err := config.NewComputeClient(userAgent).Instances.Get(project, zone, instance.Name).Do()
 				if err != nil {
@@ -1967,7 +1973,7 @@ func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 		}
 
 		if d.HasChange("machine_type") {
-			mt, err := ParseMachineTypesFieldValue(d.Get("machine_type").(string), d, config)
+			mt, err := tpgresource.ParseMachineTypesFieldValue(d.Get("machine_type").(string), d, config)
 			if err != nil {
 				return err
 			}
@@ -2011,7 +2017,7 @@ func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 			if len(sa) > 0 && sa[0] != nil {
 				saMap := sa[0].(map[string]interface{})
 				req.Email = saMap["email"].(string)
-				req.Scopes = canonicalizeServiceScopes(convertStringSet(saMap["scopes"].(*schema.Set)))
+				req.Scopes = tpgresource.CanonicalizeServiceScopes(convertStringSet(saMap["scopes"].(*schema.Set)))
 			}
 			op, err := config.NewComputeClient(userAgent).Instances.SetServiceAccount(project, zone, instance.Name, req).Do()
 			if err != nil {
@@ -2074,7 +2080,7 @@ func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 		}
 
 		if d.HasChange("advanced_machine_features") {
-			err = retry(
+			err = transport_tpg.Retry(
 				func() error {
 					// retrieve up-to-date instance from the API in case several updates hit simultaneously. instances
 					// sometimes but not always share metadata fingerprints.
@@ -2140,18 +2146,18 @@ func resourceComputeInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 	return resourceComputeInstanceRead(d, meta)
 }
 
-func startInstanceOperation(d *schema.ResourceData, config *Config) (*compute.Operation, error) {
-	project, err := getProject(d, config)
+func startInstanceOperation(d *schema.ResourceData, config *transport_tpg.Config) (*compute.Operation, error) {
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return nil, err
 	}
 
-	zone, err := getZone(d, config)
+	zone, err := tpgresource.GetZone(d, config)
 	if err != nil {
 		return nil, err
 	}
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -2160,7 +2166,7 @@ func startInstanceOperation(d *schema.ResourceData, config *Config) (*compute.Op
 	// Change back to getInstance(config, d) once updating alias ips is GA.
 	instance, err := config.NewComputeClient(userAgent).Instances.Get(project, zone, d.Get("name").(string)).Do()
 	if err != nil {
-		return nil, handleNotFoundError(err, d, fmt.Sprintf("Instance %s", instance.Name))
+		return nil, transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Instance %s", instance.Name))
 	}
 
 	// Retrieve instance from config to pull encryption keys if necessary
@@ -2191,18 +2197,18 @@ func startInstanceOperation(d *schema.ResourceData, config *Config) (*compute.Op
 }
 
 func expandAttachedDisk(diskConfig map[string]interface{}, d *schema.ResourceData, meta interface{}) (*compute.AttachedDisk, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	s := diskConfig["source"].(string)
 	var sourceLink string
 	if strings.Contains(s, "regions/") {
-		source, err := ParseRegionDiskFieldValue(s, d, config)
+		source, err := tpgresource.ParseRegionDiskFieldValue(s, d, config)
 		if err != nil {
 			return nil, err
 		}
 		sourceLink = source.RelativeLink()
 	} else {
-		source, err := ParseDiskFieldValue(s, d, config)
+		source, err := tpgresource.ParseDiskFieldValue(s, d, config)
 		if err != nil {
 			return nil, err
 		}
@@ -2246,7 +2252,7 @@ func expandAttachedDisk(diskConfig map[string]interface{}, d *schema.ResourceDat
 
 // See comment on expandInstanceTemplateGuestAccelerators regarding why this
 // code is duplicated.
-func expandInstanceGuestAccelerators(d TerraformResourceData, config *Config) ([]*compute.AcceleratorConfig, error) {
+func expandInstanceGuestAccelerators(d tpgresource.TerraformResourceData, config *transport_tpg.Config) ([]*compute.AcceleratorConfig, error) {
 	configs, ok := d.GetOk("guest_accelerator")
 	if !ok {
 		return nil, nil
@@ -2258,7 +2264,7 @@ func expandInstanceGuestAccelerators(d TerraformResourceData, config *Config) ([
 		if data["count"].(int) == 0 {
 			continue
 		}
-		at, err := ParseAcceleratorFieldValue(data["type"].(string), d, config)
+		at, err := tpgresource.ParseAcceleratorFieldValue(data["type"].(string), d, config)
 		if err != nil {
 			return nil, fmt.Errorf("cannot parse accelerator type: %v", err)
 		}
@@ -2335,18 +2341,18 @@ func desiredStatusDiff(_ context.Context, diff *schema.ResourceDiff, meta interf
 }
 
 func resourceComputeInstanceDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	zone, err := getZone(d, config)
+	zone, err := tpgresource.GetZone(d, config)
 	if err != nil {
 		return err
 	}
@@ -2377,7 +2383,7 @@ func resourceComputeInstanceDelete(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceComputeInstanceImportState(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/zones/(?P<zone>[^/]+)/instances/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<zone>[^/]+)/(?P<name>[^/]+)",
@@ -2387,7 +2393,7 @@ func resourceComputeInstanceImportState(d *schema.ResourceData, meta interface{}
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/instances/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/instances/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -2396,8 +2402,8 @@ func resourceComputeInstanceImportState(d *schema.ResourceData, meta interface{}
 	return []*schema.ResourceData{d}, nil
 }
 
-func expandBootDisk(d *schema.ResourceData, config *Config, project string) (*compute.AttachedDisk, error) {
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+func expandBootDisk(d *schema.ResourceData, config *transport_tpg.Config, project string) (*compute.AttachedDisk, error) {
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -2428,7 +2434,7 @@ func expandBootDisk(d *schema.ResourceData, config *Config, project string) (*co
 	}
 
 	if v, ok := d.GetOk("boot_disk.0.source"); ok {
-		source, err := ParseDiskFieldValue(v.(string), d, config)
+		source, err := tpgresource.ParseDiskFieldValue(v.(string), d, config)
 		if err != nil {
 			return nil, err
 		}
@@ -2462,7 +2468,7 @@ func expandBootDisk(d *schema.ResourceData, config *Config, project string) (*co
 		}
 
 		if _, ok := d.GetOk("boot_disk.0.initialize_params.0.labels"); ok {
-			disk.InitializeParams.Labels = expandStringMap(d, "boot_disk.0.initialize_params.0.labels")
+			disk.InitializeParams.Labels = tpgresource.ExpandStringMap(d, "boot_disk.0.initialize_params.0.labels")
 		}
 	}
 
@@ -2473,12 +2479,12 @@ func expandBootDisk(d *schema.ResourceData, config *Config, project string) (*co
 	return disk, nil
 }
 
-func flattenBootDisk(d *schema.ResourceData, disk *compute.AttachedDisk, config *Config) []map[string]interface{} {
+func flattenBootDisk(d *schema.ResourceData, disk *compute.AttachedDisk, config *transport_tpg.Config) []map[string]interface{} {
 	result := map[string]interface{}{
 		"auto_delete": disk.AutoDelete,
 		"device_name": disk.DeviceName,
 		"mode":        disk.Mode,
-		"source":      ConvertSelfLinkToV1(disk.Source),
+		"source":      tpgresource.ConvertSelfLinkToV1(disk.Source),
 		// disk_encryption_key_raw is not returned from the API, so copy it from what the user
 		// originally specified to avoid diffs.
 		"disk_encryption_key_raw": d.Get("boot_disk.0.disk_encryption_key_raw"),
@@ -2496,7 +2502,7 @@ func flattenBootDisk(d *schema.ResourceData, disk *compute.AttachedDisk, config 
 		}
 	} else {
 		result["initialize_params"] = []map[string]interface{}{{
-			"type": GetResourceNameFromSelfLink(diskDetails.Type),
+			"type": tpgresource.GetResourceNameFromSelfLink(diskDetails.Type),
 			// If the config specifies a family name that doesn't match the image name, then
 			// the diff won't be properly suppressed. See DiffSuppressFunc for this field.
 			"image":  diskDetails.SourceImage,
@@ -2519,7 +2525,7 @@ func flattenBootDisk(d *schema.ResourceData, disk *compute.AttachedDisk, config 
 	return []map[string]interface{}{result}
 }
 
-func expandScratchDisks(d *schema.ResourceData, config *Config, project string) ([]*compute.AttachedDisk, error) {
+func expandScratchDisks(d *schema.ResourceData, config *transport_tpg.Config, project string) ([]*compute.AttachedDisk, error) {
 	diskType, err := readDiskType(config, d, "local-ssd")
 	if err != nil {
 		return nil, fmt.Errorf("Error loading disk type 'local-ssd': %s", err)

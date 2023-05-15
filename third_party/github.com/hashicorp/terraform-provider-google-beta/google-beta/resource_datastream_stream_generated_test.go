@@ -21,10 +21,14 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccDatastreamStream_datastreamStreamBasicExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -33,7 +37,7 @@ func TestAccDatastreamStream_datastreamStreamBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
@@ -184,7 +188,7 @@ resource "google_datastream_stream" "default" {
 }
 
 func TestAccDatastreamStream_datastreamStreamFullExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -194,7 +198,7 @@ func TestAccDatastreamStream_datastreamStreamFullExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
@@ -416,7 +420,7 @@ resource "google_datastream_stream" "default" {
 }
 
 func TestAccDatastreamStream_datastreamStreamPostgresqlBigqueryDatasetIdExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -424,7 +428,7 @@ func TestAccDatastreamStream_datastreamStreamPostgresqlBigqueryDatasetIdExample(
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
@@ -458,7 +462,7 @@ resource "google_bigquery_dataset" "postgres" {
 resource "google_datastream_stream" "default" {
   display_name  = "postgres to bigQuery"
   location      = "us-central1"
-  stream_id     = "postgres-to-big-query%{random_suffix}"
+  stream_id     = "tf-test-postgres-bigquery%{random_suffix}"
 
    source_config {
     source_connection_profile = google_datastream_connection_profile.source_connection_profile.id
@@ -483,12 +487,12 @@ resource "google_datastream_stream" "default" {
 resource "google_datastream_connection_profile" "destination_connection_profile2" {
     display_name          = "Connection profile"
     location              = "us-central1"
-    connection_profile_id = "tf-test-destination-profile%{random_suffix}"
+    connection_profile_id = "tf-test-dest-profile%{random_suffix}"
     bigquery_profile {}
 }
 
 resource "google_sql_database_instance" "instance" {
-    name             = "tf-test-my-instance%{random_suffix}"
+    name             = "tf-test-instance-name%{random_suffix}"
     database_version = "MYSQL_8_0"
     region           = "us-central1"
     settings {
@@ -536,7 +540,7 @@ resource "random_password" "pwd" {
 }
 
 resource "google_sql_user" "user" {
-    name     = "user%{random_suffix}"
+    name     = "tf-test-my-user%{random_suffix}"
     instance = google_sql_database_instance.instance.name
     host     = "%"
     password = random_password.pwd.result
@@ -557,7 +561,7 @@ resource "google_datastream_connection_profile" "source_connection_profile" {
 }
 
 func TestAccDatastreamStream_datastreamStreamBigqueryExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -567,7 +571,7 @@ func TestAccDatastreamStream_datastreamStreamBigqueryExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
@@ -719,7 +723,7 @@ func testAccCheckDatastreamStreamDestroyProducer(t *testing.T) func(s *terraform
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{DatastreamBasePath}}projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DatastreamBasePath}}projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
 			if err != nil {
 				return err
 			}
@@ -730,7 +734,7 @@ func testAccCheckDatastreamStreamDestroyProducer(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("DatastreamStream still exists at %s", url)
 			}

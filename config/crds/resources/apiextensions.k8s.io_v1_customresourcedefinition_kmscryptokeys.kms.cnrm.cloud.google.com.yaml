@@ -114,9 +114,9 @@ spec:
                   letter 's' (seconds). It must be greater than a day (ie, 86400).
                 type: string
               skipInitialVersionCreation:
-                description: "Immutable. If set to true, the request will create a
-                  CryptoKey without any CryptoKeyVersions. \nYou must use the 'google_kms_key_ring_import_job'
-                  resource to import the CryptoKeyVersion."
+                description: |-
+                  Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions.
+                  You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion.
                 type: boolean
               versionTemplate:
                 description: A template describing settings for new crypto key versions.

@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceVertexAIEndpoint() *schema.Resource {
@@ -92,6 +95,12 @@ func ResourceVertexAIEndpoint() *schema.Resource {
 				Optional:    true,
 				ForceNew:    true,
 				Description: `The full name of the Google Compute Engine [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks) to which the Endpoint should be peered. Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network. Only one of the fields, network or enable_private_service_connect, can be set. [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/insert): 'projects/{project}/global/networks/{network}'. Where '{project}' is a project number, as in '12345', and '{network}' is network name.`,
+			},
+			"region": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Description: `The region for the resource`,
 			},
 			"create_time": {
 				Type:        schema.TypeString,
@@ -289,8 +298,8 @@ func ResourceVertexAIEndpoint() *schema.Resource {
 }
 
 func resourceVertexAIEndpointCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -299,35 +308,35 @@ func resourceVertexAIEndpointCreate(d *schema.ResourceData, meta interface{}) er
 	displayNameProp, err := expandVertexAIEndpointDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	descriptionProp, err := expandVertexAIEndpointDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	labelsProp, err := expandVertexAIEndpointLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	encryptionSpecProp, err := expandVertexAIEndpointEncryptionSpec(d.Get("encryption_spec"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("encryption_spec"); !isEmptyValue(reflect.ValueOf(encryptionSpecProp)) && (ok || !reflect.DeepEqual(v, encryptionSpecProp)) {
+	} else if v, ok := d.GetOkExists("encryption_spec"); !tpgresource.IsEmptyValue(reflect.ValueOf(encryptionSpecProp)) && (ok || !reflect.DeepEqual(v, encryptionSpecProp)) {
 		obj["encryptionSpec"] = encryptionSpecProp
 	}
 	networkProp, err := expandVertexAIEndpointNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints?endpointId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints?endpointId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -335,24 +344,24 @@ func resourceVertexAIEndpointCreate(d *schema.ResourceData, meta interface{}) er
 	log.Printf("[DEBUG] Creating new Endpoint: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Endpoint: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Endpoint: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -372,7 +381,7 @@ func resourceVertexAIEndpointCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -384,33 +393,33 @@ func resourceVertexAIEndpointCreate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceVertexAIEndpointRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Endpoint: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("VertexAIEndpoint %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("VertexAIEndpoint %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -449,15 +458,15 @@ func resourceVertexAIEndpointRead(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceVertexAIEndpointUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Endpoint: %s", err)
 	}
@@ -467,23 +476,23 @@ func resourceVertexAIEndpointUpdate(d *schema.ResourceData, meta interface{}) er
 	displayNameProp, err := expandVertexAIEndpointDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	descriptionProp, err := expandVertexAIEndpointDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	labelsProp, err := expandVertexAIEndpointLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -504,17 +513,17 @@ func resourceVertexAIEndpointUpdate(d *schema.ResourceData, meta interface{}) er
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Endpoint %q: %s", d.Id(), err)
@@ -526,21 +535,21 @@ func resourceVertexAIEndpointUpdate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceVertexAIEndpointDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Endpoint: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -549,13 +558,13 @@ func resourceVertexAIEndpointDelete(d *schema.ResourceData, meta interface{}) er
 	log.Printf("[DEBUG] Deleting Endpoint %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Endpoint")
+		return transport_tpg.HandleNotFoundError(err, d, "Endpoint")
 	}
 
 	err = VertexAIOperationWaitTime(
@@ -571,7 +580,7 @@ func resourceVertexAIEndpointDelete(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceVertexAIEndpointImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/endpoints/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -581,7 +590,7 @@ func resourceVertexAIEndpointImport(d *schema.ResourceData, meta interface{}) ([
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -590,15 +599,15 @@ func resourceVertexAIEndpointImport(d *schema.ResourceData, meta interface{}) ([
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenVertexAIEndpointDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -627,7 +636,7 @@ func flattenVertexAIEndpointDeployedModels(v interface{}, d *schema.ResourceData
 	}
 	return transformed
 }
-func flattenVertexAIEndpointDeployedModelsDedicatedResources(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsDedicatedResources(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -646,7 +655,7 @@ func flattenVertexAIEndpointDeployedModelsDedicatedResources(v interface{}, d *s
 		flattenVertexAIEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpecs(original["autoscalingMetricSpecs"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMachineSpec(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMachineSpec(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -663,15 +672,15 @@ func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMachineSpec(v interf
 		flattenVertexAIEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorCount(original["acceleratorCount"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMachineSpecMachineType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMachineSpecMachineType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -688,7 +697,7 @@ func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMachineSpecAccelerat
 	return v // let terraform core handle it otherwise
 }
 
-func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMinReplicaCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMinReplicaCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -705,7 +714,7 @@ func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMinReplicaCount(v in
 	return v // let terraform core handle it otherwise
 }
 
-func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMaxReplicaCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMaxReplicaCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -722,7 +731,7 @@ func flattenVertexAIEndpointDeployedModelsDedicatedResourcesMaxReplicaCount(v in
 	return v // let terraform core handle it otherwise
 }
 
-func flattenVertexAIEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpecs(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpecs(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -741,11 +750,11 @@ func flattenVertexAIEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpe
 	}
 	return transformed
 }
-func flattenVertexAIEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpecsMetricName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpecsMetricName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpecsTarget(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpecsTarget(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -762,7 +771,7 @@ func flattenVertexAIEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpe
 	return v // let terraform core handle it otherwise
 }
 
-func flattenVertexAIEndpointDeployedModelsAutomaticResources(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsAutomaticResources(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -777,7 +786,7 @@ func flattenVertexAIEndpointDeployedModelsAutomaticResources(v interface{}, d *s
 		flattenVertexAIEndpointDeployedModelsAutomaticResourcesMaxReplicaCount(original["maxReplicaCount"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVertexAIEndpointDeployedModelsAutomaticResourcesMinReplicaCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsAutomaticResourcesMinReplicaCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -794,7 +803,7 @@ func flattenVertexAIEndpointDeployedModelsAutomaticResourcesMinReplicaCount(v in
 	return v // let terraform core handle it otherwise
 }
 
-func flattenVertexAIEndpointDeployedModelsAutomaticResourcesMaxReplicaCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsAutomaticResourcesMaxReplicaCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -811,35 +820,35 @@ func flattenVertexAIEndpointDeployedModelsAutomaticResourcesMaxReplicaCount(v in
 	return v // let terraform core handle it otherwise
 }
 
-func flattenVertexAIEndpointDeployedModelsId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsModel(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsModel(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsModelVersionId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsModelVersionId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsServiceAccount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsServiceAccount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsEnableAccessLogging(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsEnableAccessLogging(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsPrivateEndpoints(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsPrivateEndpoints(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -858,43 +867,43 @@ func flattenVertexAIEndpointDeployedModelsPrivateEndpoints(v interface{}, d *sch
 		flattenVertexAIEndpointDeployedModelsPrivateEndpointsServiceAttachment(original["serviceAttachment"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVertexAIEndpointDeployedModelsPrivateEndpointsPredictHttpUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsPrivateEndpointsPredictHttpUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsPrivateEndpointsExplainHttpUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsPrivateEndpointsExplainHttpUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsPrivateEndpointsHealthHttpUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsPrivateEndpointsHealthHttpUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsPrivateEndpointsServiceAttachment(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsPrivateEndpointsServiceAttachment(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsSharedResources(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsSharedResources(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointDeployedModelsEnableContainerLogging(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointDeployedModelsEnableContainerLogging(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointEncryptionSpec(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointEncryptionSpec(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -907,27 +916,27 @@ func flattenVertexAIEndpointEncryptionSpec(v interface{}, d *schema.ResourceData
 		flattenVertexAIEndpointEncryptionSpecKmsKeyName(original["kmsKeyName"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVertexAIEndpointEncryptionSpecKmsKeyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointEncryptionSpecKmsKeyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIEndpointModelDeploymentMonitoringJob(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIEndpointModelDeploymentMonitoringJob(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandVertexAIEndpointDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIEndpointDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIEndpointDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIEndpointDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIEndpointLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandVertexAIEndpointLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -938,7 +947,7 @@ func expandVertexAIEndpointLabels(v interface{}, d TerraformResourceData, config
 	return m, nil
 }
 
-func expandVertexAIEndpointEncryptionSpec(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIEndpointEncryptionSpec(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -950,17 +959,17 @@ func expandVertexAIEndpointEncryptionSpec(v interface{}, d TerraformResourceData
 	transformedKmsKeyName, err := expandVertexAIEndpointEncryptionSpecKmsKeyName(original["kms_key_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kmsKeyName"] = transformedKmsKeyName
 	}
 
 	return transformed, nil
 }
 
-func expandVertexAIEndpointEncryptionSpecKmsKeyName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIEndpointEncryptionSpecKmsKeyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIEndpointNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIEndpointNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

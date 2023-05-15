@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccSourceRepoRepository_sourcerepoRepositoryBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccSourceRepoRepository_sourcerepoRepositoryBasicExample(t *testing.T) 
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSourceRepoRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -63,7 +67,7 @@ func TestAccSourceRepoRepository_sourcerepoRepositoryFullExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSourceRepoRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -113,7 +117,7 @@ func testAccCheckSourceRepoRepositoryDestroyProducer(t *testing.T) func(s *terra
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{SourceRepoBasePath}}projects/{{project}}/repos/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{SourceRepoBasePath}}projects/{{project}}/repos/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -124,7 +128,7 @@ func testAccCheckSourceRepoRepositoryDestroyProducer(t *testing.T) func(s *terra
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("SourceRepoRepository still exists at %s", url)
 			}

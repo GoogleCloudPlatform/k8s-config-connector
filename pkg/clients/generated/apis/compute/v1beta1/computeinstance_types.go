@@ -474,7 +474,9 @@ type ComputeInstanceStatus struct {
 	// +optional
 	CpuPlatform *string `json:"cpuPlatform,omitempty"`
 
-	/* Current status of the instance. */
+	/* Current status of the instance.
+	This could be one of the following values: PROVISIONING, STAGING, RUNNING, STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED.
+	For more information about the status of the instance, see [Instance life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle). */
 	// +optional
 	CurrentStatus *string `json:"currentStatus,omitempty"`
 

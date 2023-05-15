@@ -61,6 +61,10 @@ spec:
               description:
                 description: A human-readable description of the resource.
                 type: string
+              location:
+                description: The Certificate Manager location. If not specified, "global"
+                  is used.
+                type: string
               managed:
                 description: |-
                   Immutable. Configuration and state of a Managed Certificate.
@@ -176,7 +180,7 @@ spec:
                 properties:
                   certificatePem:
                     description: |-
-                      DEPRECATED. Deprecated in favor of `pem_certificate`. **Deprecated** The certificate chain in PEM-encoded form.
+                      DEPRECATED. Deprecated in favor of `pem_certificate`. Immutable. **Deprecated** The certificate chain in PEM-encoded form.
 
                       Leaf certificate comes first, followed by intermediate ones if any.
                     oneOf:
@@ -218,13 +222,13 @@ spec:
                     type: object
                   pemCertificate:
                     description: |-
-                      The certificate chain in PEM-encoded form.
+                      Immutable. The certificate chain in PEM-encoded form.
 
                       Leaf certificate comes first, followed by intermediate ones if any.
                     type: string
                   pemPrivateKey:
-                    description: The private key of the leaf certificate in PEM-encoded
-                      form.
+                    description: Immutable. The private key of the leaf certificate
+                      in PEM-encoded form.
                     oneOf:
                     - not:
                         required:
@@ -264,8 +268,8 @@ spec:
                     type: object
                   privateKeyPem:
                     description: DEPRECATED. Deprecated in favor of `pem_private_key`.
-                      **Deprecated** The private key of the leaf certificate in PEM-encoded
-                      form.
+                      Immutable. **Deprecated** The private key of the leaf certificate
+                      in PEM-encoded form.
                     oneOf:
                     - not:
                         required:

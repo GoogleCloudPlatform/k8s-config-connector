@@ -10,6 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"cloud.google.com/go/bigtable"
 )
 
@@ -164,15 +167,15 @@ func ResourceBigtableInstance() *schema.Resource {
 }
 
 func resourceBigtableInstanceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	ctx := context.Background()
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -188,7 +191,7 @@ func resourceBigtableInstanceCreate(d *schema.ResourceData, meta interface{}) er
 	conf.DisplayName = displayName.(string)
 
 	if _, ok := d.GetOk("labels"); ok {
-		conf.Labels = expandLabels(d)
+		conf.Labels = tpgresource.ExpandLabels(d)
 	}
 
 	switch d.Get("instance_type").(string) {
@@ -215,7 +218,7 @@ func resourceBigtableInstanceCreate(d *schema.ResourceData, meta interface{}) er
 		return fmt.Errorf("Error creating instance. %s", err)
 	}
 
-	id, err := ReplaceVars(d, config, "projects/{{project}}/instances/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/instances/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -225,14 +228,14 @@ func resourceBigtableInstanceCreate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceBigtableInstanceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	ctx := context.Background()
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -248,7 +251,7 @@ func resourceBigtableInstanceRead(d *schema.ResourceData, meta interface{}) erro
 
 	instance, err := c.InstanceInfo(ctx, instanceName)
 	if err != nil {
-		if isNotFoundGrpcError(err) {
+		if tpgresource.IsNotFoundGrpcError(err) {
 			log.Printf("[WARN] Removing %s because it's gone", instanceName)
 			d.SetId("")
 			return nil
@@ -310,14 +313,14 @@ func resourceBigtableInstanceRead(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceBigtableInstanceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	ctx := context.Background()
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -339,7 +342,7 @@ func resourceBigtableInstanceUpdate(d *schema.ResourceData, meta interface{}) er
 	conf.DisplayName = displayName.(string)
 
 	if d.HasChange("labels") {
-		conf.Labels = expandLabels(d)
+		conf.Labels = tpgresource.ExpandLabels(d)
 	}
 
 	switch d.Get("instance_type").(string) {
@@ -363,15 +366,15 @@ func resourceBigtableInstanceUpdate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceBigtableInstanceDestroy(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	ctx := context.Background()
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -439,7 +442,7 @@ func getUnavailableClusterZones(clusters []interface{}, unavailableZones []strin
 	return zones
 }
 
-func expandBigtableClusters(clusters []interface{}, instanceID string, config *Config) ([]bigtable.ClusterConfig, error) {
+func expandBigtableClusters(clusters []interface{}, instanceID string, config *transport_tpg.Config) ([]bigtable.ClusterConfig, error) {
 	results := make([]bigtable.ClusterConfig, 0, len(clusters))
 	for _, c := range clusters {
 		cluster := c.(map[string]interface{})
@@ -480,14 +483,14 @@ func expandBigtableClusters(clusters []interface{}, instanceID string, config *C
 
 // getBigtableZone reads the "zone" value from the given resource data and falls back
 // to provider's value if not given.  If neither is provided, returns an error.
-func getBigtableZone(z string, config *Config) (string, error) {
+func getBigtableZone(z string, config *transport_tpg.Config) (string, error) {
 	if z == "" {
 		if config.Zone != "" {
 			return config.Zone, nil
 		}
 		return "", fmt.Errorf("cannot determine zone: set in cluster.0.zone, or set provider-level zone")
 	}
-	return GetResourceNameFromSelfLink(z), nil
+	return tpgresource.GetResourceNameFromSelfLink(z), nil
 }
 
 // resourceBigtableInstanceClusterReorderTypeList causes the cluster block to
@@ -611,7 +614,7 @@ func resourceBigtableInstanceClusterReorderTypeList(_ context.Context, diff *sch
 }
 
 func resourceBigtableInstanceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/instances/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
@@ -621,7 +624,7 @@ func resourceBigtableInstanceImport(d *schema.ResourceData, meta interface{}) ([
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/instances/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/instances/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

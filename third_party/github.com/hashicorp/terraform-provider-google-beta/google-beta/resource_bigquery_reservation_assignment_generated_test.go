@@ -24,18 +24,21 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccBigqueryReservationAssignment_BasicHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
+		"project_name":  acctest.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigqueryReservationAssignmentDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -97,7 +100,7 @@ func testAccCheckBigqueryReservationAssignmentDestroyProducer(t *testing.T) func
 				State:       bigqueryreservation.AssignmentStateEnumRef(rs.Primary.Attributes["state"]),
 			}
 
-			client := NewDCLBigqueryReservationClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLBigqueryReservationClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetAssignment(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_bigquery_reservation_assignment still exists %v", obj)

@@ -24,19 +24,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccApikeysKey_AndroidKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
+		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApikeysKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -63,13 +66,13 @@ func TestAccApikeysKey_BasicKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
+		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApikeysKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -96,13 +99,13 @@ func TestAccApikeysKey_IosKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
+		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApikeysKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -129,13 +132,13 @@ func TestAccApikeysKey_MinimalKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
+		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApikeysKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -154,13 +157,13 @@ func TestAccApikeysKey_ServerKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
+		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApikeysKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -465,7 +468,7 @@ func testAccCheckApikeysKeyDestroyProducer(t *testing.T) func(s *terraform.State
 				Uid:         dcl.StringOrNil(rs.Primary.Attributes["uid"]),
 			}
 
-			client := NewDCLApikeysClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLApikeysClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetKey(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_apikeys_key still exists %v", obj)

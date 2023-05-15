@@ -7,6 +7,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
@@ -56,8 +59,8 @@ Examples: US, EU, asia-northeast1. The default value is US.`,
 }
 
 func resourceTagsLocationTagBindingCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -66,17 +69,17 @@ func resourceTagsLocationTagBindingCreate(d *schema.ResourceData, meta interface
 	parentProp, err := expandNestedTagsLocationTagBindingParent(d.Get("parent"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("parent"); !isEmptyValue(reflect.ValueOf(parentProp)) && (ok || !reflect.DeepEqual(v, parentProp)) {
+	} else if v, ok := d.GetOkExists("parent"); !tpgresource.IsEmptyValue(reflect.ValueOf(parentProp)) && (ok || !reflect.DeepEqual(v, parentProp)) {
 		obj["parent"] = parentProp
 	}
 	tagValueProp, err := expandNestedTagsLocationTagBindingTagValue(d.Get("tag_value"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("tag_value"); !isEmptyValue(reflect.ValueOf(tagValueProp)) && (ok || !reflect.DeepEqual(v, tagValueProp)) {
+	} else if v, ok := d.GetOkExists("tag_value"); !tpgresource.IsEmptyValue(reflect.ValueOf(tagValueProp)) && (ok || !reflect.DeepEqual(v, tagValueProp)) {
 		obj["tagValue"] = tagValueProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{TagsLocationBasePath}}tagBindings")
+	url, err := tpgresource.ReplaceVars(d, config, "{{TagsLocationBasePath}}tagBindings")
 	log.Printf("url for TagsLocation: %s", url)
 	if err != nil {
 		return err
@@ -87,11 +90,11 @@ func resourceTagsLocationTagBindingCreate(d *schema.ResourceData, meta interface
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating LocationTagBinding: %s", err)
 	}
@@ -124,7 +127,7 @@ func resourceTagsLocationTagBindingCreate(d *schema.ResourceData, meta interface
 		return err
 	}
 
-	id, err := ReplaceVars(d, config, "{{location}}/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{location}}/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -136,13 +139,13 @@ func resourceTagsLocationTagBindingCreate(d *schema.ResourceData, meta interface
 }
 
 func resourceTagsLocationTagBindingRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{TagsLocationBasePath}}tagBindings/?parent={{parent}}&pageSize=300")
+	url, err := tpgresource.ReplaceVars(d, config, "{{TagsLocationBasePath}}tagBindings/?parent={{parent}}&pageSize=300")
 	if err != nil {
 		return err
 	}
@@ -150,13 +153,13 @@ func resourceTagsLocationTagBindingRead(d *schema.ResourceData, meta interface{}
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("TagsLocationTagBinding %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("TagsLocationTagBinding %q", d.Id()))
 	}
 	log.Printf("[DEBUG] Skipping res with name for import = %#v,)", res)
 
@@ -169,13 +172,13 @@ func resourceTagsLocationTagBindingRead(d *schema.ResourceData, meta interface{}
 	//if there are more than 300 bindings - handling pagination over here
 	if pageToken, ok := res["nextPageToken"].(string); ok {
 		for pageToken != "" {
-			url, err = AddQueryParams(url, map[string]string{"pageToken": fmt.Sprintf("%s", res["nextPageToken"])})
+			url, err = transport_tpg.AddQueryParams(url, map[string]string{"pageToken": fmt.Sprintf("%s", res["nextPageToken"])})
 			if err != nil {
-				return handleNotFoundError(err, d, fmt.Sprintf("TagsLocationTagBinding %q", d.Id()))
+				return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("TagsLocationTagBinding %q", d.Id()))
 			}
-			resp, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+			resp, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 			if err != nil {
-				return handleNotFoundError(err, d, fmt.Sprintf("TagsLocationTagBinding %q", d.Id()))
+				return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("TagsLocationTagBinding %q", d.Id()))
 			}
 			if resp == nil {
 				d.SetId("")
@@ -216,15 +219,15 @@ func resourceTagsLocationTagBindingRead(d *schema.ResourceData, meta interface{}
 }
 
 func resourceTagsLocationTagBindingDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{TagsLocationBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{TagsLocationBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -233,13 +236,13 @@ func resourceTagsLocationTagBindingDelete(d *schema.ResourceData, meta interface
 	log.Printf("[DEBUG] Deleting LocationTagBinding %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "LocationTagBinding")
+		return transport_tpg.HandleNotFoundError(err, d, "LocationTagBinding")
 	}
 
 	err = TagsLocationOperationWaitTime(
@@ -255,7 +258,7 @@ func resourceTagsLocationTagBindingDelete(d *schema.ResourceData, meta interface
 }
 
 func resourceTagsLocationTagBindingImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{"(?P<location>[^/]+)/tagBindings/(?P<parent>[^/]+)/tagValues/(?P<tag_value>[^/]+)"}, d, config); err != nil {
 		return nil, err
 	}
@@ -264,7 +267,7 @@ func resourceTagsLocationTagBindingImport(d *schema.ResourceData, meta interface
 	parentProper := strings.ReplaceAll(parent, "%2F", "/")
 	d.Set("parent", parentProper)
 	d.Set("name", fmt.Sprintf("tagBindings/%s/tagValues/%s", parent, d.Get("tag_value").(string)))
-	id, err := ReplaceVars(d, config, "{{location}}/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{location}}/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -273,23 +276,23 @@ func resourceTagsLocationTagBindingImport(d *schema.ResourceData, meta interface
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenNestedTagsLocationTagBindingName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedTagsLocationTagBindingName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedTagsLocationTagBindingParent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedTagsLocationTagBindingParent(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedTagsLocationTagBindingTagValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedTagsLocationTagBindingTagValue(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandNestedTagsLocationTagBindingParent(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedTagsLocationTagBindingParent(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedTagsLocationTagBindingTagValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedTagsLocationTagBindingTagValue(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
@@ -322,7 +325,7 @@ func flattenNestedTagsLocationTagBinding(d *schema.ResourceData, meta interface{
 
 func resourceTagsLocationTagBindingFindNestedObjectInList(d *schema.ResourceData, meta interface{}, items []interface{}) (index int, item map[string]interface{}, err error) {
 	expectedName := d.Get("name")
-	expectedFlattenedName := flattenNestedTagsLocationTagBindingName(expectedName, d, meta.(*Config))
+	expectedFlattenedName := flattenNestedTagsLocationTagBindingName(expectedName, d, meta.(*transport_tpg.Config))
 
 	// Search list for this resource.
 	for idx, itemRaw := range items {
@@ -331,9 +334,9 @@ func resourceTagsLocationTagBindingFindNestedObjectInList(d *schema.ResourceData
 		}
 
 		item := itemRaw.(map[string]interface{})
-		itemName := flattenNestedTagsLocationTagBindingName(item["name"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemName)) && isEmptyValue(reflect.ValueOf(expectedFlattenedName))) && !reflect.DeepEqual(itemName, expectedFlattenedName) {
+		itemName := flattenNestedTagsLocationTagBindingName(item["name"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemName)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedName))) && !reflect.DeepEqual(itemName, expectedFlattenedName) {
 			log.Printf("[DEBUG] Skipping item with name= %#v, looking for %#v)", itemName, expectedFlattenedName)
 			continue
 		}

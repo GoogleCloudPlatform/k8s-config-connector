@@ -21,19 +21,23 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccApigeeAddonsConfig_apigeeAddonsTestExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
+		"org_id":          acctest.GetTestOrgFromEnv(t),
+		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
 		"random_suffix":   RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApigeeAddonsConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -144,7 +148,7 @@ func testAccCheckApigeeAddonsConfigDestroyProducer(t *testing.T) func(s *terrafo
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ApigeeBasePath}}organizations/{{org}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ApigeeBasePath}}organizations/{{org}}")
 			if err != nil {
 				return err
 			}
@@ -155,11 +159,11 @@ func testAccCheckApigeeAddonsConfigDestroyProducer(t *testing.T) func(s *terrafo
 				billingProject = config.BillingProject
 			}
 
-			res, err := SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 
 			if err != nil {
 				// If the Apigee org doesn't exist, then a 403 can also be returned.
-				if IsGoogleApiErrorWithCode(err, 403) || IsGoogleApiErrorWithCode(err, 404) {
+				if transport_tpg.IsGoogleApiErrorWithCode(err, 403) || transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 					return nil
 				} else {
 					return err

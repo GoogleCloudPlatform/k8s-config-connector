@@ -6,6 +6,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 
 	compute "google.golang.org/api/compute/v0.beta"
 )
@@ -19,7 +20,7 @@ func TestAccComputeInstanceFromMachineImage_basic(t *testing.T) {
 	resourceName := "google_compute_instance_from_machine_image.foobar"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeInstanceFromMachineImageDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -47,7 +48,7 @@ func TestAccComputeInstanceFromMachineImage_overrideMetadataDotStartupScript(t *
 	resourceName := "google_compute_instance_from_machine_image.foobar"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeInstanceFromMachineImageDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -70,12 +71,12 @@ func TestAccComputeInstanceFromMachineImage_diffProject(t *testing.T) {
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	generatedInstanceName := fmt.Sprintf("tf-test-generated-%s", RandString(t, 10))
 	resourceName := "google_compute_instance_from_machine_image.foobar"
-	org := GetTestOrgFromEnv(t)
-	billingId := GetTestBillingAccountFromEnv(t)
+	org := acctest.GetTestOrgFromEnv(t)
+	billingId := acctest.GetTestBillingAccountFromEnv(t)
 	projectID := fmt.Sprintf("tf-test-%d", RandInt(t))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeInstanceFromMachineImageDestroyProducer(t),
 		Steps: []resource.TestStep{

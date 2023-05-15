@@ -72,7 +72,7 @@ type AlloyDBInstanceSpec struct {
 	// +optional
 	GceZone *string `json:"gceZone,omitempty"`
 
-	/* Immutable. The type of the instance. Possible values: ["PRIMARY", "READ_POOL"]. */
+	/* Immutable. The type of the instance. If the instance type is READ_POOL, provide the associated PRIMARY instance in the 'depends_on' meta-data attribute. Possible values: ["PRIMARY", "READ_POOL"]. */
 	InstanceType string `json:"instanceType"`
 
 	/* Configurations for the machines that host the underlying database engine. */

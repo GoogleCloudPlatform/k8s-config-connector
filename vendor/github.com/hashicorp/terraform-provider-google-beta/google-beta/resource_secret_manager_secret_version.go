@@ -24,11 +24,15 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"google.golang.org/api/googleapi"
 )
 
 func resourceSecretManagerSecretVersionUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	_, err := expandSecretManagerSecretVersionEnabled(d.Get("enabled"), d, config)
 	if err != nil {
@@ -104,8 +108,8 @@ func ResourceSecretManagerSecretVersion() *schema.Resource {
 }
 
 func resourceSecretManagerSecretVersionCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -114,17 +118,17 @@ func resourceSecretManagerSecretVersionCreate(d *schema.ResourceData, meta inter
 	stateProp, err := expandSecretManagerSecretVersionEnabled(d.Get("enabled"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enabled"); !isEmptyValue(reflect.ValueOf(stateProp)) && (ok || !reflect.DeepEqual(v, stateProp)) {
+	} else if v, ok := d.GetOkExists("enabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(stateProp)) && (ok || !reflect.DeepEqual(v, stateProp)) {
 		obj["state"] = stateProp
 	}
 	payloadProp, err := expandSecretManagerSecretVersionPayload(nil, d, config)
 	if err != nil {
 		return err
-	} else if !isEmptyValue(reflect.ValueOf(payloadProp)) {
+	} else if !tpgresource.IsEmptyValue(reflect.ValueOf(payloadProp)) {
 		obj["payload"] = payloadProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecretManagerBasePath}}{{secret}}:addVersion")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecretManagerBasePath}}{{secret}}:addVersion")
 	if err != nil {
 		return err
 	}
@@ -133,11 +137,11 @@ func resourceSecretManagerSecretVersionCreate(d *schema.ResourceData, meta inter
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating SecretVersion: %s", err)
 	}
@@ -146,7 +150,7 @@ func resourceSecretManagerSecretVersionCreate(d *schema.ResourceData, meta inter
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -173,13 +177,13 @@ func resourceSecretManagerSecretVersionCreate(d *schema.ResourceData, meta inter
 }
 
 func resourceSecretManagerSecretVersionRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecretManagerBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecretManagerBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -187,13 +191,13 @@ func resourceSecretManagerSecretVersionRead(d *schema.ResourceData, meta interfa
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("SecretManagerSecretVersion %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("SecretManagerSecretVersion %q", d.Id()))
 	}
 
 	if err := d.Set("enabled", flattenSecretManagerSecretVersionEnabled(res["state"], d, config)); err != nil {
@@ -231,15 +235,15 @@ func resourceSecretManagerSecretVersionRead(d *schema.ResourceData, meta interfa
 }
 
 func resourceSecretManagerSecretVersionDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{SecretManagerBasePath}}{{name}}:destroy")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecretManagerBasePath}}{{name}}:destroy")
 	if err != nil {
 		return err
 	}
@@ -248,13 +252,13 @@ func resourceSecretManagerSecretVersionDelete(d *schema.ResourceData, meta inter
 	log.Printf("[DEBUG] Deleting SecretVersion %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "SecretVersion")
+		return transport_tpg.HandleNotFoundError(err, d, "SecretVersion")
 	}
 
 	log.Printf("[DEBUG] Finished deleting SecretVersion %q: %#v", d.Id(), res)
@@ -262,7 +266,7 @@ func resourceSecretManagerSecretVersionDelete(d *schema.ResourceData, meta inter
 }
 
 func resourceSecretManagerSecretVersionImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
@@ -290,7 +294,7 @@ func resourceSecretManagerSecretVersionImport(d *schema.ResourceData, meta inter
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenSecretManagerSecretVersionEnabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecretManagerSecretVersionEnabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v.(string) == "ENABLED" {
 		return true
 	}
@@ -298,11 +302,11 @@ func flattenSecretManagerSecretVersionEnabled(v interface{}, d *schema.ResourceD
 	return false
 }
 
-func flattenSecretManagerSecretVersionName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecretManagerSecretVersionName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecretManagerSecretVersionVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecretManagerSecretVersionVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	name := d.Get("name").(string)
 	secretRegex := regexp.MustCompile("projects/(.+)/secrets/(.+)/versions/(.+)$")
 
@@ -314,15 +318,15 @@ func flattenSecretManagerSecretVersionVersion(v interface{}, d *schema.ResourceD
 	return parts[3]
 }
 
-func flattenSecretManagerSecretVersionCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecretManagerSecretVersionCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecretManagerSecretVersionDestroyTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecretManagerSecretVersionDestroyTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecretManagerSecretVersionPayload(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecretManagerSecretVersionPayload(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	transformed := make(map[string]interface{})
 
 	// if this secret version is disabled, the api will return an error, as the value cannot be accessed, return what we have
@@ -331,7 +335,7 @@ func flattenSecretManagerSecretVersionPayload(v interface{}, d *schema.ResourceD
 		return []interface{}{transformed}
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecretManagerBasePath}}{{name}}:access")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecretManagerBasePath}}{{name}}:access")
 	if err != nil {
 		return err
 	}
@@ -339,12 +343,12 @@ func flattenSecretManagerSecretVersionPayload(v interface{}, d *schema.ResourceD
 	parts := strings.Split(d.Get("name").(string), "/")
 	project := parts[1]
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	accessRes, err := SendRequest(config, "GET", project, url, userAgent, nil)
+	accessRes, err := transport_tpg.SendRequest(config, "GET", project, url, userAgent, nil)
 	if err != nil {
 		return err
 	}
@@ -357,13 +361,13 @@ func flattenSecretManagerSecretVersionPayload(v interface{}, d *schema.ResourceD
 	return []interface{}{transformed}
 }
 
-func expandSecretManagerSecretVersionEnabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSecretManagerSecretVersionEnabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	name := d.Get("name").(string)
 	if name == "" {
 		return "", nil
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecretManagerBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecretManagerBasePath}}{{name}}")
 	if err != nil {
 		return nil, err
 	}
@@ -377,12 +381,12 @@ func expandSecretManagerSecretVersionEnabled(v interface{}, d TerraformResourceD
 	parts := strings.Split(name, "/")
 	project := parts[1]
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = SendRequest(config, "POST", project, url, userAgent, nil)
+	_, err = transport_tpg.SendRequest(config, "POST", project, url, userAgent, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -390,19 +394,19 @@ func expandSecretManagerSecretVersionEnabled(v interface{}, d TerraformResourceD
 	return nil, nil
 }
 
-func expandSecretManagerSecretVersionPayload(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSecretManagerSecretVersionPayload(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	transformed := make(map[string]interface{})
 	transformedSecretData, err := expandSecretManagerSecretVersionPayloadSecretData(d.Get("secret_data"), d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSecretData); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSecretData); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["data"] = transformedSecretData
 	}
 
 	return transformed, nil
 }
 
-func expandSecretManagerSecretVersionPayloadSecretData(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSecretManagerSecretVersionPayloadSecretData(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	if v == nil {
 		return nil, nil
 	}

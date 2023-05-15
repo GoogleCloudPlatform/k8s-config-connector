@@ -24,6 +24,7 @@ import (
 
 	"google.golang.org/api/googleapi"
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
+	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl/operations"
 )
 
 func expandHubReferenceLink(_ *Client, val *string, _ *Membership) (interface{}, error) {
@@ -253,6 +254,28 @@ func (op *deleteFeatureMembershipOperation) do(ctx context.Context, r *FeatureMe
 		"membershipSpecs": membershipSpecs,
 	}
 	return sendFeatureUpdate(ctx, req, c, u)
+}
+
+func sendFeatureUpdate(ctx context.Context, req map[string]any, c *Client, u string) error {
+	c.Config.Logger.Infof("Created update: %#v", req)
+	body, err := marshalUpdateFeatureUpdateFeatureRequest(c, req)
+	if err != nil {
+		return err
+	}
+	u, err = dcl.AddQueryParams(u, map[string]string{"updateMask": "membershipSpecs"})
+	if err != nil {
+		return err
+	}
+	resp, err := dcl.SendRequest(ctx, c.Config, "PATCH", u, bytes.NewBuffer(body), c.Config.RetryProvider)
+	if err != nil {
+		return err
+	}
+
+	var o operations.StandardGCPOperation
+	if err := dcl.ParseResponse(resp.Response, &o); err != nil {
+		return err
+	}
+	return o.Wait(ctx, c.Config, "https://gkehub.googleapis.com/v1/", "GET")
 }
 
 // CompareFeatureMembershipConfigmanagementHierarchyControllerNewStyle exists only for unit-testing the diff library.

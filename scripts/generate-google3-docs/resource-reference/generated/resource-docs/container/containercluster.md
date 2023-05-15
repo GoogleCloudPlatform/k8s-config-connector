@@ -101,6 +101,8 @@ addonsConfig:
     enabled: boolean
   gcpFilestoreCsiDriverConfig:
     enabled: boolean
+  gcsFuseCsiDriverConfig:
+    enabled: boolean
   gkeBackupAgentConfig:
     enabled: boolean
   horizontalPodAutoscaling:
@@ -512,6 +514,26 @@ workloadIdentityConfig:
     <tr>
         <td>
             <p><code>addonsConfig.gcpFilestoreCsiDriverConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.gcsFuseCsiDriverConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The status of the GCS Fuse CSI driver addon, which allows the usage of gcs bucket as volumes. Defaults to disabled; set enabled = true to enable.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.gcsFuseCsiDriverConfig.enabled</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>

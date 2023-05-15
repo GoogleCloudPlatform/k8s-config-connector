@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceApigeeEnvKeystore() *schema.Resource {
@@ -66,8 +69,8 @@ in the format 'organizations/{{org_name}}/environments/{{env_name}}'.`,
 }
 
 func resourceApigeeEnvKeystoreCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -76,11 +79,11 @@ func resourceApigeeEnvKeystoreCreate(d *schema.ResourceData, meta interface{}) e
 	nameProp, err := expandApigeeEnvKeystoreName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{env_id}}/keystores")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{env_id}}/keystores")
 	if err != nil {
 		return err
 	}
@@ -89,17 +92,17 @@ func resourceApigeeEnvKeystoreCreate(d *schema.ResourceData, meta interface{}) e
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating EnvKeystore: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{env_id}}/keystores/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{env_id}}/keystores/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -111,13 +114,13 @@ func resourceApigeeEnvKeystoreCreate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceApigeeEnvKeystoreRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{env_id}}/keystores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{env_id}}/keystores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -125,13 +128,13 @@ func resourceApigeeEnvKeystoreRead(d *schema.ResourceData, meta interface{}) err
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ApigeeEnvKeystore %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ApigeeEnvKeystore %q", d.Id()))
 	}
 
 	if err := d.Set("aliases", flattenApigeeEnvKeystoreAliases(res["aliases"], d, config)); err != nil {
@@ -145,15 +148,15 @@ func resourceApigeeEnvKeystoreRead(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceApigeeEnvKeystoreDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}{{env_id}}/keystores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}{{env_id}}/keystores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -162,13 +165,13 @@ func resourceApigeeEnvKeystoreDelete(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Deleting EnvKeystore %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "EnvKeystore")
+		return transport_tpg.HandleNotFoundError(err, d, "EnvKeystore")
 	}
 
 	log.Printf("[DEBUG] Finished deleting EnvKeystore %q: %#v", d.Id(), res)
@@ -176,7 +179,7 @@ func resourceApigeeEnvKeystoreDelete(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceApigeeEnvKeystoreImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats cannot import fields with forward slashes in their value
 	if err := ParseImportId([]string{
@@ -187,7 +190,7 @@ func resourceApigeeEnvKeystoreImport(d *schema.ResourceData, meta interface{}) (
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{env_id}}/keystores/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{env_id}}/keystores/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -196,14 +199,14 @@ func resourceApigeeEnvKeystoreImport(d *schema.ResourceData, meta interface{}) (
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenApigeeEnvKeystoreAliases(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeEnvKeystoreAliases(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeEnvKeystoreName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeEnvKeystoreName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandApigeeEnvKeystoreName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeEnvKeystoreName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

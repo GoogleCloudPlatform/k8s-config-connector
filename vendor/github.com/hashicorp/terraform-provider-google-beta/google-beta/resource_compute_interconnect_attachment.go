@@ -22,12 +22,16 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 // waitForAttachmentToBeProvisioned waits for an attachment to leave the
 // "UNPROVISIONED" state, to indicate that it's either ready or awaiting partner
 // activity.
-func waitForAttachmentToBeProvisioned(d *schema.ResourceData, config *Config, timeout time.Duration) error {
+func waitForAttachmentToBeProvisioned(d *schema.ResourceData, config *transport_tpg.Config, timeout time.Duration) error {
 	return resource.Retry(timeout, func() *resource.RetryError {
 		if err := resourceComputeInterconnectAttachmentRead(d, config); err != nil {
 			return resource.NonRetryableError(err)
@@ -65,7 +69,7 @@ func ResourceComputeInterconnectAttachment() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateRegexp(`^[a-z]([-a-z0-9]*[a-z0-9])?$`),
+				ValidateFunc: verify.ValidateRegexp(`^[a-z]([-a-z0-9]*[a-z0-9])?$`),
 				Description: `Name of the resource. Provided by the client when the resource is created. The
 name must be 1-63 characters long, and comply with RFC1035. Specifically, the
 name must be 1-63 characters long and match the regular expression
@@ -77,7 +81,7 @@ letter, or digit, except the last character, which cannot be a dash.`,
 				Type:             schema.TypeString,
 				Required:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description: `URL of the cloud router to be used for dynamic routing. This router must be in
 the same region as this InterconnectAttachment. The InterconnectAttachment will
 automatically connect the Interconnect to the network & region within which the
@@ -94,7 +98,7 @@ PARTNER type this will Pre-Activate the interconnect attachment`,
 				Type:         schema.TypeString,
 				Computed:     true,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"BPS_50M", "BPS_100M", "BPS_200M", "BPS_300M", "BPS_400M", "BPS_500M", "BPS_1G", "BPS_2G", "BPS_5G", "BPS_10G", "BPS_20G", "BPS_50G", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"BPS_50M", "BPS_100M", "BPS_200M", "BPS_300M", "BPS_400M", "BPS_500M", "BPS_1G", "BPS_2G", "BPS_5G", "BPS_10G", "BPS_20G", "BPS_50G", ""}),
 				Description: `Provisioned bandwidth capacity for the interconnect attachment.
 For attachments of type DEDICATED, the user can set the bandwidth.
 For attachments of type PARTNER, the Google Partner that is operating the interconnect must set the bandwidth.
@@ -137,7 +141,7 @@ domain. If not specified, the value will default to AVAILABILITY_DOMAIN_ANY.`,
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"NONE", "IPSEC", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"NONE", "IPSEC", ""}),
 				Description: `Indicates the user-supplied encryption option of this interconnect
 attachment. Can only be specified at attachment creation for PARTNER or
 DEDICATED attachments.
@@ -157,7 +161,7 @@ attachment must be created with this option. Default value: "NONE" Possible valu
 				Type:             schema.TypeString,
 				Optional:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description: `URL of the underlying Interconnect object that this attachment's
 traffic will traverse through. Required if type is DEDICATED, must not
 be set if type is PARTNER.`,
@@ -208,7 +212,7 @@ this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not 
 				Computed:     true,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"DEDICATED", "PARTNER", "PARTNER_PROVIDER", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"DEDICATED", "PARTNER", "PARTNER_PROVIDER", ""}),
 				Description: `The type of InterconnectAttachment you wish to create. Defaults to
 DEDICATED. Possible values: ["DEDICATED", "PARTNER", "PARTNER_PROVIDER"]`,
 			},
@@ -295,8 +299,8 @@ Google and the customer, going to and from this network and region.`,
 }
 
 func resourceComputeInterconnectAttachmentCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -311,83 +315,83 @@ func resourceComputeInterconnectAttachmentCreate(d *schema.ResourceData, meta in
 	interconnectProp, err := expandComputeInterconnectAttachmentInterconnect(d.Get("interconnect"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("interconnect"); !isEmptyValue(reflect.ValueOf(interconnectProp)) && (ok || !reflect.DeepEqual(v, interconnectProp)) {
+	} else if v, ok := d.GetOkExists("interconnect"); !tpgresource.IsEmptyValue(reflect.ValueOf(interconnectProp)) && (ok || !reflect.DeepEqual(v, interconnectProp)) {
 		obj["interconnect"] = interconnectProp
 	}
 	descriptionProp, err := expandComputeInterconnectAttachmentDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	mtuProp, err := expandComputeInterconnectAttachmentMtu(d.Get("mtu"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("mtu"); !isEmptyValue(reflect.ValueOf(mtuProp)) && (ok || !reflect.DeepEqual(v, mtuProp)) {
+	} else if v, ok := d.GetOkExists("mtu"); !tpgresource.IsEmptyValue(reflect.ValueOf(mtuProp)) && (ok || !reflect.DeepEqual(v, mtuProp)) {
 		obj["mtu"] = mtuProp
 	}
 	bandwidthProp, err := expandComputeInterconnectAttachmentBandwidth(d.Get("bandwidth"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("bandwidth"); !isEmptyValue(reflect.ValueOf(bandwidthProp)) && (ok || !reflect.DeepEqual(v, bandwidthProp)) {
+	} else if v, ok := d.GetOkExists("bandwidth"); !tpgresource.IsEmptyValue(reflect.ValueOf(bandwidthProp)) && (ok || !reflect.DeepEqual(v, bandwidthProp)) {
 		obj["bandwidth"] = bandwidthProp
 	}
 	edgeAvailabilityDomainProp, err := expandComputeInterconnectAttachmentEdgeAvailabilityDomain(d.Get("edge_availability_domain"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("edge_availability_domain"); !isEmptyValue(reflect.ValueOf(edgeAvailabilityDomainProp)) && (ok || !reflect.DeepEqual(v, edgeAvailabilityDomainProp)) {
+	} else if v, ok := d.GetOkExists("edge_availability_domain"); !tpgresource.IsEmptyValue(reflect.ValueOf(edgeAvailabilityDomainProp)) && (ok || !reflect.DeepEqual(v, edgeAvailabilityDomainProp)) {
 		obj["edgeAvailabilityDomain"] = edgeAvailabilityDomainProp
 	}
 	typeProp, err := expandComputeInterconnectAttachmentType(d.Get("type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("type"); !isEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
+	} else if v, ok := d.GetOkExists("type"); !tpgresource.IsEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
 		obj["type"] = typeProp
 	}
 	routerProp, err := expandComputeInterconnectAttachmentRouter(d.Get("router"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("router"); !isEmptyValue(reflect.ValueOf(routerProp)) && (ok || !reflect.DeepEqual(v, routerProp)) {
+	} else if v, ok := d.GetOkExists("router"); !tpgresource.IsEmptyValue(reflect.ValueOf(routerProp)) && (ok || !reflect.DeepEqual(v, routerProp)) {
 		obj["router"] = routerProp
 	}
 	nameProp, err := expandComputeInterconnectAttachmentName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	candidateSubnetsProp, err := expandComputeInterconnectAttachmentCandidateSubnets(d.Get("candidate_subnets"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("candidate_subnets"); !isEmptyValue(reflect.ValueOf(candidateSubnetsProp)) && (ok || !reflect.DeepEqual(v, candidateSubnetsProp)) {
+	} else if v, ok := d.GetOkExists("candidate_subnets"); !tpgresource.IsEmptyValue(reflect.ValueOf(candidateSubnetsProp)) && (ok || !reflect.DeepEqual(v, candidateSubnetsProp)) {
 		obj["candidateSubnets"] = candidateSubnetsProp
 	}
 	vlanTag8021qProp, err := expandComputeInterconnectAttachmentVlanTag8021q(d.Get("vlan_tag8021q"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("vlan_tag8021q"); !isEmptyValue(reflect.ValueOf(vlanTag8021qProp)) && (ok || !reflect.DeepEqual(v, vlanTag8021qProp)) {
+	} else if v, ok := d.GetOkExists("vlan_tag8021q"); !tpgresource.IsEmptyValue(reflect.ValueOf(vlanTag8021qProp)) && (ok || !reflect.DeepEqual(v, vlanTag8021qProp)) {
 		obj["vlanTag8021q"] = vlanTag8021qProp
 	}
 	ipsecInternalAddressesProp, err := expandComputeInterconnectAttachmentIpsecInternalAddresses(d.Get("ipsec_internal_addresses"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ipsec_internal_addresses"); !isEmptyValue(reflect.ValueOf(ipsecInternalAddressesProp)) && (ok || !reflect.DeepEqual(v, ipsecInternalAddressesProp)) {
+	} else if v, ok := d.GetOkExists("ipsec_internal_addresses"); !tpgresource.IsEmptyValue(reflect.ValueOf(ipsecInternalAddressesProp)) && (ok || !reflect.DeepEqual(v, ipsecInternalAddressesProp)) {
 		obj["ipsecInternalAddresses"] = ipsecInternalAddressesProp
 	}
 	encryptionProp, err := expandComputeInterconnectAttachmentEncryption(d.Get("encryption"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("encryption"); !isEmptyValue(reflect.ValueOf(encryptionProp)) && (ok || !reflect.DeepEqual(v, encryptionProp)) {
+	} else if v, ok := d.GetOkExists("encryption"); !tpgresource.IsEmptyValue(reflect.ValueOf(encryptionProp)) && (ok || !reflect.DeepEqual(v, encryptionProp)) {
 		obj["encryption"] = encryptionProp
 	}
 	regionProp, err := expandComputeInterconnectAttachmentRegion(d.Get("region"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("region"); !isEmptyValue(reflect.ValueOf(regionProp)) && (ok || !reflect.DeepEqual(v, regionProp)) {
+	} else if v, ok := d.GetOkExists("region"); !tpgresource.IsEmptyValue(reflect.ValueOf(regionProp)) && (ok || !reflect.DeepEqual(v, regionProp)) {
 		obj["region"] = regionProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/interconnectAttachments")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/interconnectAttachments")
 	if err != nil {
 		return err
 	}
@@ -395,24 +399,24 @@ func resourceComputeInterconnectAttachmentCreate(d *schema.ResourceData, meta in
 	log.Printf("[DEBUG] Creating new InterconnectAttachment: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for InterconnectAttachment: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating InterconnectAttachment: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/regions/{{region}}/interconnectAttachments/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/regions/{{region}}/interconnectAttachments/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -438,33 +442,33 @@ func resourceComputeInterconnectAttachmentCreate(d *schema.ResourceData, meta in
 }
 
 func resourceComputeInterconnectAttachmentRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/interconnectAttachments/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/interconnectAttachments/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for InterconnectAttachment: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeInterconnectAttachment %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeInterconnectAttachment %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -534,7 +538,7 @@ func resourceComputeInterconnectAttachmentRead(d *schema.ResourceData, meta inte
 	if err := d.Set("region", flattenComputeInterconnectAttachmentRegion(res["region"], d, config)); err != nil {
 		return fmt.Errorf("Error reading InterconnectAttachment: %s", err)
 	}
-	if err := d.Set("self_link", ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
+	if err := d.Set("self_link", tpgresource.ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
 		return fmt.Errorf("Error reading InterconnectAttachment: %s", err)
 	}
 
@@ -542,15 +546,15 @@ func resourceComputeInterconnectAttachmentRead(d *schema.ResourceData, meta inte
 }
 
 func resourceComputeInterconnectAttachmentUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for InterconnectAttachment: %s", err)
 	}
@@ -566,29 +570,29 @@ func resourceComputeInterconnectAttachmentUpdate(d *schema.ResourceData, meta in
 	descriptionProp, err := expandComputeInterconnectAttachmentDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	mtuProp, err := expandComputeInterconnectAttachmentMtu(d.Get("mtu"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("mtu"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, mtuProp)) {
+	} else if v, ok := d.GetOkExists("mtu"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, mtuProp)) {
 		obj["mtu"] = mtuProp
 	}
 	bandwidthProp, err := expandComputeInterconnectAttachmentBandwidth(d.Get("bandwidth"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("bandwidth"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, bandwidthProp)) {
+	} else if v, ok := d.GetOkExists("bandwidth"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, bandwidthProp)) {
 		obj["bandwidth"] = bandwidthProp
 	}
 	regionProp, err := expandComputeInterconnectAttachmentRegion(d.Get("region"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("region"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, regionProp)) {
+	} else if v, ok := d.GetOkExists("region"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, regionProp)) {
 		obj["region"] = regionProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/interconnectAttachments/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/interconnectAttachments/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -596,11 +600,11 @@ func resourceComputeInterconnectAttachmentUpdate(d *schema.ResourceData, meta in
 	log.Printf("[DEBUG] Updating InterconnectAttachment %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating InterconnectAttachment %q: %s", d.Id(), err)
@@ -620,21 +624,21 @@ func resourceComputeInterconnectAttachmentUpdate(d *schema.ResourceData, meta in
 }
 
 func resourceComputeInterconnectAttachmentDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for InterconnectAttachment: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/interconnectAttachments/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/interconnectAttachments/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -646,13 +650,13 @@ func resourceComputeInterconnectAttachmentDelete(d *schema.ResourceData, meta in
 	log.Printf("[DEBUG] Deleting InterconnectAttachment %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "InterconnectAttachment")
+		return transport_tpg.HandleNotFoundError(err, d, "InterconnectAttachment")
 	}
 
 	err = ComputeOperationWaitTime(
@@ -668,7 +672,7 @@ func resourceComputeInterconnectAttachmentDelete(d *schema.ResourceData, meta in
 }
 
 func resourceComputeInterconnectAttachmentImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/regions/(?P<region>[^/]+)/interconnectAttachments/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)",
@@ -679,7 +683,7 @@ func resourceComputeInterconnectAttachmentImport(d *schema.ResourceData, meta in
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/regions/{{region}}/interconnectAttachments/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/regions/{{region}}/interconnectAttachments/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -688,27 +692,27 @@ func resourceComputeInterconnectAttachmentImport(d *schema.ResourceData, meta in
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenComputeInterconnectAttachmentAdminEnabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentAdminEnabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentCloudRouterIpAddress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentCloudRouterIpAddress(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentCustomerRouterIpAddress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentCustomerRouterIpAddress(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentInterconnect(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentInterconnect(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentMtu(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentMtu(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles int given in float64 format
 	if floatVal, ok := v.(float64); ok {
 		return fmt.Sprintf("%d", int(floatVal))
@@ -716,23 +720,23 @@ func flattenComputeInterconnectAttachmentMtu(v interface{}, d *schema.ResourceDa
 	return v
 }
 
-func flattenComputeInterconnectAttachmentBandwidth(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentBandwidth(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentEdgeAvailabilityDomain(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentEdgeAvailabilityDomain(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentPairingKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentPairingKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentPartnerAsn(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentPartnerAsn(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentPrivateInterconnectInfo(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentPrivateInterconnectInfo(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -745,7 +749,7 @@ func flattenComputeInterconnectAttachmentPrivateInterconnectInfo(v interface{}, 
 		flattenComputeInterconnectAttachmentPrivateInterconnectInfoTag8021q(original["tag8021q"], d, config)
 	return []interface{}{transformed}
 }
-func flattenComputeInterconnectAttachmentPrivateInterconnectInfoTag8021q(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentPrivateInterconnectInfoTag8021q(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -762,34 +766,34 @@ func flattenComputeInterconnectAttachmentPrivateInterconnectInfoTag8021q(v inter
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeInterconnectAttachmentType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentGoogleReferenceId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentGoogleReferenceId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentRouter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentRouter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return ConvertSelfLinkToV1(v.(string))
+	return tpgresource.ConvertSelfLinkToV1(v.(string))
 }
 
-func flattenComputeInterconnectAttachmentCreationTimestamp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentCreationTimestamp(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeInterconnectAttachmentVlanTag8021q(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentVlanTag8021q(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -806,84 +810,84 @@ func flattenComputeInterconnectAttachmentVlanTag8021q(v interface{}, d *schema.R
 	return v // let terraform core handle it otherwise
 }
 
-func flattenComputeInterconnectAttachmentIpsecInternalAddresses(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentIpsecInternalAddresses(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return convertAndMapStringArr(v.([]interface{}), ConvertSelfLinkToV1)
+	return convertAndMapStringArr(v.([]interface{}), tpgresource.ConvertSelfLinkToV1)
 }
 
-func flattenComputeInterconnectAttachmentEncryption(v interface{}, d *schema.ResourceData, config *Config) interface{} {
-	if v == nil || isEmptyValue(reflect.ValueOf(v)) {
+func flattenComputeInterconnectAttachmentEncryption(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil || tpgresource.IsEmptyValue(reflect.ValueOf(v)) {
 		return "NONE"
 	}
 
 	return v
 }
 
-func flattenComputeInterconnectAttachmentRegion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeInterconnectAttachmentRegion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return ConvertSelfLinkToV1(v.(string))
+	return tpgresource.ConvertSelfLinkToV1(v.(string))
 }
 
-func expandComputeInterconnectAttachmentAdminEnabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeInterconnectAttachmentAdminEnabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeInterconnectAttachmentInterconnect(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeInterconnectAttachmentInterconnect(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeInterconnectAttachmentDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeInterconnectAttachmentDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeInterconnectAttachmentMtu(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeInterconnectAttachmentMtu(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeInterconnectAttachmentBandwidth(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeInterconnectAttachmentBandwidth(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeInterconnectAttachmentEdgeAvailabilityDomain(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeInterconnectAttachmentEdgeAvailabilityDomain(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeInterconnectAttachmentType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeInterconnectAttachmentType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeInterconnectAttachmentRouter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	f, err := parseRegionalFieldValue("routers", v.(string), "project", "region", "zone", d, config, true)
+func expandComputeInterconnectAttachmentRouter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	f, err := tpgresource.ParseRegionalFieldValue("routers", v.(string), "project", "region", "zone", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for router: %s", err)
 	}
 	return f.RelativeLink(), nil
 }
 
-func expandComputeInterconnectAttachmentName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeInterconnectAttachmentName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeInterconnectAttachmentCandidateSubnets(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeInterconnectAttachmentCandidateSubnets(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeInterconnectAttachmentVlanTag8021q(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeInterconnectAttachmentVlanTag8021q(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeInterconnectAttachmentIpsecInternalAddresses(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeInterconnectAttachmentIpsecInternalAddresses(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
 		if raw == nil {
 			return nil, fmt.Errorf("Invalid value for ipsec_internal_addresses: nil")
 		}
-		f, err := parseRegionalFieldValue("addresses", raw.(string), "project", "region", "zone", d, config, true)
+		f, err := tpgresource.ParseRegionalFieldValue("addresses", raw.(string), "project", "region", "zone", d, config, true)
 		if err != nil {
 			return nil, fmt.Errorf("Invalid value for ipsec_internal_addresses: %s", err)
 		}
@@ -892,12 +896,12 @@ func expandComputeInterconnectAttachmentIpsecInternalAddresses(v interface{}, d 
 	return req, nil
 }
 
-func expandComputeInterconnectAttachmentEncryption(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeInterconnectAttachmentEncryption(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeInterconnectAttachmentRegion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	f, err := parseGlobalFieldValue("regions", v.(string), "project", d, config, true)
+func expandComputeInterconnectAttachmentRegion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	f, err := tpgresource.ParseGlobalFieldValue("regions", v.(string), "project", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for region: %s", err)
 	}

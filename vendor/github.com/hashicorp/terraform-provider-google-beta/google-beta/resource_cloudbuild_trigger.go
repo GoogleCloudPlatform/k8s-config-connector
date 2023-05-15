@@ -23,6 +23,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func stepTimeoutCustomizeDiff(_ context.Context, diff *schema.ResourceDiff, v interface{}) error {
@@ -100,8 +104,8 @@ func ResourceCloudBuildTrigger() *schema.Resource {
 				Type:     schema.TypeList,
 				Computed: true,
 				Optional: true,
-				Description: `Configuration for manual approval to start a build invocation of this BuildTrigger. 
-Builds created by this trigger will require approval before they execute. 
+				Description: `Configuration for manual approval to start a build invocation of this BuildTrigger.
+Builds created by this trigger will require approval before they execute.
 Any user with a Cloud Build Approver role for the project can approve a build.`,
 				MaxItems: 1,
 				Elem: &schema.Resource{
@@ -109,7 +113,7 @@ Any user with a Cloud Build Approver role for the project can approve a build.`,
 						"approval_required": {
 							Type:     schema.TypeBool,
 							Optional: true,
-							Description: `Whether or not approval is needed. If this is set on a build, it will become pending when run, 
+							Description: `Whether or not approval is needed. If this is set on a build, it will become pending when run,
 and will need to be explicitly approved to start.`,
 							Default: false,
 						},
@@ -155,7 +159,7 @@ The syntax of the regular expressions accepted is the syntax accepted by RE2 and
 									"comment_control": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY", ""}),
 										Description:  `Configure builds to run whether a repository owner or collaborator need to comment /gcbrun. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"]`,
 									},
 									"invert_regex": {
@@ -222,7 +226,7 @@ run directly. If not, the host will attempt to pull the image first, using
 the builder service account's credentials if necessary.
 
 The Docker daemon's cache will already have the latest versions of all of
-the officially supported build steps (see https://github.com/GoogleCloudPlatform/cloud-builders 
+the officially supported build steps (see https://github.com/GoogleCloudPlatform/cloud-builders
 for images and examples).
 The Docker daemon will also have cached many of the layers for some popular
 images, like "ubuntu", "debian", but they will be refreshed at the time
@@ -231,6 +235,27 @@ you attempt to use them.
 If you built an image in a previous build step, it will be stored in the
 host's Docker daemon's cache and is available to use as the name for a
 later build step.`,
+									},
+									"allow_exit_codes": {
+										Type:     schema.TypeList,
+										Optional: true,
+										Description: `Allow this build step to fail without failing the entire build if and
+only if the exit code is one of the specified codes.
+
+If 'allowFailure' is also specified, this field will take precedence.`,
+										Elem: &schema.Schema{
+											Type: schema.TypeInt,
+										},
+									},
+									"allow_failure": {
+										Type:     schema.TypeBool,
+										Optional: true,
+										Description: `Allow this build step to fail without failing the entire build.
+If false, the entire build will fail if this step fails. Otherwise, the
+build will succeed, but this step will still have a failure status.
+Error information will be reported in the 'failureDetail' field.
+
+'allowExitCodes' takes precedence over this field.`,
 									},
 									"args": {
 										Type:     schema.TypeList,
@@ -288,7 +313,7 @@ reference this build step as a dependency.`,
 									"script": {
 										Type:     schema.TypeString,
 										Optional: true,
-										Description: `A shell script to be executed in the step. 
+										Description: `A shell script to be executed in the step.
 When script is provided, the user cannot specify the entrypoint or args.`,
 									},
 									"secret_env": {
@@ -491,7 +516,7 @@ If any of the images fail to be pushed, the build status is marked FAILURE.`,
 						"logs_bucket": {
 							Type:     schema.TypeString,
 							Optional: true,
-							Description: `Google Cloud Storage bucket where logs should be written. 
+							Description: `Google Cloud Storage bucket where logs should be written.
 Logs file names will be of the format ${logsBucket}/log-${build_id}.txt.`,
 						},
 						"options": {
@@ -532,25 +557,25 @@ The elements are of the form "KEY=VALUE" for the environment variable "KEY" bein
 									"log_streaming_option": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"STREAM_DEFAULT", "STREAM_ON", "STREAM_OFF", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"STREAM_DEFAULT", "STREAM_ON", "STREAM_OFF", ""}),
 										Description:  `Option to define build log streaming behavior to Google Cloud Storage. Possible values: ["STREAM_DEFAULT", "STREAM_ON", "STREAM_OFF"]`,
 									},
 									"logging": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "CLOUD_LOGGING_ONLY", "NONE", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "CLOUD_LOGGING_ONLY", "NONE", ""}),
 										Description:  `Option to specify the logging mode, which determines if and where build logs are stored. Possible values: ["LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "CLOUD_LOGGING_ONLY", "NONE"]`,
 									},
 									"machine_type": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32", ""}),
 										Description:  `Compute Engine machine type on which to run the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"]`,
 									},
 									"requested_verify_option": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"NOT_VERIFIED", "VERIFIED", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"NOT_VERIFIED", "VERIFIED", ""}),
 										Description:  `Requested verifiability options. Possible values: ["NOT_VERIFIED", "VERIFIED"]`,
 									},
 									"secret_env": {
@@ -569,13 +594,13 @@ will be available to all build steps in this build.`,
 										Description: `Requested hash for SourceProvenance. Possible values: ["NONE", "SHA256", "MD5"]`,
 										Elem: &schema.Schema{
 											Type:         schema.TypeString,
-											ValidateFunc: validateEnum([]string{"NONE", "SHA256", "MD5"}),
+											ValidateFunc: verify.ValidateEnum([]string{"NONE", "SHA256", "MD5"}),
 										},
 									},
 									"substitution_option": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"MUST_MATCH", "ALLOW_LOOSE", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"MUST_MATCH", "ALLOW_LOOSE", ""}),
 										Description: `Option to specify behavior when there is an error in the substitution checks.
 
 NOTE this is always set to ALLOW_LOOSE for triggered builds and cannot be overridden
@@ -626,7 +651,7 @@ This field is experimental.`,
 						"queue_ttl": {
 							Type:     schema.TypeString,
 							Optional: true,
-							Description: `TTL in queue for this build. If provided and the build is enqueued longer than this value, 
+							Description: `TTL in queue for this build. If provided and the build is enqueued longer than this value,
 the build will expire and the build status will be EXPIRED.
 The TTL starts ticking from createTime.
 A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".`,
@@ -646,8 +671,8 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
 										Type:     schema.TypeMap,
 										Optional: true,
 										Description: `Map of environment variable name to its encrypted value.
-Secret environment variables must be unique across all of a build's secrets, 
-and must be used by at least one build step. Values can be at most 64 KB in size. 
+Secret environment variables must be unique across all of a build's secrets,
+and must be used by at least one build step. Values can be at most 64 KB in size.
 There can be at most 100 secret values across all of a build's secrets.`,
 										Elem: &schema.Schema{Type: schema.TypeString},
 									},
@@ -679,7 +704,7 @@ One of 'storageSource' or 'repoSource' must be provided.`,
 													Type:     schema.TypeString,
 													Optional: true,
 													Description: `Regex matching branches to build. Exactly one a of branch name, tag, or commit SHA must be provided.
-The syntax of the regular expressions accepted is the syntax accepted by RE2 and 
+The syntax of the regular expressions accepted is the syntax accepted by RE2 and
 described at https://github.com/google/re2/wiki/Syntax`,
 													ExactlyOneOf: []string{"build.0.source.0.repo_source.0.branch_name", "build.0.source.0.repo_source.0.commit_sha", "build.0.source.0.repo_source.0.tag_name"},
 												},
@@ -693,7 +718,7 @@ described at https://github.com/google/re2/wiki/Syntax`,
 													Type:     schema.TypeString,
 													Optional: true,
 													Description: `Directory, relative to the source root, in which to run the build.
-This must be a relative path. If a step's dir is specified and is an absolute path, 
+This must be a relative path. If a step's dir is specified and is an absolute path,
 this value is ignored for that step's execution.`,
 												},
 												"invert_regex": {
@@ -704,7 +729,7 @@ this value is ignored for that step's execution.`,
 												"project_id": {
 													Type:     schema.TypeString,
 													Optional: true,
-													Description: `ID of the project that owns the Cloud Source Repository. 
+													Description: `ID of the project that owns the Cloud Source Repository.
 If omitted, the project ID requesting the build is assumed.`,
 												},
 												"substitutions": {
@@ -717,7 +742,7 @@ If omitted, the project ID requesting the build is assumed.`,
 													Type:     schema.TypeString,
 													Optional: true,
 													Description: `Regex matching tags to build. Exactly one a of branch name, tag, or commit SHA must be provided.
-The syntax of the regular expressions accepted is the syntax accepted by RE2 and 
+The syntax of the regular expressions accepted is the syntax accepted by RE2 and
 described at https://github.com/google/re2/wiki/Syntax`,
 													ExactlyOneOf: []string{"build.0.source.0.repo_source.0.branch_name", "build.0.source.0.repo_source.0.commit_sha", "build.0.source.0.repo_source.0.tag_name"},
 												},
@@ -745,7 +770,7 @@ This object must be a gzipped archive file (.tar.gz) containing source to build.
 												"generation": {
 													Type:     schema.TypeString,
 													Optional: true,
-													Description: `Google Cloud Storage generation for the object. 
+													Description: `Google Cloud Storage generation for the object.
 If the generation is omitted, the latest generation will be used`,
 												},
 											},
@@ -795,7 +820,7 @@ Default time is ten minutes (600s).`,
 			"filename": {
 				Type:     schema.TypeString,
 				Optional: true,
-				Description: `Path, from the source root, to a file whose contents is used for the template. 
+				Description: `Path, from the source root, to a file whose contents is used for the template.
 Either a filename or build template must be provided. Set this only when using trigger_template or github.
 When using Pub/Sub, Webhook or Manual set the file name using git_file_source instead.`,
 				ExactlyOneOf: []string{"filename", "build", "git_file_source"},
@@ -820,8 +845,8 @@ When using Pub/Sub, Webhook or Manual set the file name using git_file_source in
 						"repo_type": {
 							Type:         schema.TypeString,
 							Required:     true,
-							ValidateFunc: validateEnum([]string{"UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"}),
-							Description: `The type of the repo, since it may not be explicit from the repo field (e.g from a URL). 
+							ValidateFunc: verify.ValidateEnum([]string{"UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"}),
+							Description: `The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
 Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"]`,
 						},
 						"github_enterprise_config": {
@@ -830,17 +855,23 @@ Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possi
 							Description: `The full resource name of the github enterprise config.
 Format: projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}. projects/{project}/githubEnterpriseConfigs/{id}.`,
 						},
+						"repository": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Description: `The fully qualified resource name of the Repo API repository. The fully qualified resource name of the Repo API repository.
+If unspecified, the repo from which the trigger invocation originated is assumed to be the repo from which to read the specified path.`,
+						},
 						"revision": {
 							Type:     schema.TypeString,
 							Optional: true,
-							Description: `The branch, tag, arbitrary ref, or SHA version of the repo to use when resolving the 
-filename (optional). This field respects the same syntax/resolution as described here: https://git-scm.com/docs/gitrevisions 
+							Description: `The branch, tag, arbitrary ref, or SHA version of the repo to use when resolving the
+filename (optional). This field respects the same syntax/resolution as described here: https://git-scm.com/docs/gitrevisions
 If unspecified, the revision from which the trigger invocation originated is assumed to be the revision from which to read the specified path.`,
 						},
 						"uri": {
 							Type:     schema.TypeString,
 							Optional: true,
-							Description: `The URI of the repo (optional). If unspecified, the repo from which the trigger 
+							Description: `The URI of the repo (optional). If unspecified, the repo from which the trigger
 invocation originated is assumed to be the repo from which to read the specified path.`,
 						},
 					},
@@ -889,7 +920,7 @@ https://github.com/googlecloudplatform/cloud-builders is "googlecloudplatform".`
 									"comment_control": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY", ""}),
 										Description:  `Whether to block builds on a "/gcbrun" comment from a repository owner or collaborator. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"]`,
 									},
 									"invert_regex": {
@@ -952,7 +983,7 @@ of the ignoredFiles globs, then we do not trigger a build.`,
 			"include_build_logs": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"INCLUDE_BUILD_LOGS_UNSPECIFIED", "INCLUDE_BUILD_LOGS_WITH_STATUS", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"INCLUDE_BUILD_LOGS_UNSPECIFIED", "INCLUDE_BUILD_LOGS_WITH_STATUS", ""}),
 				Description: `Build logs will be sent back to GitHub as part of the checkrun
 result.  Values can be INCLUDE_BUILD_LOGS_UNSPECIFIED or
 INCLUDE_BUILD_LOGS_WITH_STATUS Possible values: ["INCLUDE_BUILD_LOGS_UNSPECIFIED", "INCLUDE_BUILD_LOGS_WITH_STATUS"]`,
@@ -992,7 +1023,7 @@ If not specified, "global" is used.`,
 			"pubsub_config": {
 				Type:     schema.TypeList,
 				Optional: true,
-				Description: `PubsubConfig describes the configuration of a trigger that creates 
+				Description: `PubsubConfig describes the configuration of a trigger that creates
 a build whenever a Pub/Sub message is published.
 
 One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.`,
@@ -1050,7 +1081,7 @@ RE2 and described at https://github.com/google/re2/wiki/Syntax`,
 									"comment_control": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY", ""}),
 										Description:  `Configure builds to run whether a repository owner or collaborator need to comment '/gcbrun'. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"]`,
 									},
 									"invert_regex": {
@@ -1119,9 +1150,9 @@ Format: projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_ID_OR_EMAIL}`,
 			"source_to_build": {
 				Type:     schema.TypeList,
 				Optional: true,
-				Description: `The repo and ref of the repository from which to build. 
-This field is used only for those triggers that do not respond to SCM events. 
-Triggers that respond to such events build source at whatever commit caused the event. 
+				Description: `The repo and ref of the repository from which to build.
+This field is used only for those triggers that do not respond to SCM events.
+Triggers that respond to such events build source at whatever commit caused the event.
 This field is currently only used by Webhook, Pub/Sub, Manual, and Cron triggers.
 
 One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.`,
@@ -1136,20 +1167,26 @@ One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source
 						"repo_type": {
 							Type:         schema.TypeString,
 							Required:     true,
-							ValidateFunc: validateEnum([]string{"UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"}),
+							ValidateFunc: verify.ValidateEnum([]string{"UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"}),
 							Description: `The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
 Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"]`,
-						},
-						"uri": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: `The URI of the repo (required).`,
 						},
 						"github_enterprise_config": {
 							Type:     schema.TypeString,
 							Optional: true,
 							Description: `The full resource name of the github enterprise config.
 Format: projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}. projects/{project}/githubEnterpriseConfigs/{id}.`,
+						},
+						"repository": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Description: `The qualified resource name of the Repo API repository. 
+Either uri or repository can be specified and is required.`,
+						},
+						"uri": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: `The URI of the repo.`,
 						},
 					},
 				},
@@ -1236,7 +1273,7 @@ This field is a regular expression.`,
 			"webhook_config": {
 				Type:     schema.TypeList,
 				Optional: true,
-				Description: `WebhookConfig describes the configuration of a trigger that creates 
+				Description: `WebhookConfig describes the configuration of a trigger that creates
 a build whenever a webhook is sent to a trigger's webhook URL.
 
 One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.`,
@@ -1280,8 +1317,8 @@ Only populated on get requests.`,
 }
 
 func resourceCloudBuildTriggerCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -1290,131 +1327,131 @@ func resourceCloudBuildTriggerCreate(d *schema.ResourceData, meta interface{}) e
 	nameProp, err := expandCloudBuildTriggerName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	descriptionProp, err := expandCloudBuildTriggerDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	tagsProp, err := expandCloudBuildTriggerTags(d.Get("tags"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("tags"); !isEmptyValue(reflect.ValueOf(tagsProp)) && (ok || !reflect.DeepEqual(v, tagsProp)) {
+	} else if v, ok := d.GetOkExists("tags"); !tpgresource.IsEmptyValue(reflect.ValueOf(tagsProp)) && (ok || !reflect.DeepEqual(v, tagsProp)) {
 		obj["tags"] = tagsProp
 	}
 	disabledProp, err := expandCloudBuildTriggerDisabled(d.Get("disabled"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("disabled"); !isEmptyValue(reflect.ValueOf(disabledProp)) && (ok || !reflect.DeepEqual(v, disabledProp)) {
+	} else if v, ok := d.GetOkExists("disabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(disabledProp)) && (ok || !reflect.DeepEqual(v, disabledProp)) {
 		obj["disabled"] = disabledProp
 	}
 	substitutionsProp, err := expandCloudBuildTriggerSubstitutions(d.Get("substitutions"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("substitutions"); !isEmptyValue(reflect.ValueOf(substitutionsProp)) && (ok || !reflect.DeepEqual(v, substitutionsProp)) {
+	} else if v, ok := d.GetOkExists("substitutions"); !tpgresource.IsEmptyValue(reflect.ValueOf(substitutionsProp)) && (ok || !reflect.DeepEqual(v, substitutionsProp)) {
 		obj["substitutions"] = substitutionsProp
 	}
 	serviceAccountProp, err := expandCloudBuildTriggerServiceAccount(d.Get("service_account"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("service_account"); !isEmptyValue(reflect.ValueOf(serviceAccountProp)) && (ok || !reflect.DeepEqual(v, serviceAccountProp)) {
+	} else if v, ok := d.GetOkExists("service_account"); !tpgresource.IsEmptyValue(reflect.ValueOf(serviceAccountProp)) && (ok || !reflect.DeepEqual(v, serviceAccountProp)) {
 		obj["serviceAccount"] = serviceAccountProp
 	}
 	includeBuildLogsProp, err := expandCloudBuildTriggerIncludeBuildLogs(d.Get("include_build_logs"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("include_build_logs"); !isEmptyValue(reflect.ValueOf(includeBuildLogsProp)) && (ok || !reflect.DeepEqual(v, includeBuildLogsProp)) {
+	} else if v, ok := d.GetOkExists("include_build_logs"); !tpgresource.IsEmptyValue(reflect.ValueOf(includeBuildLogsProp)) && (ok || !reflect.DeepEqual(v, includeBuildLogsProp)) {
 		obj["includeBuildLogs"] = includeBuildLogsProp
 	}
 	filenameProp, err := expandCloudBuildTriggerFilename(d.Get("filename"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("filename"); !isEmptyValue(reflect.ValueOf(filenameProp)) && (ok || !reflect.DeepEqual(v, filenameProp)) {
+	} else if v, ok := d.GetOkExists("filename"); !tpgresource.IsEmptyValue(reflect.ValueOf(filenameProp)) && (ok || !reflect.DeepEqual(v, filenameProp)) {
 		obj["filename"] = filenameProp
 	}
 	filterProp, err := expandCloudBuildTriggerFilter(d.Get("filter"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("filter"); !isEmptyValue(reflect.ValueOf(filterProp)) && (ok || !reflect.DeepEqual(v, filterProp)) {
+	} else if v, ok := d.GetOkExists("filter"); !tpgresource.IsEmptyValue(reflect.ValueOf(filterProp)) && (ok || !reflect.DeepEqual(v, filterProp)) {
 		obj["filter"] = filterProp
 	}
 	gitFileSourceProp, err := expandCloudBuildTriggerGitFileSource(d.Get("git_file_source"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("git_file_source"); !isEmptyValue(reflect.ValueOf(gitFileSourceProp)) && (ok || !reflect.DeepEqual(v, gitFileSourceProp)) {
+	} else if v, ok := d.GetOkExists("git_file_source"); !tpgresource.IsEmptyValue(reflect.ValueOf(gitFileSourceProp)) && (ok || !reflect.DeepEqual(v, gitFileSourceProp)) {
 		obj["gitFileSource"] = gitFileSourceProp
 	}
 	repositoryEventConfigProp, err := expandCloudBuildTriggerRepositoryEventConfig(d.Get("repository_event_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("repository_event_config"); !isEmptyValue(reflect.ValueOf(repositoryEventConfigProp)) && (ok || !reflect.DeepEqual(v, repositoryEventConfigProp)) {
+	} else if v, ok := d.GetOkExists("repository_event_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(repositoryEventConfigProp)) && (ok || !reflect.DeepEqual(v, repositoryEventConfigProp)) {
 		obj["repositoryEventConfig"] = repositoryEventConfigProp
 	}
 	sourceToBuildProp, err := expandCloudBuildTriggerSourceToBuild(d.Get("source_to_build"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("source_to_build"); !isEmptyValue(reflect.ValueOf(sourceToBuildProp)) && (ok || !reflect.DeepEqual(v, sourceToBuildProp)) {
+	} else if v, ok := d.GetOkExists("source_to_build"); !tpgresource.IsEmptyValue(reflect.ValueOf(sourceToBuildProp)) && (ok || !reflect.DeepEqual(v, sourceToBuildProp)) {
 		obj["sourceToBuild"] = sourceToBuildProp
 	}
 	ignoredFilesProp, err := expandCloudBuildTriggerIgnoredFiles(d.Get("ignored_files"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ignored_files"); !isEmptyValue(reflect.ValueOf(ignoredFilesProp)) && (ok || !reflect.DeepEqual(v, ignoredFilesProp)) {
+	} else if v, ok := d.GetOkExists("ignored_files"); !tpgresource.IsEmptyValue(reflect.ValueOf(ignoredFilesProp)) && (ok || !reflect.DeepEqual(v, ignoredFilesProp)) {
 		obj["ignoredFiles"] = ignoredFilesProp
 	}
 	includedFilesProp, err := expandCloudBuildTriggerIncludedFiles(d.Get("included_files"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("included_files"); !isEmptyValue(reflect.ValueOf(includedFilesProp)) && (ok || !reflect.DeepEqual(v, includedFilesProp)) {
+	} else if v, ok := d.GetOkExists("included_files"); !tpgresource.IsEmptyValue(reflect.ValueOf(includedFilesProp)) && (ok || !reflect.DeepEqual(v, includedFilesProp)) {
 		obj["includedFiles"] = includedFilesProp
 	}
 	triggerTemplateProp, err := expandCloudBuildTriggerTriggerTemplate(d.Get("trigger_template"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("trigger_template"); !isEmptyValue(reflect.ValueOf(triggerTemplateProp)) && (ok || !reflect.DeepEqual(v, triggerTemplateProp)) {
+	} else if v, ok := d.GetOkExists("trigger_template"); !tpgresource.IsEmptyValue(reflect.ValueOf(triggerTemplateProp)) && (ok || !reflect.DeepEqual(v, triggerTemplateProp)) {
 		obj["triggerTemplate"] = triggerTemplateProp
 	}
 	githubProp, err := expandCloudBuildTriggerGithub(d.Get("github"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("github"); !isEmptyValue(reflect.ValueOf(githubProp)) && (ok || !reflect.DeepEqual(v, githubProp)) {
+	} else if v, ok := d.GetOkExists("github"); !tpgresource.IsEmptyValue(reflect.ValueOf(githubProp)) && (ok || !reflect.DeepEqual(v, githubProp)) {
 		obj["github"] = githubProp
 	}
 	bitbucketServerTriggerConfigProp, err := expandCloudBuildTriggerBitbucketServerTriggerConfig(d.Get("bitbucket_server_trigger_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("bitbucket_server_trigger_config"); !isEmptyValue(reflect.ValueOf(bitbucketServerTriggerConfigProp)) && (ok || !reflect.DeepEqual(v, bitbucketServerTriggerConfigProp)) {
+	} else if v, ok := d.GetOkExists("bitbucket_server_trigger_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(bitbucketServerTriggerConfigProp)) && (ok || !reflect.DeepEqual(v, bitbucketServerTriggerConfigProp)) {
 		obj["bitbucketServerTriggerConfig"] = bitbucketServerTriggerConfigProp
 	}
 	pubsubConfigProp, err := expandCloudBuildTriggerPubsubConfig(d.Get("pubsub_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("pubsub_config"); !isEmptyValue(reflect.ValueOf(pubsubConfigProp)) && (ok || !reflect.DeepEqual(v, pubsubConfigProp)) {
+	} else if v, ok := d.GetOkExists("pubsub_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(pubsubConfigProp)) && (ok || !reflect.DeepEqual(v, pubsubConfigProp)) {
 		obj["pubsubConfig"] = pubsubConfigProp
 	}
 	webhookConfigProp, err := expandCloudBuildTriggerWebhookConfig(d.Get("webhook_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("webhook_config"); !isEmptyValue(reflect.ValueOf(webhookConfigProp)) && (ok || !reflect.DeepEqual(v, webhookConfigProp)) {
+	} else if v, ok := d.GetOkExists("webhook_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(webhookConfigProp)) && (ok || !reflect.DeepEqual(v, webhookConfigProp)) {
 		obj["webhookConfig"] = webhookConfigProp
 	}
 	approvalConfigProp, err := expandCloudBuildTriggerApprovalConfig(d.Get("approval_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("approval_config"); !isEmptyValue(reflect.ValueOf(approvalConfigProp)) && (ok || !reflect.DeepEqual(v, approvalConfigProp)) {
+	} else if v, ok := d.GetOkExists("approval_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(approvalConfigProp)) && (ok || !reflect.DeepEqual(v, approvalConfigProp)) {
 		obj["approvalConfig"] = approvalConfigProp
 	}
 	buildProp, err := expandCloudBuildTriggerBuild(d.Get("build"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("build"); !isEmptyValue(reflect.ValueOf(buildProp)) && (ok || !reflect.DeepEqual(v, buildProp)) {
+	} else if v, ok := d.GetOkExists("build"); !tpgresource.IsEmptyValue(reflect.ValueOf(buildProp)) && (ok || !reflect.DeepEqual(v, buildProp)) {
 		obj["build"] = buildProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudBuildBasePath}}projects/{{project}}/locations/{{location}}/triggers")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudBuildBasePath}}projects/{{project}}/locations/{{location}}/triggers")
 	if err != nil {
 		return err
 	}
@@ -1422,24 +1459,24 @@ func resourceCloudBuildTriggerCreate(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Creating new Trigger: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Trigger: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Trigger: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/triggers/{{trigger_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/triggers/{{trigger_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1456,7 +1493,7 @@ func resourceCloudBuildTriggerCreate(d *schema.ResourceData, meta interface{}) e
 
 	// Store the ID now. We tried to set it before and it failed because
 	// trigger_id didn't exist yet.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/triggers/{{trigger_id}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/triggers/{{trigger_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1470,35 +1507,35 @@ func resourceCloudBuildTriggerCreate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceCloudBuildTriggerRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudBuildBasePath}}projects/{{project}}/locations/{{location}}/triggers/{{trigger_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudBuildBasePath}}projects/{{project}}/locations/{{location}}/triggers/{{trigger_id}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Trigger: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
 	// To support import with the legacy id format.
 	url = strings.ReplaceAll(url, "/locations//", "/locations/global/")
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("CloudBuildTrigger %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("CloudBuildTrigger %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -1579,15 +1616,15 @@ func resourceCloudBuildTriggerRead(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceCloudBuildTriggerUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Trigger: %s", err)
 	}
@@ -1597,131 +1634,131 @@ func resourceCloudBuildTriggerUpdate(d *schema.ResourceData, meta interface{}) e
 	nameProp, err := expandCloudBuildTriggerName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	descriptionProp, err := expandCloudBuildTriggerDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	tagsProp, err := expandCloudBuildTriggerTags(d.Get("tags"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("tags"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, tagsProp)) {
+	} else if v, ok := d.GetOkExists("tags"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, tagsProp)) {
 		obj["tags"] = tagsProp
 	}
 	disabledProp, err := expandCloudBuildTriggerDisabled(d.Get("disabled"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("disabled"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, disabledProp)) {
+	} else if v, ok := d.GetOkExists("disabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, disabledProp)) {
 		obj["disabled"] = disabledProp
 	}
 	substitutionsProp, err := expandCloudBuildTriggerSubstitutions(d.Get("substitutions"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("substitutions"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, substitutionsProp)) {
+	} else if v, ok := d.GetOkExists("substitutions"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, substitutionsProp)) {
 		obj["substitutions"] = substitutionsProp
 	}
 	serviceAccountProp, err := expandCloudBuildTriggerServiceAccount(d.Get("service_account"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("service_account"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, serviceAccountProp)) {
+	} else if v, ok := d.GetOkExists("service_account"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, serviceAccountProp)) {
 		obj["serviceAccount"] = serviceAccountProp
 	}
 	includeBuildLogsProp, err := expandCloudBuildTriggerIncludeBuildLogs(d.Get("include_build_logs"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("include_build_logs"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, includeBuildLogsProp)) {
+	} else if v, ok := d.GetOkExists("include_build_logs"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, includeBuildLogsProp)) {
 		obj["includeBuildLogs"] = includeBuildLogsProp
 	}
 	filenameProp, err := expandCloudBuildTriggerFilename(d.Get("filename"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("filename"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, filenameProp)) {
+	} else if v, ok := d.GetOkExists("filename"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, filenameProp)) {
 		obj["filename"] = filenameProp
 	}
 	filterProp, err := expandCloudBuildTriggerFilter(d.Get("filter"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("filter"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, filterProp)) {
+	} else if v, ok := d.GetOkExists("filter"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, filterProp)) {
 		obj["filter"] = filterProp
 	}
 	gitFileSourceProp, err := expandCloudBuildTriggerGitFileSource(d.Get("git_file_source"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("git_file_source"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, gitFileSourceProp)) {
+	} else if v, ok := d.GetOkExists("git_file_source"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, gitFileSourceProp)) {
 		obj["gitFileSource"] = gitFileSourceProp
 	}
 	repositoryEventConfigProp, err := expandCloudBuildTriggerRepositoryEventConfig(d.Get("repository_event_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("repository_event_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, repositoryEventConfigProp)) {
+	} else if v, ok := d.GetOkExists("repository_event_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, repositoryEventConfigProp)) {
 		obj["repositoryEventConfig"] = repositoryEventConfigProp
 	}
 	sourceToBuildProp, err := expandCloudBuildTriggerSourceToBuild(d.Get("source_to_build"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("source_to_build"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sourceToBuildProp)) {
+	} else if v, ok := d.GetOkExists("source_to_build"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sourceToBuildProp)) {
 		obj["sourceToBuild"] = sourceToBuildProp
 	}
 	ignoredFilesProp, err := expandCloudBuildTriggerIgnoredFiles(d.Get("ignored_files"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ignored_files"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, ignoredFilesProp)) {
+	} else if v, ok := d.GetOkExists("ignored_files"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, ignoredFilesProp)) {
 		obj["ignoredFiles"] = ignoredFilesProp
 	}
 	includedFilesProp, err := expandCloudBuildTriggerIncludedFiles(d.Get("included_files"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("included_files"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, includedFilesProp)) {
+	} else if v, ok := d.GetOkExists("included_files"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, includedFilesProp)) {
 		obj["includedFiles"] = includedFilesProp
 	}
 	triggerTemplateProp, err := expandCloudBuildTriggerTriggerTemplate(d.Get("trigger_template"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("trigger_template"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, triggerTemplateProp)) {
+	} else if v, ok := d.GetOkExists("trigger_template"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, triggerTemplateProp)) {
 		obj["triggerTemplate"] = triggerTemplateProp
 	}
 	githubProp, err := expandCloudBuildTriggerGithub(d.Get("github"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("github"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, githubProp)) {
+	} else if v, ok := d.GetOkExists("github"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, githubProp)) {
 		obj["github"] = githubProp
 	}
 	bitbucketServerTriggerConfigProp, err := expandCloudBuildTriggerBitbucketServerTriggerConfig(d.Get("bitbucket_server_trigger_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("bitbucket_server_trigger_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, bitbucketServerTriggerConfigProp)) {
+	} else if v, ok := d.GetOkExists("bitbucket_server_trigger_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, bitbucketServerTriggerConfigProp)) {
 		obj["bitbucketServerTriggerConfig"] = bitbucketServerTriggerConfigProp
 	}
 	pubsubConfigProp, err := expandCloudBuildTriggerPubsubConfig(d.Get("pubsub_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("pubsub_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, pubsubConfigProp)) {
+	} else if v, ok := d.GetOkExists("pubsub_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, pubsubConfigProp)) {
 		obj["pubsubConfig"] = pubsubConfigProp
 	}
 	webhookConfigProp, err := expandCloudBuildTriggerWebhookConfig(d.Get("webhook_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("webhook_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, webhookConfigProp)) {
+	} else if v, ok := d.GetOkExists("webhook_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, webhookConfigProp)) {
 		obj["webhookConfig"] = webhookConfigProp
 	}
 	approvalConfigProp, err := expandCloudBuildTriggerApprovalConfig(d.Get("approval_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("approval_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, approvalConfigProp)) {
+	} else if v, ok := d.GetOkExists("approval_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, approvalConfigProp)) {
 		obj["approvalConfig"] = approvalConfigProp
 	}
 	buildProp, err := expandCloudBuildTriggerBuild(d.Get("build"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("build"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, buildProp)) {
+	} else if v, ok := d.GetOkExists("build"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, buildProp)) {
 		obj["build"] = buildProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{CloudBuildBasePath}}projects/{{project}}/locations/{{location}}/triggers/{{trigger_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudBuildBasePath}}projects/{{project}}/locations/{{location}}/triggers/{{trigger_id}}")
 	if err != nil {
 		return err
 	}
@@ -1730,11 +1767,11 @@ func resourceCloudBuildTriggerUpdate(d *schema.ResourceData, meta interface{}) e
 	obj["id"] = d.Get("trigger_id")
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Trigger %q: %s", d.Id(), err)
@@ -1746,21 +1783,21 @@ func resourceCloudBuildTriggerUpdate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceCloudBuildTriggerDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Trigger: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{CloudBuildBasePath}}projects/{{project}}/locations/{{location}}/triggers/{{trigger_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CloudBuildBasePath}}projects/{{project}}/locations/{{location}}/triggers/{{trigger_id}}")
 	if err != nil {
 		return err
 	}
@@ -1769,13 +1806,13 @@ func resourceCloudBuildTriggerDelete(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Deleting Trigger %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Trigger")
+		return transport_tpg.HandleNotFoundError(err, d, "Trigger")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Trigger %q: %#v", d.Id(), res)
@@ -1783,7 +1820,7 @@ func resourceCloudBuildTriggerDelete(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceCloudBuildTriggerImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/triggers/(?P<trigger_id>[^/]+)",
 		"projects/(?P<project>[^/]+)/triggers/(?P<trigger_id>[^/]+)",
@@ -1794,7 +1831,7 @@ func resourceCloudBuildTriggerImport(d *schema.ResourceData, meta interface{}) (
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/triggers/{{trigger_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/triggers/{{trigger_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1812,51 +1849,51 @@ func resourceCloudBuildTriggerImport(d *schema.ResourceData, meta interface{}) (
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenCloudBuildTriggerTriggerId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerTriggerId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerTags(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerTags(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerDisabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerDisabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerSubstitutions(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerSubstitutions(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerServiceAccount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerServiceAccount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerIncludeBuildLogs(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerIncludeBuildLogs(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerFilename(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerFilename(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerFilter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerFilter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGitFileSource(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGitFileSource(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1869,6 +1906,8 @@ func flattenCloudBuildTriggerGitFileSource(v interface{}, d *schema.ResourceData
 		flattenCloudBuildTriggerGitFileSourcePath(original["path"], d, config)
 	transformed["uri"] =
 		flattenCloudBuildTriggerGitFileSourceUri(original["uri"], d, config)
+	transformed["repository"] =
+		flattenCloudBuildTriggerGitFileSourceRepository(original["repository"], d, config)
 	transformed["repo_type"] =
 		flattenCloudBuildTriggerGitFileSourceRepoType(original["repoType"], d, config)
 	transformed["revision"] =
@@ -1877,27 +1916,31 @@ func flattenCloudBuildTriggerGitFileSource(v interface{}, d *schema.ResourceData
 		flattenCloudBuildTriggerGitFileSourceGithubEnterpriseConfig(original["githubEnterpriseConfig"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerGitFileSourcePath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGitFileSourcePath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGitFileSourceUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGitFileSourceUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGitFileSourceRepoType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGitFileSourceRepository(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGitFileSourceRevision(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGitFileSourceRepoType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGitFileSourceGithubEnterpriseConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGitFileSourceRevision(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerRepositoryEventConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGitFileSourceGithubEnterpriseConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudBuildTriggerRepositoryEventConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1914,11 +1957,11 @@ func flattenCloudBuildTriggerRepositoryEventConfig(v interface{}, d *schema.Reso
 		flattenCloudBuildTriggerRepositoryEventConfigPush(original["push"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerRepositoryEventConfigRepository(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerRepositoryEventConfigRepository(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerRepositoryEventConfigPullRequest(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerRepositoryEventConfigPullRequest(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1935,19 +1978,19 @@ func flattenCloudBuildTriggerRepositoryEventConfigPullRequest(v interface{}, d *
 		flattenCloudBuildTriggerRepositoryEventConfigPullRequestCommentControl(original["commentControl"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerRepositoryEventConfigPullRequestBranch(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerRepositoryEventConfigPullRequestBranch(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerRepositoryEventConfigPullRequestInvertRegex(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerRepositoryEventConfigPullRequestInvertRegex(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerRepositoryEventConfigPullRequestCommentControl(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerRepositoryEventConfigPullRequestCommentControl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerRepositoryEventConfigPush(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerRepositoryEventConfigPush(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1964,19 +2007,19 @@ func flattenCloudBuildTriggerRepositoryEventConfigPush(v interface{}, d *schema.
 		flattenCloudBuildTriggerRepositoryEventConfigPushInvertRegex(original["invertRegex"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerRepositoryEventConfigPushBranch(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerRepositoryEventConfigPushBranch(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerRepositoryEventConfigPushTag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerRepositoryEventConfigPushTag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerRepositoryEventConfigPushInvertRegex(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerRepositoryEventConfigPushInvertRegex(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerSourceToBuild(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerSourceToBuild(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1987,6 +2030,8 @@ func flattenCloudBuildTriggerSourceToBuild(v interface{}, d *schema.ResourceData
 	transformed := make(map[string]interface{})
 	transformed["uri"] =
 		flattenCloudBuildTriggerSourceToBuildUri(original["uri"], d, config)
+	transformed["repository"] =
+		flattenCloudBuildTriggerSourceToBuildRepository(original["repository"], d, config)
 	transformed["ref"] =
 		flattenCloudBuildTriggerSourceToBuildRef(original["ref"], d, config)
 	transformed["repo_type"] =
@@ -1995,31 +2040,35 @@ func flattenCloudBuildTriggerSourceToBuild(v interface{}, d *schema.ResourceData
 		flattenCloudBuildTriggerSourceToBuildGithubEnterpriseConfig(original["githubEnterpriseConfig"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerSourceToBuildUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerSourceToBuildUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerSourceToBuildRef(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerSourceToBuildRepository(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerSourceToBuildRepoType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerSourceToBuildRef(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerSourceToBuildGithubEnterpriseConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerSourceToBuildRepoType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerIgnoredFiles(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerSourceToBuildGithubEnterpriseConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerIncludedFiles(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerIgnoredFiles(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerTriggerTemplate(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerIncludedFiles(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudBuildTriggerTriggerTemplate(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2044,35 +2093,35 @@ func flattenCloudBuildTriggerTriggerTemplate(v interface{}, d *schema.ResourceDa
 		flattenCloudBuildTriggerTriggerTemplateCommitSha(original["commitSha"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerTriggerTemplateProjectId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerTriggerTemplateProjectId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerTriggerTemplateRepoName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerTriggerTemplateRepoName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerTriggerTemplateDir(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerTriggerTemplateDir(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerTriggerTemplateInvertRegex(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerTriggerTemplateInvertRegex(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerTriggerTemplateBranchName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerTriggerTemplateBranchName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerTriggerTemplateTagName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerTriggerTemplateTagName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerTriggerTemplateCommitSha(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerTriggerTemplateCommitSha(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGithub(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGithub(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2093,15 +2142,15 @@ func flattenCloudBuildTriggerGithub(v interface{}, d *schema.ResourceData, confi
 		flattenCloudBuildTriggerGithubEnterpriseConfigResourceName(original["enterpriseConfigResourceName"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerGithubOwner(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGithubOwner(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGithubName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGithubName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGithubPullRequest(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGithubPullRequest(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2118,19 +2167,19 @@ func flattenCloudBuildTriggerGithubPullRequest(v interface{}, d *schema.Resource
 		flattenCloudBuildTriggerGithubPullRequestInvertRegex(original["invertRegex"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerGithubPullRequestBranch(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGithubPullRequestBranch(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGithubPullRequestCommentControl(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGithubPullRequestCommentControl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGithubPullRequestInvertRegex(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGithubPullRequestInvertRegex(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGithubPush(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGithubPush(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2147,23 +2196,23 @@ func flattenCloudBuildTriggerGithubPush(v interface{}, d *schema.ResourceData, c
 		flattenCloudBuildTriggerGithubPushTag(original["tag"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerGithubPushInvertRegex(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGithubPushInvertRegex(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGithubPushBranch(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGithubPushBranch(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGithubPushTag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGithubPushTag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerGithubEnterpriseConfigResourceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerGithubEnterpriseConfigResourceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBitbucketServerTriggerConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBitbucketServerTriggerConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2184,19 +2233,19 @@ func flattenCloudBuildTriggerBitbucketServerTriggerConfig(v interface{}, d *sche
 		flattenCloudBuildTriggerBitbucketServerTriggerConfigPush(original["push"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerBitbucketServerTriggerConfigRepoSlug(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBitbucketServerTriggerConfigRepoSlug(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBitbucketServerTriggerConfigProjectKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBitbucketServerTriggerConfigProjectKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBitbucketServerTriggerConfigBitbucketServerConfigResource(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBitbucketServerTriggerConfigBitbucketServerConfigResource(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBitbucketServerTriggerConfigPullRequest(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBitbucketServerTriggerConfigPullRequest(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2213,19 +2262,19 @@ func flattenCloudBuildTriggerBitbucketServerTriggerConfigPullRequest(v interface
 		flattenCloudBuildTriggerBitbucketServerTriggerConfigPullRequestInvertRegex(original["invertRegex"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerBitbucketServerTriggerConfigPullRequestBranch(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBitbucketServerTriggerConfigPullRequestBranch(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBitbucketServerTriggerConfigPullRequestCommentControl(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBitbucketServerTriggerConfigPullRequestCommentControl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBitbucketServerTriggerConfigPullRequestInvertRegex(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBitbucketServerTriggerConfigPullRequestInvertRegex(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBitbucketServerTriggerConfigPush(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBitbucketServerTriggerConfigPush(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2242,19 +2291,19 @@ func flattenCloudBuildTriggerBitbucketServerTriggerConfigPush(v interface{}, d *
 		flattenCloudBuildTriggerBitbucketServerTriggerConfigPushTag(original["tag"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerBitbucketServerTriggerConfigPushInvertRegex(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBitbucketServerTriggerConfigPushInvertRegex(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBitbucketServerTriggerConfigPushBranch(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBitbucketServerTriggerConfigPushBranch(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBitbucketServerTriggerConfigPushTag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBitbucketServerTriggerConfigPushTag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerPubsubConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerPubsubConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2273,23 +2322,23 @@ func flattenCloudBuildTriggerPubsubConfig(v interface{}, d *schema.ResourceData,
 		flattenCloudBuildTriggerPubsubConfigState(original["state"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerPubsubConfigSubscription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerPubsubConfigSubscription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerPubsubConfigTopic(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerPubsubConfigTopic(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerPubsubConfigServiceAccountEmail(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerPubsubConfigServiceAccountEmail(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerPubsubConfigState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerPubsubConfigState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerWebhookConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerWebhookConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2304,15 +2353,15 @@ func flattenCloudBuildTriggerWebhookConfig(v interface{}, d *schema.ResourceData
 		flattenCloudBuildTriggerWebhookConfigState(original["state"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerWebhookConfigSecret(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerWebhookConfigSecret(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerWebhookConfigState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerWebhookConfigState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerApprovalConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerApprovalConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	transformed := make(map[string]interface{})
 	if v == nil {
 		// Disabled by default, but API will not return object if value is false
@@ -2325,7 +2374,7 @@ func flattenCloudBuildTriggerApprovalConfig(v interface{}, d *schema.ResourceDat
 	return []interface{}{transformed}
 }
 
-func flattenCloudBuildTriggerBuild(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuild(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2360,7 +2409,7 @@ func flattenCloudBuildTriggerBuild(v interface{}, d *schema.ResourceData, config
 		flattenCloudBuildTriggerBuildOptions(original["options"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerBuildSource(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSource(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2375,7 +2424,7 @@ func flattenCloudBuildTriggerBuildSource(v interface{}, d *schema.ResourceData, 
 		flattenCloudBuildTriggerBuildSourceRepoSource(original["repoSource"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerBuildSourceStorageSource(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceStorageSource(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2392,19 +2441,19 @@ func flattenCloudBuildTriggerBuildSourceStorageSource(v interface{}, d *schema.R
 		flattenCloudBuildTriggerBuildSourceStorageSourceGeneration(original["generation"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerBuildSourceStorageSourceBucket(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceStorageSourceBucket(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSourceStorageSourceObject(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceStorageSourceObject(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSourceStorageSourceGeneration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceStorageSourceGeneration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSourceRepoSource(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceRepoSource(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2431,63 +2480,63 @@ func flattenCloudBuildTriggerBuildSourceRepoSource(v interface{}, d *schema.Reso
 		flattenCloudBuildTriggerBuildSourceRepoSourceCommitSha(original["commitSha"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerBuildSourceRepoSourceProjectId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceRepoSourceProjectId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSourceRepoSourceRepoName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceRepoSourceRepoName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSourceRepoSourceDir(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceRepoSourceDir(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSourceRepoSourceInvertRegex(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceRepoSourceInvertRegex(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSourceRepoSourceSubstitutions(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceRepoSourceSubstitutions(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSourceRepoSourceBranchName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceRepoSourceBranchName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSourceRepoSourceTagName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceRepoSourceTagName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSourceRepoSourceCommitSha(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSourceRepoSourceCommitSha(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildTags(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildTags(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildImages(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildImages(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSubstitutions(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSubstitutions(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildQueueTtl(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildQueueTtl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildLogsBucket(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildLogsBucket(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildTimeout(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildTimeout(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSecret(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSecret(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -2506,15 +2555,15 @@ func flattenCloudBuildTriggerBuildSecret(v interface{}, d *schema.ResourceData, 
 	}
 	return transformed
 }
-func flattenCloudBuildTriggerBuildSecretKmsKeyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSecretKmsKeyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildSecretSecretEnv(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildSecretSecretEnv(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildAvailableSecrets(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildAvailableSecrets(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2527,7 +2576,7 @@ func flattenCloudBuildTriggerBuildAvailableSecrets(v interface{}, d *schema.Reso
 		flattenCloudBuildTriggerBuildAvailableSecretsSecretManager(original["secretManager"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerBuildAvailableSecretsSecretManager(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildAvailableSecretsSecretManager(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -2546,15 +2595,15 @@ func flattenCloudBuildTriggerBuildAvailableSecretsSecretManager(v interface{}, d
 	}
 	return transformed
 }
-func flattenCloudBuildTriggerBuildAvailableSecretsSecretManagerVersionName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildAvailableSecretsSecretManagerVersionName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildAvailableSecretsSecretManagerEnv(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildAvailableSecretsSecretManagerEnv(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStep(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStep(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -2567,59 +2616,61 @@ func flattenCloudBuildTriggerBuildStep(v interface{}, d *schema.ResourceData, co
 			continue
 		}
 		transformed = append(transformed, map[string]interface{}{
-			"name":       flattenCloudBuildTriggerBuildStepName(original["name"], d, config),
-			"args":       flattenCloudBuildTriggerBuildStepArgs(original["args"], d, config),
-			"env":        flattenCloudBuildTriggerBuildStepEnv(original["env"], d, config),
-			"id":         flattenCloudBuildTriggerBuildStepId(original["id"], d, config),
-			"entrypoint": flattenCloudBuildTriggerBuildStepEntrypoint(original["entrypoint"], d, config),
-			"dir":        flattenCloudBuildTriggerBuildStepDir(original["dir"], d, config),
-			"secret_env": flattenCloudBuildTriggerBuildStepSecretEnv(original["secretEnv"], d, config),
-			"timeout":    flattenCloudBuildTriggerBuildStepTimeout(original["timeout"], d, config),
-			"timing":     flattenCloudBuildTriggerBuildStepTiming(original["timing"], d, config),
-			"volumes":    flattenCloudBuildTriggerBuildStepVolumes(original["volumes"], d, config),
-			"wait_for":   flattenCloudBuildTriggerBuildStepWaitFor(original["waitFor"], d, config),
-			"script":     flattenCloudBuildTriggerBuildStepScript(original["script"], d, config),
+			"name":             flattenCloudBuildTriggerBuildStepName(original["name"], d, config),
+			"args":             flattenCloudBuildTriggerBuildStepArgs(original["args"], d, config),
+			"env":              flattenCloudBuildTriggerBuildStepEnv(original["env"], d, config),
+			"id":               flattenCloudBuildTriggerBuildStepId(original["id"], d, config),
+			"entrypoint":       flattenCloudBuildTriggerBuildStepEntrypoint(original["entrypoint"], d, config),
+			"dir":              flattenCloudBuildTriggerBuildStepDir(original["dir"], d, config),
+			"secret_env":       flattenCloudBuildTriggerBuildStepSecretEnv(original["secretEnv"], d, config),
+			"timeout":          flattenCloudBuildTriggerBuildStepTimeout(original["timeout"], d, config),
+			"timing":           flattenCloudBuildTriggerBuildStepTiming(original["timing"], d, config),
+			"volumes":          flattenCloudBuildTriggerBuildStepVolumes(original["volumes"], d, config),
+			"wait_for":         flattenCloudBuildTriggerBuildStepWaitFor(original["waitFor"], d, config),
+			"script":           flattenCloudBuildTriggerBuildStepScript(original["script"], d, config),
+			"allow_failure":    flattenCloudBuildTriggerBuildStepAllowFailure(original["allowFailure"], d, config),
+			"allow_exit_codes": flattenCloudBuildTriggerBuildStepAllowExitCodes(original["allowExitCodes"], d, config),
 		})
 	}
 	return transformed
 }
-func flattenCloudBuildTriggerBuildStepName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStepArgs(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepArgs(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStepEnv(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepEnv(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStepId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStepEntrypoint(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepEntrypoint(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStepDir(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepDir(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStepSecretEnv(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepSecretEnv(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStepTimeout(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepTimeout(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStepTiming(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepTiming(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStepVolumes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepVolumes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -2638,23 +2689,31 @@ func flattenCloudBuildTriggerBuildStepVolumes(v interface{}, d *schema.ResourceD
 	}
 	return transformed
 }
-func flattenCloudBuildTriggerBuildStepVolumesName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepVolumesName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStepVolumesPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepVolumesPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStepWaitFor(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepWaitFor(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildStepScript(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepScript(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildArtifacts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildStepAllowFailure(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudBuildTriggerBuildStepAllowExitCodes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudBuildTriggerBuildArtifacts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2669,11 +2728,11 @@ func flattenCloudBuildTriggerBuildArtifacts(v interface{}, d *schema.ResourceDat
 		flattenCloudBuildTriggerBuildArtifactsObjects(original["objects"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerBuildArtifactsImages(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildArtifactsImages(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildArtifactsObjects(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildArtifactsObjects(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2690,15 +2749,15 @@ func flattenCloudBuildTriggerBuildArtifactsObjects(v interface{}, d *schema.Reso
 		flattenCloudBuildTriggerBuildArtifactsObjectsTiming(original["timing"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerBuildArtifactsObjectsLocation(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildArtifactsObjectsLocation(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildArtifactsObjectsPaths(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildArtifactsObjectsPaths(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildArtifactsObjectsTiming(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildArtifactsObjectsTiming(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2713,15 +2772,15 @@ func flattenCloudBuildTriggerBuildArtifactsObjectsTiming(v interface{}, d *schem
 		flattenCloudBuildTriggerBuildArtifactsObjectsTimingEndTime(original["endTime"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerBuildArtifactsObjectsTimingStartTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildArtifactsObjectsTimingStartTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildArtifactsObjectsTimingEndTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildArtifactsObjectsTimingEndTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildOptions(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptions(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -2756,19 +2815,19 @@ func flattenCloudBuildTriggerBuildOptions(v interface{}, d *schema.ResourceData,
 		flattenCloudBuildTriggerBuildOptionsVolumes(original["volumes"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudBuildTriggerBuildOptionsSourceProvenanceHash(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsSourceProvenanceHash(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildOptionsRequestedVerifyOption(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsRequestedVerifyOption(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildOptionsMachineType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsMachineType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildOptionsDiskSizeGb(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsDiskSizeGb(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -2785,35 +2844,35 @@ func flattenCloudBuildTriggerBuildOptionsDiskSizeGb(v interface{}, d *schema.Res
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudBuildTriggerBuildOptionsSubstitutionOption(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsSubstitutionOption(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildOptionsDynamicSubstitutions(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsDynamicSubstitutions(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildOptionsLogStreamingOption(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsLogStreamingOption(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildOptionsWorkerPool(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsWorkerPool(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildOptionsLogging(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsLogging(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildOptionsEnv(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsEnv(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildOptionsSecretEnv(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsSecretEnv(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildOptionsVolumes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsVolumes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -2832,31 +2891,31 @@ func flattenCloudBuildTriggerBuildOptionsVolumes(v interface{}, d *schema.Resour
 	}
 	return transformed
 }
-func flattenCloudBuildTriggerBuildOptionsVolumesName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsVolumesName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCloudBuildTriggerBuildOptionsVolumesPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudBuildTriggerBuildOptionsVolumesPath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandCloudBuildTriggerName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerTags(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerTags(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerDisabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerDisabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerSubstitutions(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudBuildTriggerSubstitutions(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -2867,23 +2926,23 @@ func expandCloudBuildTriggerSubstitutions(v interface{}, d TerraformResourceData
 	return m, nil
 }
 
-func expandCloudBuildTriggerServiceAccount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerServiceAccount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerIncludeBuildLogs(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerIncludeBuildLogs(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerFilename(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerFilename(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerFilter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerFilter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGitFileSource(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGitFileSource(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2895,62 +2954,73 @@ func expandCloudBuildTriggerGitFileSource(v interface{}, d TerraformResourceData
 	transformedPath, err := expandCloudBuildTriggerGitFileSourcePath(original["path"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["path"] = transformedPath
 	}
 
 	transformedUri, err := expandCloudBuildTriggerGitFileSourceUri(original["uri"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedUri); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedUri); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["uri"] = transformedUri
+	}
+
+	transformedRepository, err := expandCloudBuildTriggerGitFileSourceRepository(original["repository"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedRepository); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["repository"] = transformedRepository
 	}
 
 	transformedRepoType, err := expandCloudBuildTriggerGitFileSourceRepoType(original["repo_type"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRepoType); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRepoType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["repoType"] = transformedRepoType
 	}
 
 	transformedRevision, err := expandCloudBuildTriggerGitFileSourceRevision(original["revision"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRevision); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRevision); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["revision"] = transformedRevision
 	}
 
 	transformedGithubEnterpriseConfig, err := expandCloudBuildTriggerGitFileSourceGithubEnterpriseConfig(original["github_enterprise_config"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedGithubEnterpriseConfig); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedGithubEnterpriseConfig); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["githubEnterpriseConfig"] = transformedGithubEnterpriseConfig
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerGitFileSourcePath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGitFileSourcePath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGitFileSourceUri(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGitFileSourceUri(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGitFileSourceRepoType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGitFileSourceRepository(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGitFileSourceRevision(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGitFileSourceRepoType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGitFileSourceGithubEnterpriseConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGitFileSourceRevision(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerRepositoryEventConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGitFileSourceGithubEnterpriseConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudBuildTriggerRepositoryEventConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2962,32 +3032,32 @@ func expandCloudBuildTriggerRepositoryEventConfig(v interface{}, d TerraformReso
 	transformedRepository, err := expandCloudBuildTriggerRepositoryEventConfigRepository(original["repository"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRepository); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRepository); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["repository"] = transformedRepository
 	}
 
 	transformedPullRequest, err := expandCloudBuildTriggerRepositoryEventConfigPullRequest(original["pull_request"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPullRequest); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPullRequest); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["pullRequest"] = transformedPullRequest
 	}
 
 	transformedPush, err := expandCloudBuildTriggerRepositoryEventConfigPush(original["push"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPush); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPush); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["push"] = transformedPush
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerRepositoryEventConfigRepository(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerRepositoryEventConfigRepository(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerRepositoryEventConfigPullRequest(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerRepositoryEventConfigPullRequest(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2999,40 +3069,40 @@ func expandCloudBuildTriggerRepositoryEventConfigPullRequest(v interface{}, d Te
 	transformedBranch, err := expandCloudBuildTriggerRepositoryEventConfigPullRequestBranch(original["branch"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBranch); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBranch); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["branch"] = transformedBranch
 	}
 
 	transformedInvertRegex, err := expandCloudBuildTriggerRepositoryEventConfigPullRequestInvertRegex(original["invert_regex"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["invertRegex"] = transformedInvertRegex
 	}
 
 	transformedCommentControl, err := expandCloudBuildTriggerRepositoryEventConfigPullRequestCommentControl(original["comment_control"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCommentControl); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCommentControl); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["commentControl"] = transformedCommentControl
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerRepositoryEventConfigPullRequestBranch(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerRepositoryEventConfigPullRequestBranch(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerRepositoryEventConfigPullRequestInvertRegex(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerRepositoryEventConfigPullRequestInvertRegex(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerRepositoryEventConfigPullRequestCommentControl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerRepositoryEventConfigPullRequestCommentControl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerRepositoryEventConfigPush(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerRepositoryEventConfigPush(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3044,40 +3114,40 @@ func expandCloudBuildTriggerRepositoryEventConfigPush(v interface{}, d Terraform
 	transformedBranch, err := expandCloudBuildTriggerRepositoryEventConfigPushBranch(original["branch"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBranch); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBranch); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["branch"] = transformedBranch
 	}
 
 	transformedTag, err := expandCloudBuildTriggerRepositoryEventConfigPushTag(original["tag"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTag); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTag); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["tag"] = transformedTag
 	}
 
 	transformedInvertRegex, err := expandCloudBuildTriggerRepositoryEventConfigPushInvertRegex(original["invert_regex"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["invertRegex"] = transformedInvertRegex
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerRepositoryEventConfigPushBranch(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerRepositoryEventConfigPushBranch(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerRepositoryEventConfigPushTag(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerRepositoryEventConfigPushTag(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerRepositoryEventConfigPushInvertRegex(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerRepositoryEventConfigPushInvertRegex(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerSourceToBuild(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerSourceToBuild(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3089,59 +3159,70 @@ func expandCloudBuildTriggerSourceToBuild(v interface{}, d TerraformResourceData
 	transformedUri, err := expandCloudBuildTriggerSourceToBuildUri(original["uri"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedUri); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedUri); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["uri"] = transformedUri
+	}
+
+	transformedRepository, err := expandCloudBuildTriggerSourceToBuildRepository(original["repository"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedRepository); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["repository"] = transformedRepository
 	}
 
 	transformedRef, err := expandCloudBuildTriggerSourceToBuildRef(original["ref"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRef); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRef); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["ref"] = transformedRef
 	}
 
 	transformedRepoType, err := expandCloudBuildTriggerSourceToBuildRepoType(original["repo_type"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRepoType); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRepoType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["repoType"] = transformedRepoType
 	}
 
 	transformedGithubEnterpriseConfig, err := expandCloudBuildTriggerSourceToBuildGithubEnterpriseConfig(original["github_enterprise_config"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedGithubEnterpriseConfig); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedGithubEnterpriseConfig); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["githubEnterpriseConfig"] = transformedGithubEnterpriseConfig
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerSourceToBuildUri(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerSourceToBuildUri(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerSourceToBuildRef(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerSourceToBuildRepository(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerSourceToBuildRepoType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerSourceToBuildRef(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerSourceToBuildGithubEnterpriseConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerSourceToBuildRepoType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerIgnoredFiles(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerSourceToBuildGithubEnterpriseConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerIncludedFiles(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerIgnoredFiles(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerTriggerTemplate(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerIncludedFiles(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudBuildTriggerTriggerTemplate(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3153,84 +3234,84 @@ func expandCloudBuildTriggerTriggerTemplate(v interface{}, d TerraformResourceDa
 	transformedProjectId, err := expandCloudBuildTriggerTriggerTemplateProjectId(original["project_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["projectId"] = transformedProjectId
 	}
 
 	transformedRepoName, err := expandCloudBuildTriggerTriggerTemplateRepoName(original["repo_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRepoName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRepoName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["repoName"] = transformedRepoName
 	}
 
 	transformedDir, err := expandCloudBuildTriggerTriggerTemplateDir(original["dir"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDir); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDir); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["dir"] = transformedDir
 	}
 
 	transformedInvertRegex, err := expandCloudBuildTriggerTriggerTemplateInvertRegex(original["invert_regex"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["invertRegex"] = transformedInvertRegex
 	}
 
 	transformedBranchName, err := expandCloudBuildTriggerTriggerTemplateBranchName(original["branch_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBranchName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBranchName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["branchName"] = transformedBranchName
 	}
 
 	transformedTagName, err := expandCloudBuildTriggerTriggerTemplateTagName(original["tag_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTagName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTagName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["tagName"] = transformedTagName
 	}
 
 	transformedCommitSha, err := expandCloudBuildTriggerTriggerTemplateCommitSha(original["commit_sha"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCommitSha); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCommitSha); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["commitSha"] = transformedCommitSha
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerTriggerTemplateProjectId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerTriggerTemplateProjectId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerTriggerTemplateRepoName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerTriggerTemplateRepoName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerTriggerTemplateDir(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerTriggerTemplateDir(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerTriggerTemplateInvertRegex(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerTriggerTemplateInvertRegex(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerTriggerTemplateBranchName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerTriggerTemplateBranchName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerTriggerTemplateTagName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerTriggerTemplateTagName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerTriggerTemplateCommitSha(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerTriggerTemplateCommitSha(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGithub(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGithub(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3242,50 +3323,50 @@ func expandCloudBuildTriggerGithub(v interface{}, d TerraformResourceData, confi
 	transformedOwner, err := expandCloudBuildTriggerGithubOwner(original["owner"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedOwner); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedOwner); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["owner"] = transformedOwner
 	}
 
 	transformedName, err := expandCloudBuildTriggerGithubName(original["name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["name"] = transformedName
 	}
 
 	transformedPullRequest, err := expandCloudBuildTriggerGithubPullRequest(original["pull_request"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPullRequest); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPullRequest); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["pullRequest"] = transformedPullRequest
 	}
 
 	transformedPush, err := expandCloudBuildTriggerGithubPush(original["push"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPush); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPush); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["push"] = transformedPush
 	}
 
 	transformedEnterpriseConfigResourceName, err := expandCloudBuildTriggerGithubEnterpriseConfigResourceName(original["enterprise_config_resource_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEnterpriseConfigResourceName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEnterpriseConfigResourceName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["enterpriseConfigResourceName"] = transformedEnterpriseConfigResourceName
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerGithubOwner(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGithubOwner(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGithubName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGithubName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGithubPullRequest(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGithubPullRequest(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3297,40 +3378,40 @@ func expandCloudBuildTriggerGithubPullRequest(v interface{}, d TerraformResource
 	transformedBranch, err := expandCloudBuildTriggerGithubPullRequestBranch(original["branch"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBranch); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBranch); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["branch"] = transformedBranch
 	}
 
 	transformedCommentControl, err := expandCloudBuildTriggerGithubPullRequestCommentControl(original["comment_control"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCommentControl); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCommentControl); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["commentControl"] = transformedCommentControl
 	}
 
 	transformedInvertRegex, err := expandCloudBuildTriggerGithubPullRequestInvertRegex(original["invert_regex"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["invertRegex"] = transformedInvertRegex
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerGithubPullRequestBranch(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGithubPullRequestBranch(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGithubPullRequestCommentControl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGithubPullRequestCommentControl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGithubPullRequestInvertRegex(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGithubPullRequestInvertRegex(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGithubPush(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGithubPush(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3342,44 +3423,44 @@ func expandCloudBuildTriggerGithubPush(v interface{}, d TerraformResourceData, c
 	transformedInvertRegex, err := expandCloudBuildTriggerGithubPushInvertRegex(original["invert_regex"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["invertRegex"] = transformedInvertRegex
 	}
 
 	transformedBranch, err := expandCloudBuildTriggerGithubPushBranch(original["branch"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBranch); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBranch); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["branch"] = transformedBranch
 	}
 
 	transformedTag, err := expandCloudBuildTriggerGithubPushTag(original["tag"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTag); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTag); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["tag"] = transformedTag
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerGithubPushInvertRegex(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGithubPushInvertRegex(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGithubPushBranch(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGithubPushBranch(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGithubPushTag(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGithubPushTag(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerGithubEnterpriseConfigResourceName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerGithubEnterpriseConfigResourceName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBitbucketServerTriggerConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBitbucketServerTriggerConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3391,54 +3472,54 @@ func expandCloudBuildTriggerBitbucketServerTriggerConfig(v interface{}, d Terraf
 	transformedRepoSlug, err := expandCloudBuildTriggerBitbucketServerTriggerConfigRepoSlug(original["repo_slug"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRepoSlug); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRepoSlug); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["repoSlug"] = transformedRepoSlug
 	}
 
 	transformedProjectKey, err := expandCloudBuildTriggerBitbucketServerTriggerConfigProjectKey(original["project_key"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProjectKey); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProjectKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["projectKey"] = transformedProjectKey
 	}
 
 	transformedBitbucketServerConfigResource, err := expandCloudBuildTriggerBitbucketServerTriggerConfigBitbucketServerConfigResource(original["bitbucket_server_config_resource"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBitbucketServerConfigResource); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBitbucketServerConfigResource); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["bitbucketServerConfigResource"] = transformedBitbucketServerConfigResource
 	}
 
 	transformedPullRequest, err := expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequest(original["pull_request"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPullRequest); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPullRequest); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["pullRequest"] = transformedPullRequest
 	}
 
 	transformedPush, err := expandCloudBuildTriggerBitbucketServerTriggerConfigPush(original["push"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPush); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPush); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["push"] = transformedPush
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerBitbucketServerTriggerConfigRepoSlug(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBitbucketServerTriggerConfigRepoSlug(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBitbucketServerTriggerConfigProjectKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBitbucketServerTriggerConfigProjectKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBitbucketServerTriggerConfigBitbucketServerConfigResource(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBitbucketServerTriggerConfigBitbucketServerConfigResource(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequest(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequest(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3450,40 +3531,40 @@ func expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequest(v interface{
 	transformedBranch, err := expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequestBranch(original["branch"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBranch); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBranch); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["branch"] = transformedBranch
 	}
 
 	transformedCommentControl, err := expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequestCommentControl(original["comment_control"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCommentControl); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCommentControl); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["commentControl"] = transformedCommentControl
 	}
 
 	transformedInvertRegex, err := expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequestInvertRegex(original["invert_regex"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["invertRegex"] = transformedInvertRegex
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequestBranch(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequestBranch(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequestCommentControl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequestCommentControl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequestInvertRegex(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBitbucketServerTriggerConfigPullRequestInvertRegex(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBitbucketServerTriggerConfigPush(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBitbucketServerTriggerConfigPush(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3495,40 +3576,40 @@ func expandCloudBuildTriggerBitbucketServerTriggerConfigPush(v interface{}, d Te
 	transformedInvertRegex, err := expandCloudBuildTriggerBitbucketServerTriggerConfigPushInvertRegex(original["invert_regex"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["invertRegex"] = transformedInvertRegex
 	}
 
 	transformedBranch, err := expandCloudBuildTriggerBitbucketServerTriggerConfigPushBranch(original["branch"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBranch); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBranch); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["branch"] = transformedBranch
 	}
 
 	transformedTag, err := expandCloudBuildTriggerBitbucketServerTriggerConfigPushTag(original["tag"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTag); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTag); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["tag"] = transformedTag
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerBitbucketServerTriggerConfigPushInvertRegex(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBitbucketServerTriggerConfigPushInvertRegex(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBitbucketServerTriggerConfigPushBranch(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBitbucketServerTriggerConfigPushBranch(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBitbucketServerTriggerConfigPushTag(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBitbucketServerTriggerConfigPushTag(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerPubsubConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerPubsubConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3540,51 +3621,51 @@ func expandCloudBuildTriggerPubsubConfig(v interface{}, d TerraformResourceData,
 	transformedSubscription, err := expandCloudBuildTriggerPubsubConfigSubscription(original["subscription"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSubscription); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSubscription); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["subscription"] = transformedSubscription
 	}
 
 	transformedTopic, err := expandCloudBuildTriggerPubsubConfigTopic(original["topic"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTopic); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTopic); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["topic"] = transformedTopic
 	}
 
 	transformedServiceAccountEmail, err := expandCloudBuildTriggerPubsubConfigServiceAccountEmail(original["service_account_email"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedServiceAccountEmail); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedServiceAccountEmail); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["service_account_email"] = transformedServiceAccountEmail
 	}
 
 	transformedState, err := expandCloudBuildTriggerPubsubConfigState(original["state"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedState); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedState); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["state"] = transformedState
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerPubsubConfigSubscription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerPubsubConfigSubscription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerPubsubConfigTopic(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerPubsubConfigTopic(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerPubsubConfigServiceAccountEmail(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerPubsubConfigServiceAccountEmail(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerPubsubConfigState(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerPubsubConfigState(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerWebhookConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerWebhookConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3596,29 +3677,29 @@ func expandCloudBuildTriggerWebhookConfig(v interface{}, d TerraformResourceData
 	transformedSecret, err := expandCloudBuildTriggerWebhookConfigSecret(original["secret"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSecret); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSecret); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["secret"] = transformedSecret
 	}
 
 	transformedState, err := expandCloudBuildTriggerWebhookConfigState(original["state"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedState); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedState); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["state"] = transformedState
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerWebhookConfigSecret(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerWebhookConfigSecret(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerWebhookConfigState(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerWebhookConfigState(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerApprovalConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerApprovalConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3630,18 +3711,18 @@ func expandCloudBuildTriggerApprovalConfig(v interface{}, d TerraformResourceDat
 	transformedApprovalRequired, err := expandCloudBuildTriggerApprovalConfigApprovalRequired(original["approval_required"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedApprovalRequired); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedApprovalRequired); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["approvalRequired"] = transformedApprovalRequired
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerApprovalConfigApprovalRequired(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerApprovalConfigApprovalRequired(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuild(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuild(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3653,91 +3734,91 @@ func expandCloudBuildTriggerBuild(v interface{}, d TerraformResourceData, config
 	transformedSource, err := expandCloudBuildTriggerBuildSource(original["source"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSource); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSource); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["source"] = transformedSource
 	}
 
 	transformedTags, err := expandCloudBuildTriggerBuildTags(original["tags"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTags); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTags); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["tags"] = transformedTags
 	}
 
 	transformedImages, err := expandCloudBuildTriggerBuildImages(original["images"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedImages); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedImages); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["images"] = transformedImages
 	}
 
 	transformedSubstitutions, err := expandCloudBuildTriggerBuildSubstitutions(original["substitutions"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSubstitutions); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSubstitutions); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["substitutions"] = transformedSubstitutions
 	}
 
 	transformedQueueTtl, err := expandCloudBuildTriggerBuildQueueTtl(original["queue_ttl"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedQueueTtl); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedQueueTtl); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["queueTtl"] = transformedQueueTtl
 	}
 
 	transformedLogsBucket, err := expandCloudBuildTriggerBuildLogsBucket(original["logs_bucket"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLogsBucket); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLogsBucket); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["logsBucket"] = transformedLogsBucket
 	}
 
 	transformedTimeout, err := expandCloudBuildTriggerBuildTimeout(original["timeout"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTimeout); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTimeout); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["timeout"] = transformedTimeout
 	}
 
 	transformedSecret, err := expandCloudBuildTriggerBuildSecret(original["secret"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSecret); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSecret); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["secrets"] = transformedSecret
 	}
 
 	transformedAvailableSecrets, err := expandCloudBuildTriggerBuildAvailableSecrets(original["available_secrets"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAvailableSecrets); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAvailableSecrets); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["availableSecrets"] = transformedAvailableSecrets
 	}
 
 	transformedStep, err := expandCloudBuildTriggerBuildStep(original["step"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedStep); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedStep); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["steps"] = transformedStep
 	}
 
 	transformedArtifacts, err := expandCloudBuildTriggerBuildArtifacts(original["artifacts"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedArtifacts); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedArtifacts); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["artifacts"] = transformedArtifacts
 	}
 
 	transformedOptions, err := expandCloudBuildTriggerBuildOptions(original["options"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedOptions); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedOptions); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["options"] = transformedOptions
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerBuildSource(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSource(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3749,21 +3830,21 @@ func expandCloudBuildTriggerBuildSource(v interface{}, d TerraformResourceData, 
 	transformedStorageSource, err := expandCloudBuildTriggerBuildSourceStorageSource(original["storage_source"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedStorageSource); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedStorageSource); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["storageSource"] = transformedStorageSource
 	}
 
 	transformedRepoSource, err := expandCloudBuildTriggerBuildSourceRepoSource(original["repo_source"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRepoSource); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRepoSource); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["repoSource"] = transformedRepoSource
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerBuildSourceStorageSource(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSourceStorageSource(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3775,40 +3856,40 @@ func expandCloudBuildTriggerBuildSourceStorageSource(v interface{}, d TerraformR
 	transformedBucket, err := expandCloudBuildTriggerBuildSourceStorageSourceBucket(original["bucket"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBucket); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBucket); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["bucket"] = transformedBucket
 	}
 
 	transformedObject, err := expandCloudBuildTriggerBuildSourceStorageSourceObject(original["object"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedObject); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedObject); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["object"] = transformedObject
 	}
 
 	transformedGeneration, err := expandCloudBuildTriggerBuildSourceStorageSourceGeneration(original["generation"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedGeneration); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedGeneration); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["generation"] = transformedGeneration
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerBuildSourceStorageSourceBucket(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSourceStorageSourceBucket(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildSourceStorageSourceObject(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSourceStorageSourceObject(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildSourceStorageSourceGeneration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSourceStorageSourceGeneration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildSourceRepoSource(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSourceRepoSource(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -3820,79 +3901,79 @@ func expandCloudBuildTriggerBuildSourceRepoSource(v interface{}, d TerraformReso
 	transformedProjectId, err := expandCloudBuildTriggerBuildSourceRepoSourceProjectId(original["project_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["projectId"] = transformedProjectId
 	}
 
 	transformedRepoName, err := expandCloudBuildTriggerBuildSourceRepoSourceRepoName(original["repo_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRepoName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRepoName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["repoName"] = transformedRepoName
 	}
 
 	transformedDir, err := expandCloudBuildTriggerBuildSourceRepoSourceDir(original["dir"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDir); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDir); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["dir"] = transformedDir
 	}
 
 	transformedInvertRegex, err := expandCloudBuildTriggerBuildSourceRepoSourceInvertRegex(original["invert_regex"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedInvertRegex); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["invertRegex"] = transformedInvertRegex
 	}
 
 	transformedSubstitutions, err := expandCloudBuildTriggerBuildSourceRepoSourceSubstitutions(original["substitutions"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSubstitutions); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSubstitutions); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["substitutions"] = transformedSubstitutions
 	}
 
 	transformedBranchName, err := expandCloudBuildTriggerBuildSourceRepoSourceBranchName(original["branch_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedBranchName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedBranchName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["branchName"] = transformedBranchName
 	}
 
 	transformedTagName, err := expandCloudBuildTriggerBuildSourceRepoSourceTagName(original["tag_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTagName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTagName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["tagName"] = transformedTagName
 	}
 
 	transformedCommitSha, err := expandCloudBuildTriggerBuildSourceRepoSourceCommitSha(original["commit_sha"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCommitSha); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCommitSha); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["commitSha"] = transformedCommitSha
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerBuildSourceRepoSourceProjectId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSourceRepoSourceProjectId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildSourceRepoSourceRepoName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSourceRepoSourceRepoName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildSourceRepoSourceDir(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSourceRepoSourceDir(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildSourceRepoSourceInvertRegex(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSourceRepoSourceInvertRegex(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildSourceRepoSourceSubstitutions(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudBuildTriggerBuildSourceRepoSourceSubstitutions(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -3903,27 +3984,27 @@ func expandCloudBuildTriggerBuildSourceRepoSourceSubstitutions(v interface{}, d 
 	return m, nil
 }
 
-func expandCloudBuildTriggerBuildSourceRepoSourceBranchName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSourceRepoSourceBranchName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildSourceRepoSourceTagName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSourceRepoSourceTagName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildSourceRepoSourceCommitSha(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSourceRepoSourceCommitSha(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildTags(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildTags(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildImages(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildImages(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildSubstitutions(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudBuildTriggerBuildSubstitutions(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -3934,19 +4015,19 @@ func expandCloudBuildTriggerBuildSubstitutions(v interface{}, d TerraformResourc
 	return m, nil
 }
 
-func expandCloudBuildTriggerBuildQueueTtl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildQueueTtl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildLogsBucket(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildLogsBucket(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildTimeout(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildTimeout(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildSecret(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSecret(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -3959,14 +4040,14 @@ func expandCloudBuildTriggerBuildSecret(v interface{}, d TerraformResourceData, 
 		transformedKmsKeyName, err := expandCloudBuildTriggerBuildSecretKmsKeyName(original["kms_key_name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["kmsKeyName"] = transformedKmsKeyName
 		}
 
 		transformedSecretEnv, err := expandCloudBuildTriggerBuildSecretSecretEnv(original["secret_env"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSecretEnv); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSecretEnv); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["secretEnv"] = transformedSecretEnv
 		}
 
@@ -3975,11 +4056,11 @@ func expandCloudBuildTriggerBuildSecret(v interface{}, d TerraformResourceData, 
 	return req, nil
 }
 
-func expandCloudBuildTriggerBuildSecretKmsKeyName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildSecretKmsKeyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildSecretSecretEnv(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCloudBuildTriggerBuildSecretSecretEnv(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -3990,7 +4071,7 @@ func expandCloudBuildTriggerBuildSecretSecretEnv(v interface{}, d TerraformResou
 	return m, nil
 }
 
-func expandCloudBuildTriggerBuildAvailableSecrets(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildAvailableSecrets(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -4002,14 +4083,14 @@ func expandCloudBuildTriggerBuildAvailableSecrets(v interface{}, d TerraformReso
 	transformedSecretManager, err := expandCloudBuildTriggerBuildAvailableSecretsSecretManager(original["secret_manager"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSecretManager); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSecretManager); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["secretManager"] = transformedSecretManager
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerBuildAvailableSecretsSecretManager(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildAvailableSecretsSecretManager(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -4022,14 +4103,14 @@ func expandCloudBuildTriggerBuildAvailableSecretsSecretManager(v interface{}, d 
 		transformedVersionName, err := expandCloudBuildTriggerBuildAvailableSecretsSecretManagerVersionName(original["version_name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedVersionName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedVersionName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["versionName"] = transformedVersionName
 		}
 
 		transformedEnv, err := expandCloudBuildTriggerBuildAvailableSecretsSecretManagerEnv(original["env"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedEnv); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedEnv); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["env"] = transformedEnv
 		}
 
@@ -4038,15 +4119,15 @@ func expandCloudBuildTriggerBuildAvailableSecretsSecretManager(v interface{}, d 
 	return req, nil
 }
 
-func expandCloudBuildTriggerBuildAvailableSecretsSecretManagerVersionName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildAvailableSecretsSecretManagerVersionName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildAvailableSecretsSecretManagerEnv(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildAvailableSecretsSecretManagerEnv(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStep(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStep(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -4059,85 +4140,99 @@ func expandCloudBuildTriggerBuildStep(v interface{}, d TerraformResourceData, co
 		transformedName, err := expandCloudBuildTriggerBuildStepName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
 		transformedArgs, err := expandCloudBuildTriggerBuildStepArgs(original["args"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedArgs); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedArgs); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["args"] = transformedArgs
 		}
 
 		transformedEnv, err := expandCloudBuildTriggerBuildStepEnv(original["env"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedEnv); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedEnv); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["env"] = transformedEnv
 		}
 
 		transformedId, err := expandCloudBuildTriggerBuildStepId(original["id"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedId); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["id"] = transformedId
 		}
 
 		transformedEntrypoint, err := expandCloudBuildTriggerBuildStepEntrypoint(original["entrypoint"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedEntrypoint); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedEntrypoint); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["entrypoint"] = transformedEntrypoint
 		}
 
 		transformedDir, err := expandCloudBuildTriggerBuildStepDir(original["dir"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedDir); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedDir); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["dir"] = transformedDir
 		}
 
 		transformedSecretEnv, err := expandCloudBuildTriggerBuildStepSecretEnv(original["secret_env"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSecretEnv); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSecretEnv); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["secretEnv"] = transformedSecretEnv
 		}
 
 		transformedTimeout, err := expandCloudBuildTriggerBuildStepTimeout(original["timeout"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedTimeout); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedTimeout); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["timeout"] = transformedTimeout
 		}
 
 		transformedTiming, err := expandCloudBuildTriggerBuildStepTiming(original["timing"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedTiming); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedTiming); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["timing"] = transformedTiming
 		}
 
 		transformedVolumes, err := expandCloudBuildTriggerBuildStepVolumes(original["volumes"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedVolumes); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedVolumes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["volumes"] = transformedVolumes
 		}
 
 		transformedWaitFor, err := expandCloudBuildTriggerBuildStepWaitFor(original["wait_for"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedWaitFor); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedWaitFor); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["waitFor"] = transformedWaitFor
 		}
 
 		transformedScript, err := expandCloudBuildTriggerBuildStepScript(original["script"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedScript); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedScript); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["script"] = transformedScript
+		}
+
+		transformedAllowFailure, err := expandCloudBuildTriggerBuildStepAllowFailure(original["allow_failure"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedAllowFailure); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["allowFailure"] = transformedAllowFailure
+		}
+
+		transformedAllowExitCodes, err := expandCloudBuildTriggerBuildStepAllowExitCodes(original["allow_exit_codes"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedAllowExitCodes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["allowExitCodes"] = transformedAllowExitCodes
 		}
 
 		req = append(req, transformed)
@@ -4145,43 +4240,43 @@ func expandCloudBuildTriggerBuildStep(v interface{}, d TerraformResourceData, co
 	return req, nil
 }
 
-func expandCloudBuildTriggerBuildStepName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStepArgs(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepArgs(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStepEnv(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepEnv(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStepId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStepEntrypoint(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepEntrypoint(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStepDir(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepDir(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStepSecretEnv(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepSecretEnv(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStepTimeout(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepTimeout(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStepTiming(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepTiming(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStepVolumes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepVolumes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -4194,14 +4289,14 @@ func expandCloudBuildTriggerBuildStepVolumes(v interface{}, d TerraformResourceD
 		transformedName, err := expandCloudBuildTriggerBuildStepVolumesName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
 		transformedPath, err := expandCloudBuildTriggerBuildStepVolumesPath(original["path"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["path"] = transformedPath
 		}
 
@@ -4210,23 +4305,31 @@ func expandCloudBuildTriggerBuildStepVolumes(v interface{}, d TerraformResourceD
 	return req, nil
 }
 
-func expandCloudBuildTriggerBuildStepVolumesName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepVolumesName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStepVolumesPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepVolumesPath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStepWaitFor(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepWaitFor(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildStepScript(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepScript(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildArtifacts(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildStepAllowFailure(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudBuildTriggerBuildStepAllowExitCodes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudBuildTriggerBuildArtifacts(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -4238,25 +4341,25 @@ func expandCloudBuildTriggerBuildArtifacts(v interface{}, d TerraformResourceDat
 	transformedImages, err := expandCloudBuildTriggerBuildArtifactsImages(original["images"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedImages); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedImages); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["images"] = transformedImages
 	}
 
 	transformedObjects, err := expandCloudBuildTriggerBuildArtifactsObjects(original["objects"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedObjects); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedObjects); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["objects"] = transformedObjects
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerBuildArtifactsImages(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildArtifactsImages(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildArtifactsObjects(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildArtifactsObjects(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -4268,36 +4371,36 @@ func expandCloudBuildTriggerBuildArtifactsObjects(v interface{}, d TerraformReso
 	transformedLocation, err := expandCloudBuildTriggerBuildArtifactsObjectsLocation(original["location"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLocation); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLocation); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["location"] = transformedLocation
 	}
 
 	transformedPaths, err := expandCloudBuildTriggerBuildArtifactsObjectsPaths(original["paths"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPaths); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPaths); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["paths"] = transformedPaths
 	}
 
 	transformedTiming, err := expandCloudBuildTriggerBuildArtifactsObjectsTiming(original["timing"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTiming); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTiming); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["timing"] = transformedTiming
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerBuildArtifactsObjectsLocation(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildArtifactsObjectsLocation(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildArtifactsObjectsPaths(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildArtifactsObjectsPaths(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildArtifactsObjectsTiming(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildArtifactsObjectsTiming(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -4309,29 +4412,29 @@ func expandCloudBuildTriggerBuildArtifactsObjectsTiming(v interface{}, d Terrafo
 	transformedStartTime, err := expandCloudBuildTriggerBuildArtifactsObjectsTimingStartTime(original["start_time"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedStartTime); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedStartTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["startTime"] = transformedStartTime
 	}
 
 	transformedEndTime, err := expandCloudBuildTriggerBuildArtifactsObjectsTimingEndTime(original["end_time"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEndTime); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEndTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["endTime"] = transformedEndTime
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerBuildArtifactsObjectsTimingStartTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildArtifactsObjectsTimingStartTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildArtifactsObjectsTimingEndTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildArtifactsObjectsTimingEndTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptions(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptions(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -4343,35 +4446,35 @@ func expandCloudBuildTriggerBuildOptions(v interface{}, d TerraformResourceData,
 	transformedSourceProvenanceHash, err := expandCloudBuildTriggerBuildOptionsSourceProvenanceHash(original["source_provenance_hash"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSourceProvenanceHash); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSourceProvenanceHash); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["sourceProvenanceHash"] = transformedSourceProvenanceHash
 	}
 
 	transformedRequestedVerifyOption, err := expandCloudBuildTriggerBuildOptionsRequestedVerifyOption(original["requested_verify_option"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRequestedVerifyOption); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRequestedVerifyOption); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["requestedVerifyOption"] = transformedRequestedVerifyOption
 	}
 
 	transformedMachineType, err := expandCloudBuildTriggerBuildOptionsMachineType(original["machine_type"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMachineType); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMachineType); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["machineType"] = transformedMachineType
 	}
 
 	transformedDiskSizeGb, err := expandCloudBuildTriggerBuildOptionsDiskSizeGb(original["disk_size_gb"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDiskSizeGb); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDiskSizeGb); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["diskSizeGb"] = transformedDiskSizeGb
 	}
 
 	transformedSubstitutionOption, err := expandCloudBuildTriggerBuildOptionsSubstitutionOption(original["substitution_option"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSubstitutionOption); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSubstitutionOption); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["substitutionOption"] = transformedSubstitutionOption
 	}
 
@@ -4385,93 +4488,93 @@ func expandCloudBuildTriggerBuildOptions(v interface{}, d TerraformResourceData,
 	transformedLogStreamingOption, err := expandCloudBuildTriggerBuildOptionsLogStreamingOption(original["log_streaming_option"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLogStreamingOption); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLogStreamingOption); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["logStreamingOption"] = transformedLogStreamingOption
 	}
 
 	transformedWorkerPool, err := expandCloudBuildTriggerBuildOptionsWorkerPool(original["worker_pool"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedWorkerPool); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedWorkerPool); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["workerPool"] = transformedWorkerPool
 	}
 
 	transformedLogging, err := expandCloudBuildTriggerBuildOptionsLogging(original["logging"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLogging); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLogging); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["logging"] = transformedLogging
 	}
 
 	transformedEnv, err := expandCloudBuildTriggerBuildOptionsEnv(original["env"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEnv); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEnv); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["env"] = transformedEnv
 	}
 
 	transformedSecretEnv, err := expandCloudBuildTriggerBuildOptionsSecretEnv(original["secret_env"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSecretEnv); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSecretEnv); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["secretEnv"] = transformedSecretEnv
 	}
 
 	transformedVolumes, err := expandCloudBuildTriggerBuildOptionsVolumes(original["volumes"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedVolumes); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedVolumes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["volumes"] = transformedVolumes
 	}
 
 	return transformed, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsSourceProvenanceHash(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsSourceProvenanceHash(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsRequestedVerifyOption(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsRequestedVerifyOption(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsMachineType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsMachineType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsDiskSizeGb(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsDiskSizeGb(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsSubstitutionOption(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsSubstitutionOption(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsDynamicSubstitutions(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsDynamicSubstitutions(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsLogStreamingOption(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsLogStreamingOption(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsWorkerPool(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsWorkerPool(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsLogging(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsLogging(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsEnv(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsEnv(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsSecretEnv(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsSecretEnv(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsVolumes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsVolumes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -4484,14 +4587,14 @@ func expandCloudBuildTriggerBuildOptionsVolumes(v interface{}, d TerraformResour
 		transformedName, err := expandCloudBuildTriggerBuildOptionsVolumesName(original["name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["name"] = transformedName
 		}
 
 		transformedPath, err := expandCloudBuildTriggerBuildOptionsVolumesPath(original["path"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["path"] = transformedPath
 		}
 
@@ -4500,11 +4603,11 @@ func expandCloudBuildTriggerBuildOptionsVolumes(v interface{}, d TerraformResour
 	return req, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsVolumesName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsVolumesName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudBuildTriggerBuildOptionsVolumesPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudBuildTriggerBuildOptionsVolumesPath(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
@@ -4871,25 +4974,25 @@ The elements are of the form "KEY=VALUE" for the environment variable "KEY" bein
 									"log_streaming_option": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"STREAM_DEFAULT", "STREAM_ON", "STREAM_OFF", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"STREAM_DEFAULT", "STREAM_ON", "STREAM_OFF", ""}),
 										Description:  `Option to define build log streaming behavior to Google Cloud Storage. Possible values: ["STREAM_DEFAULT", "STREAM_ON", "STREAM_OFF"]`,
 									},
 									"logging": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "CLOUD_LOGGING_ONLY", "NONE", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "CLOUD_LOGGING_ONLY", "NONE", ""}),
 										Description:  `Option to specify the logging mode, which determines if and where build logs are stored. Possible values: ["LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "CLOUD_LOGGING_ONLY", "NONE"]`,
 									},
 									"machine_type": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32", ""}),
 										Description:  `Compute Engine machine type on which to run the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"]`,
 									},
 									"requested_verify_option": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"NOT_VERIFIED", "VERIFIED", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"NOT_VERIFIED", "VERIFIED", ""}),
 										Description:  `Requested verifiability options. Possible values: ["NOT_VERIFIED", "VERIFIED"]`,
 									},
 									"secret_env": {
@@ -4908,13 +5011,13 @@ will be available to all build steps in this build.`,
 										Description: `Requested hash for SourceProvenance. Possible values: ["NONE", "SHA256", "MD5"]`,
 										Elem: &schema.Schema{
 											Type:         schema.TypeString,
-											ValidateFunc: validateEnum([]string{"NONE", "SHA256", "MD5"}),
+											ValidateFunc: verify.ValidateEnum([]string{"NONE", "SHA256", "MD5"}),
 										},
 									},
 									"substitution_option": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"MUST_MATCH", "ALLOW_LOOSE", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"MUST_MATCH", "ALLOW_LOOSE", ""}),
 										Description: `Option to specify behavior when there is an error in the substitution checks.
 NOTE this is always set to ALLOW_LOOSE for triggered builds and cannot be overridden
 in the build configuration file. Possible values: ["MUST_MATCH", "ALLOW_LOOSE"]`,
@@ -5152,7 +5255,7 @@ When using Pub/Sub, Webhook or Manual set the file name using git_file_source in
 						"repo_type": {
 							Type:         schema.TypeString,
 							Required:     true,
-							ValidateFunc: validateEnum([]string{"UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"}),
+							ValidateFunc: verify.ValidateEnum([]string{"UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"}),
 							Description: `The type of the repo, since it may not be explicit from the repo field (e.g from a URL). 
 Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"]`,
 						},
@@ -5208,7 +5311,7 @@ https://github.com/googlecloudplatform/cloud-builders is "googlecloudplatform".`
 									"comment_control": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										ValidateFunc: validateEnum([]string{"COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY", ""}),
+										ValidateFunc: verify.ValidateEnum([]string{"COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY", ""}),
 										Description:  `Whether to block builds on a "/gcbrun" comment from a repository owner or collaborator. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"]`,
 									},
 									"invert_regex": {
@@ -5269,7 +5372,7 @@ of the ignoredFiles globs, then we do not trigger a build.`,
 			"include_build_logs": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"INCLUDE_BUILD_LOGS_UNSPECIFIED", "INCLUDE_BUILD_LOGS_WITH_STATUS", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"INCLUDE_BUILD_LOGS_UNSPECIFIED", "INCLUDE_BUILD_LOGS_WITH_STATUS", ""}),
 				Description: `Build logs will be sent back to GitHub as part of the checkrun
 result.  Values can be INCLUDE_BUILD_LOGS_UNSPECIFIED or
 INCLUDE_BUILD_LOGS_WITH_STATUS Possible values: ["INCLUDE_BUILD_LOGS_UNSPECIFIED", "INCLUDE_BUILD_LOGS_WITH_STATUS"]`,
@@ -5358,7 +5461,7 @@ One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source
 						"repo_type": {
 							Type:         schema.TypeString,
 							Required:     true,
-							ValidateFunc: validateEnum([]string{"UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"}),
+							ValidateFunc: verify.ValidateEnum([]string{"UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"}),
 							Description: `The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
 Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"]`,
 						},

@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceNotebooksEnvironment() *schema.Resource {
@@ -44,7 +47,7 @@ func ResourceNotebooksEnvironment() *schema.Resource {
 			"location": {
 				Type:             schema.TypeString,
 				Required:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description:      `A reference to the zone where the machine resides.`,
 			},
 			"name": {
@@ -136,8 +139,8 @@ Format: projects/{project_id}`,
 }
 
 func resourceNotebooksEnvironmentCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -146,35 +149,35 @@ func resourceNotebooksEnvironmentCreate(d *schema.ResourceData, meta interface{}
 	displayNameProp, err := expandNotebooksEnvironmentDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	descriptionProp, err := expandNotebooksEnvironmentDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	postStartupScriptProp, err := expandNotebooksEnvironmentPostStartupScript(d.Get("post_startup_script"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("post_startup_script"); !isEmptyValue(reflect.ValueOf(postStartupScriptProp)) && (ok || !reflect.DeepEqual(v, postStartupScriptProp)) {
+	} else if v, ok := d.GetOkExists("post_startup_script"); !tpgresource.IsEmptyValue(reflect.ValueOf(postStartupScriptProp)) && (ok || !reflect.DeepEqual(v, postStartupScriptProp)) {
 		obj["postStartupScript"] = postStartupScriptProp
 	}
 	vmImageProp, err := expandNotebooksEnvironmentVmImage(d.Get("vm_image"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("vm_image"); !isEmptyValue(reflect.ValueOf(vmImageProp)) && (ok || !reflect.DeepEqual(v, vmImageProp)) {
+	} else if v, ok := d.GetOkExists("vm_image"); !tpgresource.IsEmptyValue(reflect.ValueOf(vmImageProp)) && (ok || !reflect.DeepEqual(v, vmImageProp)) {
 		obj["vmImage"] = vmImageProp
 	}
 	containerImageProp, err := expandNotebooksEnvironmentContainerImage(d.Get("container_image"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("container_image"); !isEmptyValue(reflect.ValueOf(containerImageProp)) && (ok || !reflect.DeepEqual(v, containerImageProp)) {
+	} else if v, ok := d.GetOkExists("container_image"); !tpgresource.IsEmptyValue(reflect.ValueOf(containerImageProp)) && (ok || !reflect.DeepEqual(v, containerImageProp)) {
 		obj["containerImage"] = containerImageProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/environments?environmentId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/environments?environmentId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -182,24 +185,24 @@ func resourceNotebooksEnvironmentCreate(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Creating new Environment: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Environment: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Environment: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/environments/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/environments/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -219,7 +222,7 @@ func resourceNotebooksEnvironmentCreate(d *schema.ResourceData, meta interface{}
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/environments/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/environments/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -231,33 +234,33 @@ func resourceNotebooksEnvironmentCreate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceNotebooksEnvironmentRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/environments/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/environments/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Environment: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("NotebooksEnvironment %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("NotebooksEnvironment %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -287,15 +290,15 @@ func resourceNotebooksEnvironmentRead(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceNotebooksEnvironmentUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Environment: %s", err)
 	}
@@ -305,35 +308,35 @@ func resourceNotebooksEnvironmentUpdate(d *schema.ResourceData, meta interface{}
 	displayNameProp, err := expandNotebooksEnvironmentDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	descriptionProp, err := expandNotebooksEnvironmentDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	postStartupScriptProp, err := expandNotebooksEnvironmentPostStartupScript(d.Get("post_startup_script"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("post_startup_script"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, postStartupScriptProp)) {
+	} else if v, ok := d.GetOkExists("post_startup_script"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, postStartupScriptProp)) {
 		obj["postStartupScript"] = postStartupScriptProp
 	}
 	vmImageProp, err := expandNotebooksEnvironmentVmImage(d.Get("vm_image"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("vm_image"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, vmImageProp)) {
+	} else if v, ok := d.GetOkExists("vm_image"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, vmImageProp)) {
 		obj["vmImage"] = vmImageProp
 	}
 	containerImageProp, err := expandNotebooksEnvironmentContainerImage(d.Get("container_image"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("container_image"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, containerImageProp)) {
+	} else if v, ok := d.GetOkExists("container_image"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, containerImageProp)) {
 		obj["containerImage"] = containerImageProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/environments/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/environments/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -341,11 +344,11 @@ func resourceNotebooksEnvironmentUpdate(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Updating Environment %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Environment %q: %s", d.Id(), err)
@@ -365,21 +368,21 @@ func resourceNotebooksEnvironmentUpdate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceNotebooksEnvironmentDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Environment: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/environments/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/environments/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -388,13 +391,13 @@ func resourceNotebooksEnvironmentDelete(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Deleting Environment %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Environment")
+		return transport_tpg.HandleNotFoundError(err, d, "Environment")
 	}
 
 	err = NotebooksOperationWaitTime(
@@ -410,7 +413,7 @@ func resourceNotebooksEnvironmentDelete(d *schema.ResourceData, meta interface{}
 }
 
 func resourceNotebooksEnvironmentImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/environments/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -420,7 +423,7 @@ func resourceNotebooksEnvironmentImport(d *schema.ResourceData, meta interface{}
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/environments/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/environments/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -429,23 +432,23 @@ func resourceNotebooksEnvironmentImport(d *schema.ResourceData, meta interface{}
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenNotebooksEnvironmentDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksEnvironmentDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksEnvironmentDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksEnvironmentDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksEnvironmentPostStartupScript(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksEnvironmentPostStartupScript(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksEnvironmentCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksEnvironmentCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksEnvironmentVmImage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksEnvironmentVmImage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -462,19 +465,19 @@ func flattenNotebooksEnvironmentVmImage(v interface{}, d *schema.ResourceData, c
 		flattenNotebooksEnvironmentVmImageImageFamily(original["imageFamily"], d, config)
 	return []interface{}{transformed}
 }
-func flattenNotebooksEnvironmentVmImageProject(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksEnvironmentVmImageProject(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksEnvironmentVmImageImageName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksEnvironmentVmImageImageName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksEnvironmentVmImageImageFamily(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksEnvironmentVmImageImageFamily(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksEnvironmentContainerImage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksEnvironmentContainerImage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -489,27 +492,27 @@ func flattenNotebooksEnvironmentContainerImage(v interface{}, d *schema.Resource
 		flattenNotebooksEnvironmentContainerImageTag(original["tag"], d, config)
 	return []interface{}{transformed}
 }
-func flattenNotebooksEnvironmentContainerImageRepository(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksEnvironmentContainerImageRepository(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNotebooksEnvironmentContainerImageTag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNotebooksEnvironmentContainerImageTag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandNotebooksEnvironmentDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksEnvironmentDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksEnvironmentDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksEnvironmentDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksEnvironmentPostStartupScript(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksEnvironmentPostStartupScript(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksEnvironmentVmImage(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksEnvironmentVmImage(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -521,40 +524,40 @@ func expandNotebooksEnvironmentVmImage(v interface{}, d TerraformResourceData, c
 	transformedProject, err := expandNotebooksEnvironmentVmImageProject(original["project"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProject); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProject); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["project"] = transformedProject
 	}
 
 	transformedImageName, err := expandNotebooksEnvironmentVmImageImageName(original["image_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedImageName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedImageName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["imageName"] = transformedImageName
 	}
 
 	transformedImageFamily, err := expandNotebooksEnvironmentVmImageImageFamily(original["image_family"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedImageFamily); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedImageFamily); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["imageFamily"] = transformedImageFamily
 	}
 
 	return transformed, nil
 }
 
-func expandNotebooksEnvironmentVmImageProject(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksEnvironmentVmImageProject(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksEnvironmentVmImageImageName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksEnvironmentVmImageImageName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksEnvironmentVmImageImageFamily(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksEnvironmentVmImageImageFamily(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksEnvironmentContainerImage(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksEnvironmentContainerImage(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -566,24 +569,24 @@ func expandNotebooksEnvironmentContainerImage(v interface{}, d TerraformResource
 	transformedRepository, err := expandNotebooksEnvironmentContainerImageRepository(original["repository"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRepository); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRepository); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["repository"] = transformedRepository
 	}
 
 	transformedTag, err := expandNotebooksEnvironmentContainerImageTag(original["tag"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTag); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTag); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["tag"] = transformedTag
 	}
 
 	return transformed, nil
 }
 
-func expandNotebooksEnvironmentContainerImageRepository(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksEnvironmentContainerImageRepository(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNotebooksEnvironmentContainerImageTag(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNotebooksEnvironmentContainerImageTag(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

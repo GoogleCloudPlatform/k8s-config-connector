@@ -25,6 +25,10 @@ import (
 	"github.com/apparentlymart/go-cidr/cidr"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/customdiff"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 // Whether the IP CIDR change shrinks the block.
@@ -73,7 +77,7 @@ func ResourceComputeSubnetwork() *schema.Resource {
 			"ip_cidr_range": {
 				Type:         schema.TypeString,
 				Required:     true,
-				ValidateFunc: validateIpCidrRange,
+				ValidateFunc: verify.ValidateIpCidrRange,
 				Description: `The range of internal addresses that are owned by this subnetwork.
 Provide this property when you create the subnetwork. For example,
 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and
@@ -83,7 +87,7 @@ non-overlapping within a network. Only IPv4 is supported.`,
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateGCEName,
+				ValidateFunc: verify.ValidateGCEName,
 				Description: `The name of the resource, provided by the client when initially
 creating the resource. The name must be 1-63 characters long, and
 comply with RFC1035. Specifically, the name must be 1-63 characters
@@ -111,7 +115,7 @@ creation time.`,
 			"ipv6_access_type": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"EXTERNAL", "INTERNAL", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"EXTERNAL", "INTERNAL", ""}),
 				Description: `The access type of IPv6 address this subnet holds. It's immutable and can only be specified during creation
 or the first time the subnet is updated into IPV4_IPV6 dual stack. If the ipv6_type is EXTERNAL then this subnet
 cannot enable direct path. Possible values: ["EXTERNAL", "INTERNAL"]`,
@@ -128,7 +132,7 @@ subnetwork is 'INTERNAL_HTTPS_LOAD_BALANCER'`,
 						"aggregation_interval": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"INTERVAL_5_SEC", "INTERVAL_30_SEC", "INTERVAL_1_MIN", "INTERVAL_5_MIN", "INTERVAL_10_MIN", "INTERVAL_15_MIN", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"INTERVAL_5_SEC", "INTERVAL_30_SEC", "INTERVAL_1_MIN", "INTERVAL_5_MIN", "INTERVAL_10_MIN", "INTERVAL_15_MIN", ""}),
 							Description: `Can only be specified if VPC flow logging for this subnetwork is enabled.
 Toggles the aggregation interval for collecting flow logs. Increasing the
 interval time will reduce the amount of generated flow logs for long
@@ -159,7 +163,7 @@ half of all collected logs are reported.`,
 						"metadata": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA", "CUSTOM_METADATA", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA", "CUSTOM_METADATA", ""}),
 							Description: `Can only be specified if VPC flow logging for this subnetwork is enabled.
 Configures whether metadata fields should be added to the reported VPC
 flow logs. Default value: "INCLUDE_ALL_METADATA" Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA", "CUSTOM_METADATA"]`,
@@ -214,7 +218,7 @@ The enableFlowLogs field isn't supported with the purpose field set to 'INTERNAL
 			"role": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"ACTIVE", "BACKUP", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"ACTIVE", "BACKUP", ""}),
 				Description: `The role of subnetwork.
 The value can be set to 'ACTIVE' or 'BACKUP'.
 An 'ACTIVE' subnetwork is one that is currently being used.
@@ -242,7 +246,7 @@ For more details about this behavior, see [this section](https://www.terraform.i
 						"ip_cidr_range": {
 							Type:         schema.TypeString,
 							Required:     true,
-							ValidateFunc: validateIpCidrRange,
+							ValidateFunc: verify.ValidateIpCidrRange,
 							Description: `The range of IP addresses belonging to this subnetwork secondary
 range. Provide this property when you create the subnetwork.
 Ranges must be unique and non-overlapping with all primary and
@@ -251,7 +255,7 @@ secondary IP ranges within a network. Only IPv4 is supported.`,
 						"range_name": {
 							Type:         schema.TypeString,
 							Required:     true,
-							ValidateFunc: validateGCEName,
+							ValidateFunc: verify.ValidateGCEName,
 							Description: `The name associated with this subnetwork secondary range, used
 when adding an alias IP range to a VM instance. The name must
 be 1-63 characters long, and comply with RFC1035. The name
@@ -264,7 +268,7 @@ must be unique within the subnetwork.`,
 				Type:         schema.TypeString,
 				Computed:     true,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"IPV4_ONLY", "IPV4_IPV6", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"IPV4_ONLY", "IPV4_IPV6", ""}),
 				Description: `The stack type for this subnet to identify whether the IPv6 feature is enabled or not.
 If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]`,
 			},
@@ -353,8 +357,8 @@ func resourceComputeSubnetworkSecondaryIpRangeSetStyleDiff(_ context.Context, di
 }
 
 func resourceComputeSubnetworkCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -363,37 +367,37 @@ func resourceComputeSubnetworkCreate(d *schema.ResourceData, meta interface{}) e
 	descriptionProp, err := expandComputeSubnetworkDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	ipCidrRangeProp, err := expandComputeSubnetworkIpCidrRange(d.Get("ip_cidr_range"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ip_cidr_range"); !isEmptyValue(reflect.ValueOf(ipCidrRangeProp)) && (ok || !reflect.DeepEqual(v, ipCidrRangeProp)) {
+	} else if v, ok := d.GetOkExists("ip_cidr_range"); !tpgresource.IsEmptyValue(reflect.ValueOf(ipCidrRangeProp)) && (ok || !reflect.DeepEqual(v, ipCidrRangeProp)) {
 		obj["ipCidrRange"] = ipCidrRangeProp
 	}
 	nameProp, err := expandComputeSubnetworkName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	networkProp, err := expandComputeSubnetworkNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 	purposeProp, err := expandComputeSubnetworkPurpose(d.Get("purpose"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("purpose"); !isEmptyValue(reflect.ValueOf(purposeProp)) && (ok || !reflect.DeepEqual(v, purposeProp)) {
+	} else if v, ok := d.GetOkExists("purpose"); !tpgresource.IsEmptyValue(reflect.ValueOf(purposeProp)) && (ok || !reflect.DeepEqual(v, purposeProp)) {
 		obj["purpose"] = purposeProp
 	}
 	roleProp, err := expandComputeSubnetworkRole(d.Get("role"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("role"); !isEmptyValue(reflect.ValueOf(roleProp)) && (ok || !reflect.DeepEqual(v, roleProp)) {
+	} else if v, ok := d.GetOkExists("role"); !tpgresource.IsEmptyValue(reflect.ValueOf(roleProp)) && (ok || !reflect.DeepEqual(v, roleProp)) {
 		obj["role"] = roleProp
 	}
 	secondaryIpRangesProp, err := expandComputeSubnetworkSecondaryIpRange(d.Get("secondary_ip_range"), d, config)
@@ -405,19 +409,19 @@ func resourceComputeSubnetworkCreate(d *schema.ResourceData, meta interface{}) e
 	privateIpGoogleAccessProp, err := expandComputeSubnetworkPrivateIpGoogleAccess(d.Get("private_ip_google_access"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("private_ip_google_access"); !isEmptyValue(reflect.ValueOf(privateIpGoogleAccessProp)) && (ok || !reflect.DeepEqual(v, privateIpGoogleAccessProp)) {
+	} else if v, ok := d.GetOkExists("private_ip_google_access"); !tpgresource.IsEmptyValue(reflect.ValueOf(privateIpGoogleAccessProp)) && (ok || !reflect.DeepEqual(v, privateIpGoogleAccessProp)) {
 		obj["privateIpGoogleAccess"] = privateIpGoogleAccessProp
 	}
 	privateIpv6GoogleAccessProp, err := expandComputeSubnetworkPrivateIpv6GoogleAccess(d.Get("private_ipv6_google_access"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("private_ipv6_google_access"); !isEmptyValue(reflect.ValueOf(privateIpv6GoogleAccessProp)) && (ok || !reflect.DeepEqual(v, privateIpv6GoogleAccessProp)) {
+	} else if v, ok := d.GetOkExists("private_ipv6_google_access"); !tpgresource.IsEmptyValue(reflect.ValueOf(privateIpv6GoogleAccessProp)) && (ok || !reflect.DeepEqual(v, privateIpv6GoogleAccessProp)) {
 		obj["privateIpv6GoogleAccess"] = privateIpv6GoogleAccessProp
 	}
 	regionProp, err := expandComputeSubnetworkRegion(d.Get("region"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("region"); !isEmptyValue(reflect.ValueOf(regionProp)) && (ok || !reflect.DeepEqual(v, regionProp)) {
+	} else if v, ok := d.GetOkExists("region"); !tpgresource.IsEmptyValue(reflect.ValueOf(regionProp)) && (ok || !reflect.DeepEqual(v, regionProp)) {
 		obj["region"] = regionProp
 	}
 	logConfigProp, err := expandComputeSubnetworkLogConfig(d.Get("log_config"), d, config)
@@ -429,17 +433,17 @@ func resourceComputeSubnetworkCreate(d *schema.ResourceData, meta interface{}) e
 	stackTypeProp, err := expandComputeSubnetworkStackType(d.Get("stack_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("stack_type"); !isEmptyValue(reflect.ValueOf(stackTypeProp)) && (ok || !reflect.DeepEqual(v, stackTypeProp)) {
+	} else if v, ok := d.GetOkExists("stack_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(stackTypeProp)) && (ok || !reflect.DeepEqual(v, stackTypeProp)) {
 		obj["stackType"] = stackTypeProp
 	}
 	ipv6AccessTypeProp, err := expandComputeSubnetworkIpv6AccessType(d.Get("ipv6_access_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("ipv6_access_type"); !isEmptyValue(reflect.ValueOf(ipv6AccessTypeProp)) && (ok || !reflect.DeepEqual(v, ipv6AccessTypeProp)) {
+	} else if v, ok := d.GetOkExists("ipv6_access_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(ipv6AccessTypeProp)) && (ok || !reflect.DeepEqual(v, ipv6AccessTypeProp)) {
 		obj["ipv6AccessType"] = ipv6AccessTypeProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks")
 	if err != nil {
 		return err
 	}
@@ -447,24 +451,24 @@ func resourceComputeSubnetworkCreate(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Creating new Subnetwork: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Subnetwork: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Subnetwork: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -486,33 +490,33 @@ func resourceComputeSubnetworkCreate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceComputeSubnetworkRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Subnetwork: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ComputeSubnetwork %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeSubnetwork %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -570,7 +574,7 @@ func resourceComputeSubnetworkRead(d *schema.ResourceData, meta interface{}) err
 	if err := d.Set("external_ipv6_prefix", flattenComputeSubnetworkExternalIpv6Prefix(res["externalIpv6Prefix"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Subnetwork: %s", err)
 	}
-	if err := d.Set("self_link", ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
+	if err := d.Set("self_link", tpgresource.ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
 		return fmt.Errorf("Error reading Subnetwork: %s", err)
 	}
 
@@ -578,15 +582,15 @@ func resourceComputeSubnetworkRead(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceComputeSubnetworkUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Subnetwork: %s", err)
 	}
@@ -600,21 +604,21 @@ func resourceComputeSubnetworkUpdate(d *schema.ResourceData, meta interface{}) e
 		ipCidrRangeProp, err := expandComputeSubnetworkIpCidrRange(d.Get("ip_cidr_range"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("ip_cidr_range"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, ipCidrRangeProp)) {
+		} else if v, ok := d.GetOkExists("ip_cidr_range"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, ipCidrRangeProp)) {
 			obj["ipCidrRange"] = ipCidrRangeProp
 		}
 
-		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}/expandIpCidrRange")
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}/expandIpCidrRange")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Subnetwork %q: %s", d.Id(), err)
 		} else {
@@ -634,21 +638,21 @@ func resourceComputeSubnetworkUpdate(d *schema.ResourceData, meta interface{}) e
 		privateIpGoogleAccessProp, err := expandComputeSubnetworkPrivateIpGoogleAccess(d.Get("private_ip_google_access"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("private_ip_google_access"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, privateIpGoogleAccessProp)) {
+		} else if v, ok := d.GetOkExists("private_ip_google_access"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, privateIpGoogleAccessProp)) {
 			obj["privateIpGoogleAccess"] = privateIpGoogleAccessProp
 		}
 
-		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}/setPrivateIpGoogleAccess")
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}/setPrivateIpGoogleAccess")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Subnetwork %q: %s", d.Id(), err)
 		} else {
@@ -665,19 +669,19 @@ func resourceComputeSubnetworkUpdate(d *schema.ResourceData, meta interface{}) e
 	if d.HasChange("private_ipv6_google_access") || d.HasChange("stack_type") || d.HasChange("ipv6_access_type") {
 		obj := make(map[string]interface{})
 
-		getUrl, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+		getUrl, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		getRes, err := SendRequest(config, "GET", billingProject, getUrl, userAgent, nil)
+		getRes, err := transport_tpg.SendRequest(config, "GET", billingProject, getUrl, userAgent, nil)
 		if err != nil {
-			return handleNotFoundError(err, d, fmt.Sprintf("ComputeSubnetwork %q", d.Id()))
+			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeSubnetwork %q", d.Id()))
 		}
 
 		obj["fingerprint"] = getRes["fingerprint"]
@@ -685,33 +689,33 @@ func resourceComputeSubnetworkUpdate(d *schema.ResourceData, meta interface{}) e
 		privateIpv6GoogleAccessProp, err := expandComputeSubnetworkPrivateIpv6GoogleAccess(d.Get("private_ipv6_google_access"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("private_ipv6_google_access"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, privateIpv6GoogleAccessProp)) {
+		} else if v, ok := d.GetOkExists("private_ipv6_google_access"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, privateIpv6GoogleAccessProp)) {
 			obj["privateIpv6GoogleAccess"] = privateIpv6GoogleAccessProp
 		}
 		stackTypeProp, err := expandComputeSubnetworkStackType(d.Get("stack_type"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("stack_type"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, stackTypeProp)) {
+		} else if v, ok := d.GetOkExists("stack_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, stackTypeProp)) {
 			obj["stackType"] = stackTypeProp
 		}
 		ipv6AccessTypeProp, err := expandComputeSubnetworkIpv6AccessType(d.Get("ipv6_access_type"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("ipv6_access_type"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, ipv6AccessTypeProp)) {
+		} else if v, ok := d.GetOkExists("ipv6_access_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, ipv6AccessTypeProp)) {
 			obj["ipv6AccessType"] = ipv6AccessTypeProp
 		}
 
-		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Subnetwork %q: %s", d.Id(), err)
 		} else {
@@ -728,19 +732,19 @@ func resourceComputeSubnetworkUpdate(d *schema.ResourceData, meta interface{}) e
 	if d.HasChange("log_config") {
 		obj := make(map[string]interface{})
 
-		getUrl, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+		getUrl, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		getRes, err := SendRequest(config, "GET", billingProject, getUrl, userAgent, nil)
+		getRes, err := transport_tpg.SendRequest(config, "GET", billingProject, getUrl, userAgent, nil)
 		if err != nil {
-			return handleNotFoundError(err, d, fmt.Sprintf("ComputeSubnetwork %q", d.Id()))
+			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeSubnetwork %q", d.Id()))
 		}
 
 		obj["fingerprint"] = getRes["fingerprint"]
@@ -752,17 +756,17 @@ func resourceComputeSubnetworkUpdate(d *schema.ResourceData, meta interface{}) e
 			obj["logConfig"] = logConfigProp
 		}
 
-		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Subnetwork %q: %s", d.Id(), err)
 		} else {
@@ -779,19 +783,19 @@ func resourceComputeSubnetworkUpdate(d *schema.ResourceData, meta interface{}) e
 	if d.HasChange("role") {
 		obj := make(map[string]interface{})
 
-		getUrl, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+		getUrl, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		getRes, err := SendRequest(config, "GET", billingProject, getUrl, userAgent, nil)
+		getRes, err := transport_tpg.SendRequest(config, "GET", billingProject, getUrl, userAgent, nil)
 		if err != nil {
-			return handleNotFoundError(err, d, fmt.Sprintf("ComputeSubnetwork %q", d.Id()))
+			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeSubnetwork %q", d.Id()))
 		}
 
 		obj["fingerprint"] = getRes["fingerprint"]
@@ -799,21 +803,21 @@ func resourceComputeSubnetworkUpdate(d *schema.ResourceData, meta interface{}) e
 		roleProp, err := expandComputeSubnetworkRole(d.Get("role"), d, config)
 		if err != nil {
 			return err
-		} else if v, ok := d.GetOkExists("role"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, roleProp)) {
+		} else if v, ok := d.GetOkExists("role"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, roleProp)) {
 			obj["role"] = roleProp
 		}
 
-		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Subnetwork %q: %s", d.Id(), err)
 		} else {
@@ -830,19 +834,19 @@ func resourceComputeSubnetworkUpdate(d *schema.ResourceData, meta interface{}) e
 	if d.HasChange("secondary_ip_range") {
 		obj := make(map[string]interface{})
 
-		getUrl, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+		getUrl, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		getRes, err := SendRequest(config, "GET", billingProject, getUrl, userAgent, nil)
+		getRes, err := transport_tpg.SendRequest(config, "GET", billingProject, getUrl, userAgent, nil)
 		if err != nil {
-			return handleNotFoundError(err, d, fmt.Sprintf("ComputeSubnetwork %q", d.Id()))
+			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeSubnetwork %q", d.Id()))
 		}
 
 		obj["fingerprint"] = getRes["fingerprint"]
@@ -854,17 +858,17 @@ func resourceComputeSubnetworkUpdate(d *schema.ResourceData, meta interface{}) e
 			obj["secondaryIpRanges"] = secondaryIpRangesProp
 		}
 
-		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 		if err != nil {
 			return err
 		}
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Subnetwork %q: %s", d.Id(), err)
 		} else {
@@ -885,21 +889,21 @@ func resourceComputeSubnetworkUpdate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceComputeSubnetworkDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Subnetwork: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -908,13 +912,13 @@ func resourceComputeSubnetworkDelete(d *schema.ResourceData, meta interface{}) e
 	log.Printf("[DEBUG] Deleting Subnetwork %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Subnetwork")
+		return transport_tpg.HandleNotFoundError(err, d, "Subnetwork")
 	}
 
 	err = ComputeOperationWaitTime(
@@ -930,7 +934,7 @@ func resourceComputeSubnetworkDelete(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceComputeSubnetworkImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/regions/(?P<region>[^/]+)/subnetworks/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)",
@@ -941,7 +945,7 @@ func resourceComputeSubnetworkImport(d *schema.ResourceData, meta interface{}) (
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -950,42 +954,42 @@ func resourceComputeSubnetworkImport(d *schema.ResourceData, meta interface{}) (
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenComputeSubnetworkCreationTimestamp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkCreationTimestamp(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkGatewayAddress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkGatewayAddress(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkIpCidrRange(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkIpCidrRange(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return ConvertSelfLinkToV1(v.(string))
+	return tpgresource.ConvertSelfLinkToV1(v.(string))
 }
 
-func flattenComputeSubnetworkPurpose(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkPurpose(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkRole(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkRole(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkSecondaryIpRange(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkSecondaryIpRange(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1004,30 +1008,30 @@ func flattenComputeSubnetworkSecondaryIpRange(v interface{}, d *schema.ResourceD
 	}
 	return transformed
 }
-func flattenComputeSubnetworkSecondaryIpRangeRangeName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkSecondaryIpRangeRangeName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkSecondaryIpRangeIpCidrRange(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkSecondaryIpRangeIpCidrRange(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkPrivateIpGoogleAccess(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkPrivateIpGoogleAccess(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkPrivateIpv6GoogleAccess(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkPrivateIpv6GoogleAccess(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkRegion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkRegion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenComputeSubnetworkLogConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkLogConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1060,51 +1064,51 @@ func flattenComputeSubnetworkLogConfig(v interface{}, d *schema.ResourceData, co
 	return []interface{}{transformed}
 }
 
-func flattenComputeSubnetworkStackType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkStackType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkIpv6AccessType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkIpv6AccessType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkIpv6CidrRange(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkIpv6CidrRange(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenComputeSubnetworkExternalIpv6Prefix(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenComputeSubnetworkExternalIpv6Prefix(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandComputeSubnetworkDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeSubnetworkIpCidrRange(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkIpCidrRange(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeSubnetworkName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeSubnetworkNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	f, err := parseGlobalFieldValue("networks", v.(string), "project", d, config, true)
+func expandComputeSubnetworkNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	f, err := tpgresource.ParseGlobalFieldValue("networks", v.(string), "project", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for network: %s", err)
 	}
 	return f.RelativeLink(), nil
 }
 
-func expandComputeSubnetworkPurpose(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkPurpose(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeSubnetworkRole(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkRole(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeSubnetworkSecondaryIpRange(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkSecondaryIpRange(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -1117,14 +1121,14 @@ func expandComputeSubnetworkSecondaryIpRange(v interface{}, d TerraformResourceD
 		transformedRangeName, err := expandComputeSubnetworkSecondaryIpRangeRangeName(original["range_name"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedRangeName); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedRangeName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["rangeName"] = transformedRangeName
 		}
 
 		transformedIpCidrRange, err := expandComputeSubnetworkSecondaryIpRangeIpCidrRange(original["ip_cidr_range"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedIpCidrRange); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedIpCidrRange); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["ipCidrRange"] = transformedIpCidrRange
 		}
 
@@ -1133,31 +1137,31 @@ func expandComputeSubnetworkSecondaryIpRange(v interface{}, d TerraformResourceD
 	return req, nil
 }
 
-func expandComputeSubnetworkSecondaryIpRangeRangeName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkSecondaryIpRangeRangeName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeSubnetworkSecondaryIpRangeIpCidrRange(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkSecondaryIpRangeIpCidrRange(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeSubnetworkPrivateIpGoogleAccess(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkPrivateIpGoogleAccess(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeSubnetworkPrivateIpv6GoogleAccess(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkPrivateIpv6GoogleAccess(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeSubnetworkRegion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	f, err := parseGlobalFieldValue("regions", v.(string), "project", d, config, true)
+func expandComputeSubnetworkRegion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	f, err := tpgresource.ParseGlobalFieldValue("regions", v.(string), "project", d, config, true)
 	if err != nil {
 		return nil, fmt.Errorf("Invalid value for region: %s", err)
 	}
 	return f.RelativeLink(), nil
 }
 
-func expandComputeSubnetworkLogConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkLogConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	transformed := make(map[string]interface{})
 	if len(l) == 0 || l[0] == nil {
@@ -1188,10 +1192,10 @@ func expandComputeSubnetworkLogConfig(v interface{}, d TerraformResourceData, co
 	return transformed, nil
 }
 
-func expandComputeSubnetworkStackType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkStackType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandComputeSubnetworkIpv6AccessType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandComputeSubnetworkIpv6AccessType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

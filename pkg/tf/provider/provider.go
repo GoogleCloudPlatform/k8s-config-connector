@@ -25,6 +25,7 @@ import (
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 // Config holds additional configuration for the google TF provider
@@ -57,7 +58,7 @@ var DefaultConfig = NewConfig()
 
 func NewConfig() Config {
 	return Config{
-		Scopes: append(deepcopy.StringSlice(google.DefaultClientScopes),
+		Scopes: append(deepcopy.StringSlice(transport_tpg.DefaultClientScopes),
 
 			// Needed by the KCC controller to be able to create resources that
 			// read Google Drive files.

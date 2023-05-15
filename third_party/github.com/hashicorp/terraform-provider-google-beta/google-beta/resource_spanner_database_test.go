@@ -6,18 +6,20 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 )
 
 func TestAccSpannerDatabase_basic(t *testing.T) {
 	t.Parallel()
 
-	project := GetTestProjectFromEnv()
+	project := acctest.GetTestProjectFromEnv()
 	rnd := RandString(t, 10)
 	instanceName := fmt.Sprintf("tf-test-%s", rnd)
 	databaseName := fmt.Sprintf("tfgen_%s", rnd)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -155,7 +157,7 @@ func TestAccSpannerDatabase_postgres(t *testing.T) {
 	databaseName := fmt.Sprintf("tfgen_%s", rnd)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -244,7 +246,7 @@ func TestAccSpannerDatabase_versionRetentionPeriod(t *testing.T) {
 	databaseName := fmt.Sprintf("tfgen_%s", rnd)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -458,7 +460,7 @@ func TestSpannerDatabase_resourceSpannerDBDdlCustomDiffFuncForceNew(t *testing.T
 	}
 
 	for tn, tc := range cases {
-		d := &ResourceDiffMock{
+		d := &tpgresource.ResourceDiffMock{
 			Before: map[string]interface{}{
 				"ddl": tc.before,
 			},
@@ -548,7 +550,7 @@ func TestValidateDatabaseRetentionPeriod(t *testing.T) {
 }
 
 func TestAccSpannerDatabase_deletionProtection(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -556,7 +558,7 @@ func TestAccSpannerDatabase_deletionProtection(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -601,7 +603,7 @@ resource "google_spanner_database" "database" {
 }
 
 func TestAccSpannerDatabase_cmek(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -609,7 +611,7 @@ func TestAccSpannerDatabase_cmek(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{

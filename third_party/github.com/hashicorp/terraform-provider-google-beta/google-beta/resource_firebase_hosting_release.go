@@ -21,6 +21,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceFirebaseHostingRelease() *schema.Resource {
@@ -64,7 +68,7 @@ belong to the default "live" channel`,
 				Computed:     true,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"DEPLOY", "ROLLBACK", "SITE_DISABLE", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"DEPLOY", "ROLLBACK", "SITE_DISABLE", ""}),
 				Description: `The type of the release; indicates what happened to the content of the site. There is no need to specify
 'DEPLOY' or 'ROLLBACK' type if a 'version_name' is provided.
 DEPLOY: A version was uploaded to Firebase Hosting and released. Output only.
@@ -99,8 +103,8 @@ sites/SITE_ID/channels/CHANNEL_ID/releases/RELEASE_ID`,
 }
 
 func resourceFirebaseHostingReleaseCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -109,17 +113,17 @@ func resourceFirebaseHostingReleaseCreate(d *schema.ResourceData, meta interface
 	typeProp, err := expandFirebaseHostingReleaseType(d.Get("type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("type"); !isEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
+	} else if v, ok := d.GetOkExists("type"); !tpgresource.IsEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
 		obj["type"] = typeProp
 	}
 	messageProp, err := expandFirebaseHostingReleaseMessage(d.Get("message"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("message"); !isEmptyValue(reflect.ValueOf(messageProp)) && (ok || !reflect.DeepEqual(v, messageProp)) {
+	} else if v, ok := d.GetOkExists("message"); !tpgresource.IsEmptyValue(reflect.ValueOf(messageProp)) && (ok || !reflect.DeepEqual(v, messageProp)) {
 		obj["message"] = messageProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}/releases?versionName={{version_name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}/releases?versionName={{version_name}}")
 	if err != nil {
 		return err
 	}
@@ -128,11 +132,11 @@ func resourceFirebaseHostingReleaseCreate(d *schema.ResourceData, meta interface
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Release: %s", err)
 	}
@@ -141,7 +145,7 @@ func resourceFirebaseHostingReleaseCreate(d *schema.ResourceData, meta interface
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}/releases/{{release_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}/releases/{{release_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -150,7 +154,7 @@ func resourceFirebaseHostingReleaseCreate(d *schema.ResourceData, meta interface
 	// Store the name as ID
 	d.SetId(res["name"].(string))
 
-	if err = d.Set("release_id", GetResourceNameFromSelfLink(res["name"].(string))); err != nil {
+	if err = d.Set("release_id", tpgresource.GetResourceNameFromSelfLink(res["name"].(string))); err != nil {
 		return fmt.Errorf("Error setting release_id: %s", err)
 	}
 
@@ -160,13 +164,13 @@ func resourceFirebaseHostingReleaseCreate(d *schema.ResourceData, meta interface
 }
 
 func resourceFirebaseHostingReleaseRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}/releases/{{release_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}/releases/{{release_id}}")
 	if err != nil {
 		return err
 	}
@@ -174,13 +178,13 @@ func resourceFirebaseHostingReleaseRead(d *schema.ResourceData, meta interface{}
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseHostingRelease %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("FirebaseHostingRelease %q", d.Id()))
 	}
 
 	res, err = resourceFirebaseHostingReleaseDecoder(d, meta, res)
@@ -218,7 +222,7 @@ func resourceFirebaseHostingReleaseDelete(d *schema.ResourceData, meta interface
 }
 
 func resourceFirebaseHostingReleaseImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"sites/(?P<site_id>[^/]+)/channels/(?P<channel_id>[^/]+)/releases/(?P<release_id>[^/]+)",
 		"sites/(?P<site_id>[^/]+)/releases/(?P<release_id>[^/]+)",
@@ -229,7 +233,7 @@ func resourceFirebaseHostingReleaseImport(d *schema.ResourceData, meta interface
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}/releases/{{release_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}/releases/{{release_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -238,28 +242,28 @@ func resourceFirebaseHostingReleaseImport(d *schema.ResourceData, meta interface
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenFirebaseHostingReleaseName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseHostingReleaseName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseHostingReleaseType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseHostingReleaseType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseHostingReleaseMessage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseHostingReleaseMessage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandFirebaseHostingReleaseType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseHostingReleaseType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandFirebaseHostingReleaseMessage(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseHostingReleaseMessage(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
 func resourceFirebaseHostingReleaseDecoder(d *schema.ResourceData, meta interface{}, res map[string]interface{}) (map[string]interface{}, error) {
-	if err := d.Set("release_id", GetResourceNameFromSelfLink(res["name"].(string))); err != nil {
+	if err := d.Set("release_id", tpgresource.GetResourceNameFromSelfLink(res["name"].(string))); err != nil {
 		return nil, err
 	}
 

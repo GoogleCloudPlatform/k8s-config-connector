@@ -23,6 +23,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceSecurityCenterSource() *schema.Resource {
@@ -46,7 +50,7 @@ func ResourceSecurityCenterSource() *schema.Resource {
 			"display_name": {
 				Type:         schema.TypeString,
 				Required:     true,
-				ValidateFunc: validateRegexp(`[\p{L}\p{N}]({\p{L}\p{N}_- ]{0,30}[\p{L}\p{N}])?`),
+				ValidateFunc: verify.ValidateRegexp(`[\p{L}\p{N}]({\p{L}\p{N}_- ]{0,30}[\p{L}\p{N}])?`),
 				Description: `The source’s display name. A source’s display name must be unique
 amongst its siblings, for example, two sources with the same parent
 can't share the same display name. The display name must start and end
@@ -78,8 +82,8 @@ lives in.`,
 }
 
 func resourceSecurityCenterSourceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -88,17 +92,17 @@ func resourceSecurityCenterSourceCreate(d *schema.ResourceData, meta interface{}
 	descriptionProp, err := expandSecurityCenterSourceDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	displayNameProp, err := expandSecurityCenterSourceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecurityCenterBasePath}}organizations/{{organization}}/sources")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecurityCenterBasePath}}organizations/{{organization}}/sources")
 	if err != nil {
 		return err
 	}
@@ -107,11 +111,11 @@ func resourceSecurityCenterSourceCreate(d *schema.ResourceData, meta interface{}
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Source: %s", err)
 	}
@@ -120,7 +124,7 @@ func resourceSecurityCenterSourceCreate(d *schema.ResourceData, meta interface{}
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -150,13 +154,13 @@ func resourceSecurityCenterSourceCreate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceSecurityCenterSourceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -164,13 +168,13 @@ func resourceSecurityCenterSourceRead(d *schema.ResourceData, meta interface{}) 
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("SecurityCenterSource %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("SecurityCenterSource %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenSecurityCenterSourceName(res["name"], d, config)); err != nil {
@@ -187,8 +191,8 @@ func resourceSecurityCenterSourceRead(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceSecurityCenterSourceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -199,17 +203,17 @@ func resourceSecurityCenterSourceUpdate(d *schema.ResourceData, meta interface{}
 	descriptionProp, err := expandSecurityCenterSourceDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	displayNameProp, err := expandSecurityCenterSourceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -226,17 +230,17 @@ func resourceSecurityCenterSourceUpdate(d *schema.ResourceData, meta interface{}
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Source %q: %s", d.Id(), err)
@@ -257,7 +261,7 @@ func resourceSecurityCenterSourceDelete(d *schema.ResourceData, meta interface{}
 }
 
 func resourceSecurityCenterSourceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
@@ -279,22 +283,22 @@ func resourceSecurityCenterSourceImport(d *schema.ResourceData, meta interface{}
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenSecurityCenterSourceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterSourceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecurityCenterSourceDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterSourceDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecurityCenterSourceDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterSourceDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandSecurityCenterSourceDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSecurityCenterSourceDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandSecurityCenterSourceDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSecurityCenterSourceDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

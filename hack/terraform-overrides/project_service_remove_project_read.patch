@@ -1,43 +1,29 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_service.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_service.go
-index 91deb7b47..7d44ae5af 100644
+index 3b20ff852..59adfbf26 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_service.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_service.go
-@@ -7,7 +7,6 @@ import (
- 	"time"
+@@ -12,7 +12,6 @@ import (
+ 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+ 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
  
- 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 -	"google.golang.org/api/googleapi"
  	"google.golang.org/api/serviceusage/v1"
  )
  
-@@ -176,10 +175,6 @@ func resourceGoogleProjectServiceCreate(d *schema.ResourceData, meta interface{}
+@@ -181,10 +180,6 @@ func resourceGoogleProjectServiceCreate(d *schema.ResourceData, meta interface{}
  
  func resourceGoogleProjectServiceRead(d *schema.ResourceData, meta interface{}) error {
- 	config := meta.(*Config)
--	userAgent, err := generateUserAgentString(d, config.UserAgent)
+ 	config := meta.(*transport_tpg.Config)
+-	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 -	if err != nil {
 -		return err
 -	}
  
- 	project, err := getProject(d, config)
+ 	project, err := tpgresource.GetProject(d, config)
  	if err != nil {
-@@ -187,30 +182,6 @@ func resourceGoogleProjectServiceRead(d *schema.ResourceData, meta interface{})
+@@ -192,30 +187,6 @@ func resourceGoogleProjectServiceRead(d *schema.ResourceData, meta interface{})
  	}
- 	project = GetResourceNameFromSelfLink(project)
+ 	project = tpgresource.GetResourceNameFromSelfLink(project)
  
 -	// Verify project for services still exists
 -	projectGetCall := config.NewResourceManagerClient(userAgent).Projects.Get(project)
@@ -45,7 +31,7 @@ index 91deb7b47..7d44ae5af 100644
 -		billingProject := project
 -
 -		// err == nil indicates that the billing_project value was found
--		if bp, err := getBillingProject(d, config); err == nil {
+-		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 -			billingProject = bp
 -		}
 -		projectGetCall.Header().Add("X-Goog-User-Project", billingProject)
@@ -53,16 +39,16 @@ index 91deb7b47..7d44ae5af 100644
 -	p, err := projectGetCall.Do()
 -
 -	if err == nil && p.LifecycleState == "DELETE_REQUESTED" {
--		// Construct a 404 error for handleNotFoundError
+-		// Construct a 404 error for transport_tpg.HandleNotFoundError
 -		err = &googleapi.Error{
 -			Code:    404,
 -			Message: "Project deletion was requested",
 -		}
 -	}
 -	if err != nil {
--		return handleNotFoundError(err, d, fmt.Sprintf("Project Service %s", d.Id()))
+-		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Project Service %s", d.Id()))
 -	}
 -
  	servicesRaw, err := BatchRequestReadServices(project, d, config)
  	if err != nil {
- 		return handleNotFoundError(err, d, fmt.Sprintf("Project Service %s", d.Id()))
+ 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Project Service %s", d.Id()))

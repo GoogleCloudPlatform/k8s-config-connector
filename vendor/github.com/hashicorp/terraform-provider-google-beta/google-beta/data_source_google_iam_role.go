@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceGoogleIamRole() *schema.Resource {
@@ -32,8 +34,8 @@ func DataSourceGoogleIamRole() *schema.Resource {
 }
 
 func dataSourceGoogleIamRoleRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -41,7 +43,7 @@ func dataSourceGoogleIamRoleRead(d *schema.ResourceData, meta interface{}) error
 	roleName := d.Get("name").(string)
 	role, err := config.NewIamClient(userAgent).Roles.Get(roleName).Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Error reading IAM Role %s: %s", roleName, err))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Error reading IAM Role %s: %s", roleName, err))
 	}
 
 	d.SetId(role.Name)

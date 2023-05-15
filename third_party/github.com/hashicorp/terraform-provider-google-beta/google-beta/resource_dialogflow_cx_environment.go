@@ -10,6 +10,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceDialogflowCXEnvironment() *schema.Resource {
@@ -79,8 +82,8 @@ Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>.`,
 }
 
 func resourceDialogflowCXEnvironmentCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -89,23 +92,23 @@ func resourceDialogflowCXEnvironmentCreate(d *schema.ResourceData, meta interfac
 	displayNameProp, err := expandDialogflowCXEnvironmentDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	descriptionProp, err := expandDialogflowCXEnvironmentDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	versionConfigsProp, err := expandDialogflowCXEnvironmentVersionConfigs(d.Get("version_configs"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("version_configs"); !isEmptyValue(reflect.ValueOf(versionConfigsProp)) && (ok || !reflect.DeepEqual(v, versionConfigsProp)) {
+	} else if v, ok := d.GetOkExists("version_configs"); !tpgresource.IsEmptyValue(reflect.ValueOf(versionConfigsProp)) && (ok || !reflect.DeepEqual(v, versionConfigsProp)) {
 		obj["versionConfigs"] = versionConfigsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/environments")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/environments")
 	if err != nil {
 		return err
 	}
@@ -114,7 +117,7 @@ func resourceDialogflowCXEnvironmentCreate(d *schema.ResourceData, meta interfac
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
@@ -132,13 +135,13 @@ func resourceDialogflowCXEnvironmentCreate(d *schema.ResourceData, meta interfac
 	}
 
 	url = strings.Replace(url, "-dialogflow", fmt.Sprintf("%s-dialogflow", location), 1)
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Environment: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{parent}}/environments/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{parent}}/environments/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -162,7 +165,7 @@ func resourceDialogflowCXEnvironmentCreate(d *schema.ResourceData, meta interfac
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "{{parent}}/environments/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "{{parent}}/environments/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -174,13 +177,13 @@ func resourceDialogflowCXEnvironmentCreate(d *schema.ResourceData, meta interfac
 }
 
 func resourceDialogflowCXEnvironmentRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/environments/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/environments/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -188,7 +191,7 @@ func resourceDialogflowCXEnvironmentRead(d *schema.ResourceData, meta interface{
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
@@ -206,9 +209,9 @@ func resourceDialogflowCXEnvironmentRead(d *schema.ResourceData, meta interface{
 	}
 
 	url = strings.Replace(url, "-dialogflow", fmt.Sprintf("%s-dialogflow", location), 1)
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("DialogflowCXEnvironment %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("DialogflowCXEnvironment %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenDialogflowCXEnvironmentName(res["name"], d, config)); err != nil {
@@ -231,8 +234,8 @@ func resourceDialogflowCXEnvironmentRead(d *schema.ResourceData, meta interface{
 }
 
 func resourceDialogflowCXEnvironmentUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -243,23 +246,23 @@ func resourceDialogflowCXEnvironmentUpdate(d *schema.ResourceData, meta interfac
 	displayNameProp, err := expandDialogflowCXEnvironmentDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	descriptionProp, err := expandDialogflowCXEnvironmentDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	versionConfigsProp, err := expandDialogflowCXEnvironmentVersionConfigs(d.Get("version_configs"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("version_configs"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, versionConfigsProp)) {
+	} else if v, ok := d.GetOkExists("version_configs"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, versionConfigsProp)) {
 		obj["versionConfigs"] = versionConfigsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/environments/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/environments/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -280,7 +283,7 @@ func resourceDialogflowCXEnvironmentUpdate(d *schema.ResourceData, meta interfac
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -301,11 +304,11 @@ func resourceDialogflowCXEnvironmentUpdate(d *schema.ResourceData, meta interfac
 	url = strings.Replace(url, "-dialogflow", fmt.Sprintf("%s-dialogflow", location), 1)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Environment %q: %s", d.Id(), err)
@@ -325,15 +328,15 @@ func resourceDialogflowCXEnvironmentUpdate(d *schema.ResourceData, meta interfac
 }
 
 func resourceDialogflowCXEnvironmentDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/environments/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DialogflowCXBasePath}}{{parent}}/environments/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -357,13 +360,13 @@ func resourceDialogflowCXEnvironmentDelete(d *schema.ResourceData, meta interfac
 	log.Printf("[DEBUG] Deleting Environment %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Environment")
+		return transport_tpg.HandleNotFoundError(err, d, "Environment")
 	}
 
 	err = DialogflowCXOperationWaitTime(
@@ -379,7 +382,7 @@ func resourceDialogflowCXEnvironmentDelete(d *schema.ResourceData, meta interfac
 }
 
 func resourceDialogflowCXEnvironmentImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value and parent contains slashes
 	if err := ParseImportId([]string{
@@ -390,7 +393,7 @@ func resourceDialogflowCXEnvironmentImport(d *schema.ResourceData, meta interfac
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{parent}}/environments/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{parent}}/environments/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -399,22 +402,22 @@ func resourceDialogflowCXEnvironmentImport(d *schema.ResourceData, meta interfac
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenDialogflowCXEnvironmentName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEnvironmentName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenDialogflowCXEnvironmentDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEnvironmentDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXEnvironmentDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEnvironmentDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXEnvironmentVersionConfigs(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEnvironmentVersionConfigs(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -432,23 +435,23 @@ func flattenDialogflowCXEnvironmentVersionConfigs(v interface{}, d *schema.Resou
 	}
 	return transformed
 }
-func flattenDialogflowCXEnvironmentVersionConfigsVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEnvironmentVersionConfigsVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDialogflowCXEnvironmentUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDialogflowCXEnvironmentUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandDialogflowCXEnvironmentDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEnvironmentDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXEnvironmentDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEnvironmentDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDialogflowCXEnvironmentVersionConfigs(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEnvironmentVersionConfigs(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -461,7 +464,7 @@ func expandDialogflowCXEnvironmentVersionConfigs(v interface{}, d TerraformResou
 		transformedVersion, err := expandDialogflowCXEnvironmentVersionConfigsVersion(original["version"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["version"] = transformedVersion
 		}
 
@@ -470,6 +473,6 @@ func expandDialogflowCXEnvironmentVersionConfigs(v interface{}, d TerraformResou
 	return req, nil
 }
 
-func expandDialogflowCXEnvironmentVersionConfigsVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDialogflowCXEnvironmentVersionConfigsVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

@@ -39,7 +39,7 @@ import (
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
-	tfgooglebeta "github.com/hashicorp/terraform-provider-google-beta/google-beta"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
@@ -77,7 +77,7 @@ func TestGetNotFound(t *testing.T) {
 func init() {
 	// TODO: Can we initialize this globally once somewhere?
 	// (It shouldn't _really_ matter if we have multiple instances, it's just leaky and confusing)
-	tfgooglebeta.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		artifacts := os.Getenv("ARTIFACTS")
 		if artifacts == "" {
 			log.Printf("env var ARTIFACTS is not set; will not record http log")
@@ -87,7 +87,7 @@ func init() {
 		t := test.NewHTTPRecorder(inner.Transport, outputDir)
 		return &http.Client{Transport: t}
 	}
-	tfgooglebeta.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		artifacts := os.Getenv("ARTIFACTS")
 		if artifacts == "" {
 			return inner

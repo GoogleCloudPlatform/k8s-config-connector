@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceIdentityPlatformTenant() *schema.Resource {
@@ -81,8 +84,8 @@ are not able to manage its users.`,
 }
 
 func resourceIdentityPlatformTenantCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -91,29 +94,29 @@ func resourceIdentityPlatformTenantCreate(d *schema.ResourceData, meta interface
 	displayNameProp, err := expandIdentityPlatformTenantDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	allowPasswordSignupProp, err := expandIdentityPlatformTenantAllowPasswordSignup(d.Get("allow_password_signup"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("allow_password_signup"); !isEmptyValue(reflect.ValueOf(allowPasswordSignupProp)) && (ok || !reflect.DeepEqual(v, allowPasswordSignupProp)) {
+	} else if v, ok := d.GetOkExists("allow_password_signup"); !tpgresource.IsEmptyValue(reflect.ValueOf(allowPasswordSignupProp)) && (ok || !reflect.DeepEqual(v, allowPasswordSignupProp)) {
 		obj["allowPasswordSignup"] = allowPasswordSignupProp
 	}
 	enableEmailLinkSigninProp, err := expandIdentityPlatformTenantEnableEmailLinkSignin(d.Get("enable_email_link_signin"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enable_email_link_signin"); !isEmptyValue(reflect.ValueOf(enableEmailLinkSigninProp)) && (ok || !reflect.DeepEqual(v, enableEmailLinkSigninProp)) {
+	} else if v, ok := d.GetOkExists("enable_email_link_signin"); !tpgresource.IsEmptyValue(reflect.ValueOf(enableEmailLinkSigninProp)) && (ok || !reflect.DeepEqual(v, enableEmailLinkSigninProp)) {
 		obj["enableEmailLinkSignin"] = enableEmailLinkSigninProp
 	}
 	disableAuthProp, err := expandIdentityPlatformTenantDisableAuth(d.Get("disable_auth"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("disable_auth"); !isEmptyValue(reflect.ValueOf(disableAuthProp)) && (ok || !reflect.DeepEqual(v, disableAuthProp)) {
+	} else if v, ok := d.GetOkExists("disable_auth"); !tpgresource.IsEmptyValue(reflect.ValueOf(disableAuthProp)) && (ok || !reflect.DeepEqual(v, disableAuthProp)) {
 		obj["disableAuth"] = disableAuthProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/tenants")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/tenants")
 	if err != nil {
 		return err
 	}
@@ -121,18 +124,18 @@ func resourceIdentityPlatformTenantCreate(d *schema.ResourceData, meta interface
 	log.Printf("[DEBUG] Creating new Tenant: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Tenant: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Tenant: %s", err)
 	}
@@ -141,7 +144,7 @@ func resourceIdentityPlatformTenantCreate(d *schema.ResourceData, meta interface
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/tenants/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/tenants/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -152,11 +155,11 @@ func resourceIdentityPlatformTenantCreate(d *schema.ResourceData, meta interface
 	if !ok {
 		return fmt.Errorf("Create response didn't contain critical fields. Create may not have succeeded.")
 	}
-	if err := d.Set("name", GetResourceNameFromSelfLink(name.(string))); err != nil {
+	if err := d.Set("name", tpgresource.GetResourceNameFromSelfLink(name.(string))); err != nil {
 		return fmt.Errorf("Error setting name: %s", err)
 	}
 	// Store the ID now that we have set the computed name
-	id, err = ReplaceVars(d, config, "projects/{{project}}/tenants/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/tenants/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -168,33 +171,33 @@ func resourceIdentityPlatformTenantCreate(d *schema.ResourceData, meta interface
 }
 
 func resourceIdentityPlatformTenantRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/tenants/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/tenants/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Tenant: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("IdentityPlatformTenant %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("IdentityPlatformTenant %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -221,15 +224,15 @@ func resourceIdentityPlatformTenantRead(d *schema.ResourceData, meta interface{}
 }
 
 func resourceIdentityPlatformTenantUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Tenant: %s", err)
 	}
@@ -239,29 +242,29 @@ func resourceIdentityPlatformTenantUpdate(d *schema.ResourceData, meta interface
 	displayNameProp, err := expandIdentityPlatformTenantDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	allowPasswordSignupProp, err := expandIdentityPlatformTenantAllowPasswordSignup(d.Get("allow_password_signup"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("allow_password_signup"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, allowPasswordSignupProp)) {
+	} else if v, ok := d.GetOkExists("allow_password_signup"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, allowPasswordSignupProp)) {
 		obj["allowPasswordSignup"] = allowPasswordSignupProp
 	}
 	enableEmailLinkSigninProp, err := expandIdentityPlatformTenantEnableEmailLinkSignin(d.Get("enable_email_link_signin"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enable_email_link_signin"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enableEmailLinkSigninProp)) {
+	} else if v, ok := d.GetOkExists("enable_email_link_signin"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enableEmailLinkSigninProp)) {
 		obj["enableEmailLinkSignin"] = enableEmailLinkSigninProp
 	}
 	disableAuthProp, err := expandIdentityPlatformTenantDisableAuth(d.Get("disable_auth"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("disable_auth"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, disableAuthProp)) {
+	} else if v, ok := d.GetOkExists("disable_auth"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, disableAuthProp)) {
 		obj["disableAuth"] = disableAuthProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/tenants/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/tenants/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -286,17 +289,17 @@ func resourceIdentityPlatformTenantUpdate(d *schema.ResourceData, meta interface
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Tenant %q: %s", d.Id(), err)
@@ -308,21 +311,21 @@ func resourceIdentityPlatformTenantUpdate(d *schema.ResourceData, meta interface
 }
 
 func resourceIdentityPlatformTenantDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Tenant: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/tenants/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/tenants/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -331,13 +334,13 @@ func resourceIdentityPlatformTenantDelete(d *schema.ResourceData, meta interface
 	log.Printf("[DEBUG] Deleting Tenant %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Tenant")
+		return transport_tpg.HandleNotFoundError(err, d, "Tenant")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Tenant %q: %#v", d.Id(), res)
@@ -345,7 +348,7 @@ func resourceIdentityPlatformTenantDelete(d *schema.ResourceData, meta interface
 }
 
 func resourceIdentityPlatformTenantImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/tenants/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
@@ -355,7 +358,7 @@ func resourceIdentityPlatformTenantImport(d *schema.ResourceData, meta interface
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/tenants/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/tenants/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -364,41 +367,41 @@ func resourceIdentityPlatformTenantImport(d *schema.ResourceData, meta interface
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenIdentityPlatformTenantName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformTenantName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenIdentityPlatformTenantDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformTenantDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIdentityPlatformTenantAllowPasswordSignup(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformTenantAllowPasswordSignup(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIdentityPlatformTenantEnableEmailLinkSignin(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformTenantEnableEmailLinkSignin(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIdentityPlatformTenantDisableAuth(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformTenantDisableAuth(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandIdentityPlatformTenantDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformTenantDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandIdentityPlatformTenantAllowPasswordSignup(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformTenantAllowPasswordSignup(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandIdentityPlatformTenantEnableEmailLinkSignin(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformTenantEnableEmailLinkSignin(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandIdentityPlatformTenantDisableAuth(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformTenantDisableAuth(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

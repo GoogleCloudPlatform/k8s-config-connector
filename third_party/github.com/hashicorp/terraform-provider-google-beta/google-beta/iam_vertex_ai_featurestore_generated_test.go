@@ -19,6 +19,8 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccVertexAIFeaturestoreIamBindingGenerated(t *testing.T) {
@@ -27,14 +29,14 @@ func TestAccVertexAIFeaturestoreIamBindingGenerated(t *testing.T) {
 	context := map[string]interface{}{
 		"random_suffix":   RandString(t, 10),
 		"role":            "roles/viewer",
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
+		"org_id":          acctest.GetTestOrgFromEnv(t),
+		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
 
 		"kms_key_name": BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -42,7 +44,7 @@ func TestAccVertexAIFeaturestoreIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_vertex_ai_featurestore_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/featurestores/%s roles/viewer", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/featurestores/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -52,7 +54,7 @@ func TestAccVertexAIFeaturestoreIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_vertex_ai_featurestore_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/featurestores/%s roles/viewer", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/featurestores/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -66,14 +68,14 @@ func TestAccVertexAIFeaturestoreIamMemberGenerated(t *testing.T) {
 	context := map[string]interface{}{
 		"random_suffix":   RandString(t, 10),
 		"role":            "roles/viewer",
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
+		"org_id":          acctest.GetTestOrgFromEnv(t),
+		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
 
 		"kms_key_name": BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -82,7 +84,7 @@ func TestAccVertexAIFeaturestoreIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_vertex_ai_featurestore_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/featurestores/%s roles/viewer user:admin@hashicorptest.com", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/featurestores/%s roles/viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -96,14 +98,14 @@ func TestAccVertexAIFeaturestoreIamPolicyGenerated(t *testing.T) {
 	context := map[string]interface{}{
 		"random_suffix":   RandString(t, 10),
 		"role":            "roles/viewer",
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
+		"org_id":          acctest.GetTestOrgFromEnv(t),
+		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
 
 		"kms_key_name": BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
@@ -111,7 +113,7 @@ func TestAccVertexAIFeaturestoreIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_vertex_ai_featurestore_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -120,7 +122,7 @@ func TestAccVertexAIFeaturestoreIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_vertex_ai_featurestore_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},

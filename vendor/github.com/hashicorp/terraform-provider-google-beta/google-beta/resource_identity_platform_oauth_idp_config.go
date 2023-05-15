@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceIdentityPlatformOauthIdpConfig() *schema.Resource {
@@ -85,8 +88,8 @@ func ResourceIdentityPlatformOauthIdpConfig() *schema.Resource {
 }
 
 func resourceIdentityPlatformOauthIdpConfigCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -95,41 +98,41 @@ func resourceIdentityPlatformOauthIdpConfigCreate(d *schema.ResourceData, meta i
 	nameProp, err := expandIdentityPlatformOauthIdpConfigName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	displayNameProp, err := expandIdentityPlatformOauthIdpConfigDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	enabledProp, err := expandIdentityPlatformOauthIdpConfigEnabled(d.Get("enabled"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enabled"); !isEmptyValue(reflect.ValueOf(enabledProp)) && (ok || !reflect.DeepEqual(v, enabledProp)) {
+	} else if v, ok := d.GetOkExists("enabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(enabledProp)) && (ok || !reflect.DeepEqual(v, enabledProp)) {
 		obj["enabled"] = enabledProp
 	}
 	issuerProp, err := expandIdentityPlatformOauthIdpConfigIssuer(d.Get("issuer"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("issuer"); !isEmptyValue(reflect.ValueOf(issuerProp)) && (ok || !reflect.DeepEqual(v, issuerProp)) {
+	} else if v, ok := d.GetOkExists("issuer"); !tpgresource.IsEmptyValue(reflect.ValueOf(issuerProp)) && (ok || !reflect.DeepEqual(v, issuerProp)) {
 		obj["issuer"] = issuerProp
 	}
 	clientIdProp, err := expandIdentityPlatformOauthIdpConfigClientId(d.Get("client_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("client_id"); !isEmptyValue(reflect.ValueOf(clientIdProp)) && (ok || !reflect.DeepEqual(v, clientIdProp)) {
+	} else if v, ok := d.GetOkExists("client_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(clientIdProp)) && (ok || !reflect.DeepEqual(v, clientIdProp)) {
 		obj["clientId"] = clientIdProp
 	}
 	clientSecretProp, err := expandIdentityPlatformOauthIdpConfigClientSecret(d.Get("client_secret"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("client_secret"); !isEmptyValue(reflect.ValueOf(clientSecretProp)) && (ok || !reflect.DeepEqual(v, clientSecretProp)) {
+	} else if v, ok := d.GetOkExists("client_secret"); !tpgresource.IsEmptyValue(reflect.ValueOf(clientSecretProp)) && (ok || !reflect.DeepEqual(v, clientSecretProp)) {
 		obj["clientSecret"] = clientSecretProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/oauthIdpConfigs?oauthIdpConfigId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/oauthIdpConfigs?oauthIdpConfigId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -137,24 +140,24 @@ func resourceIdentityPlatformOauthIdpConfigCreate(d *schema.ResourceData, meta i
 	log.Printf("[DEBUG] Creating new OauthIdpConfig: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for OauthIdpConfig: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating OauthIdpConfig: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/oauthIdpConfigs/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/oauthIdpConfigs/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -166,33 +169,33 @@ func resourceIdentityPlatformOauthIdpConfigCreate(d *schema.ResourceData, meta i
 }
 
 func resourceIdentityPlatformOauthIdpConfigRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/oauthIdpConfigs/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/oauthIdpConfigs/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for OauthIdpConfig: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("IdentityPlatformOauthIdpConfig %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("IdentityPlatformOauthIdpConfig %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -222,15 +225,15 @@ func resourceIdentityPlatformOauthIdpConfigRead(d *schema.ResourceData, meta int
 }
 
 func resourceIdentityPlatformOauthIdpConfigUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for OauthIdpConfig: %s", err)
 	}
@@ -240,35 +243,35 @@ func resourceIdentityPlatformOauthIdpConfigUpdate(d *schema.ResourceData, meta i
 	displayNameProp, err := expandIdentityPlatformOauthIdpConfigDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	enabledProp, err := expandIdentityPlatformOauthIdpConfigEnabled(d.Get("enabled"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("enabled"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enabledProp)) {
+	} else if v, ok := d.GetOkExists("enabled"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enabledProp)) {
 		obj["enabled"] = enabledProp
 	}
 	issuerProp, err := expandIdentityPlatformOauthIdpConfigIssuer(d.Get("issuer"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("issuer"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, issuerProp)) {
+	} else if v, ok := d.GetOkExists("issuer"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, issuerProp)) {
 		obj["issuer"] = issuerProp
 	}
 	clientIdProp, err := expandIdentityPlatformOauthIdpConfigClientId(d.Get("client_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("client_id"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, clientIdProp)) {
+	} else if v, ok := d.GetOkExists("client_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, clientIdProp)) {
 		obj["clientId"] = clientIdProp
 	}
 	clientSecretProp, err := expandIdentityPlatformOauthIdpConfigClientSecret(d.Get("client_secret"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("client_secret"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, clientSecretProp)) {
+	} else if v, ok := d.GetOkExists("client_secret"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, clientSecretProp)) {
 		obj["clientSecret"] = clientSecretProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/oauthIdpConfigs/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/oauthIdpConfigs/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -297,17 +300,17 @@ func resourceIdentityPlatformOauthIdpConfigUpdate(d *schema.ResourceData, meta i
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating OauthIdpConfig %q: %s", d.Id(), err)
@@ -319,21 +322,21 @@ func resourceIdentityPlatformOauthIdpConfigUpdate(d *schema.ResourceData, meta i
 }
 
 func resourceIdentityPlatformOauthIdpConfigDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for OauthIdpConfig: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/oauthIdpConfigs/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/oauthIdpConfigs/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -342,13 +345,13 @@ func resourceIdentityPlatformOauthIdpConfigDelete(d *schema.ResourceData, meta i
 	log.Printf("[DEBUG] Deleting OauthIdpConfig %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "OauthIdpConfig")
+		return transport_tpg.HandleNotFoundError(err, d, "OauthIdpConfig")
 	}
 
 	log.Printf("[DEBUG] Finished deleting OauthIdpConfig %q: %#v", d.Id(), res)
@@ -356,7 +359,7 @@ func resourceIdentityPlatformOauthIdpConfigDelete(d *schema.ResourceData, meta i
 }
 
 func resourceIdentityPlatformOauthIdpConfigImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/oauthIdpConfigs/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
@@ -366,7 +369,7 @@ func resourceIdentityPlatformOauthIdpConfigImport(d *schema.ResourceData, meta i
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/oauthIdpConfigs/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/oauthIdpConfigs/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -375,53 +378,53 @@ func resourceIdentityPlatformOauthIdpConfigImport(d *schema.ResourceData, meta i
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenIdentityPlatformOauthIdpConfigName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformOauthIdpConfigName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenIdentityPlatformOauthIdpConfigDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformOauthIdpConfigDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIdentityPlatformOauthIdpConfigEnabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformOauthIdpConfigEnabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIdentityPlatformOauthIdpConfigIssuer(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformOauthIdpConfigIssuer(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIdentityPlatformOauthIdpConfigClientId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformOauthIdpConfigClientId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIdentityPlatformOauthIdpConfigClientSecret(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformOauthIdpConfigClientSecret(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandIdentityPlatformOauthIdpConfigName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformOauthIdpConfigName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandIdentityPlatformOauthIdpConfigDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformOauthIdpConfigDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandIdentityPlatformOauthIdpConfigEnabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformOauthIdpConfigEnabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandIdentityPlatformOauthIdpConfigIssuer(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformOauthIdpConfigIssuer(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandIdentityPlatformOauthIdpConfigClientId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformOauthIdpConfigClientId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandIdentityPlatformOauthIdpConfigClientSecret(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformOauthIdpConfigClientSecret(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

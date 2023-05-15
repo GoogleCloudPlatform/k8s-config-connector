@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceDataprocMetastoreService() *schema.Resource {
@@ -54,7 +58,7 @@ and hyphens (-). Cannot begin or end with underscore or hyphen. Must consist of 
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"MYSQL", "SPANNER", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"MYSQL", "SPANNER", ""}),
 				Description:  `The database type that the Metastore service stores its data. Default value: "MYSQL" Possible values: ["MYSQL", "SPANNER"]`,
 				Default:      "MYSQL",
 			},
@@ -131,7 +135,7 @@ The mappings override system defaults (some keys cannot be overridden)`,
 							Type:         schema.TypeString,
 							Optional:     true,
 							ForceNew:     true,
-							ValidateFunc: validateEnum([]string{"THRIFT", "GRPC", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"THRIFT", "GRPC", ""}),
 							Description:  `The protocol to use for the metastore service endpoint. If unspecified, defaults to 'THRIFT'. Default value: "THRIFT" Possible values: ["THRIFT", "GRPC"]`,
 							Default:      "THRIFT",
 						},
@@ -201,7 +205,7 @@ Maintenance window is not needed for services with the 'SPANNER' database type.`
 						"day_of_week": {
 							Type:         schema.TypeString,
 							Required:     true,
-							ValidateFunc: validateEnum([]string{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"}),
+							ValidateFunc: verify.ValidateEnum([]string{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"}),
 							Description:  `The day of week, when the window starts. Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]`,
 						},
 						"hour_of_day": {
@@ -290,7 +294,7 @@ There must be at least one IP address available in the subnet's primary range. T
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"CANARY", "STABLE", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"CANARY", "STABLE", ""}),
 				Description:  `The release channel of the service. If unspecified, defaults to 'STABLE'. Default value: "STABLE" Possible values: ["CANARY", "STABLE"]`,
 				Default:      "STABLE",
 			},
@@ -305,7 +309,7 @@ There must be at least one IP address available in the subnet's primary range. T
 						"log_format": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"LEGACY", "JSON", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"LEGACY", "JSON", ""}),
 							Description:  `The output format of the Dataproc Metastore service's logs. Default value: "JSON" Possible values: ["LEGACY", "JSON"]`,
 							Default:      "JSON",
 						},
@@ -316,7 +320,7 @@ There must be at least one IP address available in the subnet's primary range. T
 				Type:         schema.TypeString,
 				Computed:     true,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"DEVELOPER", "ENTERPRISE", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"DEVELOPER", "ENTERPRISE", ""}),
 				Description:  `The tier of the service. Possible values: ["DEVELOPER", "ENTERPRISE"]`,
 			},
 			"artifact_gcs_uri": {
@@ -361,8 +365,8 @@ There must be at least one IP address available in the subnet's primary range. T
 }
 
 func resourceDataprocMetastoreServiceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -371,77 +375,77 @@ func resourceDataprocMetastoreServiceCreate(d *schema.ResourceData, meta interfa
 	labelsProp, err := expandDataprocMetastoreServiceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	networkProp, err := expandDataprocMetastoreServiceNetwork(d.Get("network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network"); !isEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
+	} else if v, ok := d.GetOkExists("network"); !tpgresource.IsEmptyValue(reflect.ValueOf(networkProp)) && (ok || !reflect.DeepEqual(v, networkProp)) {
 		obj["network"] = networkProp
 	}
 	portProp, err := expandDataprocMetastoreServicePort(d.Get("port"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("port"); !isEmptyValue(reflect.ValueOf(portProp)) && (ok || !reflect.DeepEqual(v, portProp)) {
+	} else if v, ok := d.GetOkExists("port"); !tpgresource.IsEmptyValue(reflect.ValueOf(portProp)) && (ok || !reflect.DeepEqual(v, portProp)) {
 		obj["port"] = portProp
 	}
 	tierProp, err := expandDataprocMetastoreServiceTier(d.Get("tier"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("tier"); !isEmptyValue(reflect.ValueOf(tierProp)) && (ok || !reflect.DeepEqual(v, tierProp)) {
+	} else if v, ok := d.GetOkExists("tier"); !tpgresource.IsEmptyValue(reflect.ValueOf(tierProp)) && (ok || !reflect.DeepEqual(v, tierProp)) {
 		obj["tier"] = tierProp
 	}
 	maintenanceWindowProp, err := expandDataprocMetastoreServiceMaintenanceWindow(d.Get("maintenance_window"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("maintenance_window"); !isEmptyValue(reflect.ValueOf(maintenanceWindowProp)) && (ok || !reflect.DeepEqual(v, maintenanceWindowProp)) {
+	} else if v, ok := d.GetOkExists("maintenance_window"); !tpgresource.IsEmptyValue(reflect.ValueOf(maintenanceWindowProp)) && (ok || !reflect.DeepEqual(v, maintenanceWindowProp)) {
 		obj["maintenanceWindow"] = maintenanceWindowProp
 	}
 	encryptionConfigProp, err := expandDataprocMetastoreServiceEncryptionConfig(d.Get("encryption_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("encryption_config"); !isEmptyValue(reflect.ValueOf(encryptionConfigProp)) && (ok || !reflect.DeepEqual(v, encryptionConfigProp)) {
+	} else if v, ok := d.GetOkExists("encryption_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(encryptionConfigProp)) && (ok || !reflect.DeepEqual(v, encryptionConfigProp)) {
 		obj["encryptionConfig"] = encryptionConfigProp
 	}
 	hiveMetastoreConfigProp, err := expandDataprocMetastoreServiceHiveMetastoreConfig(d.Get("hive_metastore_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("hive_metastore_config"); !isEmptyValue(reflect.ValueOf(hiveMetastoreConfigProp)) && (ok || !reflect.DeepEqual(v, hiveMetastoreConfigProp)) {
+	} else if v, ok := d.GetOkExists("hive_metastore_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(hiveMetastoreConfigProp)) && (ok || !reflect.DeepEqual(v, hiveMetastoreConfigProp)) {
 		obj["hiveMetastoreConfig"] = hiveMetastoreConfigProp
 	}
 	networkConfigProp, err := expandDataprocMetastoreServiceNetworkConfig(d.Get("network_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("network_config"); !isEmptyValue(reflect.ValueOf(networkConfigProp)) && (ok || !reflect.DeepEqual(v, networkConfigProp)) {
+	} else if v, ok := d.GetOkExists("network_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(networkConfigProp)) && (ok || !reflect.DeepEqual(v, networkConfigProp)) {
 		obj["networkConfig"] = networkConfigProp
 	}
 	databaseTypeProp, err := expandDataprocMetastoreServiceDatabaseType(d.Get("database_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("database_type"); !isEmptyValue(reflect.ValueOf(databaseTypeProp)) && (ok || !reflect.DeepEqual(v, databaseTypeProp)) {
+	} else if v, ok := d.GetOkExists("database_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(databaseTypeProp)) && (ok || !reflect.DeepEqual(v, databaseTypeProp)) {
 		obj["databaseType"] = databaseTypeProp
 	}
 	releaseChannelProp, err := expandDataprocMetastoreServiceReleaseChannel(d.Get("release_channel"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("release_channel"); !isEmptyValue(reflect.ValueOf(releaseChannelProp)) && (ok || !reflect.DeepEqual(v, releaseChannelProp)) {
+	} else if v, ok := d.GetOkExists("release_channel"); !tpgresource.IsEmptyValue(reflect.ValueOf(releaseChannelProp)) && (ok || !reflect.DeepEqual(v, releaseChannelProp)) {
 		obj["releaseChannel"] = releaseChannelProp
 	}
 	metadataIntegrationProp, err := expandDataprocMetastoreServiceMetadataIntegration(d.Get("metadata_integration"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("metadata_integration"); !isEmptyValue(reflect.ValueOf(metadataIntegrationProp)) && (ok || !reflect.DeepEqual(v, metadataIntegrationProp)) {
+	} else if v, ok := d.GetOkExists("metadata_integration"); !tpgresource.IsEmptyValue(reflect.ValueOf(metadataIntegrationProp)) && (ok || !reflect.DeepEqual(v, metadataIntegrationProp)) {
 		obj["metadataIntegration"] = metadataIntegrationProp
 	}
 	telemetryConfigProp, err := expandDataprocMetastoreServiceTelemetryConfig(d.Get("telemetry_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("telemetry_config"); !isEmptyValue(reflect.ValueOf(telemetryConfigProp)) && (ok || !reflect.DeepEqual(v, telemetryConfigProp)) {
+	} else if v, ok := d.GetOkExists("telemetry_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(telemetryConfigProp)) && (ok || !reflect.DeepEqual(v, telemetryConfigProp)) {
 		obj["telemetryConfig"] = telemetryConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/services?serviceId={{service_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/services?serviceId={{service_id}}")
 	if err != nil {
 		return err
 	}
@@ -449,24 +453,24 @@ func resourceDataprocMetastoreServiceCreate(d *schema.ResourceData, meta interfa
 	log.Printf("[DEBUG] Creating new Service: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Service: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Service: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{service_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{service_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -488,33 +492,33 @@ func resourceDataprocMetastoreServiceCreate(d *schema.ResourceData, meta interfa
 }
 
 func resourceDataprocMetastoreServiceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/services/{{service_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/services/{{service_id}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Service: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("DataprocMetastoreService %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("DataprocMetastoreService %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -580,15 +584,15 @@ func resourceDataprocMetastoreServiceRead(d *schema.ResourceData, meta interface
 }
 
 func resourceDataprocMetastoreServiceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Service: %s", err)
 	}
@@ -598,53 +602,53 @@ func resourceDataprocMetastoreServiceUpdate(d *schema.ResourceData, meta interfa
 	labelsProp, err := expandDataprocMetastoreServiceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	portProp, err := expandDataprocMetastoreServicePort(d.Get("port"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("port"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, portProp)) {
+	} else if v, ok := d.GetOkExists("port"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, portProp)) {
 		obj["port"] = portProp
 	}
 	tierProp, err := expandDataprocMetastoreServiceTier(d.Get("tier"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("tier"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, tierProp)) {
+	} else if v, ok := d.GetOkExists("tier"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, tierProp)) {
 		obj["tier"] = tierProp
 	}
 	maintenanceWindowProp, err := expandDataprocMetastoreServiceMaintenanceWindow(d.Get("maintenance_window"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("maintenance_window"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, maintenanceWindowProp)) {
+	} else if v, ok := d.GetOkExists("maintenance_window"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, maintenanceWindowProp)) {
 		obj["maintenanceWindow"] = maintenanceWindowProp
 	}
 	encryptionConfigProp, err := expandDataprocMetastoreServiceEncryptionConfig(d.Get("encryption_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("encryption_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, encryptionConfigProp)) {
+	} else if v, ok := d.GetOkExists("encryption_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, encryptionConfigProp)) {
 		obj["encryptionConfig"] = encryptionConfigProp
 	}
 	hiveMetastoreConfigProp, err := expandDataprocMetastoreServiceHiveMetastoreConfig(d.Get("hive_metastore_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("hive_metastore_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, hiveMetastoreConfigProp)) {
+	} else if v, ok := d.GetOkExists("hive_metastore_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, hiveMetastoreConfigProp)) {
 		obj["hiveMetastoreConfig"] = hiveMetastoreConfigProp
 	}
 	metadataIntegrationProp, err := expandDataprocMetastoreServiceMetadataIntegration(d.Get("metadata_integration"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("metadata_integration"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, metadataIntegrationProp)) {
+	} else if v, ok := d.GetOkExists("metadata_integration"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, metadataIntegrationProp)) {
 		obj["metadataIntegration"] = metadataIntegrationProp
 	}
 	telemetryConfigProp, err := expandDataprocMetastoreServiceTelemetryConfig(d.Get("telemetry_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("telemetry_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, telemetryConfigProp)) {
+	} else if v, ok := d.GetOkExists("telemetry_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, telemetryConfigProp)) {
 		obj["telemetryConfig"] = telemetryConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/services/{{service_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/services/{{service_id}}")
 	if err != nil {
 		return err
 	}
@@ -685,17 +689,17 @@ func resourceDataprocMetastoreServiceUpdate(d *schema.ResourceData, meta interfa
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Service %q: %s", d.Id(), err)
@@ -715,21 +719,21 @@ func resourceDataprocMetastoreServiceUpdate(d *schema.ResourceData, meta interfa
 }
 
 func resourceDataprocMetastoreServiceDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Service: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/services/{{service_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/services/{{service_id}}")
 	if err != nil {
 		return err
 	}
@@ -738,13 +742,13 @@ func resourceDataprocMetastoreServiceDelete(d *schema.ResourceData, meta interfa
 	log.Printf("[DEBUG] Deleting Service %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Service")
+		return transport_tpg.HandleNotFoundError(err, d, "Service")
 	}
 
 	err = DataprocMetastoreOperationWaitTime(
@@ -760,7 +764,7 @@ func resourceDataprocMetastoreServiceDelete(d *schema.ResourceData, meta interfa
 }
 
 func resourceDataprocMetastoreServiceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/services/(?P<service_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<service_id>[^/]+)",
@@ -770,7 +774,7 @@ func resourceDataprocMetastoreServiceImport(d *schema.ResourceData, meta interfa
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{service_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{service_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -779,23 +783,23 @@ func resourceDataprocMetastoreServiceImport(d *schema.ResourceData, meta interfa
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenDataprocMetastoreServiceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceEndpointUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceEndpointUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServicePort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServicePort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -812,23 +816,23 @@ func flattenDataprocMetastoreServicePort(v interface{}, d *schema.ResourceData, 
 	return v // let terraform core handle it otherwise
 }
 
-func flattenDataprocMetastoreServiceState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceStateMessage(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceStateMessage(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceArtifactGcsUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceArtifactGcsUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceTier(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceTier(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceMaintenanceWindow(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceMaintenanceWindow(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -843,7 +847,7 @@ func flattenDataprocMetastoreServiceMaintenanceWindow(v interface{}, d *schema.R
 		flattenDataprocMetastoreServiceMaintenanceWindowDayOfWeek(original["dayOfWeek"], d, config)
 	return []interface{}{transformed}
 }
-func flattenDataprocMetastoreServiceMaintenanceWindowHourOfDay(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceMaintenanceWindowHourOfDay(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -860,11 +864,11 @@ func flattenDataprocMetastoreServiceMaintenanceWindowHourOfDay(v interface{}, d 
 	return v // let terraform core handle it otherwise
 }
 
-func flattenDataprocMetastoreServiceMaintenanceWindowDayOfWeek(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceMaintenanceWindowDayOfWeek(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceEncryptionConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceEncryptionConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -877,11 +881,11 @@ func flattenDataprocMetastoreServiceEncryptionConfig(v interface{}, d *schema.Re
 		flattenDataprocMetastoreServiceEncryptionConfigKmsKey(original["kmsKey"], d, config)
 	return []interface{}{transformed}
 }
-func flattenDataprocMetastoreServiceEncryptionConfigKmsKey(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceEncryptionConfigKmsKey(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceHiveMetastoreConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceHiveMetastoreConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -902,19 +906,19 @@ func flattenDataprocMetastoreServiceHiveMetastoreConfig(v interface{}, d *schema
 		flattenDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersions(original["auxiliaryVersions"], d, config)
 	return []interface{}{transformed}
 }
-func flattenDataprocMetastoreServiceHiveMetastoreConfigEndpointProtocol(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceHiveMetastoreConfigEndpointProtocol(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceHiveMetastoreConfigVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceHiveMetastoreConfigVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceHiveMetastoreConfigConfigOverrides(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceHiveMetastoreConfigConfigOverrides(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -931,7 +935,7 @@ func flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfig(v interfac
 		flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKrb5ConfigGcsUri(original["krb5ConfigGcsUri"], d, config)
 	return []interface{}{transformed}
 }
-func flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytab(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytab(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -944,19 +948,19 @@ func flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytab(v in
 		flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytabCloudSecret(original["cloudSecret"], d, config)
 	return []interface{}{transformed}
 }
-func flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytabCloudSecret(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytabCloudSecret(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigPrincipal(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigPrincipal(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKrb5ConfigGcsUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKrb5ConfigGcsUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersions(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersions(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -972,15 +976,15 @@ func flattenDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersions(v inter
 	}
 	return transformed
 }
-func flattenDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersionsVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersionsVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersionsConfigOverrides(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersionsConfigOverrides(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceNetworkConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceNetworkConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -993,7 +997,7 @@ func flattenDataprocMetastoreServiceNetworkConfig(v interface{}, d *schema.Resou
 		flattenDataprocMetastoreServiceNetworkConfigConsumers(original["consumers"], d, config)
 	return []interface{}{transformed}
 }
-func flattenDataprocMetastoreServiceNetworkConfigConsumers(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceNetworkConfigConsumers(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -1012,27 +1016,27 @@ func flattenDataprocMetastoreServiceNetworkConfigConsumers(v interface{}, d *sch
 	}
 	return transformed
 }
-func flattenDataprocMetastoreServiceNetworkConfigConsumersEndpointUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceNetworkConfigConsumersEndpointUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceNetworkConfigConsumersSubnetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceNetworkConfigConsumersSubnetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceDatabaseType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceDatabaseType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceReleaseChannel(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceReleaseChannel(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceUid(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceUid(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceMetadataIntegration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceMetadataIntegration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1045,7 +1049,7 @@ func flattenDataprocMetastoreServiceMetadataIntegration(v interface{}, d *schema
 		flattenDataprocMetastoreServiceMetadataIntegrationDataCatalogConfig(original["dataCatalogConfig"], d, config)
 	return []interface{}{transformed}
 }
-func flattenDataprocMetastoreServiceMetadataIntegrationDataCatalogConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceMetadataIntegrationDataCatalogConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1058,11 +1062,11 @@ func flattenDataprocMetastoreServiceMetadataIntegrationDataCatalogConfig(v inter
 		flattenDataprocMetastoreServiceMetadataIntegrationDataCatalogConfigEnabled(original["enabled"], d, config)
 	return []interface{}{transformed}
 }
-func flattenDataprocMetastoreServiceMetadataIntegrationDataCatalogConfigEnabled(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceMetadataIntegrationDataCatalogConfigEnabled(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataprocMetastoreServiceTelemetryConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceTelemetryConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1075,11 +1079,11 @@ func flattenDataprocMetastoreServiceTelemetryConfig(v interface{}, d *schema.Res
 		flattenDataprocMetastoreServiceTelemetryConfigLogFormat(original["logFormat"], d, config)
 	return []interface{}{transformed}
 }
-func flattenDataprocMetastoreServiceTelemetryConfigLogFormat(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataprocMetastoreServiceTelemetryConfigLogFormat(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandDataprocMetastoreServiceLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandDataprocMetastoreServiceLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1090,19 +1094,19 @@ func expandDataprocMetastoreServiceLabels(v interface{}, d TerraformResourceData
 	return m, nil
 }
 
-func expandDataprocMetastoreServiceNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServicePort(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServicePort(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceTier(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceTier(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceMaintenanceWindow(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceMaintenanceWindow(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1114,29 +1118,29 @@ func expandDataprocMetastoreServiceMaintenanceWindow(v interface{}, d TerraformR
 	transformedHourOfDay, err := expandDataprocMetastoreServiceMaintenanceWindowHourOfDay(original["hour_of_day"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedHourOfDay); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedHourOfDay); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["hourOfDay"] = transformedHourOfDay
 	}
 
 	transformedDayOfWeek, err := expandDataprocMetastoreServiceMaintenanceWindowDayOfWeek(original["day_of_week"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDayOfWeek); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDayOfWeek); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["dayOfWeek"] = transformedDayOfWeek
 	}
 
 	return transformed, nil
 }
 
-func expandDataprocMetastoreServiceMaintenanceWindowHourOfDay(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceMaintenanceWindowHourOfDay(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceMaintenanceWindowDayOfWeek(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceMaintenanceWindowDayOfWeek(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceEncryptionConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceEncryptionConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1148,18 +1152,18 @@ func expandDataprocMetastoreServiceEncryptionConfig(v interface{}, d TerraformRe
 	transformedKmsKey, err := expandDataprocMetastoreServiceEncryptionConfigKmsKey(original["kms_key"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKmsKey); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKmsKey); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kmsKey"] = transformedKmsKey
 	}
 
 	return transformed, nil
 }
 
-func expandDataprocMetastoreServiceEncryptionConfigKmsKey(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceEncryptionConfigKmsKey(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceHiveMetastoreConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceHiveMetastoreConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1171,50 +1175,50 @@ func expandDataprocMetastoreServiceHiveMetastoreConfig(v interface{}, d Terrafor
 	transformedEndpointProtocol, err := expandDataprocMetastoreServiceHiveMetastoreConfigEndpointProtocol(original["endpoint_protocol"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEndpointProtocol); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEndpointProtocol); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["endpointProtocol"] = transformedEndpointProtocol
 	}
 
 	transformedVersion, err := expandDataprocMetastoreServiceHiveMetastoreConfigVersion(original["version"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["version"] = transformedVersion
 	}
 
 	transformedConfigOverrides, err := expandDataprocMetastoreServiceHiveMetastoreConfigConfigOverrides(original["config_overrides"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedConfigOverrides); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedConfigOverrides); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["configOverrides"] = transformedConfigOverrides
 	}
 
 	transformedKerberosConfig, err := expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfig(original["kerberos_config"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKerberosConfig); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKerberosConfig); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kerberosConfig"] = transformedKerberosConfig
 	}
 
 	transformedAuxiliaryVersions, err := expandDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersions(original["auxiliary_versions"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAuxiliaryVersions); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAuxiliaryVersions); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["auxiliaryVersions"] = transformedAuxiliaryVersions
 	}
 
 	return transformed, nil
 }
 
-func expandDataprocMetastoreServiceHiveMetastoreConfigEndpointProtocol(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceHiveMetastoreConfigEndpointProtocol(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceHiveMetastoreConfigVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceHiveMetastoreConfigVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceHiveMetastoreConfigConfigOverrides(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandDataprocMetastoreServiceHiveMetastoreConfigConfigOverrides(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1225,7 +1229,7 @@ func expandDataprocMetastoreServiceHiveMetastoreConfigConfigOverrides(v interfac
 	return m, nil
 }
 
-func expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1237,28 +1241,28 @@ func expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfig(v interface
 	transformedKeytab, err := expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytab(original["keytab"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKeytab); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKeytab); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["keytab"] = transformedKeytab
 	}
 
 	transformedPrincipal, err := expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigPrincipal(original["principal"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPrincipal); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPrincipal); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["principal"] = transformedPrincipal
 	}
 
 	transformedKrb5ConfigGcsUri, err := expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKrb5ConfigGcsUri(original["krb5_config_gcs_uri"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKrb5ConfigGcsUri); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKrb5ConfigGcsUri); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["krb5ConfigGcsUri"] = transformedKrb5ConfigGcsUri
 	}
 
 	return transformed, nil
 }
 
-func expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytab(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytab(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1270,26 +1274,26 @@ func expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytab(v int
 	transformedCloudSecret, err := expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytabCloudSecret(original["cloud_secret"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCloudSecret); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCloudSecret); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["cloudSecret"] = transformedCloudSecret
 	}
 
 	return transformed, nil
 }
 
-func expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytabCloudSecret(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKeytabCloudSecret(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigPrincipal(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigPrincipal(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKrb5ConfigGcsUri(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceHiveMetastoreConfigKerberosConfigKrb5ConfigGcsUri(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersions(v interface{}, d TerraformResourceData, config *Config) (map[string]interface{}, error) {
+func expandDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersions(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]interface{}, error) {
 	if v == nil {
 		return map[string]interface{}{}, nil
 	}
@@ -1301,14 +1305,14 @@ func expandDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersions(v interf
 		transformedVersion, err := expandDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersionsVersion(original["version"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["version"] = transformedVersion
 		}
 
 		transformedConfigOverrides, err := expandDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersionsConfigOverrides(original["config_overrides"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedConfigOverrides); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedConfigOverrides); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["configOverrides"] = transformedConfigOverrides
 		}
 
@@ -1321,11 +1325,11 @@ func expandDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersions(v interf
 	return m, nil
 }
 
-func expandDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersionsVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersionsVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersionsConfigOverrides(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersionsConfigOverrides(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1336,7 +1340,7 @@ func expandDataprocMetastoreServiceHiveMetastoreConfigAuxiliaryVersionsConfigOve
 	return m, nil
 }
 
-func expandDataprocMetastoreServiceNetworkConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceNetworkConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1348,14 +1352,14 @@ func expandDataprocMetastoreServiceNetworkConfig(v interface{}, d TerraformResou
 	transformedConsumers, err := expandDataprocMetastoreServiceNetworkConfigConsumers(original["consumers"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedConsumers); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedConsumers); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["consumers"] = transformedConsumers
 	}
 
 	return transformed, nil
 }
 
-func expandDataprocMetastoreServiceNetworkConfigConsumers(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceNetworkConfigConsumers(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -1368,14 +1372,14 @@ func expandDataprocMetastoreServiceNetworkConfigConsumers(v interface{}, d Terra
 		transformedEndpointUri, err := expandDataprocMetastoreServiceNetworkConfigConsumersEndpointUri(original["endpoint_uri"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedEndpointUri); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedEndpointUri); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["endpointUri"] = transformedEndpointUri
 		}
 
 		transformedSubnetwork, err := expandDataprocMetastoreServiceNetworkConfigConsumersSubnetwork(original["subnetwork"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSubnetwork); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSubnetwork); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["subnetwork"] = transformedSubnetwork
 		}
 
@@ -1384,23 +1388,23 @@ func expandDataprocMetastoreServiceNetworkConfigConsumers(v interface{}, d Terra
 	return req, nil
 }
 
-func expandDataprocMetastoreServiceNetworkConfigConsumersEndpointUri(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceNetworkConfigConsumersEndpointUri(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceNetworkConfigConsumersSubnetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceNetworkConfigConsumersSubnetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceDatabaseType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceDatabaseType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceReleaseChannel(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceReleaseChannel(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceMetadataIntegration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceMetadataIntegration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1412,14 +1416,14 @@ func expandDataprocMetastoreServiceMetadataIntegration(v interface{}, d Terrafor
 	transformedDataCatalogConfig, err := expandDataprocMetastoreServiceMetadataIntegrationDataCatalogConfig(original["data_catalog_config"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDataCatalogConfig); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDataCatalogConfig); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["dataCatalogConfig"] = transformedDataCatalogConfig
 	}
 
 	return transformed, nil
 }
 
-func expandDataprocMetastoreServiceMetadataIntegrationDataCatalogConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceMetadataIntegrationDataCatalogConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1431,18 +1435,18 @@ func expandDataprocMetastoreServiceMetadataIntegrationDataCatalogConfig(v interf
 	transformedEnabled, err := expandDataprocMetastoreServiceMetadataIntegrationDataCatalogConfigEnabled(original["enabled"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedEnabled); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedEnabled); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["enabled"] = transformedEnabled
 	}
 
 	return transformed, nil
 }
 
-func expandDataprocMetastoreServiceMetadataIntegrationDataCatalogConfigEnabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceMetadataIntegrationDataCatalogConfigEnabled(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataprocMetastoreServiceTelemetryConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceTelemetryConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1454,13 +1458,13 @@ func expandDataprocMetastoreServiceTelemetryConfig(v interface{}, d TerraformRes
 	transformedLogFormat, err := expandDataprocMetastoreServiceTelemetryConfigLogFormat(original["log_format"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedLogFormat); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedLogFormat); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["logFormat"] = transformedLogFormat
 	}
 
 	return transformed, nil
 }
 
-func expandDataprocMetastoreServiceTelemetryConfigLogFormat(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataprocMetastoreServiceTelemetryConfigLogFormat(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

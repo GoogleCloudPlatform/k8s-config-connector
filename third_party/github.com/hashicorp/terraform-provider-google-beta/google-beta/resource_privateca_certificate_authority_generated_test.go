@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccPrivatecaCertificateAuthority_privatecaCertificateAuthorityBasicExample(t *testing.T) {
@@ -34,7 +38,7 @@ func TestAccPrivatecaCertificateAuthority_privatecaCertificateAuthorityBasicExam
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPrivatecaCertificateAuthorityDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -105,7 +109,7 @@ resource "google_privateca_certificate_authority" "default" {
 }
 
 func TestAccPrivatecaCertificateAuthority_privatecaCertificateAuthoritySubordinateExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -116,7 +120,7 @@ func TestAccPrivatecaCertificateAuthority_privatecaCertificateAuthoritySubordina
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPrivatecaCertificateAuthorityDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -244,12 +248,12 @@ func testAccCheckPrivatecaCertificateAuthorityDestroyProducer(t *testing.T) func
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{PrivatecaBasePath}}projects/{{project}}/locations/{{location}}/caPools/{{pool}}/certificateAuthorities/{{certificate_authority_id}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{PrivatecaBasePath}}projects/{{project}}/locations/{{location}}/caPools/{{pool}}/certificateAuthorities/{{certificate_authority_id}}")
 			if err != nil {
 				return err
 			}
 
-			res, err := SendRequest(config, "GET", "", url, config.UserAgent, nil)
+			res, err := transport_tpg.SendRequest(config, "GET", "", url, config.UserAgent, nil)
 			if err != nil {
 				return nil
 			}

@@ -6,20 +6,22 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 func TestAccBigtableTable_basic(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	tableName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableTableDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -37,14 +39,14 @@ func TestAccBigtableTable_basic(t *testing.T) {
 
 func TestAccBigtableTable_splitKeys(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	tableName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableTableDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -63,7 +65,7 @@ func TestAccBigtableTable_splitKeys(t *testing.T) {
 
 func TestAccBigtableTable_family(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -71,7 +73,7 @@ func TestAccBigtableTable_family(t *testing.T) {
 	family := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableTableDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -89,7 +91,7 @@ func TestAccBigtableTable_family(t *testing.T) {
 
 func TestAccBigtableTable_deletion_protection_protected(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -97,7 +99,7 @@ func TestAccBigtableTable_deletion_protection_protected(t *testing.T) {
 	family := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableTableDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -149,7 +151,7 @@ func TestAccBigtableTable_deletion_protection_protected(t *testing.T) {
 
 func TestAccBigtableTable_deletion_protection_unprotected(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -157,7 +159,7 @@ func TestAccBigtableTable_deletion_protection_unprotected(t *testing.T) {
 	family := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableTableDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -208,7 +210,7 @@ func TestAccBigtableTable_deletion_protection_unprotected(t *testing.T) {
 
 func TestAccBigtableTable_familyMany(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -216,7 +218,7 @@ func TestAccBigtableTable_familyMany(t *testing.T) {
 	family := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableTableDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -234,7 +236,7 @@ func TestAccBigtableTable_familyMany(t *testing.T) {
 
 func TestAccBigtableTable_familyUpdate(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
@@ -242,7 +244,7 @@ func TestAccBigtableTable_familyUpdate(t *testing.T) {
 	family := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableTableDestroyProducer(t),
 		Steps: []resource.TestStep{

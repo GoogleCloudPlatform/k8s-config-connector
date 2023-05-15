@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceApigeeSyncAuthorization() *schema.Resource {
@@ -73,8 +76,8 @@ Used internally during updates.`,
 }
 
 func resourceApigeeSyncAuthorizationCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -89,11 +92,11 @@ func resourceApigeeSyncAuthorizationCreate(d *schema.ResourceData, meta interfac
 	etagProp, err := expandApigeeSyncAuthorizationEtag(d.Get("etag"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("etag"); !isEmptyValue(reflect.ValueOf(etagProp)) && (ok || !reflect.DeepEqual(v, etagProp)) {
+	} else if v, ok := d.GetOkExists("etag"); !tpgresource.IsEmptyValue(reflect.ValueOf(etagProp)) && (ok || !reflect.DeepEqual(v, etagProp)) {
 		obj["etag"] = etagProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}organizations/{{name}}:setSyncAuthorization")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}organizations/{{name}}:setSyncAuthorization")
 	if err != nil {
 		return err
 	}
@@ -102,17 +105,17 @@ func resourceApigeeSyncAuthorizationCreate(d *schema.ResourceData, meta interfac
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating SyncAuthorization: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "organizations/{{name}}/syncAuthorization")
+	id, err := tpgresource.ReplaceVars(d, config, "organizations/{{name}}/syncAuthorization")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -124,13 +127,13 @@ func resourceApigeeSyncAuthorizationCreate(d *schema.ResourceData, meta interfac
 }
 
 func resourceApigeeSyncAuthorizationRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}organizations/{{name}}:getSyncAuthorization")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}organizations/{{name}}:getSyncAuthorization")
 	if err != nil {
 		return err
 	}
@@ -138,13 +141,13 @@ func resourceApigeeSyncAuthorizationRead(d *schema.ResourceData, meta interface{
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "POST", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "POST", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ApigeeSyncAuthorization %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ApigeeSyncAuthorization %q", d.Id()))
 	}
 
 	if err := d.Set("identities", flattenApigeeSyncAuthorizationIdentities(res["identities"], d, config)); err != nil {
@@ -158,8 +161,8 @@ func resourceApigeeSyncAuthorizationRead(d *schema.ResourceData, meta interface{
 }
 
 func resourceApigeeSyncAuthorizationUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -176,11 +179,11 @@ func resourceApigeeSyncAuthorizationUpdate(d *schema.ResourceData, meta interfac
 	etagProp, err := expandApigeeSyncAuthorizationEtag(d.Get("etag"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("etag"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, etagProp)) {
+	} else if v, ok := d.GetOkExists("etag"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, etagProp)) {
 		obj["etag"] = etagProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{ApigeeBasePath}}organizations/{{name}}:setSyncAuthorization")
+	url, err := tpgresource.ReplaceVars(d, config, "{{ApigeeBasePath}}organizations/{{name}}:setSyncAuthorization")
 	if err != nil {
 		return err
 	}
@@ -188,11 +191,11 @@ func resourceApigeeSyncAuthorizationUpdate(d *schema.ResourceData, meta interfac
 	log.Printf("[DEBUG] Updating SyncAuthorization %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating SyncAuthorization %q: %s", d.Id(), err)
@@ -213,7 +216,7 @@ func resourceApigeeSyncAuthorizationDelete(d *schema.ResourceData, meta interfac
 }
 
 func resourceApigeeSyncAuthorizationImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"organizations/(?P<name>[^/]+)/syncAuthorization",
 		"(?P<name>[^/]+)",
@@ -222,7 +225,7 @@ func resourceApigeeSyncAuthorizationImport(d *schema.ResourceData, meta interfac
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "organizations/{{name}}/syncAuthorization")
+	id, err := tpgresource.ReplaceVars(d, config, "organizations/{{name}}/syncAuthorization")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -231,18 +234,18 @@ func resourceApigeeSyncAuthorizationImport(d *schema.ResourceData, meta interfac
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenApigeeSyncAuthorizationIdentities(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeSyncAuthorizationIdentities(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenApigeeSyncAuthorizationEtag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenApigeeSyncAuthorizationEtag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandApigeeSyncAuthorizationIdentities(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeSyncAuthorizationIdentities(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandApigeeSyncAuthorizationEtag(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandApigeeSyncAuthorizationEtag(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

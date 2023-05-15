@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceTagsTagBinding() *schema.Resource {
@@ -63,8 +66,8 @@ func ResourceTagsTagBinding() *schema.Resource {
 }
 
 func resourceTagsTagBindingCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -73,24 +76,24 @@ func resourceTagsTagBindingCreate(d *schema.ResourceData, meta interface{}) erro
 	parentProp, err := expandNestedTagsTagBindingParent(d.Get("parent"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("parent"); !isEmptyValue(reflect.ValueOf(parentProp)) && (ok || !reflect.DeepEqual(v, parentProp)) {
+	} else if v, ok := d.GetOkExists("parent"); !tpgresource.IsEmptyValue(reflect.ValueOf(parentProp)) && (ok || !reflect.DeepEqual(v, parentProp)) {
 		obj["parent"] = parentProp
 	}
 	tagValueProp, err := expandNestedTagsTagBindingTagValue(d.Get("tag_value"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("tag_value"); !isEmptyValue(reflect.ValueOf(tagValueProp)) && (ok || !reflect.DeepEqual(v, tagValueProp)) {
+	} else if v, ok := d.GetOkExists("tag_value"); !tpgresource.IsEmptyValue(reflect.ValueOf(tagValueProp)) && (ok || !reflect.DeepEqual(v, tagValueProp)) {
 		obj["tagValue"] = tagValueProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "tagBindings/{{parent}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "tagBindings/{{parent}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{TagsBasePath}}tagBindings")
+	url, err := tpgresource.ReplaceVars(d, config, "{{TagsBasePath}}tagBindings")
 	if err != nil {
 		return err
 	}
@@ -99,17 +102,17 @@ func resourceTagsTagBindingCreate(d *schema.ResourceData, meta interface{}) erro
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating TagBinding: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "tagBindings/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "tagBindings/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -143,7 +146,7 @@ func resourceTagsTagBindingCreate(d *schema.ResourceData, meta interface{}) erro
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "tagBindings/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "tagBindings/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -155,13 +158,13 @@ func resourceTagsTagBindingCreate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceTagsTagBindingRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{TagsBasePath}}tagBindings/?parent={{parent}}&pageSize=300")
+	url, err := tpgresource.ReplaceVars(d, config, "{{TagsBasePath}}tagBindings/?parent={{parent}}&pageSize=300")
 	if err != nil {
 		return err
 	}
@@ -169,13 +172,13 @@ func resourceTagsTagBindingRead(d *schema.ResourceData, meta interface{}) error 
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("TagsTagBinding %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("TagsTagBinding %q", d.Id()))
 	}
 
 	res, err = flattenNestedTagsTagBinding(d, meta, res)
@@ -204,22 +207,22 @@ func resourceTagsTagBindingRead(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceTagsTagBindingDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	lockName, err := ReplaceVars(d, config, "tagBindings/{{parent}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "tagBindings/{{parent}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{TagsBasePath}}tagBindings/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{TagsBasePath}}tagBindings/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -228,13 +231,13 @@ func resourceTagsTagBindingDelete(d *schema.ResourceData, meta interface{}) erro
 	log.Printf("[DEBUG] Deleting TagBinding %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "TagBinding")
+		return transport_tpg.HandleNotFoundError(err, d, "TagBinding")
 	}
 
 	err = TagsOperationWaitTime(
@@ -250,7 +253,7 @@ func resourceTagsTagBindingDelete(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceTagsTagBindingImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{
@@ -266,7 +269,7 @@ func resourceTagsTagBindingImport(d *schema.ResourceData, meta interface{}) ([]*
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenNestedTagsTagBindingName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedTagsTagBindingName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -274,19 +277,19 @@ func flattenNestedTagsTagBindingName(v interface{}, d *schema.ResourceData, conf
 	return strings.Join(parts[len(parts)-3:], "/")
 }
 
-func flattenNestedTagsTagBindingParent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedTagsTagBindingParent(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenNestedTagsTagBindingTagValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenNestedTagsTagBindingTagValue(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandNestedTagsTagBindingParent(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedTagsTagBindingParent(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandNestedTagsTagBindingTagValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandNestedTagsTagBindingTagValue(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
@@ -318,7 +321,7 @@ func flattenNestedTagsTagBinding(d *schema.ResourceData, meta interface{}, res m
 
 func resourceTagsTagBindingFindNestedObjectInList(d *schema.ResourceData, meta interface{}, items []interface{}) (index int, item map[string]interface{}, err error) {
 	expectedName := d.Get("name")
-	expectedFlattenedName := flattenNestedTagsTagBindingName(expectedName, d, meta.(*Config))
+	expectedFlattenedName := flattenNestedTagsTagBindingName(expectedName, d, meta.(*transport_tpg.Config))
 
 	// Search list for this resource.
 	for idx, itemRaw := range items {
@@ -327,9 +330,9 @@ func resourceTagsTagBindingFindNestedObjectInList(d *schema.ResourceData, meta i
 		}
 		item := itemRaw.(map[string]interface{})
 
-		itemName := flattenNestedTagsTagBindingName(item["name"], d, meta.(*Config))
-		// isEmptyValue check so that if one is nil and the other is "", that's considered a match
-		if !(isEmptyValue(reflect.ValueOf(itemName)) && isEmptyValue(reflect.ValueOf(expectedFlattenedName))) && !reflect.DeepEqual(itemName, expectedFlattenedName) {
+		itemName := flattenNestedTagsTagBindingName(item["name"], d, meta.(*transport_tpg.Config))
+		// IsEmptyValue check so that if one is nil and the other is "", that's considered a match
+		if !(tpgresource.IsEmptyValue(reflect.ValueOf(itemName)) && tpgresource.IsEmptyValue(reflect.ValueOf(expectedFlattenedName))) && !reflect.DeepEqual(itemName, expectedFlattenedName) {
 			log.Printf("[DEBUG] Skipping item with name= %#v, looking for %#v)", itemName, expectedFlattenedName)
 			continue
 		}

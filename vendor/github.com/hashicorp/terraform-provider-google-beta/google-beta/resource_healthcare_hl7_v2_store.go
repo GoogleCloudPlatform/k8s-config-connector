@@ -25,6 +25,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/structure"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceHealthcareHl7V2Store() *schema.Resource {
@@ -163,7 +167,7 @@ store if schematized parsing is desired.`,
 						"segment_terminator": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateBase64String,
+							ValidateFunc: verify.ValidateBase64String,
 							Description: `Byte(s) to be used as the segment terminator. If this is unset, '\r' will be used as segment terminator.
 
 A base64-encoded string.`,
@@ -173,7 +177,7 @@ A base64-encoded string.`,
 							Type:         schema.TypeString,
 							Optional:     true,
 							ForceNew:     true,
-							ValidateFunc: validateEnum([]string{"V1", "V2", "V3", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"V1", "V2", "V3", ""}),
 							Description:  `The version of the unschematized parser to be used when a custom 'schema' is not set. Default value: "V1" Possible values: ["V1", "V2", "V3"]`,
 							Default:      "V1",
 						},
@@ -191,8 +195,8 @@ A base64-encoded string.`,
 }
 
 func resourceHealthcareHl7V2StoreCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -201,35 +205,35 @@ func resourceHealthcareHl7V2StoreCreate(d *schema.ResourceData, meta interface{}
 	nameProp, err := expandHealthcareHl7V2StoreName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	parserConfigProp, err := expandHealthcareHl7V2StoreParserConfig(d.Get("parser_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("parser_config"); !isEmptyValue(reflect.ValueOf(parserConfigProp)) && (ok || !reflect.DeepEqual(v, parserConfigProp)) {
+	} else if v, ok := d.GetOkExists("parser_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(parserConfigProp)) && (ok || !reflect.DeepEqual(v, parserConfigProp)) {
 		obj["parserConfig"] = parserConfigProp
 	}
 	labelsProp, err := expandHealthcareHl7V2StoreLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	notificationConfigsProp, err := expandHealthcareHl7V2StoreNotificationConfigs(d.Get("notification_configs"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("notification_configs"); !isEmptyValue(reflect.ValueOf(notificationConfigsProp)) && (ok || !reflect.DeepEqual(v, notificationConfigsProp)) {
+	} else if v, ok := d.GetOkExists("notification_configs"); !tpgresource.IsEmptyValue(reflect.ValueOf(notificationConfigsProp)) && (ok || !reflect.DeepEqual(v, notificationConfigsProp)) {
 		obj["notificationConfigs"] = notificationConfigsProp
 	}
 	notificationConfigProp, err := expandHealthcareHl7V2StoreNotificationConfig(d.Get("notification_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("notification_config"); !isEmptyValue(reflect.ValueOf(notificationConfigProp)) && (ok || !reflect.DeepEqual(v, notificationConfigProp)) {
+	} else if v, ok := d.GetOkExists("notification_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(notificationConfigProp)) && (ok || !reflect.DeepEqual(v, notificationConfigProp)) {
 		obj["notificationConfig"] = notificationConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/hl7V2Stores?hl7V2StoreId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/hl7V2Stores?hl7V2StoreId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -238,17 +242,17 @@ func resourceHealthcareHl7V2StoreCreate(d *schema.ResourceData, meta interface{}
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Hl7V2Store: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{dataset}}/hl7V2Stores/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{dataset}}/hl7V2Stores/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -260,13 +264,13 @@ func resourceHealthcareHl7V2StoreCreate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceHealthcareHl7V2StoreRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/hl7V2Stores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/hl7V2Stores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -274,13 +278,13 @@ func resourceHealthcareHl7V2StoreRead(d *schema.ResourceData, meta interface{}) 
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("HealthcareHl7V2Store %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("HealthcareHl7V2Store %q", d.Id()))
 	}
 
 	res, err = resourceHealthcareHl7V2StoreDecoder(d, meta, res)
@@ -315,8 +319,8 @@ func resourceHealthcareHl7V2StoreRead(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceHealthcareHl7V2StoreUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -327,29 +331,29 @@ func resourceHealthcareHl7V2StoreUpdate(d *schema.ResourceData, meta interface{}
 	parserConfigProp, err := expandHealthcareHl7V2StoreParserConfig(d.Get("parser_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("parser_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, parserConfigProp)) {
+	} else if v, ok := d.GetOkExists("parser_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, parserConfigProp)) {
 		obj["parserConfig"] = parserConfigProp
 	}
 	labelsProp, err := expandHealthcareHl7V2StoreLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	notificationConfigsProp, err := expandHealthcareHl7V2StoreNotificationConfigs(d.Get("notification_configs"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("notification_configs"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationConfigsProp)) {
+	} else if v, ok := d.GetOkExists("notification_configs"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationConfigsProp)) {
 		obj["notificationConfigs"] = notificationConfigsProp
 	}
 	notificationConfigProp, err := expandHealthcareHl7V2StoreNotificationConfig(d.Get("notification_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("notification_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationConfigProp)) {
+	} else if v, ok := d.GetOkExists("notification_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationConfigProp)) {
 		obj["notificationConfig"] = notificationConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/hl7V2Stores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/hl7V2Stores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -376,17 +380,17 @@ func resourceHealthcareHl7V2StoreUpdate(d *schema.ResourceData, meta interface{}
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Hl7V2Store %q: %s", d.Id(), err)
@@ -398,15 +402,15 @@ func resourceHealthcareHl7V2StoreUpdate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceHealthcareHl7V2StoreDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/hl7V2Stores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/hl7V2Stores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -415,13 +419,13 @@ func resourceHealthcareHl7V2StoreDelete(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Deleting Hl7V2Store %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Hl7V2Store")
+		return transport_tpg.HandleNotFoundError(err, d, "Hl7V2Store")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Hl7V2Store %q: %#v", d.Id(), res)
@@ -430,7 +434,7 @@ func resourceHealthcareHl7V2StoreDelete(d *schema.ResourceData, meta interface{}
 
 func resourceHealthcareHl7V2StoreImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	hl7v2StoreId, err := ParseHealthcareHl7V2StoreId(d.Id(), config)
 	if err != nil {
@@ -447,11 +451,11 @@ func resourceHealthcareHl7V2StoreImport(d *schema.ResourceData, meta interface{}
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenHealthcareHl7V2StoreName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareHl7V2StoreName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenHealthcareHl7V2StoreParserConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareHl7V2StoreParserConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -470,15 +474,15 @@ func flattenHealthcareHl7V2StoreParserConfig(v interface{}, d *schema.ResourceDa
 		flattenHealthcareHl7V2StoreParserConfigVersion(original["version"], d, config)
 	return []interface{}{transformed}
 }
-func flattenHealthcareHl7V2StoreParserConfigAllowNullHeader(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareHl7V2StoreParserConfigAllowNullHeader(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenHealthcareHl7V2StoreParserConfigSegmentTerminator(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareHl7V2StoreParserConfigSegmentTerminator(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenHealthcareHl7V2StoreParserConfigSchema(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareHl7V2StoreParserConfigSchema(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -490,15 +494,15 @@ func flattenHealthcareHl7V2StoreParserConfigSchema(v interface{}, d *schema.Reso
 	return string(b)
 }
 
-func flattenHealthcareHl7V2StoreParserConfigVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareHl7V2StoreParserConfigVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenHealthcareHl7V2StoreLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareHl7V2StoreLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenHealthcareHl7V2StoreNotificationConfigs(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareHl7V2StoreNotificationConfigs(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -517,15 +521,15 @@ func flattenHealthcareHl7V2StoreNotificationConfigs(v interface{}, d *schema.Res
 	}
 	return transformed
 }
-func flattenHealthcareHl7V2StoreNotificationConfigsPubsubTopic(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareHl7V2StoreNotificationConfigsPubsubTopic(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenHealthcareHl7V2StoreNotificationConfigsFilter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareHl7V2StoreNotificationConfigsFilter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenHealthcareHl7V2StoreNotificationConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareHl7V2StoreNotificationConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -538,15 +542,15 @@ func flattenHealthcareHl7V2StoreNotificationConfig(v interface{}, d *schema.Reso
 		flattenHealthcareHl7V2StoreNotificationConfigPubsubTopic(original["pubsubTopic"], d, config)
 	return []interface{}{transformed}
 }
-func flattenHealthcareHl7V2StoreNotificationConfigPubsubTopic(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenHealthcareHl7V2StoreNotificationConfigPubsubTopic(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandHealthcareHl7V2StoreName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareHl7V2StoreName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandHealthcareHl7V2StoreParserConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareHl7V2StoreParserConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -558,43 +562,43 @@ func expandHealthcareHl7V2StoreParserConfig(v interface{}, d TerraformResourceDa
 	transformedAllowNullHeader, err := expandHealthcareHl7V2StoreParserConfigAllowNullHeader(original["allow_null_header"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAllowNullHeader); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAllowNullHeader); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["allowNullHeader"] = transformedAllowNullHeader
 	}
 
 	transformedSegmentTerminator, err := expandHealthcareHl7V2StoreParserConfigSegmentTerminator(original["segment_terminator"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSegmentTerminator); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSegmentTerminator); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["segmentTerminator"] = transformedSegmentTerminator
 	}
 
 	transformedSchema, err := expandHealthcareHl7V2StoreParserConfigSchema(original["schema"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSchema); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSchema); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["schema"] = transformedSchema
 	}
 
 	transformedVersion, err := expandHealthcareHl7V2StoreParserConfigVersion(original["version"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedVersion); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["version"] = transformedVersion
 	}
 
 	return transformed, nil
 }
 
-func expandHealthcareHl7V2StoreParserConfigAllowNullHeader(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareHl7V2StoreParserConfigAllowNullHeader(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandHealthcareHl7V2StoreParserConfigSegmentTerminator(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareHl7V2StoreParserConfigSegmentTerminator(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandHealthcareHl7V2StoreParserConfigSchema(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareHl7V2StoreParserConfigSchema(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	b := []byte(v.(string))
 	if len(b) == 0 {
 		return nil, nil
@@ -606,11 +610,11 @@ func expandHealthcareHl7V2StoreParserConfigSchema(v interface{}, d TerraformReso
 	return m, nil
 }
 
-func expandHealthcareHl7V2StoreParserConfigVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareHl7V2StoreParserConfigVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandHealthcareHl7V2StoreLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandHealthcareHl7V2StoreLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -621,7 +625,7 @@ func expandHealthcareHl7V2StoreLabels(v interface{}, d TerraformResourceData, co
 	return m, nil
 }
 
-func expandHealthcareHl7V2StoreNotificationConfigs(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareHl7V2StoreNotificationConfigs(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -634,14 +638,14 @@ func expandHealthcareHl7V2StoreNotificationConfigs(v interface{}, d TerraformRes
 		transformedPubsubTopic, err := expandHealthcareHl7V2StoreNotificationConfigsPubsubTopic(original["pubsub_topic"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedPubsubTopic); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedPubsubTopic); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["pubsubTopic"] = transformedPubsubTopic
 		}
 
 		transformedFilter, err := expandHealthcareHl7V2StoreNotificationConfigsFilter(original["filter"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedFilter); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedFilter); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["filter"] = transformedFilter
 		}
 
@@ -650,15 +654,15 @@ func expandHealthcareHl7V2StoreNotificationConfigs(v interface{}, d TerraformRes
 	return req, nil
 }
 
-func expandHealthcareHl7V2StoreNotificationConfigsPubsubTopic(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareHl7V2StoreNotificationConfigsPubsubTopic(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandHealthcareHl7V2StoreNotificationConfigsFilter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareHl7V2StoreNotificationConfigsFilter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandHealthcareHl7V2StoreNotificationConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareHl7V2StoreNotificationConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -670,14 +674,14 @@ func expandHealthcareHl7V2StoreNotificationConfig(v interface{}, d TerraformReso
 	transformedPubsubTopic, err := expandHealthcareHl7V2StoreNotificationConfigPubsubTopic(original["pubsub_topic"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedPubsubTopic); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedPubsubTopic); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["pubsubTopic"] = transformedPubsubTopic
 	}
 
 	return transformed, nil
 }
 
-func expandHealthcareHl7V2StoreNotificationConfigPubsubTopic(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandHealthcareHl7V2StoreNotificationConfigPubsubTopic(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

@@ -4,15 +4,18 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func DataSourceGoogleProject() *schema.Resource {
 	// Generate datasource schema from resource
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceGoogleProject().Schema)
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceGoogleProject().Schema)
 
-	addOptionalFieldsToSchema(dsSchema, "project_id")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "project_id")
 
-	dsSchema["project_id"].ValidateFunc = validateDSProjectID()
+	dsSchema["project_id"].ValidateFunc = verify.ValidateDSProjectID()
 	return &schema.Resource{
 		Read:   datasourceGoogleProjectRead,
 		Schema: dsSchema,
@@ -20,13 +23,13 @@ func DataSourceGoogleProject() *schema.Resource {
 }
 
 func datasourceGoogleProjectRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	if v, ok := d.GetOk("project_id"); ok {
 		project := v.(string)
 		d.SetId(fmt.Sprintf("projects/%s", project))
 	} else {
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return fmt.Errorf("no project value set. `project_id` must be set at the resource level, or a default `project` value must be specified on the provider")
 		}

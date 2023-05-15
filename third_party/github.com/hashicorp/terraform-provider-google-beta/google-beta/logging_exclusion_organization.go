@@ -5,6 +5,8 @@ import (
 
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"google.golang.org/api/logging/v2"
 )
 
@@ -20,13 +22,13 @@ type OrganizationLoggingExclusionUpdater struct {
 	resourceType string
 	resourceId   string
 	userAgent    string
-	Config       *Config
+	Config       *transport_tpg.Config
 }
 
-func NewOrganizationLoggingExclusionUpdater(d *schema.ResourceData, config *Config) (ResourceLoggingExclusionUpdater, error) {
+func NewOrganizationLoggingExclusionUpdater(d *schema.ResourceData, config *transport_tpg.Config) (ResourceLoggingExclusionUpdater, error) {
 	organization := d.Get("org_id").(string)
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +41,7 @@ func NewOrganizationLoggingExclusionUpdater(d *schema.ResourceData, config *Conf
 	}, nil
 }
 
-func OrganizationLoggingExclusionIdParseFunc(d *schema.ResourceData, _ *Config) error {
+func OrganizationLoggingExclusionIdParseFunc(d *schema.ResourceData, _ *transport_tpg.Config) error {
 	loggingExclusionId, err := parseLoggingExclusionId(d.Id())
 	if err != nil {
 		return err

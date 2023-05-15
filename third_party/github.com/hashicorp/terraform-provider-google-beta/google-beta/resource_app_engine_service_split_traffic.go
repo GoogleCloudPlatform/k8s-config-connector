@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceAppEngineServiceSplitTraffic() *schema.Resource {
@@ -63,7 +67,7 @@ func ResourceAppEngineServiceSplitTraffic() *schema.Resource {
 						"shard_by": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateEnum([]string{"UNSPECIFIED", "COOKIE", "IP", "RANDOM", ""}),
+							ValidateFunc: verify.ValidateEnum([]string{"UNSPECIFIED", "COOKIE", "IP", "RANDOM", ""}),
 							Description:  `Mechanism used to determine which version a request is sent to. The traffic selection algorithm will be stable for either type until allocations are changed. Possible values: ["UNSPECIFIED", "COOKIE", "IP", "RANDOM"]`,
 						},
 					},
@@ -86,8 +90,8 @@ func ResourceAppEngineServiceSplitTraffic() *schema.Resource {
 }
 
 func resourceAppEngineServiceSplitTrafficCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -96,24 +100,24 @@ func resourceAppEngineServiceSplitTrafficCreate(d *schema.ResourceData, meta int
 	idProp, err := expandAppEngineServiceSplitTrafficService(d.Get("service"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("service"); !isEmptyValue(reflect.ValueOf(idProp)) && (ok || !reflect.DeepEqual(v, idProp)) {
+	} else if v, ok := d.GetOkExists("service"); !tpgresource.IsEmptyValue(reflect.ValueOf(idProp)) && (ok || !reflect.DeepEqual(v, idProp)) {
 		obj["id"] = idProp
 	}
 	splitProp, err := expandAppEngineServiceSplitTrafficSplit(d.Get("split"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("split"); !isEmptyValue(reflect.ValueOf(splitProp)) && (ok || !reflect.DeepEqual(v, splitProp)) {
+	} else if v, ok := d.GetOkExists("split"); !tpgresource.IsEmptyValue(reflect.ValueOf(splitProp)) && (ok || !reflect.DeepEqual(v, splitProp)) {
 		obj["split"] = splitProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "apps/{{project}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}?migrateTraffic={{migrate_traffic}}&updateMask=split")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}?migrateTraffic={{migrate_traffic}}&updateMask=split")
 	if err != nil {
 		return err
 	}
@@ -121,24 +125,24 @@ func resourceAppEngineServiceSplitTrafficCreate(d *schema.ResourceData, meta int
 	log.Printf("[DEBUG] Creating new ServiceSplitTraffic: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for ServiceSplitTraffic: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating ServiceSplitTraffic: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "apps/{{project}}/services/{{service}}")
+	id, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}/services/{{service}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -160,33 +164,33 @@ func resourceAppEngineServiceSplitTrafficCreate(d *schema.ResourceData, meta int
 }
 
 func resourceAppEngineServiceSplitTrafficRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for ServiceSplitTraffic: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("AppEngineServiceSplitTraffic %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("AppEngineServiceSplitTraffic %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -201,15 +205,15 @@ func resourceAppEngineServiceSplitTrafficRead(d *schema.ResourceData, meta inter
 }
 
 func resourceAppEngineServiceSplitTrafficUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for ServiceSplitTraffic: %s", err)
 	}
@@ -219,24 +223,24 @@ func resourceAppEngineServiceSplitTrafficUpdate(d *schema.ResourceData, meta int
 	idProp, err := expandAppEngineServiceSplitTrafficService(d.Get("service"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("service"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, idProp)) {
+	} else if v, ok := d.GetOkExists("service"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, idProp)) {
 		obj["id"] = idProp
 	}
 	splitProp, err := expandAppEngineServiceSplitTrafficSplit(d.Get("split"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("split"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, splitProp)) {
+	} else if v, ok := d.GetOkExists("split"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, splitProp)) {
 		obj["split"] = splitProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "apps/{{project}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}?migrateTraffic={{migrate_traffic}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AppEngineBasePath}}apps/{{project}}/services/{{service}}?migrateTraffic={{migrate_traffic}}")
 	if err != nil {
 		return err
 	}
@@ -253,17 +257,17 @@ func resourceAppEngineServiceSplitTrafficUpdate(d *schema.ResourceData, meta int
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating ServiceSplitTraffic %q: %s", d.Id(), err)
@@ -292,7 +296,7 @@ func resourceAppEngineServiceSplitTrafficDelete(d *schema.ResourceData, meta int
 }
 
 func resourceAppEngineServiceSplitTrafficImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"apps/(?P<project>[^/]+)/services/(?P<service>[^/]+)",
 		"(?P<project>[^/]+)/(?P<service>[^/]+)",
@@ -302,7 +306,7 @@ func resourceAppEngineServiceSplitTrafficImport(d *schema.ResourceData, meta int
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "apps/{{project}}/services/{{service}}")
+	id, err := tpgresource.ReplaceVars(d, config, "apps/{{project}}/services/{{service}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -311,15 +315,15 @@ func resourceAppEngineServiceSplitTrafficImport(d *schema.ResourceData, meta int
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenAppEngineServiceSplitTrafficService(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAppEngineServiceSplitTrafficService(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandAppEngineServiceSplitTrafficService(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineServiceSplitTrafficService(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineServiceSplitTrafficSplit(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineServiceSplitTrafficSplit(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -331,25 +335,25 @@ func expandAppEngineServiceSplitTrafficSplit(v interface{}, d TerraformResourceD
 	transformedShardBy, err := expandAppEngineServiceSplitTrafficSplitShardBy(original["shard_by"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedShardBy); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedShardBy); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["shardBy"] = transformedShardBy
 	}
 
 	transformedAllocations, err := expandAppEngineServiceSplitTrafficSplitAllocations(original["allocations"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAllocations); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAllocations); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["allocations"] = transformedAllocations
 	}
 
 	return transformed, nil
 }
 
-func expandAppEngineServiceSplitTrafficSplitShardBy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAppEngineServiceSplitTrafficSplitShardBy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAppEngineServiceSplitTrafficSplitAllocations(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandAppEngineServiceSplitTrafficSplitAllocations(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}

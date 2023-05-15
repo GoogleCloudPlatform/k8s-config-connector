@@ -2,6 +2,7 @@ package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -16,7 +17,7 @@ func TestAccComputeNetwork_explicitAutoSubnet(t *testing.T) {
 	var network compute.Network
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeNetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -44,7 +45,7 @@ func TestAccComputeNetwork_customSubnet(t *testing.T) {
 	var network compute.Network
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeNetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -73,7 +74,7 @@ func TestAccComputeNetwork_routingModeAndUpdate(t *testing.T) {
 	networkName := RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeNetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -108,7 +109,7 @@ func TestAccComputeNetwork_default_routing_mode(t *testing.T) {
 	expectedRoutingMode := "REGIONAL"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeNetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -131,7 +132,7 @@ func TestAccComputeNetwork_networkDeleteDefaultRoute(t *testing.T) {
 	var network compute.Network
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeNetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -143,6 +144,57 @@ func TestAccComputeNetwork_networkDeleteDefaultRoute(t *testing.T) {
 					testAccCheckComputeNetworkDefaultRoutesDeleted(
 						t, "google_compute_network.bar", &network),
 				),
+			},
+		},
+	})
+}
+
+func TestAccComputeNetwork_networkFirewallPolicyEnforcementOrderAndUpdate(t *testing.T) {
+	t.Parallel()
+
+	var network compute.Network
+	var updatedNetwork compute.Network
+	networkName := RandString(t, 10)
+
+	defaultNetworkFirewallPolicyEnforcementOrder := "AFTER_CLASSIC_FIREWALL"
+	explicitNetworkFirewallPolicyEnforcementOrder := "BEFORE_CLASSIC_FIREWALL"
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckComputeNetworkDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeNetwork_networkFirewallPolicyEnforcementOrderDefault(networkName),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckComputeNetworkExists(
+						t, "google_compute_network.acc_network_firewall_policy_enforcement_order", &network),
+					testAccCheckComputeNetworkHasNetworkFirewallPolicyEnforcementOrder(
+						t, "google_compute_network.acc_network_firewall_policy_enforcement_order", &network, defaultNetworkFirewallPolicyEnforcementOrder),
+				),
+			},
+			{
+				ResourceName:            "google_compute_network.acc_network_firewall_policy_enforcement_order",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"force_destroy"},
+			},
+			// Test updating the enforcement order works and updates in-place
+			{
+				Config: testAccComputeNetwork_networkFirewallPolicyEnforcementOrderUpdate(networkName, explicitNetworkFirewallPolicyEnforcementOrder),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckComputeNetworkExists(
+						t, "google_compute_network.acc_network_firewall_policy_enforcement_order", &updatedNetwork),
+					testAccCheckComputeNetworkHasNetworkFirewallPolicyEnforcementOrder(
+						t, "google_compute_network.acc_network_firewall_policy_enforcement_order", &updatedNetwork, explicitNetworkFirewallPolicyEnforcementOrder),
+					testAccCheckComputeNetworkWasUpdated(&updatedNetwork, &network),
+				),
+			},
+			{
+				ResourceName:            "google_compute_network.acc_network_firewall_policy_enforcement_order",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"force_destroy"},
 			},
 		},
 	})
@@ -276,6 +328,44 @@ func testAccCheckComputeNetworkHasRoutingMode(t *testing.T, n string, network *c
 	}
 }
 
+func testAccCheckComputeNetworkHasNetworkFirewallPolicyEnforcementOrder(t *testing.T, n string, network *compute.Network, order string) resource.TestCheckFunc {
+	return func(s *terraform.State) error {
+		config := GoogleProviderConfig(t)
+
+		rs, ok := s.RootModule().Resources[n]
+		if !ok {
+			return fmt.Errorf("Not found: %s", n)
+		}
+
+		if rs.Primary.Attributes["network_firewall_policy_enforcement_order"] == "" {
+			return fmt.Errorf("Network firewall policy enforcement order not found on resource")
+		}
+
+		found, err := config.NewComputeClient(config.UserAgent).Networks.Get(
+			config.Project, network.Name).Do()
+		if err != nil {
+			return err
+		}
+
+		foundNetworkFirewallPolicyEnforcementOrder := found.NetworkFirewallPolicyEnforcementOrder
+
+		if order != foundNetworkFirewallPolicyEnforcementOrder {
+			return fmt.Errorf("Expected network firewall policy enforcement order %s to match %s", order, foundNetworkFirewallPolicyEnforcementOrder)
+		}
+
+		return nil
+	}
+}
+
+func testAccCheckComputeNetworkWasUpdated(newNetwork *compute.Network, oldNetwork *compute.Network) resource.TestCheckFunc {
+	return func(s *terraform.State) error {
+		if oldNetwork.CreationTimestamp != newNetwork.CreationTimestamp {
+			return fmt.Errorf("expected compute network to have been updated (had same creation time), instead was recreated - old creation time %s, new creation time %s", oldNetwork.CreationTimestamp, newNetwork.CreationTimestamp)
+		}
+		return nil
+	}
+}
+
 func testAccComputeNetwork_basic(suffix string) string {
 	return fmt.Sprintf(`
 resource "google_compute_network" "bar" {
@@ -311,4 +401,21 @@ resource "google_compute_network" "bar" {
   auto_create_subnetworks         = false
 }
 `, suffix)
+}
+
+func testAccComputeNetwork_networkFirewallPolicyEnforcementOrderDefault(network string) string {
+	return fmt.Sprintf(`
+resource "google_compute_network" "acc_network_firewall_policy_enforcement_order" {
+  name = "tf-test-network-firewall-policy-enforcement-order-%s"
+}
+`, network)
+}
+
+func testAccComputeNetwork_networkFirewallPolicyEnforcementOrderUpdate(network, order string) string {
+	return fmt.Sprintf(`
+resource "google_compute_network" "acc_network_firewall_policy_enforcement_order" {
+  name                                      = "tf-test-network-firewall-policy-enforcement-order-%s"
+  network_firewall_policy_enforcement_order = "%s"
+}
+`, network, order)
 }

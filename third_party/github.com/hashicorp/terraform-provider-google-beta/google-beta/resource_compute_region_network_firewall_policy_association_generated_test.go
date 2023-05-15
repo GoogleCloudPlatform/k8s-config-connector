@@ -24,19 +24,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeRegionNetworkFirewallPolicyAssociation_RegionalHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  acctest.GetTestProjectFromEnv(),
+		"region":        acctest.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionNetworkFirewallPolicyAssociationDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -138,7 +141,7 @@ func testAccCheckComputeRegionNetworkFirewallPolicyAssociationDestroyProducer(t 
 				ShortName:        dcl.StringOrNil(rs.Primary.Attributes["short_name"]),
 			}
 
-			client := NewDCLComputeClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLComputeClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetNetworkFirewallPolicyAssociation(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_compute_region_network_firewall_policy_association still exists %v", obj)

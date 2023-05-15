@@ -10,11 +10,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-google-beta/version"
 
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
+
 	googleoauth "golang.org/x/oauth2/google"
 )
 
 // Global MutexKV
-var mutexKV = NewMutexKV()
+//
+// Deprecated: For backward compatibility mutexKV is still working,
+// but all new code should use MutexStore in the transport_tpg package instead.
+var mutexKV = transport_tpg.MutexStore
 
 // Provider returns a *schema.Provider.
 func Provider() *schema.Provider {
@@ -25,8 +31,8 @@ func Provider() *schema.Provider {
 	// mtls is enabled.
 	if isMtls() {
 		// if mtls is enabled switch all default endpoints to use the mtls endpoint
-		for key, bp := range DefaultBasePaths {
-			DefaultBasePaths[key] = getMtlsEndpoint(bp)
+		for key, bp := range transport_tpg.DefaultBasePaths {
+			transport_tpg.DefaultBasePaths[key] = getMtlsEndpoint(bp)
 		}
 	}
 
@@ -91,7 +97,7 @@ func Provider() *schema.Provider {
 						"send_after": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							ValidateFunc: validateNonNegativeDuration(),
+							ValidateFunc: verify.ValidateNonNegativeDuration(),
 						},
 						"enable_batching": {
 							Type:     schema.TypeBool,
@@ -120,514 +126,524 @@ func Provider() *schema.Provider {
 			"access_approval_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"access_context_manager_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"active_directory_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"alloydb_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"api_gateway_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"apigee_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"app_engine_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"artifact_registry_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"beyondcorp_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"big_query_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"bigquery_analytics_hub_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"bigquery_connection_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"bigquery_datapolicy_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"bigquery_data_transfer_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"bigquery_reservation_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"bigtable_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"billing_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"binary_authorization_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"certificate_manager_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"cloud_asset_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"cloud_build_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"cloudbuildv2_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"cloud_functions_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"cloudfunctions2_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"cloud_identity_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"cloud_ids_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"cloud_iot_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"cloud_run_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"cloud_run_v2_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"cloud_scheduler_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"cloud_tasks_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"compute_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"container_analysis_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"container_attached_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
+			},
+			"database_migration_service_custom_endpoint": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"data_catalog_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"dataform_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"data_fusion_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"data_loss_prevention_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"dataplex_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"dataproc_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"dataproc_metastore_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"datastore_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"datastream_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"deployment_manager_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"dialogflow_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"dialogflow_cx_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"dns_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"document_ai_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"essential_contacts_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"filestore_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"firebase_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"firebase_database_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"firebase_hosting_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"firebase_storage_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"firestore_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"game_services_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"gke_backup_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"gke_hub_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
+			},
+			"gkeonprem_custom_endpoint": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"healthcare_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"iam2_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"iam_beta_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"iam_workforce_pool_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"iap_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"identity_platform_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"kms_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"logging_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"memcache_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"ml_engine_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"monitoring_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"network_management_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"network_security_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"network_services_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"notebooks_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"org_policy_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"os_config_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"os_login_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"privateca_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"pubsub_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"pubsub_lite_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"redis_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"resource_manager_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"runtime_config_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"secret_manager_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"security_center_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"security_scanner_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"service_directory_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"service_management_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"service_usage_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"source_repo_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"spanner_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"sql_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"storage_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"storage_transfer_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"tags_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"tpu_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"vertex_ai_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"vpc_access_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"workflows_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"workstations_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateCustomEndpoint,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 
 			// Handwritten Products / Versioned / Atypical Entries
-			CloudBillingCustomEndpointEntryKey:      CloudBillingCustomEndpointEntry,
-			ComposerCustomEndpointEntryKey:          ComposerCustomEndpointEntry,
-			ContainerCustomEndpointEntryKey:         ContainerCustomEndpointEntry,
-			DataflowCustomEndpointEntryKey:          DataflowCustomEndpointEntry,
-			IamCredentialsCustomEndpointEntryKey:    IamCredentialsCustomEndpointEntry,
-			ResourceManagerV3CustomEndpointEntryKey: ResourceManagerV3CustomEndpointEntry,
-			RuntimeConfigCustomEndpointEntryKey:     RuntimeConfigCustomEndpointEntry,
-			IAMCustomEndpointEntryKey:               IAMCustomEndpointEntry,
-			ServiceNetworkingCustomEndpointEntryKey: ServiceNetworkingCustomEndpointEntry,
-			TagsLocationCustomEndpointEntryKey:      TagsLocationCustomEndpointEntry,
+			transport_tpg.CloudBillingCustomEndpointEntryKey:      transport_tpg.CloudBillingCustomEndpointEntry,
+			transport_tpg.ComposerCustomEndpointEntryKey:          transport_tpg.ComposerCustomEndpointEntry,
+			transport_tpg.ContainerCustomEndpointEntryKey:         transport_tpg.ContainerCustomEndpointEntry,
+			transport_tpg.DataflowCustomEndpointEntryKey:          transport_tpg.DataflowCustomEndpointEntry,
+			transport_tpg.IamCredentialsCustomEndpointEntryKey:    transport_tpg.IamCredentialsCustomEndpointEntry,
+			transport_tpg.ResourceManagerV3CustomEndpointEntryKey: transport_tpg.ResourceManagerV3CustomEndpointEntry,
+			transport_tpg.RuntimeConfigCustomEndpointEntryKey:     transport_tpg.RuntimeConfigCustomEndpointEntry,
+			transport_tpg.IAMCustomEndpointEntryKey:               transport_tpg.IAMCustomEndpointEntry,
+			transport_tpg.ServiceNetworkingCustomEndpointEntryKey: transport_tpg.ServiceNetworkingCustomEndpointEntry,
+			transport_tpg.TagsLocationCustomEndpointEntryKey:      transport_tpg.TagsLocationCustomEndpointEntry,
 
 			// dcl
-			ContainerAwsCustomEndpointEntryKey:   ContainerAwsCustomEndpointEntry,
-			ContainerAzureCustomEndpointEntryKey: ContainerAzureCustomEndpointEntry,
+			transport_tpg.ContainerAwsCustomEndpointEntryKey:   transport_tpg.ContainerAwsCustomEndpointEntry,
+			transport_tpg.ContainerAzureCustomEndpointEntryKey: transport_tpg.ContainerAzureCustomEndpointEntry,
 		},
 
 		ProviderMetaSchema: map[string]*schema.Schema{
@@ -643,6 +659,8 @@ func Provider() *schema.Provider {
 			"google_access_approval_organization_service_account": DataSourceAccessApprovalOrganizationServiceAccount(),
 			"google_access_approval_project_service_account":      DataSourceAccessApprovalProjectServiceAccount(),
 			"google_active_folder":                                DataSourceGoogleActiveFolder(),
+			"google_alloydb_locations":                            DataSourceAlloydbLocations(),
+			"google_alloydb_supported_database_flags":             DataSourceAlloydbSupportedDatabaseFlags(),
 			"google_artifact_registry_repository":                 DataSourceArtifactRegistryRepository(),
 			"google_app_engine_default_service_account":           DataSourceGoogleAppEngineDefaultServiceAccount(),
 			"google_beyondcorp_app_connection":                    DataSourceGoogleBeyondcorpAppConnection(),
@@ -685,7 +703,6 @@ func Provider() *schema.Provider {
 			"google_compute_regions":                              DataSourceGoogleComputeRegions(),
 			"google_compute_region_network_endpoint_group":        DataSourceGoogleComputeRegionNetworkEndpointGroup(),
 			"google_compute_region_instance_group":                DataSourceGoogleComputeRegionInstanceGroup(),
-
 			"google_compute_region_instance_template":             DataSourceGoogleComputeRegionInstanceTemplate(),
 			"google_compute_region_ssl_certificate":               DataSourceGoogleRegionComputeSslCertificate(),
 			"google_compute_resource_policy":                      DataSourceGoogleComputeResourcePolicy(),
@@ -707,6 +724,7 @@ func Provider() *schema.Provider {
 			"google_container_registry_image":                     DataSourceGoogleContainerImage(),
 			"google_container_registry_repository":                DataSourceGoogleContainerRepo(),
 			"google_dataproc_metastore_service":                   DataSourceDataprocMetastoreService(),
+			"google_datastream_static_ips":                        DataSourceGoogleDatastreamStaticIps(),
 			"google_game_services_game_server_deployment_rollout": DataSourceGameServicesGameServerDeploymentRollout(),
 			"google_iam_policy":                                   DataSourceGoogleIamPolicy(),
 			"google_iam_role":                                     DataSourceGoogleIamRole(),
@@ -757,6 +775,7 @@ func Provider() *schema.Provider {
 			"google_sourcerepo_repository":                        DataSourceGoogleSourceRepoRepository(),
 			"google_spanner_instance":                             DataSourceSpannerInstance(),
 			"google_sql_ca_certs":                                 DataSourceGoogleSQLCaCerts(),
+			"google_sql_tiers":                                    DataSourceGoogleSQLTiers(),
 			"google_sql_backup_run":                               DataSourceSqlBackupRun(),
 			"google_sql_databases":                                DataSourceSqlDatabases(),
 			"google_sql_database":                                 DataSourceSqlDatabase(),
@@ -783,14 +802,14 @@ func Provider() *schema.Provider {
 		return providerConfigure(ctx, d, provider)
 	}
 
-	ConfigureDCLProvider(provider)
+	transport_tpg.ConfigureDCLProvider(provider)
 
 	return provider
 }
 
-// Generated resources: 318
-// Generated IAM resources: 213
-// Total generated resources: 531
+// Generated resources: 339
+// Generated IAM resources: 219
+// Total generated resources: 558
 func ResourceMap() map[string]*schema.Resource {
 	resourceMap, _ := ResourceMapWithErrors()
 	return resourceMap
@@ -810,7 +829,9 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_access_context_manager_access_policy_iam_member":       ResourceIamMember(AccessContextManagerAccessPolicyIamSchema, AccessContextManagerAccessPolicyIamUpdaterProducer, AccessContextManagerAccessPolicyIdParseFunc),
 			"google_access_context_manager_access_policy_iam_policy":       ResourceIamPolicy(AccessContextManagerAccessPolicyIamSchema, AccessContextManagerAccessPolicyIamUpdaterProducer, AccessContextManagerAccessPolicyIdParseFunc),
 			"google_access_context_manager_authorized_orgs_desc":           ResourceAccessContextManagerAuthorizedOrgsDesc(),
+			"google_access_context_manager_egress_policy":                  ResourceAccessContextManagerEgressPolicy(),
 			"google_access_context_manager_gcp_user_access_binding":        ResourceAccessContextManagerGcpUserAccessBinding(),
+			"google_access_context_manager_ingress_policy":                 ResourceAccessContextManagerIngressPolicy(),
 			"google_access_context_manager_service_perimeter":              ResourceAccessContextManagerServicePerimeter(),
 			"google_access_context_manager_service_perimeter_resource":     ResourceAccessContextManagerServicePerimeterResource(),
 			"google_access_context_manager_service_perimeters":             ResourceAccessContextManagerServicePerimeters(),
@@ -993,11 +1014,14 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_compute_organization_security_policy_rule":             ResourceComputeOrganizationSecurityPolicyRule(),
 			"google_compute_packet_mirroring":                              ResourceComputePacketMirroring(),
 			"google_compute_per_instance_config":                           ResourceComputePerInstanceConfig(),
+			"google_compute_public_advertised_prefix":                      ResourceComputePublicAdvertisedPrefix(),
+			"google_compute_public_delegated_prefix":                       ResourceComputePublicDelegatedPrefix(),
 			"google_compute_region_autoscaler":                             ResourceComputeRegionAutoscaler(),
 			"google_compute_region_backend_service":                        ResourceComputeRegionBackendService(),
 			"google_compute_region_backend_service_iam_binding":            ResourceIamBinding(ComputeRegionBackendServiceIamSchema, ComputeRegionBackendServiceIamUpdaterProducer, ComputeRegionBackendServiceIdParseFunc),
 			"google_compute_region_backend_service_iam_member":             ResourceIamMember(ComputeRegionBackendServiceIamSchema, ComputeRegionBackendServiceIamUpdaterProducer, ComputeRegionBackendServiceIdParseFunc),
 			"google_compute_region_backend_service_iam_policy":             ResourceIamPolicy(ComputeRegionBackendServiceIamSchema, ComputeRegionBackendServiceIamUpdaterProducer, ComputeRegionBackendServiceIdParseFunc),
+			"google_compute_region_commitment":                             ResourceComputeRegionCommitment(),
 			"google_compute_region_disk":                                   ResourceComputeRegionDisk(),
 			"google_compute_region_disk_iam_binding":                       ResourceIamBinding(ComputeRegionDiskIamSchema, ComputeRegionDiskIamUpdaterProducer, ComputeRegionDiskIdParseFunc),
 			"google_compute_region_disk_iam_member":                        ResourceIamMember(ComputeRegionDiskIamSchema, ComputeRegionDiskIamUpdaterProducer, ComputeRegionDiskIdParseFunc),
@@ -1041,6 +1065,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_container_analysis_note":                               ResourceContainerAnalysisNote(),
 			"google_container_analysis_occurrence":                         ResourceContainerAnalysisOccurrence(),
 			"google_container_attached_cluster":                            ResourceContainerAttachedCluster(),
+			"google_database_migration_service_connection_profile":         ResourceDatabaseMigrationServiceConnectionProfile(),
 			"google_data_catalog_entry":                                    ResourceDataCatalogEntry(),
 			"google_data_catalog_entry_group":                              ResourceDataCatalogEntryGroup(),
 			"google_data_catalog_entry_group_iam_binding":                  ResourceIamBinding(DataCatalogEntryGroupIamSchema, DataCatalogEntryGroupIamUpdaterProducer, DataCatalogEntryGroupIdParseFunc),
@@ -1130,6 +1155,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_firebase_storage_bucket":                               ResourceFirebaseStorageBucket(),
 			"google_firestore_database":                                    ResourceFirestoreDatabase(),
 			"google_firestore_document":                                    ResourceFirestoreDocument(),
+			"google_firestore_field":                                       ResourceFirestoreField(),
 			"google_firestore_index":                                       ResourceFirestoreIndex(),
 			"google_game_services_game_server_cluster":                     ResourceGameServicesGameServerCluster(),
 			"google_game_services_game_server_config":                      ResourceGameServicesGameServerConfig(),
@@ -1144,6 +1170,10 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_gke_hub_membership_iam_binding":                        ResourceIamBinding(GKEHubMembershipIamSchema, GKEHubMembershipIamUpdaterProducer, GKEHubMembershipIdParseFunc),
 			"google_gke_hub_membership_iam_member":                         ResourceIamMember(GKEHubMembershipIamSchema, GKEHubMembershipIamUpdaterProducer, GKEHubMembershipIdParseFunc),
 			"google_gke_hub_membership_iam_policy":                         ResourceIamPolicy(GKEHubMembershipIamSchema, GKEHubMembershipIamUpdaterProducer, GKEHubMembershipIdParseFunc),
+			"google_gkeonprem_bare_metal_cluster":                          ResourceGkeonpremBareMetalCluster(),
+			"google_gkeonprem_bare_metal_node_pool":                        ResourceGkeonpremBareMetalNodePool(),
+			"google_gkeonprem_vmware_cluster":                              ResourceGkeonpremVmwareCluster(),
+			"google_gkeonprem_vmware_node_pool":                            ResourceGkeonpremVmwareNodePool(),
 			"google_healthcare_consent_store":                              ResourceHealthcareConsentStore(),
 			"google_healthcare_consent_store_iam_binding":                  ResourceIamBinding(HealthcareConsentStoreIamSchema, HealthcareConsentStoreIamUpdaterProducer, HealthcareConsentStoreIdParseFunc),
 			"google_healthcare_consent_store_iam_member":                   ResourceIamMember(HealthcareConsentStoreIamSchema, HealthcareConsentStoreIamUpdaterProducer, HealthcareConsentStoreIdParseFunc),
@@ -1213,14 +1243,24 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_monitoring_slo":                                        ResourceMonitoringSlo(),
 			"google_monitoring_uptime_check_config":                        ResourceMonitoringUptimeCheckConfig(),
 			"google_network_management_connectivity_test":                  ResourceNetworkManagementConnectivityTest(),
+			"google_network_security_address_group":                        ResourceNetworkSecurityAddressGroup(),
+			"google_network_security_authorization_policy":                 ResourceNetworkSecurityAuthorizationPolicy(),
+			"google_network_security_client_tls_policy":                    ResourceNetworkSecurityClientTlsPolicy(),
 			"google_network_security_gateway_security_policy":              ResourceNetworkSecurityGatewaySecurityPolicy(),
 			"google_network_security_gateway_security_policy_rule":         ResourceNetworkSecurityGatewaySecurityPolicyRule(),
+			"google_network_security_tls_inspection_policy":                ResourceNetworkSecurityTlsInspectionPolicy(),
 			"google_network_security_url_lists":                            ResourceNetworkSecurityUrlLists(),
 			"google_network_services_edge_cache_keyset":                    ResourceNetworkServicesEdgeCacheKeyset(),
 			"google_network_services_edge_cache_origin":                    ResourceNetworkServicesEdgeCacheOrigin(),
 			"google_network_services_edge_cache_service":                   ResourceNetworkServicesEdgeCacheService(),
+			"google_network_services_endpoint_policy":                      ResourceNetworkServicesEndpointPolicy(),
 			"google_network_services_gateway":                              ResourceNetworkServicesGateway(),
+			"google_network_services_grpc_route":                           ResourceNetworkServicesGrpcRoute(),
+			"google_network_services_http_route":                           ResourceNetworkServicesHttpRoute(),
 			"google_network_services_mesh":                                 ResourceNetworkServicesMesh(),
+			"google_network_services_service_binding":                      ResourceNetworkServicesServiceBinding(),
+			"google_network_services_tcp_route":                            ResourceNetworkServicesTcpRoute(),
+			"google_network_services_tls_route":                            ResourceNetworkServicesTlsRoute(),
 			"google_notebooks_environment":                                 ResourceNotebooksEnvironment(),
 			"google_notebooks_instance":                                    ResourceNotebooksInstance(),
 			"google_notebooks_instance_iam_binding":                        ResourceIamBinding(NotebooksInstanceIamSchema, NotebooksInstanceIamUpdaterProducer, NotebooksInstanceIdParseFunc),
@@ -1329,8 +1369,14 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_vpc_access_connector":                                  ResourceVPCAccessConnector(),
 			"google_workflows_workflow":                                    ResourceWorkflowsWorkflow(),
 			"google_workstations_workstation":                              ResourceWorkstationsWorkstation(),
+			"google_workstations_workstation_iam_binding":                  ResourceIamBinding(WorkstationsWorkstationIamSchema, WorkstationsWorkstationIamUpdaterProducer, WorkstationsWorkstationIdParseFunc),
+			"google_workstations_workstation_iam_member":                   ResourceIamMember(WorkstationsWorkstationIamSchema, WorkstationsWorkstationIamUpdaterProducer, WorkstationsWorkstationIdParseFunc),
+			"google_workstations_workstation_iam_policy":                   ResourceIamPolicy(WorkstationsWorkstationIamSchema, WorkstationsWorkstationIamUpdaterProducer, WorkstationsWorkstationIdParseFunc),
 			"google_workstations_workstation_cluster":                      ResourceWorkstationsWorkstationCluster(),
 			"google_workstations_workstation_config":                       ResourceWorkstationsWorkstationConfig(),
+			"google_workstations_workstation_config_iam_binding":           ResourceIamBinding(WorkstationsWorkstationConfigIamSchema, WorkstationsWorkstationConfigIamUpdaterProducer, WorkstationsWorkstationConfigIdParseFunc),
+			"google_workstations_workstation_config_iam_member":            ResourceIamMember(WorkstationsWorkstationConfigIamSchema, WorkstationsWorkstationConfigIamUpdaterProducer, WorkstationsWorkstationConfigIdParseFunc),
+			"google_workstations_workstation_config_iam_policy":            ResourceIamPolicy(WorkstationsWorkstationConfigIamSchema, WorkstationsWorkstationConfigIamUpdaterProducer, WorkstationsWorkstationConfigIdParseFunc),
 		},
 		map[string]*schema.Resource{
 			// ####### START handwritten resources ###########
@@ -1349,6 +1395,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_composer_environment":                   ResourceComposerEnvironment(),
 			"google_compute_attached_disk":                  ResourceComputeAttachedDisk(),
 			"google_compute_instance":                       ResourceComputeInstance(),
+			"google_compute_disk_async_replication":         ResourceComputeDiskAsyncReplication(),
 			"google_compute_instance_from_machine_image":    ResourceComputeInstanceFromMachineImage(),
 			"google_compute_instance_from_template":         ResourceComputeInstanceFromTemplate(),
 			"google_compute_instance_group":                 ResourceComputeInstanceGroup(),
@@ -1359,67 +1406,66 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_compute_project_metadata":               ResourceComputeProjectMetadata(),
 			"google_compute_project_metadata_item":          ResourceComputeProjectMetadataItem(),
 			"google_compute_region_instance_group_manager":  ResourceComputeRegionInstanceGroupManager(),
-
-			"google_compute_region_instance_template":      ResourceComputeRegionInstanceTemplate(),
-			"google_compute_router_interface":              ResourceComputeRouterInterface(),
-			"google_compute_security_policy":               ResourceComputeSecurityPolicy(),
-			"google_compute_shared_vpc_host_project":       ResourceComputeSharedVpcHostProject(),
-			"google_compute_shared_vpc_service_project":    ResourceComputeSharedVpcServiceProject(),
-			"google_compute_target_pool":                   ResourceComputeTargetPool(),
-			"google_container_cluster":                     ResourceContainerCluster(),
-			"google_container_node_pool":                   ResourceContainerNodePool(),
-			"google_container_registry":                    ResourceContainerRegistry(),
-			"google_dataflow_job":                          ResourceDataflowJob(),
-			"google_dataflow_flex_template_job":            ResourceDataflowFlexTemplateJob(),
-			"google_dataproc_cluster":                      ResourceDataprocCluster(),
-			"google_dataproc_job":                          ResourceDataprocJob(),
-			"google_dialogflow_cx_version":                 ResourceDialogflowCXVersion(),
-			"google_dialogflow_cx_environment":             ResourceDialogflowCXEnvironment(),
-			"google_dns_record_set":                        ResourceDnsRecordSet(),
-			"google_endpoints_service":                     ResourceEndpointsService(),
-			"google_folder":                                ResourceGoogleFolder(),
-			"google_folder_organization_policy":            ResourceGoogleFolderOrganizationPolicy(),
-			"google_logging_billing_account_sink":          ResourceLoggingBillingAccountSink(),
-			"google_logging_billing_account_exclusion":     ResourceLoggingExclusion(BillingAccountLoggingExclusionSchema, NewBillingAccountLoggingExclusionUpdater, BillingAccountLoggingExclusionIdParseFunc),
-			"google_logging_billing_account_bucket_config": ResourceLoggingBillingAccountBucketConfig(),
-			"google_logging_organization_sink":             ResourceLoggingOrganizationSink(),
-			"google_logging_organization_exclusion":        ResourceLoggingExclusion(OrganizationLoggingExclusionSchema, NewOrganizationLoggingExclusionUpdater, OrganizationLoggingExclusionIdParseFunc),
-			"google_logging_organization_bucket_config":    ResourceLoggingOrganizationBucketConfig(),
-			"google_logging_folder_sink":                   ResourceLoggingFolderSink(),
-			"google_logging_log_sink":                      resourceLoggingLogSink(),
-			"google_logging_folder_exclusion":              ResourceLoggingExclusion(FolderLoggingExclusionSchema, NewFolderLoggingExclusionUpdater, FolderLoggingExclusionIdParseFunc),
-			"google_logging_folder_bucket_config":          ResourceLoggingFolderBucketConfig(),
-			"google_logging_project_sink":                  ResourceLoggingProjectSink(),
-			"google_logging_project_exclusion":             ResourceLoggingExclusion(ProjectLoggingExclusionSchema, NewProjectLoggingExclusionUpdater, ProjectLoggingExclusionIdParseFunc),
-			"google_logging_project_bucket_config":         ResourceLoggingProjectBucketConfig(),
-			"google_monitoring_dashboard":                  ResourceMonitoringDashboard(),
-			"google_project_service_identity":              ResourceProjectServiceIdentity(),
-			"google_service_networking_connection":         ResourceServiceNetworkingConnection(),
-			"google_sql_database_instance":                 ResourceSqlDatabaseInstance(),
-			"google_sql_ssl_cert":                          ResourceSqlSslCert(),
-			"google_sql_user":                              ResourceSqlUser(),
-			"google_organization_iam_custom_role":          ResourceGoogleOrganizationIamCustomRole(),
-			"google_organization_policy":                   ResourceGoogleOrganizationPolicy(),
-			"google_org_policy":                            ResourceOrgPolicy(),
-			"google_project":                               ResourceGoogleProject(),
-			"google_project_default_service_accounts":      ResourceGoogleProjectDefaultServiceAccounts(),
-			"google_project_service":                       ResourceGoogleProjectService(),
-			"google_project_iam_custom_role":               ResourceGoogleProjectIamCustomRole(),
-			"google_project_organization_policy":           ResourceGoogleProjectOrganizationPolicy(),
-			"google_project_usage_export_bucket":           ResourceProjectUsageBucket(),
-			"google_runtimeconfig_config":                  ResourceRuntimeconfigConfig(),
-			"google_runtimeconfig_variable":                ResourceRuntimeconfigVariable(),
-			"google_service_account":                       ResourceGoogleServiceAccount(),
-			"google_service_account_key":                   ResourceGoogleServiceAccountKey(),
-			"google_service_networking_peered_dns_domain":  ResourceGoogleServiceNetworkingPeeredDNSDomain(),
-			"google_storage_bucket":                        ResourceStorageBucket(),
-			"google_storage_bucket_acl":                    ResourceStorageBucketAcl(),
-			"google_storage_bucket_object":                 ResourceStorageBucketObject(),
-			"google_storage_object_acl":                    ResourceStorageObjectAcl(),
-			"google_storage_default_object_acl":            ResourceStorageDefaultObjectAcl(),
-			"google_storage_notification":                  ResourceStorageNotification(),
-			"google_storage_transfer_job":                  ResourceStorageTransferJob(),
-			"google_tags_location_tag_binding":             ResourceTagsLocationTagBinding(),
+			"google_compute_region_instance_template":       ResourceComputeRegionInstanceTemplate(),
+			"google_compute_router_interface":               ResourceComputeRouterInterface(),
+			"google_compute_security_policy":                ResourceComputeSecurityPolicy(),
+			"google_compute_shared_vpc_host_project":        ResourceComputeSharedVpcHostProject(),
+			"google_compute_shared_vpc_service_project":     ResourceComputeSharedVpcServiceProject(),
+			"google_compute_target_pool":                    ResourceComputeTargetPool(),
+			"google_container_cluster":                      ResourceContainerCluster(),
+			"google_container_node_pool":                    ResourceContainerNodePool(),
+			"google_container_registry":                     ResourceContainerRegistry(),
+			"google_dataflow_job":                           ResourceDataflowJob(),
+			"google_dataflow_flex_template_job":             ResourceDataflowFlexTemplateJob(),
+			"google_dataproc_cluster":                       ResourceDataprocCluster(),
+			"google_dataproc_job":                           ResourceDataprocJob(),
+			"google_dialogflow_cx_version":                  ResourceDialogflowCXVersion(),
+			"google_dialogflow_cx_environment":              ResourceDialogflowCXEnvironment(),
+			"google_dns_record_set":                         ResourceDnsRecordSet(),
+			"google_endpoints_service":                      ResourceEndpointsService(),
+			"google_folder":                                 ResourceGoogleFolder(),
+			"google_folder_organization_policy":             ResourceGoogleFolderOrganizationPolicy(),
+			"google_logging_billing_account_sink":           ResourceLoggingBillingAccountSink(),
+			"google_logging_billing_account_exclusion":      ResourceLoggingExclusion(BillingAccountLoggingExclusionSchema, NewBillingAccountLoggingExclusionUpdater, BillingAccountLoggingExclusionIdParseFunc),
+			"google_logging_billing_account_bucket_config":  ResourceLoggingBillingAccountBucketConfig(),
+			"google_logging_organization_sink":              ResourceLoggingOrganizationSink(),
+			"google_logging_organization_exclusion":         ResourceLoggingExclusion(OrganizationLoggingExclusionSchema, NewOrganizationLoggingExclusionUpdater, OrganizationLoggingExclusionIdParseFunc),
+			"google_logging_organization_bucket_config":     ResourceLoggingOrganizationBucketConfig(),
+			"google_logging_folder_sink":                    ResourceLoggingFolderSink(),
+			"google_logging_log_sink":                       resourceLoggingLogSink(),
+			"google_logging_folder_exclusion":               ResourceLoggingExclusion(FolderLoggingExclusionSchema, NewFolderLoggingExclusionUpdater, FolderLoggingExclusionIdParseFunc),
+			"google_logging_folder_bucket_config":           ResourceLoggingFolderBucketConfig(),
+			"google_logging_project_sink":                   ResourceLoggingProjectSink(),
+			"google_logging_project_exclusion":              ResourceLoggingExclusion(ProjectLoggingExclusionSchema, NewProjectLoggingExclusionUpdater, ProjectLoggingExclusionIdParseFunc),
+			"google_logging_project_bucket_config":          ResourceLoggingProjectBucketConfig(),
+			"google_monitoring_dashboard":                   ResourceMonitoringDashboard(),
+			"google_project_service_identity":               ResourceProjectServiceIdentity(),
+			"google_service_networking_connection":          ResourceServiceNetworkingConnection(),
+			"google_sql_database_instance":                  ResourceSqlDatabaseInstance(),
+			"google_sql_ssl_cert":                           ResourceSqlSslCert(),
+			"google_sql_user":                               ResourceSqlUser(),
+			"google_organization_iam_custom_role":           ResourceGoogleOrganizationIamCustomRole(),
+			"google_organization_policy":                    ResourceGoogleOrganizationPolicy(),
+			"google_org_policy":                             ResourceOrgPolicy(),
+			"google_project":                                ResourceGoogleProject(),
+			"google_project_default_service_accounts":       ResourceGoogleProjectDefaultServiceAccounts(),
+			"google_project_service":                        ResourceGoogleProjectService(),
+			"google_project_iam_custom_role":                ResourceGoogleProjectIamCustomRole(),
+			"google_project_organization_policy":            ResourceGoogleProjectOrganizationPolicy(),
+			"google_project_usage_export_bucket":            ResourceProjectUsageBucket(),
+			"google_runtimeconfig_config":                   ResourceRuntimeconfigConfig(),
+			"google_runtimeconfig_variable":                 ResourceRuntimeconfigVariable(),
+			"google_service_account":                        ResourceGoogleServiceAccount(),
+			"google_service_account_key":                    ResourceGoogleServiceAccountKey(),
+			"google_service_networking_peered_dns_domain":   ResourceGoogleServiceNetworkingPeeredDNSDomain(),
+			"google_storage_bucket":                         ResourceStorageBucket(),
+			"google_storage_bucket_acl":                     ResourceStorageBucketAcl(),
+			"google_storage_bucket_object":                  ResourceStorageBucketObject(),
+			"google_storage_object_acl":                     ResourceStorageObjectAcl(),
+			"google_storage_default_object_acl":             ResourceStorageDefaultObjectAcl(),
+			"google_storage_notification":                   ResourceStorageNotification(),
+			"google_storage_transfer_job":                   ResourceStorageTransferJob(),
+			"google_tags_location_tag_binding":              ResourceTagsLocationTagBinding(),
 			// ####### END handwritten resources ###########
 		},
 		map[string]*schema.Resource{
@@ -1491,13 +1537,13 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 }
 
 func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Provider) (interface{}, diag.Diagnostics) {
-	err := HandleSDKDefaults(d)
+	err := transport_tpg.HandleSDKDefaults(d)
 	if err != nil {
 		return nil, diag.FromErr(err)
 	}
-	HandleDCLCustomEndpointDefaults(d)
+	transport_tpg.HandleDCLCustomEndpointDefaults(d)
 
-	config := Config{
+	config := transport_tpg.Config{
 		Project:             d.Get("project").(string),
 		Region:              d.Get("region").(string),
 		Zone:                d.Get("zone").(string),
@@ -1537,13 +1583,13 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	// only check environment variables if neither value was set in config- this
 	// means config beats env var in all cases.
 	if config.AccessToken == "" && config.Credentials == "" {
-		config.Credentials = MultiEnvSearch([]string{
+		config.Credentials = transport_tpg.MultiEnvSearch([]string{
 			"GOOGLE_CREDENTIALS",
 			"GOOGLE_CLOUD_KEYFILE_JSON",
 			"GCLOUD_KEYFILE_JSON",
 		})
 
-		config.AccessToken = MultiEnvSearch([]string{
+		config.AccessToken = transport_tpg.MultiEnvSearch([]string{
 			"GOOGLE_OAUTH_ACCESS_TOKEN",
 		})
 	}
@@ -1570,7 +1616,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 		config.Scopes[i] = scope.(string)
 	}
 
-	batchCfg, err := ExpandProviderBatchingConfig(d.Get("batching"))
+	batchCfg, err := transport_tpg.ExpandProviderBatchingConfig(d.Get("batching"))
 	if err != nil {
 		return nil, diag.FromErr(err)
 	}
@@ -1611,6 +1657,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.ComputeBasePath = d.Get("compute_custom_endpoint").(string)
 	config.ContainerAnalysisBasePath = d.Get("container_analysis_custom_endpoint").(string)
 	config.ContainerAttachedBasePath = d.Get("container_attached_custom_endpoint").(string)
+	config.DatabaseMigrationServiceBasePath = d.Get("database_migration_service_custom_endpoint").(string)
 	config.DataCatalogBasePath = d.Get("data_catalog_custom_endpoint").(string)
 	config.DataformBasePath = d.Get("dataform_custom_endpoint").(string)
 	config.DataFusionBasePath = d.Get("data_fusion_custom_endpoint").(string)
@@ -1635,6 +1682,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.GameServicesBasePath = d.Get("game_services_custom_endpoint").(string)
 	config.GKEBackupBasePath = d.Get("gke_backup_custom_endpoint").(string)
 	config.GKEHubBasePath = d.Get("gke_hub_custom_endpoint").(string)
+	config.GkeonpremBasePath = d.Get("gkeonprem_custom_endpoint").(string)
 	config.HealthcareBasePath = d.Get("healthcare_custom_endpoint").(string)
 	config.IAM2BasePath = d.Get("iam2_custom_endpoint").(string)
 	config.IAMBetaBasePath = d.Get("iam_beta_custom_endpoint").(string)
@@ -1678,22 +1726,22 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.WorkstationsBasePath = d.Get("workstations_custom_endpoint").(string)
 
 	// Handwritten Products / Versioned / Atypical Entries
-	config.CloudBillingBasePath = d.Get(CloudBillingCustomEndpointEntryKey).(string)
-	config.ComposerBasePath = d.Get(ComposerCustomEndpointEntryKey).(string)
-	config.ContainerBasePath = d.Get(ContainerCustomEndpointEntryKey).(string)
-	config.DataflowBasePath = d.Get(DataflowCustomEndpointEntryKey).(string)
-	config.IamCredentialsBasePath = d.Get(IamCredentialsCustomEndpointEntryKey).(string)
-	config.ResourceManagerV3BasePath = d.Get(ResourceManagerV3CustomEndpointEntryKey).(string)
-	config.RuntimeConfigBasePath = d.Get(RuntimeConfigCustomEndpointEntryKey).(string)
-	config.IAMBasePath = d.Get(IAMCustomEndpointEntryKey).(string)
-	config.ServiceNetworkingBasePath = d.Get(ServiceNetworkingCustomEndpointEntryKey).(string)
-	config.ServiceUsageBasePath = d.Get(ServiceUsageCustomEndpointEntryKey).(string)
-	config.BigtableAdminBasePath = d.Get(BigtableAdminCustomEndpointEntryKey).(string)
-	config.TagsLocationBasePath = d.Get(TagsLocationCustomEndpointEntryKey).(string)
+	config.CloudBillingBasePath = d.Get(transport_tpg.CloudBillingCustomEndpointEntryKey).(string)
+	config.ComposerBasePath = d.Get(transport_tpg.ComposerCustomEndpointEntryKey).(string)
+	config.ContainerBasePath = d.Get(transport_tpg.ContainerCustomEndpointEntryKey).(string)
+	config.DataflowBasePath = d.Get(transport_tpg.DataflowCustomEndpointEntryKey).(string)
+	config.IamCredentialsBasePath = d.Get(transport_tpg.IamCredentialsCustomEndpointEntryKey).(string)
+	config.ResourceManagerV3BasePath = d.Get(transport_tpg.ResourceManagerV3CustomEndpointEntryKey).(string)
+	config.RuntimeConfigBasePath = d.Get(transport_tpg.RuntimeConfigCustomEndpointEntryKey).(string)
+	config.IAMBasePath = d.Get(transport_tpg.IAMCustomEndpointEntryKey).(string)
+	config.ServiceNetworkingBasePath = d.Get(transport_tpg.ServiceNetworkingCustomEndpointEntryKey).(string)
+	config.ServiceUsageBasePath = d.Get(transport_tpg.ServiceUsageCustomEndpointEntryKey).(string)
+	config.BigtableAdminBasePath = d.Get(transport_tpg.BigtableAdminCustomEndpointEntryKey).(string)
+	config.TagsLocationBasePath = d.Get(transport_tpg.TagsLocationCustomEndpointEntryKey).(string)
 
 	// dcl
-	config.ContainerAwsBasePath = d.Get(ContainerAwsCustomEndpointEntryKey).(string)
-	config.ContainerAzureBasePath = d.Get(ContainerAzureCustomEndpointEntryKey).(string)
+	config.ContainerAwsBasePath = d.Get(transport_tpg.ContainerAwsCustomEndpointEntryKey).(string)
+	config.ContainerAzureBasePath = d.Get(transport_tpg.ContainerAzureCustomEndpointEntryKey).(string)
 
 	stopCtx, ok := schema.StopContext(ctx)
 	if !ok {
@@ -1703,7 +1751,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 		return nil, diag.FromErr(err)
 	}
 
-	return ProviderDCLConfigure(d, &config), nil
+	return transport_tpg.ProviderDCLConfigure(d, &config), nil
 }
 
 func validateCredentials(v interface{}, k string) (warnings []string, errors []error) {

@@ -12,6 +12,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"google.golang.org/api/dataproc/v1"
 )
 
@@ -544,7 +547,7 @@ func ResourceDataprocCluster() *schema.Resource {
 										AtLeastOneOf:     gceClusterConfigKeys,
 										ForceNew:         true,
 										ConflictsWith:    []string{"cluster_config.0.gce_cluster_config.0.subnetwork"},
-										DiffSuppressFunc: compareSelfLinkOrResourceName,
+										DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 										Description:      `The name or self_link of the Google Compute Engine network to the cluster will be part of. Conflicts with subnetwork. If neither is specified, this defaults to the "default" network.`,
 									},
 
@@ -554,7 +557,7 @@ func ResourceDataprocCluster() *schema.Resource {
 										AtLeastOneOf:     gceClusterConfigKeys,
 										ForceNew:         true,
 										ConflictsWith:    []string{"cluster_config.0.gce_cluster_config.0.network"},
-										DiffSuppressFunc: compareSelfLinkOrResourceName,
+										DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 										Description:      `The name or self_link of the Google Compute Engine subnetwork the cluster will be part of. Conflicts with network.`,
 									},
 
@@ -585,10 +588,10 @@ func ResourceDataprocCluster() *schema.Resource {
 										Elem: &schema.Schema{
 											Type: schema.TypeString,
 											StateFunc: func(v interface{}) string {
-												return canonicalizeServiceScope(v.(string))
+												return tpgresource.CanonicalizeServiceScope(v.(string))
 											},
 										},
-										Set: stringScopeHashcode,
+										Set: tpgresource.StringScopeHashcode,
 									},
 
 									"internal_ip_only": {
@@ -696,7 +699,7 @@ func ResourceDataprocCluster() *schema.Resource {
 													ForceNew:         true,
 													Required:         true,
 													Description:      `The URI of a sole-tenant that the cluster will be created on.`,
-													DiffSuppressFunc: compareSelfLinkOrResourceName,
+													DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 												},
 											},
 										},
@@ -1003,14 +1006,14 @@ by Dataproc`,
 							AtLeastOneOf:     clusterConfigKeys,
 							MaxItems:         1,
 							Description:      `The autoscaling policy config associated with the cluster.`,
-							DiffSuppressFunc: EmptyOrUnsetBlockDiffSuppress,
+							DiffSuppressFunc: tpgresource.EmptyOrUnsetBlockDiffSuppress,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"policy_uri": {
 										Type:             schema.TypeString,
 										Required:         true,
 										Description:      `The autoscaling policy used by the cluster.`,
-										DiffSuppressFunc: LocationDiffSuppress,
+										DiffSuppressFunc: tpgresource.LocationDiffSuppress,
 									},
 								},
 							},
@@ -1062,7 +1065,7 @@ by Dataproc`,
 										Type:             schema.TypeString,
 										Optional:         true,
 										Description:      `The time when cluster will be auto-deleted. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".`,
-										DiffSuppressFunc: TimestampDiffSuppress(time.RFC3339Nano),
+										DiffSuppressFunc: tpgresource.TimestampDiffSuppress(time.RFC3339Nano),
 										AtLeastOneOf: []string{
 											"cluster_config.0.lifecycle_config.0.idle_delete_ttl",
 											"cluster_config.0.lifecycle_config.0.auto_delete_time",
@@ -1293,13 +1296,13 @@ func acceleratorsSchema() *schema.Resource {
 }
 
 func resourceDataprocClusterCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -1321,7 +1324,7 @@ func resourceDataprocClusterCreate(d *schema.ResourceData, meta interface{}) err
 	}
 
 	if _, ok := d.GetOk("labels"); ok {
-		cluster.Labels = expandLabels(d)
+		cluster.Labels = tpgresource.ExpandLabels(d)
 	}
 
 	// Checking here caters for the case where the user does not specify cluster_config
@@ -1353,7 +1356,7 @@ func resourceDataprocClusterCreate(d *schema.ResourceData, meta interface{}) err
 	return resourceDataprocClusterRead(d, meta)
 }
 
-func expandVirtualClusterConfig(d *schema.ResourceData, config *Config) (*dataproc.VirtualClusterConfig, error) {
+func expandVirtualClusterConfig(d *schema.ResourceData, config *transport_tpg.Config) (*dataproc.VirtualClusterConfig, error) {
 	conf := &dataproc.VirtualClusterConfig{}
 
 	if v, ok := d.GetOk("virtual_cluster_config"); ok {
@@ -1535,7 +1538,7 @@ func expandGkeNodePoolAutoscalingConfig(cfg map[string]interface{}) *dataproc.Gk
 	return conf
 }
 
-func expandClusterConfig(d *schema.ResourceData, config *Config) (*dataproc.ClusterConfig, error) {
+func expandClusterConfig(d *schema.ResourceData, config *transport_tpg.Config) (*dataproc.ClusterConfig, error) {
 	conf := &dataproc.ClusterConfig{
 		// SDK requires GceClusterConfig to be specified,
 		// even if no explicit values specified
@@ -1616,7 +1619,7 @@ func expandClusterConfig(d *schema.ResourceData, config *Config) (*dataproc.Clus
 	return conf, nil
 }
 
-func expandGceClusterConfig(d *schema.ResourceData, config *Config) (*dataproc.GceClusterConfig, error) {
+func expandGceClusterConfig(d *schema.ResourceData, config *transport_tpg.Config) (*dataproc.GceClusterConfig, error) {
 	conf := &dataproc.GceClusterConfig{}
 
 	v, ok := d.GetOk("cluster_config.0.gce_cluster_config")
@@ -1629,7 +1632,7 @@ func expandGceClusterConfig(d *schema.ResourceData, config *Config) (*dataproc.G
 		conf.ZoneUri = v.(string)
 	}
 	if v, ok := cfg["network"]; ok {
-		nf, err := ParseNetworkFieldValue(v.(string), d, config)
+		nf, err := tpgresource.ParseNetworkFieldValue(v.(string), d, config)
 		if err != nil {
 			return nil, fmt.Errorf("cannot determine self_link for network %q: %s", v, err)
 		}
@@ -1637,7 +1640,7 @@ func expandGceClusterConfig(d *schema.ResourceData, config *Config) (*dataproc.G
 		conf.NetworkUri = nf.RelativeLink()
 	}
 	if v, ok := cfg["subnetwork"]; ok {
-		snf, err := ParseSubnetworkFieldValue(v.(string), d, config)
+		snf, err := tpgresource.ParseSubnetworkFieldValue(v.(string), d, config)
 		if err != nil {
 			return nil, fmt.Errorf("cannot determine self_link for subnetwork %q: %s", v, err)
 		}
@@ -1654,7 +1657,7 @@ func expandGceClusterConfig(d *schema.ResourceData, config *Config) (*dataproc.G
 		scopesSet := scopes.(*schema.Set)
 		scopes := make([]string, scopesSet.Len())
 		for i, scope := range scopesSet.List() {
-			scopes[i] = canonicalizeServiceScope(scope.(string))
+			scopes[i] = tpgresource.CanonicalizeServiceScope(scope.(string))
 		}
 		conf.ServiceAccountScopes = scopes
 	}
@@ -1896,7 +1899,7 @@ func expandInstanceGroupConfig(cfg map[string]interface{}) *dataproc.InstanceGro
 		icg.NumInstances = int64(v.(int))
 	}
 	if v, ok := cfg["machine_type"]; ok {
-		icg.MachineTypeUri = GetResourceNameFromSelfLink(v.(string))
+		icg.MachineTypeUri = tpgresource.GetResourceNameFromSelfLink(v.(string))
 	}
 	if v, ok := cfg["min_cpu_platform"]; ok {
 		icg.MinCpuPlatform = v.(string)
@@ -1943,13 +1946,13 @@ func expandAccelerators(configured []interface{}) []*dataproc.AcceleratorConfig 
 }
 
 func resourceDataprocClusterUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -2050,13 +2053,13 @@ func resourceDataprocClusterUpdate(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceDataprocClusterRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
@@ -2067,7 +2070,7 @@ func resourceDataprocClusterRead(d *schema.ResourceData, meta interface{}) error
 	cluster, err := config.NewDataprocClient(userAgent).Projects.Regions.Clusters.Get(
 		project, region, clusterName).Do()
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("Dataproc Cluster %q", clusterName))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Dataproc Cluster %q", clusterName))
 	}
 
 	if err := d.Set("name", cluster.ClusterName); err != nil {
@@ -2386,7 +2389,7 @@ func flattenAccelerators(accelerators []*dataproc.AcceleratorConfig) interface{}
 	acceleratorsTypeSet := schema.NewSet(schema.HashResource(acceleratorsSchema()), []interface{}{})
 	for _, accelerator := range accelerators {
 		data := map[string]interface{}{
-			"accelerator_type":  GetResourceNameFromSelfLink(accelerator.AcceleratorTypeUri),
+			"accelerator_type":  tpgresource.GetResourceNameFromSelfLink(accelerator.AcceleratorTypeUri),
 			"accelerator_count": int(accelerator.AcceleratorCount),
 		}
 
@@ -2422,7 +2425,7 @@ func flattenGceClusterConfig(d *schema.ResourceData, gcc *dataproc.GceClusterCon
 	gceConfig := map[string]interface{}{
 		"tags":             schema.NewSet(schema.HashString, convertStringArrToInterface(gcc.Tags)),
 		"service_account":  gcc.ServiceAccount,
-		"zone":             GetResourceNameFromSelfLink(gcc.ZoneUri),
+		"zone":             tpgresource.GetResourceNameFromSelfLink(gcc.ZoneUri),
 		"internal_ip_only": gcc.InternalIpOnly,
 		"metadata":         gcc.Metadata,
 	}
@@ -2434,7 +2437,7 @@ func flattenGceClusterConfig(d *schema.ResourceData, gcc *dataproc.GceClusterCon
 		gceConfig["subnetwork"] = gcc.SubnetworkUri
 	}
 	if len(gcc.ServiceAccountScopes) > 0 {
-		gceConfig["service_account_scopes"] = schema.NewSet(stringScopeHashcode, convertStringArrToInterface(gcc.ServiceAccountScopes))
+		gceConfig["service_account_scopes"] = schema.NewSet(tpgresource.StringScopeHashcode, convertStringArrToInterface(gcc.ServiceAccountScopes))
 	}
 	if gcc.ShieldedInstanceConfig != nil {
 		gceConfig["shielded_instance_config"] = []map[string]interface{}{
@@ -2506,7 +2509,7 @@ func flattenInstanceGroupConfig(d *schema.ResourceData, icg *dataproc.InstanceGr
 
 	if icg != nil {
 		data["num_instances"] = icg.NumInstances
-		data["machine_type"] = GetResourceNameFromSelfLink(icg.MachineTypeUri)
+		data["machine_type"] = tpgresource.GetResourceNameFromSelfLink(icg.MachineTypeUri)
 		data["min_cpu_platform"] = icg.MinCpuPlatform
 		data["image_uri"] = icg.ImageUri
 		data["instance_names"] = icg.InstanceNames
@@ -2532,13 +2535,13 @@ func extractInitTimeout(t string) (int, error) {
 }
 
 func resourceDataprocClusterDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}

@@ -328,6 +328,15 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - key: diskRef
+          tfField: async_primary_disk.disk
+          description: |-
+            Immutable. Primary disk for asynchronous disk replication.
+          gvk:
+            kind: ComputeDisk
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project
@@ -1467,6 +1476,15 @@ spec:
           key: sourceDiskRef
           description: |-
             The source disk used to create this disk.
+          gvk:
+            kind: ComputeDisk
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - key: diskRef
+          tfField: async_primary_disk.disk
+          description: |-
+            Immutable. Primary disk for asynchronous disk replication.
           gvk:
             kind: ComputeDisk
             version: v1beta1

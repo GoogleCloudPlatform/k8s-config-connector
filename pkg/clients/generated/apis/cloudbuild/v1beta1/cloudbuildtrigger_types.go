@@ -170,6 +170,13 @@ type TriggerGitFileSource struct {
 	Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"]. */
 	RepoType string `json:"repoType"`
 
+	/* Only `external` field is supported to configure the reference.
+
+	The fully qualified resource name of the Repo API repository. The fully qualified resource name of the Repo API repository.
+	If unspecified, the repo from which the trigger invocation originated is assumed to be the repo from which to read the specified path. */
+	// +optional
+	RepositoryRef *v1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
+
 	/* The branch, tag, arbitrary ref, or SHA version of the repo to use when resolving the
 	filename (optional). This field respects the same syntax/resolution as described here: https://git-scm.com/docs/gitrevisions
 	If unspecified, the revision from which the trigger invocation originated is assumed to be the revision from which to read the specified path. */
@@ -457,11 +464,35 @@ type TriggerSourceToBuild struct {
 	Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"]. */
 	RepoType string `json:"repoType"`
 
-	/* The URI of the repo (required). */
-	Uri string `json:"uri"`
+	/* Only `external` field is supported to configure the reference.
+
+	The qualified resource name of the Repo API repository.
+	Either uri or repository can be specified and is required. */
+	// +optional
+	RepositoryRef *v1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
+
+	/* The URI of the repo. */
+	// +optional
+	Uri *string `json:"uri,omitempty"`
 }
 
 type TriggerStep struct {
+	/* Allow this build step to fail without failing the entire build if and
+	only if the exit code is one of the specified codes.
+
+	If 'allowFailure' is also specified, this field will take precedence. */
+	// +optional
+	AllowExitCodes []int `json:"allowExitCodes,omitempty"`
+
+	/* Allow this build step to fail without failing the entire build.
+	If false, the entire build will fail if this step fails. Otherwise, the
+	build will succeed, but this step will still have a failure status.
+	Error information will be reported in the 'failureDetail' field.
+
+	'allowExitCodes' takes precedence over this field. */
+	// +optional
+	AllowFailure *bool `json:"allowFailure,omitempty"`
+
 	/* A list of arguments that will be presented to the step when it is started.
 
 	If the image used to run the step's container has an entrypoint, the args

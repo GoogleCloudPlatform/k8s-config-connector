@@ -181,7 +181,7 @@ vpnInterfaces:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The stack type for this VPN gateway to identify the IP protocols that are enbaled.
+            <p>{% verbatim %}Immutable. The stack type for this VPN gateway to identify the IP protocols that are enabled.
 If not specified, IPV4_ONLY will be used. Default value: "IPV4_ONLY" Possible values: ["IPV4_ONLY", "IPV4_IPV6"].{% endverbatim %}</p>
         </td>
     </tr>

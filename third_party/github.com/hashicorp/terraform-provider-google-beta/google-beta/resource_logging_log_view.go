@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceLoggingLogView() *schema.Resource {
@@ -46,14 +49,14 @@ func ResourceLoggingLogView() *schema.Resource {
 				Type:             schema.TypeString,
 				Required:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareResourceNames,
+				DiffSuppressFunc: tpgresource.CompareResourceNames,
 				Description:      `The bucket of the resource`,
 			},
 			"name": {
 				Type:             schema.TypeString,
 				Required:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareResourceNames,
+				DiffSuppressFunc: tpgresource.CompareResourceNames,
 				Description:      `The resource name of the view. For example: \'projects/my-project/locations/global/buckets/my-bucket/views/my-view\'`,
 			},
 			"description": {
@@ -78,7 +81,7 @@ func ResourceLoggingLogView() *schema.Resource {
 				Computed:         true,
 				Optional:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description:      `The parent of the resource.`,
 			},
 			"create_time": {
@@ -97,8 +100,8 @@ func ResourceLoggingLogView() *schema.Resource {
 }
 
 func resourceLoggingLogViewCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -107,19 +110,19 @@ func resourceLoggingLogViewCreate(d *schema.ResourceData, meta interface{}) erro
 	nameProp, err := expandLoggingLogViewName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	descriptionProp, err := expandLoggingLogViewDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	filterProp, err := expandLoggingLogViewFilter(d.Get("filter"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("filter"); !isEmptyValue(reflect.ValueOf(filterProp)) && (ok || !reflect.DeepEqual(v, filterProp)) {
+	} else if v, ok := d.GetOkExists("filter"); !tpgresource.IsEmptyValue(reflect.ValueOf(filterProp)) && (ok || !reflect.DeepEqual(v, filterProp)) {
 		obj["filter"] = filterProp
 	}
 
@@ -128,7 +131,7 @@ func resourceLoggingLogViewCreate(d *schema.ResourceData, meta interface{}) erro
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{LoggingBasePath}}{{parent}}/locations/{{location}}/buckets/{{bucket}}/views?viewId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{LoggingBasePath}}{{parent}}/locations/{{location}}/buckets/{{bucket}}/views?viewId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -137,17 +140,17 @@ func resourceLoggingLogViewCreate(d *schema.ResourceData, meta interface{}) erro
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating LogView: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -159,13 +162,13 @@ func resourceLoggingLogViewCreate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceLoggingLogViewRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{LoggingBasePath}}{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{LoggingBasePath}}{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -173,13 +176,13 @@ func resourceLoggingLogViewRead(d *schema.ResourceData, meta interface{}) error 
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("LoggingLogView %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("LoggingLogView %q", d.Id()))
 	}
 
 	if err := d.Set("description", flattenLoggingLogViewDescription(res["description"], d, config)); err != nil {
@@ -199,8 +202,8 @@ func resourceLoggingLogViewRead(d *schema.ResourceData, meta interface{}) error 
 }
 
 func resourceLoggingLogViewUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -211,13 +214,13 @@ func resourceLoggingLogViewUpdate(d *schema.ResourceData, meta interface{}) erro
 	descriptionProp, err := expandLoggingLogViewDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	filterProp, err := expandLoggingLogViewFilter(d.Get("filter"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("filter"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, filterProp)) {
+	} else if v, ok := d.GetOkExists("filter"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, filterProp)) {
 		obj["filter"] = filterProp
 	}
 
@@ -226,7 +229,7 @@ func resourceLoggingLogViewUpdate(d *schema.ResourceData, meta interface{}) erro
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{LoggingBasePath}}{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{LoggingBasePath}}{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -243,17 +246,17 @@ func resourceLoggingLogViewUpdate(d *schema.ResourceData, meta interface{}) erro
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating LogView %q: %s", d.Id(), err)
@@ -265,15 +268,15 @@ func resourceLoggingLogViewUpdate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceLoggingLogViewDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{LoggingBasePath}}{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{LoggingBasePath}}{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -282,13 +285,13 @@ func resourceLoggingLogViewDelete(d *schema.ResourceData, meta interface{}) erro
 	log.Printf("[DEBUG] Deleting LogView %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "LogView")
+		return transport_tpg.HandleNotFoundError(err, d, "LogView")
 	}
 
 	log.Printf("[DEBUG] Finished deleting LogView %q: %#v", d.Id(), res)
@@ -296,7 +299,7 @@ func resourceLoggingLogViewDelete(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceLoggingLogViewImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"(?P<parent>.+)/locations/(?P<location>[^/]+)/buckets/(?P<bucket>[^/]+)/views/(?P<name>[^/]+)",
 	}, d, config); err != nil {
@@ -304,7 +307,7 @@ func resourceLoggingLogViewImport(d *schema.ResourceData, meta interface{}) ([]*
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -313,31 +316,31 @@ func resourceLoggingLogViewImport(d *schema.ResourceData, meta interface{}) ([]*
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenLoggingLogViewDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenLoggingLogViewDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenLoggingLogViewCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenLoggingLogViewCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenLoggingLogViewUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenLoggingLogViewUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenLoggingLogViewFilter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenLoggingLogViewFilter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandLoggingLogViewName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandLoggingLogViewName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandLoggingLogViewDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandLoggingLogViewDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandLoggingLogViewFilter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandLoggingLogViewFilter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
@@ -357,9 +360,9 @@ func resourceLoggingLogViewEncoder(d *schema.ResourceData, meta interface{}, obj
 	// Set parent to the extracted value.
 	d.Set("parent", parent)
 	// Set all the other fields to their short forms before forming url and setting ID.
-	bucket = GetResourceNameFromSelfLink(bucket)
+	bucket = tpgresource.GetResourceNameFromSelfLink(bucket)
 	name := d.Get("name").(string)
-	name = GetResourceNameFromSelfLink(name)
+	name = tpgresource.GetResourceNameFromSelfLink(name)
 	d.Set("location", location)
 	d.Set("bucket", bucket)
 	d.Set("name", name)

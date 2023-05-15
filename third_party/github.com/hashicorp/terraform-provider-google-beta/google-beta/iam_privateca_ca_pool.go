@@ -20,6 +20,9 @@ import (
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"google.golang.org/api/cloudresourcemanager/v1"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 var PrivatecaCaPoolIamSchema = map[string]*schema.Schema{
@@ -47,11 +50,11 @@ type PrivatecaCaPoolIamUpdater struct {
 	project  string
 	location string
 	caPool   string
-	d        TerraformResourceData
-	Config   *Config
+	d        tpgresource.TerraformResourceData
+	Config   *transport_tpg.Config
 }
 
-func PrivatecaCaPoolIamUpdaterProducer(d TerraformResourceData, config *Config) (ResourceIamUpdater, error) {
+func PrivatecaCaPoolIamUpdaterProducer(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
 	values := make(map[string]string)
 
 	project, _ := getProject(d, config)
@@ -103,7 +106,7 @@ func PrivatecaCaPoolIamUpdaterProducer(d TerraformResourceData, config *Config) 
 	return u, nil
 }
 
-func PrivatecaCaPoolIdParseFunc(d *schema.ResourceData, config *Config) error {
+func PrivatecaCaPoolIdParseFunc(d *schema.ResourceData, config *transport_tpg.Config) error {
 	values := make(map[string]string)
 
 	project, _ := getProject(d, config)
@@ -145,28 +148,28 @@ func (u *PrivatecaCaPoolIamUpdater) GetResourceIamPolicy() (*cloudresourcemanage
 		return nil, err
 	}
 
-	project, err := getProject(u.d, u.Config)
+	project, err := tpgresource.GetProject(u.d, u.Config)
 	if err != nil {
 		return nil, err
 	}
 	var obj map[string]interface{}
-	url, err = AddQueryParams(url, map[string]string{"options.requestedPolicyVersion": fmt.Sprintf("%d", IamPolicyVersion)})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"options.requestedPolicyVersion": fmt.Sprintf("%d", IamPolicyVersion)})
 	if err != nil {
 		return nil, err
 	}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
 
-	policy, err := SendRequest(u.Config, "GET", project, url, userAgent, obj)
+	policy, err := transport_tpg.SendRequest(u.Config, "GET", project, url, userAgent, obj)
 	if err != nil {
 		return nil, errwrap.Wrapf(fmt.Sprintf("Error retrieving IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
 
 	out := &cloudresourcemanager.Policy{}
-	err = Convert(policy, out)
+	err = tpgresource.Convert(policy, out)
 	if err != nil {
 		return nil, errwrap.Wrapf("Cannot convert a policy to a resource manager policy: {{err}}", err)
 	}
@@ -175,7 +178,7 @@ func (u *PrivatecaCaPoolIamUpdater) GetResourceIamPolicy() (*cloudresourcemanage
 }
 
 func (u *PrivatecaCaPoolIamUpdater) SetResourceIamPolicy(policy *cloudresourcemanager.Policy) error {
-	json, err := ConvertToMap(policy)
+	json, err := tpgresource.ConvertToMap(policy)
 	if err != nil {
 		return err
 	}
@@ -187,17 +190,17 @@ func (u *PrivatecaCaPoolIamUpdater) SetResourceIamPolicy(policy *cloudresourcema
 	if err != nil {
 		return err
 	}
-	project, err := getProject(u.d, u.Config)
+	project, err := tpgresource.GetProject(u.d, u.Config)
 	if err != nil {
 		return err
 	}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	_, err = SendRequestWithTimeout(u.Config, "POST", project, url, userAgent, obj, u.d.Timeout(schema.TimeoutCreate))
+	_, err = transport_tpg.SendRequestWithTimeout(u.Config, "POST", project, url, userAgent, obj, u.d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return errwrap.Wrapf(fmt.Sprintf("Error setting IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
@@ -207,7 +210,7 @@ func (u *PrivatecaCaPoolIamUpdater) SetResourceIamPolicy(policy *cloudresourcema
 
 func (u *PrivatecaCaPoolIamUpdater) qualifyCaPoolUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{PrivatecaBasePath}}%s:%s", fmt.Sprintf("projects/%s/locations/%s/caPools/%s", u.project, u.location, u.caPool), methodIdentifier)
-	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
+	url, err := tpgresource.ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

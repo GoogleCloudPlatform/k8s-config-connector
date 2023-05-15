@@ -4,17 +4,19 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceGoogleComputeForwardingRule() *schema.Resource {
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceComputeForwardingRule().Schema)
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceComputeForwardingRule().Schema)
 
 	// Set 'Required' schema elements
-	addRequiredFieldsToSchema(dsSchema, "name")
+	tpgresource.AddRequiredFieldsToSchema(dsSchema, "name")
 
 	// Set 'Optional' schema elements
-	addOptionalFieldsToSchema(dsSchema, "project")
-	addOptionalFieldsToSchema(dsSchema, "region")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "project")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "region")
 
 	return &schema.Resource{
 		Read:   dataSourceGoogleComputeForwardingRuleRead,
@@ -23,16 +25,16 @@ func DataSourceGoogleComputeForwardingRule() *schema.Resource {
 }
 
 func dataSourceGoogleComputeForwardingRuleRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	name := d.Get("name").(string)
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}
 
-	region, err := getRegion(d, config)
+	region, err := tpgresource.GetRegion(d, config)
 	if err != nil {
 		return err
 	}

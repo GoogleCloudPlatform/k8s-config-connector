@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccIdentityPlatformInboundSamlConfig_identityPlatformInboundSamlConfigBasicExample(t *testing.T) {
@@ -32,7 +36,7 @@ func TestAccIdentityPlatformInboundSamlConfig_identityPlatformInboundSamlConfigB
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIdentityPlatformInboundSamlConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -82,7 +86,7 @@ func testAccCheckIdentityPlatformInboundSamlConfigDestroyProducer(t *testing.T) 
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{IdentityPlatformBasePath}}projects/{{project}}/inboundSamlConfigs/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{IdentityPlatformBasePath}}projects/{{project}}/inboundSamlConfigs/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -93,7 +97,7 @@ func testAccCheckIdentityPlatformInboundSamlConfigDestroyProducer(t *testing.T) 
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("IdentityPlatformInboundSamlConfig still exists at %s", url)
 			}

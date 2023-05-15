@@ -135,6 +135,9 @@ load:
   jsonExtension: string
   maxBadRecords: integer
   nullMarker: string
+  parquetOptions:
+    enableListInference: boolean
+    enumAsString: boolean
   projectionFields:
   - string
   quote: string
@@ -794,6 +797,36 @@ an invalid error is returned in the job result. The default value is 0, which re
 when loading a CSV file. The default value is the empty string. If you set this property to a custom value, BigQuery throws an error if an
 empty string is present for all data types except for STRING and BYTE. For STRING and BYTE columns, BigQuery interprets the empty string as
 an empty value.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>load.parquetOptions</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Parquet Options for load and make external tables.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>load.parquetOptions.enableListInference</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. If sourceFormat is set to PARQUET, indicates whether to use schema inference specifically for Parquet LIST logical type.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>load.parquetOptions.enumAsString</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. If sourceFormat is set to PARQUET, indicates whether to infer Parquet ENUM logical type as STRING instead of BYTES by default.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

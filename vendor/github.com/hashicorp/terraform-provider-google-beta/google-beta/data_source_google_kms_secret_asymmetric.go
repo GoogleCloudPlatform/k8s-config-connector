@@ -10,6 +10,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 	"google.golang.org/api/cloudkms/v1"
 )
 
@@ -24,7 +27,7 @@ func DataSourceGoogleKmsSecretAsymmetric() *schema.Resource {
 			"crypto_key_version": {
 				Type:         schema.TypeString,
 				Description:  "The fully qualified KMS crypto key version name",
-				ValidateFunc: validateRegexp(cryptoKeyVersionRegexp.String()),
+				ValidateFunc: verify.ValidateRegexp(cryptoKeyVersionRegexp.String()),
 				Required:     true,
 			},
 			"ciphertext": {
@@ -59,8 +62,8 @@ func dataSourceGoogleKmsSecretAsymmetricReadContext(ctx context.Context, d *sche
 }
 
 func dataSourceGoogleKmsSecretAsymmetricRead(ctx context.Context, d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

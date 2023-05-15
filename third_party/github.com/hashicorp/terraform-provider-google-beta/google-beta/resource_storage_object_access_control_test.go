@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
@@ -22,7 +24,7 @@ func TestAccStorageObjectAccessControl_update(t *testing.T) {
 			if errObjectAcl != nil {
 				panic(errObjectAcl)
 			}
-			AccTestPreCheck(t)
+			acctest.AccTestPreCheck(t)
 		},
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckStorageObjectAccessControlDestroyProducer(t),
@@ -61,7 +63,7 @@ func TestAccStorageObjectAccessControl_updateWithSlashes(t *testing.T) {
 			if errObjectAcl != nil {
 				panic(errObjectAcl)
 			}
-			AccTestPreCheck(t)
+			acctest.AccTestPreCheck(t)
 		},
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckStorageObjectAccessControlDestroyProducer(t),

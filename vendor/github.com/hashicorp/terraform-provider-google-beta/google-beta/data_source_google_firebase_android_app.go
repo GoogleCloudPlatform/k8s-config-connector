@@ -4,17 +4,19 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceGoogleFirebaseAndroidApp() *schema.Resource {
 	// Generate datasource schema from resource
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceFirebaseAndroidApp().Schema)
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceFirebaseAndroidApp().Schema)
 
 	// Set 'Required' schema elements
-	addRequiredFieldsToSchema(dsSchema, "app_id")
+	tpgresource.AddRequiredFieldsToSchema(dsSchema, "app_id")
 
 	// Allow specifying a project
-	addOptionalFieldsToSchema(dsSchema, "project")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "project")
 
 	return &schema.Resource{
 		Read:   dataSourceGoogleFirebaseAndroidAppRead,
@@ -23,9 +25,9 @@ func DataSourceGoogleFirebaseAndroidApp() *schema.Resource {
 }
 
 func dataSourceGoogleFirebaseAndroidAppRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	appId := d.Get("app_id")
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}

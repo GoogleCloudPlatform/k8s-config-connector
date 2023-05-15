@@ -23,6 +23,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceSecurityCenterMuteConfig() *schema.Resource {
@@ -105,8 +108,8 @@ provided on config creation or update.`,
 }
 
 func resourceSecurityCenterMuteConfigCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -115,17 +118,17 @@ func resourceSecurityCenterMuteConfigCreate(d *schema.ResourceData, meta interfa
 	descriptionProp, err := expandSecurityCenterMuteConfigDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	filterProp, err := expandSecurityCenterMuteConfigFilter(d.Get("filter"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("filter"); !isEmptyValue(reflect.ValueOf(filterProp)) && (ok || !reflect.DeepEqual(v, filterProp)) {
+	} else if v, ok := d.GetOkExists("filter"); !tpgresource.IsEmptyValue(reflect.ValueOf(filterProp)) && (ok || !reflect.DeepEqual(v, filterProp)) {
 		obj["filter"] = filterProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{parent}}/muteConfigs?muteConfigId={{mute_config_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{parent}}/muteConfigs?muteConfigId={{mute_config_id}}")
 	if err != nil {
 		return err
 	}
@@ -134,11 +137,11 @@ func resourceSecurityCenterMuteConfigCreate(d *schema.ResourceData, meta interfa
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating MuteConfig: %s", err)
 	}
@@ -147,7 +150,7 @@ func resourceSecurityCenterMuteConfigCreate(d *schema.ResourceData, meta interfa
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -159,13 +162,13 @@ func resourceSecurityCenterMuteConfigCreate(d *schema.ResourceData, meta interfa
 }
 
 func resourceSecurityCenterMuteConfigRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -173,13 +176,13 @@ func resourceSecurityCenterMuteConfigRead(d *schema.ResourceData, meta interface
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("SecurityCenterMuteConfig %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("SecurityCenterMuteConfig %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenSecurityCenterMuteConfigName(res["name"], d, config)); err != nil {
@@ -205,8 +208,8 @@ func resourceSecurityCenterMuteConfigRead(d *schema.ResourceData, meta interface
 }
 
 func resourceSecurityCenterMuteConfigUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -217,17 +220,17 @@ func resourceSecurityCenterMuteConfigUpdate(d *schema.ResourceData, meta interfa
 	descriptionProp, err := expandSecurityCenterMuteConfigDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	filterProp, err := expandSecurityCenterMuteConfigFilter(d.Get("filter"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("filter"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, filterProp)) {
+	} else if v, ok := d.GetOkExists("filter"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, filterProp)) {
 		obj["filter"] = filterProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -244,17 +247,17 @@ func resourceSecurityCenterMuteConfigUpdate(d *schema.ResourceData, meta interfa
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating MuteConfig %q: %s", d.Id(), err)
@@ -266,15 +269,15 @@ func resourceSecurityCenterMuteConfigUpdate(d *schema.ResourceData, meta interfa
 }
 
 func resourceSecurityCenterMuteConfigDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SecurityCenterBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -283,13 +286,13 @@ func resourceSecurityCenterMuteConfigDelete(d *schema.ResourceData, meta interfa
 	log.Printf("[DEBUG] Deleting MuteConfig %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "MuteConfig")
+		return transport_tpg.HandleNotFoundError(err, d, "MuteConfig")
 	}
 
 	log.Printf("[DEBUG] Finished deleting MuteConfig %q: %#v", d.Id(), res)
@@ -297,7 +300,7 @@ func resourceSecurityCenterMuteConfigDelete(d *schema.ResourceData, meta interfa
 }
 
 func resourceSecurityCenterMuteConfigImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
 		return nil, err
@@ -333,34 +336,34 @@ func resourceSecurityCenterMuteConfigImport(d *schema.ResourceData, meta interfa
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenSecurityCenterMuteConfigName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterMuteConfigName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecurityCenterMuteConfigDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterMuteConfigDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecurityCenterMuteConfigFilter(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterMuteConfigFilter(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecurityCenterMuteConfigCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterMuteConfigCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecurityCenterMuteConfigUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterMuteConfigUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSecurityCenterMuteConfigMostRecentEditor(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSecurityCenterMuteConfigMostRecentEditor(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandSecurityCenterMuteConfigDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSecurityCenterMuteConfigDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandSecurityCenterMuteConfigFilter(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSecurityCenterMuteConfigFilter(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

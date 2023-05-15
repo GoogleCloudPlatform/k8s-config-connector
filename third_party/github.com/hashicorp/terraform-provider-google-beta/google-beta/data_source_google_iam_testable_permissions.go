@@ -6,6 +6,8 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceGoogleIamTestablePermissions() *schema.Resource {
@@ -63,8 +65,8 @@ func DataSourceGoogleIamTestablePermissions() *schema.Resource {
 }
 
 func dataSourceGoogleIamTestablePermissionsRead(d *schema.ResourceData, meta interface{}) (err error) {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -85,7 +87,7 @@ func dataSourceGoogleIamTestablePermissionsRead(d *schema.ResourceData, meta int
 	for {
 		url := "https://iam.googleapis.com/v1/permissions:queryTestablePermissions"
 		body["fullResourceName"] = d.Get("full_resource_name").(string)
-		res, err := SendRequest(config, "POST", "", url, userAgent, body)
+		res, err := transport_tpg.SendRequest(config, "POST", "", url, userAgent, body)
 		if err != nil {
 			return fmt.Errorf("Error retrieving permissions: %s", err)
 		}

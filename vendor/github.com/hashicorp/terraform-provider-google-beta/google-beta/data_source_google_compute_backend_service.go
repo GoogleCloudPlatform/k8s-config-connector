@@ -4,16 +4,18 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceGoogleComputeBackendService() *schema.Resource {
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceComputeBackendService().Schema)
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceComputeBackendService().Schema)
 
 	// Set 'Required' schema elements
-	addRequiredFieldsToSchema(dsSchema, "name")
+	tpgresource.AddRequiredFieldsToSchema(dsSchema, "name")
 
 	// Set 'Optional' schema elements
-	addOptionalFieldsToSchema(dsSchema, "project")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "project")
 
 	return &schema.Resource{
 		Read:   dataSourceComputeBackendServiceRead,
@@ -22,11 +24,11 @@ func DataSourceGoogleComputeBackendService() *schema.Resource {
 }
 
 func dataSourceComputeBackendServiceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	serviceName := d.Get("name").(string)
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return err
 	}

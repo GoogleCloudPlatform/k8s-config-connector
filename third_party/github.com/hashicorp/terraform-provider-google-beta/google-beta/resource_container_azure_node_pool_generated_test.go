@@ -24,6 +24,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccContainerAzureNodePool_BasicHandWritten(t *testing.T) {
@@ -35,13 +38,13 @@ func TestAccContainerAzureNodePool_BasicHandWritten(t *testing.T) {
 		"azure_sub":           "00000000-0000-0000-0000-17aad2f0f61f",
 		"azure_tenant":        "00000000-0000-0000-0000-17aad2f0f61f",
 		"byo_prefix":          "mmv2",
-		"project_name":        GetTestProjectFromEnv(),
-		"project_number":      GetTestProjectNumberFromEnv(),
+		"project_name":        acctest.GetTestProjectFromEnv(),
+		"project_number":      acctest.GetTestProjectNumberFromEnv(),
 		"random_suffix":       RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckContainerAzureNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -73,13 +76,13 @@ func TestAccContainerAzureNodePool_BetaBasicHandWritten(t *testing.T) {
 		"azure_sub":           "00000000-0000-0000-0000-17aad2f0f61f",
 		"azure_tenant":        "00000000-0000-0000-0000-17aad2f0f61f",
 		"byo_prefix":          "mmv2",
-		"project_name":        GetTestProjectFromEnv(),
-		"project_number":      GetTestProjectNumberFromEnv(),
+		"project_name":        acctest.GetTestProjectFromEnv(),
+		"project_number":      acctest.GetTestProjectNumberFromEnv(),
 		"random_suffix":       RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
+		PreCheck: func() { acctest.AccTestPreCheck(t) },
 
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckContainerAzureNodePoolDestroyProducer(t),
@@ -555,7 +558,7 @@ func testAccCheckContainerAzureNodePoolDestroyProducer(t *testing.T) func(s *ter
 				UpdateTime:            dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLContainerAzureClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLContainerAzureClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetNodePool(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_container_azure_node_pool still exists %v", obj)

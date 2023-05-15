@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceDataformRepository() *schema.Resource {
@@ -95,8 +98,8 @@ func ResourceDataformRepository() *schema.Resource {
 }
 
 func resourceDataformRepositoryCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -105,17 +108,17 @@ func resourceDataformRepositoryCreate(d *schema.ResourceData, meta interface{}) 
 	nameProp, err := expandDataformRepositoryName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	gitRemoteSettingsProp, err := expandDataformRepositoryGitRemoteSettings(d.Get("git_remote_settings"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("git_remote_settings"); !isEmptyValue(reflect.ValueOf(gitRemoteSettingsProp)) && (ok || !reflect.DeepEqual(v, gitRemoteSettingsProp)) {
+	} else if v, ok := d.GetOkExists("git_remote_settings"); !tpgresource.IsEmptyValue(reflect.ValueOf(gitRemoteSettingsProp)) && (ok || !reflect.DeepEqual(v, gitRemoteSettingsProp)) {
 		obj["gitRemoteSettings"] = gitRemoteSettingsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DataformBasePath}}projects/{{project}}/locations/{{region}}/repositories?repositoryId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DataformBasePath}}projects/{{project}}/locations/{{region}}/repositories?repositoryId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -123,24 +126,24 @@ func resourceDataformRepositoryCreate(d *schema.ResourceData, meta interface{}) 
 	log.Printf("[DEBUG] Creating new Repository: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Repository: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Repository: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/repositories/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/repositories/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -152,33 +155,33 @@ func resourceDataformRepositoryCreate(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceDataformRepositoryRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{DataformBasePath}}projects/{{project}}/locations/{{region}}/repositories/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DataformBasePath}}projects/{{project}}/locations/{{region}}/repositories/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Repository: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("DataformRepository %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("DataformRepository %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -196,15 +199,15 @@ func resourceDataformRepositoryRead(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceDataformRepositoryUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Repository: %s", err)
 	}
@@ -214,11 +217,11 @@ func resourceDataformRepositoryUpdate(d *schema.ResourceData, meta interface{}) 
 	gitRemoteSettingsProp, err := expandDataformRepositoryGitRemoteSettings(d.Get("git_remote_settings"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("git_remote_settings"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, gitRemoteSettingsProp)) {
+	} else if v, ok := d.GetOkExists("git_remote_settings"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, gitRemoteSettingsProp)) {
 		obj["gitRemoteSettings"] = gitRemoteSettingsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{DataformBasePath}}projects/{{project}}/locations/{{region}}/repositories/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DataformBasePath}}projects/{{project}}/locations/{{region}}/repositories/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -226,11 +229,11 @@ func resourceDataformRepositoryUpdate(d *schema.ResourceData, meta interface{}) 
 	log.Printf("[DEBUG] Updating Repository %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Repository %q: %s", d.Id(), err)
@@ -242,21 +245,21 @@ func resourceDataformRepositoryUpdate(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceDataformRepositoryDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Repository: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{DataformBasePath}}projects/{{project}}/locations/{{region}}/repositories/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{DataformBasePath}}projects/{{project}}/locations/{{region}}/repositories/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -265,13 +268,13 @@ func resourceDataformRepositoryDelete(d *schema.ResourceData, meta interface{}) 
 	log.Printf("[DEBUG] Deleting Repository %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Repository")
+		return transport_tpg.HandleNotFoundError(err, d, "Repository")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Repository %q: %#v", d.Id(), res)
@@ -279,7 +282,7 @@ func resourceDataformRepositoryDelete(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceDataformRepositoryImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/repositories/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)",
@@ -290,7 +293,7 @@ func resourceDataformRepositoryImport(d *schema.ResourceData, meta interface{}) 
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/repositories/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/repositories/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -299,14 +302,14 @@ func resourceDataformRepositoryImport(d *schema.ResourceData, meta interface{}) 
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenDataformRepositoryName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataformRepositoryName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func flattenDataformRepositoryGitRemoteSettings(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataformRepositoryGitRemoteSettings(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -325,27 +328,27 @@ func flattenDataformRepositoryGitRemoteSettings(v interface{}, d *schema.Resourc
 		flattenDataformRepositoryGitRemoteSettingsTokenStatus(original["tokenStatus"], d, config)
 	return []interface{}{transformed}
 }
-func flattenDataformRepositoryGitRemoteSettingsUrl(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataformRepositoryGitRemoteSettingsUrl(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataformRepositoryGitRemoteSettingsDefaultBranch(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataformRepositoryGitRemoteSettingsDefaultBranch(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataformRepositoryGitRemoteSettingsAuthenticationTokenSecretVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataformRepositoryGitRemoteSettingsAuthenticationTokenSecretVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenDataformRepositoryGitRemoteSettingsTokenStatus(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenDataformRepositoryGitRemoteSettingsTokenStatus(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandDataformRepositoryName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataformRepositoryName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataformRepositoryGitRemoteSettings(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataformRepositoryGitRemoteSettings(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -357,46 +360,46 @@ func expandDataformRepositoryGitRemoteSettings(v interface{}, d TerraformResourc
 	transformedUrl, err := expandDataformRepositoryGitRemoteSettingsUrl(original["url"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedUrl); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedUrl); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["url"] = transformedUrl
 	}
 
 	transformedDefaultBranch, err := expandDataformRepositoryGitRemoteSettingsDefaultBranch(original["default_branch"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDefaultBranch); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDefaultBranch); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["defaultBranch"] = transformedDefaultBranch
 	}
 
 	transformedAuthenticationTokenSecretVersion, err := expandDataformRepositoryGitRemoteSettingsAuthenticationTokenSecretVersion(original["authentication_token_secret_version"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedAuthenticationTokenSecretVersion); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedAuthenticationTokenSecretVersion); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["authenticationTokenSecretVersion"] = transformedAuthenticationTokenSecretVersion
 	}
 
 	transformedTokenStatus, err := expandDataformRepositoryGitRemoteSettingsTokenStatus(original["token_status"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTokenStatus); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTokenStatus); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["tokenStatus"] = transformedTokenStatus
 	}
 
 	return transformed, nil
 }
 
-func expandDataformRepositoryGitRemoteSettingsUrl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataformRepositoryGitRemoteSettingsUrl(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataformRepositoryGitRemoteSettingsDefaultBranch(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataformRepositoryGitRemoteSettingsDefaultBranch(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataformRepositoryGitRemoteSettingsAuthenticationTokenSecretVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataformRepositoryGitRemoteSettingsAuthenticationTokenSecretVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandDataformRepositoryGitRemoteSettingsTokenStatus(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandDataformRepositoryGitRemoteSettingsTokenStatus(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

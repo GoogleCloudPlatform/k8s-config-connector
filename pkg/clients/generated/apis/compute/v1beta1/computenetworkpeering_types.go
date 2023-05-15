@@ -59,6 +59,10 @@ type ComputeNetworkPeeringSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Which IP version(s) of traffic and routes are allowed to be imported or exported between peer networks. The default value is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"]. */
+	// +optional
+	StackType *string `json:"stackType,omitempty"`
 }
 
 type ComputeNetworkPeeringStatus struct {

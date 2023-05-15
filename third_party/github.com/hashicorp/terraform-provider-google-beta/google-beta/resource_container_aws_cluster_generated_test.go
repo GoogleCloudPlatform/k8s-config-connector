@@ -24,6 +24,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccContainerAwsCluster_BasicHandWritten(t *testing.T) {
@@ -38,14 +41,14 @@ func TestAccContainerAwsCluster_BasicHandWritten(t *testing.T) {
 		"aws_vol_key":    "00000000-0000-0000-0000-17aad2f0f61f",
 		"aws_vpc":        "vpc-0b3f63cb91b247628",
 		"byo_prefix":     "mmv2",
-		"project_name":   GetTestProjectFromEnv(),
-		"project_number": GetTestProjectNumberFromEnv(),
-		"service_acct":   GetTestServiceAccountFromEnv(t),
+		"project_name":   acctest.GetTestProjectFromEnv(),
+		"project_number": acctest.GetTestProjectNumberFromEnv(),
+		"service_acct":   acctest.GetTestServiceAccountFromEnv(t),
 		"random_suffix":  RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckContainerAwsClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -82,14 +85,14 @@ func TestAccContainerAwsCluster_BetaBasicHandWritten(t *testing.T) {
 		"aws_vol_key":    "00000000-0000-0000-0000-17aad2f0f61f",
 		"aws_vpc":        "vpc-0b3f63cb91b247628",
 		"byo_prefix":     "mmv2",
-		"project_name":   GetTestProjectFromEnv(),
-		"project_number": GetTestProjectNumberFromEnv(),
-		"service_acct":   GetTestServiceAccountFromEnv(t),
+		"project_name":   acctest.GetTestProjectFromEnv(),
+		"project_number": acctest.GetTestProjectNumberFromEnv(),
+		"service_acct":   acctest.GetTestServiceAccountFromEnv(t),
 		"random_suffix":  RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
+		PreCheck: func() { acctest.AccTestPreCheck(t) },
 
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckContainerAwsClusterDestroyProducer(t),
@@ -534,7 +537,7 @@ func testAccCheckContainerAwsClusterDestroyProducer(t *testing.T) func(s *terraf
 				UpdateTime:  dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLContainerAwsClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLContainerAwsClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetCluster(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_container_aws_cluster still exists %v", obj)

@@ -5,6 +5,8 @@ import (
 
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"google.golang.org/api/logging/v2"
 )
 
@@ -13,7 +15,7 @@ var FolderLoggingExclusionSchema = map[string]*schema.Schema{
 		Type:             schema.TypeString,
 		Required:         true,
 		ForceNew:         true,
-		DiffSuppressFunc: OptionalPrefixSuppress("folders/"),
+		DiffSuppressFunc: tpgresource.OptionalPrefixSuppress("folders/"),
 	},
 }
 
@@ -21,13 +23,12 @@ type FolderLoggingExclusionUpdater struct {
 	resourceType string
 	resourceId   string
 	userAgent    string
-	Config       *Config
+	Config       *transport_tpg.Config
 }
 
-func NewFolderLoggingExclusionUpdater(d *schema.ResourceData, config *Config) (ResourceLoggingExclusionUpdater, error) {
+func NewFolderLoggingExclusionUpdater(d *schema.ResourceData, config *transport_tpg.Config) (ResourceLoggingExclusionUpdater, error) {
 	folder := parseFolderId(d.Get("folder"))
-
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +41,7 @@ func NewFolderLoggingExclusionUpdater(d *schema.ResourceData, config *Config) (R
 	}, nil
 }
 
-func FolderLoggingExclusionIdParseFunc(d *schema.ResourceData, _ *Config) error {
+func FolderLoggingExclusionIdParseFunc(d *schema.ResourceData, _ *transport_tpg.Config) error {
 	loggingExclusionId, err := parseLoggingExclusionId(d.Id())
 	if err != nil {
 		return err

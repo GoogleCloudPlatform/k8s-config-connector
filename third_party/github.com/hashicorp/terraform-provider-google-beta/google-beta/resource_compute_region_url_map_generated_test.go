@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeRegionUrlMap_regionUrlMapBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccComputeRegionUrlMap_regionUrlMapBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionUrlMapDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -129,7 +133,7 @@ func TestAccComputeRegionUrlMap_regionUrlMapDefaultRouteActionExample(t *testing
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionUrlMapDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -328,7 +332,7 @@ func TestAccComputeRegionUrlMap_regionUrlMapL7IlbPathExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionUrlMapDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -459,7 +463,7 @@ func TestAccComputeRegionUrlMap_regionUrlMapL7IlbPathPartialExample(t *testing.T
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionUrlMapDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -558,7 +562,7 @@ func TestAccComputeRegionUrlMap_regionUrlMapL7IlbRouteExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionUrlMapDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -670,7 +674,7 @@ func TestAccComputeRegionUrlMap_regionUrlMapL7IlbRoutePartialExample(t *testing.
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionUrlMapDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -761,7 +765,7 @@ func testAccCheckComputeRegionUrlMapDestroyProducer(t *testing.T) func(s *terraf
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/urlMaps/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/urlMaps/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -772,7 +776,7 @@ func testAccCheckComputeRegionUrlMapDestroyProducer(t *testing.T) func(s *terraf
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("ComputeRegionUrlMap still exists at %s", url)
 			}

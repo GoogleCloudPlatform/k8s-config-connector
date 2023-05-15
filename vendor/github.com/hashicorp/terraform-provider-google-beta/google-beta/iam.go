@@ -10,6 +10,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/davecgh/go-spew/spew"
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -46,20 +49,20 @@ type (
 	}
 
 	// Factory for generating ResourceIamUpdater for given ResourceData resource
-	newResourceIamUpdaterFunc func(d TerraformResourceData, config *Config) (ResourceIamUpdater, error)
+	newResourceIamUpdaterFunc func(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error)
 
 	// Describes how to modify a policy for a given Terraform IAM (_policy/_member/_binding/_audit_config) resource
 	iamPolicyModifyFunc func(p *cloudresourcemanager.Policy) error
 
 	// Parser for Terraform resource identifier (d.Id) for resource whose IAM policy is being changed
-	resourceIdParserFunc func(d *schema.ResourceData, config *Config) error
+	resourceIdParserFunc func(d *schema.ResourceData, config *transport_tpg.Config) error
 )
 
 // Locking wrapper around read-only operation with retries.
 func iamPolicyReadWithRetry(updater ResourceIamUpdater) (*cloudresourcemanager.Policy, error) {
 	mutexKey := updater.GetMutexKey()
-	mutexKV.Lock(mutexKey)
-	defer mutexKV.Unlock(mutexKey)
+	transport_tpg.MutexStore.Lock(mutexKey)
+	defer transport_tpg.MutexStore.Unlock(mutexKey)
 
 	log.Printf("[DEBUG] Retrieving policy for %s\n", updater.DescribeResource())
 	var policy *cloudresourcemanager.Policy
@@ -77,14 +80,14 @@ func iamPolicyReadWithRetry(updater ResourceIamUpdater) (*cloudresourcemanager.P
 // Locking wrapper around read-modify-write cycle for IAM policy.
 func iamPolicyReadModifyWrite(updater ResourceIamUpdater, modify iamPolicyModifyFunc) error {
 	mutexKey := updater.GetMutexKey()
-	mutexKV.Lock(mutexKey)
-	defer mutexKV.Unlock(mutexKey)
+	transport_tpg.MutexStore.Lock(mutexKey)
+	defer transport_tpg.MutexStore.Unlock(mutexKey)
 
 	backoff := time.Second
 	for {
 		log.Printf("[DEBUG]: Retrieving policy for %s\n", updater.DescribeResource())
 		p, err := updater.GetResourceIamPolicy()
-		if IsGoogleApiErrorWithCode(err, 429) {
+		if transport_tpg.IsGoogleApiErrorWithCode(err, 429) {
 			log.Printf("[DEBUG] 429 while attempting to read policy for %s, waiting %v before attempting again", updater.DescribeResource(), backoff)
 			time.Sleep(backoff)
 			continue
@@ -111,7 +114,7 @@ func iamPolicyReadModifyWrite(updater ResourceIamUpdater, modify iamPolicyModify
 				new_p, err := updater.GetResourceIamPolicy()
 				if err != nil {
 					// Quota for Read is pretty limited, so watch out for running out of quota.
-					if IsGoogleApiErrorWithCode(err, 429) {
+					if transport_tpg.IsGoogleApiErrorWithCode(err, 429) {
 						fetchBackoff = fetchBackoff * 2
 					} else {
 						return err
@@ -140,7 +143,7 @@ func iamPolicyReadModifyWrite(updater ResourceIamUpdater, modify iamPolicyModify
 			}
 			break
 		}
-		if isConflictError(err) {
+		if tpgresource.IsConflictError(err) {
 			log.Printf("[DEBUG]: Concurrent policy changes, restarting read-modify-write after %s\n", backoff)
 			time.Sleep(backoff)
 			backoff = backoff * 2
@@ -152,7 +155,7 @@ func iamPolicyReadModifyWrite(updater ResourceIamUpdater, modify iamPolicyModify
 
 		// retry in the case that a service account is not found. This can happen when a service account is deleted
 		// out of band.
-		if isServiceAccountNotFoundError, _ := IamServiceAccountNotFound(err); isServiceAccountNotFoundError {
+		if isServiceAccountNotFoundError, _ := transport_tpg.IamServiceAccountNotFound(err); isServiceAccountNotFoundError {
 			// calling a retryable function within a retry loop is not
 			// strictly the _best_ idea, but this error only happens in
 			// high-traffic projects anyways

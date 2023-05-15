@@ -21,18 +21,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccCloudRunService_cloudRunServiceBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
+		"project":       acctest.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -80,7 +84,7 @@ func TestAccCloudRunService_cloudRunServiceSqlExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -138,12 +142,12 @@ func TestAccCloudRunService_cloudRunServiceNoauthExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
+		"project":       acctest.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -199,12 +203,12 @@ func TestAccCloudRunService_cloudRunServiceMultipleEnvironmentVariablesExample(t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
+		"project":       acctest.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -268,12 +272,12 @@ func TestAccCloudRunService_cloudRunServiceSecretEnvironmentVariablesExample(t *
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
+		"project":       acctest.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -362,12 +366,12 @@ func TestAccCloudRunService_cloudRunServiceSecretVolumesExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
+		"project":       acctest.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -463,13 +467,13 @@ func TestAccCloudRunService_cloudRunServiceProbesExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
+		"project":       acctest.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -488,15 +492,8 @@ func TestAccCloudRunService_cloudRunServiceProbesExample(t *testing.T) {
 func testAccCloudRunService_cloudRunServiceProbesExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_cloud_run_service" "default" {
-  provider = google-beta
-
   name     = "tf-test-cloudrun-srv%{random_suffix}"
   location = "us-central1"
-  metadata {
-    annotations = {
-      "run.googleapis.com/launch-stage" = "BETA"
-    }
-  }
 
   template {
     spec {
@@ -546,7 +543,7 @@ func testAccCheckCloudRunServiceDestroyProducer(t *testing.T) func(s *terraform.
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{CloudRunBasePath}}apis/serving.knative.dev/v1/namespaces/{{project}}/services/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CloudRunBasePath}}apis/serving.knative.dev/v1/namespaces/{{project}}/services/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -557,7 +554,7 @@ func testAccCheckCloudRunServiceDestroyProducer(t *testing.T) func(s *terraform.
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, IsCloudRunCreationConflict)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, transport_tpg.IsCloudRunCreationConflict)
 			if err == nil {
 				return fmt.Errorf("CloudRunService still exists at %s", url)
 			}

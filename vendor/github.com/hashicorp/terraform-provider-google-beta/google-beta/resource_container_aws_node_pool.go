@@ -25,6 +25,9 @@ import (
 
 	dcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	containeraws "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/containeraws/beta"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceContainerAwsNodePool() *schema.Resource {
@@ -261,6 +264,15 @@ func ContainerAwsNodePoolConfigSchema() *schema.Resource {
 				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 
+			"spot_config": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				ForceNew:    true,
+				Description: "Optional. When specified, the node pool will provision Spot instances from the set of spot_config.instance_types. This field is mutually exclusive with `instance_type`",
+				MaxItems:    1,
+				Elem:        ContainerAwsNodePoolConfigSpotConfigSchema(),
+			},
+
 			"ssh_config": {
 				Type:        schema.TypeList,
 				Optional:    true,
@@ -383,6 +395,20 @@ func ContainerAwsNodePoolConfigRootVolumeSchema() *schema.Resource {
 	}
 }
 
+func ContainerAwsNodePoolConfigSpotConfigSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"instance_types": {
+				Type:        schema.TypeList,
+				Required:    true,
+				ForceNew:    true,
+				Description: "List of AWS EC2 instance types for creating a spot node pool's nodes. The specified instance types must have the same number of CPUs and memory. You can use the Amazon EC2 Instance Selector tool (https://github.com/aws/amazon-ec2-instance-selector) to choose instance types with matching CPU and memory",
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+		},
+	}
+}
+
 func ContainerAwsNodePoolConfigSshConfigSchema() *schema.Resource {
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
@@ -436,7 +462,7 @@ func ContainerAwsNodePoolMaxPodsConstraintSchema() *schema.Resource {
 }
 
 func resourceContainerAwsNodePoolCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -461,17 +487,17 @@ func resourceContainerAwsNodePoolCreate(d *schema.ResourceData, meta interface{}
 	}
 	d.SetId(id)
 	directive := CreateDirective
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := project
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLContainerAwsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutCreate))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLContainerAwsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutCreate))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -493,7 +519,7 @@ func resourceContainerAwsNodePoolCreate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceContainerAwsNodePoolRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -512,17 +538,17 @@ func resourceContainerAwsNodePoolRead(d *schema.ResourceData, meta interface{}) 
 		Project:           dcl.String(project),
 	}
 
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := project
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLContainerAwsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutRead))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLContainerAwsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutRead))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -586,7 +612,7 @@ func resourceContainerAwsNodePoolRead(d *schema.ResourceData, meta interface{}) 
 	return nil
 }
 func resourceContainerAwsNodePoolUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -605,18 +631,18 @@ func resourceContainerAwsNodePoolUpdate(d *schema.ResourceData, meta interface{}
 		Project:           dcl.String(project),
 	}
 	directive := UpdateDirective
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLContainerAwsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutUpdate))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLContainerAwsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutUpdate))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -638,7 +664,7 @@ func resourceContainerAwsNodePoolUpdate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceContainerAwsNodePoolDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	project, err := getProject(d, config)
 	if err != nil {
 		return err
@@ -658,17 +684,17 @@ func resourceContainerAwsNodePoolDelete(d *schema.ResourceData, meta interface{}
 	}
 
 	log.Printf("[DEBUG] Deleting NodePool %q", d.Id())
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 	billingProject := project
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-	client := NewDCLContainerAwsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutDelete))
-	if bp, err := ReplaceVars(d, config, client.Config.BasePath); err != nil {
+	client := transport_tpg.NewDCLContainerAwsClient(config, userAgent, billingProject, d.Timeout(schema.TimeoutDelete))
+	if bp, err := tpgresource.ReplaceVars(d, config, client.Config.BasePath); err != nil {
 		d.SetId("")
 		return fmt.Errorf("Could not format %q: %w", client.Config.BasePath, err)
 	} else {
@@ -683,7 +709,7 @@ func resourceContainerAwsNodePoolDelete(d *schema.ResourceData, meta interface{}
 }
 
 func resourceContainerAwsNodePoolImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/awsClusters/(?P<cluster>[^/]+)/awsNodePools/(?P<name>[^/]+)",
@@ -751,6 +777,7 @@ func expandContainerAwsNodePoolConfig(o interface{}) *containeraws.NodePoolConfi
 		ProxyConfig:                  expandContainerAwsNodePoolConfigProxyConfig(obj["proxy_config"]),
 		RootVolume:                   expandContainerAwsNodePoolConfigRootVolume(obj["root_volume"]),
 		SecurityGroupIds:             expandStringArray(obj["security_group_ids"]),
+		SpotConfig:                   expandContainerAwsNodePoolConfigSpotConfig(obj["spot_config"]),
 		SshConfig:                    expandContainerAwsNodePoolConfigSshConfig(obj["ssh_config"]),
 		Tags:                         checkStringMap(obj["tags"]),
 		Taints:                       expandContainerAwsNodePoolConfigTaintsArray(obj["taints"]),
@@ -772,6 +799,7 @@ func flattenContainerAwsNodePoolConfig(obj *containeraws.NodePoolConfig) interfa
 		"proxy_config":                   flattenContainerAwsNodePoolConfigProxyConfig(obj.ProxyConfig),
 		"root_volume":                    flattenContainerAwsNodePoolConfigRootVolume(obj.RootVolume),
 		"security_group_ids":             obj.SecurityGroupIds,
+		"spot_config":                    flattenContainerAwsNodePoolConfigSpotConfig(obj.SpotConfig),
 		"ssh_config":                     flattenContainerAwsNodePoolConfigSshConfig(obj.SshConfig),
 		"tags":                           obj.Tags,
 		"taints":                         flattenContainerAwsNodePoolConfigTaintsArray(obj.Taints),
@@ -915,6 +943,32 @@ func flattenContainerAwsNodePoolConfigRootVolume(obj *containeraws.NodePoolConfi
 		"kms_key_arn": obj.KmsKeyArn,
 		"size_gib":    obj.SizeGib,
 		"volume_type": obj.VolumeType,
+	}
+
+	return []interface{}{transformed}
+
+}
+
+func expandContainerAwsNodePoolConfigSpotConfig(o interface{}) *containeraws.NodePoolConfigSpotConfig {
+	if o == nil {
+		return containeraws.EmptyNodePoolConfigSpotConfig
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return containeraws.EmptyNodePoolConfigSpotConfig
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &containeraws.NodePoolConfigSpotConfig{
+		InstanceTypes: expandStringArray(obj["instance_types"]),
+	}
+}
+
+func flattenContainerAwsNodePoolConfigSpotConfig(obj *containeraws.NodePoolConfigSpotConfig) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"instance_types": obj.InstanceTypes,
 	}
 
 	return []interface{}{transformed}

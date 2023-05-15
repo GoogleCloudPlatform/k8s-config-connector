@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceCertificateManagerCertificateMap() *schema.Resource {
@@ -132,8 +135,8 @@ Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".`,
 }
 
 func resourceCertificateManagerCertificateMapCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -142,17 +145,17 @@ func resourceCertificateManagerCertificateMapCreate(d *schema.ResourceData, meta
 	descriptionProp, err := expandCertificateManagerCertificateMapDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	labelsProp, err := expandCertificateManagerCertificateMapLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps?certificateMapId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps?certificateMapId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -160,24 +163,24 @@ func resourceCertificateManagerCertificateMapCreate(d *schema.ResourceData, meta
 	log.Printf("[DEBUG] Creating new CertificateMap: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for CertificateMap: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating CertificateMap: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/certificateMaps/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/global/certificateMaps/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -199,33 +202,33 @@ func resourceCertificateManagerCertificateMapCreate(d *schema.ResourceData, meta
 }
 
 func resourceCertificateManagerCertificateMapRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for CertificateMap: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("CertificateManagerCertificateMap %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("CertificateManagerCertificateMap %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -252,15 +255,15 @@ func resourceCertificateManagerCertificateMapRead(d *schema.ResourceData, meta i
 }
 
 func resourceCertificateManagerCertificateMapUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for CertificateMap: %s", err)
 	}
@@ -270,17 +273,17 @@ func resourceCertificateManagerCertificateMapUpdate(d *schema.ResourceData, meta
 	descriptionProp, err := expandCertificateManagerCertificateMapDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	labelsProp, err := expandCertificateManagerCertificateMapLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -297,17 +300,17 @@ func resourceCertificateManagerCertificateMapUpdate(d *schema.ResourceData, meta
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating CertificateMap %q: %s", d.Id(), err)
@@ -327,21 +330,21 @@ func resourceCertificateManagerCertificateMapUpdate(d *schema.ResourceData, meta
 }
 
 func resourceCertificateManagerCertificateMapDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for CertificateMap: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -350,13 +353,13 @@ func resourceCertificateManagerCertificateMapDelete(d *schema.ResourceData, meta
 	log.Printf("[DEBUG] Deleting CertificateMap %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "CertificateMap")
+		return transport_tpg.HandleNotFoundError(err, d, "CertificateMap")
 	}
 
 	err = CertificateManagerOperationWaitTime(
@@ -372,7 +375,7 @@ func resourceCertificateManagerCertificateMapDelete(d *schema.ResourceData, meta
 }
 
 func resourceCertificateManagerCertificateMapImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/global/certificateMaps/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
@@ -382,7 +385,7 @@ func resourceCertificateManagerCertificateMapImport(d *schema.ResourceData, meta
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/certificateMaps/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/global/certificateMaps/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -391,23 +394,23 @@ func resourceCertificateManagerCertificateMapImport(d *schema.ResourceData, meta
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenCertificateManagerCertificateMapDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCertificateManagerCertificateMapDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCertificateManagerCertificateMapCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCertificateManagerCertificateMapCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCertificateManagerCertificateMapUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCertificateManagerCertificateMapUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCertificateManagerCertificateMapLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCertificateManagerCertificateMapLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCertificateManagerCertificateMapGclbTargets(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCertificateManagerCertificateMapGclbTargets(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -427,7 +430,7 @@ func flattenCertificateManagerCertificateMapGclbTargets(v interface{}, d *schema
 	}
 	return transformed
 }
-func flattenCertificateManagerCertificateMapGclbTargetsIpConfigs(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCertificateManagerCertificateMapGclbTargetsIpConfigs(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -446,27 +449,27 @@ func flattenCertificateManagerCertificateMapGclbTargetsIpConfigs(v interface{}, 
 	}
 	return transformed
 }
-func flattenCertificateManagerCertificateMapGclbTargetsIpConfigsIpAddress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCertificateManagerCertificateMapGclbTargetsIpConfigsIpAddress(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCertificateManagerCertificateMapGclbTargetsIpConfigsPorts(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCertificateManagerCertificateMapGclbTargetsIpConfigsPorts(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCertificateManagerCertificateMapGclbTargetsTargetHttpsProxy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCertificateManagerCertificateMapGclbTargetsTargetHttpsProxy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenCertificateManagerCertificateMapGclbTargetsTargetSslProxy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCertificateManagerCertificateMapGclbTargetsTargetSslProxy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandCertificateManagerCertificateMapDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCertificateManagerCertificateMapDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCertificateManagerCertificateMapLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandCertificateManagerCertificateMapLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}

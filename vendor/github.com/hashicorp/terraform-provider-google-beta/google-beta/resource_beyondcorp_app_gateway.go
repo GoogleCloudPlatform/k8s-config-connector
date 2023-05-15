@@ -21,6 +21,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceBeyondcorpAppGateway() *schema.Resource {
@@ -55,7 +59,7 @@ func ResourceBeyondcorpAppGateway() *schema.Resource {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"HOST_TYPE_UNSPECIFIED", "GCP_REGIONAL_MIG", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"HOST_TYPE_UNSPECIFIED", "GCP_REGIONAL_MIG", ""}),
 				Description:  `The type of hosting used by the AppGateway. Default value: "HOST_TYPE_UNSPECIFIED" Possible values: ["HOST_TYPE_UNSPECIFIED", "GCP_REGIONAL_MIG"]`,
 				Default:      "HOST_TYPE_UNSPECIFIED",
 			},
@@ -76,7 +80,7 @@ func ResourceBeyondcorpAppGateway() *schema.Resource {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"TYPE_UNSPECIFIED", "TCP_PROXY", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"TYPE_UNSPECIFIED", "TCP_PROXY", ""}),
 				Description:  `The type of network connectivity used by the AppGateway. Default value: "TYPE_UNSPECIFIED" Possible values: ["TYPE_UNSPECIFIED", "TCP_PROXY"]`,
 				Default:      "TYPE_UNSPECIFIED",
 			},
@@ -121,8 +125,8 @@ func ResourceBeyondcorpAppGateway() *schema.Resource {
 }
 
 func resourceBeyondcorpAppGatewayCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -131,29 +135,29 @@ func resourceBeyondcorpAppGatewayCreate(d *schema.ResourceData, meta interface{}
 	typeProp, err := expandBeyondcorpAppGatewayType(d.Get("type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("type"); !isEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
+	} else if v, ok := d.GetOkExists("type"); !tpgresource.IsEmptyValue(reflect.ValueOf(typeProp)) && (ok || !reflect.DeepEqual(v, typeProp)) {
 		obj["type"] = typeProp
 	}
 	hostTypeProp, err := expandBeyondcorpAppGatewayHostType(d.Get("host_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("host_type"); !isEmptyValue(reflect.ValueOf(hostTypeProp)) && (ok || !reflect.DeepEqual(v, hostTypeProp)) {
+	} else if v, ok := d.GetOkExists("host_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(hostTypeProp)) && (ok || !reflect.DeepEqual(v, hostTypeProp)) {
 		obj["hostType"] = hostTypeProp
 	}
 	displayNameProp, err := expandBeyondcorpAppGatewayDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	labelsProp, err := expandBeyondcorpAppGatewayLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{BeyondcorpBasePath}}projects/{{project}}/locations/{{region}}/appGateways?app_gateway_id={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BeyondcorpBasePath}}projects/{{project}}/locations/{{region}}/appGateways?app_gateway_id={{name}}")
 	if err != nil {
 		return err
 	}
@@ -161,24 +165,24 @@ func resourceBeyondcorpAppGatewayCreate(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Creating new AppGateway: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AppGateway: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating AppGateway: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/appGateways/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/appGateways/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -198,7 +202,7 @@ func resourceBeyondcorpAppGatewayCreate(d *schema.ResourceData, meta interface{}
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/appGateways/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/appGateways/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -210,33 +214,33 @@ func resourceBeyondcorpAppGatewayCreate(d *schema.ResourceData, meta interface{}
 }
 
 func resourceBeyondcorpAppGatewayRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{BeyondcorpBasePath}}projects/{{project}}/locations/{{region}}/appGateways/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BeyondcorpBasePath}}projects/{{project}}/locations/{{region}}/appGateways/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AppGateway: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("BeyondcorpAppGateway %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("BeyondcorpAppGateway %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -269,21 +273,21 @@ func resourceBeyondcorpAppGatewayRead(d *schema.ResourceData, meta interface{}) 
 }
 
 func resourceBeyondcorpAppGatewayDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AppGateway: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{BeyondcorpBasePath}}projects/{{project}}/locations/{{region}}/appGateways/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BeyondcorpBasePath}}projects/{{project}}/locations/{{region}}/appGateways/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -292,13 +296,13 @@ func resourceBeyondcorpAppGatewayDelete(d *schema.ResourceData, meta interface{}
 	log.Printf("[DEBUG] Deleting AppGateway %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "AppGateway")
+		return transport_tpg.HandleNotFoundError(err, d, "AppGateway")
 	}
 
 	err = BeyondcorpOperationWaitTime(
@@ -314,7 +318,7 @@ func resourceBeyondcorpAppGatewayDelete(d *schema.ResourceData, meta interface{}
 }
 
 func resourceBeyondcorpAppGatewayImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/appGateways/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)",
@@ -325,7 +329,7 @@ func resourceBeyondcorpAppGatewayImport(d *schema.ResourceData, meta interface{}
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/appGateways/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/appGateways/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -334,31 +338,31 @@ func resourceBeyondcorpAppGatewayImport(d *schema.ResourceData, meta interface{}
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenBeyondcorpAppGatewayType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBeyondcorpAppGatewayType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBeyondcorpAppGatewayHostType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBeyondcorpAppGatewayHostType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBeyondcorpAppGatewayDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBeyondcorpAppGatewayDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBeyondcorpAppGatewayLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBeyondcorpAppGatewayLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBeyondcorpAppGatewayState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBeyondcorpAppGatewayState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBeyondcorpAppGatewayUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBeyondcorpAppGatewayUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBeyondcorpAppGatewayAllocatedConnections(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBeyondcorpAppGatewayAllocatedConnections(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -373,11 +377,11 @@ func flattenBeyondcorpAppGatewayAllocatedConnections(v interface{}, d *schema.Re
 		flattenBeyondcorpAppGatewayAllocatedConnectionsIngressPort(original["ingressPort"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBeyondcorpAppGatewayAllocatedConnectionsPscUri(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBeyondcorpAppGatewayAllocatedConnectionsPscUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBeyondcorpAppGatewayAllocatedConnectionsIngressPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBeyondcorpAppGatewayAllocatedConnectionsIngressPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -394,19 +398,19 @@ func flattenBeyondcorpAppGatewayAllocatedConnectionsIngressPort(v interface{}, d
 	return v // let terraform core handle it otherwise
 }
 
-func expandBeyondcorpAppGatewayType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBeyondcorpAppGatewayType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBeyondcorpAppGatewayHostType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBeyondcorpAppGatewayHostType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBeyondcorpAppGatewayDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBeyondcorpAppGatewayDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBeyondcorpAppGatewayLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandBeyondcorpAppGatewayLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}

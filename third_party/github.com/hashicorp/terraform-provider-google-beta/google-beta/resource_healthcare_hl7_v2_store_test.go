@@ -2,6 +2,9 @@ package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"path"
 	"testing"
 
@@ -17,7 +20,7 @@ func TestAccHealthcareHl7V2StoreIdParsing(t *testing.T) {
 		ExpectedError        bool
 		ExpectedTerraformId  string
 		ExpectedHl7V2StoreId string
-		Config               *Config
+		Config               *transport_tpg.Config
 	}{
 		"id is in project/location/datasetName/hl7V2StoreName format": {
 			ImportId:             "test-project/us-central1/test-dataset/test-store-name",
@@ -36,12 +39,12 @@ func TestAccHealthcareHl7V2StoreIdParsing(t *testing.T) {
 			ExpectedError:        false,
 			ExpectedTerraformId:  "test-project/us-central1/test-dataset/test-store-name",
 			ExpectedHl7V2StoreId: "projects/test-project/locations/us-central1/datasets/test-dataset/hl7V2Stores/test-store-name",
-			Config:               &Config{Project: "test-project"},
+			Config:               &transport_tpg.Config{Project: "test-project"},
 		},
 		"id is in location/datasetName/hl7V2StoreName format without project in config": {
 			ImportId:      "us-central1/test-dataset/test-store-name",
 			ExpectedError: true,
-			Config:        &Config{Project: ""},
+			Config:        &transport_tpg.Config{Project: ""},
 		},
 	}
 
@@ -78,7 +81,7 @@ func TestAccHealthcareHl7V2Store_basic(t *testing.T) {
 	resourceName := "google_healthcare_hl7_v2_store.default"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckHealthcareHl7V2StoreDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -121,7 +124,7 @@ func TestAccHealthcareHl7V2Store_updateSchema(t *testing.T) {
 	resourceName := "google_healthcare_hl7_v2_store.default"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckHealthcareHl7V2StoreDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -254,7 +257,7 @@ func testAccCheckGoogleHealthcareHl7V2StoreUpdate(t *testing.T, pubsubTopic stri
 
 			config := GoogleProviderConfig(t)
 
-			gcpResourceUri, err := replaceVarsForTest(config, rs, "{{dataset}}/hl7V2Stores/{{name}}")
+			gcpResourceUri, err := tpgresource.ReplaceVarsForTest(config, rs, "{{dataset}}/hl7V2Stores/{{name}}")
 			if err != nil {
 				return err
 			}

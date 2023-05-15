@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceSQLDatabase() *schema.Resource {
@@ -59,7 +62,7 @@ This does not include the project ID or instance name.`,
 				Type:             schema.TypeString,
 				Computed:         true,
 				Optional:         true,
-				DiffSuppressFunc: CaseDiffSuppress,
+				DiffSuppressFunc: tpgresource.CaseDiffSuppress,
 				Description: `The charset value. See MySQL's
 [Supported Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html)
 and Postgres' [Character Set Support](https://www.postgresql.org/docs/9.6/static/multibyte.html)
@@ -80,9 +83,9 @@ a value of 'en_US.UTF8' at creation time.`,
 				Type:     schema.TypeString,
 				Optional: true,
 				Default:  "DELETE",
-				Description: `The deletion policy for the database. Setting ABANDON allows the resource 
-to be abandoned rather than deleted. This is useful for Postgres, where databases cannot be 
-deleted from the API if there are users other than cloudsqlsuperuser with access. Possible 
+				Description: `The deletion policy for the database. Setting ABANDON allows the resource
+to be abandoned rather than deleted. This is useful for Postgres, where databases cannot be
+deleted from the API if there are users other than cloudsqlsuperuser with access. Possible
 values are: "ABANDON", "DELETE". Defaults to "DELETE".`,
 			},
 			"project": {
@@ -101,8 +104,8 @@ values are: "ABANDON", "DELETE". Defaults to "DELETE".`,
 }
 
 func resourceSQLDatabaseCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -111,36 +114,36 @@ func resourceSQLDatabaseCreate(d *schema.ResourceData, meta interface{}) error {
 	charsetProp, err := expandSQLDatabaseCharset(d.Get("charset"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("charset"); !isEmptyValue(reflect.ValueOf(charsetProp)) && (ok || !reflect.DeepEqual(v, charsetProp)) {
+	} else if v, ok := d.GetOkExists("charset"); !tpgresource.IsEmptyValue(reflect.ValueOf(charsetProp)) && (ok || !reflect.DeepEqual(v, charsetProp)) {
 		obj["charset"] = charsetProp
 	}
 	collationProp, err := expandSQLDatabaseCollation(d.Get("collation"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("collation"); !isEmptyValue(reflect.ValueOf(collationProp)) && (ok || !reflect.DeepEqual(v, collationProp)) {
+	} else if v, ok := d.GetOkExists("collation"); !tpgresource.IsEmptyValue(reflect.ValueOf(collationProp)) && (ok || !reflect.DeepEqual(v, collationProp)) {
 		obj["collation"] = collationProp
 	}
 	nameProp, err := expandSQLDatabaseName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(nameProp)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	instanceProp, err := expandSQLDatabaseInstance(d.Get("instance"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("instance"); !isEmptyValue(reflect.ValueOf(instanceProp)) && (ok || !reflect.DeepEqual(v, instanceProp)) {
+	} else if v, ok := d.GetOkExists("instance"); !tpgresource.IsEmptyValue(reflect.ValueOf(instanceProp)) && (ok || !reflect.DeepEqual(v, instanceProp)) {
 		obj["instance"] = instanceProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "google-sql-database-instance-{{project}}-{{instance}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "google-sql-database-instance-{{project}}-{{instance}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{SQLBasePath}}projects/{{project}}/instances/{{instance}}/databases")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SQLBasePath}}projects/{{project}}/instances/{{instance}}/databases")
 	if err != nil {
 		return err
 	}
@@ -148,24 +151,24 @@ func resourceSQLDatabaseCreate(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG] Creating new Database: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Database: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Database: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/instances/{{instance}}/databases/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/instances/{{instance}}/databases/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -187,33 +190,33 @@ func resourceSQLDatabaseCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceSQLDatabaseRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{SQLBasePath}}projects/{{project}}/instances/{{instance}}/databases/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SQLBasePath}}projects/{{project}}/instances/{{instance}}/databases/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Database: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(transformSQLDatabaseReadError(err), d, fmt.Sprintf("SQLDatabase %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(transformSQLDatabaseReadError(err), d, fmt.Sprintf("SQLDatabase %q", d.Id()))
 	}
 
 	// Explicitly set virtual fields to default values if unset
@@ -238,7 +241,7 @@ func resourceSQLDatabaseRead(d *schema.ResourceData, meta interface{}) error {
 	if err := d.Set("instance", flattenSQLDatabaseInstance(res["instance"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Database: %s", err)
 	}
-	if err := d.Set("self_link", ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
+	if err := d.Set("self_link", tpgresource.ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
 		return fmt.Errorf("Error reading Database: %s", err)
 	}
 
@@ -246,15 +249,15 @@ func resourceSQLDatabaseRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceSQLDatabaseUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Database: %s", err)
 	}
@@ -264,36 +267,36 @@ func resourceSQLDatabaseUpdate(d *schema.ResourceData, meta interface{}) error {
 	charsetProp, err := expandSQLDatabaseCharset(d.Get("charset"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("charset"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, charsetProp)) {
+	} else if v, ok := d.GetOkExists("charset"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, charsetProp)) {
 		obj["charset"] = charsetProp
 	}
 	collationProp, err := expandSQLDatabaseCollation(d.Get("collation"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("collation"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, collationProp)) {
+	} else if v, ok := d.GetOkExists("collation"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, collationProp)) {
 		obj["collation"] = collationProp
 	}
 	nameProp, err := expandSQLDatabaseName(d.Get("name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nameProp)) {
+	} else if v, ok := d.GetOkExists("name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nameProp)) {
 		obj["name"] = nameProp
 	}
 	instanceProp, err := expandSQLDatabaseInstance(d.Get("instance"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("instance"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, instanceProp)) {
+	} else if v, ok := d.GetOkExists("instance"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, instanceProp)) {
 		obj["instance"] = instanceProp
 	}
 
-	lockName, err := ReplaceVars(d, config, "google-sql-database-instance-{{project}}-{{instance}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "google-sql-database-instance-{{project}}-{{instance}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{SQLBasePath}}projects/{{project}}/instances/{{instance}}/databases/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SQLBasePath}}projects/{{project}}/instances/{{instance}}/databases/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -301,11 +304,11 @@ func resourceSQLDatabaseUpdate(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG] Updating Database %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Database %q: %s", d.Id(), err)
@@ -325,28 +328,28 @@ func resourceSQLDatabaseUpdate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceSQLDatabaseDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Database: %s", err)
 	}
 	billingProject = project
 
-	lockName, err := ReplaceVars(d, config, "google-sql-database-instance-{{project}}-{{instance}}")
+	lockName, err := tpgresource.ReplaceVars(d, config, "google-sql-database-instance-{{project}}-{{instance}}")
 	if err != nil {
 		return err
 	}
-	mutexKV.Lock(lockName)
-	defer mutexKV.Unlock(lockName)
+	transport_tpg.MutexStore.Lock(lockName)
+	defer transport_tpg.MutexStore.Unlock(lockName)
 
-	url, err := ReplaceVars(d, config, "{{SQLBasePath}}projects/{{project}}/instances/{{instance}}/databases/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{SQLBasePath}}projects/{{project}}/instances/{{instance}}/databases/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -360,13 +363,13 @@ func resourceSQLDatabaseDelete(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG] Deleting Database %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Database")
+		return transport_tpg.HandleNotFoundError(err, d, "Database")
 	}
 
 	err = SqlAdminOperationWaitTime(
@@ -382,7 +385,7 @@ func resourceSQLDatabaseDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceSQLDatabaseImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/instances/(?P<instance>[^/]+)/databases/(?P<name>[^/]+)",
 		"instances/(?P<instance>[^/]+)/databases/(?P<name>[^/]+)",
@@ -394,7 +397,7 @@ func resourceSQLDatabaseImport(d *schema.ResourceData, meta interface{}) ([]*sch
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/instances/{{instance}}/databases/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/instances/{{instance}}/databases/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -408,34 +411,34 @@ func resourceSQLDatabaseImport(d *schema.ResourceData, meta interface{}) ([]*sch
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenSQLDatabaseCharset(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSQLDatabaseCharset(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSQLDatabaseCollation(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSQLDatabaseCollation(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSQLDatabaseName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSQLDatabaseName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenSQLDatabaseInstance(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenSQLDatabaseInstance(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandSQLDatabaseCharset(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSQLDatabaseCharset(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandSQLDatabaseCollation(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSQLDatabaseCollation(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandSQLDatabaseName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSQLDatabaseName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandSQLDatabaseInstance(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandSQLDatabaseInstance(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

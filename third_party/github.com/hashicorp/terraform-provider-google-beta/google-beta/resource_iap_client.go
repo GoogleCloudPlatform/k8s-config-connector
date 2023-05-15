@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceIapClient() *schema.Resource {
@@ -71,8 +74,8 @@ is attached to. The format is
 }
 
 func resourceIapClientCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -81,11 +84,11 @@ func resourceIapClientCreate(d *schema.ResourceData, meta interface{}) error {
 	displayNameProp, err := expandIapClientDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{IapBasePath}}{{brand}}/identityAwareProxyClients")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IapBasePath}}{{brand}}/identityAwareProxyClients")
 	if err != nil {
 		return err
 	}
@@ -94,17 +97,17 @@ func resourceIapClientCreate(d *schema.ResourceData, meta interface{}) error {
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), IapClient409Operation)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), transport_tpg.IapClient409Operation)
 	if err != nil {
 		return fmt.Errorf("Error creating Client: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{brand}}/identityAwareProxyClients/{{client_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{brand}}/identityAwareProxyClients/{{client_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -124,13 +127,13 @@ func resourceIapClientCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceIapClientRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{IapBasePath}}{{brand}}/identityAwareProxyClients/{{client_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IapBasePath}}{{brand}}/identityAwareProxyClients/{{client_id}}")
 	if err != nil {
 		return err
 	}
@@ -138,13 +141,13 @@ func resourceIapClientRead(d *schema.ResourceData, meta interface{}) error {
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, IapClient409Operation)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil, transport_tpg.IapClient409Operation)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("IapClient %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("IapClient %q", d.Id()))
 	}
 
 	if err := d.Set("secret", flattenIapClientSecret(res["secret"], d, config)); err != nil {
@@ -161,15 +164,15 @@ func resourceIapClientRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceIapClientDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{IapBasePath}}{{brand}}/identityAwareProxyClients/{{client_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IapBasePath}}{{brand}}/identityAwareProxyClients/{{client_id}}")
 	if err != nil {
 		return err
 	}
@@ -178,13 +181,13 @@ func resourceIapClientDelete(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG] Deleting Client %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), IapClient409Operation)
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), transport_tpg.IapClient409Operation)
 	if err != nil {
-		return handleNotFoundError(err, d, "Client")
+		return transport_tpg.HandleNotFoundError(err, d, "Client")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Client %q: %#v", d.Id(), res)
@@ -192,7 +195,7 @@ func resourceIapClientDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceIapClientImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<brand>.+)"}, d, config); err != nil {
@@ -217,21 +220,21 @@ func resourceIapClientImport(d *schema.ResourceData, meta interface{}) ([]*schem
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenIapClientSecret(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIapClientSecret(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIapClientDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIapClientDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIapClientClientId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIapClientClientId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
-	return NameFromSelfLinkStateFunc(v)
+	return tpgresource.NameFromSelfLinkStateFunc(v)
 }
 
-func expandIapClientDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIapClientDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

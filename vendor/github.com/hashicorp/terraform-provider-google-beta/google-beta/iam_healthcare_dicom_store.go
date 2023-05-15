@@ -3,6 +3,8 @@ package google
 import (
 	"fmt"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	healthcare "google.golang.org/api/healthcare/v1"
 
 	"github.com/hashicorp/errwrap"
@@ -20,11 +22,11 @@ var IamHealthcareDicomStoreSchema = map[string]*schema.Schema{
 
 type HealthcareDicomStoreIamUpdater struct {
 	resourceId string
-	d          TerraformResourceData
-	Config     *Config
+	d          tpgresource.TerraformResourceData
+	Config     *transport_tpg.Config
 }
 
-func NewHealthcareDicomStoreIamUpdater(d TerraformResourceData, config *Config) (ResourceIamUpdater, error) {
+func NewHealthcareDicomStoreIamUpdater(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
 	dicomStore := d.Get("dicom_store_id").(string)
 	dicomStoreId, err := ParseHealthcareDicomStoreId(dicomStore, config)
 
@@ -39,7 +41,7 @@ func NewHealthcareDicomStoreIamUpdater(d TerraformResourceData, config *Config) 
 	}, nil
 }
 
-func DicomStoreIdParseFunc(d *schema.ResourceData, config *Config) error {
+func DicomStoreIdParseFunc(d *schema.ResourceData, config *transport_tpg.Config) error {
 	dicomStoreId, err := ParseHealthcareDicomStoreId(d.Id(), config)
 	if err != nil {
 		return err
@@ -52,7 +54,7 @@ func DicomStoreIdParseFunc(d *schema.ResourceData, config *Config) error {
 }
 
 func (u *HealthcareDicomStoreIamUpdater) GetResourceIamPolicy() (*cloudresourcemanager.Policy, error) {
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +81,7 @@ func (u *HealthcareDicomStoreIamUpdater) SetResourceIamPolicy(policy *cloudresou
 		return errwrap.Wrapf(fmt.Sprintf("Invalid IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
 
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
+	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {
 		return err
 	}

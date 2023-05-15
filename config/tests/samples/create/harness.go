@@ -36,7 +36,7 @@ import (
 	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 
-	tfgooglebeta "github.com/hashicorp/terraform-provider-google-beta/google-beta"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -184,7 +184,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
 	}
 
-	tfgooglebeta.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
 		if t := ctx.Value(httpRoundTripperKey); t != nil {
 			ret = &http.Client{Transport: t.(http.RoundTripper)}
@@ -199,7 +199,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		return ret
 	}
 
-	tfgooglebeta.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
 		if t := ctx.Value(httpRoundTripperKey); t != nil {
 			ret = &http.Client{Transport: t.(http.RoundTripper)}

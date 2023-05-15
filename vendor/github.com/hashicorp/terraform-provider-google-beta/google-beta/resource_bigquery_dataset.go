@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"google.golang.org/api/googleapi"
 )
 
@@ -188,7 +192,7 @@ organize and group your datasets`,
 				Type:             schema.TypeString,
 				Optional:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: CaseDiffSuppress,
+				DiffSuppressFunc: tpgresource.CaseDiffSuppress,
 				Description: `The geographic location where the dataset should reside.
 See [official docs](https://cloud.google.com/bigquery/docs/dataset-locations).
 
@@ -401,8 +405,8 @@ is 1,024 characters.`,
 }
 
 func resourceBigQueryDatasetCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -411,37 +415,37 @@ func resourceBigQueryDatasetCreate(d *schema.ResourceData, meta interface{}) err
 	maxTimeTravelHoursProp, err := expandBigQueryDatasetMaxTimeTravelHours(d.Get("max_time_travel_hours"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("max_time_travel_hours"); !isEmptyValue(reflect.ValueOf(maxTimeTravelHoursProp)) && (ok || !reflect.DeepEqual(v, maxTimeTravelHoursProp)) {
+	} else if v, ok := d.GetOkExists("max_time_travel_hours"); !tpgresource.IsEmptyValue(reflect.ValueOf(maxTimeTravelHoursProp)) && (ok || !reflect.DeepEqual(v, maxTimeTravelHoursProp)) {
 		obj["maxTimeTravelHours"] = maxTimeTravelHoursProp
 	}
 	accessProp, err := expandBigQueryDatasetAccess(d.Get("access"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("access"); !isEmptyValue(reflect.ValueOf(accessProp)) && (ok || !reflect.DeepEqual(v, accessProp)) {
+	} else if v, ok := d.GetOkExists("access"); !tpgresource.IsEmptyValue(reflect.ValueOf(accessProp)) && (ok || !reflect.DeepEqual(v, accessProp)) {
 		obj["access"] = accessProp
 	}
 	datasetReferenceProp, err := expandBigQueryDatasetDatasetReference(nil, d, config)
 	if err != nil {
 		return err
-	} else if !isEmptyValue(reflect.ValueOf(datasetReferenceProp)) {
+	} else if !tpgresource.IsEmptyValue(reflect.ValueOf(datasetReferenceProp)) {
 		obj["datasetReference"] = datasetReferenceProp
 	}
 	defaultTableExpirationMsProp, err := expandBigQueryDatasetDefaultTableExpirationMs(d.Get("default_table_expiration_ms"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_table_expiration_ms"); !isEmptyValue(reflect.ValueOf(defaultTableExpirationMsProp)) && (ok || !reflect.DeepEqual(v, defaultTableExpirationMsProp)) {
+	} else if v, ok := d.GetOkExists("default_table_expiration_ms"); !tpgresource.IsEmptyValue(reflect.ValueOf(defaultTableExpirationMsProp)) && (ok || !reflect.DeepEqual(v, defaultTableExpirationMsProp)) {
 		obj["defaultTableExpirationMs"] = defaultTableExpirationMsProp
 	}
 	defaultPartitionExpirationMsProp, err := expandBigQueryDatasetDefaultPartitionExpirationMs(d.Get("default_partition_expiration_ms"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_partition_expiration_ms"); !isEmptyValue(reflect.ValueOf(defaultPartitionExpirationMsProp)) && (ok || !reflect.DeepEqual(v, defaultPartitionExpirationMsProp)) {
+	} else if v, ok := d.GetOkExists("default_partition_expiration_ms"); !tpgresource.IsEmptyValue(reflect.ValueOf(defaultPartitionExpirationMsProp)) && (ok || !reflect.DeepEqual(v, defaultPartitionExpirationMsProp)) {
 		obj["defaultPartitionExpirationMs"] = defaultPartitionExpirationMsProp
 	}
 	descriptionProp, err := expandBigQueryDatasetDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	friendlyNameProp, err := expandBigQueryDatasetFriendlyName(d.Get("friendly_name"), d, config)
@@ -453,35 +457,35 @@ func resourceBigQueryDatasetCreate(d *schema.ResourceData, meta interface{}) err
 	labelsProp, err := expandBigQueryDatasetLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	locationProp, err := expandBigQueryDatasetLocation(d.Get("location"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("location"); !isEmptyValue(reflect.ValueOf(locationProp)) && (ok || !reflect.DeepEqual(v, locationProp)) {
+	} else if v, ok := d.GetOkExists("location"); !tpgresource.IsEmptyValue(reflect.ValueOf(locationProp)) && (ok || !reflect.DeepEqual(v, locationProp)) {
 		obj["location"] = locationProp
 	}
 	defaultEncryptionConfigurationProp, err := expandBigQueryDatasetDefaultEncryptionConfiguration(d.Get("default_encryption_configuration"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_encryption_configuration"); !isEmptyValue(reflect.ValueOf(defaultEncryptionConfigurationProp)) && (ok || !reflect.DeepEqual(v, defaultEncryptionConfigurationProp)) {
+	} else if v, ok := d.GetOkExists("default_encryption_configuration"); !tpgresource.IsEmptyValue(reflect.ValueOf(defaultEncryptionConfigurationProp)) && (ok || !reflect.DeepEqual(v, defaultEncryptionConfigurationProp)) {
 		obj["defaultEncryptionConfiguration"] = defaultEncryptionConfigurationProp
 	}
 	isCaseInsensitiveProp, err := expandBigQueryDatasetIsCaseInsensitive(d.Get("is_case_insensitive"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("is_case_insensitive"); !isEmptyValue(reflect.ValueOf(isCaseInsensitiveProp)) && (ok || !reflect.DeepEqual(v, isCaseInsensitiveProp)) {
+	} else if v, ok := d.GetOkExists("is_case_insensitive"); !tpgresource.IsEmptyValue(reflect.ValueOf(isCaseInsensitiveProp)) && (ok || !reflect.DeepEqual(v, isCaseInsensitiveProp)) {
 		obj["isCaseInsensitive"] = isCaseInsensitiveProp
 	}
 	defaultCollationProp, err := expandBigQueryDatasetDefaultCollation(d.Get("default_collation"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_collation"); !isEmptyValue(reflect.ValueOf(defaultCollationProp)) && (ok || !reflect.DeepEqual(v, defaultCollationProp)) {
+	} else if v, ok := d.GetOkExists("default_collation"); !tpgresource.IsEmptyValue(reflect.ValueOf(defaultCollationProp)) && (ok || !reflect.DeepEqual(v, defaultCollationProp)) {
 		obj["defaultCollation"] = defaultCollationProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets")
 	if err != nil {
 		return err
 	}
@@ -489,24 +493,24 @@ func resourceBigQueryDatasetCreate(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Creating new Dataset: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Dataset: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Dataset: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/datasets/{{dataset_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/datasets/{{dataset_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -518,33 +522,33 @@ func resourceBigQueryDatasetCreate(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceBigQueryDatasetRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Dataset: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("BigQueryDataset %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("BigQueryDataset %q", d.Id()))
 	}
 
 	// Explicitly set virtual fields to default values if unset
@@ -614,7 +618,7 @@ func resourceBigQueryDatasetRead(d *schema.ResourceData, meta interface{}) error
 	if err := d.Set("default_collation", flattenBigQueryDatasetDefaultCollation(res["defaultCollation"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Dataset: %s", err)
 	}
-	if err := d.Set("self_link", ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
+	if err := d.Set("self_link", tpgresource.ConvertSelfLinkToV1(res["selfLink"].(string))); err != nil {
 		return fmt.Errorf("Error reading Dataset: %s", err)
 	}
 
@@ -622,15 +626,15 @@ func resourceBigQueryDatasetRead(d *schema.ResourceData, meta interface{}) error
 }
 
 func resourceBigQueryDatasetUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Dataset: %s", err)
 	}
@@ -640,37 +644,37 @@ func resourceBigQueryDatasetUpdate(d *schema.ResourceData, meta interface{}) err
 	maxTimeTravelHoursProp, err := expandBigQueryDatasetMaxTimeTravelHours(d.Get("max_time_travel_hours"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("max_time_travel_hours"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, maxTimeTravelHoursProp)) {
+	} else if v, ok := d.GetOkExists("max_time_travel_hours"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, maxTimeTravelHoursProp)) {
 		obj["maxTimeTravelHours"] = maxTimeTravelHoursProp
 	}
 	accessProp, err := expandBigQueryDatasetAccess(d.Get("access"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("access"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, accessProp)) {
+	} else if v, ok := d.GetOkExists("access"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, accessProp)) {
 		obj["access"] = accessProp
 	}
 	datasetReferenceProp, err := expandBigQueryDatasetDatasetReference(nil, d, config)
 	if err != nil {
 		return err
-	} else if !isEmptyValue(reflect.ValueOf(datasetReferenceProp)) {
+	} else if !tpgresource.IsEmptyValue(reflect.ValueOf(datasetReferenceProp)) {
 		obj["datasetReference"] = datasetReferenceProp
 	}
 	defaultTableExpirationMsProp, err := expandBigQueryDatasetDefaultTableExpirationMs(d.Get("default_table_expiration_ms"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_table_expiration_ms"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultTableExpirationMsProp)) {
+	} else if v, ok := d.GetOkExists("default_table_expiration_ms"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultTableExpirationMsProp)) {
 		obj["defaultTableExpirationMs"] = defaultTableExpirationMsProp
 	}
 	defaultPartitionExpirationMsProp, err := expandBigQueryDatasetDefaultPartitionExpirationMs(d.Get("default_partition_expiration_ms"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_partition_expiration_ms"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultPartitionExpirationMsProp)) {
+	} else if v, ok := d.GetOkExists("default_partition_expiration_ms"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultPartitionExpirationMsProp)) {
 		obj["defaultPartitionExpirationMs"] = defaultPartitionExpirationMsProp
 	}
 	descriptionProp, err := expandBigQueryDatasetDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	friendlyNameProp, err := expandBigQueryDatasetFriendlyName(d.Get("friendly_name"), d, config)
@@ -682,35 +686,35 @@ func resourceBigQueryDatasetUpdate(d *schema.ResourceData, meta interface{}) err
 	labelsProp, err := expandBigQueryDatasetLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	locationProp, err := expandBigQueryDatasetLocation(d.Get("location"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("location"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, locationProp)) {
+	} else if v, ok := d.GetOkExists("location"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, locationProp)) {
 		obj["location"] = locationProp
 	}
 	defaultEncryptionConfigurationProp, err := expandBigQueryDatasetDefaultEncryptionConfiguration(d.Get("default_encryption_configuration"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_encryption_configuration"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultEncryptionConfigurationProp)) {
+	} else if v, ok := d.GetOkExists("default_encryption_configuration"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultEncryptionConfigurationProp)) {
 		obj["defaultEncryptionConfiguration"] = defaultEncryptionConfigurationProp
 	}
 	isCaseInsensitiveProp, err := expandBigQueryDatasetIsCaseInsensitive(d.Get("is_case_insensitive"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("is_case_insensitive"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, isCaseInsensitiveProp)) {
+	} else if v, ok := d.GetOkExists("is_case_insensitive"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, isCaseInsensitiveProp)) {
 		obj["isCaseInsensitive"] = isCaseInsensitiveProp
 	}
 	defaultCollationProp, err := expandBigQueryDatasetDefaultCollation(d.Get("default_collation"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("default_collation"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultCollationProp)) {
+	} else if v, ok := d.GetOkExists("default_collation"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, defaultCollationProp)) {
 		obj["defaultCollation"] = defaultCollationProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}")
 	if err != nil {
 		return err
 	}
@@ -718,11 +722,11 @@ func resourceBigQueryDatasetUpdate(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Updating Dataset %q: %#v", d.Id(), obj)
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Dataset %q: %s", d.Id(), err)
@@ -734,21 +738,21 @@ func resourceBigQueryDatasetUpdate(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceBigQueryDatasetDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Dataset: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}?deleteContents={{delete_contents_on_destroy}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{BigQueryBasePath}}projects/{{project}}/datasets/{{dataset_id}}?deleteContents={{delete_contents_on_destroy}}")
 	if err != nil {
 		return err
 	}
@@ -757,13 +761,13 @@ func resourceBigQueryDatasetDelete(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Deleting Dataset %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Dataset")
+		return transport_tpg.HandleNotFoundError(err, d, "Dataset")
 	}
 
 	log.Printf("[DEBUG] Finished deleting Dataset %q: %#v", d.Id(), res)
@@ -771,7 +775,7 @@ func resourceBigQueryDatasetDelete(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceBigQueryDatasetImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/datasets/(?P<dataset_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<dataset_id>[^/]+)",
@@ -781,7 +785,7 @@ func resourceBigQueryDatasetImport(d *schema.ResourceData, meta interface{}) ([]
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/datasets/{{dataset_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/datasets/{{dataset_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -795,11 +799,11 @@ func resourceBigQueryDatasetImport(d *schema.ResourceData, meta interface{}) ([]
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenBigQueryDatasetMaxTimeTravelHours(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetMaxTimeTravelHours(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccess(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccess(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -824,27 +828,27 @@ func flattenBigQueryDatasetAccess(v interface{}, d *schema.ResourceData, config 
 	}
 	return transformed
 }
-func flattenBigQueryDatasetAccessDomain(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessDomain(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessGroupByEmail(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessGroupByEmail(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessRole(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessRole(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessSpecialGroup(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessSpecialGroup(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessUserByEmail(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessUserByEmail(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessView(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessView(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -861,19 +865,19 @@ func flattenBigQueryDatasetAccessView(v interface{}, d *schema.ResourceData, con
 		flattenBigQueryDatasetAccessViewTableId(original["tableId"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBigQueryDatasetAccessViewDatasetId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessViewDatasetId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessViewProjectId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessViewProjectId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessViewTableId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessViewTableId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessDataset(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessDataset(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -888,7 +892,7 @@ func flattenBigQueryDatasetAccessDataset(v interface{}, d *schema.ResourceData, 
 		flattenBigQueryDatasetAccessDatasetTargetTypes(original["targetTypes"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBigQueryDatasetAccessDatasetDataset(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessDatasetDataset(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -903,19 +907,19 @@ func flattenBigQueryDatasetAccessDatasetDataset(v interface{}, d *schema.Resourc
 		flattenBigQueryDatasetAccessDatasetDatasetProjectId(original["projectId"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBigQueryDatasetAccessDatasetDatasetDatasetId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessDatasetDatasetDatasetId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessDatasetDatasetProjectId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessDatasetDatasetProjectId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessDatasetTargetTypes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessDatasetTargetTypes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessRoutine(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessRoutine(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -932,19 +936,19 @@ func flattenBigQueryDatasetAccessRoutine(v interface{}, d *schema.ResourceData, 
 		flattenBigQueryDatasetAccessRoutineRoutineId(original["routineId"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBigQueryDatasetAccessRoutineDatasetId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessRoutineDatasetId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessRoutineProjectId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessRoutineProjectId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetAccessRoutineRoutineId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetAccessRoutineRoutineId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetCreationTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetCreationTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -961,7 +965,7 @@ func flattenBigQueryDatasetCreationTime(v interface{}, d *schema.ResourceData, c
 	return v // let terraform core handle it otherwise
 }
 
-func flattenBigQueryDatasetDatasetReference(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetDatasetReference(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -974,11 +978,11 @@ func flattenBigQueryDatasetDatasetReference(v interface{}, d *schema.ResourceDat
 		flattenBigQueryDatasetDatasetReferenceDatasetId(original["datasetId"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBigQueryDatasetDatasetReferenceDatasetId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetDatasetReferenceDatasetId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetDefaultTableExpirationMs(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetDefaultTableExpirationMs(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -995,7 +999,7 @@ func flattenBigQueryDatasetDefaultTableExpirationMs(v interface{}, d *schema.Res
 	return v // let terraform core handle it otherwise
 }
 
-func flattenBigQueryDatasetDefaultPartitionExpirationMs(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetDefaultPartitionExpirationMs(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1012,23 +1016,23 @@ func flattenBigQueryDatasetDefaultPartitionExpirationMs(v interface{}, d *schema
 	return v // let terraform core handle it otherwise
 }
 
-func flattenBigQueryDatasetDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetEtag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetEtag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetFriendlyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetFriendlyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetLastModifiedTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetLastModifiedTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1048,14 +1052,14 @@ func flattenBigQueryDatasetLastModifiedTime(v interface{}, d *schema.ResourceDat
 // Older Datasets in BigQuery have no Location set in the API response. This may be an issue when importing
 // datasets created before BigQuery was available in multiple zones. We can safely assume that these datasets
 // are in the US, as this was the default at the time.
-func flattenBigQueryDatasetLocation(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetLocation(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return "US"
 	}
 	return v
 }
 
-func flattenBigQueryDatasetDefaultEncryptionConfiguration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetDefaultEncryptionConfiguration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1068,23 +1072,23 @@ func flattenBigQueryDatasetDefaultEncryptionConfiguration(v interface{}, d *sche
 		flattenBigQueryDatasetDefaultEncryptionConfigurationKmsKeyName(original["kmsKeyName"], d, config)
 	return []interface{}{transformed}
 }
-func flattenBigQueryDatasetDefaultEncryptionConfigurationKmsKeyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetDefaultEncryptionConfigurationKmsKeyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetIsCaseInsensitive(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetIsCaseInsensitive(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenBigQueryDatasetDefaultCollation(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenBigQueryDatasetDefaultCollation(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandBigQueryDatasetMaxTimeTravelHours(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetMaxTimeTravelHours(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccess(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccess(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
@@ -1098,56 +1102,56 @@ func expandBigQueryDatasetAccess(v interface{}, d TerraformResourceData, config 
 		transformedDomain, err := expandBigQueryDatasetAccessDomain(original["domain"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedDomain); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedDomain); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["domain"] = transformedDomain
 		}
 
 		transformedGroupByEmail, err := expandBigQueryDatasetAccessGroupByEmail(original["group_by_email"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedGroupByEmail); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedGroupByEmail); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["groupByEmail"] = transformedGroupByEmail
 		}
 
 		transformedRole, err := expandBigQueryDatasetAccessRole(original["role"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedRole); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedRole); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["role"] = transformedRole
 		}
 
 		transformedSpecialGroup, err := expandBigQueryDatasetAccessSpecialGroup(original["special_group"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedSpecialGroup); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedSpecialGroup); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["specialGroup"] = transformedSpecialGroup
 		}
 
 		transformedUserByEmail, err := expandBigQueryDatasetAccessUserByEmail(original["user_by_email"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedUserByEmail); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedUserByEmail); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["userByEmail"] = transformedUserByEmail
 		}
 
 		transformedView, err := expandBigQueryDatasetAccessView(original["view"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedView); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedView); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["view"] = transformedView
 		}
 
 		transformedDataset, err := expandBigQueryDatasetAccessDataset(original["dataset"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedDataset); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedDataset); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["dataset"] = transformedDataset
 		}
 
 		transformedRoutine, err := expandBigQueryDatasetAccessRoutine(original["routine"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedRoutine); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedRoutine); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["routine"] = transformedRoutine
 		}
 
@@ -1156,27 +1160,27 @@ func expandBigQueryDatasetAccess(v interface{}, d TerraformResourceData, config 
 	return req, nil
 }
 
-func expandBigQueryDatasetAccessDomain(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessDomain(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessGroupByEmail(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessGroupByEmail(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessRole(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessRole(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessSpecialGroup(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessSpecialGroup(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessUserByEmail(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessUserByEmail(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessView(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessView(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1188,40 +1192,40 @@ func expandBigQueryDatasetAccessView(v interface{}, d TerraformResourceData, con
 	transformedDatasetId, err := expandBigQueryDatasetAccessViewDatasetId(original["dataset_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["datasetId"] = transformedDatasetId
 	}
 
 	transformedProjectId, err := expandBigQueryDatasetAccessViewProjectId(original["project_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["projectId"] = transformedProjectId
 	}
 
 	transformedTableId, err := expandBigQueryDatasetAccessViewTableId(original["table_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTableId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTableId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["tableId"] = transformedTableId
 	}
 
 	return transformed, nil
 }
 
-func expandBigQueryDatasetAccessViewDatasetId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessViewDatasetId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessViewProjectId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessViewProjectId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessViewTableId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessViewTableId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessDataset(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessDataset(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1233,21 +1237,21 @@ func expandBigQueryDatasetAccessDataset(v interface{}, d TerraformResourceData, 
 	transformedDataset, err := expandBigQueryDatasetAccessDatasetDataset(original["dataset"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDataset); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDataset); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["dataset"] = transformedDataset
 	}
 
 	transformedTargetTypes, err := expandBigQueryDatasetAccessDatasetTargetTypes(original["target_types"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedTargetTypes); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedTargetTypes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["targetTypes"] = transformedTargetTypes
 	}
 
 	return transformed, nil
 }
 
-func expandBigQueryDatasetAccessDatasetDataset(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessDatasetDataset(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1259,33 +1263,33 @@ func expandBigQueryDatasetAccessDatasetDataset(v interface{}, d TerraformResourc
 	transformedDatasetId, err := expandBigQueryDatasetAccessDatasetDatasetDatasetId(original["dataset_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["datasetId"] = transformedDatasetId
 	}
 
 	transformedProjectId, err := expandBigQueryDatasetAccessDatasetDatasetProjectId(original["project_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["projectId"] = transformedProjectId
 	}
 
 	return transformed, nil
 }
 
-func expandBigQueryDatasetAccessDatasetDatasetDatasetId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessDatasetDatasetDatasetId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessDatasetDatasetProjectId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessDatasetDatasetProjectId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessDatasetTargetTypes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessDatasetTargetTypes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessRoutine(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessRoutine(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1297,72 +1301,72 @@ func expandBigQueryDatasetAccessRoutine(v interface{}, d TerraformResourceData, 
 	transformedDatasetId, err := expandBigQueryDatasetAccessRoutineDatasetId(original["dataset_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["datasetId"] = transformedDatasetId
 	}
 
 	transformedProjectId, err := expandBigQueryDatasetAccessRoutineProjectId(original["project_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedProjectId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["projectId"] = transformedProjectId
 	}
 
 	transformedRoutineId, err := expandBigQueryDatasetAccessRoutineRoutineId(original["routine_id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedRoutineId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedRoutineId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["routineId"] = transformedRoutineId
 	}
 
 	return transformed, nil
 }
 
-func expandBigQueryDatasetAccessRoutineDatasetId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessRoutineDatasetId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessRoutineProjectId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessRoutineProjectId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetAccessRoutineRoutineId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetAccessRoutineRoutineId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetDatasetReference(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetDatasetReference(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	transformed := make(map[string]interface{})
 	transformedDatasetId, err := expandBigQueryDatasetDatasetReferenceDatasetId(d.Get("dataset_id"), d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDatasetId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["datasetId"] = transformedDatasetId
 	}
 
 	return transformed, nil
 }
 
-func expandBigQueryDatasetDatasetReferenceDatasetId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetDatasetReferenceDatasetId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetDefaultTableExpirationMs(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetDefaultTableExpirationMs(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetDefaultPartitionExpirationMs(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetDefaultPartitionExpirationMs(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetFriendlyName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetFriendlyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandBigQueryDatasetLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1373,11 +1377,11 @@ func expandBigQueryDatasetLabels(v interface{}, d TerraformResourceData, config 
 	return m, nil
 }
 
-func expandBigQueryDatasetLocation(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetLocation(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetDefaultEncryptionConfiguration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetDefaultEncryptionConfiguration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1389,21 +1393,21 @@ func expandBigQueryDatasetDefaultEncryptionConfiguration(v interface{}, d Terraf
 	transformedKmsKeyName, err := expandBigQueryDatasetDefaultEncryptionConfigurationKmsKeyName(original["kms_key_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kmsKeyName"] = transformedKmsKeyName
 	}
 
 	return transformed, nil
 }
 
-func expandBigQueryDatasetDefaultEncryptionConfigurationKmsKeyName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetDefaultEncryptionConfigurationKmsKeyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetIsCaseInsensitive(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetIsCaseInsensitive(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandBigQueryDatasetDefaultCollation(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandBigQueryDatasetDefaultCollation(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

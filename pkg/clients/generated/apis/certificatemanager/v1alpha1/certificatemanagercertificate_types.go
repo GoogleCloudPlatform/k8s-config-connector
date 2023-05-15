@@ -122,23 +122,23 @@ type CertificateProvisioningIssue struct {
 }
 
 type CertificateSelfManaged struct {
-	/* DEPRECATED. Deprecated in favor of `pem_certificate`. **Deprecated** The certificate chain in PEM-encoded form.
+	/* DEPRECATED. Deprecated in favor of `pem_certificate`. Immutable. **Deprecated** The certificate chain in PEM-encoded form.
 
 	Leaf certificate comes first, followed by intermediate ones if any. */
 	// +optional
 	CertificatePem *CertificateCertificatePem `json:"certificatePem,omitempty"`
 
-	/* The certificate chain in PEM-encoded form.
+	/* Immutable. The certificate chain in PEM-encoded form.
 
 	Leaf certificate comes first, followed by intermediate ones if any. */
 	// +optional
 	PemCertificate *string `json:"pemCertificate,omitempty"`
 
-	/* The private key of the leaf certificate in PEM-encoded form. */
+	/* Immutable. The private key of the leaf certificate in PEM-encoded form. */
 	// +optional
 	PemPrivateKey *CertificatePemPrivateKey `json:"pemPrivateKey,omitempty"`
 
-	/* DEPRECATED. Deprecated in favor of `pem_private_key`. **Deprecated** The private key of the leaf certificate in PEM-encoded form. */
+	/* DEPRECATED. Deprecated in favor of `pem_private_key`. Immutable. **Deprecated** The private key of the leaf certificate in PEM-encoded form. */
 	// +optional
 	PrivateKeyPem *CertificatePrivateKeyPem `json:"privateKeyPem,omitempty"`
 }
@@ -153,6 +153,10 @@ type CertificateManagerCertificateSpec struct {
 	/* A human-readable description of the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
+
+	/* The Certificate Manager location. If not specified, "global" is used. */
+	// +optional
+	Location *string `json:"location,omitempty"`
 
 	/* Immutable. Configuration and state of a Managed Certificate.
 	Certificate Manager provisions and renews Managed Certificates

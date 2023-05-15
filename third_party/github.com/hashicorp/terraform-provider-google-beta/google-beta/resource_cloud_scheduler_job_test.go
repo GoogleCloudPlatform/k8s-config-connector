@@ -6,6 +6,8 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestCloudScheduler_FlattenHttpHeaders(t *testing.T) {
@@ -88,7 +90,7 @@ func TestCloudScheduler_FlattenHttpHeaders(t *testing.T) {
 
 	for _, c := range cases {
 		d := &schema.ResourceData{}
-		output := flattenCloudSchedulerJobAppEngineHttpTargetHeaders(c.Input, d, &Config{})
+		output := flattenCloudSchedulerJobAppEngineHttpTargetHeaders(c.Input, d, &transport_tpg.Config{})
 		if !reflect.DeepEqual(output, c.Output) {
 			t.Fatalf("Error matching output and expected: %#v vs %#v", output, c.Output)
 		}
@@ -103,7 +105,7 @@ func TestAccCloudSchedulerJob_schedulerPausedExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudSchedulerJobDestroyProducer(t),
 		Steps: []resource.TestStep{

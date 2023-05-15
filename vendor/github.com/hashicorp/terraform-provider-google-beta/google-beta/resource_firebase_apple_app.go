@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceFirebaseAppleApp() *schema.Resource {
@@ -42,6 +45,12 @@ func ResourceFirebaseAppleApp() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
+			"bundle_id": {
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: `The canonical bundle ID of the Apple app as it would appear in the Apple AppStore.`,
+			},
 			"display_name": {
 				Type:        schema.TypeString,
 				Required:    true,
@@ -51,11 +60,6 @@ func ResourceFirebaseAppleApp() *schema.Resource {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: `The automatically generated Apple ID assigned to the Apple app by Apple in the Apple App Store.`,
-			},
-			"bundle_id": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: `The canonical bundle ID of the Apple app as it would appear in the Apple AppStore.`,
 			},
 			"team_id": {
 				Type:        schema.TypeString,
@@ -94,8 +98,8 @@ serving traffic. Set to 'DELETE' to delete the Apple. Defaults to 'DELETE'.`,
 }
 
 func resourceFirebaseAppleAppCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -104,29 +108,29 @@ func resourceFirebaseAppleAppCreate(d *schema.ResourceData, meta interface{}) er
 	displayNameProp, err := expandFirebaseAppleAppDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	bundleIdProp, err := expandFirebaseAppleAppBundleId(d.Get("bundle_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("bundle_id"); !isEmptyValue(reflect.ValueOf(bundleIdProp)) && (ok || !reflect.DeepEqual(v, bundleIdProp)) {
+	} else if v, ok := d.GetOkExists("bundle_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(bundleIdProp)) && (ok || !reflect.DeepEqual(v, bundleIdProp)) {
 		obj["bundleId"] = bundleIdProp
 	}
 	appStoreIdProp, err := expandFirebaseAppleAppAppStoreId(d.Get("app_store_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("app_store_id"); !isEmptyValue(reflect.ValueOf(appStoreIdProp)) && (ok || !reflect.DeepEqual(v, appStoreIdProp)) {
+	} else if v, ok := d.GetOkExists("app_store_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(appStoreIdProp)) && (ok || !reflect.DeepEqual(v, appStoreIdProp)) {
 		obj["appStoreId"] = appStoreIdProp
 	}
 	teamIdProp, err := expandFirebaseAppleAppTeamId(d.Get("team_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("team_id"); !isEmptyValue(reflect.ValueOf(teamIdProp)) && (ok || !reflect.DeepEqual(v, teamIdProp)) {
+	} else if v, ok := d.GetOkExists("team_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(teamIdProp)) && (ok || !reflect.DeepEqual(v, teamIdProp)) {
 		obj["teamId"] = teamIdProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/iosApps")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/iosApps")
 	if err != nil {
 		return err
 	}
@@ -134,24 +138,24 @@ func resourceFirebaseAppleAppCreate(d *schema.ResourceData, meta interface{}) er
 	log.Printf("[DEBUG] Creating new AppleApp: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AppleApp: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating AppleApp: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -175,7 +179,7 @@ func resourceFirebaseAppleAppCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -187,33 +191,33 @@ func resourceFirebaseAppleAppCreate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceFirebaseAppleAppRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AppleApp: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseAppleApp %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("FirebaseAppleApp %q", d.Id()))
 	}
 
 	// Explicitly set virtual fields to default values if unset
@@ -249,15 +253,15 @@ func resourceFirebaseAppleAppRead(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceFirebaseAppleAppUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for AppleApp: %s", err)
 	}
@@ -267,29 +271,23 @@ func resourceFirebaseAppleAppUpdate(d *schema.ResourceData, meta interface{}) er
 	displayNameProp, err := expandFirebaseAppleAppDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
-	}
-	bundleIdProp, err := expandFirebaseAppleAppBundleId(d.Get("bundle_id"), d, config)
-	if err != nil {
-		return err
-	} else if v, ok := d.GetOkExists("bundle_id"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, bundleIdProp)) {
-		obj["bundleId"] = bundleIdProp
 	}
 	appStoreIdProp, err := expandFirebaseAppleAppAppStoreId(d.Get("app_store_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("app_store_id"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, appStoreIdProp)) {
+	} else if v, ok := d.GetOkExists("app_store_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, appStoreIdProp)) {
 		obj["appStoreId"] = appStoreIdProp
 	}
 	teamIdProp, err := expandFirebaseAppleAppTeamId(d.Get("team_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("team_id"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, teamIdProp)) {
+	} else if v, ok := d.GetOkExists("team_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, teamIdProp)) {
 		obj["teamId"] = teamIdProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -301,10 +299,6 @@ func resourceFirebaseAppleAppUpdate(d *schema.ResourceData, meta interface{}) er
 		updateMask = append(updateMask, "displayName")
 	}
 
-	if d.HasChange("bundle_id") {
-		updateMask = append(updateMask, "bundleId")
-	}
-
 	if d.HasChange("app_store_id") {
 		updateMask = append(updateMask, "appStoreId")
 	}
@@ -314,17 +308,17 @@ func resourceFirebaseAppleAppUpdate(d *schema.ResourceData, meta interface{}) er
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating AppleApp %q: %s", d.Id(), err)
@@ -336,8 +330,8 @@ func resourceFirebaseAppleAppUpdate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceFirebaseAppleAppDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -353,13 +347,13 @@ func resourceFirebaseAppleAppDelete(d *schema.ResourceData, meta interface{}) er
 	// End of Handwritten
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for App: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}:remove")
+	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}:remove")
 	if err != nil {
 		return err
 	}
@@ -367,13 +361,13 @@ func resourceFirebaseAppleAppDelete(d *schema.ResourceData, meta interface{}) er
 	log.Printf("[DEBUG] Deleting App %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "App")
+		return transport_tpg.HandleNotFoundError(err, d, "App")
 	}
 
 	err = FirebaseOperationWaitTime(
@@ -395,7 +389,7 @@ func resourceFirebaseAppleAppDelete(d *schema.ResourceData, meta interface{}) er
 
 func resourceFirebaseAppleAppImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{"(?P<project>[^ ]+) (?P<name>[^ ]+)", "(?P<name>[^ ]+)"}, d, config); err != nil {
@@ -405,42 +399,42 @@ func resourceFirebaseAppleAppImport(d *schema.ResourceData, meta interface{}) ([
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenFirebaseAppleAppName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAppleAppName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseAppleAppDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAppleAppDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseAppleAppAppId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAppleAppAppId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseAppleAppBundleId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAppleAppBundleId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseAppleAppAppStoreId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAppleAppAppStoreId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenFirebaseAppleAppTeamId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenFirebaseAppleAppTeamId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandFirebaseAppleAppDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseAppleAppDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandFirebaseAppleAppBundleId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseAppleAppBundleId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandFirebaseAppleAppAppStoreId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseAppleAppAppStoreId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandFirebaseAppleAppTeamId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandFirebaseAppleAppTeamId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

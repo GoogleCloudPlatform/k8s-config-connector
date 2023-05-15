@@ -4,12 +4,15 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"google.golang.org/api/composer/v1beta1"
 )
 
 type ComposerOperationWaiter struct {
 	Service *composer.ProjectsLocationsService
-	CommonOperationWaiter
+	tpgresource.CommonOperationWaiter
 }
 
 func (w *ComposerOperationWaiter) QueryOp() (interface{}, error) {
@@ -19,12 +22,12 @@ func (w *ComposerOperationWaiter) QueryOp() (interface{}, error) {
 	return w.Service.Operations.Get(w.Op.Name).Do()
 }
 
-func ComposerOperationWaitTime(config *Config, op *composer.Operation, project, activity, userAgent string, timeout time.Duration) error {
+func ComposerOperationWaitTime(config *transport_tpg.Config, op *composer.Operation, project, activity, userAgent string, timeout time.Duration) error {
 	w := &ComposerOperationWaiter{
 		Service: config.NewComposerClient(userAgent).Projects.Locations,
 	}
 	if err := w.SetOp(op); err != nil {
 		return err
 	}
-	return OperationWait(w, activity, timeout, config.PollInterval)
+	return tpgresource.OperationWait(w, activity, timeout, config.PollInterval)
 }

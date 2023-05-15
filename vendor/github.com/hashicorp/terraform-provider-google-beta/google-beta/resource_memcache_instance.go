@@ -23,6 +23,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceMemcacheInstance() *schema.Resource {
@@ -113,7 +117,7 @@ is expected to be one.`,
 									"day": {
 										Type:         schema.TypeString,
 										Required:     true,
-										ValidateFunc: validateEnum([]string{"DAY_OF_WEEK_UNSPECIFIED", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"}),
+										ValidateFunc: verify.ValidateEnum([]string{"DAY_OF_WEEK_UNSPECIFIED", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"}),
 										Description: `Required. The day of week that maintenance updates occur.
 - DAY_OF_WEEK_UNSPECIFIED: The day of the week is unspecified.
 - MONDAY: Monday
@@ -220,7 +224,7 @@ resolution and up to nine fractional digits.`,
 			"memcache_version": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"MEMCACHE_1_5", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"MEMCACHE_1_5", ""}),
 				Description: `The major version of Memcached software. If not provided, latest supported version will be used.
 Currently the latest supported major version is MEMCACHE_1_5. The minor version will be automatically
 determined by our system based on the latest supported minor version. Default value: "MEMCACHE_1_5" Possible values: ["MEMCACHE_1_5"]`,
@@ -337,8 +341,8 @@ resolution and up to nine fractional digits.`,
 }
 
 func resourceMemcacheInstanceCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -347,59 +351,59 @@ func resourceMemcacheInstanceCreate(d *schema.ResourceData, meta interface{}) er
 	displayNameProp, err := expandMemcacheInstanceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	labelsProp, err := expandMemcacheInstanceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	zonesProp, err := expandMemcacheInstanceZones(d.Get("zones"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("zones"); !isEmptyValue(reflect.ValueOf(zonesProp)) && (ok || !reflect.DeepEqual(v, zonesProp)) {
+	} else if v, ok := d.GetOkExists("zones"); !tpgresource.IsEmptyValue(reflect.ValueOf(zonesProp)) && (ok || !reflect.DeepEqual(v, zonesProp)) {
 		obj["zones"] = zonesProp
 	}
 	authorizedNetworkProp, err := expandMemcacheInstanceAuthorizedNetwork(d.Get("authorized_network"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("authorized_network"); !isEmptyValue(reflect.ValueOf(authorizedNetworkProp)) && (ok || !reflect.DeepEqual(v, authorizedNetworkProp)) {
+	} else if v, ok := d.GetOkExists("authorized_network"); !tpgresource.IsEmptyValue(reflect.ValueOf(authorizedNetworkProp)) && (ok || !reflect.DeepEqual(v, authorizedNetworkProp)) {
 		obj["authorizedNetwork"] = authorizedNetworkProp
 	}
 	nodeCountProp, err := expandMemcacheInstanceNodeCount(d.Get("node_count"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("node_count"); !isEmptyValue(reflect.ValueOf(nodeCountProp)) && (ok || !reflect.DeepEqual(v, nodeCountProp)) {
+	} else if v, ok := d.GetOkExists("node_count"); !tpgresource.IsEmptyValue(reflect.ValueOf(nodeCountProp)) && (ok || !reflect.DeepEqual(v, nodeCountProp)) {
 		obj["nodeCount"] = nodeCountProp
 	}
 	memcacheVersionProp, err := expandMemcacheInstanceMemcacheVersion(d.Get("memcache_version"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("memcache_version"); !isEmptyValue(reflect.ValueOf(memcacheVersionProp)) && (ok || !reflect.DeepEqual(v, memcacheVersionProp)) {
+	} else if v, ok := d.GetOkExists("memcache_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(memcacheVersionProp)) && (ok || !reflect.DeepEqual(v, memcacheVersionProp)) {
 		obj["memcacheVersion"] = memcacheVersionProp
 	}
 	nodeConfigProp, err := expandMemcacheInstanceNodeConfig(d.Get("node_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("node_config"); !isEmptyValue(reflect.ValueOf(nodeConfigProp)) && (ok || !reflect.DeepEqual(v, nodeConfigProp)) {
+	} else if v, ok := d.GetOkExists("node_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(nodeConfigProp)) && (ok || !reflect.DeepEqual(v, nodeConfigProp)) {
 		obj["nodeConfig"] = nodeConfigProp
 	}
 	parametersProp, err := expandMemcacheInstanceMemcacheParameters(d.Get("memcache_parameters"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("memcache_parameters"); !isEmptyValue(reflect.ValueOf(parametersProp)) && (ok || !reflect.DeepEqual(v, parametersProp)) {
+	} else if v, ok := d.GetOkExists("memcache_parameters"); !tpgresource.IsEmptyValue(reflect.ValueOf(parametersProp)) && (ok || !reflect.DeepEqual(v, parametersProp)) {
 		obj["parameters"] = parametersProp
 	}
 	maintenancePolicyProp, err := expandMemcacheInstanceMaintenancePolicy(d.Get("maintenance_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("maintenance_policy"); !isEmptyValue(reflect.ValueOf(maintenancePolicyProp)) && (ok || !reflect.DeepEqual(v, maintenancePolicyProp)) {
+	} else if v, ok := d.GetOkExists("maintenance_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(maintenancePolicyProp)) && (ok || !reflect.DeepEqual(v, maintenancePolicyProp)) {
 		obj["maintenancePolicy"] = maintenancePolicyProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{MemcacheBasePath}}projects/{{project}}/locations/{{region}}/instances?instanceId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MemcacheBasePath}}projects/{{project}}/locations/{{region}}/instances?instanceId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -407,24 +411,24 @@ func resourceMemcacheInstanceCreate(d *schema.ResourceData, meta interface{}) er
 	log.Printf("[DEBUG] Creating new Instance: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Instance: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -444,7 +448,7 @@ func resourceMemcacheInstanceCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -456,33 +460,33 @@ func resourceMemcacheInstanceCreate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceMemcacheInstanceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{MemcacheBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MemcacheBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("MemcacheInstance %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("MemcacheInstance %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -536,15 +540,15 @@ func resourceMemcacheInstanceRead(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceMemcacheInstanceUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
@@ -554,35 +558,35 @@ func resourceMemcacheInstanceUpdate(d *schema.ResourceData, meta interface{}) er
 	displayNameProp, err := expandMemcacheInstanceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	labelsProp, err := expandMemcacheInstanceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	nodeCountProp, err := expandMemcacheInstanceNodeCount(d.Get("node_count"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("node_count"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nodeCountProp)) {
+	} else if v, ok := d.GetOkExists("node_count"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, nodeCountProp)) {
 		obj["nodeCount"] = nodeCountProp
 	}
 	memcacheVersionProp, err := expandMemcacheInstanceMemcacheVersion(d.Get("memcache_version"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("memcache_version"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, memcacheVersionProp)) {
+	} else if v, ok := d.GetOkExists("memcache_version"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, memcacheVersionProp)) {
 		obj["memcacheVersion"] = memcacheVersionProp
 	}
 	maintenancePolicyProp, err := expandMemcacheInstanceMaintenancePolicy(d.Get("maintenance_policy"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("maintenance_policy"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, maintenancePolicyProp)) {
+	} else if v, ok := d.GetOkExists("maintenance_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, maintenancePolicyProp)) {
 		obj["maintenancePolicy"] = maintenancePolicyProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{MemcacheBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MemcacheBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -611,17 +615,17 @@ func resourceMemcacheInstanceUpdate(d *schema.ResourceData, meta interface{}) er
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Instance %q: %s", d.Id(), err)
@@ -641,21 +645,21 @@ func resourceMemcacheInstanceUpdate(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceMemcacheInstanceDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Instance: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{MemcacheBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{MemcacheBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -664,13 +668,13 @@ func resourceMemcacheInstanceDelete(d *schema.ResourceData, meta interface{}) er
 	log.Printf("[DEBUG] Deleting Instance %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Instance")
+		return transport_tpg.HandleNotFoundError(err, d, "Instance")
 	}
 
 	err = MemcacheOperationWaitTime(
@@ -686,7 +690,7 @@ func resourceMemcacheInstanceDelete(d *schema.ResourceData, meta interface{}) er
 }
 
 func resourceMemcacheInstanceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/instances/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)",
@@ -697,7 +701,7 @@ func resourceMemcacheInstanceImport(d *schema.ResourceData, meta interface{}) ([
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -706,11 +710,11 @@ func resourceMemcacheInstanceImport(d *schema.ResourceData, meta interface{}) ([
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenMemcacheInstanceDisplayName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceDisplayName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMemcacheNodes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMemcacheNodes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -732,15 +736,15 @@ func flattenMemcacheInstanceMemcacheNodes(v interface{}, d *schema.ResourceData,
 	}
 	return transformed
 }
-func flattenMemcacheInstanceMemcacheNodesNodeId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMemcacheNodesNodeId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMemcacheNodesZone(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMemcacheNodesZone(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMemcacheNodesPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMemcacheNodesPort(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -757,42 +761,42 @@ func flattenMemcacheInstanceMemcacheNodesPort(v interface{}, d *schema.ResourceD
 	return v // let terraform core handle it otherwise
 }
 
-func flattenMemcacheInstanceMemcacheNodesHost(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMemcacheNodesHost(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMemcacheNodesState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMemcacheNodesState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceDiscoveryEndpoint(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceDiscoveryEndpoint(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMemcacheFullVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMemcacheFullVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceZones(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceZones(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
 	return schema.NewSet(schema.HashString, v.([]interface{}))
 }
 
-func flattenMemcacheInstanceAuthorizedNetwork(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceAuthorizedNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceNodeCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceNodeCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -809,11 +813,11 @@ func flattenMemcacheInstanceNodeCount(v interface{}, d *schema.ResourceData, con
 	return v // let terraform core handle it otherwise
 }
 
-func flattenMemcacheInstanceMemcacheVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMemcacheVersion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceNodeConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceNodeConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -828,7 +832,7 @@ func flattenMemcacheInstanceNodeConfig(v interface{}, d *schema.ResourceData, co
 		flattenMemcacheInstanceNodeConfigMemorySizeMb(original["memorySizeMb"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMemcacheInstanceNodeConfigCpuCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceNodeConfigCpuCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -845,7 +849,7 @@ func flattenMemcacheInstanceNodeConfigCpuCount(v interface{}, d *schema.Resource
 	return v // let terraform core handle it otherwise
 }
 
-func flattenMemcacheInstanceNodeConfigMemorySizeMb(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceNodeConfigMemorySizeMb(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -862,7 +866,7 @@ func flattenMemcacheInstanceNodeConfigMemorySizeMb(v interface{}, d *schema.Reso
 	return v // let terraform core handle it otherwise
 }
 
-func flattenMemcacheInstanceMemcacheParameters(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMemcacheParameters(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -877,15 +881,15 @@ func flattenMemcacheInstanceMemcacheParameters(v interface{}, d *schema.Resource
 		flattenMemcacheInstanceMemcacheParametersParams(original["params"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMemcacheInstanceMemcacheParametersId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMemcacheParametersId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMemcacheParametersParams(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMemcacheParametersParams(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMaintenancePolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenancePolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -904,19 +908,19 @@ func flattenMemcacheInstanceMaintenancePolicy(v interface{}, d *schema.ResourceD
 		flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindow(original["weeklyMaintenanceWindow"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMemcacheInstanceMaintenancePolicyCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenancePolicyCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMaintenancePolicyUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenancePolicyUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMaintenancePolicyDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenancePolicyDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
 	}
@@ -936,15 +940,15 @@ func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface
 	}
 	return transformed
 }
-func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowDay(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowDay(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowDuration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowDuration(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -960,7 +964,7 @@ func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime(v 
 		flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(original["nanos"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeHours(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeHours(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -977,7 +981,7 @@ func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeHou
 	return v // let terraform core handle it otherwise
 }
 
-func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeMinutes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeMinutes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -994,7 +998,7 @@ func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeMin
 	return v // let terraform core handle it otherwise
 }
 
-func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeSeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeSeconds(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1011,7 +1015,7 @@ func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeSec
 	return v // let terraform core handle it otherwise
 }
 
-func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -1028,7 +1032,7 @@ func flattenMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNan
 	return v // let terraform core handle it otherwise
 }
 
-func flattenMemcacheInstanceMaintenanceSchedule(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenanceSchedule(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1045,23 +1049,23 @@ func flattenMemcacheInstanceMaintenanceSchedule(v interface{}, d *schema.Resourc
 		flattenMemcacheInstanceMaintenanceScheduleScheduleDeadlineTime(original["scheduleDeadlineTime"], d, config)
 	return []interface{}{transformed}
 }
-func flattenMemcacheInstanceMaintenanceScheduleStartTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenanceScheduleStartTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMaintenanceScheduleEndTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenanceScheduleEndTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenMemcacheInstanceMaintenanceScheduleScheduleDeadlineTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenMemcacheInstanceMaintenanceScheduleScheduleDeadlineTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandMemcacheInstanceDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandMemcacheInstanceLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1072,24 +1076,24 @@ func expandMemcacheInstanceLabels(v interface{}, d TerraformResourceData, config
 	return m, nil
 }
 
-func expandMemcacheInstanceZones(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceZones(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	v = v.(*schema.Set).List()
 	return v, nil
 }
 
-func expandMemcacheInstanceAuthorizedNetwork(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceAuthorizedNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceNodeCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceNodeCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceMemcacheVersion(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMemcacheVersion(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceNodeConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceNodeConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1101,29 +1105,29 @@ func expandMemcacheInstanceNodeConfig(v interface{}, d TerraformResourceData, co
 	transformedCpuCount, err := expandMemcacheInstanceNodeConfigCpuCount(original["cpu_count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCpuCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCpuCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["cpuCount"] = transformedCpuCount
 	}
 
 	transformedMemorySizeMb, err := expandMemcacheInstanceNodeConfigMemorySizeMb(original["memory_size_mb"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMemorySizeMb); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMemorySizeMb); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["memorySizeMb"] = transformedMemorySizeMb
 	}
 
 	return transformed, nil
 }
 
-func expandMemcacheInstanceNodeConfigCpuCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceNodeConfigCpuCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceNodeConfigMemorySizeMb(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceNodeConfigMemorySizeMb(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceMemcacheParameters(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMemcacheParameters(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1135,25 +1139,25 @@ func expandMemcacheInstanceMemcacheParameters(v interface{}, d TerraformResource
 	transformedId, err := expandMemcacheInstanceMemcacheParametersId(original["id"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedId); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedId); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["id"] = transformedId
 	}
 
 	transformedParams, err := expandMemcacheInstanceMemcacheParametersParams(original["params"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedParams); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedParams); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["params"] = transformedParams
 	}
 
 	return transformed, nil
 }
 
-func expandMemcacheInstanceMemcacheParametersId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMemcacheParametersId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceMemcacheParametersParams(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandMemcacheInstanceMemcacheParametersParams(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -1164,7 +1168,7 @@ func expandMemcacheInstanceMemcacheParametersParams(v interface{}, d TerraformRe
 	return m, nil
 }
 
-func expandMemcacheInstanceMaintenancePolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMaintenancePolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -1176,47 +1180,47 @@ func expandMemcacheInstanceMaintenancePolicy(v interface{}, d TerraformResourceD
 	transformedCreateTime, err := expandMemcacheInstanceMaintenancePolicyCreateTime(original["create_time"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCreateTime); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCreateTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["createTime"] = transformedCreateTime
 	}
 
 	transformedUpdateTime, err := expandMemcacheInstanceMaintenancePolicyUpdateTime(original["update_time"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedUpdateTime); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedUpdateTime); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["updateTime"] = transformedUpdateTime
 	}
 
 	transformedDescription, err := expandMemcacheInstanceMaintenancePolicyDescription(original["description"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedDescription); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedDescription); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["description"] = transformedDescription
 	}
 
 	transformedWeeklyMaintenanceWindow, err := expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindow(original["weekly_maintenance_window"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedWeeklyMaintenanceWindow); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedWeeklyMaintenanceWindow); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["weeklyMaintenanceWindow"] = transformedWeeklyMaintenanceWindow
 	}
 
 	return transformed, nil
 }
 
-func expandMemcacheInstanceMaintenancePolicyCreateTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMaintenancePolicyCreateTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceMaintenancePolicyUpdateTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMaintenancePolicyUpdateTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceMaintenancePolicyDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMaintenancePolicyDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
 	for _, raw := range l {
@@ -1229,14 +1233,14 @@ func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{
 		transformedDay, err := expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowDay(original["day"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedDay); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedDay); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["day"] = transformedDay
 		}
 
 		transformedDuration, err := expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowDuration(original["duration"], d, config)
 		if err != nil {
 			return nil, err
-		} else if val := reflect.ValueOf(transformedDuration); val.IsValid() && !isEmptyValue(val) {
+		} else if val := reflect.ValueOf(transformedDuration); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["duration"] = transformedDuration
 		}
 
@@ -1252,15 +1256,15 @@ func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindow(v interface{
 	return req, nil
 }
 
-func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowDay(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowDay(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowDuration(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowDuration(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 {
 		return nil, nil
@@ -1277,46 +1281,46 @@ func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTime(v i
 	transformedHours, err := expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeHours(original["hours"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedHours); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedHours); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["hours"] = transformedHours
 	}
 
 	transformedMinutes, err := expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeMinutes(original["minutes"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedMinutes); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedMinutes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["minutes"] = transformedMinutes
 	}
 
 	transformedSeconds, err := expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeSeconds(original["seconds"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedSeconds); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedSeconds); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["seconds"] = transformedSeconds
 	}
 
 	transformedNanos, err := expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(original["nanos"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedNanos); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedNanos); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["nanos"] = transformedNanos
 	}
 
 	return transformed, nil
 }
 
-func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeHours(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeHours(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeMinutes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeMinutes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeSeconds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeSeconds(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandMemcacheInstanceMaintenancePolicyWeeklyMaintenanceWindowStartTimeNanos(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

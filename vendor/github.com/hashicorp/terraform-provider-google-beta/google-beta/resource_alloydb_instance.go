@@ -22,6 +22,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
 func ResourceAlloydbInstance() *schema.Resource {
@@ -60,8 +64,8 @@ func ResourceAlloydbInstance() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				ForceNew:     true,
-				ValidateFunc: validateEnum([]string{"PRIMARY", "READ_POOL"}),
-				Description:  `The type of the instance. Possible values: ["PRIMARY", "READ_POOL"]`,
+				ValidateFunc: verify.ValidateEnum([]string{"PRIMARY", "READ_POOL"}),
+				Description:  `The type of the instance. If the instance type is READ_POOL, provide the associated PRIMARY instance in the 'depends_on' meta-data attribute. Possible values: ["PRIMARY", "READ_POOL"]`,
 			},
 			"annotations": {
 				Type:        schema.TypeMap,
@@ -73,7 +77,7 @@ func ResourceAlloydbInstance() *schema.Resource {
 				Type:         schema.TypeString,
 				Computed:     true,
 				Optional:     true,
-				ValidateFunc: validateEnum([]string{"AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL", ""}),
+				ValidateFunc: verify.ValidateEnum([]string{"AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL", ""}),
 				Description:  `Availability type of an Instance. Defaults to REGIONAL for both primary and read instances. Note that primary and read instances can have different availability types. Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"]`,
 			},
 			"database_flags": {
@@ -172,8 +176,8 @@ func ResourceAlloydbInstance() *schema.Resource {
 
 func resourceAlloydbInstanceCreate(d *schema.ResourceData, meta interface{}) error {
 	var project string
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -182,59 +186,59 @@ func resourceAlloydbInstanceCreate(d *schema.ResourceData, meta interface{}) err
 	labelsProp, err := expandAlloydbInstanceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	annotationsProp, err := expandAlloydbInstanceAnnotations(d.Get("annotations"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("annotations"); !isEmptyValue(reflect.ValueOf(annotationsProp)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
+	} else if v, ok := d.GetOkExists("annotations"); !tpgresource.IsEmptyValue(reflect.ValueOf(annotationsProp)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
 		obj["annotations"] = annotationsProp
 	}
 	displayNameProp, err := expandAlloydbInstanceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	gceZoneProp, err := expandAlloydbInstanceGceZone(d.Get("gce_zone"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("gce_zone"); !isEmptyValue(reflect.ValueOf(gceZoneProp)) && (ok || !reflect.DeepEqual(v, gceZoneProp)) {
+	} else if v, ok := d.GetOkExists("gce_zone"); !tpgresource.IsEmptyValue(reflect.ValueOf(gceZoneProp)) && (ok || !reflect.DeepEqual(v, gceZoneProp)) {
 		obj["gceZone"] = gceZoneProp
 	}
 	databaseFlagsProp, err := expandAlloydbInstanceDatabaseFlags(d.Get("database_flags"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("database_flags"); !isEmptyValue(reflect.ValueOf(databaseFlagsProp)) && (ok || !reflect.DeepEqual(v, databaseFlagsProp)) {
+	} else if v, ok := d.GetOkExists("database_flags"); !tpgresource.IsEmptyValue(reflect.ValueOf(databaseFlagsProp)) && (ok || !reflect.DeepEqual(v, databaseFlagsProp)) {
 		obj["databaseFlags"] = databaseFlagsProp
 	}
 	availabilityTypeProp, err := expandAlloydbInstanceAvailabilityType(d.Get("availability_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("availability_type"); !isEmptyValue(reflect.ValueOf(availabilityTypeProp)) && (ok || !reflect.DeepEqual(v, availabilityTypeProp)) {
+	} else if v, ok := d.GetOkExists("availability_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(availabilityTypeProp)) && (ok || !reflect.DeepEqual(v, availabilityTypeProp)) {
 		obj["availabilityType"] = availabilityTypeProp
 	}
 	instanceTypeProp, err := expandAlloydbInstanceInstanceType(d.Get("instance_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("instance_type"); !isEmptyValue(reflect.ValueOf(instanceTypeProp)) && (ok || !reflect.DeepEqual(v, instanceTypeProp)) {
+	} else if v, ok := d.GetOkExists("instance_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(instanceTypeProp)) && (ok || !reflect.DeepEqual(v, instanceTypeProp)) {
 		obj["instanceType"] = instanceTypeProp
 	}
 	readPoolConfigProp, err := expandAlloydbInstanceReadPoolConfig(d.Get("read_pool_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("read_pool_config"); !isEmptyValue(reflect.ValueOf(readPoolConfigProp)) && (ok || !reflect.DeepEqual(v, readPoolConfigProp)) {
+	} else if v, ok := d.GetOkExists("read_pool_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(readPoolConfigProp)) && (ok || !reflect.DeepEqual(v, readPoolConfigProp)) {
 		obj["readPoolConfig"] = readPoolConfigProp
 	}
 	machineConfigProp, err := expandAlloydbInstanceMachineConfig(d.Get("machine_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("machine_config"); !isEmptyValue(reflect.ValueOf(machineConfigProp)) && (ok || !reflect.DeepEqual(v, machineConfigProp)) {
+	} else if v, ok := d.GetOkExists("machine_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(machineConfigProp)) && (ok || !reflect.DeepEqual(v, machineConfigProp)) {
 		obj["machineConfig"] = machineConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{AlloydbBasePath}}{{cluster}}/instances?instanceId={{instance_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}{{cluster}}/instances?instanceId={{instance_id}}")
 	if err != nil {
 		return err
 	}
@@ -243,17 +247,17 @@ func resourceAlloydbInstanceCreate(d *schema.ResourceData, meta interface{}) err
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Instance: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{cluster}}/instances/{{instance_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{cluster}}/instances/{{instance_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -275,13 +279,13 @@ func resourceAlloydbInstanceCreate(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceAlloydbInstanceRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{AlloydbBasePath}}{{cluster}}/instances/{{instance_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}{{cluster}}/instances/{{instance_id}}")
 	if err != nil {
 		return err
 	}
@@ -289,13 +293,13 @@ func resourceAlloydbInstanceRead(d *schema.ResourceData, meta interface{}) error
 	billingProject := ""
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("AlloydbInstance %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("AlloydbInstance %q", d.Id()))
 	}
 
 	if err := d.Set("name", flattenAlloydbInstanceName(res["name"], d, config)); err != nil {
@@ -349,8 +353,8 @@ func resourceAlloydbInstanceRead(d *schema.ResourceData, meta interface{}) error
 
 func resourceAlloydbInstanceUpdate(d *schema.ResourceData, meta interface{}) error {
 	var project string
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -361,53 +365,53 @@ func resourceAlloydbInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 	labelsProp, err := expandAlloydbInstanceLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
+	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
 	annotationsProp, err := expandAlloydbInstanceAnnotations(d.Get("annotations"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("annotations"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
+	} else if v, ok := d.GetOkExists("annotations"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
 		obj["annotations"] = annotationsProp
 	}
 	displayNameProp, err := expandAlloydbInstanceDisplayName(d.Get("display_name"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
+	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
 	gceZoneProp, err := expandAlloydbInstanceGceZone(d.Get("gce_zone"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("gce_zone"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, gceZoneProp)) {
+	} else if v, ok := d.GetOkExists("gce_zone"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, gceZoneProp)) {
 		obj["gceZone"] = gceZoneProp
 	}
 	databaseFlagsProp, err := expandAlloydbInstanceDatabaseFlags(d.Get("database_flags"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("database_flags"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, databaseFlagsProp)) {
+	} else if v, ok := d.GetOkExists("database_flags"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, databaseFlagsProp)) {
 		obj["databaseFlags"] = databaseFlagsProp
 	}
 	availabilityTypeProp, err := expandAlloydbInstanceAvailabilityType(d.Get("availability_type"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("availability_type"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, availabilityTypeProp)) {
+	} else if v, ok := d.GetOkExists("availability_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, availabilityTypeProp)) {
 		obj["availabilityType"] = availabilityTypeProp
 	}
 	readPoolConfigProp, err := expandAlloydbInstanceReadPoolConfig(d.Get("read_pool_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("read_pool_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, readPoolConfigProp)) {
+	} else if v, ok := d.GetOkExists("read_pool_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, readPoolConfigProp)) {
 		obj["readPoolConfig"] = readPoolConfigProp
 	}
 	machineConfigProp, err := expandAlloydbInstanceMachineConfig(d.Get("machine_config"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("machine_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, machineConfigProp)) {
+	} else if v, ok := d.GetOkExists("machine_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, machineConfigProp)) {
 		obj["machineConfig"] = machineConfigProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{AlloydbBasePath}}{{cluster}}/instances/{{instance_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}{{cluster}}/instances/{{instance_id}}")
 	if err != nil {
 		return err
 	}
@@ -448,17 +452,17 @@ func resourceAlloydbInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Instance %q: %s", d.Id(), err)
@@ -479,15 +483,15 @@ func resourceAlloydbInstanceUpdate(d *schema.ResourceData, meta interface{}) err
 
 func resourceAlloydbInstanceDelete(d *schema.ResourceData, meta interface{}) error {
 	var project string
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	url, err := ReplaceVars(d, config, "{{AlloydbBasePath}}{{cluster}}/instances/{{instance_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}{{cluster}}/instances/{{instance_id}}")
 	if err != nil {
 		return err
 	}
@@ -496,13 +500,13 @@ func resourceAlloydbInstanceDelete(d *schema.ResourceData, meta interface{}) err
 	log.Printf("[DEBUG] Deleting Instance %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "Instance")
+		return transport_tpg.HandleNotFoundError(err, d, "Instance")
 	}
 
 	err = AlloydbOperationWaitTime(
@@ -518,7 +522,7 @@ func resourceAlloydbInstanceDelete(d *schema.ResourceData, meta interface{}) err
 }
 
 func resourceAlloydbInstanceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
 	// current import_formats can't import fields with forward slashes in their value
 	if err := ParseImportId([]string{
@@ -528,7 +532,7 @@ func resourceAlloydbInstanceImport(d *schema.ResourceData, meta interface{}) ([]
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{cluster}}/instances/{{instance_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{cluster}}/instances/{{instance_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -537,59 +541,59 @@ func resourceAlloydbInstanceImport(d *schema.ResourceData, meta interface{}) ([]
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenAlloydbInstanceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceUid(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceUid(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceAnnotations(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceAnnotations(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceGceZone(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceGceZone(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceReconciling(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceReconciling(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceDatabaseFlags(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceDatabaseFlags(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceAvailabilityType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceAvailabilityType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceInstanceType(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceInstanceType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceIpAddress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceIpAddress(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenAlloydbInstanceReadPoolConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceReadPoolConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -602,7 +606,7 @@ func flattenAlloydbInstanceReadPoolConfig(v interface{}, d *schema.ResourceData,
 		flattenAlloydbInstanceReadPoolConfigNodeCount(original["nodeCount"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAlloydbInstanceReadPoolConfigNodeCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceReadPoolConfigNodeCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -619,7 +623,7 @@ func flattenAlloydbInstanceReadPoolConfigNodeCount(v interface{}, d *schema.Reso
 	return v // let terraform core handle it otherwise
 }
 
-func flattenAlloydbInstanceMachineConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceMachineConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -632,7 +636,7 @@ func flattenAlloydbInstanceMachineConfig(v interface{}, d *schema.ResourceData, 
 		flattenAlloydbInstanceMachineConfigCpuCount(original["cpuCount"], d, config)
 	return []interface{}{transformed}
 }
-func flattenAlloydbInstanceMachineConfigCpuCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenAlloydbInstanceMachineConfigCpuCount(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
 		if intVal, err := StringToFixed64(strVal); err == nil {
@@ -649,7 +653,7 @@ func flattenAlloydbInstanceMachineConfigCpuCount(v interface{}, d *schema.Resour
 	return v // let terraform core handle it otherwise
 }
 
-func expandAlloydbInstanceLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandAlloydbInstanceLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -660,7 +664,7 @@ func expandAlloydbInstanceLabels(v interface{}, d TerraformResourceData, config 
 	return m, nil
 }
 
-func expandAlloydbInstanceAnnotations(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandAlloydbInstanceAnnotations(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -671,15 +675,15 @@ func expandAlloydbInstanceAnnotations(v interface{}, d TerraformResourceData, co
 	return m, nil
 }
 
-func expandAlloydbInstanceDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbInstanceDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbInstanceGceZone(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbInstanceGceZone(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbInstanceDatabaseFlags(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+func expandAlloydbInstanceDatabaseFlags(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}
@@ -690,15 +694,15 @@ func expandAlloydbInstanceDatabaseFlags(v interface{}, d TerraformResourceData, 
 	return m, nil
 }
 
-func expandAlloydbInstanceAvailabilityType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbInstanceAvailabilityType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbInstanceInstanceType(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbInstanceInstanceType(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbInstanceReadPoolConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbInstanceReadPoolConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -710,18 +714,18 @@ func expandAlloydbInstanceReadPoolConfig(v interface{}, d TerraformResourceData,
 	transformedNodeCount, err := expandAlloydbInstanceReadPoolConfigNodeCount(original["node_count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedNodeCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedNodeCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["nodeCount"] = transformedNodeCount
 	}
 
 	return transformed, nil
 }
 
-func expandAlloydbInstanceReadPoolConfigNodeCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbInstanceReadPoolConfigNodeCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandAlloydbInstanceMachineConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbInstanceMachineConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -733,13 +737,13 @@ func expandAlloydbInstanceMachineConfig(v interface{}, d TerraformResourceData, 
 	transformedCpuCount, err := expandAlloydbInstanceMachineConfigCpuCount(original["cpu_count"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedCpuCount); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedCpuCount); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["cpuCount"] = transformedCpuCount
 	}
 
 	return transformed, nil
 }
 
-func expandAlloydbInstanceMachineConfigCpuCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandAlloydbInstanceMachineConfigCpuCount(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

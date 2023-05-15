@@ -66,7 +66,7 @@ type TagsTagValueStatus struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* Output only. Namespaced name of the TagValue. Will be in the format {organizationId}/{tag_key_short_name}/{shortName}. */
+	/* Output only. Namespaced name of the TagValue. Will be in the format {parentNamespace}/{tagKeyShortName}/{shortName}. */
 	// +optional
 	NamespacedName *string `json:"namespacedName,omitempty"`
 

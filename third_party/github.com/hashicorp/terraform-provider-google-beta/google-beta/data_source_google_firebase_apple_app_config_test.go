@@ -2,6 +2,7 @@ package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -10,11 +11,11 @@ import (
 
 func TestAccDataSourceGoogleFirebaseAppleAppConfig(t *testing.T) {
 	// TODO: https://github.com/hashicorp/terraform-provider-google/issues/14158
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":   GetTestProjectFromEnv(),
+		"project_id":   acctest.GetTestProjectFromEnv(),
 		"bundle_id":    "apple.app." + RandString(t, 5),
 		"display_name": "tf-test Display Name AppleAppConfig DataSource",
 		"app_store_id": 12345,
@@ -22,7 +23,7 @@ func TestAccDataSourceGoogleFirebaseAppleAppConfig(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
+		PreCheck: func() { acctest.AccTestPreCheck(t) },
 		Steps: []resource.TestStep{
 			{
 				ExternalProviders: map[string]resource.ExternalProvider{

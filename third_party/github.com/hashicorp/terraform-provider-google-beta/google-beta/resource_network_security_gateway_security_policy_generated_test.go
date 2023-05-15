@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccNetworkSecurityGatewaySecurityPolicy_networkSecurityGatewaySecurityPolicyBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccNetworkSecurityGatewaySecurityPolicy_networkSecurityGatewaySecurityP
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityGatewaySecurityPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -42,7 +46,7 @@ func TestAccNetworkSecurityGatewaySecurityPolicy_networkSecurityGatewaySecurityP
 				ResourceName:            "google_network_security_gateway_security_policy.default",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"name", "location"},
+				ImportStateVerifyIgnore: []string{"tls_inspection_policy", "name", "location"},
 			},
 		},
 	})
@@ -59,6 +63,115 @@ resource "google_network_security_gateway_security_policy" "default" {
 `, context)
 }
 
+func TestAccNetworkSecurityGatewaySecurityPolicy_networkSecurityGatewaySecurityPolicyTlsInspectionBasicExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckNetworkSecurityGatewaySecurityPolicyDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccNetworkSecurityGatewaySecurityPolicy_networkSecurityGatewaySecurityPolicyTlsInspectionBasicExample(context),
+			},
+			{
+				ResourceName:            "google_network_security_gateway_security_policy.default",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"tls_inspection_policy", "name", "location"},
+			},
+		},
+	})
+}
+
+func testAccNetworkSecurityGatewaySecurityPolicy_networkSecurityGatewaySecurityPolicyTlsInspectionBasicExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_privateca_ca_pool" "default" {
+  provider = google-beta
+  name      = "tf-test-my-basic-ca-pool%{random_suffix}"
+  location  = "us-central1"
+  tier     = "DEVOPS"
+  publishing_options {
+    publish_ca_cert = false
+    publish_crl = false
+  }
+  issuance_policy {
+    maximum_lifetime = "1209600s"
+    baseline_values {
+      ca_options {
+        is_ca = false
+      }
+      key_usage {
+        base_key_usage {}
+        extended_key_usage {
+          server_auth = true
+        }
+      }
+    }
+  }
+}
+
+
+resource "google_privateca_certificate_authority" "default" {
+  provider = google-beta
+  pool = google_privateca_ca_pool.default.name
+  certificate_authority_id = "tf-test-my-basic-certificate-authority%{random_suffix}"
+  location = "us-central1"
+  lifetime = "86400s"
+  type = "SELF_SIGNED"
+  deletion_protection = false
+  skip_grace_period = true
+  ignore_active_certificates_on_deletion = true
+  config {
+    subject_config {
+      subject {
+        organization = "Test LLC"
+        common_name = "my-ca"
+      }
+    }
+    x509_config {
+      ca_options {
+        is_ca = true
+      }
+      key_usage {
+        base_key_usage {
+          cert_sign = true
+          crl_sign = true
+        }
+        extended_key_usage {
+          server_auth = false
+        }
+      }
+    }
+  }
+  key_spec {
+    algorithm = "RSA_PKCS1_4096_SHA256"
+  }
+}
+
+resource "google_network_security_tls_inspection_policy" "default" {
+  provider = google-beta
+  name     = "tf-test-my-tls-inspection-policy%{random_suffix}"
+  location = "us-central1"
+  ca_pool  = google_privateca_ca_pool.default.id
+  depends_on = [google_privateca_ca_pool.default, google_privateca_certificate_authority.default]
+}
+
+resource "google_network_security_gateway_security_policy" "default" {
+  provider    = google-beta
+  name        = "tf-test-my-gateway-security-policy%{random_suffix}"
+  location    = "us-central1"
+  description = "my description"
+  tls_inspection_policy = google_network_security_tls_inspection_policy.default.id
+  depends_on = [google_network_security_tls_inspection_policy.default]
+}
+`, context)
+}
+
 func testAccCheckNetworkSecurityGatewaySecurityPolicyDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
 		for name, rs := range s.RootModule().Resources {
@@ -71,7 +184,7 @@ func testAccCheckNetworkSecurityGatewaySecurityPolicyDestroyProducer(t *testing.
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/gatewaySecurityPolicies/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -82,7 +195,7 @@ func testAccCheckNetworkSecurityGatewaySecurityPolicyDestroyProducer(t *testing.
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("NetworkSecurityGatewaySecurityPolicy still exists at %s", url)
 			}

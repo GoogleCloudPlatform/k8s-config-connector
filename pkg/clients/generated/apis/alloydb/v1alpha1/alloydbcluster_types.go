@@ -48,6 +48,10 @@ type ClusterAutomatedBackupPolicy struct {
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`
 
+	/* EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key). */
+	// +optional
+	EncryptionConfig *ClusterEncryptionConfig `json:"encryptionConfig,omitempty"`
+
 	/* Labels to apply to backups created using this configuration. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
@@ -56,17 +60,23 @@ type ClusterAutomatedBackupPolicy struct {
 	// +optional
 	Location *string `json:"location,omitempty"`
 
-	/* Quantity-based Backup retention policy to retain recent backups. */
+	/* Quantity-based Backup retention policy to retain recent backups. Conflicts with 'time_based_retention', both can't be set together. */
 	// +optional
 	QuantityBasedRetention *ClusterQuantityBasedRetention `json:"quantityBasedRetention,omitempty"`
 
-	/* Time-based Backup retention policy. */
+	/* Time-based Backup retention policy. Conflicts with 'quantity_based_retention', both can't be set together. */
 	// +optional
 	TimeBasedRetention *ClusterTimeBasedRetention `json:"timeBasedRetention,omitempty"`
 
 	/* Weekly schedule for the Backup. */
 	// +optional
 	WeeklySchedule *ClusterWeeklySchedule `json:"weeklySchedule,omitempty"`
+}
+
+type ClusterEncryptionConfig struct {
+	/* Immutable. The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]. */
+	// +optional
+	KmsKeyName *string `json:"kmsKeyName,omitempty"`
 }
 
 type ClusterInitialUser struct {
@@ -99,15 +109,15 @@ type ClusterStartTimes struct {
 	// +optional
 	Hours *int `json:"hours,omitempty"`
 
-	/* Minutes of hour of day. Must be from 0 to 59. */
+	/* Minutes of hour of day. Currently, only the value 0 is supported. */
 	// +optional
 	Minutes *int `json:"minutes,omitempty"`
 
-	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
+	/* Fractions of seconds in nanoseconds. Currently, only the value 0 is supported. */
 	// +optional
 	Nanos *int `json:"nanos,omitempty"`
 
-	/* Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds. */
+	/* Seconds of minutes of the time. Currently, only the value 0 is supported. */
 	// +optional
 	Seconds *int `json:"seconds,omitempty"`
 }
@@ -145,6 +155,10 @@ type AlloyDBClusterSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
+	/* EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key). */
+	// +optional
+	EncryptionConfig *ClusterEncryptionConfig `json:"encryptionConfig,omitempty"`
+
 	/* Initial user to setup during cluster creation. */
 	// +optional
 	InitialUser *ClusterInitialUser `json:"initialUser,omitempty"`
@@ -169,6 +183,16 @@ type ClusterBackupSourceStatus struct {
 	/* The name of the backup resource. */
 	// +optional
 	BackupName *string `json:"backupName,omitempty"`
+}
+
+type ClusterEncryptionInfoStatus struct {
+	/* Output only. Type of encryption. */
+	// +optional
+	EncryptionType *string `json:"encryptionType,omitempty"`
+
+	/* Output only. Cloud KMS key versions that are being used to protect the database or the backup. */
+	// +optional
+	KmsKeyVersions []string `json:"kmsKeyVersions,omitempty"`
 }
 
 type ClusterMigrationSourceStatus struct {
@@ -196,6 +220,10 @@ type AlloyDBClusterStatus struct {
 	/* The database engine major version. This is an output-only field and it's populated at the Cluster creation time. This field cannot be changed after cluster creation. */
 	// +optional
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
+
+	/* EncryptionInfo describes the encryption information of a cluster or a backup. */
+	// +optional
+	EncryptionInfo []ClusterEncryptionInfoStatus `json:"encryptionInfo,omitempty"`
 
 	/* Cluster created via DMS migration. */
 	// +optional

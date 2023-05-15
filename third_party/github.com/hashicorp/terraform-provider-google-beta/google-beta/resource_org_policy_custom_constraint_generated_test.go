@@ -21,18 +21,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccOrgPolicyCustomConstraint_orgPolicyCustomConstraintBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        acctest.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckOrgPolicyCustomConstraintDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -69,12 +73,12 @@ func TestAccOrgPolicyCustomConstraint_orgPolicyCustomConstraintFullExample(t *te
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgTargetFromEnv(t),
+		"org_id":        acctest.GetTestOrgTargetFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckOrgPolicyCustomConstraintDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -134,7 +138,7 @@ func testAccCheckOrgPolicyCustomConstraintDestroyProducer(t *testing.T) func(s *
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{OrgPolicyBasePath}}{{parent}}/customConstraints/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{OrgPolicyBasePath}}{{parent}}/customConstraints/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -145,7 +149,7 @@ func testAccCheckOrgPolicyCustomConstraintDestroyProducer(t *testing.T) func(s *
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("OrgPolicyCustomConstraint still exists at %s", url)
 			}

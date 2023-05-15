@@ -21,15 +21,17 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"google.golang.org/api/googleapi"
 )
 
 type ServiceUsageOperationWaiter struct {
-	Config     *Config
+	Config     *transport_tpg.Config
 	UserAgent  string
 	Project    string
 	retryCount int
-	CommonOperationWaiter
+	tpgresource.CommonOperationWaiter
 }
 
 func (w *ServiceUsageOperationWaiter) QueryOp() (interface{}, error) {
@@ -39,7 +41,7 @@ func (w *ServiceUsageOperationWaiter) QueryOp() (interface{}, error) {
 	// Returns the proper get.
 	url := fmt.Sprintf("%s%s", w.Config.ServiceUsageBasePath, w.CommonOperationWaiter.Op.Name)
 
-	return SendRequest(w.Config, "GET", w.Project, url, w.UserAgent, nil)
+	return transport_tpg.SendRequest(w.Config, "GET", w.Project, url, w.UserAgent, nil)
 }
 
 func (w *ServiceUsageOperationWaiter) IsRetryable(err error) bool {
@@ -56,7 +58,7 @@ func (w *ServiceUsageOperationWaiter) IsRetryable(err error) bool {
 	return false
 }
 
-func createServiceUsageWaiter(config *Config, op map[string]interface{}, project, activity, userAgent string) (*ServiceUsageOperationWaiter, error) {
+func createServiceUsageWaiter(config *transport_tpg.Config, op map[string]interface{}, project, activity, userAgent string) (*ServiceUsageOperationWaiter, error) {
 	w := &ServiceUsageOperationWaiter{
 		Config:    config,
 		UserAgent: userAgent,
@@ -69,18 +71,18 @@ func createServiceUsageWaiter(config *Config, op map[string]interface{}, project
 }
 
 // nolint: deadcode,unused
-func ServiceUsageOperationWaitTimeWithResponse(config *Config, op map[string]interface{}, response *map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
+func ServiceUsageOperationWaitTimeWithResponse(config *transport_tpg.Config, op map[string]interface{}, response *map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
 	w, err := createServiceUsageWaiter(config, op, project, activity, userAgent)
 	if err != nil {
 		return err
 	}
-	if err := OperationWait(w, activity, timeout, config.PollInterval); err != nil {
+	if err := tpgresource.OperationWait(w, activity, timeout, config.PollInterval); err != nil {
 		return err
 	}
 	return json.Unmarshal([]byte(w.CommonOperationWaiter.Op.Response), response)
 }
 
-func ServiceUsageOperationWaitTime(config *Config, op map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
+func ServiceUsageOperationWaitTime(config *transport_tpg.Config, op map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
 	if val, ok := op["name"]; !ok || val == "" {
 		// This was a synchronous call - there is no operation to wait for.
 		return nil
@@ -90,5 +92,5 @@ func ServiceUsageOperationWaitTime(config *Config, op map[string]interface{}, pr
 		// If w is nil, the op was synchronous.
 		return err
 	}
-	return OperationWait(w, activity, timeout, config.PollInterval)
+	return tpgresource.OperationWait(w, activity, timeout, config.PollInterval)
 }

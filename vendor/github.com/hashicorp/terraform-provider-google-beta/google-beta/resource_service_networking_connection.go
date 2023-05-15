@@ -8,6 +8,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"google.golang.org/api/compute/v1"
@@ -35,7 +38,7 @@ func ResourceServiceNetworkingConnection() *schema.Resource {
 				Type:             schema.TypeString,
 				Required:         true,
 				ForceNew:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description:      `Name of VPC network connected with service producers using VPC peering.`,
 			},
 			// NOTE(craigatgoogle): This field is weird, it's required to make the Insert/List calls as a parameter
@@ -72,8 +75,8 @@ func ResourceServiceNetworkingConnection() *schema.Resource {
 }
 
 func resourceServiceNetworkingConnectionCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -89,7 +92,7 @@ func resourceServiceNetworkingConnectionCreate(d *schema.ResourceData, meta inte
 		ReservedPeeringRanges: convertStringArr(d.Get("reserved_peering_ranges").([]interface{})),
 	}
 
-	networkFieldValue, err := ParseNetworkFieldValue(network, d, config)
+	networkFieldValue, err := tpgresource.ParseNetworkFieldValue(network, d, config)
 	if err != nil {
 		return errwrap.Wrapf("Failed to retrieve network field value, err: {{err}}", err)
 	}
@@ -112,7 +115,7 @@ func resourceServiceNetworkingConnectionCreate(d *schema.ResourceData, meta inte
 	// the connection name.
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		project = bp
 	}
 
@@ -139,8 +142,8 @@ func resourceServiceNetworkingConnectionCreate(d *schema.ResourceData, meta inte
 }
 
 func resourceServiceNetworkingConnectionRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -156,14 +159,14 @@ func resourceServiceNetworkingConnectionRead(d *schema.ResourceData, meta interf
 	}
 
 	network := d.Get("network").(string)
-	networkFieldValue, err := ParseNetworkFieldValue(network, d, config)
+	networkFieldValue, err := tpgresource.ParseNetworkFieldValue(network, d, config)
 	if err != nil {
 		return errwrap.Wrapf("Failed to retrieve network field value, err: {{err}}", err)
 	}
 	project := networkFieldValue.Project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		project = bp
 	}
 
@@ -207,8 +210,8 @@ func resourceServiceNetworkingConnectionRead(d *schema.ResourceData, meta interf
 }
 
 func resourceServiceNetworkingConnectionUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -232,7 +235,7 @@ func resourceServiceNetworkingConnectionUpdate(d *schema.ResourceData, meta inte
 			ReservedPeeringRanges: convertStringArr(d.Get("reserved_peering_ranges").([]interface{})),
 		}
 
-		networkFieldValue, err := ParseNetworkFieldValue(network, d, config)
+		networkFieldValue, err := tpgresource.ParseNetworkFieldValue(network, d, config)
 		if err != nil {
 			return errwrap.Wrapf("Failed to retrieve network field value, err: {{err}}", err)
 		}
@@ -242,7 +245,7 @@ func resourceServiceNetworkingConnectionUpdate(d *schema.ResourceData, meta inte
 		// and it's easier than grabbing the connection name.
 
 		// err == nil indicates that the billing_project value was found
-		if bp, err := getBillingProject(d, config); err == nil {
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 			project = bp
 		}
 
@@ -262,8 +265,8 @@ func resourceServiceNetworkingConnectionUpdate(d *schema.ResourceData, meta inte
 }
 
 func resourceServiceNetworkingConnectionDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -279,19 +282,19 @@ func resourceServiceNetworkingConnectionDelete(d *schema.ResourceData, meta inte
 	obj["name"] = peering
 	url := fmt.Sprintf("%s%s/removePeering", config.ComputeBasePath, serviceNetworkingNetworkName)
 
-	networkFieldValue, err := ParseNetworkFieldValue(network, d, config)
+	networkFieldValue, err := tpgresource.ParseNetworkFieldValue(network, d, config)
 	if err != nil {
 		return errwrap.Wrapf("Failed to retrieve network field value, err: {{err}}", err)
 	}
 
 	project := networkFieldValue.Project
-	res, err := SendRequestWithTimeout(config, "POST", project, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", project, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("ServiceNetworkingConnection %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ServiceNetworkingConnection %q", d.Id()))
 	}
 
 	op := &compute.Operation{}
-	err = Convert(res, op)
+	err = tpgresource.Convert(res, op)
 	if err != nil {
 		return err
 	}
@@ -364,8 +367,8 @@ func parseConnectionId(id string) (*connectionId, error) {
 // NOTE(craigatgoogle): An out of band aspect of this API is that it uses a unique formatting of network
 // different from the standard self_link URI. It requires a call to the resource manager to get the project
 // number for the current project.
-func retrieveServiceNetworkingNetworkName(d *schema.ResourceData, config *Config, network, userAgent string) (string, error) {
-	networkFieldValue, err := ParseNetworkFieldValue(network, d, config)
+func retrieveServiceNetworkingNetworkName(d *schema.ResourceData, config *transport_tpg.Config, network, userAgent string) (string, error) {
+	networkFieldValue, err := tpgresource.ParseNetworkFieldValue(network, d, config)
 	if err != nil {
 		return "", errwrap.Wrapf("Failed to retrieve network field value, err: {{err}}", err)
 	}
@@ -377,7 +380,7 @@ func retrieveServiceNetworkingNetworkName(d *schema.ResourceData, config *Config
 	log.Printf("[DEBUG] Retrieving project number by doing a GET with the project id, as required by service networking")
 	// err == nil indicates that the billing_project value was found
 	billingProject := pid
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 

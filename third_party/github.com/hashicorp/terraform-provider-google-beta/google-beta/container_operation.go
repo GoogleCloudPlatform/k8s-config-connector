@@ -7,6 +7,9 @@ import (
 	"log"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	container "google.golang.org/api/container/v1beta1"
 )
 
@@ -75,14 +78,14 @@ func (w *ContainerOperationWaiter) QueryOp() (interface{}, error) {
 	default:
 		// default must be here to keep the previous case from blocking
 	}
-	err := RetryTimeDuration(func() (opErr error) {
+	err := transport_tpg.RetryTimeDuration(func() (opErr error) {
 		opGetCall := w.Service.Projects.Locations.Operations.Get(name)
 		if w.UserProjectOverride {
 			opGetCall.Header().Add("X-Goog-User-Project", w.Project)
 		}
 		op, opErr = opGetCall.Do()
 		return opErr
-	}, DefaultRequestTimeout)
+	}, transport_tpg.DefaultRequestTimeout)
 
 	return op, err
 }
@@ -102,10 +105,10 @@ func (w *ContainerOperationWaiter) TargetStates() []string {
 	return []string{"DONE"}
 }
 
-func ContainerOperationWait(config *Config, op *container.Operation, project, location, activity, userAgent string, timeout time.Duration) error {
+func ContainerOperationWait(config *transport_tpg.Config, op *container.Operation, project, location, activity, userAgent string, timeout time.Duration) error {
 	w := &ContainerOperationWaiter{
 		Service:             config.NewContainerClient(userAgent),
-		Context:             config.context,
+		Context:             config.Context,
 		Op:                  op,
 		Project:             project,
 		Location:            location,
@@ -116,5 +119,5 @@ func ContainerOperationWait(config *Config, op *container.Operation, project, lo
 		return err
 	}
 
-	return OperationWait(w, activity, timeout, config.PollInterval)
+	return tpgresource.OperationWait(w, activity, timeout, config.PollInterval)
 }

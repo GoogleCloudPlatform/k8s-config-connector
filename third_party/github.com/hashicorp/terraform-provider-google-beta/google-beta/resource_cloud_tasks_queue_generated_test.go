@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccCloudTasksQueue_queueBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccCloudTasksQueue_queueBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudTasksQueueDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -65,7 +69,7 @@ func TestAccCloudTasksQueue_cloudTasksQueueAdvancedExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudTasksQueueDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -126,7 +130,7 @@ func testAccCheckCloudTasksQueueDestroyProducer(t *testing.T) func(s *terraform.
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{CloudTasksBasePath}}projects/{{project}}/locations/{{location}}/queues/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CloudTasksBasePath}}projects/{{project}}/locations/{{location}}/queues/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -137,7 +141,7 @@ func testAccCheckCloudTasksQueueDestroyProducer(t *testing.T) func(s *terraform.
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("CloudTasksQueue still exists at %s", url)
 			}

@@ -3,14 +3,17 @@ package google
 import (
 	"fmt"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func DataSourceIAMBetaWorkloadIdentityPool() *schema.Resource {
 
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceIAMBetaWorkloadIdentityPool().Schema)
-	addRequiredFieldsToSchema(dsSchema, "workload_identity_pool_id")
-	addOptionalFieldsToSchema(dsSchema, "project")
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceIAMBetaWorkloadIdentityPool().Schema)
+	tpgresource.AddRequiredFieldsToSchema(dsSchema, "workload_identity_pool_id")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "project")
 
 	return &schema.Resource{
 		Read:   dataSourceIAMBetaWorkloadIdentityPoolRead,
@@ -19,9 +22,9 @@ func DataSourceIAMBetaWorkloadIdentityPool() *schema.Resource {
 }
 
 func dataSourceIAMBetaWorkloadIdentityPoolRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 
-	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/workloadIdentityPools/{{workload_identity_pool_id}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/global/workloadIdentityPools/{{workload_identity_pool_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}

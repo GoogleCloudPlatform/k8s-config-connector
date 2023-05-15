@@ -22,6 +22,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceIdentityPlatformConfig() *schema.Resource {
@@ -64,31 +67,31 @@ func ResourceIdentityPlatformConfig() *schema.Resource {
 }
 
 func resourceIdentityPlatformConfigCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/identityPlatform:initializeAuth")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/identityPlatform:initializeAuth")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Config: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, nil, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, nil, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Config: %s", err)
 	}
@@ -97,7 +100,7 @@ func resourceIdentityPlatformConfigCreate(d *schema.ResourceData, meta interface
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "projects/{{project}}/config")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/config")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -114,33 +117,33 @@ func resourceIdentityPlatformConfigCreate(d *schema.ResourceData, meta interface
 }
 
 func resourceIdentityPlatformConfigRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/config")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/config")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Config: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("IdentityPlatformConfig %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("IdentityPlatformConfig %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -158,15 +161,15 @@ func resourceIdentityPlatformConfigRead(d *schema.ResourceData, meta interface{}
 }
 
 func resourceIdentityPlatformConfigUpdate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for Config: %s", err)
 	}
@@ -176,11 +179,11 @@ func resourceIdentityPlatformConfigUpdate(d *schema.ResourceData, meta interface
 	autodeleteAnonymousUsersProp, err := expandIdentityPlatformConfigAutodeleteAnonymousUsers(d.Get("autodelete_anonymous_users"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("autodelete_anonymous_users"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, autodeleteAnonymousUsersProp)) {
+	} else if v, ok := d.GetOkExists("autodelete_anonymous_users"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, autodeleteAnonymousUsersProp)) {
 		obj["autodeleteAnonymousUsers"] = autodeleteAnonymousUsersProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/config")
+	url, err := tpgresource.ReplaceVars(d, config, "{{IdentityPlatformBasePath}}projects/{{project}}/config")
 	if err != nil {
 		return err
 	}
@@ -193,17 +196,17 @@ func resourceIdentityPlatformConfigUpdate(d *schema.ResourceData, meta interface
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Config %q: %s", d.Id(), err)
@@ -224,7 +227,7 @@ func resourceIdentityPlatformConfigDelete(d *schema.ResourceData, meta interface
 }
 
 func resourceIdentityPlatformConfigImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/config",
 		"projects/(?P<project>[^/]+)",
@@ -234,7 +237,7 @@ func resourceIdentityPlatformConfigImport(d *schema.ResourceData, meta interface
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "projects/{{project}}/config")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/config")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -243,14 +246,14 @@ func resourceIdentityPlatformConfigImport(d *schema.ResourceData, meta interface
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenIdentityPlatformConfigName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformConfigName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenIdentityPlatformConfigAutodeleteAnonymousUsers(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenIdentityPlatformConfigAutodeleteAnonymousUsers(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandIdentityPlatformConfigAutodeleteAnonymousUsers(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandIdentityPlatformConfigAutodeleteAnonymousUsers(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

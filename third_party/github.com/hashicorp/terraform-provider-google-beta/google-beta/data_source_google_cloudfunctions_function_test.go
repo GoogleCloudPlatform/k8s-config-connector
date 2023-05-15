@@ -5,6 +5,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
@@ -18,7 +20,7 @@ func TestAccDataSourceGoogleCloudFunctionsFunction_basic(t *testing.T) {
 	defer os.Remove(zipFilePath) // clean up
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -26,7 +28,7 @@ func TestAccDataSourceGoogleCloudFunctionsFunction_basic(t *testing.T) {
 				Config: testAccDataSourceGoogleCloudFunctionsFunctionConfig(functionName,
 					bucketName, zipFilePath),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceState(funcDataNameHttp,
+					acctest.CheckDataSourceStateMatchesResourceState(funcDataNameHttp,
 						"google_cloudfunctions_function.function_http"),
 				),
 			},

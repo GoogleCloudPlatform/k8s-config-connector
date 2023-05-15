@@ -93,10 +93,13 @@ bfd:
   multiplier: integer
   sessionInitializationMode: string
 enable: boolean
+enableIpv6: boolean
 ipAddress:
   external: string
+ipv6NexthopAddress: string
 peerAsn: integer
 peerIpAddress: string
+peerIpv6NexthopAddress: string
 region: string
 resourceID: string
 routerApplianceInstanceRef:
@@ -298,6 +301,16 @@ The default is true.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>enableIpv6</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enable IPv6 traffic over BGP Peer. If not specified, it is disabled by default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>ipAddress</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -315,6 +328,19 @@ Only IPv4 is supported.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipv6NexthopAddress</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}IPv6 address of the interface inside Google Cloud Platform.
+The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64.
+If you do not specify the next hop addresses, Google Cloud automatically
+assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range for you.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -337,6 +363,19 @@ Each BGP interface may use a different value.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}IP address of the BGP interface outside Google Cloud Platform.
 Only IPv4 is supported.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>peerIpv6NexthopAddress</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}IPv6 address of the BGP interface outside Google Cloud Platform.
+The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64.
+If you do not specify the next hop addresses, Google Cloud automatically
+assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range for you.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

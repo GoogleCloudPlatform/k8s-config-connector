@@ -9,6 +9,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 
 	compute "google.golang.org/api/compute/v0.beta"
 )
@@ -16,7 +19,7 @@ import (
 func TestAccDataflowFlexTemplateJob_basic(t *testing.T) {
 	// This resource uses custom retry logic that cannot be sped up without
 	// modifying the actual resource
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -24,7 +27,7 @@ func TestAccDataflowFlexTemplateJob_basic(t *testing.T) {
 	bucket := "tf-test-dataflow-bucket-" + randStr
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -41,7 +44,7 @@ func TestAccDataflowFlexTemplateJob_basic(t *testing.T) {
 func TestAccDataflowFlexTemplateJob_streamUpdate(t *testing.T) {
 	// This resource uses custom retry logic that cannot be sped up without
 	// modifying the actual resource
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -49,7 +52,7 @@ func TestAccDataflowFlexTemplateJob_streamUpdate(t *testing.T) {
 	bucket := "tf-test-dataflow-bucket-" + randStr
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -72,7 +75,7 @@ func TestAccDataflowFlexTemplateJob_streamUpdate(t *testing.T) {
 func TestAccDataflowFlexTemplateJob_streamUpdateFail(t *testing.T) {
 	// This resource uses custom retry logic that cannot be sped up without
 	// modifying the actual resource
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -80,7 +83,7 @@ func TestAccDataflowFlexTemplateJob_streamUpdateFail(t *testing.T) {
 	bucket := "tf-test-dataflow-bucket-" + randStr
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -104,7 +107,7 @@ func TestAccDataflowFlexTemplateJob_streamUpdateFail(t *testing.T) {
 func TestAccDataflowFlexTemplateJob_withServiceAccount(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	randStr := RandString(t, 10)
@@ -114,7 +117,7 @@ func TestAccDataflowFlexTemplateJob_withServiceAccount(t *testing.T) {
 	zone := "us-central1-b"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -298,7 +301,7 @@ func testAccDataflowJobHasOption(t *testing.T, res, option, expectedValue string
 			return fmt.Errorf("dataflow job does not exist")
 		}
 
-		sdkPipelineOptions, err := ConvertToMap(job.Environment.SdkPipelineOptions)
+		sdkPipelineOptions, err := tpgresource.ConvertToMap(job.Environment.SdkPipelineOptions)
 		if err != nil {
 			return fmt.Errorf("error from ConvertToMap: %s", err)
 		}

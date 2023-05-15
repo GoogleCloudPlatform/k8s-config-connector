@@ -21,6 +21,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccNotebooksRuntime_notebookRuntimeBasicExample(t *testing.T) {
@@ -31,7 +35,7 @@ func TestAccNotebooksRuntime_notebookRuntimeBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksRuntimeDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -80,7 +84,7 @@ func TestAccNotebooksRuntime_notebookRuntimeBasicGpuExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksRuntimeDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -136,7 +140,7 @@ func TestAccNotebooksRuntime_notebookRuntimeBasicContainerExample(t *testing.T) 
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksRuntimeDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -193,7 +197,7 @@ func TestAccNotebooksRuntime_notebookRuntimeKernelsExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksRuntimeDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -248,7 +252,7 @@ func TestAccNotebooksRuntime_notebookRuntimeScriptExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksRuntimeDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -304,7 +308,7 @@ func testAccCheckNotebooksRuntimeDestroyProducer(t *testing.T) func(s *terraform
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/runtimes/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/runtimes/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -315,7 +319,7 @@ func testAccCheckNotebooksRuntimeDestroyProducer(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("NotebooksRuntime still exists at %s", url)
 			}

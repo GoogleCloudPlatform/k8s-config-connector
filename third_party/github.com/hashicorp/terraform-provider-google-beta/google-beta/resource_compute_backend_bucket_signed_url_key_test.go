@@ -8,6 +8,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeBackendBucketSignedUrlKey_basic(t *testing.T) {
@@ -18,7 +21,7 @@ func TestAccComputeBackendBucketSignedUrlKey_basic(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeBackendBucketSignedUrlKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -55,7 +58,7 @@ resource "google_storage_bucket" "bucket" {
 func testAccCheckComputeBackendBucketSignedUrlKeyDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
 		exists, err := checkComputeBackendBucketSignedUrlKeyExists(t, s)
-		if err != nil && !IsGoogleApiErrorWithCode(err, 404) {
+		if err != nil && !transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 			return err
 		}
 		if exists {
@@ -90,12 +93,12 @@ func checkComputeBackendBucketSignedUrlKeyExists(t *testing.T, s *terraform.Stat
 		config := GoogleProviderConfig(t)
 		keyName := rs.Primary.Attributes["name"]
 
-		url, err := replaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{backend_bucket}}")
+		url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{backend_bucket}}")
 		if err != nil {
 			return false, err
 		}
 
-		res, err := SendRequest(config, "GET", "", url, config.UserAgent, nil)
+		res, err := transport_tpg.SendRequest(config, "GET", "", url, config.UserAgent, nil)
 		if err != nil {
 			return false, err
 		}

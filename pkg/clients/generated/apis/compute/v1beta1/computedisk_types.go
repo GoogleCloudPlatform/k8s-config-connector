@@ -35,6 +35,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type DiskAsyncPrimaryDisk struct {
+	/* Immutable. Primary disk for asynchronous disk replication. */
+	DiskRef v1alpha1.ResourceRef `json:"diskRef"`
+}
+
 type DiskDiskEncryptionKey struct {
 	/* The encryption key used to encrypt the disk. Your project's Compute
 	Engine System service account
@@ -146,6 +151,10 @@ type DiskValueFrom struct {
 }
 
 type ComputeDiskSpec struct {
+	/* Immutable. A nested object resource. */
+	// +optional
+	AsyncPrimaryDisk *DiskAsyncPrimaryDisk `json:"asyncPrimaryDisk,omitempty"`
+
 	/* Immutable. An optional description of this resource. Provide this property when
 	you create the resource. */
 	// +optional

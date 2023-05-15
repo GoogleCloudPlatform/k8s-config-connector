@@ -21,6 +21,9 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func ResourceVertexAIMetadataStore() *schema.Resource {
@@ -112,8 +115,8 @@ Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/
 }
 
 func resourceVertexAIMetadataStoreCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -122,17 +125,17 @@ func resourceVertexAIMetadataStoreCreate(d *schema.ResourceData, meta interface{
 	descriptionProp, err := expandVertexAIMetadataStoreDescription(d.Get("description"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+	} else if v, ok := d.GetOkExists("description"); !tpgresource.IsEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
 	}
 	encryptionSpecProp, err := expandVertexAIMetadataStoreEncryptionSpec(d.Get("encryption_spec"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("encryption_spec"); !isEmptyValue(reflect.ValueOf(encryptionSpecProp)) && (ok || !reflect.DeepEqual(v, encryptionSpecProp)) {
+	} else if v, ok := d.GetOkExists("encryption_spec"); !tpgresource.IsEmptyValue(reflect.ValueOf(encryptionSpecProp)) && (ok || !reflect.DeepEqual(v, encryptionSpecProp)) {
 		obj["encryptionSpec"] = encryptionSpecProp
 	}
 
-	url, err := ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{region}}/metadataStores?metadataStoreId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{region}}/metadataStores?metadataStoreId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -140,24 +143,24 @@ func resourceVertexAIMetadataStoreCreate(d *schema.ResourceData, meta interface{
 	log.Printf("[DEBUG] Creating new MetadataStore: %#v", obj)
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for MetadataStore: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating MetadataStore: %s", err)
 	}
 
 	// Store the ID now
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -177,7 +180,7 @@ func resourceVertexAIMetadataStoreCreate(d *schema.ResourceData, meta interface{
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = ReplaceVars(d, config, "{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -189,33 +192,33 @@ func resourceVertexAIMetadataStoreCreate(d *schema.ResourceData, meta interface{
 }
 
 func resourceVertexAIMetadataStoreRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
-	url, err := ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{region}}/metadataStores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{region}}/metadataStores/{{name}}")
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for MetadataStore: %s", err)
 	}
 	billingProject = project
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
-		return handleNotFoundError(err, d, fmt.Sprintf("VertexAIMetadataStore %q", d.Id()))
+		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("VertexAIMetadataStore %q", d.Id()))
 	}
 
 	if err := d.Set("project", project); err != nil {
@@ -242,21 +245,21 @@ func resourceVertexAIMetadataStoreRead(d *schema.ResourceData, meta interface{})
 }
 
 func resourceVertexAIMetadataStoreDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.UserAgent)
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
 
 	billingProject := ""
 
-	project, err := getProject(d, config)
+	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return fmt.Errorf("Error fetching project for MetadataStore: %s", err)
 	}
 	billingProject = project
 
-	url, err := ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{region}}/metadataStores/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{region}}/metadataStores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -265,13 +268,13 @@ func resourceVertexAIMetadataStoreDelete(d *schema.ResourceData, meta interface{
 	log.Printf("[DEBUG] Deleting MetadataStore %q", d.Id())
 
 	// err == nil indicates that the billing_project value was found
-	if bp, err := getBillingProject(d, config); err == nil {
+	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := transport_tpg.SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
-		return handleNotFoundError(err, d, "MetadataStore")
+		return transport_tpg.HandleNotFoundError(err, d, "MetadataStore")
 	}
 
 	err = VertexAIOperationWaitTime(
@@ -287,7 +290,7 @@ func resourceVertexAIMetadataStoreDelete(d *schema.ResourceData, meta interface{
 }
 
 func resourceVertexAIMetadataStoreImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/metadataStores/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)",
@@ -298,7 +301,7 @@ func resourceVertexAIMetadataStoreImport(d *schema.ResourceData, meta interface{
 	}
 
 	// Replace import id for the resource id
-	id, err := ReplaceVars(d, config, "{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -307,19 +310,19 @@ func resourceVertexAIMetadataStoreImport(d *schema.ResourceData, meta interface{
 	return []*schema.ResourceData{d}, nil
 }
 
-func flattenVertexAIMetadataStoreDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIMetadataStoreDescription(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIMetadataStoreCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIMetadataStoreCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIMetadataStoreUpdateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIMetadataStoreUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIMetadataStoreEncryptionSpec(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIMetadataStoreEncryptionSpec(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -332,11 +335,11 @@ func flattenVertexAIMetadataStoreEncryptionSpec(v interface{}, d *schema.Resourc
 		flattenVertexAIMetadataStoreEncryptionSpecKmsKeyName(original["kmsKeyName"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVertexAIMetadataStoreEncryptionSpecKmsKeyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIMetadataStoreEncryptionSpecKmsKeyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func flattenVertexAIMetadataStoreState(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIMetadataStoreState(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -349,15 +352,15 @@ func flattenVertexAIMetadataStoreState(v interface{}, d *schema.ResourceData, co
 		flattenVertexAIMetadataStoreStateDiskUtilizationBytes(original["diskUtilizationBytes"], d, config)
 	return []interface{}{transformed}
 }
-func flattenVertexAIMetadataStoreStateDiskUtilizationBytes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenVertexAIMetadataStoreStateDiskUtilizationBytes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
-func expandVertexAIMetadataStoreDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIMetadataStoreDescription(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandVertexAIMetadataStoreEncryptionSpec(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIMetadataStoreEncryptionSpec(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -369,13 +372,13 @@ func expandVertexAIMetadataStoreEncryptionSpec(v interface{}, d TerraformResourc
 	transformedKmsKeyName, err := expandVertexAIMetadataStoreEncryptionSpecKmsKeyName(original["kms_key_name"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !isEmptyValue(val) {
+	} else if val := reflect.ValueOf(transformedKmsKeyName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["kmsKeyName"] = transformedKmsKeyName
 	}
 
 	return transformed, nil
 }
 
-func expandVertexAIMetadataStoreEncryptionSpecKmsKeyName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandVertexAIMetadataStoreEncryptionSpecKmsKeyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

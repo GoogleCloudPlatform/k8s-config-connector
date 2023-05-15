@@ -5,17 +5,19 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func DataSourceGoogleComputeNetworkEndpointGroup() *schema.Resource {
 	// Generate datasource schema from resource
-	dsSchema := datasourceSchemaFromResourceSchema(ResourceComputeNetworkEndpointGroup().Schema)
+	dsSchema := tpgresource.DatasourceSchemaFromResourceSchema(ResourceComputeNetworkEndpointGroup().Schema)
 
 	// Set 'Optional' schema elements
-	addOptionalFieldsToSchema(dsSchema, "name")
-	addOptionalFieldsToSchema(dsSchema, "zone")
-	addOptionalFieldsToSchema(dsSchema, "project")
-	addOptionalFieldsToSchema(dsSchema, "self_link")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "name")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "zone")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "project")
+	tpgresource.AddOptionalFieldsToSchema(dsSchema, "self_link")
 
 	return &schema.Resource{
 		Read:   dataSourceComputeNetworkEndpointGroupRead,
@@ -24,19 +26,19 @@ func DataSourceGoogleComputeNetworkEndpointGroup() *schema.Resource {
 }
 
 func dataSourceComputeNetworkEndpointGroupRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config := meta.(*transport_tpg.Config)
 	if name, ok := d.GetOk("name"); ok {
-		project, err := getProject(d, config)
+		project, err := tpgresource.GetProject(d, config)
 		if err != nil {
 			return err
 		}
-		zone, err := getZone(d, config)
+		zone, err := tpgresource.GetZone(d, config)
 		if err != nil {
 			return err
 		}
 		d.SetId(fmt.Sprintf("projects/%s/zones/%s/networkEndpointGroups/%s", project, zone, name.(string)))
 	} else if selfLink, ok := d.GetOk("self_link"); ok {
-		parsed, err := ParseNetworkEndpointGroupFieldValue(selfLink.(string), d, config)
+		parsed, err := tpgresource.ParseNetworkEndpointGroupFieldValue(selfLink.(string), d, config)
 		if err != nil {
 			return err
 		}

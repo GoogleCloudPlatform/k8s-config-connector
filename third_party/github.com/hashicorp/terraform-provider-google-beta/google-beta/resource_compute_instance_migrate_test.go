@@ -9,6 +9,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	compute "google.golang.org/api/compute/v0.beta"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -17,8 +21,8 @@ import (
 func TestAccComputeInstanceMigrateState(t *testing.T) {
 	t.Parallel()
 
-	if os.Getenv(TestEnvVar) == "" {
-		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skipf("Network access not allowed; use %s=1 to enable", acctest.TestEnvVar)
 	}
 	cases := map[string]struct {
 		StateVersion int
@@ -121,8 +125,8 @@ func TestAccComputeInstanceMigrateState(t *testing.T) {
 func TestAccComputeInstanceMigrateState_empty(t *testing.T) {
 	t.Parallel()
 
-	if os.Getenv(TestEnvVar) == "" {
-		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skipf("Network access not allowed; use %s=1 to enable", acctest.TestEnvVar)
 	}
 	var is *terraform.InstanceState
 	var meta interface{}
@@ -149,8 +153,8 @@ func TestAccComputeInstanceMigrateState_empty(t *testing.T) {
 func TestAccComputeInstanceMigrateState_bootDisk(t *testing.T) {
 	t.Parallel()
 
-	if os.Getenv(TestEnvVar) == "" {
-		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skipf("Network access not allowed; use %s=1 to enable", acctest.TestEnvVar)
 	}
 	config := getInitializedConfig(t)
 	zone := "us-central1-f"
@@ -217,8 +221,8 @@ func TestAccComputeInstanceMigrateState_bootDisk(t *testing.T) {
 func TestAccComputeInstanceMigrateState_v4FixBootDisk(t *testing.T) {
 	t.Parallel()
 
-	if os.Getenv(TestEnvVar) == "" {
-		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skipf("Network access not allowed; use %s=1 to enable", acctest.TestEnvVar)
 	}
 	config := getInitializedConfig(t)
 	zone := "us-central1-f"
@@ -284,8 +288,8 @@ func TestAccComputeInstanceMigrateState_v4FixBootDisk(t *testing.T) {
 func TestAccComputeInstanceMigrateState_attachedDiskFromSource(t *testing.T) {
 	t.Parallel()
 
-	if os.Getenv(TestEnvVar) == "" {
-		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skipf("Network access not allowed; use %s=1 to enable", acctest.TestEnvVar)
 	}
 	config := getInitializedConfig(t)
 	zone := "us-central1-f"
@@ -365,8 +369,8 @@ func TestAccComputeInstanceMigrateState_attachedDiskFromSource(t *testing.T) {
 func TestAccComputeInstanceMigrateState_v4FixAttachedDiskFromSource(t *testing.T) {
 	t.Parallel()
 
-	if os.Getenv(TestEnvVar) == "" {
-		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skipf("Network access not allowed; use %s=1 to enable", acctest.TestEnvVar)
 	}
 	config := getInitializedConfig(t)
 	zone := "us-central1-f"
@@ -445,8 +449,8 @@ func TestAccComputeInstanceMigrateState_v4FixAttachedDiskFromSource(t *testing.T
 func TestAccComputeInstanceMigrateState_attachedDiskFromEncryptionKey(t *testing.T) {
 	t.Parallel()
 
-	if os.Getenv(TestEnvVar) == "" {
-		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skipf("Network access not allowed; use %s=1 to enable", acctest.TestEnvVar)
 	}
 	config := getInitializedConfig(t)
 	zone := "us-central1-f"
@@ -514,8 +518,8 @@ func TestAccComputeInstanceMigrateState_attachedDiskFromEncryptionKey(t *testing
 func TestAccComputeInstanceMigrateState_v4FixAttachedDiskFromEncryptionKey(t *testing.T) {
 	t.Parallel()
 
-	if os.Getenv(TestEnvVar) == "" {
-		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skipf("Network access not allowed; use %s=1 to enable", acctest.TestEnvVar)
 	}
 	config := getInitializedConfig(t)
 	zone := "us-central1-f"
@@ -582,8 +586,8 @@ func TestAccComputeInstanceMigrateState_v4FixAttachedDiskFromEncryptionKey(t *te
 func TestAccComputeInstanceMigrateState_attachedDiskFromAutoDeleteAndImage(t *testing.T) {
 	t.Parallel()
 
-	if os.Getenv(TestEnvVar) == "" {
-		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skipf("Network access not allowed; use %s=1 to enable", acctest.TestEnvVar)
 	}
 	config := getInitializedConfig(t)
 	zone := "us-central1-f"
@@ -655,8 +659,8 @@ func TestAccComputeInstanceMigrateState_attachedDiskFromAutoDeleteAndImage(t *te
 func TestAccComputeInstanceMigrateState_v4FixAttachedDiskFromAutoDeleteAndImage(t *testing.T) {
 	t.Parallel()
 
-	if os.Getenv(TestEnvVar) == "" {
-		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skipf("Network access not allowed; use %s=1 to enable", acctest.TestEnvVar)
 	}
 	config := getInitializedConfig(t)
 	zone := "us-central1-f"
@@ -727,8 +731,8 @@ func TestAccComputeInstanceMigrateState_v4FixAttachedDiskFromAutoDeleteAndImage(
 func TestAccComputeInstanceMigrateState_scratchDisk(t *testing.T) {
 	t.Parallel()
 
-	if os.Getenv(TestEnvVar) == "" {
-		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skipf("Network access not allowed; use %s=1 to enable", acctest.TestEnvVar)
 	}
 	config := getInitializedConfig(t)
 	zone := "us-central1-f"
@@ -793,8 +797,8 @@ func TestAccComputeInstanceMigrateState_scratchDisk(t *testing.T) {
 func TestAccComputeInstanceMigrateState_v4FixScratchDisk(t *testing.T) {
 	t.Parallel()
 
-	if os.Getenv(TestEnvVar) == "" {
-		t.Skipf("Network access not allowed; use %s=1 to enable", TestEnvVar)
+	if os.Getenv(acctest.TestEnvVar) == "" {
+		t.Skipf("Network access not allowed; use %s=1 to enable", acctest.TestEnvVar)
 	}
 	config := getInitializedConfig(t)
 	zone := "us-central1-f"
@@ -868,7 +872,7 @@ func runInstanceMigrateTest(t *testing.T, id, testName string, version int, attr
 		// source is the only self link, so compare by relpaths if source is being
 		// compared
 		if strings.HasSuffix(k, "source") {
-			if !compareSelfLinkOrResourceName("", attributes[k], v, nil) && attributes[k] != v {
+			if !tpgresource.CompareSelfLinkOrResourceName("", attributes[k], v, nil) && attributes[k] != v {
 				t.Fatalf(
 					"bad uri: %s\n\n expected: %#v -> %#v\n got: %#v -> %#v\n in: %#v",
 					testName, k, expected[k], k, attributes[k], attributes)
@@ -886,7 +890,7 @@ func runInstanceMigrateTest(t *testing.T, id, testName string, version int, attr
 		// source is the only self link, so compare by relpaths if source is being
 		// compared
 		if strings.HasSuffix(k, "source") {
-			if !compareSelfLinkOrResourceName("", expected[k], v, nil) && expected[k] != v {
+			if !tpgresource.CompareSelfLinkOrResourceName("", expected[k], v, nil) && expected[k] != v {
 				t.Fatalf(
 					"bad: %s\n\n expected: %#v -> %#v\n got: %#v -> %#v\n in: %#v",
 					testName, k, expected[k], k, attributes[k], expected)
@@ -901,7 +905,7 @@ func runInstanceMigrateTest(t *testing.T, id, testName string, version int, attr
 	}
 }
 
-func cleanUpInstance(config *Config, instanceName, zone string) {
+func cleanUpInstance(config *transport_tpg.Config, instanceName, zone string) {
 	op, err := config.NewComputeClient(config.UserAgent).Instances.Delete(config.Project, zone, instanceName).Do()
 	if err != nil {
 		log.Printf("[WARNING] Error deleting instance %q, dangling resources may exist: %s", instanceName, err)
@@ -915,7 +919,7 @@ func cleanUpInstance(config *Config, instanceName, zone string) {
 	}
 }
 
-func cleanUpDisk(config *Config, diskName, zone string) {
+func cleanUpDisk(config *transport_tpg.Config, diskName, zone string) {
 	op, err := config.NewComputeClient(config.UserAgent).Disks.Delete(config.Project, zone, diskName).Do()
 	if err != nil {
 		log.Printf("[WARNING] Error deleting disk %q, dangling resources may exist: %s", diskName, err)
@@ -929,20 +933,20 @@ func cleanUpDisk(config *Config, diskName, zone string) {
 	}
 }
 
-func getInitializedConfig(t *testing.T) *Config {
+func getInitializedConfig(t *testing.T) *transport_tpg.Config {
 	// Migrate tests are non standard and handle the config directly
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	// Check that all required environment variables are set
-	AccTestPreCheck(t)
+	acctest.AccTestPreCheck(t)
 
-	config := &Config{
-		Project:     GetTestProjectFromEnv(),
-		Credentials: GetTestCredsFromEnv(),
-		Region:      GetTestRegionFromEnv(),
-		Zone:        GetTestZoneFromEnv(),
+	config := &transport_tpg.Config{
+		Project:     acctest.GetTestProjectFromEnv(),
+		Credentials: acctest.GetTestCredsFromEnv(),
+		Region:      acctest.GetTestRegionFromEnv(),
+		Zone:        acctest.GetTestZoneFromEnv(),
 	}
 
-	ConfigureBasePaths(config)
+	transport_tpg.ConfigureBasePaths(config)
 
 	err := config.LoadAndValidate(context.Background())
 	if err != nil {

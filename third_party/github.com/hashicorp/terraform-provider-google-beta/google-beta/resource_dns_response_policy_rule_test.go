@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccDNSResponsePolicyRule_update(t *testing.T) {
@@ -13,7 +14,7 @@ func TestAccDNSResponsePolicyRule_update(t *testing.T) {
 	responsePolicyRuleSuffix := RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckDNSResponsePolicyRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -43,7 +44,7 @@ func TestAccDNSResponsePolicyRuleBehavior_update(t *testing.T) {
 	responsePolicyRuleSuffix := RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckDNSResponsePolicyRuleDestroyProducer(t),
 		Steps: []resource.TestStep{

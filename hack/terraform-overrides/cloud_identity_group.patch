@@ -1,5 +1,5 @@
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_cloud_identity_group.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_cloud_identity_group.go
-index 900830ffb..74855e0dd 100644
+index 2ef9e23e3..b03c58971 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_cloud_identity_group.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_cloud_identity_group.go
 @@ -22,6 +22,7 @@ import (
@@ -7,18 +7,18 @@ index 900830ffb..74855e0dd 100644
  
  	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 +	"google.golang.org/api/googleapi"
- )
  
- func ResourceCloudIdentityGroup() *schema.Resource {
-@@ -293,6 +294,11 @@ func resourceCloudIdentityGroupRead(d *schema.ResourceData, meta interface{}) er
+ 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+ 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+@@ -297,6 +298,11 @@ func resourceCloudIdentityGroupRead(d *schema.ResourceData, meta interface{}) er
  
- 	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
+ 	res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, userAgent, nil)
  	if err != nil {
 +		if gerr, ok := err.(*googleapi.Error); ok && gerr.Code == 403 && strings.Contains(gerr.Message, "Permission denied") {
 +			// Deleted or uncreated Groups will always return 403 on GET
 +			d.SetId("")
 +			return nil
 +		}
- 		return handleNotFoundError(err, d, fmt.Sprintf("CloudIdentityGroup %q", d.Id()))
+ 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("CloudIdentityGroup %q", d.Id()))
  	}
  
