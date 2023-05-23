@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.104.0
+    cnrm.cloud.google.com/version: 1.105.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -177,10 +177,11 @@ spec:
                       type: object
                     type: array
                   egressPolicies:
-                    description: "List of EgressPolicies to apply to the perimeter.
-                      A perimeter may \nhave multiple EgressPolicies, each of which
-                      is evaluated separately.\nAccess is granted if any EgressPolicy
-                      grants it. Must be empty for \na perimeter bridge."
+                    description: |-
+                      List of EgressPolicies to apply to the perimeter. A perimeter may
+                      have multiple EgressPolicies, each of which is evaluated separately.
+                      Access is granted if any EgressPolicy grants it. Must be empty for
+                      a perimeter bridge.
                     items:
                       properties:
                         egressFrom:
@@ -235,17 +236,16 @@ spec:
                                 type: object
                               type: array
                             identityType:
-                              description: "Specifies the type of identities that
-                                are allowed access to outside the \nperimeter. If
-                                left unspecified, then members of 'identities' field
-                                will \nbe allowed access. Possible values: [\"IDENTITY_TYPE_UNSPECIFIED\",
-                                \"ANY_IDENTITY\", \"ANY_USER_ACCOUNT\", \"ANY_SERVICE_ACCOUNT\"]."
+                              description: |-
+                                Specifies the type of identities that are allowed access to outside the
+                                perimeter. If left unspecified, then members of 'identities' field will
+                                be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"].
                               type: string
                           type: object
                         egressTo:
-                          description: "Defines the conditions on the 'ApiOperation'
-                            and destination resources that \ncause this 'EgressPolicy'
-                            to apply."
+                          description: |-
+                            Defines the conditions on the 'ApiOperation' and destination resources that
+                            cause this 'EgressPolicy' to apply.
                           properties:
                             externalResources:
                               description: |-
@@ -256,40 +256,37 @@ spec:
                                 type: string
                               type: array
                             operations:
-                              description: "A list of 'ApiOperations' that this egress
-                                rule applies to. A request matches \nif it contains
-                                an operation/service in this list."
+                              description: |-
+                                A list of 'ApiOperations' that this egress rule applies to. A request matches
+                                if it contains an operation/service in this list.
                               items:
                                 properties:
                                   methodSelectors:
-                                    description: "API methods or permissions to allow.
-                                      Method or permission must belong \nto the service
-                                      specified by 'serviceName' field. A single MethodSelector
-                                      \nentry with '*' specified for the 'method'
-                                      field will allow all methods \nAND permissions
-                                      for the service specified in 'serviceName'."
+                                    description: |-
+                                      API methods or permissions to allow. Method or permission must belong
+                                      to the service specified by 'serviceName' field. A single MethodSelector
+                                      entry with '*' specified for the 'method' field will allow all methods
+                                      AND permissions for the service specified in 'serviceName'.
                                     items:
                                       properties:
                                         method:
-                                          description: "Value for 'method' should
-                                            be a valid method name for the corresponding
-                                            \n'serviceName' in 'ApiOperation'. If
-                                            '*' used as value for method, \nthen ALL
-                                            methods and permissions are allowed."
+                                          description: |-
+                                            Value for 'method' should be a valid method name for the corresponding
+                                            'serviceName' in 'ApiOperation'. If '*' used as value for method,
+                                            then ALL methods and permissions are allowed.
                                           type: string
                                         permission:
-                                          description: "Value for permission should
-                                            be a valid Cloud IAM permission for the
-                                            \ncorresponding 'serviceName' in 'ApiOperation'."
+                                          description: |-
+                                            Value for permission should be a valid Cloud IAM permission for the
+                                            corresponding 'serviceName' in 'ApiOperation'.
                                           type: string
                                       type: object
                                     type: array
                                   serviceName:
-                                    description: "The name of the API whose methods
-                                      or permissions the 'IngressPolicy' or \n'EgressPolicy'
-                                      want to allow. A single 'ApiOperation' with
-                                      serviceName \nfield set to '*' will allow all
-                                      methods AND permissions for all services."
+                                    description: |-
+                                      The name of the API whose methods or permissions the 'IngressPolicy' or
+                                      'EgressPolicy' want to allow. A single 'ApiOperation' with serviceName
+                                      field set to '*' will allow all methods AND permissions for all services.
                                     type: string
                                 type: object
                               type: array
@@ -396,11 +393,10 @@ spec:
                                 type: object
                               type: array
                             identityType:
-                              description: "Specifies the type of identities that
-                                are allowed access from outside the \nperimeter. If
-                                left unspecified, then members of 'identities' field
-                                will be \nallowed access. Possible values: [\"IDENTITY_TYPE_UNSPECIFIED\",
-                                \"ANY_IDENTITY\", \"ANY_USER_ACCOUNT\", \"ANY_SERVICE_ACCOUNT\"]."
+                              description: |-
+                                Specifies the type of identities that are allowed access from outside the
+                                perimeter. If left unspecified, then members of 'identities' field will be
+                                allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"].
                               type: string
                             sources:
                               description: Sources that this 'IngressPolicy' authorizes
@@ -491,40 +487,37 @@ spec:
                             this 'IngressPolicy' to apply.
                           properties:
                             operations:
-                              description: "A list of 'ApiOperations' the sources
-                                specified in corresponding 'IngressFrom' \nare allowed
-                                to perform in this 'ServicePerimeter'."
+                              description: |-
+                                A list of 'ApiOperations' the sources specified in corresponding 'IngressFrom'
+                                are allowed to perform in this 'ServicePerimeter'.
                               items:
                                 properties:
                                   methodSelectors:
-                                    description: "API methods or permissions to allow.
-                                      Method or permission must belong to \nthe service
-                                      specified by serviceName field. A single 'MethodSelector'
-                                      entry \nwith '*' specified for the method field
-                                      will allow all methods AND \npermissions for
-                                      the service specified in 'serviceName'."
+                                    description: |-
+                                      API methods or permissions to allow. Method or permission must belong to
+                                      the service specified by serviceName field. A single 'MethodSelector' entry
+                                      with '*' specified for the method field will allow all methods AND
+                                      permissions for the service specified in 'serviceName'.
                                     items:
                                       properties:
                                         method:
-                                          description: "Value for method should be
-                                            a valid method name for the corresponding
-                                            \nserviceName in 'ApiOperation'. If '*'
-                                            used as value for 'method', then \nALL
-                                            methods and permissions are allowed."
+                                          description: |-
+                                            Value for method should be a valid method name for the corresponding
+                                            serviceName in 'ApiOperation'. If '*' used as value for 'method', then
+                                            ALL methods and permissions are allowed.
                                           type: string
                                         permission:
-                                          description: "Value for permission should
-                                            be a valid Cloud IAM permission for the
-                                            \ncorresponding 'serviceName' in 'ApiOperation'."
+                                          description: |-
+                                            Value for permission should be a valid Cloud IAM permission for the
+                                            corresponding 'serviceName' in 'ApiOperation'.
                                           type: string
                                       type: object
                                     type: array
                                   serviceName:
-                                    description: "The name of the API whose methods
-                                      or permissions the 'IngressPolicy' or \n'EgressPolicy'
-                                      want to allow. A single 'ApiOperation' with
-                                      'serviceName' \nfield set to '*' will allow
-                                      all methods AND permissions for all services."
+                                    description: |-
+                                      The name of the API whose methods or permissions the 'IngressPolicy' or
+                                      'EgressPolicy' want to allow. A single 'ApiOperation' with 'serviceName'
+                                      field set to '*' will allow all methods AND permissions for all services.
                                     type: string
                                 type: object
                               type: array
@@ -683,10 +676,11 @@ spec:
                       type: object
                     type: array
                   egressPolicies:
-                    description: "List of EgressPolicies to apply to the perimeter.
-                      A perimeter may \nhave multiple EgressPolicies, each of which
-                      is evaluated separately.\nAccess is granted if any EgressPolicy
-                      grants it. Must be empty for \na perimeter bridge."
+                    description: |-
+                      List of EgressPolicies to apply to the perimeter. A perimeter may
+                      have multiple EgressPolicies, each of which is evaluated separately.
+                      Access is granted if any EgressPolicy grants it. Must be empty for
+                      a perimeter bridge.
                     items:
                       properties:
                         egressFrom:
@@ -741,17 +735,16 @@ spec:
                                 type: object
                               type: array
                             identityType:
-                              description: "Specifies the type of identities that
-                                are allowed access to outside the \nperimeter. If
-                                left unspecified, then members of 'identities' field
-                                will \nbe allowed access. Possible values: [\"IDENTITY_TYPE_UNSPECIFIED\",
-                                \"ANY_IDENTITY\", \"ANY_USER_ACCOUNT\", \"ANY_SERVICE_ACCOUNT\"]."
+                              description: |-
+                                Specifies the type of identities that are allowed access to outside the
+                                perimeter. If left unspecified, then members of 'identities' field will
+                                be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"].
                               type: string
                           type: object
                         egressTo:
-                          description: "Defines the conditions on the 'ApiOperation'
-                            and destination resources that \ncause this 'EgressPolicy'
-                            to apply."
+                          description: |-
+                            Defines the conditions on the 'ApiOperation' and destination resources that
+                            cause this 'EgressPolicy' to apply.
                           properties:
                             externalResources:
                               description: |-
@@ -762,40 +755,37 @@ spec:
                                 type: string
                               type: array
                             operations:
-                              description: "A list of 'ApiOperations' that this egress
-                                rule applies to. A request matches \nif it contains
-                                an operation/service in this list."
+                              description: |-
+                                A list of 'ApiOperations' that this egress rule applies to. A request matches
+                                if it contains an operation/service in this list.
                               items:
                                 properties:
                                   methodSelectors:
-                                    description: "API methods or permissions to allow.
-                                      Method or permission must belong \nto the service
-                                      specified by 'serviceName' field. A single MethodSelector
-                                      \nentry with '*' specified for the 'method'
-                                      field will allow all methods \nAND permissions
-                                      for the service specified in 'serviceName'."
+                                    description: |-
+                                      API methods or permissions to allow. Method or permission must belong
+                                      to the service specified by 'serviceName' field. A single MethodSelector
+                                      entry with '*' specified for the 'method' field will allow all methods
+                                      AND permissions for the service specified in 'serviceName'.
                                     items:
                                       properties:
                                         method:
-                                          description: "Value for 'method' should
-                                            be a valid method name for the corresponding
-                                            \n'serviceName' in 'ApiOperation'. If
-                                            '*' used as value for method, \nthen ALL
-                                            methods and permissions are allowed."
+                                          description: |-
+                                            Value for 'method' should be a valid method name for the corresponding
+                                            'serviceName' in 'ApiOperation'. If '*' used as value for method,
+                                            then ALL methods and permissions are allowed.
                                           type: string
                                         permission:
-                                          description: "Value for permission should
-                                            be a valid Cloud IAM permission for the
-                                            \ncorresponding 'serviceName' in 'ApiOperation'."
+                                          description: |-
+                                            Value for permission should be a valid Cloud IAM permission for the
+                                            corresponding 'serviceName' in 'ApiOperation'.
                                           type: string
                                       type: object
                                     type: array
                                   serviceName:
-                                    description: "The name of the API whose methods
-                                      or permissions the 'IngressPolicy' or \n'EgressPolicy'
-                                      want to allow. A single 'ApiOperation' with
-                                      serviceName \nfield set to '*' will allow all
-                                      methods AND permissions for all services."
+                                    description: |-
+                                      The name of the API whose methods or permissions the 'IngressPolicy' or
+                                      'EgressPolicy' want to allow. A single 'ApiOperation' with serviceName
+                                      field set to '*' will allow all methods AND permissions for all services.
                                     type: string
                                 type: object
                               type: array
@@ -902,11 +892,10 @@ spec:
                                 type: object
                               type: array
                             identityType:
-                              description: "Specifies the type of identities that
-                                are allowed access from outside the \nperimeter. If
-                                left unspecified, then members of 'identities' field
-                                will be \nallowed access. Possible values: [\"IDENTITY_TYPE_UNSPECIFIED\",
-                                \"ANY_IDENTITY\", \"ANY_USER_ACCOUNT\", \"ANY_SERVICE_ACCOUNT\"]."
+                              description: |-
+                                Specifies the type of identities that are allowed access from outside the
+                                perimeter. If left unspecified, then members of 'identities' field will be
+                                allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"].
                               type: string
                             sources:
                               description: Sources that this 'IngressPolicy' authorizes
@@ -997,40 +986,37 @@ spec:
                             this 'IngressPolicy' to apply.
                           properties:
                             operations:
-                              description: "A list of 'ApiOperations' the sources
-                                specified in corresponding 'IngressFrom' \nare allowed
-                                to perform in this 'ServicePerimeter'."
+                              description: |-
+                                A list of 'ApiOperations' the sources specified in corresponding 'IngressFrom'
+                                are allowed to perform in this 'ServicePerimeter'.
                               items:
                                 properties:
                                   methodSelectors:
-                                    description: "API methods or permissions to allow.
-                                      Method or permission must belong to \nthe service
-                                      specified by serviceName field. A single 'MethodSelector'
-                                      entry \nwith '*' specified for the method field
-                                      will allow all methods AND \npermissions for
-                                      the service specified in 'serviceName'."
+                                    description: |-
+                                      API methods or permissions to allow. Method or permission must belong to
+                                      the service specified by serviceName field. A single 'MethodSelector' entry
+                                      with '*' specified for the method field will allow all methods AND
+                                      permissions for the service specified in 'serviceName'.
                                     items:
                                       properties:
                                         method:
-                                          description: "Value for method should be
-                                            a valid method name for the corresponding
-                                            \nserviceName in 'ApiOperation'. If '*'
-                                            used as value for 'method', then \nALL
-                                            methods and permissions are allowed."
+                                          description: |-
+                                            Value for method should be a valid method name for the corresponding
+                                            serviceName in 'ApiOperation'. If '*' used as value for 'method', then
+                                            ALL methods and permissions are allowed.
                                           type: string
                                         permission:
-                                          description: "Value for permission should
-                                            be a valid Cloud IAM permission for the
-                                            \ncorresponding 'serviceName' in 'ApiOperation'."
+                                          description: |-
+                                            Value for permission should be a valid Cloud IAM permission for the
+                                            corresponding 'serviceName' in 'ApiOperation'.
                                           type: string
                                       type: object
                                     type: array
                                   serviceName:
-                                    description: "The name of the API whose methods
-                                      or permissions the 'IngressPolicy' or \n'EgressPolicy'
-                                      want to allow. A single 'ApiOperation' with
-                                      'serviceName' \nfield set to '*' will allow
-                                      all methods AND permissions for all services."
+                                    description: |-
+                                      The name of the API whose methods or permissions the 'IngressPolicy' or
+                                      'EgressPolicy' want to allow. A single 'ApiOperation' with 'serviceName'
+                                      field set to '*' will allow all methods AND permissions for all services.
                                     type: string
                                 type: object
                               type: array
