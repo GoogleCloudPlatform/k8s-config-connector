@@ -7,10 +7,6 @@
 
 
 
-Note: Ask your {{gcp_name_short}} account team to request access to workforce identity
-federation for your billing/quota project. The account team notifies you when the project is
-granted access.
-
 <table>
 <thead>
 <tr>
