@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_vpc_access_connector.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_vpc_access_connector.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/vpcaccess/resource_vpc_access_connector.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/vpcaccess/resource_vpc_access_connector.go
 index 415c9ff13..da6837d62 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_vpc_access_connector.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_vpc_access_connector.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/vpcaccess/resource_vpc_access_connector.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/vpcaccess/resource_vpc_access_connector.go
 @@ -135,6 +135,14 @@ https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/su
  					},
  				},

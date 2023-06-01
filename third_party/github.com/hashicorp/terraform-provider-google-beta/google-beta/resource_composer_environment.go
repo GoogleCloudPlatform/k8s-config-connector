@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -1254,7 +1256,7 @@ func resourceComposerEnvironmentDelete(d *schema.ResourceData, meta interface{})
 
 func resourceComposerEnvironmentImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*transport_tpg.Config)
-	if err := ParseImportId([]string{"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/environments/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)", "(?P<name>[^/]+)"}, d, config); err != nil {
+	if err := tpgresource.ParseImportId([]string{"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/environments/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)", "(?P<name>[^/]+)"}, d, config); err != nil {
 		return nil, err
 	}
 
@@ -1498,14 +1500,14 @@ func flattenComposerEnvironmentConfigNodeConfigOauthScopes(v interface{}) interf
 	if v == nil {
 		return v
 	}
-	return schema.NewSet(schema.HashString, convertStringArrToInterface(v.([]string)))
+	return schema.NewSet(schema.HashString, tpgresource.ConvertStringArrToInterface(v.([]string)))
 }
 
 func flattenComposerEnvironmentConfigNodeConfigTags(v interface{}) interface{} {
 	if v == nil {
 		return v
 	}
-	return schema.NewSet(schema.HashString, convertStringArrToInterface(v.([]string)))
+	return schema.NewSet(schema.HashString, tpgresource.ConvertStringArrToInterface(v.([]string)))
 }
 
 func flattenComposerEnvironmentConfigSoftwareConfig(softwareCfg *composer.SoftwareConfig) interface{} {
@@ -2095,7 +2097,7 @@ func expandComposerEnvironmentSetList(v interface{}, d *schema.ResourceData, con
 	if v == nil {
 		return nil, nil
 	}
-	return convertStringArr(v.(*schema.Set).List()), nil
+	return tpgresource.ConvertStringArr(v.(*schema.Set).List()), nil
 }
 
 func expandComposerEnvironmentConfigSoftwareConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) (*composer.SoftwareConfig, error) {
@@ -2126,7 +2128,7 @@ func expandComposerEnvironmentConfigSoftwareConfig(v interface{}, d *schema.Reso
 func expandComposerEnvironmentConfigSoftwareConfigStringMap(softwareConfig map[string]interface{}, k string) map[string]string {
 	v, ok := softwareConfig[k]
 	if ok && v != nil {
-		return convertStringMap(v.(map[string]interface{}))
+		return tpgresource.ConvertStringMap(v.(map[string]interface{}))
 	}
 	return map[string]string{}
 }

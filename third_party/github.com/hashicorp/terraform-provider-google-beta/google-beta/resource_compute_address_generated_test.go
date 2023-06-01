@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeAddress_addressBasicExample(t *testing.T) {
 }
 
 func testAccComputeAddress_addressBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_address" "ip_address" {
   name = "tf-test-my-address%{random_suffix}"
 }
@@ -86,7 +89,7 @@ func TestAccComputeAddress_addressWithSubnetworkExample(t *testing.T) {
 }
 
 func testAccComputeAddress_addressWithSubnetworkExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_network" "default" {
   name = "tf-test-my-network%{random_suffix}"
 }
@@ -134,7 +137,7 @@ func TestAccComputeAddress_addressWithGceEndpointExample(t *testing.T) {
 }
 
 func testAccComputeAddress_addressWithGceEndpointExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_address" "internal_with_gce_endpoint" {
   name         = "tf-test-my-internal-address-%{random_suffix}"
   address_type = "INTERNAL"
@@ -169,7 +172,7 @@ func TestAccComputeAddress_addressWithSharedLoadbalancerVipExample(t *testing.T)
 }
 
 func testAccComputeAddress_addressWithSharedLoadbalancerVipExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_address" "internal_with_shared_loadbalancer_vip" {
   name         = "tf-test-my-internal-address%{random_suffix}"
   address_type = "INTERNAL"
@@ -204,7 +207,7 @@ func TestAccComputeAddress_instanceWithIpExample(t *testing.T) {
 }
 
 func testAccComputeAddress_instanceWithIpExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_address" "static" {
   name = "tf-test-ipv4-address%{random_suffix}"
 }
@@ -261,7 +264,7 @@ func TestAccComputeAddress_computeAddressIpsecInterconnectExample(t *testing.T) 
 }
 
 func testAccComputeAddress_computeAddressIpsecInterconnectExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_address" "ipsec-interconnect-address" {
   name          = "tf-test-test-address%{random_suffix}"
   address_type  = "INTERNAL"
@@ -301,7 +304,13 @@ func testAccCheckComputeAddressDestroyProducer(t *testing.T) func(s *terraform.S
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeAddress still exists at %s", url)
 			}

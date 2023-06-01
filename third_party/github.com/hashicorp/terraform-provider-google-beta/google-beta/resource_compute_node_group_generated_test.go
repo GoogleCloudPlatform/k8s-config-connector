@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeNodeGroup_nodeGroupBasicExample(t *testing.T) {
 }
 
 func testAccComputeNodeGroup_nodeGroupBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_node_template" "soletenant-tmpl" {
   name      = "tf-test-soletenant-tmpl%{random_suffix}"
   region    = "us-central1"
@@ -97,7 +100,7 @@ func TestAccComputeNodeGroup_nodeGroupAutoscalingPolicyExample(t *testing.T) {
 }
 
 func testAccComputeNodeGroup_nodeGroupAutoscalingPolicyExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_node_template" "soletenant-tmpl" {
   name      = "tf-test-soletenant-tmpl%{random_suffix}"
   region    = "us-central1"
@@ -150,7 +153,7 @@ func TestAccComputeNodeGroup_nodeGroupShareSettingsExample(t *testing.T) {
 }
 
 func testAccComputeNodeGroup_nodeGroupShareSettingsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_project" "guest_project" {
   project_id      = "tf-test-project-id%{random_suffix}"
   name            = "tf-test-project-name%{random_suffix}"
@@ -205,7 +208,13 @@ func testAccCheckComputeNodeGroupDestroyProducer(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeNodeGroup still exists at %s", url)
 			}

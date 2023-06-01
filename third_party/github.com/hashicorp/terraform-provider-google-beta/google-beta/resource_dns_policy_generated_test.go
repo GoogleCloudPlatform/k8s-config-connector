@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -52,7 +55,7 @@ func TestAccDNSPolicy_dnsPolicyBasicExample(t *testing.T) {
 }
 
 func testAccDNSPolicy_dnsPolicyBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_dns_policy" "example-policy" {
   name                      = "tf-test-example-policy%{random_suffix}"
   enable_inbound_forwarding = true
@@ -112,7 +115,13 @@ func testAccCheckDNSPolicyDestroyProducer(t *testing.T) func(s *terraform.State)
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("DNSPolicy still exists at %s", url)
 			}

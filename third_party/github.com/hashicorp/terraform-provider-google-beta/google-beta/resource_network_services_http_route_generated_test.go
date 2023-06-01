@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccNetworkServicesHttpRoute_networkServicesHttpRouteBasicExample(t *tes
 }
 
 func testAccNetworkServicesHttpRoute_networkServicesHttpRouteBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_network_services_http_route" "default" {
   provider               = google-beta
   name                   = "tf-test-my-http-route%{random_suffix}"
@@ -101,7 +104,7 @@ func TestAccNetworkServicesHttpRoute_networkServicesHttpRouteMatchesAndActionsEx
 }
 
 func testAccNetworkServicesHttpRoute_networkServicesHttpRouteMatchesAndActionsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_network_services_http_route" "default" {
   provider               = google-beta
   name                   = "tf-test-my-http-route%{random_suffix}"
@@ -215,7 +218,7 @@ func TestAccNetworkServicesHttpRoute_networkServicesHttpRouteActionsExample(t *t
 }
 
 func testAccNetworkServicesHttpRoute_networkServicesHttpRouteActionsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_network_services_http_route" "default" {
   provider               = google-beta
   name                   = "tf-test-my-http-route%{random_suffix}"
@@ -302,7 +305,7 @@ func TestAccNetworkServicesHttpRoute_networkServicesHttpRouteMeshBasicExample(t 
 }
 
 func testAccNetworkServicesHttpRoute_networkServicesHttpRouteMeshBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_network_services_mesh" "default" {
   provider    = google-beta
   name        = "tf-test-my-http-route%{random_suffix}"
@@ -359,7 +362,13 @@ func testAccCheckNetworkServicesHttpRouteDestroyProducer(t *testing.T) func(s *t
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("NetworkServicesHttpRoute still exists at %s", url)
 			}

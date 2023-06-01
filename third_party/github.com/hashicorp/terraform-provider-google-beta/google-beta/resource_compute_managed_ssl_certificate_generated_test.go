@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -52,7 +55,7 @@ func TestAccComputeManagedSslCertificate_managedSslCertificateBasicExample(t *te
 }
 
 func testAccComputeManagedSslCertificate_managedSslCertificateBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_managed_ssl_certificate" "default" {
   name = "tf-test-test-cert%{random_suffix}"
 
@@ -143,7 +146,7 @@ func TestAccComputeManagedSslCertificate_managedSslCertificateRecreationExample(
 }
 
 func testAccComputeManagedSslCertificate_managedSslCertificateRecreationExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 // This example allows the list of managed domains to be modified and will
 // recreate the ssl certificate and update the target https proxy correctly
 
@@ -236,7 +239,13 @@ func testAccCheckComputeManagedSslCertificateDestroyProducer(t *testing.T) func(
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeManagedSslCertificate still exists at %s", url)
 			}

@@ -131,6 +131,8 @@ sourceSnapshotRef:
   external: string
   name: string
   namespace: string
+storageLocations:
+- string
 ```
 
 <table class="properties responsive">
@@ -499,6 +501,28 @@ but not both.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>storageLocations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Immutable. Cloud Storage bucket storage location of the image
+(regional or multi-regional).
+Reference link: https://cloud.google.com/compute/docs/reference/rest/v1/images.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>storageLocations[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

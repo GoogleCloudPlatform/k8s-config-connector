@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -54,7 +57,7 @@ func TestAccPrivatecaCertificate_privatecaCertificateConfigExample(t *testing.T)
 }
 
 func testAccPrivatecaCertificate_privatecaCertificateConfigExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_privateca_ca_pool" "default" {
   location = "us-central1"
   name = "tf-test-my-pool%{random_suffix}"
@@ -184,7 +187,7 @@ func TestAccPrivatecaCertificate_privatecaCertificateWithTemplateExample(t *test
 }
 
 func testAccPrivatecaCertificate_privatecaCertificateWithTemplateExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_privateca_ca_pool" "default" {
   location = "us-central1"
   name = "tf-test-my-pool%{random_suffix}"
@@ -347,7 +350,7 @@ func TestAccPrivatecaCertificate_privatecaCertificateCsrExample(t *testing.T) {
 }
 
 func testAccPrivatecaCertificate_privatecaCertificateCsrExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_privateca_ca_pool" "default" {
   location = "us-central1"
   name = "tf-test-my-pool%{random_suffix}"
@@ -434,7 +437,7 @@ func TestAccPrivatecaCertificate_privatecaCertificateNoAuthorityExample(t *testi
 }
 
 func testAccPrivatecaCertificate_privatecaCertificateNoAuthorityExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_privateca_ca_pool" "default" {
   location = "us-central1"
   name = "tf-test-my-pool%{random_suffix}"
@@ -549,7 +552,13 @@ func testAccCheckPrivatecaCertificateDestroyProducer(t *testing.T) func(s *terra
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("PrivatecaCertificate still exists at %s", url)
 			}

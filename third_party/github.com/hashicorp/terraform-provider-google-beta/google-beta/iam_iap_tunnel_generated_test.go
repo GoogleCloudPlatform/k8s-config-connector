@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -132,6 +135,7 @@ func TestAccIapTunnelIamPolicyGenerated(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIapTunnelIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_iap_tunnel_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_iap_tunnel_iam_policy.foo",
@@ -432,6 +436,13 @@ data "google_iam_policy" "foo" {
 resource "google_iap_tunnel_iam_policy" "foo" {
   project = google_project_service.project_service.project
   policy_data = data.google_iam_policy.foo.policy_data
+}
+
+data "google_iap_tunnel_iam_policy" "foo" {
+  project = google_project_service.project_service.project
+  depends_on = [
+    google_iap_tunnel_iam_policy.foo
+  ]
 }
 `, context)
 }

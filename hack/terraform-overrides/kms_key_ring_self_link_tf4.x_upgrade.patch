@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_kms_key_ring.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_kms_key_ring.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/kms/resource_kms_key_ring.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/kms/resource_kms_key_ring.go
 index 29efaac75..f05b5987a 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_kms_key_ring.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_kms_key_ring.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/kms/resource_kms_key_ring.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/kms/resource_kms_key_ring.go
 @@ -58,6 +58,13 @@ A full list of valid locations can be found by running 'gcloud kms locations lis
  				Computed: true,
  				ForceNew: true,

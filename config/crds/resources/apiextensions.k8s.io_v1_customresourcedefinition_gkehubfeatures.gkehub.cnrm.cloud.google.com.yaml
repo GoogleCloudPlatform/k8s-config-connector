@@ -100,6 +100,32 @@ spec:
                 description: Optional. Hub-wide Feature configuration. If this Feature
                   does not support any Hub-wide configuration, this field may be unused.
                 properties:
+                  fleetobservability:
+                    description: Fleet Observability spec.
+                    properties:
+                      loggingConfig:
+                        description: Fleet Observability Logging-specific spec.
+                        properties:
+                          defaultConfig:
+                            description: Specified if applying the default routing
+                              config to logs not specified in other configs.
+                            properties:
+                              mode:
+                                description: 'The logs routing mode Possible values:
+                                  MODE_UNSPECIFIED, COPY, MOVE'
+                                type: string
+                            type: object
+                          fleetScopeLogsConfig:
+                            description: Specified if applying the routing config
+                              to all logs for all fleet scopes.
+                            properties:
+                              mode:
+                                description: 'The logs routing mode Possible values:
+                                  MODE_UNSPECIFIED, COPY, MOVE'
+                                type: string
+                            type: object
+                        type: object
+                    type: object
                   multiclusteringress:
                     description: Multicluster Ingress-specific spec.
                     properties:

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -54,7 +57,7 @@ func TestAccLoggingLogView_loggingLogViewBasicExample(t *testing.T) {
 }
 
 func testAccLoggingLogView_loggingLogViewBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_logging_project_bucket_config" "logging_log_view" {
     project        = "%{project}"
     location       = "global"
@@ -98,7 +101,7 @@ func TestAccLoggingLogView_loggingLogViewLongNameExample(t *testing.T) {
 }
 
 func testAccLoggingLogView_loggingLogViewLongNameExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_logging_project_bucket_config" "logging_log_view" {
     project        = "%{project}"
     location       = "global"
@@ -138,7 +141,13 @@ func testAccCheckLoggingLogViewDestroyProducer(t *testing.T) func(s *terraform.S
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("LoggingLogView still exists at %s", url)
 			}

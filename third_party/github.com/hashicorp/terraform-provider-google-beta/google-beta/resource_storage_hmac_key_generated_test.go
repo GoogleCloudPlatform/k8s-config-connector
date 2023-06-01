@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccStorageHmacKey_storageHmacKeyExample(t *testing.T) {
 }
 
 func testAccStorageHmacKey_storageHmacKeyExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 # Create a new service account
 resource "google_service_account" "service_account" {
   account_id = "tf-test-my-svc-acc%{random_suffix}"
@@ -83,7 +86,12 @@ func testAccCheckStorageHmacKeyDestroyProducer(t *testing.T) func(s *terraform.S
 				return err
 			}
 
-			res, err := transport_tpg.SendRequest(config, "GET", "", url, config.UserAgent, nil)
+			res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err != nil {
 				return nil
 			}

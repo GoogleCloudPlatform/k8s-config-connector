@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccNotebooksRuntime_notebookRuntimeBasicExample(t *testing.T) {
 }
 
 func testAccNotebooksRuntime_notebookRuntimeBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_notebooks_runtime" "runtime" {
   name = "tf-test-notebooks-runtime%{random_suffix}"
   location = "us-central1"
@@ -102,7 +105,7 @@ func TestAccNotebooksRuntime_notebookRuntimeBasicGpuExample(t *testing.T) {
 }
 
 func testAccNotebooksRuntime_notebookRuntimeBasicGpuExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_notebooks_runtime" "runtime_gpu" {
   name = "tf-test-notebooks-runtime-gpu%{random_suffix}"
   location = "us-central1"
@@ -158,7 +161,7 @@ func TestAccNotebooksRuntime_notebookRuntimeBasicContainerExample(t *testing.T) 
 }
 
 func testAccNotebooksRuntime_notebookRuntimeBasicContainerExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_notebooks_runtime" "runtime_container" {
   name = "tf-test-notebooks-runtime-container%{random_suffix}"
   location = "us-central1"
@@ -215,7 +218,7 @@ func TestAccNotebooksRuntime_notebookRuntimeKernelsExample(t *testing.T) {
 }
 
 func testAccNotebooksRuntime_notebookRuntimeKernelsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_notebooks_runtime" "runtime_container" {
   name = "tf-test-notebooks-runtime-kernel%{random_suffix}"
   location = "us-central1"
@@ -270,7 +273,7 @@ func TestAccNotebooksRuntime_notebookRuntimeScriptExample(t *testing.T) {
 }
 
 func testAccNotebooksRuntime_notebookRuntimeScriptExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_notebooks_runtime" "runtime_container" {
   name = "tf-test-notebooks-runtime-script%{random_suffix}"
   location = "us-central1"
@@ -319,7 +322,13 @@ func testAccCheckNotebooksRuntimeDestroyProducer(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("NotebooksRuntime still exists at %s", url)
 			}

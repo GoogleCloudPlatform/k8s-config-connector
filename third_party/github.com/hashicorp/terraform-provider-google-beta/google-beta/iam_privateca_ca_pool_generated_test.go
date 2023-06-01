@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -114,6 +117,7 @@ func TestAccPrivatecaCaPoolIamPolicyGenerated(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccPrivatecaCaPoolIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_privateca_ca_pool_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_privateca_ca_pool_iam_policy.foo",
@@ -370,6 +374,13 @@ data "google_iam_policy" "foo" {
 resource "google_privateca_ca_pool_iam_policy" "foo" {
   ca_pool = google_privateca_ca_pool.default.id
   policy_data = data.google_iam_policy.foo.policy_data
+}
+
+data "google_privateca_ca_pool_iam_policy" "foo" {
+  ca_pool = google_privateca_ca_pool.default.id
+  depends_on = [
+    google_privateca_ca_pool_iam_policy.foo
+  ]
 }
 `, context)
 }

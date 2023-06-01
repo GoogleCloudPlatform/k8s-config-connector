@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeImage_imageBasicExample(t *testing.T) {
 }
 
 func testAccComputeImage_imageBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_image" "example" {
   name = "tf-test-example-image%{random_suffix}"
 
@@ -90,7 +93,7 @@ func TestAccComputeImage_imageGuestOsExample(t *testing.T) {
 }
 
 func testAccComputeImage_imageGuestOsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_image" "example" {
   name = "tf-test-example-image%{random_suffix}"
 
@@ -105,6 +108,44 @@ resource "google_compute_image" "example" {
   guest_os_features {
     type = "MULTI_IP_SUBNET"
   }
+}
+`, context)
+}
+
+func TestAccComputeImage_imageBasicStorageLocationExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckComputeImageDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeImage_imageBasicStorageLocationExample(context),
+			},
+			{
+				ResourceName:            "google_compute_image.example",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"raw_disk", "source_disk", "source_image", "source_snapshot"},
+			},
+		},
+	})
+}
+
+func testAccComputeImage_imageBasicStorageLocationExample(context map[string]interface{}) string {
+	return tpgresource.Nprintf(`
+resource "google_compute_image" "example" {
+  name = "tf-test-example-sl-image%{random_suffix}"
+
+  raw_disk {
+    source = "https://storage.googleapis.com/bosh-gce-raw-stemcells/bosh-stemcell-97.98-google-kvm-ubuntu-xenial-go_agent-raw-1557960142.tar.gz"
+  }
+  storage_locations = ["us-central1"]
 }
 `, context)
 }
@@ -132,7 +173,13 @@ func testAccCheckComputeImageDestroyProducer(t *testing.T) func(s *terraform.Sta
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeImage still exists at %s", url)
 			}

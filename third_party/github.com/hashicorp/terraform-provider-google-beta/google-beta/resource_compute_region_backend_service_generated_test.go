@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceBasicExample(t *test
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   name                            = "tf-test-region-service%{random_suffix}"
   region                          = "us-central1"
@@ -100,7 +103,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceCacheExample(t *test
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceCacheExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   provider = google-beta
 
@@ -161,7 +164,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceIlbRoundRobinExample
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceIlbRoundRobinExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   region = "us-central1"
   name = "tf-test-region-service%{random_suffix}"
@@ -206,7 +209,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceExternalExample(t *t
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceExternalExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   provider              = google-beta
   region                = "us-central1"
@@ -254,7 +257,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceExternalWeightedExam
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceExternalWeightedExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   region                = "us-central1"
   name                  = "tf-test-region-service%{random_suffix}"
@@ -301,7 +304,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceIlbRingHashExample(t
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceIlbRingHashExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   region = "us-central1"
   name = "tf-test-region-service%{random_suffix}"
@@ -362,7 +365,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceBalancingModeExample
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceBalancingModeExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   load_balancing_scheme = "INTERNAL_MANAGED"
 
@@ -463,7 +466,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceConnectionTrackingEx
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceConnectionTrackingExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   provider                        = google-beta
   name                            = "tf-test-region-service%{random_suffix}"
@@ -515,7 +518,13 @@ func testAccCheckComputeRegionBackendServiceDestroyProducer(t *testing.T) func(s
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeRegionBackendService still exists at %s", url)
 			}

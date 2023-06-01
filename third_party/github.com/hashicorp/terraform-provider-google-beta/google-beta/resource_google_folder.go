@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -38,13 +40,13 @@ func ResourceGoogleFolder() *schema.Resource {
 			"parent_org_id": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: `The organization id of the parent Organization. Exactly one of parent_org_id or parent_folder_id must be specified.`,
+				Description: `The organization id of the parent Organization. Exactly one of parent_org_id or parent_folder must be specified.`,
 			},
 			"parent_folder_id": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: `The folder id of the parent Folder. Exactly one of parent_org_id or parent_folder_id must be specified.`,
-			},
+ 			},
 			// Must be unique amongst its siblings.
 			"display_name": {
 				Type:        schema.TypeString,
@@ -103,16 +105,18 @@ func resourceGoogleFolderCreate(d *schema.ResourceData, meta interface{}) error 
 		return resourceGoogleFolderRead(d, meta)
 	}
 
-
 	var op *resourceManagerV3.Operation
-	err = transport_tpg.RetryTimeDuration(func() error {
-		var reqErr error
-		op, reqErr = config.NewResourceManagerV3Client(userAgent).Folders.Create(&resourceManagerV3.Folder{
-			DisplayName: displayName,
-			Parent:      parent,
-		}).Do()
-		return reqErr
-	}, d.Timeout(schema.TimeoutCreate))
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() error {
+			var reqErr error
+			op, reqErr = config.NewResourceManagerV3Client(userAgent).Folders.Create(&resourceManagerV3.Folder{
+				DisplayName: displayName,
+				Parent:      parent,
+			}).Do()
+			return reqErr
+		},
+		Timeout: d.Timeout(schema.TimeoutCreate),
+	})
 	if err != nil {
 		return fmt.Errorf("Error creating folder '%s' in '%s': %s", displayName, parent, err)
 	}
@@ -209,11 +213,13 @@ func resourceGoogleFolderUpdate(d *schema.ResourceData, meta interface{}) error 
 
 	d.Partial(true)
 	if d.HasChange("display_name") {
-		err := transport_tpg.Retry(func() error {
-			_, reqErr := config.NewResourceManagerV3Client(userAgent).Folders.Patch(d.Id(), &resourceManagerV3.Folder{
-				DisplayName: displayName,
-			}).Do()
-			return reqErr
+		err := transport_tpg.Retry(transport_tpg.RetryOptions{
+			RetryFunc: func() error {
+				_, reqErr := config.NewResourceManagerV3Client(userAgent).Folders.Patch(d.Id(), &resourceManagerV3.Folder{
+					DisplayName: displayName,
+				}).Do()
+				return reqErr
+			},
 		})
 		if err != nil {
 			return fmt.Errorf("Error updating display_name to '%s': %s", displayName, err)
@@ -227,12 +233,14 @@ func resourceGoogleFolderUpdate(d *schema.ResourceData, meta interface{}) error 
 		}
 
 		var op *resourceManagerV3.Operation
-		err = transport_tpg.Retry(func() error {
-			var reqErr error
-			op, reqErr = config.NewResourceManagerV3Client(userAgent).Folders.Move(d.Id(), &resourceManagerV3.MoveFolderRequest{
-				DestinationParent: newParent,
-			}).Do()
-			return reqErr
+		err = transport_tpg.Retry(transport_tpg.RetryOptions{
+			RetryFunc: func() error {
+				var reqErr error
+				op, reqErr = config.NewResourceManagerV3Client(userAgent).Folders.Move(d.Id(), &resourceManagerV3.MoveFolderRequest{
+					DestinationParent: newParent,
+				}).Do()
+				return reqErr
+			},
 		})
 		if err != nil {
 			return fmt.Errorf("Error moving folder '%s' to '%s': %s", displayName, newParent, err)
@@ -263,11 +271,14 @@ func resourceGoogleFolderDelete(d *schema.ResourceData, meta interface{}) error 
 	displayName := d.Get("display_name").(string)
 
 	var op *resourceManagerV3.Operation
-	err = transport_tpg.RetryTimeDuration(func() error {
-		var reqErr error
-		op, reqErr = config.NewResourceManagerV3Client(userAgent).Folders.Delete(d.Id()).Do()
-		return reqErr
-	}, d.Timeout(schema.TimeoutDelete))
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() error {
+			var reqErr error
+			op, reqErr = config.NewResourceManagerV3Client(userAgent).Folders.Delete(d.Id()).Do()
+			return reqErr
+		},
+		Timeout: d.Timeout(schema.TimeoutDelete),
+	})
 	if err != nil {
 		return fmt.Errorf("Error deleting folder '%s': %s", displayName, err)
 	}
@@ -302,11 +313,14 @@ func resourceGoogleFolderImportState(d *schema.ResourceData, m interface{}) ([]*
 // ResourceData resource.
 func getGoogleFolder(folderName, userAgent string, d *schema.ResourceData, config *transport_tpg.Config) (*resourceManagerV3.Folder, error) {
 	var folder *resourceManagerV3.Folder
-	err := transport_tpg.RetryTimeDuration(func() error {
-		var reqErr error
-		folder, reqErr = config.NewResourceManagerV3Client(userAgent).Folders.Get(folderName).Do()
-		return reqErr
-	}, d.Timeout(schema.TimeoutRead))
+	err := transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() error {
+			var reqErr error
+			folder, reqErr = config.NewResourceManagerV3Client(userAgent).Folders.Get(folderName).Do()
+			return reqErr
+		},
+		Timeout: d.Timeout(schema.TimeoutRead),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -319,7 +333,7 @@ func getActiveFolderByDisplayName(displayName, parent, userAgent string, config 
 		query := fmt.Sprintf("state=ACTIVE AND parent=%s AND displayName=\"%s\"", parent, displayName)
 		searchResponse, err := config.NewResourceManagerV3Client(userAgent).Folders.Search().Query(query).PageToken(pageToken).Do()
 		if err != nil {
-			if IsGoogleApiErrorWithCode(err, 404) {
+			if transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 				return nil, activeFolderNotFoundError
 			}
 			return nil, fmt.Errorf("error searching for folders with query '%v': %v", query, err)

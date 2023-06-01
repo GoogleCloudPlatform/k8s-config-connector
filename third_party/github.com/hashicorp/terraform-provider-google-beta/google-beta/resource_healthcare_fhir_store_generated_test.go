@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreBasicExample(t *testing.T) {
 }
 
 func testAccHealthcareFhirStore_healthcareFhirStoreBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_healthcare_fhir_store" "default" {
   name    = "tf-test-example-fhir-store%{random_suffix}"
   dataset = google_healthcare_dataset.dataset.id
@@ -111,7 +114,7 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreStreamingConfigExample(t *tes
 }
 
 func testAccHealthcareFhirStore_healthcareFhirStoreStreamingConfigExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_healthcare_fhir_store" "default" {
   name    = "tf-test-example-fhir-store%{random_suffix}"
   dataset = google_healthcare_dataset.dataset.id
@@ -182,7 +185,7 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreNotificationConfigExample(t *
 }
 
 func testAccHealthcareFhirStore_healthcareFhirStoreNotificationConfigExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_healthcare_fhir_store" "default" {
   name    = "tf-test-example-fhir-store%{random_suffix}"
   dataset = google_healthcare_dataset.dataset.id
@@ -239,7 +242,7 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreNotificationConfigsExample(t 
 }
 
 func testAccHealthcareFhirStore_healthcareFhirStoreNotificationConfigsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_healthcare_fhir_store" "default" {
   provider = google-beta
   name     = "tf-test-example-fhir-store%{random_suffix}"
@@ -297,7 +300,13 @@ func testAccCheckHealthcareFhirStoreDestroyProducer(t *testing.T) func(s *terraf
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("HealthcareFhirStore still exists at %s", url)
 			}

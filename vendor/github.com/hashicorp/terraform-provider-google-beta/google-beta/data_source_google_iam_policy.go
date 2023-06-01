@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -125,7 +127,7 @@ func dataSourceGoogleIamPolicyRead(d *schema.ResourceData, meta interface{}) err
 	bindingMap := map[string]*cloudresourcemanager.Binding{}
 	for _, v := range bset.List() {
 		binding := v.(map[string]interface{})
-		members := convertStringSet(binding["members"].(*schema.Set))
+		members := tpgresource.ConvertStringSet(binding["members"].(*schema.Set))
 		condition := expandIamCondition(binding["condition"])
 
 		// Map keys are used to identify binding{} blocks that are identical except for the member lists
@@ -198,7 +200,7 @@ func expandAuditConfig(set *schema.Set) []*cloudresourcemanager.AuditConfig {
 			logConfig := y.(map[string]interface{})
 			auditLogConfigs = append(auditLogConfigs, &cloudresourcemanager.AuditLogConfig{
 				LogType:         logConfig["log_type"].(string),
-				ExemptedMembers: convertStringArr(logConfig["exempted_members"].(*schema.Set).List()),
+				ExemptedMembers: tpgresource.ConvertStringArr(logConfig["exempted_members"].(*schema.Set).List()),
 			})
 		}
 		auditConfigs = append(auditConfigs, &cloudresourcemanager.AuditConfig{

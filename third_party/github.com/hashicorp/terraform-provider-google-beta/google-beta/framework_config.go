@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -162,6 +164,7 @@ func (p *frameworkProvider) LoadAndValidateFramework(ctx context.Context, data P
 	p.TagsBasePath = data.TagsCustomEndpoint.ValueString()
 	p.TPUBasePath = data.TPUCustomEndpoint.ValueString()
 	p.VertexAIBasePath = data.VertexAICustomEndpoint.ValueString()
+	p.VmwareengineBasePath = data.VmwareengineCustomEndpoint.ValueString()
 	p.VPCAccessBasePath = data.VPCAccessCustomEndpoint.ValueString()
 	p.WorkflowsBasePath = data.WorkflowsCustomEndpoint.ValueString()
 	p.WorkstationsBasePath = data.WorkstationsCustomEndpoint.ValueString()
@@ -1069,6 +1072,14 @@ func (p *frameworkProvider) HandleDefaults(ctx context.Context, data *ProviderMo
 		}, transport_tpg.DefaultBasePaths[transport_tpg.VertexAIBasePathKey])
 		if customEndpoint != nil {
 			data.VertexAICustomEndpoint = types.StringValue(customEndpoint.(string))
+		}
+	}
+	if data.VmwareengineCustomEndpoint.IsNull() {
+		customEndpoint := transport_tpg.MultiEnvDefault([]string{
+			"GOOGLE_VMWAREENGINE_CUSTOM_ENDPOINT",
+		}, transport_tpg.DefaultBasePaths[transport_tpg.VmwareengineBasePathKey])
+		if customEndpoint != nil {
+			data.VmwareengineCustomEndpoint = types.StringValue(customEndpoint.(string))
 		}
 	}
 	if data.VPCAccessCustomEndpoint.IsNull() {

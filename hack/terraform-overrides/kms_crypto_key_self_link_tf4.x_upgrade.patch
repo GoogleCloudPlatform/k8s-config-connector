@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_kms_crypto_key.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_kms_crypto_key.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/kms/resource_kms_crypto_key.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/kms/resource_kms_crypto_key.go
 index f622b452b..7240692a8 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_kms_crypto_key.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_kms_crypto_key.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/kms/resource_kms_crypto_key.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/kms/resource_kms_crypto_key.go
 @@ -139,6 +139,13 @@ See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v
  					},
  				},

@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_instance_template.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_instance_template.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_instance_template.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_instance_template.go
 index b0019167..916c45e1 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_instance_template.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_instance_template.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_instance_template.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_instance_template.go
 @@ -526,7 +526,6 @@ func resourceComputeInstanceTemplate() *schema.Resource {
  				MaxItems:    1,
  				Optional:    true,

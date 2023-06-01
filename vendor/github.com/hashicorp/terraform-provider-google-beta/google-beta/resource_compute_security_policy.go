@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -30,9 +32,9 @@ func ResourceComputeSecurityPolicy() *schema.Resource {
 		CustomizeDiff: rulesCustomizeDiff,
 
 		Timeouts: &schema.ResourceTimeout{
-			Create: schema.DefaultTimeout(4 * time.Minute),
-			Update: schema.DefaultTimeout(4 * time.Minute),
-			Delete: schema.DefaultTimeout(4 * time.Minute),
+			Create: schema.DefaultTimeout(8 * time.Minute),
+			Update: schema.DefaultTimeout(8 * time.Minute),
+			Delete: schema.DefaultTimeout(8 * time.Minute),
 		},
 
 		Schema: map[string]*schema.Schema{
@@ -897,7 +899,7 @@ func expandSecurityPolicyMatchConfig(configured []interface{}) *compute.Security
 
 	data := configured[0].(map[string]interface{})
 	return &compute.SecurityPolicyRuleMatcherConfig{
-		SrcIpRanges: convertStringArr(data["src_ip_ranges"].(*schema.Set).List()),
+		SrcIpRanges: tpgresource.ConvertStringArr(data["src_ip_ranges"].(*schema.Set).List()),
 	}
 }
 
@@ -943,7 +945,7 @@ func expandSecurityPolicyRulePreconfiguredWafConfigExclusion(raw interface{}) *c
 		RequestUrisToExclude:        expandSecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams(data["request_uri"].([]interface{})),
 		RequestQueryParamsToExclude: expandSecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams(data["request_query_param"].([]interface{})),
 		TargetRuleSet:               data["target_rule_set"].(string),
-		TargetRuleIds:               convertStringArr(data["target_rule_ids"].(*schema.Set).List()),
+		TargetRuleIds:               tpgresource.ConvertStringArr(data["target_rule_ids"].(*schema.Set).List()),
 	}
 }
 
@@ -1002,7 +1004,7 @@ func flattenMatchConfig(conf *compute.SecurityPolicyRuleMatcherConfig) []map[str
 	}
 
 	data := map[string]interface{}{
-		"src_ip_ranges": schema.NewSet(schema.HashString, convertStringArrToInterface(conf.SrcIpRanges)),
+		"src_ip_ranges": schema.NewSet(schema.HashString, tpgresource.ConvertStringArrToInterface(conf.SrcIpRanges)),
 	}
 
 	return []map[string]interface{}{data}
@@ -1045,7 +1047,7 @@ func flattenPreconfiguredWafConfigExclusions(exclusions []*compute.SecurityPolic
 			"request_uri":         flattenPreconfiguredWafConfigExclusionField(exclusion.RequestUrisToExclude),
 			"request_query_param": flattenPreconfiguredWafConfigExclusionField(exclusion.RequestQueryParamsToExclude),
 			"target_rule_set":     exclusion.TargetRuleSet,
-			"target_rule_ids":     schema.NewSet(schema.HashString, convertStringArrToInterface(exclusion.TargetRuleIds)),
+			"target_rule_ids":     schema.NewSet(schema.HashString, tpgresource.ConvertStringArrToInterface(exclusion.TargetRuleIds)),
 		}
 
 		exclusionsSchema = append(exclusionsSchema, data)
@@ -1100,7 +1102,7 @@ func expandSecurityPolicyAdvancedOptionsConfigJsonCustomConfig(configured []inte
 
 	data := configured[0].(map[string]interface{})
 	return &compute.SecurityPolicyAdvancedOptionsConfigJsonCustomConfig{
-		ContentTypes: convertStringArr(data["content_types"].(*schema.Set).List()),
+		ContentTypes: tpgresource.ConvertStringArr(data["content_types"].(*schema.Set).List()),
 	}
 }
 
@@ -1110,7 +1112,7 @@ func flattenSecurityPolicyAdvancedOptionsConfigJsonCustomConfig(conf *compute.Se
 	}
 
 	data := map[string]interface{}{
-		"content_types": schema.NewSet(schema.HashString, convertStringArrToInterface(conf.ContentTypes)),
+		"content_types": schema.NewSet(schema.HashString, tpgresource.ConvertStringArrToInterface(conf.ContentTypes)),
 	}
 
 	return []map[string]interface{}{data}
@@ -1423,7 +1425,7 @@ func flattenSecurityPolicyRequestHeader(conf *compute.SecurityPolicyRuleHttpHead
 
 func resourceSecurityPolicyStateImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*transport_tpg.Config)
-	if err := ParseImportId([]string{"projects/(?P<project>[^/]+)/global/securityPolicies/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<name>[^/]+)", "(?P<name>[^/]+)"}, d, config); err != nil {
+	if err := tpgresource.ParseImportId([]string{"projects/(?P<project>[^/]+)/global/securityPolicies/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<name>[^/]+)", "(?P<name>[^/]+)"}, d, config); err != nil {
 		return nil, err
 	}
 

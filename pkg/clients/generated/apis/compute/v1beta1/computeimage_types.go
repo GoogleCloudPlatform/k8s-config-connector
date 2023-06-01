@@ -128,6 +128,12 @@ type ComputeImageSpec struct {
 	/* The source snapshot used to create this image. */
 	// +optional
 	SourceSnapshotRef *v1alpha1.ResourceRef `json:"sourceSnapshotRef,omitempty"`
+
+	/* Immutable. Cloud Storage bucket storage location of the image
+	(regional or multi-regional).
+	Reference link: https://cloud.google.com/compute/docs/reference/rest/v1/images. */
+	// +optional
+	StorageLocations []string `json:"storageLocations,omitempty"`
 }
 
 type ComputeImageStatus struct {

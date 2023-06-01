@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -23,6 +26,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccFirestoreField_firestoreFieldBasicExample(t *testing.T) {
@@ -52,7 +57,7 @@ func TestAccFirestoreField_firestoreFieldBasicExample(t *testing.T) {
 }
 
 func testAccFirestoreField_firestoreFieldBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_firestore_field" "basic" {
   project = "%{project_id}"
   database = "(default)"
@@ -101,7 +106,7 @@ func TestAccFirestoreField_firestoreFieldTimestampExample(t *testing.T) {
 }
 
 func testAccFirestoreField_firestoreFieldTimestampExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_firestore_field" "timestamp" {
   project = "%{project_id}"
   collection = "chatrooms_%{random_suffix}"
@@ -141,7 +146,7 @@ func TestAccFirestoreField_firestoreFieldMatchOverrideExample(t *testing.T) {
 }
 
 func testAccFirestoreField_firestoreFieldMatchOverrideExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_firestore_field" "match_override" {
   project = "%{project_id}"
   collection = "chatrooms_%{random_suffix}"
@@ -178,12 +183,17 @@ func testAccCheckFirestoreFieldDestroyProducer(t *testing.T) func(s *terraform.S
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{FirestoreBasePath}}projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/fields/{{field}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{FirestoreBasePath}}projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/fields/{{field}}")
 			if err != nil {
 				return err
 			}
 
-			res, err := SendRequest(config, "GET", "", url, config.UserAgent, nil)
+			res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err != nil {
 				return err
 			}

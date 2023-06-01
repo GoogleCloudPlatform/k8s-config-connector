@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -98,6 +101,7 @@ func TestAccDataprocMetastoreServiceIamPolicyGenerated(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataprocMetastoreServiceIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_dataproc_metastore_service_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_dataproc_metastore_service_iam_policy.foo",
@@ -176,6 +180,15 @@ resource "google_dataproc_metastore_service_iam_policy" "foo" {
   location = google_dataproc_metastore_service.default.location
   service_id = google_dataproc_metastore_service.default.service_id
   policy_data = data.google_iam_policy.foo.policy_data
+}
+
+data "google_dataproc_metastore_service_iam_policy" "foo" {
+  project = google_dataproc_metastore_service.default.project
+  location = google_dataproc_metastore_service.default.location
+  service_id = google_dataproc_metastore_service.default.service_id
+  depends_on = [
+    google_dataproc_metastore_service_iam_policy.foo
+  ]
 }
 `, context)
 }

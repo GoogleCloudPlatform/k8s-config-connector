@@ -61,6 +61,10 @@ type JobAwsS3DataSource struct {
 	/* S3 Bucket name. */
 	BucketName string `json:"bucketName"`
 
+	/* S3 Bucket path in bucket to transfer. */
+	// +optional
+	Path *string `json:"path,omitempty"`
+
 	/* The Amazon Resource Name (ARN) of the role to support temporary credentials via 'AssumeRoleWithWebIdentity'. For more information about ARNs, see [IAM ARNs](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns). When a role ARN is provided, Transfer Service fetches temporary credentials for the session using a 'AssumeRoleWithWebIdentity' call for the provided role using the [GoogleServiceAccount][] for this project. */
 	// +optional
 	RoleArn *string `json:"roleArn,omitempty"`

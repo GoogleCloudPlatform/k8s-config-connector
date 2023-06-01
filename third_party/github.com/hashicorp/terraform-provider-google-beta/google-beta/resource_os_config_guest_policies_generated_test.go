@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccOSConfigGuestPolicies_osConfigGuestPoliciesBasicExample(t *testing.T
 }
 
 func testAccOSConfigGuestPolicies_osConfigGuestPoliciesBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_compute_image" "my_image" {
   provider = google-beta
   family  = "debian-11"
@@ -125,7 +128,7 @@ func TestAccOSConfigGuestPolicies_osConfigGuestPoliciesPackagesExample(t *testin
 }
 
 func testAccOSConfigGuestPolicies_osConfigGuestPoliciesPackagesExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_os_config_guest_policies" "guest_policies" {
   provider = google-beta
   guest_policy_id = "tf-test-guest-policy%{random_suffix}"
@@ -209,7 +212,7 @@ func TestAccOSConfigGuestPolicies_osConfigGuestPoliciesRecipesExample(t *testing
 }
 
 func testAccOSConfigGuestPolicies_osConfigGuestPoliciesRecipesExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_os_config_guest_policies" "guest_policies" {
   provider = google-beta
   guest_policy_id = "tf-test-guest-policy%{random_suffix}"
@@ -265,7 +268,13 @@ func testAccCheckOSConfigGuestPoliciesDestroyProducer(t *testing.T) func(s *terr
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("OSConfigGuestPolicies still exists at %s", url)
 			}

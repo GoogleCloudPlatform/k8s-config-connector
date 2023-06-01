@@ -198,6 +198,60 @@ func DCLFeatureSchema() *dcl.Schema {
 								GoType:      "FeatureSpec",
 								Description: "Optional. Hub-wide Feature configuration. If this Feature does not support any Hub-wide configuration, this field may be unused.",
 								Properties: map[string]*dcl.Property{
+									"fleetobservability": &dcl.Property{
+										Type:        "object",
+										GoName:      "Fleetobservability",
+										GoType:      "FeatureSpecFleetobservability",
+										Description: "Fleet Observability spec.",
+										Properties: map[string]*dcl.Property{
+											"loggingConfig": &dcl.Property{
+												Type:        "object",
+												GoName:      "LoggingConfig",
+												GoType:      "FeatureSpecFleetobservabilityLoggingConfig",
+												Description: "Fleet Observability Logging-specific spec.",
+												Properties: map[string]*dcl.Property{
+													"defaultConfig": &dcl.Property{
+														Type:        "object",
+														GoName:      "DefaultConfig",
+														GoType:      "FeatureSpecFleetobservabilityLoggingConfigDefaultConfig",
+														Description: "Specified if applying the default routing config to logs not specified in other configs.",
+														Properties: map[string]*dcl.Property{
+															"mode": &dcl.Property{
+																Type:        "string",
+																GoName:      "Mode",
+																GoType:      "FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum",
+																Description: "The logs routing mode Possible values: MODE_UNSPECIFIED, COPY, MOVE",
+																Enum: []string{
+																	"MODE_UNSPECIFIED",
+																	"COPY",
+																	"MOVE",
+																},
+															},
+														},
+													},
+													"fleetScopeLogsConfig": &dcl.Property{
+														Type:        "object",
+														GoName:      "FleetScopeLogsConfig",
+														GoType:      "FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig",
+														Description: "Specified if applying the routing config to all logs for all fleet scopes.",
+														Properties: map[string]*dcl.Property{
+															"mode": &dcl.Property{
+																Type:        "string",
+																GoName:      "Mode",
+																GoType:      "FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum",
+																Description: "The logs routing mode Possible values: MODE_UNSPECIFIED, COPY, MOVE",
+																Enum: []string{
+																	"MODE_UNSPECIFIED",
+																	"COPY",
+																	"MOVE",
+																},
+															},
+														},
+													},
+												},
+											},
+										},
+									},
 									"multiclusteringress": &dcl.Property{
 										Type:        "object",
 										GoName:      "Multiclusteringress",

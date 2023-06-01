@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_disk.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_disk.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_disk.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_disk.go
 index 42fbc12ab..6e6a93991 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_disk.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_disk.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_disk.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_disk.go
 @@ -407,10 +407,8 @@ If you specify this field along with 'image' or 'snapshot',
  the value must not be less than the size of the image
  or the size of the snapshot.

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccDatastreamConnectionProfile_datastreamConnectionProfileBasicExample(
 }
 
 func testAccDatastreamConnectionProfile_datastreamConnectionProfileBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_datastream_connection_profile" "default" {
 	display_name          = "Connection profile"
 	location              = "us-central1"
@@ -93,7 +96,7 @@ func TestAccDatastreamConnectionProfile_datastreamConnectionProfileBigqueryPriva
 }
 
 func testAccDatastreamConnectionProfile_datastreamConnectionProfileBigqueryPrivateConnectionExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_datastream_private_connection" "private_connection" {
 	display_name          = "Connection profile"
 	location              = "us-central1"
@@ -153,7 +156,7 @@ func TestAccDatastreamConnectionProfile_datastreamConnectionProfileFullExample(t
 }
 
 func testAccDatastreamConnectionProfile_datastreamConnectionProfileFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_datastream_connection_profile" "default" {
 	display_name          = "Connection profile"
 	location              = "us-central1"
@@ -200,7 +203,13 @@ func testAccCheckDatastreamConnectionProfileDestroyProducer(t *testing.T) func(s
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("DatastreamConnectionProfile still exists at %s", url)
 			}

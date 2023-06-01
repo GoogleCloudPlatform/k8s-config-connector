@@ -81,6 +81,11 @@ func (in *JobAwsS3DataSource) DeepCopyInto(out *JobAwsS3DataSource) {
 		*out = new(JobAwsAccessKey)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Path != nil {
+		in, out := &in.Path, &out.Path
+		*out = new(string)
+		**out = **in
+	}
 	if in.RoleArn != nil {
 		in, out := &in.RoleArn, &out.RoleArn
 		*out = new(string)

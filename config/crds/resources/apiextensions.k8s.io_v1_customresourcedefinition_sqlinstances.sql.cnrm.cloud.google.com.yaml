@@ -279,6 +279,13 @@ spec:
                     required:
                     - domain
                     type: object
+                  advancedMachineFeatures:
+                    properties:
+                      threadsPerCore:
+                        description: The number of threads per physical core. Can
+                          be 1 or 2.
+                        type: integer
+                    type: object
                   authorizedGaeApplications:
                     description: |-
                       DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.

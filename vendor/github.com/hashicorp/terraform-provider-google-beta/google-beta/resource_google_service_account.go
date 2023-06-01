@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -115,10 +117,14 @@ func resourceGoogleServiceAccountCreate(d *schema.ResourceData, meta interface{}
 
 	d.SetId(sa.Name)
 
-	err = transport_tpg.RetryTimeDuration(func() (operr error) {
-		_, saerr := config.NewIamClient(userAgent).Projects.ServiceAccounts.Get(d.Id()).Do()
-		return saerr
-	}, d.Timeout(schema.TimeoutCreate), transport_tpg.IsNotFoundRetryableError("service account creation"))
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (operr error) {
+			_, saerr := config.NewIamClient(userAgent).Projects.ServiceAccounts.Get(d.Id()).Do()
+			return saerr
+		},
+		Timeout:              d.Timeout(schema.TimeoutCreate),
+		ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.IsNotFoundRetryableError("service account creation")},
+	})
 
 	if err != nil {
 		return fmt.Errorf("Error reading service account after creation: %s", err)
@@ -126,7 +132,7 @@ func resourceGoogleServiceAccountCreate(d *schema.ResourceData, meta interface{}
 
 	// We poll until the resource is found due to eventual consistency issue
 	// on part of the api https://cloud.google.com/iam/docs/overview#consistency
-	err = PollingWaitTime(resourceServiceAccountPollRead(d, meta), PollCheckForExistence, "Creating Service Account", d.Timeout(schema.TimeoutCreate), 1)
+	err = transport_tpg.PollingWaitTime(resourceServiceAccountPollRead(d, meta), transport_tpg.PollCheckForExistence, "Creating Service Account", d.Timeout(schema.TimeoutCreate), 1)
 
 	if err != nil {
 		return err
@@ -275,7 +281,7 @@ func resourceGoogleServiceAccountUpdate(d *schema.ResourceData, meta interface{}
 
 func resourceGoogleServiceAccountImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*transport_tpg.Config)
-	if err := ParseImportId([]string{
+	if err := tpgresource.ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/serviceAccounts/(?P<unique_id>[\\d]+)",
 		"projects/(?P<project>[^/]+)/serviceAccounts/(?P<email>[^/]+)",
 		"(?P<project>[^/]+)/(?P<email>[^/]+)",

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -54,7 +57,7 @@ func TestAccSpannerInstance_spannerInstanceBasicExample(t *testing.T) {
 }
 
 func testAccSpannerInstance_spannerInstanceBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_spanner_instance" "example" {
   config       = "regional-us-central1"
   display_name = "Test Spanner Instance"
@@ -93,7 +96,7 @@ func TestAccSpannerInstance_spannerInstanceProcessingUnitsExample(t *testing.T) 
 }
 
 func testAccSpannerInstance_spannerInstanceProcessingUnitsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_spanner_instance" "example" {
   config       = "regional-us-central1"
   display_name = "Test Spanner Instance"
@@ -132,7 +135,7 @@ func TestAccSpannerInstance_spannerInstanceMultiRegionalExample(t *testing.T) {
 }
 
 func testAccSpannerInstance_spannerInstanceMultiRegionalExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_spanner_instance" "example" {
   config       = "nam-eur-asia1"
   display_name = "Multi Regional Instance"
@@ -167,7 +170,13 @@ func testAccCheckSpannerInstanceDestroyProducer(t *testing.T) func(s *terraform.
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("SpannerInstance still exists at %s", url)
 			}

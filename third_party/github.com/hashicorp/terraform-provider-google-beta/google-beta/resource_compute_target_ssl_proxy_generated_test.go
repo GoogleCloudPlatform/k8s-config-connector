@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeTargetSslProxy_targetSslProxyBasicExample(t *testing.T) {
 }
 
 func testAccComputeTargetSslProxy_targetSslProxyBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_target_ssl_proxy" "default" {
   name             = "tf-test-test-proxy%{random_suffix}"
   backend_service  = google_compute_backend_service.default.id
@@ -106,7 +109,13 @@ func testAccCheckComputeTargetSslProxyDestroyProducer(t *testing.T) func(s *terr
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeTargetSslProxy still exists at %s", url)
 			}

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,11 +56,11 @@ func TestAccCertificateManagerDnsAuthorization_certificateManagerDnsAuthorizatio
 }
 
 func testAccCertificateManagerDnsAuthorization_certificateManagerDnsAuthorizationBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_certificate_manager_dns_authorization" "default" {
   name        = "tf-test-dns-auth%{random_suffix}"
   description = "The default dnss"
-  domain      = "%{random_suffix}.hashicorptest.com"
+  domain      = "subdomain%{random_suffix}.hashicorptest.com"
 }
 
 output "record_name_to_insert" {
@@ -97,7 +100,13 @@ func testAccCheckCertificateManagerDnsAuthorizationDestroyProducer(t *testing.T)
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("CertificateManagerDnsAuthorization still exists at %s", url)
 			}

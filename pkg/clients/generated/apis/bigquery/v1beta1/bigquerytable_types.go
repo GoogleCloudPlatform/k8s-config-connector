@@ -116,7 +116,7 @@ type TableExternalDataConfiguration struct {
 	// +optional
 	Schema *string `json:"schema,omitempty"`
 
-	/* The data format. Supported values are: "CSV", "GOOGLE_SHEETS", "NEWLINE_DELIMITED_JSON", "AVRO", "PARQUET", "ORC" and "DATASTORE_BACKUP". To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly". */
+	/* Please see sourceFormat under ExternalDataConfiguration in Bigquery's public API documentation (https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration) for supported formats. To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly". */
 	SourceFormat string `json:"sourceFormat"`
 
 	/* A list of the fully-qualified URIs that point to your data in Google Cloud. */

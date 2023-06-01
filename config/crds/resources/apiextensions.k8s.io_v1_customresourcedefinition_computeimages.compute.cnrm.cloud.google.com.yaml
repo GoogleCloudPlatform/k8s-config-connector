@@ -284,6 +284,14 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+              storageLocations:
+                description: |-
+                  Immutable. Cloud Storage bucket storage location of the image
+                  (regional or multi-regional).
+                  Reference link: https://cloud.google.com/compute/docs/reference/rest/v1/images.
+                items:
+                  type: string
+                type: array
             type: object
           status:
             properties:

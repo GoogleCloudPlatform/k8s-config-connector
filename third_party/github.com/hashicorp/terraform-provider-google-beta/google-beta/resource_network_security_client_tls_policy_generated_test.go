@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccNetworkSecurityClientTlsPolicy_networkSecurityClientTlsPolicyBasicEx
 }
 
 func testAccNetworkSecurityClientTlsPolicy_networkSecurityClientTlsPolicyBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_network_security_client_tls_policy" "default" {
   provider               = google-beta
   name                   = "tf-test-my-client-tls-policy%{random_suffix}"
@@ -92,7 +95,7 @@ func TestAccNetworkSecurityClientTlsPolicy_networkSecurityClientTlsPolicyAdvance
 }
 
 func testAccNetworkSecurityClientTlsPolicy_networkSecurityClientTlsPolicyAdvancedExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_network_security_client_tls_policy" "default" {
   provider               = google-beta
   name                   = "tf-test-my-client-tls-policy%{random_suffix}"
@@ -142,7 +145,13 @@ func testAccCheckNetworkSecurityClientTlsPolicyDestroyProducer(t *testing.T) fun
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("NetworkSecurityClientTlsPolicy still exists at %s", url)
 			}

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -87,7 +89,13 @@ func dataSourceGoogleIamTestablePermissionsRead(d *schema.ResourceData, meta int
 	for {
 		url := "https://iam.googleapis.com/v1/permissions:queryTestablePermissions"
 		body["fullResourceName"] = d.Get("full_resource_name").(string)
-		res, err := transport_tpg.SendRequest(config, "POST", "", url, userAgent, body)
+		res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+			Config:    config,
+			Method:    "POST",
+			RawURL:    url,
+			UserAgent: userAgent,
+			Body:      body,
+		})
 		if err != nil {
 			return fmt.Errorf("Error retrieving permissions: %s", err)
 		}
@@ -127,7 +135,7 @@ func flattenTestablePermissionsList(v interface{}, custom_support_level string, 
 			} else {
 				csl = p["customRolesSupportLevel"] == custom_support_level
 			}
-			if csl && p["stage"] != nil && stringInSlice(stages, p["stage"].(string)) {
+			if csl && p["stage"] != nil && tpgresource.StringInSlice(stages, p["stage"].(string)) {
 				permissions = append(permissions, map[string]interface{}{
 					"name":                 p["name"],
 					"title":                p["title"],

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -104,6 +107,7 @@ func TestAccCloudIotDeviceRegistryIamPolicyGenerated(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudIotDeviceRegistryIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_cloudiot_registry_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_cloudiot_registry_iam_policy.foo",
@@ -158,6 +162,15 @@ resource "google_cloudiot_registry_iam_policy" "foo" {
   region = google_cloudiot_registry.test-registry.region
   name = google_cloudiot_registry.test-registry.name
   policy_data = data.google_iam_policy.foo.policy_data
+}
+
+data "google_cloudiot_registry_iam_policy" "foo" {
+  project = google_cloudiot_registry.test-registry.project
+  region = google_cloudiot_registry.test-registry.region
+  name = google_cloudiot_registry.test-registry.name
+  depends_on = [
+    google_cloudiot_registry_iam_policy.foo
+  ]
 }
 `, context)
 }

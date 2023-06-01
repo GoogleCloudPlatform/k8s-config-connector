@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryBasicExample(t 
 }
 
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
@@ -89,7 +92,7 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryDockerExample(t
 }
 
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryDockerExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
@@ -130,7 +133,7 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryCmekExample(t *
 }
 
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryCmekExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
@@ -178,7 +181,7 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryVirtualExample(
 }
 
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryVirtualExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo-upstream" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository-upstream%{random_suffix}"
@@ -230,7 +233,7 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryRemoteExample(t
 }
 
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryRemoteExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
@@ -270,7 +273,13 @@ func testAccCheckArtifactRegistryRepositoryDestroyProducer(t *testing.T) func(s 
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ArtifactRegistryRepository still exists at %s", url)
 			}

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeInterconnectAttachment_interconnectAttachmentBasicExample(t *
 }
 
 func testAccComputeInterconnectAttachment_interconnectAttachmentBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_interconnect_attachment" "on_prem" {
   name                     = "tf-test-on-prem-attachment%{random_suffix}"
   edge_availability_domain = "AVAILABILITY_DOMAIN_1"
@@ -103,7 +106,7 @@ func TestAccComputeInterconnectAttachment_computeInterconnectAttachmentIpsecEncr
 }
 
 func testAccComputeInterconnectAttachment_computeInterconnectAttachmentIpsecEncryptionExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_interconnect_attachment" "ipsec-encrypted-interconnect-attachment" {
   name                     = "tf-test-test-interconnect-attachment%{random_suffix}"
   edge_availability_domain = "AVAILABILITY_DOMAIN_1"
@@ -163,7 +166,13 @@ func testAccCheckComputeInterconnectAttachmentDestroyProducer(t *testing.T) func
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeInterconnectAttachment still exists at %s", url)
 			}

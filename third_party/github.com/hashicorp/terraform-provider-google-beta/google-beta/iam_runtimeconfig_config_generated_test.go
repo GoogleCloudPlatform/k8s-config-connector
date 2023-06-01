@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -98,6 +101,7 @@ func TestAccRuntimeConfigConfigIamPolicyGenerated(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccRuntimeConfigConfigIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_runtimeconfig_config_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_runtimeconfig_config_iam_policy.foo",
@@ -157,6 +161,15 @@ resource "google_runtimeconfig_config_iam_policy" "foo" {
   project = google_runtimeconfig_config.config.project
   config = google_runtimeconfig_config.config.name
   policy_data = data.google_iam_policy.foo.policy_data
+}
+
+data "google_runtimeconfig_config_iam_policy" "foo" {
+  provider = google-beta
+  project = google_runtimeconfig_config.config.project
+  config = google_runtimeconfig_config.config.name
+  depends_on = [
+    google_runtimeconfig_config_iam_policy.foo
+  ]
 }
 `, context)
 }

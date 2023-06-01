@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -1470,7 +1472,7 @@ func expandGkeNodePoolTarget(d *schema.ResourceData, v interface{}, clusterAddre
 		data := v1.(map[string]interface{})
 		nodePool := dataproc.GkeNodePoolTarget{
 			NodePool: clusterAddress + "/nodePools/" + data["node_pool"].(string),
-			Roles:    convertStringSet(data["roles"].(*schema.Set)),
+			Roles:    tpgresource.ConvertStringSet(data["roles"].(*schema.Set)),
 		}
 
 		if v, ok := d.GetOk(fmt.Sprintf("virtual_cluster_config.0.kubernetes_cluster_config.0.gke_cluster_config.0.node_pool_target.%d.node_pool_config", i)); ok {
@@ -1491,7 +1493,7 @@ func expandGkeNodePoolConfig(cfg map[string]interface{}) *dataproc.GkeNodePoolCo
 	}
 
 	if v, ok := cfg["locations"]; ok {
-		conf.Locations = convertStringSet(v.(*schema.Set))
+		conf.Locations = tpgresource.ConvertStringSet(v.(*schema.Set))
 	}
 
 	if autoscalingcfg, ok := cfg["autoscaling"]; ok {
@@ -1648,7 +1650,7 @@ func expandGceClusterConfig(d *schema.ResourceData, config *transport_tpg.Config
 		conf.SubnetworkUri = snf.RelativeLink()
 	}
 	if v, ok := cfg["tags"]; ok {
-		conf.Tags = convertStringSet(v.(*schema.Set))
+		conf.Tags = tpgresource.ConvertStringSet(v.(*schema.Set))
 	}
 	if v, ok := cfg["service_account"]; ok {
 		conf.ServiceAccount = v.(string)
@@ -1665,7 +1667,7 @@ func expandGceClusterConfig(d *schema.ResourceData, config *transport_tpg.Config
 		conf.InternalIpOnly = v.(bool)
 	}
 	if v, ok := cfg["metadata"]; ok {
-		conf.Metadata = convertStringMap(v.(map[string]interface{}))
+		conf.Metadata = tpgresource.ConvertStringMap(v.(map[string]interface{}))
 	}
 	if v, ok := d.GetOk("cluster_config.0.gce_cluster_config.0.shielded_instance_config"); ok {
 		cfgSic := v.([]interface{})[0].(map[string]interface{})
@@ -1690,7 +1692,7 @@ func expandGceClusterConfig(d *schema.ResourceData, config *transport_tpg.Config
 			conf.ReservationAffinity.Key = v.(string)
 		}
 		if v, ok := cfgRa["values"]; ok {
-			conf.ReservationAffinity.Values = convertStringSet(v.(*schema.Set))
+			conf.ReservationAffinity.Values = tpgresource.ConvertStringSet(v.(*schema.Set))
 		}
 	}
 	if v, ok := d.GetOk("cluster_config.0.gce_cluster_config.0.node_group_affinity"); ok {
@@ -1829,7 +1831,7 @@ func expandDataprocMetricConfig(cfg map[string]interface{}) *dataproc.DataprocMe
 		data := raw.(map[string]interface{})
 		metric := dataproc.Metric{
 			MetricSource:    data["metric_source"].(string),
-			MetricOverrides: convertStringSet(data["metric_overrides"].(*schema.Set)),
+			MetricOverrides: tpgresource.ConvertStringSet(data["metric_overrides"].(*schema.Set)),
 		}
 		metricsSet = append(metricsSet, &metric)
 	}
@@ -2087,32 +2089,33 @@ func resourceDataprocClusterRead(d *schema.ResourceData, meta interface{}) error
 	}
 
 	var cfg []map[string]interface{}
-
-	if cluster.Config != nil {
-		cfg, err = flattenClusterConfig(d, cluster.Config)
-
-		if err != nil {
-			return err
-		}
-
-		err = d.Set("cluster_config", cfg)
-	} else {
-		cfg, err = flattenVirtualClusterConfig(d, cluster.VirtualClusterConfig)
-
-		if err != nil {
-			return err
-		}
-
-		err = d.Set("virtual_cluster_config", cfg)
-	}
+	cfg, err = flattenClusterConfig(d, cluster.Config)
 
 	if err != nil {
 		return err
 	}
+
+	err = d.Set("cluster_config", cfg)
+	virtualCfg, err := flattenVirtualClusterConfig(d, cluster.VirtualClusterConfig)
+
+	if err != nil {
+		return err
+	}
+
+	err = d.Set("virtual_cluster_config", virtualCfg)
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func flattenVirtualClusterConfig(d *schema.ResourceData, cfg *dataproc.VirtualClusterConfig) ([]map[string]interface{}, error) {
+	if cfg == nil {
+		return []map[string]interface{}{}, nil
+	}
+
 	data := map[string]interface{}{
 		"staging_bucket":            d.Get("virtual_cluster_config.0.staging_bucket"),
 		"auxiliary_services_config": flattenAuxiliaryServicesConfig(d, cfg.AuxiliaryServicesConfig),
@@ -2229,6 +2232,9 @@ func flattenKubernetesSoftwareConfig(d *schema.ResourceData, cfg *dataproc.Kuber
 }
 
 func flattenClusterConfig(d *schema.ResourceData, cfg *dataproc.ClusterConfig) ([]map[string]interface{}, error) {
+	if cfg == nil {
+		return []map[string]interface{}{}, nil
+	}
 
 	data := map[string]interface{}{
 		"staging_bucket": d.Get("cluster_config.0.staging_bucket").(string),
@@ -2421,9 +2427,12 @@ func flattenInitializationActions(nia []*dataproc.NodeInitializationAction) ([]m
 }
 
 func flattenGceClusterConfig(d *schema.ResourceData, gcc *dataproc.GceClusterConfig) []map[string]interface{} {
+	if gcc == nil {
+		return []map[string]interface{}{}
+	}
 
 	gceConfig := map[string]interface{}{
-		"tags":             schema.NewSet(schema.HashString, convertStringArrToInterface(gcc.Tags)),
+		"tags":             schema.NewSet(schema.HashString, tpgresource.ConvertStringArrToInterface(gcc.Tags)),
 		"service_account":  gcc.ServiceAccount,
 		"zone":             tpgresource.GetResourceNameFromSelfLink(gcc.ZoneUri),
 		"internal_ip_only": gcc.InternalIpOnly,
@@ -2437,7 +2446,7 @@ func flattenGceClusterConfig(d *schema.ResourceData, gcc *dataproc.GceClusterCon
 		gceConfig["subnetwork"] = gcc.SubnetworkUri
 	}
 	if len(gcc.ServiceAccountScopes) > 0 {
-		gceConfig["service_account_scopes"] = schema.NewSet(tpgresource.StringScopeHashcode, convertStringArrToInterface(gcc.ServiceAccountScopes))
+		gceConfig["service_account_scopes"] = schema.NewSet(tpgresource.StringScopeHashcode, tpgresource.ConvertStringArrToInterface(gcc.ServiceAccountScopes))
 	}
 	if gcc.ShieldedInstanceConfig != nil {
 		gceConfig["shielded_instance_config"] = []map[string]interface{}{

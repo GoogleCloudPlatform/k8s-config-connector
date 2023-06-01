@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -54,7 +57,7 @@ func TestAccFirebaseDatabaseInstance_firebaseDatabaseInstanceBasicExample(t *tes
 }
 
 func testAccFirebaseDatabaseInstance_firebaseDatabaseInstanceBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_firebase_database_instance" "basic" {
   provider = google-beta
   project  = "%{project_id}"
@@ -91,7 +94,7 @@ func TestAccFirebaseDatabaseInstance_firebaseDatabaseInstanceFullExample(t *test
 }
 
 func testAccFirebaseDatabaseInstance_firebaseDatabaseInstanceFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_firebase_database_instance" "full" {
   provider = google-beta
   project  = "%{project_id}"
@@ -130,7 +133,7 @@ func TestAccFirebaseDatabaseInstance_firebaseDatabaseInstanceDefaultDatabaseExam
 }
 
 func testAccFirebaseDatabaseInstance_firebaseDatabaseInstanceDefaultDatabaseExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_project" "default" {
   provider = google-beta
   project_id = "tf-test-rtdb-project%{random_suffix}"
@@ -186,7 +189,13 @@ func testAccCheckFirebaseDatabaseInstanceDestroyProducer(t *testing.T) func(s *t
 				billingProject = config.BillingProject
 			}
 
-			res, err := transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err != nil {
 				return err // RTDB only supports soft-delete.
 			}

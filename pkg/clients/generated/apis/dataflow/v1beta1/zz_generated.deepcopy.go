@@ -139,6 +139,11 @@ func (in *DataflowFlexTemplateJobStatus) DeepCopyInto(out *DataflowFlexTemplateJ
 		*out = new(string)
 		**out = **in
 	}
+	if in.Type != nil {
+		in, out := &in.Type, &out.Type
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

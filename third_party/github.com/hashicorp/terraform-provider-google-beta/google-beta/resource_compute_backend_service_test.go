@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -649,6 +651,14 @@ func TestAccComputeBackendService_withLogConfig(t *testing.T) {
 			},
 			{
 				Config: testAccComputeBackendService_withLogConfig(serviceName, checkName, 0.4, false),
+			},
+			{
+				ResourceName:      "google_compute_backend_service.foobar",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeBackendService_withLogConfig2(serviceName, checkName, true),
 			},
 			{
 				ResourceName:      "google_compute_backend_service.foobar",

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -48,7 +50,7 @@ func ResourceContainerNodePool() *schema.Resource {
 
 		UseJSONNumber: true,
 
-		Schema: mergeSchemas(
+		Schema: tpgresource.MergeSchemas(
 			schemaNodePool,
 			map[string]*schema.Schema{
 				"project": {
@@ -782,7 +784,7 @@ func resourceContainerNodePoolStateImporter(d *schema.ResourceData, meta interfa
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<cluster>[^/]+)/(?P<name>[^/]+)",
 		"(?P<location>[^/]+)/(?P<cluster>[^/]+)/(?P<name>[^/]+)",
 	}
-	if err := ParseImportId(idRegexes, d, config); err != nil {
+	if err := tpgresource.ParseImportId(idRegexes, d, config); err != nil {
 		return nil, err
 	}
 
@@ -822,7 +824,7 @@ func expandNodePool(d *schema.ResourceData, prefix string) (*container.NodePool,
 
 	var locations []string
 	if v, ok := d.GetOk("node_locations"); ok && v.(*schema.Set).Len() > 0 {
-		locations = convertStringSet(v.(*schema.Set))
+		locations = tpgresource.ConvertStringSet(v.(*schema.Set))
 	}
 
 	np := &container.NodePool{
@@ -1014,7 +1016,7 @@ func flattenNodePool(d *schema.ResourceData, config *transport_tpg.Config, np *c
 		"name":                        np.Name,
 		"name_prefix":                 d.Get(prefix + "name_prefix"),
 		"initial_node_count":          np.InitialNodeCount,
-		"node_locations":              schema.NewSet(schema.HashString, convertStringArrToInterface(np.Locations)),
+		"node_locations":              schema.NewSet(schema.HashString, tpgresource.ConvertStringArrToInterface(np.Locations)),
 		"node_count":                  nodeCount,
 		"node_config":                 flattenNodeConfig(np.Config),
 		"instance_group_urls":         igmUrls,
@@ -1288,7 +1290,7 @@ func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *Node
 			if v, ok := d.GetOk(prefix + "node_config.0.resource_labels"); ok {
 				resourceLabels := v.(map[string]interface{})
 				req.ResourceLabels = &container.ResourceLabels{
-					Labels: convertStringMap(resourceLabels),
+					Labels: tpgresource.ConvertStringMap(resourceLabels),
 				}
 			}
 
@@ -1326,7 +1328,7 @@ func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *Node
 			if v, ok := d.GetOk(prefix + "node_config.0.labels"); ok {
 				labels := v.(map[string]interface{})
 				req.Labels = &container.NodeLabels{
-					Labels: convertStringMap(labels),
+					Labels: tpgresource.ConvertStringMap(labels),
 				}
 			}
 
@@ -1582,7 +1584,7 @@ func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *Node
 
 	if d.HasChange(prefix + "node_locations") {
 		req := &container.UpdateNodePoolRequest{
-			Locations: convertStringSet(d.Get(prefix + "node_locations").(*schema.Set)),
+			Locations: tpgresource.ConvertStringSet(d.Get(prefix + "node_locations").(*schema.Set)),
 		}
 		updateF := func() error {
 			clusterNodePoolsUpdateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.NodePools.Update(nodePoolInfo.fullyQualifiedName(name), req)
@@ -1648,13 +1650,14 @@ func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *Node
 
 				if v, ok := blueGreenSettingsConfig["standard_rollout_policy"]; ok && len(v.([]interface{})) > 0 {
 					standardRolloutPolicy := &container.StandardRolloutPolicy{}
-					standardRolloutPolicyConfig := v.([]interface{})[0].(map[string]interface{})
-					standardRolloutPolicy.BatchSoakDuration = standardRolloutPolicyConfig["batch_soak_duration"].(string)
-					if v, ok := standardRolloutPolicyConfig["batch_node_count"]; ok {
-						standardRolloutPolicy.BatchNodeCount = int64(v.(int))
-					}
-					if v, ok := standardRolloutPolicyConfig["batch_percentage"]; ok {
-						standardRolloutPolicy.BatchPercentage = v.(float64)
+					if standardRolloutPolicyConfig, ok := v.([]interface{})[0].(map[string]interface{}); ok {
+						standardRolloutPolicy.BatchSoakDuration = standardRolloutPolicyConfig["batch_soak_duration"].(string)
+						if v, ok := standardRolloutPolicyConfig["batch_node_count"]; ok {
+							standardRolloutPolicy.BatchNodeCount = int64(v.(int))
+						}
+						if v, ok := standardRolloutPolicyConfig["batch_percentage"]; ok {
+							standardRolloutPolicy.BatchPercentage = v.(float64)
+						}
 					}
 					blueGreenSettings.StandardRolloutPolicy = standardRolloutPolicy
 				}

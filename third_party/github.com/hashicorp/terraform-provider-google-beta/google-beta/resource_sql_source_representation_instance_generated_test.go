@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccSQLSourceRepresentationInstance_sqlSourceRepresentationInstanceBasic
 }
 
 func testAccSQLSourceRepresentationInstance_sqlSourceRepresentationInstanceBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_sql_source_representation_instance" "instance" {
   name               = "tf-test-my-instance%{random_suffix}"
   region             = "us-central1"
@@ -93,7 +96,7 @@ func TestAccSQLSourceRepresentationInstance_sqlSourceRepresentationInstancePostg
 }
 
 func testAccSQLSourceRepresentationInstance_sqlSourceRepresentationInstancePostgresExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_sql_source_representation_instance" "instance" {
   name               = "tf-test-my-instance%{random_suffix}"
   region             = "us-central1"
@@ -130,7 +133,13 @@ func testAccCheckSQLSourceRepresentationInstanceDestroyProducer(t *testing.T) fu
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("SQLSourceRepresentationInstance still exists at %s", url)
 			}

@@ -46,7 +46,7 @@ type TopicMessageStoragePolicy struct {
 }
 
 type TopicSchemaSettings struct {
-	/* Immutable. The encoding of messages validated against schema. Default value: "ENCODING_UNSPECIFIED" Possible values: ["ENCODING_UNSPECIFIED", "JSON", "BINARY"]. */
+	/* The encoding of messages validated against schema. Default value: "ENCODING_UNSPECIFIED" Possible values: ["ENCODING_UNSPECIFIED", "JSON", "BINARY"]. */
 	// +optional
 	Encoding *string `json:"encoding,omitempty"`
 

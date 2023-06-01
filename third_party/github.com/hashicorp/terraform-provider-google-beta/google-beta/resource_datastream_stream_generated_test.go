@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -59,7 +62,7 @@ func TestAccDatastreamStream_datastreamStreamBasicExample(t *testing.T) {
 }
 
 func testAccDatastreamStream_datastreamStreamBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_project" "project" {
 }
 
@@ -172,7 +175,9 @@ resource "google_datastream_stream" "default" {
     display_name = "my stream"
     source_config {
         source_connection_profile = google_datastream_connection_profile.source_connection_profile.id
-        mysql_source_config {}
+        mysql_source_config {
+          max_concurrent_backfill_tasks = 15
+        }
     }
     destination_config {
         destination_connection_profile = google_datastream_connection_profile.destination_connection_profile.id
@@ -220,7 +225,7 @@ func TestAccDatastreamStream_datastreamStreamFullExample(t *testing.T) {
 }
 
 func testAccDatastreamStream_datastreamStreamFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_project" "project" {
 }
 
@@ -450,7 +455,7 @@ func TestAccDatastreamStream_datastreamStreamPostgresqlBigqueryDatasetIdExample(
 }
 
 func testAccDatastreamStream_datastreamStreamPostgresqlBigqueryDatasetIdExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 
 resource "google_bigquery_dataset" "postgres" {
   dataset_id    = "postgres%{random_suffix}"
@@ -593,7 +598,7 @@ func TestAccDatastreamStream_datastreamStreamBigqueryExample(t *testing.T) {
 }
 
 func testAccDatastreamStream_datastreamStreamBigqueryExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_project" "project" {
 }
 
@@ -734,7 +739,13 @@ func testAccCheckDatastreamStreamDestroyProducer(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("DatastreamStream still exists at %s", url)
 			}

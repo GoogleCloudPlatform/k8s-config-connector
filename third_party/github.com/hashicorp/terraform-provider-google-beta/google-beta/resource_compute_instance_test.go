@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -1291,20 +1293,8 @@ func TestAccComputeInstance_private_image_family(t *testing.T) {
 		},
 	})
 }
+
 func TestAccComputeInstance_networkPerformanceConfig(t *testing.T) {
-	// This test /should/ be passing but the reason it's failing
-	// is very non-obvious and requires further investigation
-	//
-	// It's been failing in teamcity for > 90d so there is no
-	// starting point or obvious reason to potentially pivot off
-	//
-	// For whoever decides to investigate this. It looks like
-	// at the time the failure is due to a failure to start
-	// the compute instance after a config update. This results
-	// in it /unable to find the resource/ as the start operation
-	// never completes successful. I suspect a bad configuration
-	// but am unsure.
-	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	var instance compute.Instance
@@ -1328,6 +1318,7 @@ func TestAccComputeInstance_networkPerformanceConfig(t *testing.T) {
 		},
 	})
 }
+
 func TestAccComputeInstance_forceChangeMachineTypeManually(t *testing.T) {
 	t.Parallel()
 
@@ -2376,134 +2367,6 @@ func TestAccComputeInstance_spotVM_maxRunDuration_update(t *testing.T) {
 			computeInstanceImportStep("us-central1-a", instanceName, []string{}),
 		},
 	})
-}
-
-func TestComputeInstance_networkIPCustomizedDiff(t *testing.T) {
-	t.Parallel()
-
-	d := &tpgresource.ResourceDiffMock{
-		Before: map[string]interface{}{
-			"network_interface.#": 0,
-		},
-		After: map[string]interface{}{
-			"network_interface.#": 1,
-		},
-	}
-
-	err := forceNewIfNetworkIPNotUpdatableFunc(d)
-	if err != nil {
-		t.Error(err)
-	}
-
-	if d.IsForceNew {
-		t.Errorf("Expected not force new if network_interface array size changes")
-	}
-
-	type NetworkInterface struct {
-		Network           string
-		Subnetwork        string
-		SubnetworkProject string
-		NetworkIP         string
-	}
-	NIBefore := NetworkInterface{
-		Network:           "a",
-		Subnetwork:        "a",
-		SubnetworkProject: "a",
-		NetworkIP:         "a",
-	}
-
-	cases := map[string]struct {
-		ExpectedForceNew bool
-		Before           NetworkInterface
-		After            NetworkInterface
-	}{
-		"NetworkIP only change": {
-			ExpectedForceNew: true,
-			Before:           NIBefore,
-			After: NetworkInterface{
-				Network:           "a",
-				Subnetwork:        "a",
-				SubnetworkProject: "a",
-				NetworkIP:         "b",
-			},
-		},
-		"NetworkIP and Network change": {
-			ExpectedForceNew: false,
-			Before:           NIBefore,
-			After: NetworkInterface{
-				Network:           "b",
-				Subnetwork:        "a",
-				SubnetworkProject: "a",
-				NetworkIP:         "b",
-			},
-		},
-		"NetworkIP and Subnetwork change": {
-			ExpectedForceNew: false,
-			Before:           NIBefore,
-			After: NetworkInterface{
-				Network:           "a",
-				Subnetwork:        "b",
-				SubnetworkProject: "a",
-				NetworkIP:         "b",
-			},
-		},
-		"NetworkIP and SubnetworkProject change": {
-			ExpectedForceNew: false,
-			Before:           NIBefore,
-			After: NetworkInterface{
-				Network:           "a",
-				Subnetwork:        "a",
-				SubnetworkProject: "b",
-				NetworkIP:         "b",
-			},
-		},
-		"All change": {
-			ExpectedForceNew: false,
-			Before:           NIBefore,
-			After: NetworkInterface{
-				Network:           "b",
-				Subnetwork:        "b",
-				SubnetworkProject: "b",
-				NetworkIP:         "b",
-			},
-		},
-		"No change": {
-			ExpectedForceNew: false,
-			Before:           NIBefore,
-			After: NetworkInterface{
-				Network:           "a",
-				Subnetwork:        "a",
-				SubnetworkProject: "a",
-				NetworkIP:         "a",
-			},
-		},
-	}
-
-	for tn, tc := range cases {
-		d := &tpgresource.ResourceDiffMock{
-			Before: map[string]interface{}{
-				"network_interface.#":                    1,
-				"network_interface.0.network":            tc.Before.Network,
-				"network_interface.0.subnetwork":         tc.Before.Subnetwork,
-				"network_interface.0.subnetwork_project": tc.Before.SubnetworkProject,
-				"network_interface.0.network_ip":         tc.Before.NetworkIP,
-			},
-			After: map[string]interface{}{
-				"network_interface.#":                    1,
-				"network_interface.0.network":            tc.After.Network,
-				"network_interface.0.subnetwork":         tc.After.Subnetwork,
-				"network_interface.0.subnetwork_project": tc.After.SubnetworkProject,
-				"network_interface.0.network_ip":         tc.After.NetworkIP,
-			},
-		}
-		err := forceNewIfNetworkIPNotUpdatableFunc(d)
-		if err != nil {
-			t.Error(err)
-		}
-		if tc.ExpectedForceNew != d.IsForceNew {
-			t.Errorf("%v: expected d.IsForceNew to be %v, but was %v", tn, tc.ExpectedForceNew, d.IsForceNew)
-		}
-	}
 }
 
 func TestAccComputeInstance_metadataStartupScript_update(t *testing.T) {

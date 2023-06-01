@@ -152,6 +152,52 @@ components:
           description: Optional. Hub-wide Feature configuration. If this Feature does
             not support any Hub-wide configuration, this field may be unused.
           properties:
+            fleetobservability:
+              type: object
+              x-dcl-go-name: Fleetobservability
+              x-dcl-go-type: FeatureSpecFleetobservability
+              description: Fleet Observability spec.
+              properties:
+                loggingConfig:
+                  type: object
+                  x-dcl-go-name: LoggingConfig
+                  x-dcl-go-type: FeatureSpecFleetobservabilityLoggingConfig
+                  description: Fleet Observability Logging-specific spec.
+                  properties:
+                    defaultConfig:
+                      type: object
+                      x-dcl-go-name: DefaultConfig
+                      x-dcl-go-type: FeatureSpecFleetobservabilityLoggingConfigDefaultConfig
+                      description: Specified if applying the default routing config
+                        to logs not specified in other configs.
+                      properties:
+                        mode:
+                          type: string
+                          x-dcl-go-name: Mode
+                          x-dcl-go-type: FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum
+                          description: 'The logs routing mode Possible values: MODE_UNSPECIFIED,
+                            COPY, MOVE'
+                          enum:
+                          - MODE_UNSPECIFIED
+                          - COPY
+                          - MOVE
+                    fleetScopeLogsConfig:
+                      type: object
+                      x-dcl-go-name: FleetScopeLogsConfig
+                      x-dcl-go-type: FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig
+                      description: Specified if applying the routing config to all
+                        logs for all fleet scopes.
+                      properties:
+                        mode:
+                          type: string
+                          x-dcl-go-name: Mode
+                          x-dcl-go-type: FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum
+                          description: 'The logs routing mode Possible values: MODE_UNSPECIFIED,
+                            COPY, MOVE'
+                          enum:
+                          - MODE_UNSPECIFIED
+                          - COPY
+                          - MOVE
             multiclusteringress:
               type: object
               x-dcl-go-name: Multiclusteringress

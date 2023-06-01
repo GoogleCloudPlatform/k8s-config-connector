@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -52,7 +55,7 @@ func TestAccSecurityScannerScanConfig_scanConfigBasicExample(t *testing.T) {
 }
 
 func testAccSecurityScannerScanConfig_scanConfigBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_address" "scanner_static_ip" {
   provider = google-beta
   name     = "tf-test-scan-basic-static-ip%{random_suffix}"
@@ -90,7 +93,13 @@ func testAccCheckSecurityScannerScanConfigDestroyProducer(t *testing.T) func(s *
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("SecurityScannerScanConfig still exists at %s", url)
 			}

@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_global_address.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_global_address.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_global_address.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_global_address.go
 index 5ba321f49..d784bec6a 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_global_address.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_global_address.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_global_address.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_global_address.go
 @@ -90,7 +90,7 @@ address or omitted to allow GCP to choose a valid one for you.`,
  				ForceNew:         true,
  				ValidateFunc:     verify.ValidateEnum([]string{"IPV4", "IPV6", ""}),

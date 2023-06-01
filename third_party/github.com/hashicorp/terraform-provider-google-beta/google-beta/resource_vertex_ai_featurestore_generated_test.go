@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -56,7 +59,7 @@ func TestAccVertexAIFeaturestore_vertexAiFeaturestoreExample(t *testing.T) {
 }
 
 func testAccVertexAIFeaturestore_vertexAiFeaturestoreExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_vertex_ai_featurestore" "featurestore" {
   name     = "terraform%{random_suffix}"
   labels = {
@@ -103,7 +106,7 @@ func TestAccVertexAIFeaturestore_vertexAiFeaturestoreWithBetaFieldsExample(t *te
 }
 
 func testAccVertexAIFeaturestore_vertexAiFeaturestoreWithBetaFieldsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_vertex_ai_featurestore" "featurestore" {
   provider = google-beta
   name     = "terraform2%{random_suffix}"
@@ -152,7 +155,7 @@ func TestAccVertexAIFeaturestore_vertexAiFeaturestoreScalingExample(t *testing.T
 }
 
 func testAccVertexAIFeaturestore_vertexAiFeaturestoreScalingExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_vertex_ai_featurestore" "featurestore" {
   name     = "terraform3%{random_suffix}"
   labels = {
@@ -196,7 +199,13 @@ func testAccCheckVertexAIFeaturestoreDestroyProducer(t *testing.T) func(s *terra
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("VertexAIFeaturestore still exists at %s", url)
 			}

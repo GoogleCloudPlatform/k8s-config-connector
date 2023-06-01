@@ -109,6 +109,9 @@ spec:
                 type: integer
               state:
                 type: string
+              type:
+                description: The type of this job, selected from the JobType enum.
+                type: string
             type: object
         required:
         - spec

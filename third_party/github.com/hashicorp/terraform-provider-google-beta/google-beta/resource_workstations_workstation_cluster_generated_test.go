@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccWorkstationsWorkstationCluster_workstationClusterBasicExample(t *tes
 }
 
 func testAccWorkstationsWorkstationCluster_workstationClusterBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_workstations_workstation_cluster" "default" {
   provider               = google-beta
   workstation_cluster_id = "tf-test-workstation-cluster%{random_suffix}"
@@ -116,7 +119,7 @@ func TestAccWorkstationsWorkstationCluster_workstationClusterPrivateExample(t *t
 }
 
 func testAccWorkstationsWorkstationCluster_workstationClusterPrivateExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_workstations_workstation_cluster" "default" {
   provider               = google-beta
   workstation_cluster_id = "tf-test-workstation-cluster-private%{random_suffix}"
@@ -180,7 +183,13 @@ func testAccCheckWorkstationsWorkstationClusterDestroyProducer(t *testing.T) fun
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("WorkstationsWorkstationCluster still exists at %s", url)
 			}

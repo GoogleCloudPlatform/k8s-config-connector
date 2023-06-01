@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -69,7 +71,7 @@ func resourceDataflowJobSubnetworkDiffSuppress(k, old, new string, d *schema.Res
 		newMatch := subnetRegionalLinkRegex.FindString(new)
 		return oldMatch == newMatch
 	}
-	return compareSelfLinkOrResourceName(k, old, new, d)
+	return tpgresource.CompareSelfLinkOrResourceName(k, old, new, d)
 }
 
 
@@ -136,6 +138,7 @@ func ResourceDataflowJob() *schema.Resource {
 			"labels": {
 				Type:             schema.TypeMap,
 				Optional:         true,
+				Computed:         true,
 				DiffSuppressFunc: resourceDataflowJobLabelDiffSuppress,
 				Description:      `User labels to be specified for the job. Keys and values should follow the restrictions specified in the labeling restrictions page. NOTE: Google-provided Dataflow templates often provide default labels that begin with goog-dataflow-provided. Unless explicitly set in config, these labels will be ignored to prevent diffs on re-apply.`,
 			},
@@ -332,7 +335,7 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
 		}
 		job, err = resourceDataflowJobGetJob(config, project, region, userAgent, id)
 		if err != nil {
-			return handleNotFoundError(err, d, fmt.Sprintf("Dataflow job %s", id))
+			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Dataflow job %s", id))
 		}
 	} else if err != nil {
 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Dataflow job %s", id))
@@ -440,10 +443,14 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
 	}
 
 	var response *dataflow.LaunchTemplateResponse
-	err = transport_tpg.RetryTimeDuration(func() (updateErr error) {
-		response, updateErr = resourceDataflowJobLaunchTemplate(config, project, region, userAgent, d.Get("template_gcs_path").(string), &request)
-		return updateErr
-	}, time.Minute*time.Duration(5), transport_tpg.IsDataflowJobUpdateRetryableError)
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (updateErr error) {
+			response, updateErr = resourceDataflowJobLaunchTemplate(config, project, region, userAgent, d.Get("template_gcs_path").(string), &request)
+			return updateErr
+		},
+		Timeout:              time.Minute * time.Duration(5),
+		ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.IsDataflowJobUpdateRetryableError},
+	})
 	if err != nil {
 		return err
 	}
@@ -621,7 +628,7 @@ func resourceDataflowJobSetupEnv(d *schema.ResourceData, config *transport_tpg.C
 
 	labels := tpgresource.ExpandStringMap(d, "labels")
 
-	additionalExperiments := convertStringSet(d.Get("additional_experiments").(*schema.Set))
+	additionalExperiments := tpgresource.ConvertStringSet(d.Get("additional_experiments").(*schema.Set))
 
 	env := dataflow.RuntimeEnvironment{
 		MaxWorkers:            int64(d.Get("max_workers").(int)),
@@ -700,7 +707,7 @@ func waitForDataflowJobToBeUpdated(d *schema.ResourceData, config *transport_tpg
 
 		replacementJob, err := resourceDataflowJobGetJob(config, project, region, userAgent, replacementJobID)
 		if err != nil {
-			if transport_tpg.IsRetryableError(err) {
+			if transport_tpg.IsRetryableError(err, nil, nil) {
 				return resource.RetryableError(err)
 			}
 			return resource.NonRetryableError(err)

@@ -1234,6 +1234,11 @@ func (in *StreamMysqlSourceConfig) DeepCopyInto(out *StreamMysqlSourceConfig) {
 		*out = new(StreamIncludeObjects)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.MaxConcurrentBackfillTasks != nil {
+		in, out := &in.MaxConcurrentBackfillTasks, &out.MaxConcurrentBackfillTasks
+		*out = new(int)
+		**out = **in
+	}
 	if in.MaxConcurrentCdcTasks != nil {
 		in, out := &in.MaxConcurrentCdcTasks, &out.MaxConcurrentCdcTasks
 		*out = new(int)

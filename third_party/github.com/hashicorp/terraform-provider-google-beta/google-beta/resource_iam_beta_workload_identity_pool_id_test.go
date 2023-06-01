@@ -1,9 +1,12 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"strings"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/iambeta"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
 )
 
@@ -26,7 +29,7 @@ func TestValidateIAMBetaWorkloadIdentityPoolId(t *testing.T) {
 		{TestName: "too long", Value: strings.Repeat("f", 33), ExpectError: true},
 	}
 
-	es := verify.TestStringValidationCases(x, ValidateWorkloadIdentityPoolId)
+	es := verify.TestStringValidationCases(x, iambeta.ValidateWorkloadIdentityPoolId)
 	if len(es) > 0 {
 		t.Errorf("Failed to validate WorkloadIdentityPool names: %v", es)
 	}

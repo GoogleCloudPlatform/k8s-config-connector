@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_spanner_database.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_spanner_database.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/spanner/resource_spanner_database.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/spanner/resource_spanner_database.go
 index 828f785dc..b10a3a69e 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_spanner_database.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_spanner_database.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/spanner/resource_spanner_database.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/spanner/resource_spanner_database.go
 @@ -188,7 +188,7 @@ update the database's version_retention_period.`,
  			"deletion_protection": {
  				Type:     schema.TypeBool,

@@ -300,6 +300,9 @@ spec:
                       bucketName:
                         description: S3 Bucket name.
                         type: string
+                      path:
+                        description: S3 Bucket path in bucket to transfer.
+                        type: string
                       roleArn:
                         description: The Amazon Resource Name (ARN) of the role to
                           support temporary credentials via 'AssumeRoleWithWebIdentity'.

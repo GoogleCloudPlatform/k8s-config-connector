@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -63,7 +65,12 @@ func testAccCheckAccessContextManagerServicePerimetersDestroyProducer(t *testing
 				return err
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", "", url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ServicePerimeters still exists at %s", url)
 			}

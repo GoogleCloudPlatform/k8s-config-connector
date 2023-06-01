@@ -82,6 +82,10 @@
 ```yaml
 alertStrategy:
   autoClose: string
+  notificationChannelStrategy:
+  - notificationChannelNames:
+    - string
+    renotifyInterval: string
   notificationRateLimit:
     period: string
 combiner: string
@@ -127,6 +131,8 @@ conditions:
     duration: string
     evaluationMissingData: string
     filter: string
+    forecastOptions:
+      forecastHorizon: string
     thresholdValue: float
     trigger:
       count: integer
@@ -170,6 +176,60 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}If an alert policy that was active has no data for this long, any open incidents will close.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>alertStrategy.notificationChannelStrategy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Control over how the notification channels in 'notification_channels'
+are notified when this alert fires, on a per-channel basis.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>alertStrategy.notificationChannelStrategy[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>alertStrategy.notificationChannelStrategy[].notificationChannelNames</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The notification channels that these settings apply to. Each of these
+correspond to the name field in one of the NotificationChannel objects
+referenced in the notification_channels field of this AlertPolicy. The format is
+'projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]'.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>alertStrategy.notificationChannelStrategy[].notificationChannelNames[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>alertStrategy.notificationChannelStrategy[].renotifyInterval</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The frequency at which to send reminder notifications for open incidents.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1005,6 +1065,36 @@ contain restrictions on resource type,
 resource labels, and metric labels. This
 field may not exceed 2048 Unicode characters
 in length.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionThreshold.forecastOptions</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}When this field is present, the 'MetricThreshold'
+condition forecasts whether the time series is
+predicted to violate the threshold within the
+'forecastHorizon'. When this field is not set, the
+'MetricThreshold' tests the current value of the
+timeseries against the threshold.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>conditions[].conditionThreshold.forecastOptions.forecastHorizon</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The length of time into the future to forecast
+whether a timeseries will violate the threshold.
+If the predicted value is found to violate the
+threshold, and the violation is observed in all
+forecasts made for the Configured 'duration',
+then the timeseries is considered to be failing.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

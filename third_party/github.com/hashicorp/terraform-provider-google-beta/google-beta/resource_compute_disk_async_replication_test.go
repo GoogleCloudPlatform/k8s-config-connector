@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,13 +7,15 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 )
 
 func TestAccComputeDiskAsyncReplication(t *testing.T) {
 	t.Parallel()
 
 	region := GetTestRegionFromEnv()
-	if !stringInSlice([]string{"europe-west2", "europe-west1", "us-central1", "us-east1", "us-west1", "us-east4", "asia-east1", "australia-southeast1"}, region) {
+	if !tpgresource.StringInSlice([]string{"europe-west2", "europe-west1", "us-central1", "us-east1", "us-west1", "us-east4", "asia-east1", "australia-southeast1"}, region) {
 		return
 	}
 	secondaryRegion := region

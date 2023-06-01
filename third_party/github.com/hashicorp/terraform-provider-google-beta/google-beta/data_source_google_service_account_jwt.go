@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -88,7 +90,7 @@ func dataSourceGoogleServiceAccountJwtRead(d *schema.ResourceData, meta interfac
 
 	jwtRequest := &iamcredentials.SignJwtRequest{
 		Payload:   payload,
-		Delegates: convertStringSet(d.Get("delegates").(*schema.Set)),
+		Delegates: tpgresource.ConvertStringSet(d.Get("delegates").(*schema.Set)),
 	}
 
 	service := config.NewIamCredentialsClient(userAgent)

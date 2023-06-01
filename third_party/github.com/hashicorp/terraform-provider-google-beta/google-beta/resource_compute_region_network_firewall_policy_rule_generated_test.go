@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -29,7 +32,7 @@ import (
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
-func TestAccComputeRegionNetworkFirewallPolicyRule_RegionalHandWritten(t *testing.T) {
+func TestAccComputeRegionNetworkFirewallPolicyRule_RegionalNetSecRuleHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -41,12 +44,13 @@ func TestAccComputeRegionNetworkFirewallPolicyRule_RegionalHandWritten(t *testin
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		PreCheck: func() { acctest.AccTestPreCheck(t) },
+
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionNetworkFirewallPolicyRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeRegionNetworkFirewallPolicyRule_RegionalHandWritten(context),
+				Config: testAccComputeRegionNetworkFirewallPolicyRule_RegionalNetSecRuleHandWritten(context),
 			},
 			{
 				ResourceName:      "google_compute_region_network_firewall_policy_rule.primary",
@@ -54,7 +58,7 @@ func TestAccComputeRegionNetworkFirewallPolicyRule_RegionalHandWritten(t *testin
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccComputeRegionNetworkFirewallPolicyRule_RegionalHandWrittenUpdate0(context),
+				Config: testAccComputeRegionNetworkFirewallPolicyRule_RegionalNetSecRuleHandWrittenUpdate0(context),
 			},
 			{
 				ResourceName:      "google_compute_region_network_firewall_policy_rule.primary",
@@ -65,9 +69,11 @@ func TestAccComputeRegionNetworkFirewallPolicyRule_RegionalHandWritten(t *testin
 	})
 }
 
-func testAccComputeRegionNetworkFirewallPolicyRule_RegionalHandWritten(context map[string]interface{}) string {
+func testAccComputeRegionNetworkFirewallPolicyRule_RegionalNetSecRuleHandWritten(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_network_security_address_group" "basic_regional_networksecurity_address_group" {
+  provider = google-beta
+
   name        = "tf-test-policy%{random_suffix}"
   parent      = "projects/%{project_name}"
   description = "Sample regional networksecurity_address_group"
@@ -78,6 +84,8 @@ resource "google_network_security_address_group" "basic_regional_networksecurity
 }
 
 resource "google_compute_region_network_firewall_policy" "basic_regional_network_firewall_policy" {
+  provider = google-beta
+
   name        = "tf-test-policy%{random_suffix}"
   description = "Sample regional network firewall policy"
   project     = "%{project_name}"
@@ -85,6 +93,8 @@ resource "google_compute_region_network_firewall_policy" "basic_regional_network
 }
 
 resource "google_compute_region_network_firewall_policy_rule" "primary" {
+  provider = google-beta
+
   action                  = "allow"
   description             = "This is a simple rule description"
   direction               = "INGRESS"
@@ -115,10 +125,14 @@ resource "google_compute_region_network_firewall_policy_rule" "primary" {
 }
 
 resource "google_compute_network" "basic_network" {
+  provider = google-beta
+
   name = "tf-test-network%{random_suffix}"
 }
 
 resource "google_tags_tag_key" "basic_key" {
+  provider = google-beta
+
   description = "For keyname resources."
   parent      = "organizations/%{org_id}"
   purpose     = "GCE_FIREWALL"
@@ -130,6 +144,8 @@ resource "google_tags_tag_key" "basic_key" {
 }
 
 resource "google_tags_tag_value" "basic_value" {
+  provider = google-beta
+
   description = "For valuename resources."
   parent      = "tagKeys/${google_tags_tag_key.basic_key.name}"
   short_name  = "tf-test-tagvalue%{random_suffix}"
@@ -138,9 +154,11 @@ resource "google_tags_tag_value" "basic_value" {
 `, context)
 }
 
-func testAccComputeRegionNetworkFirewallPolicyRule_RegionalHandWrittenUpdate0(context map[string]interface{}) string {
+func testAccComputeRegionNetworkFirewallPolicyRule_RegionalNetSecRuleHandWrittenUpdate0(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_network_security_address_group" "basic_regional_networksecurity_address_group" {
+  provider = google-beta
+
   name        = "tf-test-policy%{random_suffix}"
   parent      = "projects/%{project_name}"
   description = "Sample regional networksecurity_address_group. Update"
@@ -151,6 +169,8 @@ resource "google_network_security_address_group" "basic_regional_networksecurity
 }
 
 resource "google_compute_region_network_firewall_policy" "basic_regional_network_firewall_policy" {
+  provider = google-beta
+
   name        = "tf-test-policy%{random_suffix}"
   description = "Sample regional network firewall policy"
   project     = "%{project_name}"
@@ -158,6 +178,8 @@ resource "google_compute_region_network_firewall_policy" "basic_regional_network
 }
 
 resource "google_compute_region_network_firewall_policy_rule" "primary" {
+  provider = google-beta
+
   action          = "deny"
   description     = "This is an updated rule description"
   direction       = "EGRESS"
@@ -188,10 +210,14 @@ resource "google_compute_region_network_firewall_policy_rule" "primary" {
 }
 
 resource "google_compute_network" "basic_network" {
+  provider = google-beta
+
   name = "tf-test-network%{random_suffix}"
 }
 
 resource "google_tags_tag_key" "basic_key" {
+  provider = google-beta
+
   description = "For keyname resources."
   parent      = "organizations/%{org_id}"
   purpose     = "GCE_FIREWALL"
@@ -203,6 +229,8 @@ resource "google_tags_tag_key" "basic_key" {
 }
 
 resource "google_tags_tag_value" "basic_value" {
+  provider = google-beta
+
   description = "For valuename resources."
   parent      = "tagKeys/${google_tags_tag_key.basic_key.name}"
   short_name  = "tf-test-tagvalue%{random_suffix}"

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -52,7 +55,7 @@ func TestAccMonitoringService_monitoringServiceCustomExample(t *testing.T) {
 }
 
 func testAccMonitoringService_monitoringServiceCustomExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_monitoring_custom_service" "custom" {
   service_id = "tf-test-custom-srv%{random_suffix}"
   display_name = "My Custom Service tf-test-custom-srv%{random_suffix}"
@@ -92,7 +95,14 @@ func testAccCheckMonitoringServiceDestroyProducer(t *testing.T) func(s *terrafor
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, transport_tpg.IsMonitoringConcurrentEditError)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:               config,
+				Method:               "GET",
+				Project:              billingProject,
+				RawURL:               url,
+				UserAgent:            config.UserAgent,
+				ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.IsMonitoringConcurrentEditError},
+			})
 			if err == nil {
 				return fmt.Errorf("MonitoringService still exists at %s", url)
 			}

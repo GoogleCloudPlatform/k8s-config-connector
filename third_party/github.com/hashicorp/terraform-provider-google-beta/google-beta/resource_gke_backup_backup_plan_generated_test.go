@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -54,7 +57,7 @@ func TestAccGKEBackupBackupPlan_gkebackupBackupplanBasicExample(t *testing.T) {
 }
 
 func testAccGKEBackupBackupPlan_gkebackupBackupplanBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_container_cluster" "primary" {
   name               = "tf-test-basic-cluster%{random_suffix}"
   location           = "us-central1"
@@ -108,7 +111,7 @@ func TestAccGKEBackupBackupPlan_gkebackupBackupplanAutopilotExample(t *testing.T
 }
 
 func testAccGKEBackupBackupPlan_gkebackupBackupplanAutopilotExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_container_cluster" "primary" {
   name               = "tf-test-autopilot-cluster%{random_suffix}"
   location           = "us-central1"
@@ -165,7 +168,7 @@ func TestAccGKEBackupBackupPlan_gkebackupBackupplanCmekExample(t *testing.T) {
 }
 
 func testAccGKEBackupBackupPlan_gkebackupBackupplanCmekExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_container_cluster" "primary" {
   name               = "tf-test-cmek-cluster%{random_suffix}"
   location           = "us-central1"
@@ -235,7 +238,7 @@ func TestAccGKEBackupBackupPlan_gkebackupBackupplanFullExample(t *testing.T) {
 }
 
 func testAccGKEBackupBackupPlan_gkebackupBackupplanFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_container_cluster" "primary" {
   name               = "tf-test-full-cluster%{random_suffix}"
   location           = "us-central1"
@@ -302,7 +305,13 @@ func testAccCheckGKEBackupBackupPlanDestroyProducer(t *testing.T) func(s *terraf
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("GKEBackupBackupPlan still exists at %s", url)
 			}

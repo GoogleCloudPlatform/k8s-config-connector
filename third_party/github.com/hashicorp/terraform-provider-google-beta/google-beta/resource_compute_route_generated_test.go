@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeRoute_routeBasicExample(t *testing.T) {
 }
 
 func testAccComputeRoute_routeBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_route" "default" {
   name        = "tf-test-network-route%{random_suffix}"
   dest_range  = "15.0.0.0/24"
@@ -94,7 +97,7 @@ func TestAccComputeRoute_routeIlbExample(t *testing.T) {
 }
 
 func testAccComputeRoute_routeIlbExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_network" "default" {
   name                    = "tf-test-compute-network%{random_suffix}"
   auto_create_subnetworks = false
@@ -170,7 +173,7 @@ func TestAccComputeRoute_routeIlbVipExample(t *testing.T) {
 }
 
 func testAccComputeRoute_routeIlbVipExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_network" "producer" {
   provider                = google-beta
   name                    = "producer%{random_suffix}-vpc"
@@ -283,7 +286,14 @@ func testAccCheckComputeRouteDestroyProducer(t *testing.T) func(s *terraform.Sta
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, transport_tpg.IsPeeringOperationInProgress)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:               config,
+				Method:               "GET",
+				Project:              billingProject,
+				RawURL:               url,
+				UserAgent:            config.UserAgent,
+				ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.IsPeeringOperationInProgress},
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeRoute still exists at %s", url)
 			}

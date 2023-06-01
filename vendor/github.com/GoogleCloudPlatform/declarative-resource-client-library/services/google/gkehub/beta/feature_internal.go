@@ -59,12 +59,44 @@ func (r *FeatureSpec) validate() error {
 			return err
 		}
 	}
+	if !dcl.IsEmptyValueIndirect(r.Fleetobservability) {
+		if err := r.Fleetobservability.validate(); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 func (r *FeatureSpecMulticlusteringress) validate() error {
 	if err := dcl.Required(r, "configMembership"); err != nil {
 		return err
 	}
+	return nil
+}
+func (r *FeatureSpecFleetobservability) validate() error {
+	if !dcl.IsEmptyValueIndirect(r.LoggingConfig) {
+		if err := r.LoggingConfig.validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (r *FeatureSpecFleetobservabilityLoggingConfig) validate() error {
+	if !dcl.IsEmptyValueIndirect(r.DefaultConfig) {
+		if err := r.DefaultConfig.validate(); err != nil {
+			return err
+		}
+	}
+	if !dcl.IsEmptyValueIndirect(r.FleetScopeLogsConfig) {
+		if err := r.FleetScopeLogsConfig.validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (r *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig) validate() error {
+	return nil
+}
+func (r *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig) validate() error {
 	return nil
 }
 func (r *FeatureState) validate() error {
@@ -603,6 +635,7 @@ func canonicalizeFeatureSpec(des, initial *FeatureSpec, opts ...dcl.ApplyOption)
 	cDes := &FeatureSpec{}
 
 	cDes.Multiclusteringress = canonicalizeFeatureSpecMulticlusteringress(des.Multiclusteringress, initial.Multiclusteringress, opts...)
+	cDes.Fleetobservability = canonicalizeFeatureSpecFleetobservability(des.Fleetobservability, initial.Fleetobservability, opts...)
 
 	return cDes
 }
@@ -650,6 +683,7 @@ func canonicalizeNewFeatureSpec(c *Client, des, nw *FeatureSpec) *FeatureSpec {
 	}
 
 	nw.Multiclusteringress = canonicalizeNewFeatureSpecMulticlusteringress(c, des.Multiclusteringress, nw.Multiclusteringress)
+	nw.Fleetobservability = canonicalizeNewFeatureSpecFleetobservability(c, des.Fleetobservability, nw.Fleetobservability)
 
 	return nw
 }
@@ -810,6 +844,462 @@ func canonicalizeNewFeatureSpecMulticlusteringressSlice(c *Client, des, nw []Fea
 	for i, d := range des {
 		n := nw[i]
 		items = append(items, *canonicalizeNewFeatureSpecMulticlusteringress(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeFeatureSpecFleetobservability(des, initial *FeatureSpecFleetobservability, opts ...dcl.ApplyOption) *FeatureSpecFleetobservability {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &FeatureSpecFleetobservability{}
+
+	cDes.LoggingConfig = canonicalizeFeatureSpecFleetobservabilityLoggingConfig(des.LoggingConfig, initial.LoggingConfig, opts...)
+
+	return cDes
+}
+
+func canonicalizeFeatureSpecFleetobservabilitySlice(des, initial []FeatureSpecFleetobservability, opts ...dcl.ApplyOption) []FeatureSpecFleetobservability {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]FeatureSpecFleetobservability, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeFeatureSpecFleetobservability(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]FeatureSpecFleetobservability, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeFeatureSpecFleetobservability(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewFeatureSpecFleetobservability(c *Client, des, nw *FeatureSpecFleetobservability) *FeatureSpecFleetobservability {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for FeatureSpecFleetobservability while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	nw.LoggingConfig = canonicalizeNewFeatureSpecFleetobservabilityLoggingConfig(c, des.LoggingConfig, nw.LoggingConfig)
+
+	return nw
+}
+
+func canonicalizeNewFeatureSpecFleetobservabilitySet(c *Client, des, nw []FeatureSpecFleetobservability) []FeatureSpecFleetobservability {
+	if des == nil {
+		return nw
+	}
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureSpecFleetobservability
+	for _, d := range des {
+		matchedIndex := -1
+		for i, n := range nw {
+			if diffs, _ := compareFeatureSpecFleetobservabilityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedIndex = i
+				break
+			}
+		}
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureSpecFleetobservability(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
+		}
+	}
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
+
+	return items
+}
+
+func canonicalizeNewFeatureSpecFleetobservabilitySlice(c *Client, des, nw []FeatureSpecFleetobservability) []FeatureSpecFleetobservability {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []FeatureSpecFleetobservability
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewFeatureSpecFleetobservability(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeFeatureSpecFleetobservabilityLoggingConfig(des, initial *FeatureSpecFleetobservabilityLoggingConfig, opts ...dcl.ApplyOption) *FeatureSpecFleetobservabilityLoggingConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &FeatureSpecFleetobservabilityLoggingConfig{}
+
+	cDes.DefaultConfig = canonicalizeFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(des.DefaultConfig, initial.DefaultConfig, opts...)
+	cDes.FleetScopeLogsConfig = canonicalizeFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(des.FleetScopeLogsConfig, initial.FleetScopeLogsConfig, opts...)
+
+	return cDes
+}
+
+func canonicalizeFeatureSpecFleetobservabilityLoggingConfigSlice(des, initial []FeatureSpecFleetobservabilityLoggingConfig, opts ...dcl.ApplyOption) []FeatureSpecFleetobservabilityLoggingConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]FeatureSpecFleetobservabilityLoggingConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeFeatureSpecFleetobservabilityLoggingConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]FeatureSpecFleetobservabilityLoggingConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeFeatureSpecFleetobservabilityLoggingConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewFeatureSpecFleetobservabilityLoggingConfig(c *Client, des, nw *FeatureSpecFleetobservabilityLoggingConfig) *FeatureSpecFleetobservabilityLoggingConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for FeatureSpecFleetobservabilityLoggingConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	nw.DefaultConfig = canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(c, des.DefaultConfig, nw.DefaultConfig)
+	nw.FleetScopeLogsConfig = canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(c, des.FleetScopeLogsConfig, nw.FleetScopeLogsConfig)
+
+	return nw
+}
+
+func canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigSet(c *Client, des, nw []FeatureSpecFleetobservabilityLoggingConfig) []FeatureSpecFleetobservabilityLoggingConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureSpecFleetobservabilityLoggingConfig
+	for _, d := range des {
+		matchedIndex := -1
+		for i, n := range nw {
+			if diffs, _ := compareFeatureSpecFleetobservabilityLoggingConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedIndex = i
+				break
+			}
+		}
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureSpecFleetobservabilityLoggingConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
+		}
+	}
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
+
+	return items
+}
+
+func canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigSlice(c *Client, des, nw []FeatureSpecFleetobservabilityLoggingConfig) []FeatureSpecFleetobservabilityLoggingConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []FeatureSpecFleetobservabilityLoggingConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewFeatureSpecFleetobservabilityLoggingConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(des, initial *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig, opts ...dcl.ApplyOption) *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &FeatureSpecFleetobservabilityLoggingConfigDefaultConfig{}
+
+	if dcl.IsZeroValue(des.Mode) || (dcl.IsEmptyValueIndirect(des.Mode) && dcl.IsEmptyValueIndirect(initial.Mode)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.Mode = initial.Mode
+	} else {
+		cDes.Mode = des.Mode
+	}
+
+	return cDes
+}
+
+func canonicalizeFeatureSpecFleetobservabilityLoggingConfigDefaultConfigSlice(des, initial []FeatureSpecFleetobservabilityLoggingConfigDefaultConfig, opts ...dcl.ApplyOption) []FeatureSpecFleetobservabilityLoggingConfigDefaultConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]FeatureSpecFleetobservabilityLoggingConfigDefaultConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]FeatureSpecFleetobservabilityLoggingConfigDefaultConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(c *Client, des, nw *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig) *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for FeatureSpecFleetobservabilityLoggingConfigDefaultConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigDefaultConfigSet(c *Client, des, nw []FeatureSpecFleetobservabilityLoggingConfigDefaultConfig) []FeatureSpecFleetobservabilityLoggingConfigDefaultConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureSpecFleetobservabilityLoggingConfigDefaultConfig
+	for _, d := range des {
+		matchedIndex := -1
+		for i, n := range nw {
+			if diffs, _ := compareFeatureSpecFleetobservabilityLoggingConfigDefaultConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedIndex = i
+				break
+			}
+		}
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
+		}
+	}
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
+
+	return items
+}
+
+func canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigDefaultConfigSlice(c *Client, des, nw []FeatureSpecFleetobservabilityLoggingConfigDefaultConfig) []FeatureSpecFleetobservabilityLoggingConfigDefaultConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []FeatureSpecFleetobservabilityLoggingConfigDefaultConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(des, initial *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig, opts ...dcl.ApplyOption) *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig{}
+
+	if dcl.IsZeroValue(des.Mode) || (dcl.IsEmptyValueIndirect(des.Mode) && dcl.IsEmptyValueIndirect(initial.Mode)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.Mode = initial.Mode
+	} else {
+		cDes.Mode = des.Mode
+	}
+
+	return cDes
+}
+
+func canonicalizeFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigSlice(des, initial []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig, opts ...dcl.ApplyOption) []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(c *Client, des, nw *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig) *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigSet(c *Client, des, nw []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig) []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig
+	for _, d := range des {
+		matchedIndex := -1
+		for i, n := range nw {
+			if diffs, _ := compareFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedIndex = i
+				break
+			}
+		}
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
+		}
+	}
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
+
+	return items
+}
+
+func canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigSlice(c *Client, des, nw []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig) []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(c, &d, &n))
 	}
 
 	return items
@@ -1195,6 +1685,13 @@ func compareFeatureSpecNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fiel
 		}
 		diffs = append(diffs, ds...)
 	}
+
+	if ds, err := dcl.Diff(desired.Fleetobservability, actual.Fleetobservability, dcl.DiffInfo{ObjectFunction: compareFeatureSpecFleetobservabilityNewStyle, EmptyObject: EmptyFeatureSpecFleetobservability, OperationSelector: dcl.TriggersOperation("updateFeatureUpdateFeatureOperation")}, fn.AddNest("Fleetobservability")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
 	return diffs, nil
 }
 
@@ -1219,6 +1716,129 @@ func compareFeatureSpecMulticlusteringressNewStyle(d, a interface{}, fn dcl.Fiel
 	}
 
 	if ds, err := dcl.Diff(desired.ConfigMembership, actual.ConfigMembership, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateFeatureUpdateFeatureOperation")}, fn.AddNest("ConfigMembership")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareFeatureSpecFleetobservabilityNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*FeatureSpecFleetobservability)
+	if !ok {
+		desiredNotPointer, ok := d.(FeatureSpecFleetobservability)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureSpecFleetobservability or *FeatureSpecFleetobservability", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*FeatureSpecFleetobservability)
+	if !ok {
+		actualNotPointer, ok := a.(FeatureSpecFleetobservability)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureSpecFleetobservability", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.LoggingConfig, actual.LoggingConfig, dcl.DiffInfo{ObjectFunction: compareFeatureSpecFleetobservabilityLoggingConfigNewStyle, EmptyObject: EmptyFeatureSpecFleetobservabilityLoggingConfig, OperationSelector: dcl.TriggersOperation("updateFeatureUpdateFeatureOperation")}, fn.AddNest("LoggingConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareFeatureSpecFleetobservabilityLoggingConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*FeatureSpecFleetobservabilityLoggingConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(FeatureSpecFleetobservabilityLoggingConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureSpecFleetobservabilityLoggingConfig or *FeatureSpecFleetobservabilityLoggingConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*FeatureSpecFleetobservabilityLoggingConfig)
+	if !ok {
+		actualNotPointer, ok := a.(FeatureSpecFleetobservabilityLoggingConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureSpecFleetobservabilityLoggingConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.DefaultConfig, actual.DefaultConfig, dcl.DiffInfo{ObjectFunction: compareFeatureSpecFleetobservabilityLoggingConfigDefaultConfigNewStyle, EmptyObject: EmptyFeatureSpecFleetobservabilityLoggingConfigDefaultConfig, OperationSelector: dcl.TriggersOperation("updateFeatureUpdateFeatureOperation")}, fn.AddNest("DefaultConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.FleetScopeLogsConfig, actual.FleetScopeLogsConfig, dcl.DiffInfo{ObjectFunction: compareFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigNewStyle, EmptyObject: EmptyFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig, OperationSelector: dcl.TriggersOperation("updateFeatureUpdateFeatureOperation")}, fn.AddNest("FleetScopeLogsConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareFeatureSpecFleetobservabilityLoggingConfigDefaultConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*FeatureSpecFleetobservabilityLoggingConfigDefaultConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(FeatureSpecFleetobservabilityLoggingConfigDefaultConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureSpecFleetobservabilityLoggingConfigDefaultConfig or *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*FeatureSpecFleetobservabilityLoggingConfigDefaultConfig)
+	if !ok {
+		actualNotPointer, ok := a.(FeatureSpecFleetobservabilityLoggingConfigDefaultConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureSpecFleetobservabilityLoggingConfigDefaultConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.Mode, actual.Mode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateFeatureUpdateFeatureOperation")}, fn.AddNest("Mode")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig or *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig)
+	if !ok {
+		actualNotPointer, ok := a.(FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.Mode, actual.Mode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateFeatureUpdateFeatureOperation")}, fn.AddNest("Mode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1619,6 +2239,11 @@ func expandFeatureSpec(c *Client, f *FeatureSpec, res *Feature) (map[string]inte
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["multiclusteringress"] = v
 	}
+	if v, err := expandFeatureSpecFleetobservability(c, f.Fleetobservability, res); err != nil {
+		return nil, fmt.Errorf("error expanding Fleetobservability into fleetobservability: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["fleetobservability"] = v
+	}
 
 	return m, nil
 }
@@ -1637,6 +2262,7 @@ func flattenFeatureSpec(c *Client, i interface{}, res *Feature) *FeatureSpec {
 		return EmptyFeatureSpec
 	}
 	r.Multiclusteringress = flattenFeatureSpecMulticlusteringress(c, m["multiclusteringress"], res)
+	r.Fleetobservability = flattenFeatureSpecFleetobservability(c, m["fleetobservability"], res)
 
 	return r
 }
@@ -1751,6 +2377,472 @@ func flattenFeatureSpecMulticlusteringress(c *Client, i interface{}, res *Featur
 		return EmptyFeatureSpecMulticlusteringress
 	}
 	r.ConfigMembership = dcl.FlattenString(m["configMembership"])
+
+	return r
+}
+
+// expandFeatureSpecFleetobservabilityMap expands the contents of FeatureSpecFleetobservability into a JSON
+// request object.
+func expandFeatureSpecFleetobservabilityMap(c *Client, f map[string]FeatureSpecFleetobservability, res *Feature) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandFeatureSpecFleetobservability(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandFeatureSpecFleetobservabilitySlice expands the contents of FeatureSpecFleetobservability into a JSON
+// request object.
+func expandFeatureSpecFleetobservabilitySlice(c *Client, f []FeatureSpecFleetobservability, res *Feature) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandFeatureSpecFleetobservability(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenFeatureSpecFleetobservabilityMap flattens the contents of FeatureSpecFleetobservability from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityMap(c *Client, i interface{}, res *Feature) map[string]FeatureSpecFleetobservability {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]FeatureSpecFleetobservability{}
+	}
+
+	if len(a) == 0 {
+		return map[string]FeatureSpecFleetobservability{}
+	}
+
+	items := make(map[string]FeatureSpecFleetobservability)
+	for k, item := range a {
+		items[k] = *flattenFeatureSpecFleetobservability(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenFeatureSpecFleetobservabilitySlice flattens the contents of FeatureSpecFleetobservability from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilitySlice(c *Client, i interface{}, res *Feature) []FeatureSpecFleetobservability {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []FeatureSpecFleetobservability{}
+	}
+
+	if len(a) == 0 {
+		return []FeatureSpecFleetobservability{}
+	}
+
+	items := make([]FeatureSpecFleetobservability, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenFeatureSpecFleetobservability(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandFeatureSpecFleetobservability expands an instance of FeatureSpecFleetobservability into a JSON
+// request object.
+func expandFeatureSpecFleetobservability(c *Client, f *FeatureSpecFleetobservability, res *Feature) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v, err := expandFeatureSpecFleetobservabilityLoggingConfig(c, f.LoggingConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding LoggingConfig into loggingConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["loggingConfig"] = v
+	}
+
+	return m, nil
+}
+
+// flattenFeatureSpecFleetobservability flattens an instance of FeatureSpecFleetobservability from a JSON
+// response object.
+func flattenFeatureSpecFleetobservability(c *Client, i interface{}, res *Feature) *FeatureSpecFleetobservability {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &FeatureSpecFleetobservability{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyFeatureSpecFleetobservability
+	}
+	r.LoggingConfig = flattenFeatureSpecFleetobservabilityLoggingConfig(c, m["loggingConfig"], res)
+
+	return r
+}
+
+// expandFeatureSpecFleetobservabilityLoggingConfigMap expands the contents of FeatureSpecFleetobservabilityLoggingConfig into a JSON
+// request object.
+func expandFeatureSpecFleetobservabilityLoggingConfigMap(c *Client, f map[string]FeatureSpecFleetobservabilityLoggingConfig, res *Feature) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandFeatureSpecFleetobservabilityLoggingConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandFeatureSpecFleetobservabilityLoggingConfigSlice expands the contents of FeatureSpecFleetobservabilityLoggingConfig into a JSON
+// request object.
+func expandFeatureSpecFleetobservabilityLoggingConfigSlice(c *Client, f []FeatureSpecFleetobservabilityLoggingConfig, res *Feature) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandFeatureSpecFleetobservabilityLoggingConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigMap flattens the contents of FeatureSpecFleetobservabilityLoggingConfig from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfigMap(c *Client, i interface{}, res *Feature) map[string]FeatureSpecFleetobservabilityLoggingConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]FeatureSpecFleetobservabilityLoggingConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]FeatureSpecFleetobservabilityLoggingConfig{}
+	}
+
+	items := make(map[string]FeatureSpecFleetobservabilityLoggingConfig)
+	for k, item := range a {
+		items[k] = *flattenFeatureSpecFleetobservabilityLoggingConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigSlice flattens the contents of FeatureSpecFleetobservabilityLoggingConfig from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfigSlice(c *Client, i interface{}, res *Feature) []FeatureSpecFleetobservabilityLoggingConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []FeatureSpecFleetobservabilityLoggingConfig{}
+	}
+
+	if len(a) == 0 {
+		return []FeatureSpecFleetobservabilityLoggingConfig{}
+	}
+
+	items := make([]FeatureSpecFleetobservabilityLoggingConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenFeatureSpecFleetobservabilityLoggingConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandFeatureSpecFleetobservabilityLoggingConfig expands an instance of FeatureSpecFleetobservabilityLoggingConfig into a JSON
+// request object.
+func expandFeatureSpecFleetobservabilityLoggingConfig(c *Client, f *FeatureSpecFleetobservabilityLoggingConfig, res *Feature) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v, err := expandFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(c, f.DefaultConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding DefaultConfig into defaultConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["defaultConfig"] = v
+	}
+	if v, err := expandFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(c, f.FleetScopeLogsConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding FleetScopeLogsConfig into fleetScopeLogsConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["fleetScopeLogsConfig"] = v
+	}
+
+	return m, nil
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfig flattens an instance of FeatureSpecFleetobservabilityLoggingConfig from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfig(c *Client, i interface{}, res *Feature) *FeatureSpecFleetobservabilityLoggingConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &FeatureSpecFleetobservabilityLoggingConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyFeatureSpecFleetobservabilityLoggingConfig
+	}
+	r.DefaultConfig = flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(c, m["defaultConfig"], res)
+	r.FleetScopeLogsConfig = flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(c, m["fleetScopeLogsConfig"], res)
+
+	return r
+}
+
+// expandFeatureSpecFleetobservabilityLoggingConfigDefaultConfigMap expands the contents of FeatureSpecFleetobservabilityLoggingConfigDefaultConfig into a JSON
+// request object.
+func expandFeatureSpecFleetobservabilityLoggingConfigDefaultConfigMap(c *Client, f map[string]FeatureSpecFleetobservabilityLoggingConfigDefaultConfig, res *Feature) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandFeatureSpecFleetobservabilityLoggingConfigDefaultConfigSlice expands the contents of FeatureSpecFleetobservabilityLoggingConfigDefaultConfig into a JSON
+// request object.
+func expandFeatureSpecFleetobservabilityLoggingConfigDefaultConfigSlice(c *Client, f []FeatureSpecFleetobservabilityLoggingConfigDefaultConfig, res *Feature) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigMap flattens the contents of FeatureSpecFleetobservabilityLoggingConfigDefaultConfig from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigMap(c *Client, i interface{}, res *Feature) map[string]FeatureSpecFleetobservabilityLoggingConfigDefaultConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]FeatureSpecFleetobservabilityLoggingConfigDefaultConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]FeatureSpecFleetobservabilityLoggingConfigDefaultConfig{}
+	}
+
+	items := make(map[string]FeatureSpecFleetobservabilityLoggingConfigDefaultConfig)
+	for k, item := range a {
+		items[k] = *flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigSlice flattens the contents of FeatureSpecFleetobservabilityLoggingConfigDefaultConfig from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigSlice(c *Client, i interface{}, res *Feature) []FeatureSpecFleetobservabilityLoggingConfigDefaultConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []FeatureSpecFleetobservabilityLoggingConfigDefaultConfig{}
+	}
+
+	if len(a) == 0 {
+		return []FeatureSpecFleetobservabilityLoggingConfigDefaultConfig{}
+	}
+
+	items := make([]FeatureSpecFleetobservabilityLoggingConfigDefaultConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandFeatureSpecFleetobservabilityLoggingConfigDefaultConfig expands an instance of FeatureSpecFleetobservabilityLoggingConfigDefaultConfig into a JSON
+// request object.
+func expandFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(c *Client, f *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig, res *Feature) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.Mode; !dcl.IsEmptyValueIndirect(v) {
+		m["mode"] = v
+	}
+
+	return m, nil
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfig flattens an instance of FeatureSpecFleetobservabilityLoggingConfigDefaultConfig from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfig(c *Client, i interface{}, res *Feature) *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &FeatureSpecFleetobservabilityLoggingConfigDefaultConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyFeatureSpecFleetobservabilityLoggingConfigDefaultConfig
+	}
+	r.Mode = flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum(m["mode"])
+
+	return r
+}
+
+// expandFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigMap expands the contents of FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig into a JSON
+// request object.
+func expandFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigMap(c *Client, f map[string]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig, res *Feature) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigSlice expands the contents of FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig into a JSON
+// request object.
+func expandFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigSlice(c *Client, f []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig, res *Feature) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigMap flattens the contents of FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigMap(c *Client, i interface{}, res *Feature) map[string]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig{}
+	}
+
+	items := make(map[string]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig)
+	for k, item := range a {
+		items[k] = *flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigSlice flattens the contents of FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigSlice(c *Client, i interface{}, res *Feature) []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig{}
+	}
+
+	if len(a) == 0 {
+		return []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig{}
+	}
+
+	items := make([]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig expands an instance of FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig into a JSON
+// request object.
+func expandFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(c *Client, f *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig, res *Feature) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.Mode; !dcl.IsEmptyValueIndirect(v) {
+		m["mode"] = v
+	}
+
+	return m, nil
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig flattens an instance of FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig(c *Client, i interface{}, res *Feature) *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig
+	}
+	r.Mode = flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum(m["mode"])
 
 	return r
 }
@@ -2030,6 +3122,108 @@ func flattenFeatureResourceStateStateEnum(i interface{}) *FeatureResourceStateSt
 	return FeatureResourceStateStateEnumRef(s)
 }
 
+// flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnumMap flattens the contents of FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnumMap(c *Client, i interface{}, res *Feature) map[string]FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum{}
+	}
+
+	if len(a) == 0 {
+		return map[string]FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum{}
+	}
+
+	items := make(map[string]FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum)
+	for k, item := range a {
+		items[k] = *flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum(item.(interface{}))
+	}
+
+	return items
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnumSlice flattens the contents of FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnumSlice(c *Client, i interface{}, res *Feature) []FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum{}
+	}
+
+	if len(a) == 0 {
+		return []FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum{}
+	}
+
+	items := make([]FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum(item.(interface{})))
+	}
+
+	return items
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum asserts that an interface is a string, and returns a
+// pointer to a *FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum with the same value as that string.
+func flattenFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum(i interface{}) *FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum {
+	s, ok := i.(string)
+	if !ok {
+		return nil
+	}
+
+	return FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnumRef(s)
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnumMap flattens the contents of FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnumMap(c *Client, i interface{}, res *Feature) map[string]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum{}
+	}
+
+	if len(a) == 0 {
+		return map[string]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum{}
+	}
+
+	items := make(map[string]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum)
+	for k, item := range a {
+		items[k] = *flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum(item.(interface{}))
+	}
+
+	return items
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnumSlice flattens the contents of FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum from a JSON
+// response object.
+func flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnumSlice(c *Client, i interface{}, res *Feature) []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum{}
+	}
+
+	if len(a) == 0 {
+		return []FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum{}
+	}
+
+	items := make([]FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum(item.(interface{})))
+	}
+
+	return items
+}
+
+// flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum asserts that an interface is a string, and returns a
+// pointer to a *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum with the same value as that string.
+func flattenFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum(i interface{}) *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum {
+	s, ok := i.(string)
+	if !ok {
+		return nil
+	}
+
+	return FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnumRef(s)
+}
+
 // flattenFeatureStateStateCodeEnumMap flattens the contents of FeatureStateStateCodeEnum from a JSON
 // response object.
 func flattenFeatureStateStateCodeEnumMap(c *Client, i interface{}, res *Feature) map[string]FeatureStateStateCodeEnum {
@@ -2225,9 +3419,65 @@ func extractFeatureSpecFields(r *Feature, o *FeatureSpec) error {
 	if !dcl.IsEmptyValueIndirect(vMulticlusteringress) {
 		o.Multiclusteringress = vMulticlusteringress
 	}
+	vFleetobservability := o.Fleetobservability
+	if vFleetobservability == nil {
+		// note: explicitly not the empty object.
+		vFleetobservability = &FeatureSpecFleetobservability{}
+	}
+	if err := extractFeatureSpecFleetobservabilityFields(r, vFleetobservability); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vFleetobservability) {
+		o.Fleetobservability = vFleetobservability
+	}
 	return nil
 }
 func extractFeatureSpecMulticlusteringressFields(r *Feature, o *FeatureSpecMulticlusteringress) error {
+	return nil
+}
+func extractFeatureSpecFleetobservabilityFields(r *Feature, o *FeatureSpecFleetobservability) error {
+	vLoggingConfig := o.LoggingConfig
+	if vLoggingConfig == nil {
+		// note: explicitly not the empty object.
+		vLoggingConfig = &FeatureSpecFleetobservabilityLoggingConfig{}
+	}
+	if err := extractFeatureSpecFleetobservabilityLoggingConfigFields(r, vLoggingConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
+		o.LoggingConfig = vLoggingConfig
+	}
+	return nil
+}
+func extractFeatureSpecFleetobservabilityLoggingConfigFields(r *Feature, o *FeatureSpecFleetobservabilityLoggingConfig) error {
+	vDefaultConfig := o.DefaultConfig
+	if vDefaultConfig == nil {
+		// note: explicitly not the empty object.
+		vDefaultConfig = &FeatureSpecFleetobservabilityLoggingConfigDefaultConfig{}
+	}
+	if err := extractFeatureSpecFleetobservabilityLoggingConfigDefaultConfigFields(r, vDefaultConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vDefaultConfig) {
+		o.DefaultConfig = vDefaultConfig
+	}
+	vFleetScopeLogsConfig := o.FleetScopeLogsConfig
+	if vFleetScopeLogsConfig == nil {
+		// note: explicitly not the empty object.
+		vFleetScopeLogsConfig = &FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig{}
+	}
+	if err := extractFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigFields(r, vFleetScopeLogsConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vFleetScopeLogsConfig) {
+		o.FleetScopeLogsConfig = vFleetScopeLogsConfig
+	}
+	return nil
+}
+func extractFeatureSpecFleetobservabilityLoggingConfigDefaultConfigFields(r *Feature, o *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig) error {
+	return nil
+}
+func extractFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigFields(r *Feature, o *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig) error {
 	return nil
 }
 func extractFeatureStateFields(r *Feature, o *FeatureState) error {
@@ -2299,9 +3549,65 @@ func postReadExtractFeatureSpecFields(r *Feature, o *FeatureSpec) error {
 	if !dcl.IsEmptyValueIndirect(vMulticlusteringress) {
 		o.Multiclusteringress = vMulticlusteringress
 	}
+	vFleetobservability := o.Fleetobservability
+	if vFleetobservability == nil {
+		// note: explicitly not the empty object.
+		vFleetobservability = &FeatureSpecFleetobservability{}
+	}
+	if err := extractFeatureSpecFleetobservabilityFields(r, vFleetobservability); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vFleetobservability) {
+		o.Fleetobservability = vFleetobservability
+	}
 	return nil
 }
 func postReadExtractFeatureSpecMulticlusteringressFields(r *Feature, o *FeatureSpecMulticlusteringress) error {
+	return nil
+}
+func postReadExtractFeatureSpecFleetobservabilityFields(r *Feature, o *FeatureSpecFleetobservability) error {
+	vLoggingConfig := o.LoggingConfig
+	if vLoggingConfig == nil {
+		// note: explicitly not the empty object.
+		vLoggingConfig = &FeatureSpecFleetobservabilityLoggingConfig{}
+	}
+	if err := extractFeatureSpecFleetobservabilityLoggingConfigFields(r, vLoggingConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
+		o.LoggingConfig = vLoggingConfig
+	}
+	return nil
+}
+func postReadExtractFeatureSpecFleetobservabilityLoggingConfigFields(r *Feature, o *FeatureSpecFleetobservabilityLoggingConfig) error {
+	vDefaultConfig := o.DefaultConfig
+	if vDefaultConfig == nil {
+		// note: explicitly not the empty object.
+		vDefaultConfig = &FeatureSpecFleetobservabilityLoggingConfigDefaultConfig{}
+	}
+	if err := extractFeatureSpecFleetobservabilityLoggingConfigDefaultConfigFields(r, vDefaultConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vDefaultConfig) {
+		o.DefaultConfig = vDefaultConfig
+	}
+	vFleetScopeLogsConfig := o.FleetScopeLogsConfig
+	if vFleetScopeLogsConfig == nil {
+		// note: explicitly not the empty object.
+		vFleetScopeLogsConfig = &FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig{}
+	}
+	if err := extractFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigFields(r, vFleetScopeLogsConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vFleetScopeLogsConfig) {
+		o.FleetScopeLogsConfig = vFleetScopeLogsConfig
+	}
+	return nil
+}
+func postReadExtractFeatureSpecFleetobservabilityLoggingConfigDefaultConfigFields(r *Feature, o *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig) error {
+	return nil
+}
+func postReadExtractFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigFields(r *Feature, o *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig) error {
 	return nil
 }
 func postReadExtractFeatureStateFields(r *Feature, o *FeatureState) error {

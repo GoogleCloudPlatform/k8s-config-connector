@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -104,6 +106,7 @@ func TestAccBigqueryDatasetIamPolicy(t *testing.T) {
 			{
 				// Test IAM Binding creation
 				Config: testAccBigqueryDatasetIamPolicy(dataset, account, role),
+				Check:  resource.TestCheckResourceAttrSet("data.google_bigquery_dataset_iam_policy.policy", "policy_data"),
 			},
 			{
 				ResourceName:      "google_bigquery_dataset_iam_policy.policy",
@@ -192,6 +195,10 @@ data "google_iam_policy" "policy" {
 resource "google_bigquery_dataset_iam_policy" "policy" {
   dataset_id  = google_bigquery_dataset.dataset.dataset_id
   policy_data = data.google_iam_policy.policy.policy_data
+}
+
+data "google_bigquery_dataset_iam_policy" "policy" {
+  dataset_id  = google_bigquery_dataset.dataset.dataset_id
 }
 `, dataset, account, role)
 }

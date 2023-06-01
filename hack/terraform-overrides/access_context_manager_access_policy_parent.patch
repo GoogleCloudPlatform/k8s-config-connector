@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_access_context_manager_access_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_access_context_manager_access_policy.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/accesscontextmanager/resource_access_context_manager_access_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/accesscontextmanager/resource_access_context_manager_access_policy.go
 index 9b3c3ad68..d6475afbc 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_access_context_manager_access_policy.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_access_context_manager_access_policy.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/accesscontextmanager/resource_access_context_manager_access_policy.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/accesscontextmanager/resource_access_context_manager_access_policy.go
 @@ -45,12 +45,11 @@ func ResourceAccessContextManagerAccessPolicy() *schema.Resource {
  		},
  

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeGlobalAddress_globalAddressBasicExample(t *testing.T) {
 }
 
 func testAccComputeGlobalAddress_globalAddressBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_global_address" "default" {
   name = "tf-test-global-appserver-ip%{random_suffix}"
 }
@@ -86,7 +89,7 @@ func TestAccComputeGlobalAddress_globalAddressPrivateServicesConnectExample(t *t
 }
 
 func testAccComputeGlobalAddress_globalAddressPrivateServicesConnectExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_global_address" "default" {
   provider      = google-beta
   name          = "tf-test-global-psconnect-ip%{random_suffix}"
@@ -127,7 +130,13 @@ func testAccCheckComputeGlobalAddressDestroyProducer(t *testing.T) func(s *terra
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeGlobalAddress still exists at %s", url)
 			}

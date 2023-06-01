@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -6,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/healthcare"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 
@@ -50,7 +53,7 @@ func TestAccHealthcareDicomStoreIdParsing(t *testing.T) {
 	}
 
 	for tn, tc := range cases {
-		dicomStoreId, err := ParseHealthcareDicomStoreId(tc.ImportId, tc.Config)
+		dicomStoreId, err := healthcare.ParseHealthcareDicomStoreId(tc.ImportId, tc.Config)
 
 		if tc.ExpectedError && err == nil {
 			t.Fatalf("bad: %s, expected an error", tn)

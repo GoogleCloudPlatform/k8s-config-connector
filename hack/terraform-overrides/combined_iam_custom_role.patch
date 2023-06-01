@@ -3,13 +3,13 @@ index 64552d974..04b78afc1 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
 @@ -1459,6 +1459,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
- 			"google_healthcare_fhir_store":                                 ResourceHealthcareFhirStore(),
- 			"google_healthcare_hl7_v2_store":                               ResourceHealthcareHl7V2Store(),
- 			"google_iam_access_boundary_policy":                            ResourceIAM2AccessBoundaryPolicy(),
-+			"google_iam_custom_role":                                       resourceIamCustomRole(),
- 			"google_iam_deny_policy":                                       ResourceIAM2DenyPolicy(),
- 			"google_iam_workload_identity_pool":                            ResourceIAMBetaWorkloadIdentityPool(),
- 			"google_iam_workload_identity_pool_provider":                   ResourceIAMBetaWorkloadIdentityPoolProvider(),
+ 			"google_healthcare_fhir_store":                                   healthcare.ResourceHealthcareFhirStore(),
+ 			"google_healthcare_hl7_v2_store":                                 healthcare.ResourceHealthcareHl7V2Store(),
+ 			"google_iam_access_boundary_policy":                              iam2.ResourceIAM2AccessBoundaryPolicy(),
++			"google_iam_custom_role":                                         resourceIamCustomRole(),
+ 			"google_iam_deny_policy":                                         iam2.ResourceIAM2DenyPolicy(),
+ 			"google_iam_workload_identity_pool":                              iambeta.ResourceIAMBetaWorkloadIdentityPool(),
+ 			"google_iam_workload_identity_pool_provider":                     iambeta.ResourceIAMBetaWorkloadIdentityPoolProvider(),
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go
 index 2bf76615c..47b7fc6fa 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go

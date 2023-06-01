@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -605,6 +607,161 @@ resource "google_workstations_workstation_config" "default" {
 
   container {
     image       = "us-central1-docker.pkg.dev/cloud-workstations-images/predefined/code-oss:latest"
+  }
+}
+`, context)
+}
+
+func TestAccWorkstationsWorkstationConfig_updatePersistentDirectorySourceSnapshot(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckWorkstationsWorkstationConfigDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccWorkstationsWorkstationConfig_withSourceDiskSnapshot(context),
+			},
+			{
+				ResourceName:            "google_workstations_workstation_cluster.default",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"etag"},
+			},
+			{
+				Config: testAccWorkstationsWorkstationConfig_withUpdatedSourceDiskSnapshot(context),
+			},
+			{
+				ResourceName:            "google_workstations_workstation_cluster.default",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"etag"},
+			},
+		},
+	})
+}
+
+func testAccWorkstationsWorkstationConfig_withSourceDiskSnapshot(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_compute_network" "default" {
+  provider                = google-beta
+  name                    = "tf-test-workstation-cluster%{random_suffix}"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "default" {
+  provider      = google-beta
+  name          = "tf-test-workstation-cluster%{random_suffix}"
+  ip_cidr_range = "10.0.0.0/24"
+  region        = "us-central1"
+  network       = google_compute_network.default.name
+}
+
+resource "google_compute_disk" "test_source_disk" {
+  provider = google-beta
+  name     = "tf-test-workstation-source-disk%{random_suffix}"
+  size     = 10
+  type     = "pd-ssd"
+  zone     = "us-central1-a"
+}
+
+resource "google_compute_snapshot" "test_source_snapshot" {
+  provider    = google-beta
+  name        = "tf-test-workstation-source-snapshot%{random_suffix}"
+  source_disk = google_compute_disk.test_source_disk.name
+  zone        = "us-central1-a"
+}
+
+resource "google_workstations_workstation_cluster" "default" {
+  provider                   = google-beta
+  workstation_cluster_id     = "tf-test-workstation-cluster%{random_suffix}"
+  network                    = google_compute_network.default.id
+  subnetwork                 = google_compute_subnetwork.default.id
+  location                   = "us-central1"
+}
+
+resource "google_workstations_workstation_config" "default" {
+  provider               = google-beta
+  workstation_config_id  = "tf-test-workstation-config%{random_suffix}"
+  workstation_cluster_id = google_workstations_workstation_cluster.default.workstation_cluster_id
+  location               = "us-central1"
+
+  persistent_directories {
+    mount_path = "/home"
+
+    gce_pd {
+      source_snapshot = google_compute_snapshot.test_source_snapshot.id
+      reclaim_policy  = "DELETE"
+    }
+  }
+}
+`, context)
+}
+
+func testAccWorkstationsWorkstationConfig_withUpdatedSourceDiskSnapshot(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_compute_network" "default" {
+  provider                = google-beta
+  name                    = "tf-test-workstation-cluster%{random_suffix}"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "default" {
+  provider      = google-beta
+  name          = "tf-test-workstation-cluster%{random_suffix}"
+  ip_cidr_range = "10.0.0.0/24"
+  region        = "us-central1"
+  network       = google_compute_network.default.name
+}
+
+resource "google_compute_disk" "test_source_disk" {
+  provider = google-beta
+  name     = "tf-test-workstation-source-disk%{random_suffix}"
+  size     = 10
+  type     = "pd-ssd"
+  zone     = "us-central1-a"
+}
+
+resource "google_compute_snapshot" "test_source_snapshot" {
+  provider    = google-beta
+  name        = "tf-test-workstation-source-snapshot%{random_suffix}"
+  source_disk = google_compute_disk.test_source_disk.name
+  zone        = "us-central1-a"
+}
+
+resource "google_compute_snapshot" "test_source_snapshot2" {
+  provider    = google-beta
+  name        = "tf-test-workstation-source-snapshot2%{random_suffix}"
+  source_disk = google_compute_disk.test_source_disk.name
+  zone        = "us-central1-a"
+}
+
+resource "google_workstations_workstation_cluster" "default" {
+  provider                   = google-beta
+  workstation_cluster_id     = "tf-test-workstation-cluster%{random_suffix}"
+  network                    = google_compute_network.default.id
+  subnetwork                 = google_compute_subnetwork.default.id
+  location                   = "us-central1"
+}
+
+resource "google_workstations_workstation_config" "default" {
+  provider               = google-beta
+  workstation_config_id  = "tf-test-workstation-config%{random_suffix}"
+  workstation_cluster_id = google_workstations_workstation_cluster.default.workstation_cluster_id
+  location               = "us-central1"
+
+  persistent_directories {
+    mount_path = "/home"
+
+    gce_pd {
+      source_snapshot = google_compute_snapshot.test_source_snapshot2.id
+      reclaim_policy  = "RETAIN"
+    }
   }
 }
 `, context)

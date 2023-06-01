@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -12,7 +14,7 @@ func TestAccAccessContextManagerAccessPolicyIamBinding(t *testing.T) {
 	acctest.SkipIfVcr(t)
 
 	org := acctest.GetTestOrgFromEnv(t)
-	account := "tf-acm-iam-" + RandString(t, 10)
+	account := "tf-test-" + RandString(t, 10)
 	role := "roles/accesscontextmanager.policyAdmin"
 	policy := createScopedPolicy(t, org)
 	VcrTest(t, resource.TestCase{
@@ -35,7 +37,7 @@ func TestAccAccessContextManagerAccessPolicyIamMember(t *testing.T) {
 	acctest.SkipIfVcr(t)
 
 	org := acctest.GetTestOrgFromEnv(t)
-	account := "tf-acm-iam-" + RandString(t, 10)
+	account := "tf-test-" + RandString(t, 10)
 	role := "roles/accesscontextmanager.policyAdmin"
 	policy := createScopedPolicy(t, org)
 	VcrTest(t, resource.TestCase{
@@ -60,7 +62,7 @@ func TestAccAccessContextManagerAccessPolicyIamPolicy(t *testing.T) {
 	acctest.SkipIfVcr(t)
 
 	org := acctest.GetTestOrgFromEnv(t)
-	account := "tf-acm-iam-" + RandString(t, 10)
+	account := "tf-test-" + RandString(t, 10)
 	role := "roles/accesscontextmanager.policyAdmin"
 	policy := createScopedPolicy(t, org)
 	VcrTest(t, resource.TestCase{

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -52,7 +55,7 @@ func TestAccComputeGlobalNetworkEndpointGroup_globalNetworkEndpointGroupExample(
 }
 
 func testAccComputeGlobalNetworkEndpointGroup_globalNetworkEndpointGroupExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_global_network_endpoint_group" "neg" {
   name                  = "tf-test-my-lb-neg%{random_suffix}"
   default_port          = "90"
@@ -86,7 +89,7 @@ func TestAccComputeGlobalNetworkEndpointGroup_globalNetworkEndpointGroupIpAddres
 }
 
 func testAccComputeGlobalNetworkEndpointGroup_globalNetworkEndpointGroupIpAddressExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_global_network_endpoint_group" "neg" {
   name                  = "tf-test-my-lb-neg%{random_suffix}"
   network_endpoint_type = "INTERNET_IP_PORT"
@@ -118,7 +121,13 @@ func testAccCheckComputeGlobalNetworkEndpointGroupDestroyProducer(t *testing.T) 
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeGlobalNetworkEndpointGroup still exists at %s", url)
 			}

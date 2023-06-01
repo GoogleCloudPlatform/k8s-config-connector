@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -71,8 +74,9 @@ func TestAccFirebaserulesRelease_StorageReleaseHandWritten(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		PreCheck: func() { acctest.AccTestPreCheck(t) },
+
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckFirebaserulesReleaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -146,6 +150,7 @@ resource "google_firebaserules_ruleset" "firestore" {
 func testAccFirebaserulesRelease_StorageReleaseHandWritten(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_firebaserules_release" "primary" {
+  provider     = google-beta
   name         = "firebase.storage/${google_storage_bucket.bucket.name}"
   ruleset_name = "projects/%{project_name}/rulesets/${google_firebaserules_ruleset.storage.name}"
   project      = "%{project_name}"
@@ -159,20 +164,23 @@ resource "google_firebaserules_release" "primary" {
 
 # Provision a non-default Cloud Storage bucket.
 resource "google_storage_bucket" "bucket" {
-  project = "%{project_name}"
-  name    = "tf-test-bucket%{random_suffix}"
+  provider = google-beta
+  project  = "%{project_name}"
+  name     = "tf-test-bucket%{random_suffix}"
   location = "%{region}"
 }
 
 # Make the Storage bucket accessible for Firebase SDKs, authentication, and Firebase Security Rules.
 resource "google_firebase_storage_bucket" "bucket" {
+  provider  = google-beta
   project   = "%{project_name}"
   bucket_id = google_storage_bucket.bucket.name
 }
 
 # Create a ruleset of Firebase Security Rules from a local file.
 resource "google_firebaserules_ruleset" "storage" {
-  project = "%{project_name}"
+  provider = google-beta
+  project  = "%{project_name}"
   source {
     files {
       name    = "storage.rules"

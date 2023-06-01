@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccApiGatewayApiConfig_apigatewayApiConfigBasicExample(t *testing.T) {
 }
 
 func testAccApiGatewayApiConfig_apigatewayApiConfigBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_api_gateway_api" "api_cfg" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -103,7 +106,7 @@ func TestAccApiGatewayApiConfig_apigatewayApiConfigFullExample(t *testing.T) {
 }
 
 func testAccApiGatewayApiConfig_apigatewayApiConfigFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_api_gateway_api" "api_cfg" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -154,7 +157,7 @@ func TestAccApiGatewayApiConfig_apigatewayApiConfigGrpcExample(t *testing.T) {
 }
 
 func testAccApiGatewayApiConfig_apigatewayApiConfigGrpcExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_api_gateway_api" "api_cfg" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -226,7 +229,7 @@ func TestAccApiGatewayApiConfig_apigatewayApiConfigGrpcFullExample(t *testing.T)
 }
 
 func testAccApiGatewayApiConfig_apigatewayApiConfigGrpcFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_api_gateway_api" "api_cfg" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -299,7 +302,13 @@ func testAccCheckApiGatewayApiConfigDestroyProducer(t *testing.T) func(s *terraf
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ApiGatewayApiConfig still exists at %s", url)
 			}

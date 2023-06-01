@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_backend_service.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_backend_service.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_backend_service.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_backend_service.go
 index 6eacadd5..c758b78f 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_backend_service.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_backend_service.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_backend_service.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_backend_service.go
 @@ -202,6 +202,7 @@ When the load balancing scheme is INTERNAL, this field is not used.`,
  			"backend": {
  				Type:        schema.TypeSet,
@@ -24,10 +24,10 @@ index 6eacadd5..c758b78f 100644
  				Description: `The set of backends that serve this BackendService.`,
  				Elem:        computeBackendServiceBackendSchema(),
  				Set:         resourceGoogleComputeBackendServiceBackendHash,
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_region_backend_service.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_region_backend_service.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_region_backend_service.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_region_backend_service.go
 index 58d3e994..752a3d00 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_region_backend_service.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_region_backend_service.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_region_backend_service.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_region_backend_service.go
 @@ -89,6 +89,7 @@ When the load balancing scheme is INTERNAL, this field is not used.`,
  			"backend": {
  				Type:        schema.TypeSet,

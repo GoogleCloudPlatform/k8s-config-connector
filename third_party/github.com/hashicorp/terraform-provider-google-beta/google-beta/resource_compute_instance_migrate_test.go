@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -10,6 +12,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	tpgcompute "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 
@@ -132,7 +135,7 @@ func TestAccComputeInstanceMigrateState_empty(t *testing.T) {
 	var meta interface{}
 
 	// should handle nil
-	is, err := resourceComputeInstanceMigrateState(0, is, meta)
+	is, err := tpgcompute.ResourceComputeInstanceMigrateState(0, is, meta)
 
 	if err != nil {
 		t.Fatalf("err: %#v", err)
@@ -143,7 +146,7 @@ func TestAccComputeInstanceMigrateState_empty(t *testing.T) {
 
 	// should handle non-nil but empty
 	is = &terraform.InstanceState{}
-	_, err = resourceComputeInstanceMigrateState(0, is, meta)
+	_, err = tpgcompute.ResourceComputeInstanceMigrateState(0, is, meta)
 
 	if err != nil {
 		t.Fatalf("err: %#v", err)
@@ -863,7 +866,7 @@ func runInstanceMigrateTest(t *testing.T, id, testName string, version int, attr
 		ID:         id,
 		Attributes: attributes,
 	}
-	_, err := resourceComputeInstanceMigrateState(version, is, meta)
+	_, err := tpgcompute.ResourceComputeInstanceMigrateState(version, is, meta)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -198,6 +200,42 @@ func TestAccComputeRegionDisk_cloneDisk(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_compute_region_disk.regiondisk-clone",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func TestAccComputeRegionDisk_featuresUpdated(t *testing.T) {
+	t.Parallel()
+
+	diskName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+
+	var disk compute.Disk
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeRegionDisk_features(diskName),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckComputeRegionDiskExists(
+						t, "google_compute_region_disk.regiondisk", &disk),
+				),
+			},
+			{
+				ResourceName:      "google_compute_region_disk.regiondisk",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeRegionDisk_featuresUpdated(diskName),
+			},
+			{
+				ResourceName:      "google_compute_region_disk.regiondisk",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -477,4 +515,42 @@ func testAccComputeRegionDisk_diskClone(diskName, refSelector string) string {
 		replica_zones = ["us-central1-a", "us-central1-f"]
 	  }
 	`, diskName, diskName, diskName, diskName+"-clone", refSelector)
+}
+
+func testAccComputeRegionDisk_features(diskName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_region_disk" "regiondisk" {
+  name   = "%s"
+  type   = "pd-ssd"
+  size   = 50
+  region = "us-central1"
+
+  guest_os_features {
+    type = "SECURE_BOOT"
+  }
+
+  replica_zones = ["us-central1-a", "us-central1-f"]
+}
+`, diskName)
+}
+
+func testAccComputeRegionDisk_featuresUpdated(diskName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_region_disk" "regiondisk" {
+  name   = "%s"
+  type   = "pd-ssd"
+  size   = 50
+  region = "us-central1"
+
+  guest_os_features {
+    type = "SECURE_BOOT"
+  }
+
+  guest_os_features {
+    type = "MULTI_IP_SUBNET"
+  }
+
+  replica_zones = ["us-central1-a", "us-central1-f"]
+}
+`, diskName)
 }

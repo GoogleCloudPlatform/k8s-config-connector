@@ -40,6 +40,12 @@ type InstanceActiveDirectoryConfig struct {
 	Domain string `json:"domain"`
 }
 
+type InstanceAdvancedMachineFeatures struct {
+	/* The number of threads per physical core. Can be 1 or 2. */
+	// +optional
+	ThreadsPerCore *int `json:"threadsPerCore,omitempty"`
+}
+
 type InstanceAuthorizedNetworks struct {
 	// +optional
 	ExpirationTime *string `json:"expirationTime,omitempty"`
@@ -278,6 +284,9 @@ type InstanceSettings struct {
 
 	// +optional
 	ActiveDirectoryConfig *InstanceActiveDirectoryConfig `json:"activeDirectoryConfig,omitempty"`
+
+	// +optional
+	AdvancedMachineFeatures *InstanceAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
 
 	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
 	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */

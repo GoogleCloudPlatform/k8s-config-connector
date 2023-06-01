@@ -87,6 +87,12 @@ projectRef:
   namespace: string
 resourceID: string
 spec:
+  fleetobservability:
+    loggingConfig:
+      defaultConfig:
+        mode: string
+      fleetScopeLogsConfig:
+        mode: string
   multiclusteringress:
     configMembershipRef:
       external: string
@@ -171,6 +177,66 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Optional. Hub-wide Feature configuration. If this Feature does not support any Hub-wide configuration, this field may be unused.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spec.fleetobservability</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Fleet Observability spec.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spec.fleetobservability.loggingConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Fleet Observability Logging-specific spec.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spec.fleetobservability.loggingConfig.defaultConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Specified if applying the default routing config to logs not specified in other configs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spec.fleetobservability.loggingConfig.defaultConfig.mode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The logs routing mode Possible values: MODE_UNSPECIFIED, COPY, MOVE{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spec.fleetobservability.loggingConfig.fleetScopeLogsConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Specified if applying the routing config to all logs for all fleet scopes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spec.fleetobservability.loggingConfig.fleetScopeLogsConfig.mode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The logs routing mode Possible values: MODE_UNSPECIFIED, COPY, MOVE{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

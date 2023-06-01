@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,9 +56,9 @@ func TestAccCloudBuildBitbucketServerConfig_cloudbuildBitbucketServerConfigExamp
 }
 
 func testAccCloudBuildBitbucketServerConfig_cloudbuildBitbucketServerConfigExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_cloudbuild_bitbucket_server_config" "bbs-config" {
-    config_id = "mybbsconfig"
+    config_id = "tf-test-bbs-config%{random_suffix}"
     location = "us-central1"
     host_uri = "https://bbs.com"
     secrets {
@@ -96,7 +99,7 @@ func TestAccCloudBuildBitbucketServerConfig_cloudbuildBitbucketServerConfigPeere
 }
 
 func testAccCloudBuildBitbucketServerConfig_cloudbuildBitbucketServerConfigPeeredNetworkExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_project" "project" {}
 
 resource "google_project_service" "servicenetworking" {
@@ -125,7 +128,7 @@ resource "google_service_networking_connection" "default" {
 }
 
 resource "google_cloudbuild_bitbucket_server_config" "bbs-config-with-peered-network" {
-    config_id = "mybbsconfig"
+    config_id = "tf-test-bbs-config%{random_suffix}"
     location = "us-central1"
     host_uri = "https://bbs.com"
     secrets {
@@ -165,7 +168,13 @@ func testAccCheckCloudBuildBitbucketServerConfigDestroyProducer(t *testing.T) fu
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("CloudBuildBitbucketServerConfig still exists at %s", url)
 			}

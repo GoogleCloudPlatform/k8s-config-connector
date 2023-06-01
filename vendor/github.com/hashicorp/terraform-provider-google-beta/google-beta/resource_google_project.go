@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -12,6 +14,8 @@ import (
 
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
+	tpgserviceusage "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/serviceusage"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"
@@ -139,10 +143,13 @@ func resourceGoogleProjectCreate(d *schema.ResourceData, meta interface{}) error
 	}
 
 	var op *cloudresourcemanager.Operation
-	err = transport_tpg.RetryTimeDuration(func() (reqErr error) {
-		op, reqErr = config.NewResourceManagerClient(userAgent).Projects.Create(project).Do()
-		return reqErr
-	}, d.Timeout(schema.TimeoutCreate))
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (reqErr error) {
+			op, reqErr = config.NewResourceManagerClient(userAgent).Projects.Create(project).Do()
+			return reqErr
+		},
+		Timeout: d.Timeout(schema.TimeoutCreate),
+	})
 	if err != nil {
 		return fmt.Errorf("error creating project %s (%s): %s. "+
 			"If you received a 403 error, make sure you have the"+
@@ -224,7 +231,7 @@ func resourceGoogleProjectCheckPreRequisites(config *transport_tpg.Config, d *sc
 	if err != nil {
 		return fmt.Errorf("failed to check permissions on billing account %q: %v", ba, err)
 	}
-	if !stringInSlice(resp.Permissions, perm) {
+	if !tpgresource.StringInSlice(resp.Permissions, perm) {
 		return fmt.Errorf("missing permission on %q: %v", ba, perm)
 	}
 	if !d.Get("auto_create_network").(bool) {
@@ -309,10 +316,13 @@ func resourceGoogleProjectRead(d *schema.ResourceData, meta interface{}) error {
 	}
 
 	var ba *cloudbilling.ProjectBillingInfo
-	err = transport_tpg.RetryTimeDuration(func() (reqErr error) {
-		ba, reqErr = config.NewBillingClient(userAgent).Projects.GetBillingInfo(PrefixedProject(pid)).Do()
-		return reqErr
-	}, d.Timeout(schema.TimeoutRead))
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (reqErr error) {
+			ba, reqErr = config.NewBillingClient(userAgent).Projects.GetBillingInfo(PrefixedProject(pid)).Do()
+			return reqErr
+		},
+		Timeout: d.Timeout(schema.TimeoutRead),
+	})
 	// Read the billing account
 	if err != nil && !transport_tpg.IsApiNotEnabledError(err) {
 		return fmt.Errorf("Error reading billing account for project %q: %v", PrefixedProject(pid), err)
@@ -442,10 +452,13 @@ func resourceGoogleProjectUpdate(d *schema.ResourceData, meta interface{}) error
 
 func updateProject(config *transport_tpg.Config, d *schema.ResourceData, projectName, userAgent string, desiredProject *cloudresourcemanager.Project) (*cloudresourcemanager.Project, error) {
 	var newProj *cloudresourcemanager.Project
-	if err := transport_tpg.RetryTimeDuration(func() (updateErr error) {
-		newProj, updateErr = config.NewResourceManagerClient(userAgent).Projects.Update(desiredProject.ProjectId, desiredProject).Do()
-		return updateErr
-	}, d.Timeout(schema.TimeoutUpdate)); err != nil {
+	if err := transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (updateErr error) {
+			newProj, updateErr = config.NewResourceManagerClient(userAgent).Projects.Update(desiredProject.ProjectId, desiredProject).Do()
+			return updateErr
+		},
+		Timeout: d.Timeout(schema.TimeoutUpdate),
+	}); err != nil {
 		return nil, fmt.Errorf("Error updating project %q: %s", projectName, err)
 	}
 	return newProj, nil
@@ -461,10 +474,13 @@ func resourceGoogleProjectDelete(d *schema.ResourceData, meta interface{}) error
 	if !d.Get("skip_delete").(bool) {
 		parts := strings.Split(d.Id(), "/")
 		pid := parts[len(parts)-1]
-		if err := transport_tpg.RetryTimeDuration(func() error {
-			_, delErr := config.NewResourceManagerClient(userAgent).Projects.Delete(pid).Do()
-			return delErr
-		}, d.Timeout(schema.TimeoutDelete)); err != nil {
+		if err := transport_tpg.Retry(transport_tpg.RetryOptions{
+			RetryFunc: func() error {
+				_, delErr := config.NewResourceManagerClient(userAgent).Projects.Delete(pid).Do()
+				return delErr
+			},
+			Timeout: d.Timeout(schema.TimeoutDelete),
+		}); err != nil {
 			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Project %s", pid))
 		}
 	}
@@ -558,7 +574,10 @@ func updateProjectBillingAccount(d *schema.ResourceData, config *transport_tpg.C
 		_, err := config.NewBillingClient(userAgent).Projects.UpdateBillingInfo(PrefixedProject(pid), ba).Do()
 		return err
 	}
-	err := transport_tpg.RetryTimeDuration(updateBillingInfoFunc, d.Timeout(schema.TimeoutUpdate))
+	err := transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: updateBillingInfoFunc,
+		Timeout:   d.Timeout(schema.TimeoutUpdate),
+	})
 	if err != nil {
 		if err := d.Set("billing_account", ""); err != nil {
 			return fmt.Errorf("Error setting billing_account: %s", err)
@@ -570,10 +589,13 @@ func updateProjectBillingAccount(d *schema.ResourceData, config *transport_tpg.C
 	}
 	for retries := 0; retries < 3; retries++ {
 		var ba *cloudbilling.ProjectBillingInfo
-		err = transport_tpg.RetryTimeDuration(func() (reqErr error) {
-			ba, reqErr = config.NewBillingClient(userAgent).Projects.GetBillingInfo(PrefixedProject(pid)).Do()
-			return reqErr
-		}, d.Timeout(schema.TimeoutRead))
+		err = transport_tpg.Retry(transport_tpg.RetryOptions{
+			RetryFunc: func() (reqErr error) {
+				ba, reqErr = config.NewBillingClient(userAgent).Projects.GetBillingInfo(PrefixedProject(pid)).Do()
+				return reqErr
+			},
+			Timeout: d.Timeout(schema.TimeoutRead),
+		})
 		if err != nil {
 			return fmt.Errorf("Error getting billing info for project %q: %v", PrefixedProject(pid), err)
 		}
@@ -606,10 +628,13 @@ func readGoogleProject(d *schema.ResourceData, config *transport_tpg.Config, use
 	// Read the project
 	parts := strings.Split(d.Id(), "/")
 	pid := parts[len(parts)-1]
-	err := transport_tpg.RetryTimeDuration(func() (reqErr error) {
-		p, reqErr = config.NewResourceManagerClient(userAgent).Projects.Get(pid).Do()
-		return reqErr
-	}, d.Timeout(schema.TimeoutRead))
+	err := transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (reqErr error) {
+			p, reqErr = config.NewResourceManagerClient(userAgent).Projects.Get(pid).Do()
+			return reqErr
+		},
+		Timeout: d.Timeout(schema.TimeoutRead),
+	})
 	return p, err
 }
 
@@ -641,39 +666,79 @@ func EnableServiceUsageProjectServices(services []string, project, billingProjec
 
 func doEnableServicesRequest(services []string, project, billingProject, userAgent string, config *transport_tpg.Config, timeout time.Duration) error {
 	var op *serviceusage.Operation
-	var call ServicesCall
-	err := transport_tpg.RetryTimeDuration(func() error {
-		var rerr error
-		if len(services) == 1 {
-			// BatchEnable returns an error for a single item, so just enable
-			// using service endpoint.
-			name := fmt.Sprintf("projects/%s/services/%s", project, services[0])
-			req := &serviceusage.EnableServiceRequest{}
-			call = config.NewServiceUsageClient(userAgent).Services.Enable(name, req)
-		} else {
-			// Batch enable for multiple services.
-			name := fmt.Sprintf("projects/%s", project)
-			req := &serviceusage.BatchEnableServicesRequest{ServiceIds: services}
-			call = config.NewServiceUsageClient(userAgent).Services.BatchEnable(name, req)
-		}
-		if config.UserProjectOverride && billingProject != "" {
-			call.Header().Add("X-Goog-User-Project", billingProject)
-		}
-		op, rerr = call.Do()
-		return handleServiceUsageRetryableError(rerr)
-	},
-		timeout,
-		transport_tpg.ServiceUsageServiceBeingActivated,
-	)
-	if err != nil {
-		return errwrap.Wrapf("failed to send enable services request: {{err}}", err)
+
+	// errors can come up at multiple points, so there are a few levels of
+	// retrying here.
+	// logicalErr / waitErr: overall error on the logical operation (enabling services)
+	// but possibly also errors when retrieving the LRO (these are rare)
+	// err / reqErr: precondition errors when sending the request received instead of an LRO
+	logicalErr := transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() error {
+			err := transport_tpg.Retry(transport_tpg.RetryOptions{
+				RetryFunc: func() error {
+					var reqErr error
+					var call ServicesCall
+					if len(services) == 1 {
+						// BatchEnable returns an error for a single item, so enable with single endpoint
+						name := fmt.Sprintf("projects/%s/services/%s", project, services[0])
+						req := &serviceusage.EnableServiceRequest{}
+						call = config.NewServiceUsageClient(userAgent).Services.Enable(name, req)
+					} else {
+						// Batch enable for multiple services.
+						name := fmt.Sprintf("projects/%s", project)
+						req := &serviceusage.BatchEnableServicesRequest{ServiceIds: services}
+						call = config.NewServiceUsageClient(userAgent).Services.BatchEnable(name, req)
+					}
+
+					if config.UserProjectOverride && billingProject != "" {
+						call.Header().Add("X-Goog-User-Project", billingProject)
+					}
+
+					op, reqErr = call.Do()
+					return handleServiceUsageRetryablePreconditionError(reqErr)
+				},
+				Timeout:              timeout,
+				ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.ServiceUsageServiceBeingActivated},
+			})
+			if err != nil {
+				return errwrap.Wrapf("failed on request preconditions: {{err}}", err)
+			}
+
+			waitErr := tpgserviceusage.ServiceUsageOperationWait(config, op, billingProject, fmt.Sprintf("Enable Project %q Services: %+v", project, services), userAgent, timeout)
+			if waitErr != nil {
+				return waitErr
+			}
+
+			return nil
+		},
+		Timeout:              timeout,
+		ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.ServiceUsageInternalError160009},
+	})
+
+	if logicalErr != nil {
+		return errwrap.Wrapf("failed to enable services: {{err}}", logicalErr)
 	}
-	// Poll for the API to return
-	waitErr := serviceUsageOperationWait(config, op, billingProject, fmt.Sprintf("Enable Project %q Services: %+v", project, services), userAgent, timeout)
-	if waitErr != nil {
-		return waitErr
-	}
+
 	return nil
+}
+
+// Handle errors that are retryable at call time for serviceusage
+// Specifically, errors in https://cloud.google.com/service-usage/docs/reference/rest/v1/services/batchEnable#response-body
+// Errors in operations are handled separately.
+// NOTE(rileykarson): This should probably be turned into a retry predicate
+func handleServiceUsageRetryablePreconditionError(err error) error {
+	if err == nil {
+		return nil
+	}
+	if gerr, ok := err.(*googleapi.Error); ok {
+		if (gerr.Code == 400 || gerr.Code == 412) && gerr.Message == "Precondition check failed." {
+			return &googleapi.Error{
+				Code:    503,
+				Message: "api returned \"precondition failed\" while enabling service",
+			}
+		}
+	}
+	return err
 }
 
 // Retrieve a project's services from the API
@@ -683,33 +748,36 @@ func doEnableServicesRequest(services []string, project, billingProject, userAge
 func ListCurrentlyEnabledServices(project, billingProject, userAgent string, config *transport_tpg.Config, timeout time.Duration) (map[string]struct{}, error) {
 	log.Printf("[DEBUG] Listing enabled services for project %s", project)
 	apiServices := make(map[string]struct{})
-	err := transport_tpg.RetryTimeDuration(func() error {
-		ctx := context.Background()
-		call := config.NewServiceUsageClient(userAgent).Services.List(fmt.Sprintf("projects/%s", project))
-		if config.UserProjectOverride && billingProject != "" {
-			call.Header().Add("X-Goog-User-Project", billingProject)
-		}
-		return call.Fields("services/name,nextPageToken").Filter("state:ENABLED").
-			Pages(ctx, func(r *serviceusage.ListServicesResponse) error {
-				for _, v := range r.Services {
-					// services are returned as "projects/{{project}}/services/{{name}}"
-					name := tpgresource.GetResourceNameFromSelfLink(v.Name)
+	err := transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() error {
+			ctx := context.Background()
+			call := config.NewServiceUsageClient(userAgent).Services.List(fmt.Sprintf("projects/%s", project))
+			if config.UserProjectOverride && billingProject != "" {
+				call.Header().Add("X-Goog-User-Project", billingProject)
+			}
+			return call.Fields("services/name,nextPageToken").Filter("state:ENABLED").
+				Pages(ctx, func(r *serviceusage.ListServicesResponse) error {
+					for _, v := range r.Services {
+						// services are returned as "projects/{{project}}/services/{{name}}"
+						name := tpgresource.GetResourceNameFromSelfLink(v.Name)
 
-					// if name not in ignoredProjectServicesSet
-					if _, ok := ignoredProjectServicesSet[name]; !ok {
-						apiServices[name] = struct{}{}
+						// if name not in ignoredProjectServicesSet
+						if _, ok := ignoredProjectServicesSet[name]; !ok {
+							apiServices[name] = struct{}{}
 
-						// if a service has been renamed, set both. We'll deal
-						// with setting the right values later.
-						if v, ok := renamedServicesByOldAndNewServiceNames[name]; ok {
-							log.Printf("[DEBUG] Adding service alias for %s to enabled services: %s", name, v)
-							apiServices[v] = struct{}{}
+							// if a service has been renamed, set both. We'll deal
+							// with setting the right values later.
+							if v, ok := renamedServicesByOldAndNewServiceNames[name]; ok {
+								log.Printf("[DEBUG] Adding service alias for %s to enabled services: %s", name, v)
+								apiServices[v] = struct{}{}
+							}
 						}
 					}
-				}
-				return nil
-			})
-	}, timeout)
+					return nil
+				})
+		},
+		Timeout: timeout,
+	})
 	if err != nil {
 		return nil, errwrap.Wrapf(fmt.Sprintf("Failed to list enabled services for project %s: {{err}}", project), err)
 	}
@@ -723,33 +791,36 @@ func waitForServiceUsageEnabledServices(services []string, project, billingProje
 	missing := make([]string, 0, len(services))
 	delay := time.Duration(0)
 	interval := time.Second
-	err := transport_tpg.RetryTimeDuration(func() error {
-		// Get the list of services that are enabled on the project
-		enabledServices, err := ListCurrentlyEnabledServices(project, billingProject, userAgent, config, timeout)
-		if err != nil {
-			return err
-		}
-
-		missing := make([]string, 0, len(services))
-		for _, s := range services {
-			if _, ok := enabledServices[s]; !ok {
-				missing = append(missing, s)
+	err := transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() error {
+			// Get the list of services that are enabled on the project
+			enabledServices, err := ListCurrentlyEnabledServices(project, billingProject, userAgent, config, timeout)
+			if err != nil {
+				return err
 			}
-		}
-		if len(missing) > 0 {
-			log.Printf("[DEBUG] waiting %v before reading project %s services...", delay, project)
-			time.Sleep(delay)
-			delay += interval
-			interval += delay
 
-			// Spoof a googleapi Error so retryTime will try again
-			return &googleapi.Error{
-				Code:    503,
-				Message: fmt.Sprintf("The service(s) %q are still being enabled for project %s. This isn't a real API error, this is just eventual consistency.", missing, project),
+			missing := make([]string, 0, len(services))
+			for _, s := range services {
+				if _, ok := enabledServices[s]; !ok {
+					missing = append(missing, s)
+				}
 			}
-		}
-		return nil
-	}, timeout)
+			if len(missing) > 0 {
+				log.Printf("[DEBUG] waiting %v before reading project %s services...", delay, project)
+				time.Sleep(delay)
+				delay += interval
+				interval += delay
+
+				// Spoof a googleapi Error so retryTime will try again
+				return &googleapi.Error{
+					Code:    503,
+					Message: fmt.Sprintf("The service(s) %q are still being enabled for project %s. This isn't a real API error, this is just eventual consistency.", missing, project),
+				}
+			}
+			return nil
+		},
+		Timeout: timeout,
+	})
 	if err != nil {
 		return errwrap.Wrap(err, fmt.Errorf("failed to enable some service(s) %q for project %s", missing, project))
 	}

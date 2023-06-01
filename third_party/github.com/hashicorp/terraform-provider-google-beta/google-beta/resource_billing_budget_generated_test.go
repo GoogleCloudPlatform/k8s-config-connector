@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -54,7 +57,7 @@ func TestAccBillingBudget_billingBudgetBasicExample(t *testing.T) {
 }
 
 func testAccBillingBudget_billingBudgetBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_billing_account" "account" {
   billing_account = "%{billing_acct}"
 }
@@ -102,7 +105,7 @@ func TestAccBillingBudget_billingBudgetLastperiodExample(t *testing.T) {
 }
 
 func testAccBillingBudget_billingBudgetLastperiodExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_billing_account" "account" {
   billing_account = "%{billing_acct}"
 }
@@ -159,7 +162,7 @@ func TestAccBillingBudget_billingBudgetFilterExample(t *testing.T) {
 }
 
 func testAccBillingBudget_billingBudgetFilterExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_billing_account" "account" {
   billing_account = "%{billing_acct}"
 }
@@ -223,7 +226,7 @@ func TestAccBillingBudget_billingBudgetNotifyExample(t *testing.T) {
 }
 
 func testAccBillingBudget_billingBudgetNotifyExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_billing_account" "account" {
   billing_account = "%{billing_acct}"
 }
@@ -300,7 +303,7 @@ func TestAccBillingBudget_billingBudgetCustomperiodExample(t *testing.T) {
 }
 
 func testAccBillingBudget_billingBudgetCustomperiodExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_billing_account" "account" {
   billing_account = "%{billing_acct}"
 }
@@ -375,7 +378,7 @@ func TestAccBillingBudget_billingBudgetOptionalExample(t *testing.T) {
 }
 
 func testAccBillingBudget_billingBudgetOptionalExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_billing_account" "account" {
   billing_account = "%{billing_acct}"
 }
@@ -426,7 +429,13 @@ func testAccCheckBillingBudgetDestroyProducer(t *testing.T) func(s *terraform.St
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("BillingBudget still exists at %s", url)
 			}

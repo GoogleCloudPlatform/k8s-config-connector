@@ -68,6 +68,60 @@ func (v FeatureResourceStateStateEnum) Validate() error {
 	}
 }
 
+// The enum FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum.
+type FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum string
+
+// FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnumRef returns a *FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum with the value of string s
+// If the empty string is provided, nil is returned.
+func FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnumRef(s string) *FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum {
+	v := FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum(s)
+	return &v
+}
+
+func (v FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum) Validate() error {
+	if string(v) == "" {
+		// Empty enum is okay.
+		return nil
+	}
+	for _, s := range []string{"MODE_UNSPECIFIED", "COPY", "MOVE"} {
+		if string(v) == s {
+			return nil
+		}
+	}
+	return &dcl.EnumInvalidError{
+		Enum:  "FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum",
+		Value: string(v),
+		Valid: []string{},
+	}
+}
+
+// The enum FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum.
+type FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum string
+
+// FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnumRef returns a *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum with the value of string s
+// If the empty string is provided, nil is returned.
+func FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnumRef(s string) *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum {
+	v := FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum(s)
+	return &v
+}
+
+func (v FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum) Validate() error {
+	if string(v) == "" {
+		// Empty enum is okay.
+		return nil
+	}
+	for _, s := range []string{"MODE_UNSPECIFIED", "COPY", "MOVE"} {
+		if string(v) == s {
+			return nil
+		}
+	}
+	return &dcl.EnumInvalidError{
+		Enum:  "FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum",
+		Value: string(v),
+		Valid: []string{},
+	}
+}
+
 // The enum FeatureStateStateCodeEnum.
 type FeatureStateStateCodeEnum string
 
@@ -147,6 +201,7 @@ func (r *FeatureResourceState) HashCode() string {
 type FeatureSpec struct {
 	empty               bool                            `json:"-"`
 	Multiclusteringress *FeatureSpecMulticlusteringress `json:"multiclusteringress"`
+	Fleetobservability  *FeatureSpecFleetobservability  `json:"fleetobservability"`
 }
 
 type jsonFeatureSpec FeatureSpec
@@ -165,6 +220,8 @@ func (r *FeatureSpec) UnmarshalJSON(data []byte) error {
 	} else {
 
 		r.Multiclusteringress = res.Multiclusteringress
+
+		r.Fleetobservability = res.Fleetobservability
 
 	}
 	return nil
@@ -230,6 +287,193 @@ func (r *FeatureSpecMulticlusteringress) String() string {
 }
 
 func (r *FeatureSpecMulticlusteringress) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type FeatureSpecFleetobservability struct {
+	empty         bool                                        `json:"-"`
+	LoggingConfig *FeatureSpecFleetobservabilityLoggingConfig `json:"loggingConfig"`
+}
+
+type jsonFeatureSpecFleetobservability FeatureSpecFleetobservability
+
+func (r *FeatureSpecFleetobservability) UnmarshalJSON(data []byte) error {
+	var res jsonFeatureSpecFleetobservability
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyFeatureSpecFleetobservability
+	} else {
+
+		r.LoggingConfig = res.LoggingConfig
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this FeatureSpecFleetobservability is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyFeatureSpecFleetobservability *FeatureSpecFleetobservability = &FeatureSpecFleetobservability{empty: true}
+
+func (r *FeatureSpecFleetobservability) Empty() bool {
+	return r.empty
+}
+
+func (r *FeatureSpecFleetobservability) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *FeatureSpecFleetobservability) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type FeatureSpecFleetobservabilityLoggingConfig struct {
+	empty                bool                                                            `json:"-"`
+	DefaultConfig        *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig        `json:"defaultConfig"`
+	FleetScopeLogsConfig *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig `json:"fleetScopeLogsConfig"`
+}
+
+type jsonFeatureSpecFleetobservabilityLoggingConfig FeatureSpecFleetobservabilityLoggingConfig
+
+func (r *FeatureSpecFleetobservabilityLoggingConfig) UnmarshalJSON(data []byte) error {
+	var res jsonFeatureSpecFleetobservabilityLoggingConfig
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyFeatureSpecFleetobservabilityLoggingConfig
+	} else {
+
+		r.DefaultConfig = res.DefaultConfig
+
+		r.FleetScopeLogsConfig = res.FleetScopeLogsConfig
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this FeatureSpecFleetobservabilityLoggingConfig is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyFeatureSpecFleetobservabilityLoggingConfig *FeatureSpecFleetobservabilityLoggingConfig = &FeatureSpecFleetobservabilityLoggingConfig{empty: true}
+
+func (r *FeatureSpecFleetobservabilityLoggingConfig) Empty() bool {
+	return r.empty
+}
+
+func (r *FeatureSpecFleetobservabilityLoggingConfig) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *FeatureSpecFleetobservabilityLoggingConfig) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type FeatureSpecFleetobservabilityLoggingConfigDefaultConfig struct {
+	empty bool                                                             `json:"-"`
+	Mode  *FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum `json:"mode"`
+}
+
+type jsonFeatureSpecFleetobservabilityLoggingConfigDefaultConfig FeatureSpecFleetobservabilityLoggingConfigDefaultConfig
+
+func (r *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig) UnmarshalJSON(data []byte) error {
+	var res jsonFeatureSpecFleetobservabilityLoggingConfigDefaultConfig
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyFeatureSpecFleetobservabilityLoggingConfigDefaultConfig
+	} else {
+
+		r.Mode = res.Mode
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this FeatureSpecFleetobservabilityLoggingConfigDefaultConfig is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyFeatureSpecFleetobservabilityLoggingConfigDefaultConfig *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig = &FeatureSpecFleetobservabilityLoggingConfigDefaultConfig{empty: true}
+
+func (r *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig) Empty() bool {
+	return r.empty
+}
+
+func (r *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *FeatureSpecFleetobservabilityLoggingConfigDefaultConfig) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig struct {
+	empty bool                                                                    `json:"-"`
+	Mode  *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum `json:"mode"`
+}
+
+type jsonFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig
+
+func (r *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig) UnmarshalJSON(data []byte) error {
+	var res jsonFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig
+	} else {
+
+		r.Mode = res.Mode
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig = &FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig{empty: true}
+
+func (r *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig) Empty() bool {
+	return r.empty
+}
+
+func (r *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig) HashCode() string {
 	// Placeholder for a more complex hash method that handles ordering, etc
 	// Hash resource body for easy comparison later
 	hash := sha256.New().Sum([]byte(r.String()))

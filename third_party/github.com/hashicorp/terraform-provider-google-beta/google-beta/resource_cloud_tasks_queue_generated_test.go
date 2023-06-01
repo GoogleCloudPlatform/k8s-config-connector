@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccCloudTasksQueue_queueBasicExample(t *testing.T) {
 }
 
 func testAccCloudTasksQueue_queueBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_cloud_tasks_queue" "default" {
   name = "tf-test-cloud-tasks-queue-test%{random_suffix}"
   location = "us-central1"
@@ -87,7 +90,7 @@ func TestAccCloudTasksQueue_cloudTasksQueueAdvancedExample(t *testing.T) {
 }
 
 func testAccCloudTasksQueue_cloudTasksQueueAdvancedExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_cloud_tasks_queue" "advanced_configuration" {
   name = "tf-test-instance-name%{random_suffix}"
   location = "us-central1"
@@ -141,7 +144,13 @@ func testAccCheckCloudTasksQueueDestroyProducer(t *testing.T) func(s *terraform.
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("CloudTasksQueue still exists at %s", url)
 			}

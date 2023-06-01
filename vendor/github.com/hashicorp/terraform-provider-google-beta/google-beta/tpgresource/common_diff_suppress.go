@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 // Contains common diff suppress functions.
 
 package tpgresource
@@ -244,4 +246,25 @@ func ProjectNumberDiffSuppress(_, old, new string, _ *schema.ResourceData) bool 
 	a2 = string(reN.ReplaceAll([]byte(old), replacement))
 	b2 = string(re.ReplaceAll([]byte(new), replacement))
 	return a2 == b2
+}
+
+func CompareCaseInsensitive(k, old, new string, d *schema.ResourceData) bool {
+	return strings.ToLower(old) == strings.ToLower(new)
+}
+
+func IsNewResource(diff TerraformResourceDiff) bool {
+	name := diff.Get("name")
+	return name.(string) == ""
+}
+
+func CompareCryptoKeyVersions(_, old, new string, _ *schema.ResourceData) bool {
+	// The API can return cryptoKeyVersions even though it wasn't specified.
+	// format: projects/<project>/locations/<region>/keyRings/<keyring>/cryptoKeys/<key>/cryptoKeyVersions/1
+
+	kmsKeyWithoutVersions := strings.Split(old, "/cryptoKeyVersions")[0]
+	if kmsKeyWithoutVersions == new {
+		return true
+	}
+
+	return false
 }

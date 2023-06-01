@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -54,7 +57,7 @@ func TestAccCloudRunService_cloudRunServiceBasicExample(t *testing.T) {
 }
 
 func testAccCloudRunService_cloudRunServiceBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_cloud_run_service" "default" {
   name     = "tf-test-cloudrun-srv%{random_suffix}"
   location = "us-central1"
@@ -102,7 +105,7 @@ func TestAccCloudRunService_cloudRunServiceSqlExample(t *testing.T) {
 }
 
 func testAccCloudRunService_cloudRunServiceSqlExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_cloud_run_service" "default" {
   name     = "tf-test-cloudrun-srv%{random_suffix}"
   location = "us-central1"
@@ -165,7 +168,7 @@ func TestAccCloudRunService_cloudRunServiceNoauthExample(t *testing.T) {
 }
 
 func testAccCloudRunService_cloudRunServiceNoauthExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 
 resource "google_cloud_run_service" "default" {
   name     = "tf-test-cloudrun-srv%{random_suffix}"
@@ -226,7 +229,7 @@ func TestAccCloudRunService_cloudRunServiceMultipleEnvironmentVariablesExample(t
 }
 
 func testAccCloudRunService_cloudRunServiceMultipleEnvironmentVariablesExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_cloud_run_service" "default" {
   name     = "tf-test-cloudrun-srv%{random_suffix}"
   location = "us-central1"
@@ -295,7 +298,7 @@ func TestAccCloudRunService_cloudRunServiceSecretEnvironmentVariablesExample(t *
 }
 
 func testAccCloudRunService_cloudRunServiceSecretEnvironmentVariablesExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_project" "project" {
 }
 
@@ -389,7 +392,7 @@ func TestAccCloudRunService_cloudRunServiceSecretVolumesExample(t *testing.T) {
 }
 
 func testAccCloudRunService_cloudRunServiceSecretVolumesExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 data "google_project" "project" {
 }
 
@@ -490,7 +493,7 @@ func TestAccCloudRunService_cloudRunServiceProbesExample(t *testing.T) {
 }
 
 func testAccCloudRunService_cloudRunServiceProbesExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_cloud_run_service" "default" {
   name     = "tf-test-cloudrun-srv%{random_suffix}"
   location = "us-central1"
@@ -531,6 +534,98 @@ resource "google_cloud_run_service" "default" {
 `, context)
 }
 
+func TestAccCloudRunService_cloudRunServiceMulticontainerExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project":       acctest.GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckCloudRunServiceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudRunService_cloudRunServiceMulticontainerExample(context),
+			},
+			{
+				ResourceName:            "google_cloud_run_service.default",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"name", "location"},
+			},
+		},
+	})
+}
+
+func testAccCloudRunService_cloudRunServiceMulticontainerExample(context map[string]interface{}) string {
+	return tpgresource.Nprintf(`
+resource "google_cloud_run_service" "default" {
+  name     = "tf-test-cloudrun-srv%{random_suffix}"
+  location = "us-central1"
+  provider = google-beta
+
+  metadata {
+    annotations = {
+      "run.googleapis.com/launch-stage" = "BETA"
+    }
+  }
+  template {
+    metadata {
+      annotations = {
+        "run.googleapis.com/container-dependencies" = jsonencode({hello-1 = ["hello-2"]})
+      }
+    }
+    spec {
+      containers {
+	name = "hello-1"
+	ports {
+	  container_port = 8080
+	}
+	image = "us-docker.pkg.dev/cloudrun/container/hello"
+	volume_mounts {
+	  name = "shared-volume"
+	  mount_path = "/mnt/shared"
+	}
+      }
+      containers {
+	name = "hello-2"
+	image = "us-docker.pkg.dev/cloudrun/container/hello"
+	env {
+	  name = "PORT"
+	  value = "8081"
+	}
+	startup_probe {
+	  http_get {
+	    port = 8081
+	  }
+	}
+	volume_mounts {
+	  name = "shared-volume"
+	  mount_path = "/mnt/shared"
+	}
+      }
+      volumes {
+	name = "shared-volume"
+	empty_dir {
+	  medium = "Memory"
+	  size_limit = "128Mi"
+	}
+      }
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata[0].annotations["run.googleapis.com/launch-stage"],
+    ]
+  }
+}
+`, context)
+}
+
 func testAccCheckCloudRunServiceDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
 		for name, rs := range s.RootModule().Resources {
@@ -554,7 +649,14 @@ func testAccCheckCloudRunServiceDestroyProducer(t *testing.T) func(s *terraform.
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, transport_tpg.IsCloudRunCreationConflict)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:               config,
+				Method:               "GET",
+				Project:              billingProject,
+				RawURL:               url,
+				UserAgent:            config.UserAgent,
+				ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.IsCloudRunCreationConflict},
+			})
 			if err == nil {
 				return fmt.Errorf("CloudRunService still exists at %s", url)
 			}

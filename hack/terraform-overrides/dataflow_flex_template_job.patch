@@ -16,8 +16,8 @@ diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/goo
 index 42765a1eb..4a8d9f94f 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_flex_template_job.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_flex_template_job.go
-@@ -172,12 +172,6 @@ func resourceDataflowFlexTemplateJobRead(d *schema.ResourceData, meta interface{
- 		return fmt.Errorf("Error setting labels: %s", err)
+@@ -382,12 +382,6 @@ func resourceDataflowFlexTemplateJobRead(d *schema.ResourceData, meta interface{
+ 		return fmt.Errorf("Error setting machine_type: %s", err)
  	}
  
 -	if ok := shouldStopDataflowJobDeleteQuery(job.CurrentState, d.Get("skip_wait_on_job_termination").(bool)); ok {

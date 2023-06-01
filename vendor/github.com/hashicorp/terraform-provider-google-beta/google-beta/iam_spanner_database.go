@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,6 +7,7 @@ import (
 
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgiamresource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"google.golang.org/api/cloudresourcemanager/v1"
@@ -39,7 +42,7 @@ type SpannerDatabaseIamUpdater struct {
 	Config   *transport_tpg.Config
 }
 
-func NewSpannerDatabaseIamUpdater(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
+func NewSpannerDatabaseIamUpdater(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (tpgiamresource.ResourceIamUpdater, error) {
 	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return nil, err
@@ -55,7 +58,7 @@ func NewSpannerDatabaseIamUpdater(d tpgresource.TerraformResourceData, config *t
 }
 
 func SpannerDatabaseIdParseFunc(d *schema.ResourceData, config *transport_tpg.Config) error {
-	return ParseImportId([]string{"(?P<project>[^/]+)/(?P<instance>[^/]+)/(?P<database>[^/]+)"}, d, config)
+	return tpgresource.ParseImportId([]string{"(?P<project>[^/]+)/(?P<instance>[^/]+)/(?P<database>[^/]+)"}, d, config)
 }
 
 func (u *SpannerDatabaseIamUpdater) GetResourceIamPolicy() (*cloudresourcemanager.Policy, error) {
@@ -69,7 +72,7 @@ func (u *SpannerDatabaseIamUpdater) GetResourceIamPolicy() (*cloudresourcemanage
 		Database: u.database,
 		Instance: u.instance,
 	}.databaseUri(), &spanner.GetIamPolicyRequest{
-		Options: &spanner.GetPolicyOptions{RequestedPolicyVersion: IamPolicyVersion},
+		Options: &spanner.GetPolicyOptions{RequestedPolicyVersion: tpgiamresource.IamPolicyVersion},
 	}).Do()
 
 	if err != nil {
@@ -82,7 +85,7 @@ func (u *SpannerDatabaseIamUpdater) GetResourceIamPolicy() (*cloudresourcemanage
 		return nil, errwrap.Wrapf(fmt.Sprintf("Invalid IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
 
-	cloudResourcePolicy.Version = IamPolicyVersion
+	cloudResourcePolicy.Version = tpgiamresource.IamPolicyVersion
 
 	return cloudResourcePolicy, nil
 }
@@ -94,7 +97,7 @@ func (u *SpannerDatabaseIamUpdater) SetResourceIamPolicy(policy *cloudresourcema
 		return errwrap.Wrapf(fmt.Sprintf("Invalid IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
 
-	spannerPolicy.Version = IamPolicyVersion
+	spannerPolicy.Version = tpgiamresource.IamPolicyVersion
 
 	userAgent, err := tpgresource.GenerateUserAgentString(u.d, u.Config.UserAgent)
 	if err != nil {

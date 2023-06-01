@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccNetworkServicesTlsRoute_networkServicesTlsRouteBasicExample(t *testi
 }
 
 func testAccNetworkServicesTlsRoute_networkServicesTlsRouteBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_backend_service" "default" {
   provider               = google-beta
   name          = "tf-test-my-backend-service%{random_suffix}"
@@ -114,7 +117,7 @@ func TestAccNetworkServicesTlsRoute_networkServicesTlsRouteMeshBasicExample(t *t
 }
 
 func testAccNetworkServicesTlsRoute_networkServicesTlsRouteMeshBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_backend_service" "default" {
   provider               = google-beta
   name          = "tf-test-my-backend-service%{random_suffix}"
@@ -188,7 +191,7 @@ func TestAccNetworkServicesTlsRoute_networkServicesTlsRouteGatewayBasicExample(t
 }
 
 func testAccNetworkServicesTlsRoute_networkServicesTlsRouteGatewayBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_backend_service" "default" {
   provider               = google-beta
   name          = "tf-test-my-backend-service%{random_suffix}"
@@ -261,7 +264,13 @@ func testAccCheckNetworkServicesTlsRouteDestroyProducer(t *testing.T) func(s *te
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("NetworkServicesTlsRoute still exists at %s", url)
 			}

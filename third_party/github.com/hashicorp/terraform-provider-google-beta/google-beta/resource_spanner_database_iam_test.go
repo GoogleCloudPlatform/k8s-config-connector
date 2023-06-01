@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -99,6 +101,7 @@ func TestAccSpannerDatabaseIamPolicy(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSpannerDatabaseIamPolicy_basic(account, instance, database, role),
+				Check:  resource.TestCheckResourceAttrSet("data.google_spanner_database_iam_policy.foo", "policy_data"),
 			},
 			// Test a few import formats
 			{
@@ -250,6 +253,12 @@ resource "google_spanner_database_iam_policy" "foo" {
   database    = google_spanner_database.database.name
   instance    = google_spanner_database.database.instance
   policy_data = data.google_iam_policy.foo.policy_data
+}
+
+data "google_spanner_database_iam_policy" "foo" {
+  project     = google_spanner_database.database.project
+  database    = google_spanner_database.database.name
+  instance    = google_spanner_database.database.instance
 }
 `, account, instance, instance, database, roleId)
 }

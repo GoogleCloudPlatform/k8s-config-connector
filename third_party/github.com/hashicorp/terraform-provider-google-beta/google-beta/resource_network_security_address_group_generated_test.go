@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -54,7 +57,7 @@ func TestAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsBasicExample
 }
 
 func testAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_network_security_address_group" "default" {
   provider    = google-beta
   name        = "tf-test-my-address-groups%{random_suffix}"
@@ -94,7 +97,7 @@ func TestAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsOrganization
 }
 
 func testAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsOrganizationBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_network_security_address_group" "default" {
   provider    = google-beta
   name        = "tf-test-my-address-groups%{random_suffix}"
@@ -134,7 +137,7 @@ func TestAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsAdvancedExam
 }
 
 func testAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsAdvancedExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_network_security_address_group" "default" {
   provider    = google-beta
   name        = "tf-test-my-address-groups%{random_suffix}"
@@ -171,7 +174,13 @@ func testAccCheckNetworkSecurityAddressGroupDestroyProducer(t *testing.T) func(s
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("NetworkSecurityAddressGroup still exists at %s", url)
 			}

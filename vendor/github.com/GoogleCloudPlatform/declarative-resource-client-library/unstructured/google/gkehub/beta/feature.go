@@ -66,6 +66,28 @@ func FeatureToUnstructured(r *dclService.Feature) *unstructured.Resource {
 	}
 	if r.Spec != nil && r.Spec != dclService.EmptyFeatureSpec {
 		rSpec := make(map[string]interface{})
+		if r.Spec.Fleetobservability != nil && r.Spec.Fleetobservability != dclService.EmptyFeatureSpecFleetobservability {
+			rSpecFleetobservability := make(map[string]interface{})
+			if r.Spec.Fleetobservability.LoggingConfig != nil && r.Spec.Fleetobservability.LoggingConfig != dclService.EmptyFeatureSpecFleetobservabilityLoggingConfig {
+				rSpecFleetobservabilityLoggingConfig := make(map[string]interface{})
+				if r.Spec.Fleetobservability.LoggingConfig.DefaultConfig != nil && r.Spec.Fleetobservability.LoggingConfig.DefaultConfig != dclService.EmptyFeatureSpecFleetobservabilityLoggingConfigDefaultConfig {
+					rSpecFleetobservabilityLoggingConfigDefaultConfig := make(map[string]interface{})
+					if r.Spec.Fleetobservability.LoggingConfig.DefaultConfig.Mode != nil {
+						rSpecFleetobservabilityLoggingConfigDefaultConfig["mode"] = string(*r.Spec.Fleetobservability.LoggingConfig.DefaultConfig.Mode)
+					}
+					rSpecFleetobservabilityLoggingConfig["defaultConfig"] = rSpecFleetobservabilityLoggingConfigDefaultConfig
+				}
+				if r.Spec.Fleetobservability.LoggingConfig.FleetScopeLogsConfig != nil && r.Spec.Fleetobservability.LoggingConfig.FleetScopeLogsConfig != dclService.EmptyFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig {
+					rSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig := make(map[string]interface{})
+					if r.Spec.Fleetobservability.LoggingConfig.FleetScopeLogsConfig.Mode != nil {
+						rSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig["mode"] = string(*r.Spec.Fleetobservability.LoggingConfig.FleetScopeLogsConfig.Mode)
+					}
+					rSpecFleetobservabilityLoggingConfig["fleetScopeLogsConfig"] = rSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig
+				}
+				rSpecFleetobservability["loggingConfig"] = rSpecFleetobservabilityLoggingConfig
+			}
+			rSpec["fleetobservability"] = rSpecFleetobservability
+		}
 		if r.Spec.Multiclusteringress != nil && r.Spec.Multiclusteringress != dclService.EmptyFeatureSpecMulticlusteringress {
 			rSpecMulticlusteringress := make(map[string]interface{})
 			if r.Spec.Multiclusteringress.ConfigMembership != nil {
@@ -172,6 +194,48 @@ func UnstructuredToFeature(u *unstructured.Resource) (*dclService.Feature, error
 	if _, ok := u.Object["spec"]; ok {
 		if rSpec, ok := u.Object["spec"].(map[string]interface{}); ok {
 			r.Spec = &dclService.FeatureSpec{}
+			if _, ok := rSpec["fleetobservability"]; ok {
+				if rSpecFleetobservability, ok := rSpec["fleetobservability"].(map[string]interface{}); ok {
+					r.Spec.Fleetobservability = &dclService.FeatureSpecFleetobservability{}
+					if _, ok := rSpecFleetobservability["loggingConfig"]; ok {
+						if rSpecFleetobservabilityLoggingConfig, ok := rSpecFleetobservability["loggingConfig"].(map[string]interface{}); ok {
+							r.Spec.Fleetobservability.LoggingConfig = &dclService.FeatureSpecFleetobservabilityLoggingConfig{}
+							if _, ok := rSpecFleetobservabilityLoggingConfig["defaultConfig"]; ok {
+								if rSpecFleetobservabilityLoggingConfigDefaultConfig, ok := rSpecFleetobservabilityLoggingConfig["defaultConfig"].(map[string]interface{}); ok {
+									r.Spec.Fleetobservability.LoggingConfig.DefaultConfig = &dclService.FeatureSpecFleetobservabilityLoggingConfigDefaultConfig{}
+									if _, ok := rSpecFleetobservabilityLoggingConfigDefaultConfig["mode"]; ok {
+										if s, ok := rSpecFleetobservabilityLoggingConfigDefaultConfig["mode"].(string); ok {
+											r.Spec.Fleetobservability.LoggingConfig.DefaultConfig.Mode = dclService.FeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnumRef(s)
+										} else {
+											return nil, fmt.Errorf("r.Spec.Fleetobservability.LoggingConfig.DefaultConfig.Mode: expected string")
+										}
+									}
+								} else {
+									return nil, fmt.Errorf("r.Spec.Fleetobservability.LoggingConfig.DefaultConfig: expected map[string]interface{}")
+								}
+							}
+							if _, ok := rSpecFleetobservabilityLoggingConfig["fleetScopeLogsConfig"]; ok {
+								if rSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig, ok := rSpecFleetobservabilityLoggingConfig["fleetScopeLogsConfig"].(map[string]interface{}); ok {
+									r.Spec.Fleetobservability.LoggingConfig.FleetScopeLogsConfig = &dclService.FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig{}
+									if _, ok := rSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig["mode"]; ok {
+										if s, ok := rSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig["mode"].(string); ok {
+											r.Spec.Fleetobservability.LoggingConfig.FleetScopeLogsConfig.Mode = dclService.FeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnumRef(s)
+										} else {
+											return nil, fmt.Errorf("r.Spec.Fleetobservability.LoggingConfig.FleetScopeLogsConfig.Mode: expected string")
+										}
+									}
+								} else {
+									return nil, fmt.Errorf("r.Spec.Fleetobservability.LoggingConfig.FleetScopeLogsConfig: expected map[string]interface{}")
+								}
+							}
+						} else {
+							return nil, fmt.Errorf("r.Spec.Fleetobservability.LoggingConfig: expected map[string]interface{}")
+						}
+					}
+				} else {
+					return nil, fmt.Errorf("r.Spec.Fleetobservability: expected map[string]interface{}")
+				}
+			}
 			if _, ok := rSpec["multiclusteringress"]; ok {
 				if rSpecMulticlusteringress, ok := rSpec["multiclusteringress"].(map[string]interface{}); ok {
 					r.Spec.Multiclusteringress = &dclService.FeatureSpecMulticlusteringress{}

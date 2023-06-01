@@ -1,8 +1,11 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"fmt"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	tpgdns "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dns"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"testing"
@@ -268,7 +271,7 @@ func testAccCheckManagedZoneCreateRRs(t *testing.T, zoneSuffix string, project s
 			return fmt.Errorf("Error creating DNS RecordSet: %s", err)
 		}
 
-		w := &DnsChangeWaiter{
+		w := &tpgdns.DnsChangeWaiter{
 			Service:     config.NewDnsClient(config.UserAgent),
 			Change:      chg,
 			Project:     project,
@@ -600,7 +603,7 @@ func TestDnsManagedZoneImport_parseImportId(t *testing.T) {
 			config = &transport_tpg.Config{}
 		}
 		//
-		if err := ParseImportId(tc.IdRegexes, d, config); err == nil {
+		if err := tpgresource.ParseImportId(tc.IdRegexes, d, config); err == nil {
 			for k, expectedValue := range tc.ExpectedSchemaValues {
 				if v, ok := d.GetOk(k); ok {
 					if v != expectedValue {

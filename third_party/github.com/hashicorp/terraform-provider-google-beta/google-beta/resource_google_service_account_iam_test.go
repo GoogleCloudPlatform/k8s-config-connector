@@ -1,10 +1,14 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"fmt"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgiamresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -193,6 +197,7 @@ func TestAccServiceAccountIamPolicy(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceAccountIamPolicy_basic(account),
+				Check:  resource.TestCheckResourceAttrSet("data.google_service_account_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_service_account_iam_policy.foo",
@@ -315,7 +320,7 @@ func testAccServiceAccountIamMember_generateFederatedIdentityStateId(state *terr
 func testAccCheckGoogleServiceAccountIam(t *testing.T, account string, numBindings int) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		config := GoogleProviderConfig(t)
-		p, err := config.NewIamClient(config.UserAgent).Projects.ServiceAccounts.GetIamPolicy(serviceAccountCanonicalId(account)).OptionsRequestedPolicyVersion(IamPolicyVersion).Do()
+		p, err := config.NewIamClient(config.UserAgent).Projects.ServiceAccounts.GetIamPolicy(serviceAccountCanonicalId(account)).OptionsRequestedPolicyVersion(tpgiamresource.IamPolicyVersion).Do()
 		if err != nil {
 			return err
 		}
@@ -477,6 +482,10 @@ data "google_iam_policy" "foo" {
 resource "google_service_account_iam_policy" "foo" {
   service_account_id = google_service_account.test_account.name
   policy_data        = data.google_iam_policy.foo.policy_data
+}
+
+data "google_service_account_iam_policy" "foo" {
+  service_account_id = google_service_account.test_account.name
 }
 `, account)
 }

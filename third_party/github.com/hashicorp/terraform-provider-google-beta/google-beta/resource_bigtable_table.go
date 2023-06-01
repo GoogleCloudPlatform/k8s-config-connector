@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -133,7 +135,7 @@ func resourceBigtableTableCreate(d *schema.ResourceData, meta interface{}) error
 
 	// Set the split keys if given.
 	if v, ok := d.GetOk("split_keys"); ok {
-		tblConf.SplitKeys = convertStringArr(v.([]interface{}))
+		tblConf.SplitKeys = tpgresource.ConvertStringArr(v.([]interface{}))
 	}
 
 	// Set the column families if given.
@@ -338,7 +340,7 @@ func flattenColumnFamily(families []string) []map[string]interface{} {
 // TODO(rileykarson): Fix the stored import format after rebasing 3.0.0
 func resourceBigtableTableImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*transport_tpg.Config)
-	if err := ParseImportId([]string{
+	if err := tpgresource.ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/instances/(?P<instance_name>[^/]+)/tables/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<instance_name>[^/]+)/(?P<name>[^/]+)",
 		"(?P<instance_name>[^/]+)/(?P<name>[^/]+)",

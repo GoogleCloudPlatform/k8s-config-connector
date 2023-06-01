@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -54,7 +57,7 @@ func TestAccVertexAIIndex_vertexAiIndexExample(t *testing.T) {
 }
 
 func testAccVertexAIIndex_vertexAiIndexExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_storage_bucket" "bucket" {
   name     = "tf-test-vertex-ai-index-test%{random_suffix}"
   location = "us-central1"
@@ -125,7 +128,7 @@ func TestAccVertexAIIndex_vertexAiIndexStreamingExample(t *testing.T) {
 }
 
 func testAccVertexAIIndex_vertexAiIndexStreamingExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_storage_bucket" "bucket" {
   name     = "tf-test-vertex-ai-index-test%{random_suffix}"
   location = "us-central1"
@@ -189,7 +192,13 @@ func testAccCheckVertexAIIndexDestroyProducer(t *testing.T) func(s *terraform.St
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("VertexAIIndex still exists at %s", url)
 			}

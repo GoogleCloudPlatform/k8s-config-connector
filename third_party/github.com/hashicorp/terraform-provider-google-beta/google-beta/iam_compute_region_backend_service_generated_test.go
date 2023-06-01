@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -114,6 +117,7 @@ func TestAccComputeRegionBackendServiceIamPolicyGenerated(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeRegionBackendServiceIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_compute_region_backend_service_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_compute_region_backend_service_iam_policy.foo",
@@ -384,6 +388,15 @@ resource "google_compute_region_backend_service_iam_policy" "foo" {
   region = google_compute_region_backend_service.default.region
   name = google_compute_region_backend_service.default.name
   policy_data = data.google_iam_policy.foo.policy_data
+}
+
+data "google_compute_region_backend_service_iam_policy" "foo" {
+  project = google_compute_region_backend_service.default.project
+  region = google_compute_region_backend_service.default.region
+  name = google_compute_region_backend_service.default.name
+  depends_on = [
+    google_compute_region_backend_service_iam_policy.foo
+  ]
 }
 `, context)
 }

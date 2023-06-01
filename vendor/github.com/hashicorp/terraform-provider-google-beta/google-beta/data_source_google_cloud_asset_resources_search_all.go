@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -111,7 +113,12 @@ func datasourceGoogleCloudAssetResourcesSearchAllRead(d *schema.ResourceData, me
 			return err
 		}
 
-		res, err := transport_tpg.SendRequest(config, "GET", "", url, userAgent, nil)
+		res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+			Config:    config,
+			Method:    "GET",
+			RawURL:    url,
+			UserAgent: userAgent,
+		})
 		if err != nil {
 			return fmt.Errorf("Error searching resources: %s", err)
 		}

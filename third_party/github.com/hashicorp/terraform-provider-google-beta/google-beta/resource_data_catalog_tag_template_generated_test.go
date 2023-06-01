@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -54,7 +57,7 @@ func TestAccDataCatalogTagTemplate_dataCatalogTagTemplateBasicExample(t *testing
 }
 
 func testAccDataCatalogTagTemplate_dataCatalogTagTemplateBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_data_catalog_tag_template" "basic_tag_template" {
   tag_template_id = "tf_test_my_template%{random_suffix}"
   region = "us-central1"
@@ -123,7 +126,13 @@ func testAccCheckDataCatalogTagTemplateDestroyProducer(t *testing.T) func(s *ter
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("DataCatalogTagTemplate still exists at %s", url)
 			}

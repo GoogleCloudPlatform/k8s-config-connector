@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccSQLDatabase_sqlDatabaseBasicExample(t *testing.T) {
 }
 
 func testAccSQLDatabase_sqlDatabaseBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_sql_database" "database" {
   name     = "tf-test-my-database%{random_suffix}"
   instance = google_sql_database_instance.instance.name
@@ -100,7 +103,7 @@ func TestAccSQLDatabase_sqlDatabaseDeletionPolicyExample(t *testing.T) {
 }
 
 func testAccSQLDatabase_sqlDatabaseDeletionPolicyExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_sql_database" "database_deletion_policy" {
   name     = "tf-test-my-database%{random_suffix}"
   instance = google_sql_database_instance.instance.name
@@ -144,7 +147,13 @@ func testAccCheckSQLDatabaseDestroyProducer(t *testing.T) func(s *terraform.Stat
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("SQLDatabase still exists at %s", url)
 			}

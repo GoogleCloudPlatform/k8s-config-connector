@@ -1,8 +1,8 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_instance_from_template.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_instance_from_template.go
-index 0c14e410a..07a37a68b 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_instance_from_template.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_instance_from_template.go
-@@ -16,8 +16,11 @@ func ResourceComputeInstanceFromTemplate() *schema.Resource {
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_instance_from_template.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_instance_from_template.go
+index fe33c7dd4..9ae9a453b 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_instance_from_template.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_instance_from_template.go
+@@ -23,8 +23,11 @@ func ResourceComputeInstanceFromTemplate() *schema.Resource {
  		Update: resourceComputeInstanceUpdate,
  		Delete: resourceComputeInstanceDelete,
  

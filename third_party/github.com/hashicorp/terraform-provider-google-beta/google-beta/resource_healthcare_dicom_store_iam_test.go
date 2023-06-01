@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -7,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/healthcare"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -19,7 +22,7 @@ func TestAccHealthcareDicomStoreIamBinding(t *testing.T) {
 	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	roleId := "roles/healthcare.dicomStoreAdmin"
 	datasetName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	datasetId := &HealthcareDatasetId{
+	datasetId := &healthcare.HealthcareDatasetId{
 		Project:  projectId,
 		Location: DEFAULT_HEALTHCARE_TEST_LOCATION,
 		Name:     datasetName,
@@ -68,7 +71,7 @@ func TestAccHealthcareDicomStoreIamMember(t *testing.T) {
 	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	roleId := "roles/healthcare.dicomEditor"
 	datasetName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	datasetId := &HealthcareDatasetId{
+	datasetId := &healthcare.HealthcareDatasetId{
 		Project:  projectId,
 		Location: DEFAULT_HEALTHCARE_TEST_LOCATION,
 		Name:     datasetName,
@@ -103,7 +106,7 @@ func TestAccHealthcareDicomStoreIamPolicy(t *testing.T) {
 	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	roleId := "roles/healthcare.dicomViewer"
 	datasetName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	datasetId := &HealthcareDatasetId{
+	datasetId := &healthcare.HealthcareDatasetId{
 		Project:  projectId,
 		Location: DEFAULT_HEALTHCARE_TEST_LOCATION,
 		Name:     datasetName,
@@ -117,8 +120,11 @@ func TestAccHealthcareDicomStoreIamPolicy(t *testing.T) {
 			{
 				// Test Iam Policy creation (no update for policy, no need to test)
 				Config: testAccHealthcareDicomStoreIamPolicy_basic(account, datasetName, dicomStoreName, roleId),
-				Check: testAccCheckGoogleHealthcareDicomStoreIamPolicyExists(t, "foo", roleId,
-					fmt.Sprintf("serviceAccount:%s@%s.iam.gserviceaccount.com", account, projectId),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckGoogleHealthcareDicomStoreIamPolicyExists(t, "foo", roleId,
+						fmt.Sprintf("serviceAccount:%s@%s.iam.gserviceaccount.com", account, projectId),
+					),
+					resource.TestCheckResourceAttrSet("data.google_healthcare_dicom_store_iam_policy.foo", "policy_data"),
 				),
 			},
 			{
@@ -139,7 +145,7 @@ func testAccCheckGoogleHealthcareDicomStoreIamBindingExists(t *testing.T, bindin
 		}
 
 		config := GoogleProviderConfig(t)
-		dicomStoreId, err := ParseHealthcareDicomStoreId(bindingRs.Primary.Attributes["dicom_store_id"], config)
+		dicomStoreId, err := healthcare.ParseHealthcareDicomStoreId(bindingRs.Primary.Attributes["dicom_store_id"], config)
 
 		if err != nil {
 			return err
@@ -175,7 +181,7 @@ func testAccCheckGoogleHealthcareDicomStoreIamMemberExists(t *testing.T, n, role
 		}
 
 		config := GoogleProviderConfig(t)
-		dicomStoreId, err := ParseHealthcareDicomStoreId(rs.Primary.Attributes["dicom_store_id"], config)
+		dicomStoreId, err := healthcare.ParseHealthcareDicomStoreId(rs.Primary.Attributes["dicom_store_id"], config)
 
 		if err != nil {
 			return err
@@ -210,7 +216,7 @@ func testAccCheckGoogleHealthcareDicomStoreIamPolicyExists(t *testing.T, n, role
 		}
 
 		config := GoogleProviderConfig(t)
-		dicomStoreId, err := ParseHealthcareDicomStoreId(rs.Primary.Attributes["dicom_store_id"], config)
+		dicomStoreId, err := healthcare.ParseHealthcareDicomStoreId(rs.Primary.Attributes["dicom_store_id"], config)
 
 		if err != nil {
 			return err
@@ -350,6 +356,10 @@ data "google_iam_policy" "foo" {
 resource "google_healthcare_dicom_store_iam_policy" "foo" {
   dicom_store_id = google_healthcare_dicom_store.dicom_store.id
   policy_data    = data.google_iam_policy.foo.policy_data
+}
+
+data "google_healthcare_dicom_store_iam_policy" "foo" {
+  dicom_store_id = google_healthcare_dicom_store.dicom_store.id
 }
 `, account, datasetName, dicomStoreName, roleId)
 }

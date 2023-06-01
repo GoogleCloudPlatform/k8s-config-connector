@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeForwardingRule_internalHttpLbWithMigBackendExample(t *testing
 }
 
 func testAccComputeForwardingRule_internalHttpLbWithMigBackendExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 # Internal HTTP load balancer with a managed instance group backend
 
 # VPC network
@@ -272,7 +275,7 @@ func TestAccComputeForwardingRule_internalTcpUdpLbWithMigBackendExample(t *testi
 }
 
 func testAccComputeForwardingRule_internalTcpUdpLbWithMigBackendExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 # Internal TCP/UDP load balancer with a managed instance group backend
 
 # VPC
@@ -480,7 +483,7 @@ func TestAccComputeForwardingRule_forwardingRuleExternallbExample(t *testing.T) 
 }
 
 func testAccComputeForwardingRule_forwardingRuleExternallbExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 // Forwarding rule for External Network Load Balancing using Backend Services
 resource "google_compute_forwarding_rule" "default" {
   provider              = google-beta
@@ -536,7 +539,7 @@ func TestAccComputeForwardingRule_forwardingRuleGlobalInternallbExample(t *testi
 }
 
 func testAccComputeForwardingRule_forwardingRuleGlobalInternallbExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 // Forwarding rule for Internal Load Balancing
 resource "google_compute_forwarding_rule" "default" {
   name                  = "tf-test-website-forwarding-rule%{random_suffix}"
@@ -600,7 +603,7 @@ func TestAccComputeForwardingRule_forwardingRuleBasicExample(t *testing.T) {
 }
 
 func testAccComputeForwardingRule_forwardingRuleBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_forwarding_rule" "default" {
   name       = "tf-test-website-forwarding-rule%{random_suffix}"
   target     = google_compute_target_pool.default.id
@@ -639,7 +642,7 @@ func TestAccComputeForwardingRule_forwardingRuleL3DefaultExample(t *testing.T) {
 }
 
 func testAccComputeForwardingRule_forwardingRuleL3DefaultExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_forwarding_rule" "fwd_rule" {
   provider        = google-beta
   name            = "tf-test-l3-forwarding-rule%{random_suffix}"
@@ -695,7 +698,7 @@ func TestAccComputeForwardingRule_forwardingRuleInternallbExample(t *testing.T) 
 }
 
 func testAccComputeForwardingRule_forwardingRuleInternallbExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 // Forwarding rule for Internal Load Balancing
 resource "google_compute_forwarding_rule" "default" {
   name   = "tf-test-website-forwarding-rule%{random_suffix}"
@@ -764,7 +767,7 @@ func TestAccComputeForwardingRule_forwardingRuleHttpLbExample(t *testing.T) {
 }
 
 func testAccComputeForwardingRule_forwardingRuleHttpLbExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 // Forwarding rule for Internal Load Balancing
 resource "google_compute_forwarding_rule" "default" {
   provider = google-beta
@@ -983,7 +986,7 @@ func TestAccComputeForwardingRule_forwardingRuleRegionalHttpXlbExample(t *testin
 }
 
 func testAccComputeForwardingRule_forwardingRuleRegionalHttpXlbExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 // Forwarding rule for Regional External Load Balancing
 resource "google_compute_forwarding_rule" "default" {
   provider = google-beta
@@ -1192,7 +1195,7 @@ func TestAccComputeForwardingRule_forwardingRuleVpcPscExample(t *testing.T) {
 
 	VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1209,10 +1212,9 @@ func TestAccComputeForwardingRule_forwardingRuleVpcPscExample(t *testing.T) {
 }
 
 func testAccComputeForwardingRule_forwardingRuleVpcPscExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 // Forwarding rule for VPC private service connect
 resource "google_compute_forwarding_rule" "default" {
-  provider                = google-beta
   name                    = "tf-test-psc-endpoint%{random_suffix}"
   region                  = "us-central1"
   load_balancing_scheme   = ""
@@ -1225,13 +1227,11 @@ resource "google_compute_forwarding_rule" "default" {
 // Consumer service endpoint
 
 resource "google_compute_network" "consumer_net" {
-  provider                = google-beta
   name                    = "tf-test-consumer-net%{random_suffix}"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "consumer_subnet" {
-  provider      = google-beta
   name          = "tf-test-consumer-net%{random_suffix}"
   ip_cidr_range = "10.0.0.0/16"
   region        = "us-central1"
@@ -1239,7 +1239,6 @@ resource "google_compute_subnetwork" "consumer_subnet" {
 }
 
 resource "google_compute_address" "consumer_address" {
-  provider      = google-beta
   name         = "tf-test-website-ip%{random_suffix}-1"
   region       = "us-central1"
   subnetwork   = google_compute_subnetwork.consumer_subnet.id
@@ -1250,13 +1249,11 @@ resource "google_compute_address" "consumer_address" {
 // Producer service attachment
 
 resource "google_compute_network" "producer_net" {
-  provider                = google-beta
   name                    = "tf-test-producer-net%{random_suffix}"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "producer_subnet" {
-  provider      = google-beta
   name          = "tf-test-producer-net%{random_suffix}"
   ip_cidr_range = "10.0.0.0/16"
   region        = "us-central1"
@@ -1264,7 +1261,6 @@ resource "google_compute_subnetwork" "producer_subnet" {
 }
 
 resource "google_compute_subnetwork" "psc_producer_subnet" {
-  provider      = google-beta
   name          = "tf-test-producer-psc-net%{random_suffix}"
   ip_cidr_range = "10.1.0.0/16"
   region        = "us-central1"
@@ -1274,7 +1270,6 @@ resource "google_compute_subnetwork" "psc_producer_subnet" {
 }
 
 resource "google_compute_service_attachment" "producer_service_attachment" {
-  provider    = google-beta
   name        = "tf-test-producer-service%{random_suffix}"
   region      = "us-central1"
   description = "A service attachment configured with Terraform"
@@ -1286,7 +1281,6 @@ resource "google_compute_service_attachment" "producer_service_attachment" {
 }
 
 resource "google_compute_forwarding_rule" "producer_target_service" {
-  provider = google-beta
   name     = "tf-test-producer-forwarding-rule%{random_suffix}"
   region   = "us-central1"
 
@@ -1298,7 +1292,6 @@ resource "google_compute_forwarding_rule" "producer_target_service" {
 }
 
 resource "google_compute_region_backend_service" "producer_service_backend" {
-  provider = google-beta
   name     = "tf-test-producer-service-backend%{random_suffix}"
   region   = "us-central1"
 
@@ -1306,7 +1299,6 @@ resource "google_compute_region_backend_service" "producer_service_backend" {
 }
 
 resource "google_compute_health_check" "producer_service_health_check" {
-  provider = google-beta
   name     = "tf-test-producer-service-health-check%{random_suffix}"
 
   check_interval_sec = 1
@@ -1344,7 +1336,7 @@ func TestAccComputeForwardingRule_forwardingRuleRegionalSteeringExample(t *testi
 }
 
 func testAccComputeForwardingRule_forwardingRuleRegionalSteeringExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_forwarding_rule" "steering" {
   name = "tf-test-steering-rule%{random_suffix}"
   region = "us-central1"
@@ -1399,7 +1391,13 @@ func testAccCheckComputeForwardingRuleDestroyProducer(t *testing.T) func(s *terr
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeForwardingRule still exists at %s", url)
 			}

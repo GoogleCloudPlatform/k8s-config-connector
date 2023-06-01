@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccHealthcareHl7V2Store_healthcareHl7V2StoreBasicExample(t *testing.T) 
 }
 
 func testAccHealthcareHl7V2Store_healthcareHl7V2StoreBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_healthcare_hl7_v2_store" "store" {
   name    = "tf-test-example-hl7-v2-store%{random_suffix}"
   dataset = google_healthcare_dataset.dataset.id
@@ -104,7 +107,7 @@ func TestAccHealthcareHl7V2Store_healthcareHl7V2StoreParserConfigExample(t *test
 }
 
 func testAccHealthcareHl7V2Store_healthcareHl7V2StoreParserConfigExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_healthcare_hl7_v2_store" "store" {
   provider = google-beta
   name    = "tf-test-example-hl7-v2-store%{random_suffix}"
@@ -230,7 +233,7 @@ func TestAccHealthcareHl7V2Store_healthcareHl7V2StoreUnschematizedExample(t *tes
 }
 
 func testAccHealthcareHl7V2Store_healthcareHl7V2StoreUnschematizedExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_healthcare_hl7_v2_store" "store" {
   provider = google-beta
   name    = "tf-test-example-hl7-v2-store%{random_suffix}"
@@ -274,7 +277,13 @@ func testAccCheckHealthcareHl7V2StoreDestroyProducer(t *testing.T) func(s *terra
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("HealthcareHl7V2Store still exists at %s", url)
 			}

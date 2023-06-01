@@ -62,6 +62,10 @@ type DataflowFlexTemplateJobStatus struct {
 
 	// +optional
 	State *string `json:"state,omitempty"`
+
+	/* The type of this job, selected from the JobType enum. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 // +genclient

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 // Contains common diff suppress functions.
 
 package google
@@ -172,4 +174,8 @@ func LastSlashDiffSuppress(k, old, new string, d *schema.ResourceData) bool {
 // has the project number instead of the project name
 func ProjectNumberDiffSuppress(k, old, new string, d *schema.ResourceData) bool {
 	return tpgresource.ProjectNumberDiffSuppress(k, old, new, d)
+}
+
+func compareCryptoKeyVersions(_, old, new string, _ *schema.ResourceData) bool {
+	return tpgresource.CompareCryptoKeyVersions("", old, new, nil)
 }

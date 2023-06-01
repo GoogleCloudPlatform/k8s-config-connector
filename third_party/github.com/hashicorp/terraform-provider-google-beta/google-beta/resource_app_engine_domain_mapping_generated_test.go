@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccAppEngineDomainMapping_appEngineDomainMappingBasicExample(t *testing
 }
 
 func testAccAppEngineDomainMapping_appEngineDomainMappingBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_app_engine_domain_mapping" "domain_mapping" {
   domain_name = "tf-test-domain%{random_suffix}.gcp.tfacc.hashicorptest.com"
 
@@ -87,7 +90,13 @@ func testAccCheckAppEngineDomainMappingDestroyProducer(t *testing.T) func(s *ter
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("AppEngineDomainMapping still exists at %s", url)
 			}

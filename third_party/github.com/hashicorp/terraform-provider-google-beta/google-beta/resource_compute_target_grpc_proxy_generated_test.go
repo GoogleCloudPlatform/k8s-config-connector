@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -52,7 +55,7 @@ func TestAccComputeTargetGrpcProxy_targetGrpcProxyBasicExample(t *testing.T) {
 }
 
 func testAccComputeTargetGrpcProxy_targetGrpcProxyBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_target_grpc_proxy" "default" {
   name    = "proxy%{random_suffix}"
   url_map = google_compute_url_map.urlmap.id
@@ -166,7 +169,13 @@ func testAccCheckComputeTargetGrpcProxyDestroyProducer(t *testing.T) func(s *ter
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeTargetGrpcProxy still exists at %s", url)
 			}

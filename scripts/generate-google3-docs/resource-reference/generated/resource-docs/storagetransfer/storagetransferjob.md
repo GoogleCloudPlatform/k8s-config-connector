@@ -122,6 +122,7 @@ transferSpec:
             key: string
             name: string
     bucketName: string
+    path: string
     roleArn: string
   azureBlobStorageDataSource:
     azureCredentials:
@@ -595,6 +596,16 @@ transferSpec:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}S3 Bucket name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>transferSpec.awsS3DataSource.path</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}S3 Bucket path in bucket to transfer.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

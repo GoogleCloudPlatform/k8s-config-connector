@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccFilestoreInstance_filestoreInstanceBasicExample(t *testing.T) {
 }
 
 func testAccFilestoreInstance_filestoreInstanceBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_filestore_instance" "instance" {
   name = "tf-test-test-instance%{random_suffix}"
   location = "us-central1-b"
@@ -98,7 +101,7 @@ func TestAccFilestoreInstance_filestoreInstanceFullExample(t *testing.T) {
 }
 
 func testAccFilestoreInstance_filestoreInstanceFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_filestore_instance" "instance" {
   name = "tf-test-test-instance%{random_suffix}"
   location = "us-central1-b"
@@ -155,7 +158,14 @@ func testAccCheckFilestoreInstanceDestroyProducer(t *testing.T) func(s *terrafor
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, transport_tpg.IsNotFilestoreQuotaError)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:               config,
+				Method:               "GET",
+				Project:              billingProject,
+				RawURL:               url,
+				UserAgent:            config.UserAgent,
+				ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.IsNotFilestoreQuotaError},
+			})
 			if err == nil {
 				return fmt.Errorf("FilestoreInstance still exists at %s", url)
 			}

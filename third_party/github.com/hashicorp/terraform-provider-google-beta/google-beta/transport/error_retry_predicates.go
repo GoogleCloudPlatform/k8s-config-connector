@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package transport
 
 import (
@@ -234,6 +236,20 @@ func ServiceUsageServiceBeingActivated(err error) (bool, string) {
 	return false, ""
 }
 
+// See https://github.com/hashicorp/terraform-provider-google/issues/14691 for
+// details on the error message this handles
+// This is a post-operation error so it uses tpgresource.CommonOpError instead of googleapi.Error
+func ServiceUsageInternalError160009(err error) (bool, string) {
+	// a cyclical dependency between transport/tpgresource blocks using tpgresource.CommonOpError
+	// so just work off the error string. Ideally, we'd use that type instead.
+	s := err.Error()
+	if strings.Contains(s, "encountered internal error") && strings.Contains(s, "160009") && strings.Contains(s, "with failed services") {
+		return true, "retrying internal error 160009."
+	}
+
+	return false, ""
+}
+
 // Retry if Bigquery operation returns a 403 with a specific message for
 // concurrent operations (which are implemented in terms of 'edit quota').
 func IsBigqueryIAMQuotaError(err error) (bool, string) {
@@ -440,6 +456,20 @@ func IsBigTableRetryableError(err error) (bool, string) {
 		if retryDelayDuration != 0 {
 			// TODO: Consider sleep for `retryDelayDuration` before retrying.
 			return true, "Bigtable operation failed with a retryable error, will retry"
+		}
+	}
+
+	return false, ""
+}
+
+// Gateway of type 'SECURE_WEB_GATEWAY' automatically creates a router but does not delete it.
+// This router might be re-used by other gateways located in the same network.
+// When multiple gateways are being deleted at the same time, multiple attempts to delete the
+// same router will be triggered and the api throws an error saying the "The resource <router> is not ready".
+func IsSwgAutogenRouterRetryable(err error) (bool, string) {
+	if gerr, ok := err.(*googleapi.Error); ok {
+		if gerr.Code == 400 && strings.Contains(strings.ToLower(gerr.Body), "not ready") {
+			return true, "Waiting swg autogen router to be ready"
 		}
 	}
 

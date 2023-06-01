@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,6 +7,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgiamresource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 
@@ -40,7 +43,7 @@ type BigqueryDatasetIamUpdater struct {
 	Config    *transport_tpg.Config
 }
 
-func NewBigqueryDatasetIamUpdater(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (ResourceIamUpdater, error) {
+func NewBigqueryDatasetIamUpdater(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (tpgiamresource.ResourceIamUpdater, error) {
 	project, err := tpgresource.GetProject(d, config)
 	if err != nil {
 		return nil, err
@@ -84,7 +87,13 @@ func (u *BigqueryDatasetIamUpdater) GetResourceIamPolicy() (*cloudresourcemanage
 		return nil, err
 	}
 
-	res, err := transport_tpg.SendRequest(u.Config, "GET", u.project, url, userAgent, nil)
+	res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+		Config:    u.Config,
+		Method:    "GET",
+		Project:   u.project,
+		RawURL:    url,
+		UserAgent: userAgent,
+	})
 	if err != nil {
 		return nil, errwrap.Wrapf(fmt.Sprintf("Error retrieving IAM policy for %s: {{err}}", u.DescribeResource()), err)
 	}
@@ -112,7 +121,14 @@ func (u *BigqueryDatasetIamUpdater) SetResourceIamPolicy(policy *cloudresourcema
 		return err
 	}
 
-	_, err = transport_tpg.SendRequest(u.Config, "PATCH", u.project, url, userAgent, obj)
+	_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+		Config:    u.Config,
+		Method:    "PATCH",
+		Project:   u.project,
+		RawURL:    url,
+		UserAgent: userAgent,
+		Body:      obj,
+	})
 	if err != nil {
 		return fmt.Errorf("Error creating DatasetAccess: %s", err)
 	}

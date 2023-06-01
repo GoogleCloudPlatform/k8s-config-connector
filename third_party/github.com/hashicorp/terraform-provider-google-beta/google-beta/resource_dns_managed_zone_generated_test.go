@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccDNSManagedZone_dnsManagedZoneQuickstartExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZoneQuickstartExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 # to setup a web-server
 resource "google_compute_instance" "default" {
   name         = "tf-test-dns-compute-instance%{random_suffix}"
@@ -136,7 +139,7 @@ func TestAccDNSManagedZone_dnsRecordSetBasicExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsRecordSetBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_dns_managed_zone" "parent-zone" {
   name        = "tf-test-sample-zone%{random_suffix}"
   dns_name    = "tf-test-sample-zone%{random_suffix}.hashicorptest.com."
@@ -183,7 +186,7 @@ func TestAccDNSManagedZone_dnsManagedZoneBasicExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZoneBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_dns_managed_zone" "example-zone" {
   name        = "example-zone"
   dns_name    = "example-${random_id.rnd.hex}.com."
@@ -224,7 +227,7 @@ func TestAccDNSManagedZone_dnsManagedZonePrivateExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZonePrivateExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_dns_managed_zone" "private-zone" {
   name        = "tf-test-private-zone%{random_suffix}"
   dns_name    = "private.example.com."
@@ -282,7 +285,7 @@ func TestAccDNSManagedZone_dnsManagedZonePrivateGkeExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZonePrivateGkeExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_dns_managed_zone" "private-zone-gke" {
   name        = "tf-test-private-zone%{random_suffix}"
   dns_name    = "private.example.com."
@@ -381,7 +384,7 @@ func TestAccDNSManagedZone_dnsManagedZonePrivatePeeringExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZonePrivatePeeringExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_dns_managed_zone" "peering-zone" {
   name        = "tf-test-peering-zone%{random_suffix}"
   dns_name    = "peering.example.com."
@@ -439,7 +442,7 @@ func TestAccDNSManagedZone_dnsManagedZoneServiceDirectoryExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZoneServiceDirectoryExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_dns_managed_zone" "sd-zone" {
   provider = google-beta
 
@@ -497,7 +500,7 @@ func TestAccDNSManagedZone_dnsManagedZoneCloudLoggingExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZoneCloudLoggingExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_dns_managed_zone" "cloud-logging-enabled-zone" {
   name        = "tf-test-cloud-logging-enabled-zone%{random_suffix}"
   dns_name    = "services.example.com."
@@ -536,7 +539,13 @@ func testAccCheckDNSManagedZoneDestroyProducer(t *testing.T) func(s *terraform.S
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("DNSManagedZone still exists at %s", url)
 			}

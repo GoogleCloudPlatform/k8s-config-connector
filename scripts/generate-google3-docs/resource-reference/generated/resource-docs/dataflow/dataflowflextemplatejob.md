@@ -149,6 +149,7 @@ conditions:
 jobId: string
 observedGeneration: integer
 state: string
+type: string
 ```
 
 <table class="properties responsive">
@@ -226,6 +227,13 @@ state: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>type</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The type of this job, selected from the JobType enum.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -296,7 +298,12 @@ func testAccCheckBigQueryDatasetAccess(t *testing.T, n string, expected map[stri
 			return err
 		}
 
-		ds, err := transport_tpg.SendRequest(config, "GET", "", url, config.UserAgent, nil)
+		ds, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+			Config:    config,
+			Method:    "GET",
+			RawURL:    url,
+			UserAgent: config.UserAgent,
+		})
 		if err != nil {
 			return err
 		}

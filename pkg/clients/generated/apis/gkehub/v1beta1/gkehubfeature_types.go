@@ -35,11 +35,43 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type FeatureDefaultConfig struct {
+	/* The logs routing mode Possible values: MODE_UNSPECIFIED, COPY, MOVE */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+}
+
+type FeatureFleetScopeLogsConfig struct {
+	/* The logs routing mode Possible values: MODE_UNSPECIFIED, COPY, MOVE */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+}
+
+type FeatureFleetobservability struct {
+	/* Fleet Observability Logging-specific spec. */
+	// +optional
+	LoggingConfig *FeatureLoggingConfig `json:"loggingConfig,omitempty"`
+}
+
+type FeatureLoggingConfig struct {
+	/* Specified if applying the default routing config to logs not specified in other configs. */
+	// +optional
+	DefaultConfig *FeatureDefaultConfig `json:"defaultConfig,omitempty"`
+
+	/* Specified if applying the routing config to all logs for all fleet scopes. */
+	// +optional
+	FleetScopeLogsConfig *FeatureFleetScopeLogsConfig `json:"fleetScopeLogsConfig,omitempty"`
+}
+
 type FeatureMulticlusteringress struct {
 	ConfigMembershipRef v1alpha1.ResourceRef `json:"configMembershipRef"`
 }
 
 type FeatureSpec struct {
+	/* Fleet Observability spec. */
+	// +optional
+	Fleetobservability *FeatureFleetobservability `json:"fleetobservability,omitempty"`
+
 	/* Multicluster Ingress-specific spec. */
 	// +optional
 	Multiclusteringress *FeatureMulticlusteringress `json:"multiclusteringress,omitempty"`

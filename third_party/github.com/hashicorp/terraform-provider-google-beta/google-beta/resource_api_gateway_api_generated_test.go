@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccApiGatewayApi_apigatewayApiBasicExample(t *testing.T) {
 }
 
 func testAccApiGatewayApi_apigatewayApiBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -87,7 +90,7 @@ func TestAccApiGatewayApi_apigatewayApiFullExample(t *testing.T) {
 }
 
 func testAccApiGatewayApi_apigatewayApiFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -122,7 +125,13 @@ func testAccCheckApiGatewayApiDestroyProducer(t *testing.T) func(s *terraform.St
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ApiGatewayApi still exists at %s", url)
 			}

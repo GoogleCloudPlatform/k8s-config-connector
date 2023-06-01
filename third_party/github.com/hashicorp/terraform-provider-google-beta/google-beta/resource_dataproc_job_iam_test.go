@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -98,6 +100,7 @@ func TestAccDataprocJobIamPolicy(t *testing.T) {
 			{
 				// Test IAM Binding creation
 				Config: testAccDataprocJobIamPolicy(cluster, job, account, role),
+				Check:  resource.TestCheckResourceAttrSet("data.google_dataproc_job_iam_policy.policy", "policy_data"),
 			},
 			{
 				ResourceName:      "google_dataproc_job_iam_policy.policy",
@@ -218,5 +221,11 @@ resource "google_dataproc_job_iam_policy" "policy" {
   region      = "us-central1"
   policy_data = data.google_iam_policy.policy.policy_data
 }
+
+data "google_dataproc_job_iam_policy" "policy" {
+  job_id      = google_dataproc_job.pyspark.reference[0].job_id
+  region      = "us-central1"
+}
+
 `, cluster, job, account, role)
 }

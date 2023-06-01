@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -110,6 +113,7 @@ func TestAccCloudfunctions2functionIamPolicyGenerated(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudfunctions2functionIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_cloudfunctions2_function_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_cloudfunctions2_function_iam_policy.foo",
@@ -246,6 +250,15 @@ resource "google_cloudfunctions2_function_iam_policy" "foo" {
   location = google_cloudfunctions2_function.function.location
   cloud_function = google_cloudfunctions2_function.function.name
   policy_data = data.google_iam_policy.foo.policy_data
+}
+
+data "google_cloudfunctions2_function_iam_policy" "foo" {
+  project = google_cloudfunctions2_function.function.project
+  location = google_cloudfunctions2_function.function.location
+  cloud_function = google_cloudfunctions2_function.function.name
+  depends_on = [
+    google_cloudfunctions2_function_iam_policy.foo
+  ]
 }
 `, context)
 }

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeVpnTunnel_vpnTunnelBasicExample(t *testing.T) {
 }
 
 func testAccComputeVpnTunnel_vpnTunnelBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_vpn_tunnel" "tunnel1" {
   name          = "tf-test-tunnel-1%{random_suffix}"
   peer_ip       = "15.0.0.120"
@@ -143,7 +146,7 @@ func TestAccComputeVpnTunnel_vpnTunnelBetaExample(t *testing.T) {
 }
 
 func testAccComputeVpnTunnel_vpnTunnelBetaExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_vpn_tunnel" "tunnel1" {
   provider      = %{provider_name}
   name          = "tf-test-tunnel-1%{random_suffix}"
@@ -246,7 +249,13 @@ func testAccCheckComputeVpnTunnelDestroyProducer(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeVpnTunnel still exists at %s", url)
 			}

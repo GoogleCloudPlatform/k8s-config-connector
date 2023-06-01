@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -28,7 +30,7 @@ func ResourceGoogleFolderOrganizationPolicy() *schema.Resource {
 			Delete: schema.DefaultTimeout(4 * time.Minute),
 		},
 
-		Schema: mergeSchemas(
+		Schema: tpgresource.MergeSchemas(
 			schemaOrganizationPolicy,
 			map[string]*schema.Schema{
 				"folder": {
@@ -46,7 +48,7 @@ func ResourceGoogleFolderOrganizationPolicy() *schema.Resource {
 func resourceFolderOrgPolicyImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*transport_tpg.Config)
 
-	if err := ParseImportId([]string{
+	if err := tpgresource.ParseImportId([]string{
 		"folders/(?P<folder>[^/]+)/constraints/(?P<constraint>[^/]+)",
 		"folders/(?P<folder>[^/]+)/(?P<constraint>[^/]+)",
 		"(?P<folder>[^/]+)/(?P<constraint>[^/]+)"},
@@ -88,12 +90,15 @@ func resourceGoogleFolderOrganizationPolicyRead(d *schema.ResourceData, meta int
 	folder := canonicalFolderId(d.Get("folder").(string))
 
 	var policy *cloudresourcemanager.OrgPolicy
-	err = transport_tpg.RetryTimeDuration(func() (getErr error) {
-		policy, getErr = config.NewResourceManagerClient(userAgent).Folders.GetOrgPolicy(folder, &cloudresourcemanager.GetOrgPolicyRequest{
-			Constraint: canonicalOrgPolicyConstraint(d.Get("constraint").(string)),
-		}).Do()
-		return getErr
-	}, d.Timeout(schema.TimeoutRead))
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (getErr error) {
+			policy, getErr = config.NewResourceManagerClient(userAgent).Folders.GetOrgPolicy(folder, &cloudresourcemanager.GetOrgPolicyRequest{
+				Constraint: canonicalOrgPolicyConstraint(d.Get("constraint").(string)),
+			}).Do()
+			return getErr
+		},
+		Timeout: d.Timeout(schema.TimeoutRead),
+	})
 	if err != nil {
 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Organization policy for %s", folder))
 	}
@@ -143,12 +148,15 @@ func resourceGoogleFolderOrganizationPolicyDelete(d *schema.ResourceData, meta i
 	}
 	folder := canonicalFolderId(d.Get("folder").(string))
 
-	return transport_tpg.RetryTimeDuration(func() (delErr error) {
-		_, delErr = config.NewResourceManagerClient(userAgent).Folders.ClearOrgPolicy(folder, &cloudresourcemanager.ClearOrgPolicyRequest{
-			Constraint: canonicalOrgPolicyConstraint(d.Get("constraint").(string)),
-		}).Do()
-		return delErr
-	}, d.Timeout(schema.TimeoutDelete))
+	return transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (delErr error) {
+			_, delErr = config.NewResourceManagerClient(userAgent).Folders.ClearOrgPolicy(folder, &cloudresourcemanager.ClearOrgPolicyRequest{
+				Constraint: canonicalOrgPolicyConstraint(d.Get("constraint").(string)),
+			}).Do()
+			return delErr
+		},
+		Timeout: d.Timeout(schema.TimeoutDelete),
+	})
 }
 
 func setFolderOrganizationPolicy(d *schema.ResourceData, meta interface{}) error {
@@ -170,17 +178,20 @@ func setFolderOrganizationPolicy(d *schema.ResourceData, meta interface{}) error
 		return err
 	}
 
-	return transport_tpg.RetryTimeDuration(func() (setErr error) {
-		_, setErr = config.NewResourceManagerClient(userAgent).Folders.SetOrgPolicy(folder, &cloudresourcemanager.SetOrgPolicyRequest{
-			Policy: &cloudresourcemanager.OrgPolicy{
-				Constraint:     canonicalOrgPolicyConstraint(d.Get("constraint").(string)),
-				BooleanPolicy:  expandBooleanOrganizationPolicy(d.Get("boolean_policy").([]interface{})),
-				ListPolicy:     listPolicy,
-				RestoreDefault: restoreDefault,
-				Version:        int64(d.Get("version").(int)),
-				Etag:           d.Get("etag").(string),
-			},
-		}).Do()
-		return setErr
-	}, d.Timeout(schema.TimeoutCreate))
+	return transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (setErr error) {
+			_, setErr = config.NewResourceManagerClient(userAgent).Folders.SetOrgPolicy(folder, &cloudresourcemanager.SetOrgPolicyRequest{
+				Policy: &cloudresourcemanager.OrgPolicy{
+					Constraint:     canonicalOrgPolicyConstraint(d.Get("constraint").(string)),
+					BooleanPolicy:  expandBooleanOrganizationPolicy(d.Get("boolean_policy").([]interface{})),
+					ListPolicy:     listPolicy,
+					RestoreDefault: restoreDefault,
+					Version:        int64(d.Get("version").(int)),
+					Etag:           d.Get("etag").(string),
+				},
+			}).Do()
+			return setErr
+		},
+		Timeout: d.Timeout(schema.TimeoutCreate),
+	})
 }

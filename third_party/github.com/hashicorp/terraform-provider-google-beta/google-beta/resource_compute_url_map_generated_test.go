@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeUrlMap_urlMapBucketAndServiceExample(t *testing.T) {
 }
 
 func testAccComputeUrlMap_urlMapBucketAndServiceExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_url_map" "urlmap" {
   name        = "urlmap%{random_suffix}"
   description = "a description"
@@ -157,7 +160,7 @@ func TestAccComputeUrlMap_urlMapTrafficDirectorRouteExample(t *testing.T) {
 }
 
 func testAccComputeUrlMap_urlMapTrafficDirectorRouteExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_url_map" "urlmap" {
   name        = "urlmap%{random_suffix}"
   description = "a description"
@@ -270,7 +273,7 @@ func TestAccComputeUrlMap_urlMapTrafficDirectorRoutePartialExample(t *testing.T)
 }
 
 func testAccComputeUrlMap_urlMapTrafficDirectorRoutePartialExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_url_map" "urlmap" {
   name        = "urlmap%{random_suffix}"
   description = "a description"
@@ -354,7 +357,7 @@ func TestAccComputeUrlMap_urlMapTrafficDirectorPathExample(t *testing.T) {
 }
 
 func testAccComputeUrlMap_urlMapTrafficDirectorPathExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_url_map" "urlmap" {
   name        = "urlmap%{random_suffix}"
   description = "a description"
@@ -487,7 +490,7 @@ func TestAccComputeUrlMap_urlMapTrafficDirectorPathPartialExample(t *testing.T) 
 }
 
 func testAccComputeUrlMap_urlMapTrafficDirectorPathPartialExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_url_map" "urlmap" {
   name        = "urlmap%{random_suffix}"
   description = "a description"
@@ -590,7 +593,7 @@ func TestAccComputeUrlMap_urlMapHeaderBasedRoutingExample(t *testing.T) {
 }
 
 func testAccComputeUrlMap_urlMapHeaderBasedRoutingExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_url_map" "urlmap" {
   name        = "urlmap%{random_suffix}"
   description = "header-based routing example"
@@ -694,7 +697,7 @@ func TestAccComputeUrlMap_urlMapParameterBasedRoutingExample(t *testing.T) {
 }
 
 func testAccComputeUrlMap_urlMapParameterBasedRoutingExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_url_map" "urlmap" {
   name        = "urlmap%{random_suffix}"
   description = "parameter-based routing example"
@@ -795,7 +798,13 @@ func testAccCheckComputeUrlMapDestroyProducer(t *testing.T) func(s *terraform.St
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeUrlMap still exists at %s", url)
 			}

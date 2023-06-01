@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeFirewall_firewallBasicExample(t *testing.T) {
 }
 
 func testAccComputeFirewall_firewallBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_firewall" "default" {
   name    = "tf-test-test-firewall%{random_suffix}"
   network = google_compute_network.default.name
@@ -103,7 +106,7 @@ func TestAccComputeFirewall_firewallWithTargetTagsExample(t *testing.T) {
 }
 
 func testAccComputeFirewall_firewallWithTargetTagsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_firewall" "rules" {
   project     = "%{project}"
   name        = "tf-test-my-firewall-rule%{random_suffix}"
@@ -144,7 +147,13 @@ func testAccCheckComputeFirewallDestroyProducer(t *testing.T) func(s *terraform.
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeFirewall still exists at %s", url)
 			}

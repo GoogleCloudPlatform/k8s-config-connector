@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -84,6 +86,7 @@ func ResourceStorageBucket() *schema.Resource {
 			"labels": {
 				Type:     schema.TypeMap,
 				Optional: true,
+				Computed: true,
 				// GCP (Dataplex) automatically adds labels
 				DiffSuppressFunc: resourceDataplexLabelDiffSuppress,
 				Elem:             &schema.Schema{Type: schema.TypeString},
@@ -547,9 +550,11 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 
 	var res *storage.Bucket
 
-	err = transport_tpg.Retry(func() error {
-		res, err = config.NewStorageClient(userAgent).Buckets.Insert(project, sb).Do()
-		return err
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() error {
+			res, err = config.NewStorageClient(userAgent).Buckets.Insert(project, sb).Do()
+			return err
+		},
 	})
 
 	if err != nil {
@@ -562,10 +567,14 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 
 	// There seems to be some eventual consistency errors in some cases, so we want to check a few times
 	// to make sure it exists before moving on
-	err = transport_tpg.RetryTimeDuration(func() (operr error) {
-		_, retryErr := config.NewStorageClient(userAgent).Buckets.Get(res.Name).Do()
-		return retryErr
-	}, d.Timeout(schema.TimeoutCreate), transport_tpg.IsNotFoundRetryableError("bucket creation"))
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (operr error) {
+			_, retryErr := config.NewStorageClient(userAgent).Buckets.Get(res.Name).Do()
+			return retryErr
+		},
+		Timeout:              d.Timeout(schema.TimeoutCreate),
+		ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.IsNotFoundRetryableError("bucket creation")},
+	})
 
 	if err != nil {
 		return fmt.Errorf("Error reading bucket after creation: %s", err)
@@ -710,10 +719,14 @@ func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error
 
 	// There seems to be some eventual consistency errors in some cases, so we want to check a few times
 	// to make sure it exists before moving on
-	err = transport_tpg.RetryTimeDuration(func() (operr error) {
-		_, retryErr := config.NewStorageClient(userAgent).Buckets.Get(res.Name).Do()
-		return retryErr
-	}, d.Timeout(schema.TimeoutUpdate), transport_tpg.IsNotFoundRetryableError("bucket update"))
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (operr error) {
+			_, retryErr := config.NewStorageClient(userAgent).Buckets.Get(res.Name).Do()
+			return retryErr
+		},
+		Timeout:              d.Timeout(schema.TimeoutUpdate),
+		ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.IsNotFoundRetryableError("bucket update")},
+	})
 
 	if err != nil {
 		return fmt.Errorf("Error reading bucket after update: %s", err)
@@ -900,9 +913,9 @@ func expandCors(configured []interface{}) []*storage.BucketCors {
 	for _, raw := range configured {
 		data := raw.(map[string]interface{})
 		corsRule := storage.BucketCors{
-			Origin:         convertStringArr(data["origin"].([]interface{})),
-			Method:         convertStringArr(data["method"].([]interface{})),
-			ResponseHeader: convertStringArr(data["response_header"].([]interface{})),
+			Origin:         tpgresource.ConvertStringArr(data["origin"].([]interface{})),
+			Method:         tpgresource.ConvertStringArr(data["method"].([]interface{})),
+			ResponseHeader: tpgresource.ConvertStringArr(data["response_header"].([]interface{})),
 			MaxAgeSeconds:  int64(data["max_age_seconds"].(int)),
 		}
 
@@ -1142,14 +1155,14 @@ func flattenBucketLifecycleRuleAction(action *storage.BucketLifecycleRuleAction)
 func flattenBucketLifecycleRuleCondition(condition *storage.BucketLifecycleRuleCondition) map[string]interface{} {
 	ruleCondition := map[string]interface{}{
 		"created_before":             condition.CreatedBefore,
-		"matches_storage_class":      convertStringArrToInterface(condition.MatchesStorageClass),
+		"matches_storage_class":      tpgresource.ConvertStringArrToInterface(condition.MatchesStorageClass),
 		"num_newer_versions":         int(condition.NumNewerVersions),
 		"custom_time_before":         condition.CustomTimeBefore,
 		"days_since_custom_time":     int(condition.DaysSinceCustomTime),
 		"days_since_noncurrent_time": int(condition.DaysSinceNoncurrentTime),
 		"noncurrent_time_before":     condition.NoncurrentTimeBefore,
-		"matches_prefix":             convertStringArrToInterface(condition.MatchesPrefix),
-		"matches_suffix":             convertStringArrToInterface(condition.MatchesSuffix),
+		"matches_prefix":             tpgresource.ConvertStringArrToInterface(condition.MatchesPrefix),
+		"matches_suffix":             tpgresource.ConvertStringArrToInterface(condition.MatchesSuffix),
 	}
 	if condition.Age != nil {
 		ruleCondition["age"] = int(*condition.Age)

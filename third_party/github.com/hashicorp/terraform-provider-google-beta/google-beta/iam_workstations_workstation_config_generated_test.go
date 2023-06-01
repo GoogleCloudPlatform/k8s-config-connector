@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -98,6 +101,7 @@ func TestAccWorkstationsWorkstationConfigIamPolicyGenerated(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccWorkstationsWorkstationConfigIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_workstations_workstation_config_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_workstations_workstation_config_iam_policy.foo",
@@ -155,6 +159,9 @@ resource "google_workstations_workstation_config" "default" {
   workstation_config_id  = "tf-test-workstation-config%{random_suffix}"
   workstation_cluster_id = google_workstations_workstation_cluster.default.workstation_cluster_id
   location   		         = "us-central1"
+
+  idle_timeout = "600s"
+  running_timeout = "21600s"
 
   host {
     gce_instance {
@@ -215,6 +222,9 @@ resource "google_workstations_workstation_config" "default" {
   workstation_cluster_id = google_workstations_workstation_cluster.default.workstation_cluster_id
   location   		         = "us-central1"
 
+  idle_timeout = "600s"
+  running_timeout = "21600s"
+
   host {
     gce_instance {
       machine_type                = "e2-standard-4"
@@ -239,6 +249,17 @@ resource "google_workstations_workstation_config_iam_policy" "foo" {
   workstation_cluster_id = google_workstations_workstation_config.default.workstation_cluster_id
   workstation_config_id = google_workstations_workstation_config.default.workstation_config_id
   policy_data = data.google_iam_policy.foo.policy_data
+}
+
+data "google_workstations_workstation_config_iam_policy" "foo" {
+  provider = google-beta
+  project = google_workstations_workstation_config.default.project
+  location = google_workstations_workstation_config.default.location
+  workstation_cluster_id = google_workstations_workstation_config.default.workstation_cluster_id
+  workstation_config_id = google_workstations_workstation_config.default.workstation_config_id
+  depends_on = [
+    google_workstations_workstation_config_iam_policy.foo
+  ]
 }
 `, context)
 }
@@ -280,6 +301,9 @@ resource "google_workstations_workstation_config" "default" {
   workstation_config_id  = "tf-test-workstation-config%{random_suffix}"
   workstation_cluster_id = google_workstations_workstation_cluster.default.workstation_cluster_id
   location   		         = "us-central1"
+
+  idle_timeout = "600s"
+  running_timeout = "21600s"
 
   host {
     gce_instance {
@@ -343,6 +367,9 @@ resource "google_workstations_workstation_config" "default" {
   workstation_cluster_id = google_workstations_workstation_cluster.default.workstation_cluster_id
   location   		         = "us-central1"
 
+  idle_timeout = "600s"
+  running_timeout = "21600s"
+
   host {
     gce_instance {
       machine_type                = "e2-standard-4"
@@ -401,6 +428,9 @@ resource "google_workstations_workstation_config" "default" {
   workstation_config_id  = "tf-test-workstation-config%{random_suffix}"
   workstation_cluster_id = google_workstations_workstation_cluster.default.workstation_cluster_id
   location   		         = "us-central1"
+
+  idle_timeout = "600s"
+  running_timeout = "21600s"
 
   host {
     gce_instance {

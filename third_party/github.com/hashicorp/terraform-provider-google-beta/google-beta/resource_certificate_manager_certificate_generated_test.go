@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccCertificateManagerCertificate_certificateManagerGoogleManagedCertifi
 }
 
 func testAccCertificateManagerCertificate_certificateManagerGoogleManagedCertificateExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_certificate_manager_certificate" "default" {
   name        = "tf-test-dns-cert%{random_suffix}"
   description = "The default cert"
@@ -111,7 +114,7 @@ func TestAccCertificateManagerCertificate_certificateManagerSelfManagedCertifica
 }
 
 func testAccCertificateManagerCertificate_certificateManagerSelfManagedCertificateExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_certificate_manager_certificate" "default" {
   name        = "tf-test-self-managed-cert%{random_suffix}"
   description = "Global cert"
@@ -150,7 +153,7 @@ func TestAccCertificateManagerCertificate_certificateManagerSelfManagedCertifica
 }
 
 func testAccCertificateManagerCertificate_certificateManagerSelfManagedCertificateRegionalExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_certificate_manager_certificate" "default" {
   name        = "tf-test-self-managed-cert%{random_suffix}"
   description = "Regional cert"
@@ -186,7 +189,13 @@ func testAccCheckCertificateManagerCertificateDestroyProducer(t *testing.T) func
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("CertificateManagerCertificate still exists at %s", url)
 			}

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package transport
 
 import (
@@ -279,6 +281,7 @@ type Config struct {
 	TagsBasePath                     string
 	TPUBasePath                      string
 	VertexAIBasePath                 string
+	VmwareengineBasePath             string
 	VPCAccessBasePath                string
 	WorkflowsBasePath                string
 	WorkstationsBasePath             string
@@ -401,6 +404,7 @@ const StorageTransferBasePathKey = "StorageTransfer"
 const TagsBasePathKey = "Tags"
 const TPUBasePathKey = "TPU"
 const VertexAIBasePathKey = "VertexAI"
+const VmwareengineBasePathKey = "Vmwareengine"
 const VPCAccessBasePathKey = "VPCAccess"
 const WorkflowsBasePathKey = "Workflows"
 const WorkstationsBasePathKey = "Workstations"
@@ -517,6 +521,7 @@ var DefaultBasePaths = map[string]string{
 	TagsBasePathKey:                     "https://cloudresourcemanager.googleapis.com/v3/",
 	TPUBasePathKey:                      "https://tpu.googleapis.com/v1/",
 	VertexAIBasePathKey:                 "https://{{region}}-aiplatform.googleapis.com/v1beta1/",
+	VmwareengineBasePathKey:             "https://vmwareengine.googleapis.com/v1/",
 	VPCAccessBasePathKey:                "https://vpcaccess.googleapis.com/v1beta1/",
 	WorkflowsBasePathKey:                "https://workflows.googleapis.com/v1/",
 	WorkstationsBasePathKey:             "https://workstations.googleapis.com/v1beta/",
@@ -1095,6 +1100,11 @@ func HandleSDKDefaults(d *schema.ResourceData) error {
 		d.Set("vertex_ai_custom_endpoint", MultiEnvDefault([]string{
 			"GOOGLE_VERTEX_AI_CUSTOM_ENDPOINT",
 		}, DefaultBasePaths[VertexAIBasePathKey]))
+	}
+	if d.Get("vmwareengine_custom_endpoint") == "" {
+		d.Set("vmwareengine_custom_endpoint", MultiEnvDefault([]string{
+			"GOOGLE_VMWAREENGINE_CUSTOM_ENDPOINT",
+		}, DefaultBasePaths[VmwareengineBasePathKey]))
 	}
 	if d.Get("vpc_access_custom_endpoint") == "" {
 		d.Set("vpc_access_custom_endpoint", MultiEnvDefault([]string{
@@ -2076,6 +2086,7 @@ func ConfigureBasePaths(c *Config) {
 	c.TagsBasePath = DefaultBasePaths[TagsBasePathKey]
 	c.TPUBasePath = DefaultBasePaths[TPUBasePathKey]
 	c.VertexAIBasePath = DefaultBasePaths[VertexAIBasePathKey]
+	c.VmwareengineBasePath = DefaultBasePaths[VmwareengineBasePathKey]
 	c.VPCAccessBasePath = DefaultBasePaths[VPCAccessBasePathKey]
 	c.WorkflowsBasePath = DefaultBasePaths[WorkflowsBasePathKey]
 	c.WorkstationsBasePath = DefaultBasePaths[WorkstationsBasePathKey]
@@ -2103,7 +2114,13 @@ func GetCurrentUserEmail(config *Config, userAgent string) (string, error) {
 
 	// See https://github.com/golang/oauth2/issues/306 for a recommendation to do this from a Go maintainer
 	// URL retrieved from https://accounts.google.com/.well-known/openid-configuration
-	res, err := SendRequest(config, "GET", "NO_BILLING_PROJECT_OVERRIDE", "https://openidconnect.googleapis.com/v1/userinfo", userAgent, nil)
+	res, err := SendRequest(SendRequestOptions{
+		Config:    config,
+		Method:    "GET",
+		Project:   "NO_BILLING_PROJECT_OVERRIDE",
+		RawURL:    "https://openidconnect.googleapis.com/v1/userinfo",
+		UserAgent: userAgent,
+	})
 
 	if err != nil {
 		return "", fmt.Errorf("error retrieving userinfo for your provider credentials. have you enabled the 'https://www.googleapis.com/auth/userinfo.email' scope? error: %s", err)

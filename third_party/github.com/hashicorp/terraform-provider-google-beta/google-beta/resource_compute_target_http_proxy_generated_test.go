@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeTargetHttpProxy_targetHttpProxyBasicExample(t *testing.T) {
 }
 
 func testAccComputeTargetHttpProxy_targetHttpProxyBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_target_http_proxy" "default" {
   name    = "tf-test-test-proxy%{random_suffix}"
   url_map = google_compute_url_map.default.id
@@ -123,7 +126,7 @@ func TestAccComputeTargetHttpProxy_targetHttpProxyHttpsRedirectExample(t *testin
 }
 
 func testAccComputeTargetHttpProxy_targetHttpProxyHttpsRedirectExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_target_http_proxy" "default" {
   name    = "tf-test-test-https-redirect-proxy%{random_suffix}"
   url_map = google_compute_url_map.default.id
@@ -162,7 +165,13 @@ func testAccCheckComputeTargetHttpProxyDestroyProducer(t *testing.T) func(s *ter
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeTargetHttpProxy still exists at %s", url)
 			}

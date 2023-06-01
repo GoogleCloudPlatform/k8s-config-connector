@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -52,7 +55,7 @@ func TestAccContainerAnalysisNote_containerAnalysisNoteBasicExample(t *testing.T
 }
 
 func testAccContainerAnalysisNote_containerAnalysisNoteBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_container_analysis_note" "note" {
   name = "tf-test-attestor-note%{random_suffix}"
   attestation_authority {
@@ -89,7 +92,7 @@ func TestAccContainerAnalysisNote_containerAnalysisNoteAttestationFullExample(t 
 }
 
 func testAccContainerAnalysisNote_containerAnalysisNoteAttestationFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_container_analysis_note" "note" {
   name = "tf-test-attestor-note%{random_suffix}"
 
@@ -138,7 +141,13 @@ func testAccCheckContainerAnalysisNoteDestroyProducer(t *testing.T) func(s *terr
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ContainerAnalysisNote still exists at %s", url)
 			}

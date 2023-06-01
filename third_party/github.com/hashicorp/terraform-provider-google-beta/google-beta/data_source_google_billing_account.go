@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -41,6 +43,11 @@ func DataSourceGoogleBillingAccount() *schema.Resource {
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
 				},
+			},
+			"lookup_projects": {
+				Type:     schema.TypeBool,
+				Optional: true,
+				Default:  true,
 			},
 		},
 	}
@@ -98,11 +105,17 @@ func dataSourceBillingAccountRead(d *schema.ResourceData, meta interface{}) erro
 		return fmt.Errorf("one of billing_account or display_name must be set")
 	}
 
-	resp, err := config.NewBillingClient(userAgent).BillingAccounts.Projects.List(billingAccount.Name).Do()
-	if err != nil {
-		return fmt.Errorf("Error reading billing account projects: %s", err)
+	if d.Get("lookup_projects").(bool) {
+		resp, err := config.NewBillingClient(userAgent).BillingAccounts.Projects.List(billingAccount.Name).Do()
+		if err != nil {
+			return fmt.Errorf("Error reading billing account projects: %s", err)
+		}
+		projectIds := flattenBillingProjects(resp.ProjectBillingInfo)
+
+		if err := d.Set("project_ids", projectIds); err != nil {
+			return fmt.Errorf("Error setting project_ids: %s", err)
+		}
 	}
-	projectIds := flattenBillingProjects(resp.ProjectBillingInfo)
 
 	d.SetId(tpgresource.GetResourceNameFromSelfLink(billingAccount.Name))
 	if err := d.Set("name", billingAccount.Name); err != nil {
@@ -113,9 +126,6 @@ func dataSourceBillingAccountRead(d *schema.ResourceData, meta interface{}) erro
 	}
 	if err := d.Set("open", billingAccount.Open); err != nil {
 		return fmt.Errorf("Error setting open: %s", err)
-	}
-	if err := d.Set("project_ids", projectIds); err != nil {
-		return fmt.Errorf("Error setting project_ids: %s", err)
 	}
 
 	return nil

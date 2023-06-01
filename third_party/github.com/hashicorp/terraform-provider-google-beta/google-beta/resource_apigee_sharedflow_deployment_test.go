@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -29,7 +31,16 @@ func TestAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(t *
 		CheckDestroy:             testAccCheckApigeeSharedflowDeploymentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(context),
+				Config: testAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(context, "./test-fixtures/apigee/apigee_sharedflow_bundle.zip"),
+			},
+			{
+				ResourceName:            "google_apigee_sharedflow_deployment.sharedflow_deployment_test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{},
+			},
+			{
+				Config: testAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(context, "./test-fixtures/apigee/apigee_sharedflow_bundle2.zip"),
 			},
 			{
 				ResourceName:            "google_apigee_sharedflow_deployment.sharedflow_deployment_test",
@@ -41,7 +52,9 @@ func TestAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(t *
 	})
 }
 
-func testAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(context map[string]interface{}) string {
+func testAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(context map[string]interface{}, configBundle string) string {
+	context["config_bundle"] = configBundle
+
 	return Nprintf(`
 resource "google_project" "project" {
   project_id      = "tf-test%{random_suffix}"
@@ -109,7 +122,7 @@ resource "google_apigee_environment" "apigee_environment" {
 resource "google_apigee_sharedflow" "test_apigee_sharedflow" {
   name            = "tf-test-apigee-sharedflow"
   org_id          = google_project.project.project_id
-  config_bundle   = "./test-fixtures/apigee/apigee_sharedflow_bundle.zip"
+  config_bundle   = "%{config_bundle}"
   depends_on      = [google_apigee_organization.apigee_org]
 }
 
@@ -144,7 +157,13 @@ func testAccCheckApigeeSharedflowDeploymentDestroyProducer(t *testing.T) func(s 
 			if config.BillingProject != "" {
 				billingProject = config.BillingProject
 			}
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ApigeeSharedFlow still exists at %s", url)
 			}

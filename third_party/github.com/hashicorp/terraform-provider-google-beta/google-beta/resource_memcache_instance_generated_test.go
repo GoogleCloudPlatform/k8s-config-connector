@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -55,7 +58,7 @@ func TestAccMemcacheInstance_memcacheInstanceBasicExample(t *testing.T) {
 }
 
 func testAccMemcacheInstance_memcacheInstanceBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 // This example assumes this network already exists.
 // The API creates a tenant network per network authorized for a
 // Memcache instance and that network is not deleted when the user-created
@@ -132,7 +135,13 @@ func testAccCheckMemcacheInstanceDestroyProducer(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("MemcacheInstance still exists at %s", url)
 			}

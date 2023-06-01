@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccComputeExternalVpnGateway_externalVpnGatewayExample(t *testing.T) {
 }
 
 func testAccComputeExternalVpnGateway_externalVpnGatewayExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_ha_vpn_gateway" "ha_gateway" {
   region   = "us-central1"
   name     = "tf-test-ha-vpn%{random_suffix}"
@@ -183,7 +186,7 @@ func TestAccComputeExternalVpnGateway_onlyExternalVpnGatewayFullExample(t *testi
 }
 
 func testAccComputeExternalVpnGateway_onlyExternalVpnGatewayFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_compute_external_vpn_gateway" "external_gateway" {
   name            = "tf-test-external-gateway%{random_suffix}"
   redundancy_type = "SINGLE_IP_INTERNALLY_REDUNDANT"
@@ -223,7 +226,13 @@ func testAccCheckComputeExternalVpnGatewayDestroyProducer(t *testing.T) func(s *
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeExternalVpnGateway still exists at %s", url)
 			}

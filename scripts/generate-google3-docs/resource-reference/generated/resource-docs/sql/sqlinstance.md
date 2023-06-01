@@ -126,6 +126,8 @@ settings:
   activationPolicy: string
   activeDirectoryConfig:
     domain: string
+  advancedMachineFeatures:
+    threadsPerCore: integer
   authorizedGaeApplications:
   - string
   availabilityType: string
@@ -606,6 +608,26 @@ settings:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Domain name of the Active Directory for SQL Server (e.g., mydomain.com).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.advancedMachineFeatures</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.advancedMachineFeatures.threadsPerCore</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}The number of threads per physical core. Can be 1 or 2.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

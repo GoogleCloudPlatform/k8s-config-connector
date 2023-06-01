@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -23,6 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 )
 
 func TestAccComputeOrganizationSecurityPolicyAssociation_organizationSecurityPolicyAssociationBasicExample(t *testing.T) {
@@ -52,7 +56,7 @@ func TestAccComputeOrganizationSecurityPolicyAssociation_organizationSecurityPol
 }
 
 func testAccComputeOrganizationSecurityPolicyAssociation_organizationSecurityPolicyAssociationBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_folder" "security_policy_target" {
   provider     = google-beta
   display_name = "tf-test-secpol-%{random_suffix}"

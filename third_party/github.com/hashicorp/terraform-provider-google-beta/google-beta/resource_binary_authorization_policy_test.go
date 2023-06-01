@@ -1,13 +1,17 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"fmt"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"reflect"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/binaryauthorization"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -161,7 +165,12 @@ func testAccCheckBinaryAuthorizationPolicyDefault(t *testing.T, pid string) reso
 	return func(s *terraform.State) error {
 		config := GoogleProviderConfig(t)
 		url := fmt.Sprintf("https://binaryauthorization.googleapis.com/v1/projects/%s/policy", pid)
-		pol, err := transport_tpg.SendRequest(config, "GET", "", url, config.UserAgent, nil)
+		pol, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+			Config:    config,
+			Method:    "GET",
+			RawURL:    url,
+			UserAgent: config.UserAgent,
+		})
 		if err != nil {
 			return err
 		}
@@ -170,7 +179,7 @@ func testAccCheckBinaryAuthorizationPolicyDefault(t *testing.T, pid string) reso
 		delete(pol, "updateTime")
 		delete(pol, "etag")
 
-		defaultPol := DefaultBinaryAuthorizationPolicy(pid)
+		defaultPol := binaryauthorization.DefaultBinaryAuthorizationPolicy(pid)
 		if !reflect.DeepEqual(pol, defaultPol) {
 			return fmt.Errorf("Policy for project %s was %v, expected default policy %v", pid, pol, defaultPol)
 		}

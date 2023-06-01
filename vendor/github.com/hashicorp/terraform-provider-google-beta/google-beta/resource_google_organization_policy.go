@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -162,7 +164,7 @@ func ResourceGoogleOrganizationPolicy() *schema.Resource {
 			Delete: schema.DefaultTimeout(4 * time.Minute),
 		},
 
-		Schema: mergeSchemas(
+		Schema: tpgresource.MergeSchemas(
 			schemaOrganizationPolicy,
 			map[string]*schema.Schema{
 				"org_id": {
@@ -197,12 +199,15 @@ func resourceGoogleOrganizationPolicyRead(d *schema.ResourceData, meta interface
 	org := "organizations/" + d.Get("org_id").(string)
 
 	var policy *cloudresourcemanager.OrgPolicy
-	err = transport_tpg.RetryTimeDuration(func() (readErr error) {
-		policy, readErr = config.NewResourceManagerClient(userAgent).Organizations.GetOrgPolicy(org, &cloudresourcemanager.GetOrgPolicyRequest{
-			Constraint: canonicalOrgPolicyConstraint(d.Get("constraint").(string)),
-		}).Do()
-		return readErr
-	}, d.Timeout(schema.TimeoutRead))
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (readErr error) {
+			policy, readErr = config.NewResourceManagerClient(userAgent).Organizations.GetOrgPolicy(org, &cloudresourcemanager.GetOrgPolicyRequest{
+				Constraint: canonicalOrgPolicyConstraint(d.Get("constraint").(string)),
+			}).Do()
+			return readErr
+		},
+		Timeout: d.Timeout(schema.TimeoutRead),
+	})
 	if err != nil {
 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Organization policy for %s", org))
 	}
@@ -252,12 +257,15 @@ func resourceGoogleOrganizationPolicyDelete(d *schema.ResourceData, meta interfa
 	}
 	org := "organizations/" + d.Get("org_id").(string)
 
-	err = transport_tpg.RetryTimeDuration(func() error {
-		_, dErr := config.NewResourceManagerClient(userAgent).Organizations.ClearOrgPolicy(org, &cloudresourcemanager.ClearOrgPolicyRequest{
-			Constraint: canonicalOrgPolicyConstraint(d.Get("constraint").(string)),
-		}).Do()
-		return dErr
-	}, d.Timeout(schema.TimeoutDelete))
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() error {
+			_, dErr := config.NewResourceManagerClient(userAgent).Organizations.ClearOrgPolicy(org, &cloudresourcemanager.ClearOrgPolicyRequest{
+				Constraint: canonicalOrgPolicyConstraint(d.Get("constraint").(string)),
+			}).Do()
+			return dErr
+		},
+		Timeout: d.Timeout(schema.TimeoutDelete),
+	})
 	if err != nil {
 		return err
 	}
@@ -313,19 +321,22 @@ func setOrganizationPolicy(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	err = transport_tpg.RetryTimeDuration(func() (setErr error) {
-		_, setErr = config.NewResourceManagerClient(userAgent).Organizations.SetOrgPolicy(org, &cloudresourcemanager.SetOrgPolicyRequest{
-			Policy: &cloudresourcemanager.OrgPolicy{
-				Constraint:     canonicalOrgPolicyConstraint(d.Get("constraint").(string)),
-				BooleanPolicy:  expandBooleanOrganizationPolicy(d.Get("boolean_policy").([]interface{})),
-				ListPolicy:     listPolicy,
-				RestoreDefault: restoreDefault,
-				Version:        int64(d.Get("version").(int)),
-				Etag:           d.Get("etag").(string),
-			},
-		}).Do()
-		return setErr
-	}, d.Timeout(schema.TimeoutCreate))
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() (setErr error) {
+			_, setErr = config.NewResourceManagerClient(userAgent).Organizations.SetOrgPolicy(org, &cloudresourcemanager.SetOrgPolicyRequest{
+				Policy: &cloudresourcemanager.OrgPolicy{
+					Constraint:     canonicalOrgPolicyConstraint(d.Get("constraint").(string)),
+					BooleanPolicy:  expandBooleanOrganizationPolicy(d.Get("boolean_policy").([]interface{})),
+					ListPolicy:     listPolicy,
+					RestoreDefault: restoreDefault,
+					Version:        int64(d.Get("version").(int)),
+					Etag:           d.Get("etag").(string),
+				},
+			}).Do()
+			return setErr
+		},
+		Timeout: d.Timeout(schema.TimeoutCreate),
+	})
 	return err
 }
 
@@ -405,11 +416,11 @@ func flattenListOrganizationPolicy(policy *cloudresourcemanager.ListPolicy) []ma
 		}}
 	case len(policy.AllowedValues) > 0:
 		listPolicy["allow"] = []interface{}{map[string]interface{}{
-			"values": schema.NewSet(schema.HashString, convertStringArrToInterface(policy.AllowedValues)),
+			"values": schema.NewSet(schema.HashString, tpgresource.ConvertStringArrToInterface(policy.AllowedValues)),
 		}}
 	case len(policy.DeniedValues) > 0:
 		listPolicy["deny"] = []interface{}{map[string]interface{}{
-			"values": schema.NewSet(schema.HashString, convertStringArrToInterface(policy.DeniedValues)),
+			"values": schema.NewSet(schema.HashString, tpgresource.ConvertStringArrToInterface(policy.DeniedValues)),
 		}}
 	}
 
@@ -439,7 +450,7 @@ func expandListOrganizationPolicy(configured []interface{}) (*cloudresourcemanag
 		if all {
 			allValues = "ALLOW"
 		} else {
-			allowedValues = convertStringArr(values.List())
+			allowedValues = tpgresource.ConvertStringArr(values.List())
 		}
 	}
 
@@ -451,7 +462,7 @@ func expandListOrganizationPolicy(configured []interface{}) (*cloudresourcemanag
 		if all {
 			allValues = "DENY"
 		} else {
-			deniedValues = convertStringArr(values.List())
+			deniedValues = tpgresource.ConvertStringArr(values.List())
 		}
 	}
 

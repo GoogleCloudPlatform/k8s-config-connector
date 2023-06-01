@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccHealthcareConsentStore_healthcareConsentStoreBasicExample(t *testing
 }
 
 func testAccHealthcareConsentStore_healthcareConsentStoreBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_healthcare_dataset" "dataset" {
   location = "us-central1"
   name     = "tf-test-my-dataset%{random_suffix}"
@@ -92,7 +95,7 @@ func TestAccHealthcareConsentStore_healthcareConsentStoreFullExample(t *testing.
 }
 
 func testAccHealthcareConsentStore_healthcareConsentStoreFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 
 resource "google_healthcare_dataset" "dataset" {
   location = "us-central1"
@@ -139,7 +142,7 @@ func TestAccHealthcareConsentStore_healthcareConsentStoreIamExample(t *testing.T
 }
 
 func testAccHealthcareConsentStore_healthcareConsentStoreIamExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_healthcare_dataset" "dataset" {
   location = "us-central1"
   name     = "tf-test-my-dataset%{random_suffix}"
@@ -187,7 +190,13 @@ func testAccCheckHealthcareConsentStoreDestroyProducer(t *testing.T) func(s *ter
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("HealthcareConsentStore still exists at %s", url)
 			}

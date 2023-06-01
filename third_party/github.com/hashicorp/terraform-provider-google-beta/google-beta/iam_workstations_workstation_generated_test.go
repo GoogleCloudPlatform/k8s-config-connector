@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -98,6 +101,7 @@ func TestAccWorkstationsWorkstationIamPolicyGenerated(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccWorkstationsWorkstationIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_workstations_workstation_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_workstations_workstation_iam_policy.foo",
@@ -273,6 +277,18 @@ resource "google_workstations_workstation_iam_policy" "foo" {
   workstation_config_id = google_workstations_workstation.default.workstation_config_id
   workstation_id = google_workstations_workstation.default.workstation_id
   policy_data = data.google_iam_policy.foo.policy_data
+}
+
+data "google_workstations_workstation_iam_policy" "foo" {
+  provider = google-beta
+  project = google_workstations_workstation.default.project
+  location = google_workstations_workstation.default.location
+  workstation_cluster_id = google_workstations_workstation.default.workstation_cluster_id
+  workstation_config_id = google_workstations_workstation.default.workstation_config_id
+  workstation_id = google_workstations_workstation.default.workstation_id
+  depends_on = [
+    google_workstations_workstation_iam_policy.foo
+  ]
 }
 `, context)
 }

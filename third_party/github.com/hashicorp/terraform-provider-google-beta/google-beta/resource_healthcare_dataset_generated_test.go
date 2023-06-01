@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccHealthcareDataset_healthcareDatasetBasicExample(t *testing.T) {
 }
 
 func testAccHealthcareDataset_healthcareDatasetBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_healthcare_dataset" "default" {
   name      = "tf-test-example-dataset%{random_suffix}"
   location  = "us-central1"
@@ -85,7 +88,14 @@ func testAccCheckHealthcareDatasetDestroyProducer(t *testing.T) func(s *terrafor
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, transport_tpg.HealthcareDatasetNotInitialized)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:               config,
+				Method:               "GET",
+				Project:              billingProject,
+				RawURL:               url,
+				UserAgent:            config.UserAgent,
+				ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.HealthcareDatasetNotInitialized},
+			})
 			if err == nil {
 				return fmt.Errorf("HealthcareDataset still exists at %s", url)
 			}

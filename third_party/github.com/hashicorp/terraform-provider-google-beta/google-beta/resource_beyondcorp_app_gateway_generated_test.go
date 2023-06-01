@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccBeyondcorpAppGateway_beyondcorpAppGatewayBasicExample(t *testing.T) 
 }
 
 func testAccBeyondcorpAppGateway_beyondcorpAppGatewayBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_beyondcorp_app_gateway" "app_gateway" {
   name = "tf-test-my-app-gateway%{random_suffix}"
   type = "TCP_PROXY"
@@ -89,7 +92,7 @@ func TestAccBeyondcorpAppGateway_beyondcorpAppGatewayFullExample(t *testing.T) {
 }
 
 func testAccBeyondcorpAppGateway_beyondcorpAppGatewayFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_beyondcorp_app_gateway" "app_gateway" {
   name = "tf-test-my-app-gateway%{random_suffix}"
   type = "TCP_PROXY"
@@ -127,7 +130,13 @@ func testAccCheckBeyondcorpAppGatewayDestroyProducer(t *testing.T) func(s *terra
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("BeyondcorpAppGateway still exists at %s", url)
 			}

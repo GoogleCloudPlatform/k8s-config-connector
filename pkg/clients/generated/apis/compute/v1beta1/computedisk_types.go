@@ -72,6 +72,11 @@ type DiskDiskEncryptionKey struct {
 	Sha256 *string `json:"sha256,omitempty"`
 }
 
+type DiskGuestOsFeatures struct {
+	/* Immutable. The type of supported feature. Read [Enabling guest operating system features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features) to see a list of available options. Possible values: ["MULTI_IP_SUBNET", "SECURE_BOOT", "SEV_CAPABLE", "UEFI_COMPATIBLE", "VIRTIO_SCSI_MULTIQUEUE", "WINDOWS", "GVNIC", "SEV_LIVE_MIGRATABLE", "SEV_SNP_CAPABLE", "SUSPEND_RESUME_COMPATIBLE", "TDX_CAPABLE"]. */
+	Type string `json:"type"`
+}
+
 type DiskRawKey struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional
@@ -175,6 +180,11 @@ type ComputeDiskSpec struct {
 	// +optional
 	DiskEncryptionKey *DiskDiskEncryptionKey `json:"diskEncryptionKey,omitempty"`
 
+	/* Immutable. A list of features to enable on the guest operating system.
+	Applicable only for bootable disks. */
+	// +optional
+	GuestOsFeatures []DiskGuestOsFeatures `json:"guestOsFeatures,omitempty"`
+
 	/* The image from which to initialize this disk. */
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
@@ -182,6 +192,10 @@ type ComputeDiskSpec struct {
 	/* DEPRECATED. This field is no longer in use, disk interfaces will be automatically determined on attachment. To resolve this issue, remove this field from your config. Immutable. Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. */
 	// +optional
 	Interface *string `json:"interface,omitempty"`
+
+	/* Immutable. Any applicable license URI. */
+	// +optional
+	Licenses []string `json:"licenses,omitempty"`
 
 	/* Location represents the geographical location of the ComputeDisk. Specify a region name or a zone name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`

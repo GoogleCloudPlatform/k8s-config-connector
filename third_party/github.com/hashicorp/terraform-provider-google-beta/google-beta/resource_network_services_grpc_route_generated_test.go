@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -53,7 +56,7 @@ func TestAccNetworkServicesGrpcRoute_networkServicesGrpcRouteBasicExample(t *tes
 }
 
 func testAccNetworkServicesGrpcRoute_networkServicesGrpcRouteBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_network_services_grpc_route" "default" {
   provider               = google-beta
   name                   = "tf-test-my-grpc-route%{random_suffix}"
@@ -106,7 +109,7 @@ func TestAccNetworkServicesGrpcRoute_networkServicesGrpcRouteMatchesAndActionsEx
 }
 
 func testAccNetworkServicesGrpcRoute_networkServicesGrpcRouteMatchesAndActionsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_network_services_grpc_route" "default" {
   provider               = google-beta
   name                   = "tf-test-my-grpc-route%{random_suffix}"
@@ -180,7 +183,7 @@ func TestAccNetworkServicesGrpcRoute_networkServicesGrpcRouteActionsExample(t *t
 }
 
 func testAccNetworkServicesGrpcRoute_networkServicesGrpcRouteActionsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return tpgresource.Nprintf(`
 resource "google_network_services_grpc_route" "default" {
   provider               = google-beta
   name                   = "tf-test-my-grpc-route%{random_suffix}"
@@ -234,7 +237,13 @@ func testAccCheckNetworkServicesGrpcRouteDestroyProducer(t *testing.T) func(s *t
 				billingProject = config.BillingProject
 			}
 
-			_, err = transport_tpg.SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("NetworkServicesGrpcRoute still exists at %s", url)
 			}

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -1869,6 +1871,7 @@ func ResourceContainerCluster() *schema.Resource {
 			"gateway_api_config": {
 				Type:        schema.TypeList,
 				Optional:    true,
+				Computed:    true,
 				MaxItems:    1,
 				Description: `Configuration for GKE Gateway API controller.`,
 				Elem: &schema.Resource{
@@ -1876,7 +1879,7 @@ func ResourceContainerCluster() *schema.Resource {
 						"channel": {
 							Type:         schema.TypeString,
 							Required:     true,
-							ValidateFunc: validation.StringInSlice([]string{"CHANNEL_DISABLED", "CHANNEL_STANDARD"}, false),
+							ValidateFunc: validation.StringInSlice([]string{"CHANNEL_DISABLED", "CHANNEL_EXPERIMENTAL", "CHANNEL_STANDARD"}, false),
 							Description:  `The Gateway API release channel to use for Gateway API.`,
 						},
 					},
@@ -2046,7 +2049,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		if tpgresource.IsZone(location) {
 			locationsSet.Add(location)
 		}
-		cluster.Locations = convertStringSet(locationsSet)
+		cluster.Locations = tpgresource.ConvertStringSet(locationsSet)
 	}
 
 	if v, ok := d.GetOk("network"); ok {
@@ -2152,13 +2155,15 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	parent := fmt.Sprintf("projects/%s/locations/%s", project, location)
 	var op *container.Operation
-	err = transport_tpg.Retry(func() error {
-		clusterCreateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Create(parent, req)
-		if config.UserProjectOverride {
-			clusterCreateCall.Header().Add("X-Goog-User-Project", project)
-		}
-		op, err = clusterCreateCall.Do()
-		return err
+	err = transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() error {
+			clusterCreateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Create(parent, req)
+			if config.UserProjectOverride {
+				clusterCreateCall.Header().Add("X-Goog-User-Project", project)
+			}
+			op, err = clusterCreateCall.Do()
+			return err
+		},
 	})
 	if err != nil {
 		return err
@@ -2209,13 +2214,15 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	if d.Get("remove_default_node_pool").(bool) {
 		parent := fmt.Sprintf("%s/nodePools/%s", containerClusterFullName(project, location, clusterName), "default-pool")
-		err = transport_tpg.Retry(func() error {
-			clusterNodePoolDeleteCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.NodePools.Delete(parent)
-			if config.UserProjectOverride {
-				clusterNodePoolDeleteCall.Header().Add("X-Goog-User-Project", project)
-			}
-			op, err = clusterNodePoolDeleteCall.Do()
-			return err
+		err = transport_tpg.Retry(transport_tpg.RetryOptions{
+			RetryFunc: func() error {
+				clusterNodePoolDeleteCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.NodePools.Delete(parent)
+				if config.UserProjectOverride {
+					clusterNodePoolDeleteCall.Header().Add("X-Goog-User-Project", project)
+				}
+				op, err = clusterNodePoolDeleteCall.Do()
+				return err
+			},
 		})
 		if err != nil {
 			return errwrap.Wrapf("Error deleting default node pool: {{err}}", err)
@@ -2317,7 +2324,7 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 		return fmt.Errorf("Error setting location: %s", err)
 	}
 
-	locations := schema.NewSet(schema.HashString, convertStringArrToInterface(cluster.Locations))
+	locations := schema.NewSet(schema.HashString, tpgresource.ConvertStringArrToInterface(cluster.Locations))
 	locations.Remove(cluster.Zone) // Remove the original zone since we only store additional zones
 	if err := d.Set("node_locations", locations); err != nil {
 		return fmt.Errorf("Error setting node_locations: %s", err)
@@ -2975,7 +2982,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		req := &container.UpdateClusterRequest{
 			Update: &container.ClusterUpdate{
-				DesiredLocations: convertStringSet(azSet),
+				DesiredLocations: tpgresource.ConvertStringSet(azSet),
 			},
 		}
 
@@ -2991,7 +2998,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		if !azSet.Equal(azSetNew) {
 			req = &container.UpdateClusterRequest{
 				Update: &container.ClusterUpdate{
-					DesiredLocations: convertStringSet(azSetNew),
+					DesiredLocations: tpgresource.ConvertStringSet(azSetNew),
 				},
 			}
 
@@ -3494,7 +3501,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		resourceLabels := d.Get("resource_labels").(map[string]interface{})
 		labelFingerprint := d.Get("label_fingerprint").(string)
 		req := &container.SetLabelsRequest{
-			ResourceLabels:   convertStringMap(resourceLabels),
+			ResourceLabels:   tpgresource.ConvertStringMap(resourceLabels),
 			LabelFingerprint: labelFingerprint,
 		}
 		updateF := func() error {
@@ -3633,7 +3640,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		req := &container.UpdateClusterRequest{
 			Update: &container.ClusterUpdate{
 				DesiredNodePoolAutoConfigNetworkTags: &container.NetworkTags{
-					Tags:            convertStringArr(tags),
+					Tags:            tpgresource.ConvertStringArr(tags),
 					ForceSendFields: []string{"Tags"},
 				},
 			},
@@ -4164,7 +4171,7 @@ func expandAutoProvisioningDefaults(configured interface{}, d *schema.ResourceDa
 	config := l[0].(map[string]interface{})
 
 	npd := &container.AutoprovisioningNodePoolDefaults{
-		OauthScopes:     convertStringArr(config["oauth_scopes"].([]interface{})),
+		OauthScopes:     tpgresource.ConvertStringArr(config["oauth_scopes"].([]interface{})),
 		ServiceAccount:  config["service_account"].(string),
 		DiskSizeGb:      int64(config["disk_size"].(int)),
 		DiskType:        config["disk_type"].(string),
@@ -4361,7 +4368,7 @@ func expandNotificationConfig(configured interface{}) *container.NotificationCon
 				filter := vv.([]interface{})[0].(map[string]interface{})
 				eventType := filter["event_type"].([]interface{})
 				nc.Pubsub.Filter = &container.Filter{
-					EventType: convertStringArr(eventType),
+					EventType: tpgresource.ConvertStringArr(eventType),
 				}
 			}
 
@@ -4711,7 +4718,7 @@ func expandContainerClusterLoggingConfig(configured interface{}) *container.Logg
 	var components []string
 	if l[0] != nil {
 		config := l[0].(map[string]interface{})
-		components = convertStringArr(config["enable_components"].([]interface{}))
+		components = tpgresource.ConvertStringArr(config["enable_components"].([]interface{}))
 	}
 
 	return &container.LoggingConfig{
@@ -4732,7 +4739,7 @@ func expandMonitoringConfig(configured interface{}) *container.MonitoringConfig 
 	if v, ok := config["enable_components"]; ok {
 		enable_components := v.([]interface{})
 		mc.ComponentConfig = &container.MonitoringComponentConfig{
-			EnableComponents: convertStringArr(enable_components),
+			EnableComponents: tpgresource.ConvertStringArr(enable_components),
 		}
 	}
 	if v, ok := config["managed_prometheus"]; ok && len(v.([]interface{})) > 0 {
@@ -4812,7 +4819,7 @@ func expandNodePoolAutoConfigNetworkTags(configured interface{}) *container.Netw
 	config := l[0].(map[string]interface{})
 
 	if v, ok := config["tags"]; ok && len(v.([]interface{})) > 0 {
-		nt.Tags = convertStringArr(v.([]interface{}))
+		nt.Tags = tpgresource.ConvertStringArr(v.([]interface{}))
 	}
 	return nt
 }
@@ -5632,16 +5639,16 @@ func containerClusterAddedScopesSuppress(k, old, new string, d *schema.ResourceD
 	}
 
 	// combine what the default scopes are with what was passed
-	m := golangSetFromStringSlice(append(addedScopes, convertStringArr(n.([]interface{}))...))
-	combined := stringSliceFromGolangSet(m)
+	m := golangSetFromStringSlice(append(addedScopes, tpgresource.ConvertStringArr(n.([]interface{}))...))
+	combined := tpgresource.StringSliceFromGolangSet(m)
 
 	// compare if the combined new scopes and default scopes differ from the old scopes
-	if len(combined) != len(convertStringArr(o.([]interface{}))) {
+	if len(combined) != len(tpgresource.ConvertStringArr(o.([]interface{}))) {
 		return false
 	}
 
 	for _, i := range combined {
-		if stringInSlice(convertStringArr(o.([]interface{})), i) {
+		if tpgresource.StringInSlice(tpgresource.ConvertStringArr(o.([]interface{})), i) {
 			continue
 		}
 

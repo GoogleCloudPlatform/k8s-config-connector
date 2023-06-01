@@ -131,9 +131,9 @@ spec:
                   schema.
                 properties:
                   encoding:
-                    description: 'Immutable. The encoding of messages validated against
-                      schema. Default value: "ENCODING_UNSPECIFIED" Possible values:
-                      ["ENCODING_UNSPECIFIED", "JSON", "BINARY"].'
+                    description: 'The encoding of messages validated against schema.
+                      Default value: "ENCODING_UNSPECIFIED" Possible values: ["ENCODING_UNSPECIFIED",
+                      "JSON", "BINARY"].'
                     type: string
                   schemaRef:
                     oneOf:

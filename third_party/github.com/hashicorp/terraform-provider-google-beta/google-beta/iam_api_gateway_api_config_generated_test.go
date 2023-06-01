@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -79,6 +82,7 @@ func TestAccApiGatewayApiConfigIamPolicyGenerated(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayApiConfigIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_api_gateway_api_config_iam_policy.foo", "policy_data"),
 			},
 			{
 				Config: testAccApiGatewayApiConfigIamPolicy_emptyBinding(context),
@@ -156,6 +160,15 @@ resource "google_api_gateway_api_config_iam_policy" "foo" {
   api = google_api_gateway_api_config.api_cfg.api
   api_config = google_api_gateway_api_config.api_cfg.api_config_id
   policy_data = data.google_iam_policy.foo.policy_data
+}
+
+data "google_api_gateway_api_config_iam_policy" "foo" {
+  provider = google-beta
+  api = google_api_gateway_api_config.api_cfg.api
+  api_config = google_api_gateway_api_config.api_cfg.api_config_id
+  depends_on = [
+    google_api_gateway_api_config_iam_policy.foo
+  ]
 }
 `, context)
 }

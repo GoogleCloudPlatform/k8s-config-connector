@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_redis_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_redis_instance.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/redis/resource_redis_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/redis/resource_redis_instance.go
 index c50f8b7f9..1ef415f31 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_redis_instance.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_redis_instance.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/redis/resource_redis_instance.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/redis/resource_redis_instance.go
 @@ -537,9 +537,9 @@ Write requests should target 'port'.`,
  			},
  			"auth_string": {

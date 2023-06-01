@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -6,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -133,7 +136,7 @@ func testAccCheckGoogleIamTestablePermissionsMeta(project string, n string, expe
 			for s := 0; s < len(expectedStages); s++ {
 				stageKey := "permissions." + strconv.Itoa(i) + ".stage"
 				supportKey := "permissions." + strconv.Itoa(i) + ".custom_support_level"
-				if stringInSlice(expectedStages, attrs[stageKey]) {
+				if tpgresource.StringInSlice(expectedStages, attrs[stageKey]) {
 					foundStageCounter -= 1
 				}
 				if attrs[supportKey] == expectedSupportLevel {

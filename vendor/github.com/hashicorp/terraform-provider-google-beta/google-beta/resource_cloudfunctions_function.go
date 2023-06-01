@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -63,7 +65,7 @@ func (s *cloudFunctionId) locationId() string {
 }
 
 func parseCloudFunctionId(d *schema.ResourceData, config *transport_tpg.Config) (*cloudFunctionId, error) {
-	if err := ParseImportId([]string{
+	if err := tpgresource.ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/functions/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)",
 		"(?P<name>[^/]+)",
@@ -461,6 +463,11 @@ func ResourceCloudFunctionsFunction() *schema.Resource {
 					},
 				},
 			},
+			"status": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: `Describes the current stage of a deployment.`,
+			},
 		},
 		UseJSONNumber: true,
 	}
@@ -598,19 +605,23 @@ func resourceCloudFunctionsCreate(d *schema.ResourceData, meta interface{}) erro
 	// We retry the whole create-and-wait because Cloud Functions
 	// will sometimes fail a creation operation entirely if it fails to pull
 	// source code and we need to try the whole creation again.
-	rerr := transport_tpg.RetryTimeDuration(func() error {
-		op, err := config.NewCloudFunctionsClient(userAgent).Projects.Locations.Functions.Create(
-			cloudFuncId.locationId(), function).Do()
-		if err != nil {
-			return err
-		}
+	rerr := transport_tpg.Retry(transport_tpg.RetryOptions{
+		RetryFunc: func() error {
+			op, err := config.NewCloudFunctionsClient(userAgent).Projects.Locations.Functions.Create(
+				cloudFuncId.locationId(), function).Do()
+			if err != nil {
+				return err
+			}
 
-		// Name of function should be unique
-		d.SetId(cloudFuncId.cloudFunctionId())
+			// Name of function should be unique
+			d.SetId(cloudFuncId.cloudFunctionId())
 
-		return cloudFunctionsOperationWait(config, op, "Creating CloudFunctions Function", userAgent,
-			d.Timeout(schema.TimeoutCreate))
-	}, d.Timeout(schema.TimeoutCreate), IsCloudFunctionsSourceCodeError)
+			return cloudFunctionsOperationWait(config, op, "Creating CloudFunctions Function", userAgent,
+				d.Timeout(schema.TimeoutCreate))
+		},
+		Timeout:              d.Timeout(schema.TimeoutCreate),
+		ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{IsCloudFunctionsSourceCodeError},
+	})
 	if rerr != nil {
 		return rerr
 	}
@@ -705,6 +716,10 @@ func resourceCloudFunctionsRead(d *schema.ResourceData, meta interface{}) error 
 
 	if err := d.Set("secret_volumes", flattenSecretVolumes(function.SecretVolumes)); err != nil {
 		return fmt.Errorf("Error setting secret_volumes: %s", err)
+	}
+
+	if err := d.Set("status", function.Status); err != nil {
+		return fmt.Errorf("Error setting status: %s", err)
 	}
 
 	if function.HttpsTrigger != nil {
@@ -897,16 +912,19 @@ func resourceCloudFunctionsUpdate(d *schema.ResourceData, meta interface{}) erro
 	if len(updateMaskArr) > 0 {
 		log.Printf("[DEBUG] Send Patch CloudFunction Configuration request: %#v", function)
 		updateMask := strings.Join(updateMaskArr, ",")
-		rerr := transport_tpg.RetryTimeDuration(func() error {
-			op, err := config.NewCloudFunctionsClient(userAgent).Projects.Locations.Functions.Patch(function.Name, function).
-				UpdateMask(updateMask).Do()
-			if err != nil {
-				return err
-			}
+		rerr := transport_tpg.Retry(transport_tpg.RetryOptions{
+			RetryFunc: func() error {
+				op, err := config.NewCloudFunctionsClient(userAgent).Projects.Locations.Functions.Patch(function.Name, function).
+					UpdateMask(updateMask).Do()
+				if err != nil {
+					return err
+				}
 
-			return cloudFunctionsOperationWait(config, op, "Updating CloudFunctions Function", userAgent,
-				d.Timeout(schema.TimeoutUpdate))
-		}, d.Timeout(schema.TimeoutUpdate))
+				return cloudFunctionsOperationWait(config, op, "Updating CloudFunctions Function", userAgent,
+					d.Timeout(schema.TimeoutUpdate))
+			},
+			Timeout: d.Timeout(schema.TimeoutUpdate),
+		})
 		if rerr != nil {
 			return fmt.Errorf("Error while updating cloudfunction configuration: %s", rerr)
 		}

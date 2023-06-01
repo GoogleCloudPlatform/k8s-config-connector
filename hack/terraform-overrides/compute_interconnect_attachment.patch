@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_interconnect_attachment.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_interconnect_attachment.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_interconnect_attachment.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_interconnect_attachment.go
 index 54df76d0..9355c176 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_interconnect_attachment.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_interconnect_attachment.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_interconnect_attachment.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_interconnect_attachment.go
 @@ -209,6 +209,7 @@ they configured BGP on behalf of the customer.`,
  			"private_interconnect_info": {
  				Type:     schema.TypeList,
