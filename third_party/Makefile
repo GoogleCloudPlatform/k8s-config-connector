@@ -273,3 +273,5 @@ apply-patches:
 	# Avoid breaking change from TF with MaxItem = 1, which will update type from array to object in CRD
 	# See b/283317413 for context
 	git apply ../hack/terraform-overrides/compute_forwarding_rule.patch
+	# Pick up the fix for the missing field in VPC Access Connector.
+	git apply ../hack/terraform-overrides/vpc_connected_projects.patch
