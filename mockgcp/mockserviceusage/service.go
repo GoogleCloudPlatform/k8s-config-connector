@@ -20,15 +20,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/api/serviceusage/v1"
+	pb_v1_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/api/serviceusage/v1"
+	pb_v1beta1_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/api/serviceusage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
+	pb_v1 "google.golang.org/genproto/googleapis/api/serviceusage/v1"
+	pb_v1beta1 "google.golang.org/genproto/googleapis/api/serviceusage/v1beta1"
 	"google.golang.org/grpc"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-const ExpectedHost = "serviceusage.googleapis.com"
 
 // MockService represents a mocked serviceusage service.
 type MockService struct {
@@ -39,9 +39,10 @@ type MockService struct {
 	operations *operations.Operations
 
 	serviceusagev1 *ServiceUsageV1
+	serviceusagev1beta1 *ServiceUsageV1Beta1
 }
 
-// New creates a MockResourceManager
+// New creates a MockService
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
 		kube:       env.GetKubeClient(),
@@ -50,6 +51,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		operations: operations.NewOperationsService(storage),
 	}
 	s.serviceusagev1 = &ServiceUsageV1{MockService: s}
+	s.serviceusagev1beta1 = &ServiceUsageV1Beta1{MockService: s}
 	return s
 }
 
@@ -58,13 +60,18 @@ func (s *MockService) ExpectedHost() string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterServiceUsageServer(grpcServer, s.serviceusagev1)
+	pb_v1.RegisterServiceUsageServer(grpcServer, s.serviceusagev1)
+	pb_v1beta1.RegisterServiceUsageServer(grpcServer, s.serviceusagev1beta1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
 	mux := runtime.NewServeMux()
 
-	if err := pb_http.RegisterServiceUsageHandler(ctx, mux, conn); err != nil {
+	if err := pb_v1_http.RegisterServiceUsageHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb_v1beta1_http.RegisterServiceUsageHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 

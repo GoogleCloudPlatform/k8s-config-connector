@@ -22,4 +22,5 @@ gen-proto:
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/google/cloud/security/privateca/v1/*.proto \
 		./third_party/googleapis/google/cloud/secretmanager/v1/service.proto \
-		./third_party/googleapis/google/api/serviceusage/v1/*.proto
+		./third_party/googleapis/google/api/serviceusage/v1/*.proto \
+		./third_party/googleapis/google/api/serviceusage/v1beta1/*.proto

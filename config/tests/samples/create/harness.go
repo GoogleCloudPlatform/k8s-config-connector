@@ -275,6 +275,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 				// ok
 
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
+			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "ServiceIdentity"}:
 				// ok
 
 			default:

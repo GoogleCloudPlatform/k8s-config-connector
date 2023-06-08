@@ -19,14 +19,16 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/klog/v2"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type ServiceUsageV1 struct {
@@ -45,6 +47,7 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 
 	// Verify that this is a known service
 	if !isKnownService(name.ServiceName) {
+		klog.Errorf("enabling service %q not implemented in mock", name.ServiceName)
 		return nil, status.Errorf(codes.PermissionDenied, "Not found or permission denied for service(s): %v", name.ServiceName)
 	}
 

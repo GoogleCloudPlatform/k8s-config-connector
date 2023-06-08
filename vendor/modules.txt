@@ -46,6 +46,7 @@ github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/api/serviceusage/v1
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/api/serviceusage/v1beta1
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networkservices/v1
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/secretmanager/v1
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/security/privateca/v1
@@ -1249,6 +1250,7 @@ google.golang.org/genproto/googleapis/api/metric
 google.golang.org/genproto/googleapis/api/monitoredres
 google.golang.org/genproto/googleapis/api/serviceconfig
 google.golang.org/genproto/googleapis/api/serviceusage/v1
+google.golang.org/genproto/googleapis/api/serviceusage/v1beta1
 google.golang.org/genproto/googleapis/bigtable/admin/v2
 google.golang.org/genproto/googleapis/bigtable/v2
 google.golang.org/genproto/googleapis/cloud/networkservices/v1
