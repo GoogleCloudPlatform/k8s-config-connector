@@ -18,7 +18,7 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: webhook
   annotations:
-    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":90}}]'
+    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
 spec:
   maxReplicas: 20
   minReplicas: 2
