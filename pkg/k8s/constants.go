@@ -87,6 +87,9 @@ const (
 	ResourceIDFieldName = "resourceID"
 	ResourceIDFieldPath = "spec." + ResourceIDFieldName
 
+	// selfLink may not present in every KRM resource status.
+	SelfLinkFieldName = "selfLink"
+
 	StabilityLevelStable = "stable"
 	StabilityLevelAlpha  = "alpha"
 

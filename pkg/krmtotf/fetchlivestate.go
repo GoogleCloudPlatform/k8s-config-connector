@@ -49,9 +49,46 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 		}
 		return nil, fmt.Errorf("error getting ID for resource: %w", err)
 	}
+	return fetchLiveStateFromId(ctx, id, resource, provider, kubeClient, smLoader)
 
+}
+
+// Special handling for KMSCryptoKey that still lives after its parent KMSKeyRing is deleted.
+// We can import the tf state directly from itself instead of sourcing for its parent.
+// More info in b/279485255#comment14
+func shouldGetImportIDFromSelfForDelete(resource *Resource) bool {
+	return resource.Kind == "KMSCryptoKey"
+}
+
+func ShouldResolveParentForDelete(resource *Resource) bool {
+	return !shouldGetImportIDFromSelfForDelete(resource) || hasEmptySelfLink(resource)
+}
+
+func hasEmptySelfLink(resource *Resource) bool {
+	id, err := resource.SelfLinkAsID()
+	if err != nil || id == "" {
+		return true
+	}
+	return false
+}
+
+func FetchLiveStateForDelete(ctx context.Context, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
+	if shouldGetImportIDFromSelfForDelete(resource) {
+		id, err := resource.SelfLinkAsID()
+		if err != nil {
+			return nil, err
+		}
+		if id != "" {
+			return fetchLiveStateFromId(ctx, id, resource, provider, kubeClient, smLoader)
+		}
+	}
+	return FetchLiveState(ctx, resource, provider, kubeClient, smLoader)
+}
+
+func fetchLiveStateFromId(ctx context.Context, id string, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
 	// Get the imported resource
 	var state *terraform.InstanceState
+	var err error
 	if resource.ResourceConfig.SkipImport {
 		state = &terraform.InstanceState{ID: id}
 	} else {
