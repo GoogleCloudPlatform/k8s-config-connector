@@ -180,6 +180,8 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		kccConfig.HTTPClient = &http.Client{Transport: roundTripper}
 
 		kccConfig.AccessToken = "dummytoken"
+	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
+		t.Logf("targeting real GCP")
 	} else {
 		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
 	}
