@@ -118,7 +118,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The range of internal addresses that follows RFC 4632 notation. Example: `10.132.0.0/28`.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The range of internal addresses that follows RFC 4632 notation. Example: '10.132.0.0/28'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -128,7 +128,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The location for the resource{% endverbatim %}</p>
+            <p>{% verbatim %}Location represents the geographical location of the VPCAccessConnector. Specify a region name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -138,7 +138,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Machine type of VM Instance underlying connector. Default is e2-micro{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Machine type of VM Instance underlying connector. Default is e2-micro.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -158,7 +158,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Maximum throughput of the connector in Mbps. Default is 200, max is 1000.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Maximum throughput of the connector in Mbps, must be greater than 'min_throughput'. Default is 300.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -188,7 +188,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Name or self_link of the VPC network. Required if 'ip_cidr_range' is set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -198,9 +198,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of a VPC network.
-
-Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (format: `projects/{{project}}/global/networks/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -230,7 +228,7 @@ Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (fo
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The Project that this resource belongs to.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The project that this resource belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -240,9 +238,7 @@ Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (fo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -282,7 +278,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The subnet in which to house the VPC Access Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The subnet in which to house the connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -292,7 +288,8 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Subnet name (relative, not fully qualified). E.g. if the full subnet selfLink is
+https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName} the correct input for this field would be {subnetName}"{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -302,9 +299,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Subnet name (relative, not fully qualified). E.g. if the full subnet selfLink is https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName} the correct input for this field would be: {subnetName}
-
-Allowed value: The Google Cloud resource name of a `ComputeSubnetwork` resource (format: `projects/{{project}}/regions/{{region}}/subnetworks/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -334,7 +329,7 @@ Allowed value: The Google Cloud resource name of a `ComputeSubnetwork` resource 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Project in which the subnet exists. If not set, this project is assumed to be the project for which the connector create request was issued.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -344,9 +339,7 @@ Allowed value: The Google Cloud resource name of a `ComputeSubnetwork` resource 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Project in which the subnet exists. If not set, this project is assumed to be the project for which the connector create request was issued.
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -386,6 +379,7 @@ conditions:
 connectedProjects:
 - string
 observedGeneration: integer
+selfLink: string
 state: string
 ```
 
@@ -449,7 +443,7 @@ state: string
         <td><code>connectedProjects</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Output only. List of projects using the connector.{% endverbatim %}</p>
+            <p>{% verbatim %}List of projects using the connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -467,10 +461,17 @@ state: string
         </td>
     </tr>
     <tr>
+        <td><code>selfLink</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The fully qualified name of this VPC connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. State of the VPC access connector. Possible values: STATE_UNSPECIFIED, READY, CREATING, DELETING, ERROR, UPDATING{% endverbatim %}</p>
+            <p>{% verbatim %}State of the VPC access connector.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

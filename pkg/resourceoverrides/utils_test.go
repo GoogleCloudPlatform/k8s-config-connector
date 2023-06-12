@@ -4003,3 +4003,135 @@ func TestEnsureReferenceFieldIsMultiKind(t *testing.T) {
 		})
 	}
 }
+
+func TestRemovePrefixFromStringFieldInSpec(t *testing.T) {
+	t.Parallel()
+	prefixToRemove := "prefix/"
+	tests := []struct {
+		name      string
+		original  *k8s.Resource
+		fieldPath []string
+		expected  *k8s.Resource
+		expectErr bool
+	}{
+		{
+			name: "field exists, is string, has matching prefix",
+			original: &k8s.Resource{
+				TypeMeta: v1.TypeMeta{
+					Kind: fooKind,
+				},
+				Spec: map[string]interface{}{
+					"field1": prefixToRemove + "value1",
+					"field2": prefixToRemove + "value2",
+				},
+			},
+			fieldPath: []string{"field1"},
+			expected: &k8s.Resource{
+				TypeMeta: v1.TypeMeta{
+					Kind: fooKind,
+				},
+				Spec: map[string]interface{}{
+					"field1": "value1",
+					"field2": prefixToRemove + "value2",
+				},
+			},
+		},
+		{
+			name: "nested field exists, is string, has matching prefix",
+			original: &k8s.Resource{
+				TypeMeta: v1.TypeMeta{
+					Kind: fooKind,
+				},
+				Spec: map[string]interface{}{
+					"field": prefixToRemove + "value",
+					"topField": map[string]interface{}{
+						"field": prefixToRemove + "value",
+					},
+				},
+			},
+			fieldPath: []string{"topField", "field"},
+			expected: &k8s.Resource{
+				TypeMeta: v1.TypeMeta{
+					Kind: fooKind,
+				},
+				Spec: map[string]interface{}{
+					"field": prefixToRemove + "value",
+					"topField": map[string]interface{}{
+						"field": "value",
+					},
+				},
+			},
+		},
+		{
+			name: "field does not exist",
+			original: &k8s.Resource{
+				TypeMeta: v1.TypeMeta{
+					Kind: fooKind,
+				},
+				Spec: map[string]interface{}{
+					"field1": "value1",
+				},
+			},
+			fieldPath: []string{"field2"},
+			expected: &k8s.Resource{
+				TypeMeta: v1.TypeMeta{
+					Kind: fooKind,
+				},
+				Spec: map[string]interface{}{
+					"field1": "value1",
+				},
+			},
+		},
+		{
+			name: "field exits, is not a string",
+			original: &k8s.Resource{
+				TypeMeta: v1.TypeMeta{
+					Kind: fooKind,
+				},
+				Spec: map[string]interface{}{
+					"field1": true,
+				},
+			},
+			fieldPath: []string{"field1"},
+			expectErr: true,
+		},
+		{
+			name: "field exists, prefix does not match",
+			original: &k8s.Resource{
+				TypeMeta: v1.TypeMeta{
+					Kind: fooKind,
+				},
+				Spec: map[string]interface{}{
+					"field1": "prefix1/value1",
+				},
+			},
+			fieldPath: []string{"field1"},
+			expected: &k8s.Resource{
+				TypeMeta: v1.TypeMeta{
+					Kind: fooKind,
+				},
+				Spec: map[string]interface{}{
+					"field1": "prefix1/value1",
+				},
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			err := RemovePrefixFromStringFieldInSpec(tc.original, prefixToRemove, tc.fieldPath...)
+			if tc.expectErr {
+				if err == nil {
+					t.Fatalf("got nil, but expect to have error")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if !reflect.DeepEqual(tc.original, tc.expected) {
+				t.Fatalf("unexpected diff (-want +got): \n%v", cmp.Diff(tc.expected, tc.original))
+			}
+		})
+	}
+}

@@ -951,3 +951,14 @@
       name: projects/kcc-test/locations/us-central1/namespaces/zzzzaaa/services/zzzzbbb/endpoints/endpoint-aaa
   ResourceConfigId: ServiceDirectoryEndpoint
   URI: "https://servicedirectory.googleapis.com/projects/kcc-test/locations/us-central1/namespaces/zzzzaaa/services/zzzzbbb/endpoints/endpoint-aaa"
+- ExpectedSkeleton:
+    apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
+    kind: VPCAccessConnector
+    metadata:
+      name: vpcaccessconnector-test
+    spec:
+      location: us-west2
+      projectRef:
+        external: kcc-test
+  ResourceConfigId: VPCAccessConnector:regional
+  URI: "https://vpcaccess.googleapis.com/v1/projects/kcc-test/locations/us-west2/connectors/vpcaccessconnector-test?alt=json"

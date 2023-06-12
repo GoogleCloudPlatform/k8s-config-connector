@@ -830,9 +830,9 @@ var serviceList = []ServiceMetadata{
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
-				Kind:                           "VPCAccessConnector",
-				Releasable:                     true,
-				SupportsHierarchicalReferences: true,
+				Kind: "VPCAccessConnector",
+				// This resource is migrated to Terraform-based implementation, only load its DCL OpenAPI schema for resource references.
+				Releasable: false,
 			},
 		},
 	},

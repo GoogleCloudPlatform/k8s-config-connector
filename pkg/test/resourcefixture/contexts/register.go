@@ -294,6 +294,10 @@ func dclStateToKRM(resource *dcl.Resource, liveState *unstructured.Unstructured,
 func resourceToKRM(resource *krmtotf.Resource, state *terraform.InstanceState) (*unstructured.Unstructured, error) {
 	resource.Spec, resource.Status = krmtotf.ResolveSpecAndStatusWithResourceID(resource, state)
 	resource.Labels = krmtotf.GetLabelsFromState(resource, state)
+	// Apply post-actuation transformation.
+	if err := resourceoverrides.Handler.PostActuationTransform(resource.Original, &resource.Resource, state, nil); err != nil {
+		return nil, fmt.Errorf("error applying post-actuation transformation to resource '%v': %v", resource.GetNamespacedName(), err)
+	}
 	return resource.MarshalAsUnstructured()
 }
 
@@ -302,6 +306,10 @@ func getTerraformResourceAndLiveState(ctx context.Context, u *unstructured.Unstr
 	resource, err := newTerraformResource(u, provider, smLoader)
 	if err != nil {
 		return nil, nil, err
+	}
+	// Apply pre-actuation transformation.
+	if err := resourceoverrides.Handler.PreActuationTransform(&resource.Resource); err != nil {
+		return nil, nil, fmt.Errorf("error applying pre-actuation transformation to resource '%s': %v", u.GetName(), err)
 	}
 	liveState, err := krmtotf.FetchLiveState(ctx, resource, provider, c, smLoader)
 	if err != nil {

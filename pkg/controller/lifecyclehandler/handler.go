@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	corev1 "k8s.io/api/core/v1"
@@ -72,7 +73,10 @@ func (r *LifecycleHandler) updateStatus(ctx context.Context, resource *k8s.Resou
 		return fmt.Errorf("error with status update call to API server: %v", u.Object["message"])
 	}
 	// sync the resource up with the updated metadata.
-	return util.Marshal(u, resource)
+	if err := util.Marshal(u, resource); err != nil {
+		return err
+	}
+	return resourceoverrides.Handler.PostUpdateStatusTransform(resource)
 }
 
 // WARNING: This function should NOT be exported and invoked directly outside the package.
