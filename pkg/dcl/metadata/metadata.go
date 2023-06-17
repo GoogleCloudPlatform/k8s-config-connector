@@ -777,9 +777,9 @@ var serviceList = []ServiceMetadata{
 		DCLVersion: "alpha",
 		Resources: []Resource{
 			{
-				Kind:                           "RunService",
-				Releasable:                     true,
-				SupportsHierarchicalReferences: true,
+				Kind: "RunService",
+				// This resource is migrated to Terraform-based implementation, only load its DCL OpenAPI schema for resource references.
+				Releasable: false,
 			},
 		},
 	},

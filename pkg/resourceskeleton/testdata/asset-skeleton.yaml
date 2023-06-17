@@ -1111,3 +1111,5 @@
       projectRef:
         external: kcc-test
   resourceConfigId: VPCAccessConnector:regional
+# V2 Run Service not supported by asset inventory
+- resourceConfigId: RunService

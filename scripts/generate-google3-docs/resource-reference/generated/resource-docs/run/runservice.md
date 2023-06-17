@@ -5,12 +5,6 @@
 {% block page_title %}RunService{% endblock %}
 {% block body %}
 
-<aside class="caution"><strong>Caution:</strong> This resource is currently in alpha and may change without notice.
-<p>
-Before you upgrade Config Connector to a later version, we recommended that you abandon all existing Kubernetes objects based on alpha-stage resources from the cluster. Objects should be adjusted to reflect the CRD schema of the new version, and reapplied after the upgrade.
-</p>
-</aside>
-
 
 
 <table>
@@ -56,11 +50,7 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 </tr>
 
 <tr>
-    <td>IAMPolicy/IAMPartialPolicy Supports Conditions</td>
-    <td>Yes</td>
-</tr>
-<tr>
-    <td>IAMPolicyMember Supports Conditions</td>
+    <td>Supports IAM Conditions</td>
     <td>No</td>
 </tr>
 
@@ -113,6 +103,8 @@ binaryAuthorization:
   useDefault: boolean
 client: string
 clientVersion: string
+customAudiences:
+- string
 description: string
 ingress: string
 launchStage: string
@@ -125,11 +117,12 @@ resourceID: string
 template:
   annotations:
     string: string
-  containerConcurrency: integer
   containers:
   - args:
     - string
     command:
+    - string
+    dependsOn:
     - string
     env:
     - name: string
@@ -145,6 +138,20 @@ template:
             name: string
             namespace: string
     image: string
+    livenessProbe:
+      failureThreshold: integer
+      grpc:
+        port: integer
+        service: string
+      httpGet:
+        httpHeaders:
+        - name: string
+          value: string
+        path: string
+        port: integer
+      initialDelaySeconds: integer
+      periodSeconds: integer
+      timeoutSeconds: integer
     name: string
     ports:
     - containerPort: integer
@@ -153,12 +160,35 @@ template:
       cpuIdle: boolean
       limits:
         string: string
+      startupCpuBoost: boolean
+    startupProbe:
+      failureThreshold: integer
+      grpc:
+        port: integer
+        service: string
+      httpGet:
+        httpHeaders:
+        - name: string
+          value: string
+        path: string
+        port: integer
+      initialDelaySeconds: integer
+      periodSeconds: integer
+      tcpSocket:
+        port: integer
+      timeoutSeconds: integer
     volumeMounts:
     - mountPath: string
       name: string
+    workingDir: string
+  encryptionKeyRef:
+    external: string
+    name: string
+    namespace: string
   executionEnvironment: string
   labels:
     string: string
+  maxInstanceRequestConcurrency: integer
   revision: string
   scaling:
     maxInstanceCount: integer
@@ -167,6 +197,7 @@ template:
     external: string
     name: string
     namespace: string
+  sessionAffinity: boolean
   timeout: string
   volumes:
   - cloudSqlInstance:
@@ -174,6 +205,9 @@ template:
       - external: string
         name: string
         namespace: string
+    emptyDir:
+      medium: string
+      sizeLimit: string
     name: string
     secret:
       defaultMode: integer
@@ -215,7 +249,12 @@ traffic:
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. Cloud Run will populate some annotations using 'run.googleapis.com' or 'serving.knative.dev' namespaces. This field follows Kubernetes annotations' namespacing, limits, and rules. More info: http://kubernetes.io/docs/user-guide/annotations{% endverbatim %}</p>
+            <p>{% verbatim %}Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.
+
+Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected in new resources.
+All system annotations in v1 now have a corresponding field in v2 Service.
+
+This field follows Kubernetes annotations' namespacing, limits, and rules.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -235,7 +274,7 @@ traffic:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}If present, indicates to use Breakglass using this justification. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass{% endverbatim %}</p>
+            <p>{% verbatim %}If present, indicates to use Breakglass using this justification. If useDefault is False, then it must be empty. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -245,7 +284,7 @@ traffic:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If True, indicates to use the default project's binary authorization policy. If False, binary authorization will be disabled{% endverbatim %}</p>
+            <p>{% verbatim %}If True, indicates to use the default project's binary authorization policy. If False, binary authorization will be disabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -270,12 +309,33 @@ traffic:
     </tr>
     <tr>
         <td>
+            <p><code>customAudiences</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}One or more custom audiences that you want this service to support. Specify each custom audience as the full URL in a string. The custom audiences are encoded in the token and used to authenticate requests.
+For more information, see https://cloud.google.com/run/docs/configuring/custom-audiences.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>customAudiences[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>description</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}User-provided description of the Service.{% endverbatim %}</p>
+            <p>{% verbatim %}User-provided description of the Service. This field currently has a 512-character limit.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -285,7 +345,7 @@ traffic:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active.{% endverbatim %}</p>
+            <p>{% verbatim %}Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active. Possible values: ["INGRESS_TRAFFIC_ALL", "INGRESS_TRAFFIC_INTERNAL_ONLY", "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -295,7 +355,10 @@ traffic:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The launch stage as defined by [Google Cloud Platform Launch Stages](http://cloud.google.com/terms/launch-stages). Cloud Run supports `ALPHA`, `BETA`, and `GA`. If no value is specified, GA is assumed. Possible values: LAUNCH_STAGE_UNSPECIFIED, UNIMPLEMENTED, PRELAUNCH, EARLY_ACCESS, ALPHA, BETA, GA, DEPRECATED{% endverbatim %}</p>
+            <p>{% verbatim %}The launch stage as defined by [Google Cloud Platform Launch Stages](https://cloud.google.com/products#product-launch-stages). Cloud Run supports ALPHA, BETA, and GA.
+If no value is specified, GA is assumed. Set the launch stage to a preview stage on input to allow use of preview features in that stage. On read (or output), describes whether the resource uses preview features.
+
+For example, if ALPHA is provided as input, but only BETA and GA-level features are used, this field will be BETA on output. Possible values: ["UNIMPLEMENTED", "PRELAUNCH", "EARLY_ACCESS", "ALPHA", "BETA", "GA", "DEPRECATED"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -305,7 +368,7 @@ traffic:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The location for the resource{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The location of the cloud run service.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -315,7 +378,7 @@ traffic:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The Project that this resource belongs to.{% endverbatim %}</p>
+            <p>{% verbatim %}The project that this resource belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -325,9 +388,7 @@ traffic:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -367,7 +428,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. The template used to create revisions for this Service.{% endverbatim %}</p>
+            <p>{% verbatim %}The template used to create revisions for this Service.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -377,17 +438,12 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}KRM-style annotations for the resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>template.containerConcurrency</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Sets the maximum number of requests that each serving instance can receive.{% endverbatim %}</p>
+            <p>{% verbatim %}Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.
+
+Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected.
+All system annotations in v1 now have a corresponding field in v2 RevisionTemplate.
+
+This field follows Kubernetes annotations' namespacing, limits, and rules.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -397,7 +453,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Holds the single container that defines the unit of execution for this Revision.{% endverbatim %}</p>
+            <p>{% verbatim %}Holds the containers that define the unit of execution for this Service.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -417,7 +473,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Arguments to the entrypoint. The docker image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell{% endverbatim %}</p>
+            <p>{% verbatim %}Arguments to the entrypoint. The docker image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -437,12 +493,32 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell{% endverbatim %}</p>
+            <p>{% verbatim %}Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>template.containers[].command[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].dependsOn</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Containers which should be started before this container. If specified the container will wait to start until all containers with the listed names are healthy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].dependsOn[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -477,7 +553,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. Name of the environment variable. Must be a C_IDENTIFIER, and mnay not exceed 32768 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}Name of the environment variable. Must be a C_IDENTIFIER, and mnay not exceed 32768 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -517,7 +593,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the secret in Cloud Secret Manager. Format: {secretName} if the secret is in the same project. projects/{project}/secrets/{secretName} if the secret is in a different project.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -527,9 +603,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The name of the secret in Cloud Secret Manager. Format: {secret_name} if the secret is in the same project. projects/{project}/secrets/{secret_name} if the secret is in a different project.
-
-Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resource (format: `projects/{{project}}/secrets/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `SecretManagerSecret` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -559,7 +633,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resourc
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -569,9 +643,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resourc
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version.
-
-Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` resource (format: `{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `version` field of a `SecretManagerSecretVersion` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -601,7 +673,161 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. URL of the Container image in Google Container Registry or Docker More info: https://kubernetes.io/docs/concepts/containers/images{% endverbatim %}</p>
+            <p>{% verbatim %}URL of the Container image in Google Container Registry or Google Artifact Registry. More info: https://kubernetes.io/docs/concepts/containers/images.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Periodic probe of container liveness. Container will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.failureThreshold</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.grpc</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}GRPC specifies an action involving a GRPC port.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.grpc.port</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Port number to access on the container. Number must be in the range 1 to 65535.
+If not specified, defaults to the same value as container.ports[0].containerPort.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.grpc.service</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of the service to place in the gRPC HealthCheckRequest
+(see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+If this is not specified, the default behavior is defined by gRPC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.httpGet</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}HTTPGet specifies the http request to perform.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.httpGet.httpHeaders</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Custom headers to set in the request. HTTP allows repeated headers.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.httpGet.httpHeaders[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.httpGet.httpHeaders[].name</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The header field name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.httpGet.httpHeaders[].value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The header field value.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.httpGet.path</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Path to access on the HTTP server. Defaults to '/'.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.httpGet.port</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Port number to access on the container. Number must be in the range 1 to 65535.
+If not specified, defaults to the same value as container.ports[0].containerPort.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.initialDelaySeconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.periodSeconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeoutSeconds.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].livenessProbe.timeoutSeconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than periodSeconds. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -621,7 +847,9 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}List of ports to expose from the container. Only a single port can be specified. The specified ports must be listening on all interfaces (0.0.0.0) within the container to be accessible. If omitted, a port number will be chosen and passed to the container through the PORT environment variable for the container to listen on.{% endverbatim %}</p>
+            <p>{% verbatim %}List of ports to expose from the container. Only a single port can be specified. The specified ports must be listening on all interfaces (0.0.0.0) within the container to be accessible.
+
+If omitted, a port number will be chosen and passed to the container through the PORT environment variable for the container to listen on.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -641,7 +869,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Port number the container listens on. This must be a valid TCP port number, 0 < container_port < 65536.{% endverbatim %}</p>
+            <p>{% verbatim %}Port number the container listens on. This must be a valid TCP port number, 0 < containerPort < 65536.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -661,7 +889,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Compute Resource requirements by this container. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources{% endverbatim %}</p>
+            <p>{% verbatim %}Compute Resource requirements by this container. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -681,7 +909,192 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Only memory and CPU are supported. Note: The only supported values for CPU are '1', '2', and '4'. Setting 4 CPU requires at least 2Gi of memory. The values of the map is string form of the 'quantity' k8s type: https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go{% endverbatim %}</p>
+            <p>{% verbatim %}Only memory and CPU are supported. Note: The only supported values for CPU are '1', '2', '4', and '8'. Setting 4 CPU requires at least 2Gi of memory. The values of the map is string form of the 'quantity' k8s type: https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].resources.startupCpuBoost</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Determines whether CPU should be boosted on startup of a new container instance above the requested CPU threshold, this can help reduce cold-start latency.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.failureThreshold</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.grpc</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}GRPC specifies an action involving a GRPC port.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.grpc.port</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Port number to access on the container. Number must be in the range 1 to 65535.
+If not specified, defaults to the same value as container.ports[0].containerPort.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.grpc.service</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of the service to place in the gRPC HealthCheckRequest
+(see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+If this is not specified, the default behavior is defined by gRPC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.httpGet</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}HTTPGet specifies the http request to perform. Exactly one of HTTPGet or TCPSocket must be specified.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.httpGet.httpHeaders</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Custom headers to set in the request. HTTP allows repeated headers.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.httpGet.httpHeaders[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.httpGet.httpHeaders[].name</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The header field name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.httpGet.httpHeaders[].value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The header field value.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.httpGet.path</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Path to access on the HTTP server. Defaults to '/'.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.httpGet.port</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Port number to access on the container. Must be in the range 1 to 65535.
+If not specified, defaults to the same value as container.ports[0].containerPort.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.initialDelaySeconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.periodSeconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeoutSeconds.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.tcpSocket</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}TCPSocket specifies an action involving a TCP port. Exactly one of HTTPGet or TCPSocket must be specified.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.tcpSocket.port</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Port number to access on the container. Must be in the range 1 to 65535.
+If not specified, defaults to the same value as container.ports[0].containerPort.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].startupProbe.timeoutSeconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than periodSeconds. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -711,7 +1124,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. Path within the container at which the volume should be mounted. Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must otherwise be `/cloudsql`. All instances defined in the Volume will be available as `/cloudsql/[instance]`. For more information on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run{% endverbatim %}</p>
+            <p>{% verbatim %}Path within the container at which the volume should be mounted. Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must otherwise be /cloudsql. All instances defined in the Volume will be available as /cloudsql/[instance]. For more information on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -721,7 +1134,57 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. This must match the Name of a Volume.{% endverbatim %}</p>
+            <p>{% verbatim %}This must match the Name of a Volume.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.containers[].workingDir</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Container's working directory. If not specified, the container runtime's default will be used, which might be configured in the container image.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.encryptionKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. For more information, go to https://cloud.google.com/run/docs/securing/using-cmek{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.encryptionKeyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.encryptionKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.encryptionKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -731,7 +1194,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The sandbox environment to host this Revision. Possible values: EXECUTION_ENVIRONMENT_UNSPECIFIED, EXECUTION_ENVIRONMENT_GEN1, EXECUTION_ENVIRONMENT_GEN2{% endverbatim %}</p>
+            <p>{% verbatim %}The sandbox environment to host this Revision. Possible values: ["EXECUTION_ENVIRONMENT_GEN1", "EXECUTION_ENVIRONMENT_GEN2"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -741,7 +1204,21 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}KRM-style labels for the resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Unstructured key value map that can be used to organize and categorize objects. User-provided labels are shared with Google's billing system, so they can be used to filter, or break down billing charges by team, component, environment, state, etc.
+For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels.
+
+Cloud Run API v2 does not support labels with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected.
+All system labels in v1 now have a corresponding field in v2 RevisionTemplate.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.maxInstanceRequestConcurrency</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Sets the maximum number of requests that each serving instance can receive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -791,7 +1268,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -801,9 +1278,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account.
-
-Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -828,12 +1303,24 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
     </tr>
     <tr>
         <td>
+            <p><code>template.sessionAffinity</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enables session affinity. For more information, go to https://cloud.google.com/run/docs/configuring/session-affinity.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>template.timeout</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Max allowed time for an instance to respond to a request.{% endverbatim %}</p>
+            <p>{% verbatim %}Max allowed time for an instance to respond to a request.
+
+A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -883,7 +1370,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -893,7 +1380,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `instanceName` field of a `SQLInstance` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `connectionName` field of a `SQLInstance` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -918,12 +1405,42 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
     </tr>
     <tr>
         <td>
+            <p><code>template.volumes[].emptyDir</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Ephemeral storage used as a shared volume.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.volumes[].emptyDir.medium</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The different types of medium supported for EmptyDir. Default value: "MEMORY" Possible values: ["MEMORY"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.volumes[].emptyDir.sizeLimit</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Limit on the storage usable by this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. This field's values are of the 'Quantity' k8s type: https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>template.volumes[].name</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. Volume's name.{% endverbatim %}</p>
+            <p>{% verbatim %}Volume's name.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -933,7 +1450,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Secret represents a secret that should populate this volume. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret{% endverbatim %}</p>
+            <p>{% verbatim %}Secret represents a secret that should populate this volume. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -943,7 +1460,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Integer representation of mode bits to use on created files by default. Must be a value between 0000 and 0777 (octal), defaulting to 0644. Directories within the path are not affected by this setting. Notes * Internally, a umask of 0222 will be applied to any non-zero value. * This is an integer representation of the mode bits. So, the octal integer value should look exactly as the chmod numeric notation with a leading zero. Some examples: for chmod 777 (a=rwx), set to 0777 (octal) or 511 (base-10). For chmod 640 (u=rw,g=r), set to 0640 (octal) or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or 493 (base-10). * This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set. This might be in conflict with other options that affect the file mode, like fsGroup, and as a result, other mode bits could be set.{% endverbatim %}</p>
+            <p>{% verbatim %}Integer representation of mode bits to use on created files by default. Must be a value between 0000 and 0777 (octal), defaulting to 0444. Directories within the path are not affected by this setting.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -973,7 +1490,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Integer octal mode bits to use on this file, must be a value between 01 and 0777 (octal). If 0 or not set, the Volume's default mode will be used. Notes * Internally, a umask of 0222 will be applied to any non-zero value. * This is an integer representation of the mode bits. So, the octal integer value should look exactly as the chmod numeric notation with a leading zero. Some examples: for chmod 777 (a=rwx), set to 0777 (octal) or 511 (base-10). For chmod 640 (u=rw,g=r), set to 0640 (octal) or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or 493 (base-10). * This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.{% endverbatim %}</p>
+            <p>{% verbatim %}Integer octal mode bits to use on this file, must be a value between 01 and 0777 (octal). If 0 or not set, the Volume's default mode will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -983,7 +1500,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The relative path of the secret in the container.{% endverbatim %}</p>
+            <p>{% verbatim %}The relative path of the secret in the container.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -993,7 +1510,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1003,9 +1520,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version.
-
-Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` resource (format: `{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `version` field of a `SecretManagerSecretVersion` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1035,7 +1550,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1045,9 +1560,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.
-
-Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resource (format: `projects/{{project}}/secrets/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `SecretManagerSecret` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1077,7 +1590,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resourc
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}VPC Access configuration to use for this Revision. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc.{% endverbatim %}</p>
+            <p>{% verbatim %}VPC Access configuration to use for this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1087,7 +1600,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resourc
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}, where {project} can be project id or number.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1097,9 +1610,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resourc
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}
-
-Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource (format: `projects/{{project}}/locations/{{location}}/connectors/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `VPCAccessConnector` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1129,7 +1640,7 @@ Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Traffic VPC egress settings. Possible values: VPC_EGRESS_UNSPECIFIED, ALL_TRAFFIC, PRIVATE_RANGES_ONLY{% endverbatim %}</p>
+            <p>{% verbatim %}Traffic VPC egress settings. Possible values: ["ALL_TRAFFIC", "PRIVATE_RANGES_ONLY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1139,7 +1650,7 @@ Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Specifies how to distribute traffic over a collection of Revisions belonging to the Service. If traffic is empty or not provided, defaults to 100% traffic to the latest `Ready` Revision.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies how to distribute traffic over a collection of Revisions belonging to the Service. If traffic is empty or not provided, defaults to 100% traffic to the latest Ready Revision.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1159,7 +1670,7 @@ Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Specifies percent of the traffic to this Revision. This defaults to zero if unspecified. Cloud Run currently requires 100 percent for a single TrafficTarget entry.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies percent of the traffic to this Revision. This defaults to zero if unspecified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1189,7 +1700,7 @@ Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The allocation type for this traffic target. Possible values: TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED, TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST, TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION{% endverbatim %}</p>
+            <p>{% verbatim %}The allocation type for this traffic target. Possible values: ["TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST", "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"].{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -1213,16 +1724,12 @@ creator: string
 deleteTime: string
 etag: string
 expireTime: string
-labels:
-  string: string
 lastModifier: string
 latestCreatedRevision: string
 latestReadyRevision: string
 observedGeneration: integer
 reconciling: boolean
-resourceGeneration: integer
 terminalCondition:
-  jobReason: string
   lastTransitionTime: string
   message: string
   reason: string
@@ -1301,63 +1808,56 @@ uri: string
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The creation time.{% endverbatim %}</p>
+            <p>{% verbatim %}The creation time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>creator</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. Email address of the authenticated creator.{% endverbatim %}</p>
+            <p>{% verbatim %}Email address of the authenticated creator.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>deleteTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The deletion time.{% endverbatim %}</p>
+            <p>{% verbatim %}The deletion time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>etag</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. A system-generated fingerprint for this version of the resource. May be used to detect modification conflict during updates.{% endverbatim %}</p>
+            <p>{% verbatim %}A system-generated fingerprint for this version of the resource. May be used to detect modification conflict during updates.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>expireTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. For a deleted resource, the time after which it will be permamently deleted.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>labels</code></td>
-        <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Map of string keys and values that can be used to organize and categorize objects. User-provided labels are shared with Google's billing system, so they can be used to filter, or break down billing charges by team, component, environment, state, etc. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels Cloud Run will populate some labels with 'run.googleapis.com' or 'serving.knative.dev' namespaces. Those labels are read-only, and user changes will not be preserved.{% endverbatim %}</p>
+            <p>{% verbatim %}For a deleted resource, the time after which it will be permamently deleted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>lastModifier</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. Email address of the last authenticated modifier.{% endverbatim %}</p>
+            <p>{% verbatim %}Email address of the last authenticated modifier.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>latestCreatedRevision</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. Name of the last created revision. See comments in `reconciling` for additional information on reconciliation process in Cloud Run.{% endverbatim %}</p>
+            <p>{% verbatim %}Name of the last created revision. See comments in reconciling for additional information on reconciliation process in Cloud Run.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>latestReadyRevision</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. Name of the latest revision that is serving traffic. See comments in `reconciling` for additional information on reconciliation process in Cloud Run.{% endverbatim %}</p>
+            <p>{% verbatim %}Name of the latest revision that is serving traffic. See comments in reconciling for additional information on reconciliation process in Cloud Run.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1371,28 +1871,20 @@ uri: string
         <td><code>reconciling</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Output only. Returns true if the Service is currently being acted upon by the system to bring it into the desired state. When a new Service is created, or an existing one is updated, Cloud Run will asynchronously perform all necessary steps to bring the Service to the desired serving state. This process is called reconciliation. While reconciliation is in process, `observed_generation`, `latest_ready_revison`, `traffic_statuses`, and `uri` will have transient values that might mismatch the intended state: Once reconciliation is over (and this field is false), there are two possible outcomes: reconciliation succeeded and the serving state matches the Service, or there was an error, and reconciliation failed. This state can be found in `terminal_condition.state`. If reconciliation succeeded, the following fields will match: `traffic` and `traffic_statuses`, `observed_generation` and `generation`, `latest_ready_revision` and `latest_created_revision`. If reconciliation failed, `traffic_statuses`, `observed_generation`, and `latest_ready_revision` will have the state of the last serving revision, or empty for newly created Services. Additional information on the failure can be found in `terminal_condition` and `conditions`.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>resourceGeneration</code></td>
-        <td>
-            <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Output only. A number that monotonically increases every time the user modifies the desired state.{% endverbatim %}</p>
+            <p>{% verbatim %}Returns true if the Service is currently being acted upon by the system to bring it into the desired state.
+
+When a new Service is created, or an existing one is updated, Cloud Run will asynchronously perform all necessary steps to bring the Service to the desired serving state. This process is called reconciliation. While reconciliation is in process, observedGeneration, latest_ready_revison, trafficStatuses, and uri will have transient values that might mismatch the intended state: Once reconciliation is over (and this field is false), there are two possible outcomes: reconciliation succeeded and the serving state matches the Service, or there was an error, and reconciliation failed. This state can be found in terminalCondition.state.
+
+If reconciliation succeeded, the following fields will match: traffic and trafficStatuses, observedGeneration and generation, latestReadyRevision and latestCreatedRevision.
+
+If reconciliation failed, trafficStatuses, observedGeneration, and latestReadyRevision will have the state of the last serving revision, or empty for newly created Services. Additional information on the failure can be found in terminalCondition and conditions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>terminalCondition</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Output only. The Condition of this Service, containing its readiness status, and detailed error information in case it did not reach a serving state. See comments in `reconciling` for additional information on reconciliation process in Cloud Run.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>terminalCondition.jobReason</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reason for the job condition. Possible values: JOB_REASON_UNDEFINED, JOB_STATUS_SERVICE_POLLING_ERROR{% endverbatim %}</p>
+            <p>{% verbatim %}The Condition of this Service, containing its readiness status, and detailed error information in case it did not reach a serving state. See comments in reconciling for additional information on reconciliation process in Cloud Run.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1413,28 +1905,28 @@ uri: string
         <td><code>terminalCondition.reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A common (service-level) reason for this condition. Possible values: COMMON_REASON_UNDEFINED, UNKNOWN, REVISION_FAILED, PROGRESS_DEADLINE_EXCEEDED, CONTAINER_MISSING, CONTAINER_PERMISSION_DENIED, CONTAINER_IMAGE_UNAUTHORIZED, CONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED, ENCRYPTION_KEY_PERMISSION_DENIED, ENCRYPTION_KEY_CHECK_FAILED, SECRETS_ACCESS_CHECK_FAILED, WAITING_FOR_OPERATION, IMMEDIATE_RETRY, POSTPONED_RETRY, INTERNAL{% endverbatim %}</p>
+            <p>{% verbatim %}A common (service-level) reason for this condition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>terminalCondition.revisionReason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reason for the revision condition. Possible values: REVISION_REASON_UNDEFINED, PENDING, RESERVE, RETIRED, RETIRING, RECREATING, HEALTH_CHECK_CONTAINER_ERROR, CUSTOMIZED_PATH_RESPONSE_PENDING, MIN_INSTANCES_NOT_PROVISIONED, ACTIVE_REVISION_LIMIT_REACHED, NO_DEPLOYMENT{% endverbatim %}</p>
+            <p>{% verbatim %}A reason for the revision condition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>terminalCondition.severity</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}How to interpret failures of this condition, one of Error, Warning, Info Possible values: SEVERITY_UNSPECIFIED, ERROR, WARNING, INFO{% endverbatim %}</p>
+            <p>{% verbatim %}How to interpret failures of this condition, one of Error, Warning, Info.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>terminalCondition.state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}State of the condition. Possible values: STATE_UNSPECIFIED, CONDITION_PENDING, CONDITION_RECONCILING, CONDITION_FAILED, CONDITION_SUCCEEDED{% endverbatim %}</p>
+            <p>{% verbatim %}State of the condition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1448,7 +1940,7 @@ uri: string
         <td><code>trafficStatuses</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Output only. Detailed status information for corresponding traffic targets. See comments in `reconciling` for additional information on reconciliation process in Cloud Run.{% endverbatim %}</p>
+            <p>{% verbatim %}Detailed status information for corresponding traffic targets. See comments in reconciling for additional information on reconciliation process in Cloud Run.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1483,7 +1975,7 @@ uri: string
         <td><code>trafficStatuses[].type</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The allocation type for this traffic target. Possible values: TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED, TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST, TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION{% endverbatim %}</p>
+            <p>{% verbatim %}The allocation type for this traffic target.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1497,21 +1989,21 @@ uri: string
         <td><code>uid</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. Server assigned unique identifier for the trigger. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted.{% endverbatim %}</p>
+            <p>{% verbatim %}Server assigned unique identifier for the trigger. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The last-modified time.{% endverbatim %}</p>
+            <p>{% verbatim %}The last-modified time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>uri</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The main URI in which this Service is serving traffic.{% endverbatim %}</p>
+            <p>{% verbatim %}The main URI in which this Service is serving traffic.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -1519,7 +2011,7 @@ uri: string
 
 ## Sample YAML(s)
 
-### Typical Use Case
+### Run Service Basic
 ```yaml
 # Copyright 2021 Google LLC
 #
@@ -1538,7 +2030,7 @@ uri: string
 apiVersion: run.cnrm.cloud.google.com/v1beta1
 kind: RunService
 metadata:
-  name: runservice-sample
+  name: runservice-sample-basic
 spec:
   ingress: "INGRESS_TRAFFIC_ALL"
   launchStage: "GA"
@@ -1557,6 +2049,377 @@ spec:
   traffic:
     - percent: 100
       type: "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+```
+
+### Run Service Encryptionkey
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunService
+metadata:
+  name: runservice-sample-encryptionkey
+spec:
+  ingress: "INGRESS_TRAFFIC_ALL"
+  launchStage: "GA"
+  location: "us-central1"
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  template:
+    containers:
+      - image: "gcr.io/cloudrun/hello"
+    encryptionKeyRef:
+      name: runservice-dep-encryptionkey
+---
+# Replace ${PROJECT_ID?} and ${PROJECT_NUMBER?} below with your desired project
+# ID and project number.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: runservice-dep-encryptionkey
+spec:
+  member: serviceAccount:service-${PROJECT_NUMBER?}@serverless-robot-prod.iam.gserviceaccount.com
+  role: roles/cloudkms.cryptoKeyEncrypterDecrypter # required by cloud run service agent to access KMS keys
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/${PROJECT_ID?}
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: runservice-dep-encryptionkey
+spec:
+  keyRingRef:
+    name: runservice-dep-encryptionkey
+  purpose: ENCRYPT_DECRYPT
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: runservice-dep-encryptionkey
+spec:
+  location: us-central1
+```
+
+### Run Service Multicontainer
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunService
+metadata:
+  name: runservice-sample-multicontainer
+spec:
+  ingress: "INGRESS_TRAFFIC_ALL"
+  launchStage: "BETA"
+  location: "us-central1"
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  template:
+    containers:
+      - name: "hello-1"
+        image: "gcr.io/cloudrun/hello"
+        ports:
+          - containerPort: 8080
+        volumeMounts:
+          - name: "empty-dir-volume"
+            mountPath: "/mnt"
+      - name: "hello-2"
+        image: "gcr.io/cloudrun/hello"
+    volumes:
+      - name: "empty-dir-volume"
+        emptyDir:
+          medium: "MEMORY"
+          sizeLimit: "256Mi"
+```
+
+### Run Service Probes
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunService
+metadata:
+  name: runservice-sample-serviceprobes
+spec:
+  ingress: "INGRESS_TRAFFIC_ALL"
+  launchStage: "GA"
+  location: "us-central1"
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  template:
+    containers:
+      - image: "gcr.io/cloudrun/hello"
+        startupProbe:
+          initialDelaySeconds: 0
+          timeoutSeconds: 1
+          periodSeconds: 3
+          failureThreshold: 1
+          tcpSocket:
+            port: 8080
+        livenessProbe:
+          httpGet:
+            path: "/"
+```
+
+### Run Service SQL
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunService
+metadata:
+  name: runservice-sample-sql
+spec:
+  ingress: "INGRESS_TRAFFIC_ALL"
+  launchStage: "GA"
+  location: "us-central1"
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  template:
+    volumes:
+      - name: "cloudsql"
+        cloudSqlInstance:
+          instances:
+            - name: runservice-dep-sql
+    containers:
+      - image: "gcr.io/cloudrun/hello"
+        volumeMounts:
+          - name: "cloudsql"
+            mountPath: "/cloudsql"
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: runservice-dep-sql
+spec:
+  region: us-central1
+  databaseVersion: MYSQL_5_7
+  settings:
+    tier: db-n1-standard-1
+```
+
+### Run Service Secret
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunService
+metadata:
+  name: runservice-sample-secret
+spec:
+  ingress: "INGRESS_TRAFFIC_ALL"
+  launchStage: "GA"
+  location: "us-central1"
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  template:
+    containers:
+      - image: "gcr.io/cloudrun/hello"
+        volumeMounts:
+          - name: "a-volume"
+            mountPath: "/secrets"
+    volumes:
+      - name: "a-volume"
+        secret:
+          secretRef:
+            name: runservice-dep-secret
+            defaultMode: 292 # 0444
+            items:
+              - versionRef:
+                  name: runservice-dep-secret
+                  path: "my-secret"
+                  mode: 256 # 0400
+---
+# Replace ${PROJECT_ID?} and ${PROJECT_NUMBER?} below with your desired project
+# ID and project number.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: runservice-dep-secret
+spec:
+  member: serviceAccount:${PROJECT_NUMBER?}-compute@developer.gserviceaccount.com
+  role: roles/secretmanager.secretAccessor # required by default service account to access secrets
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/${PROJECT_ID?}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: runservice-dep-secret
+data:
+  secretData: SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=
+---
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecret
+metadata:
+  name: runservice-dep-secret
+spec:
+  replication:
+    automatic: true
+---
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecretVersion
+metadata:
+  name: runservice-dep-secret
+spec:
+  enabled: true
+  secretData:
+    valueFrom:
+      secretKeyRef:
+        key: secretData
+        name: runservice-dep-secret
+  secretRef:
+    name: runservice-dep-secret
+```
+
+### Run Service Serviceaccount
+```yaml
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: runservice-dep-serviceaccount
+---
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunService
+metadata:
+  name: runservice-sample-serviceaccount
+spec:
+  ingress: "INGRESS_TRAFFIC_ALL"
+  launchStage: "GA"
+  location: "us-central1"
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  template:
+    containers:
+      - image: "gcr.io/cloudrun/hello"
+    serviceAccountRef:
+      name: runservice-dep-serviceaccount
+```
+
+### Run Service Vpcaccess
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunService
+metadata:
+  name: runservice-sample-vpcaccess
+spec:
+  ingress: "INGRESS_TRAFFIC_ALL"
+  launchStage: "GA"
+  location: "us-central1"
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: projects/${PROJECT_ID?}
+  template:
+    containers:
+      - image: "gcr.io/cloudrun/hello"
+    vpcAccess:
+      connectorRef:
+        name: runservice-dep-vpcaccess
+      egress: "ALL_TRAFFIC"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: runservice-dep-vpcaccess
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
+kind: VPCAccessConnector
+metadata:
+  name: runservice-dep-vpcaccess
+spec:
+  location: "us-central1"
+  networkRef:
+    name: runservice-dep-vpcaccess
+  ipCidrRange: "10.132.0.0/28"
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: ${PROJECT_ID?}
 ```
 
 

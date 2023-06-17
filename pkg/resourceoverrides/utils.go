@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/crdutil"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
@@ -668,12 +669,12 @@ func FavorReferenceArrayFieldOverNonReferenceArrayField(r *k8s.Resource, nonRefe
 	return nil
 }
 
-// RemovePrefixFromStringFieldInSpec removes the prefix from the field specified by
+// removePrefixFromStringFieldInSpec removes the prefix from the field specified by
 // the input path in the resource spec.
 // The function returns error if the specified field is not a string.
 // The function is no-op if the field is not found in resource spec.
 // The function is no-op if the input prefix does not match the prefix of the specified field.
-func RemovePrefixFromStringFieldInSpec(r *k8s.Resource, prefix string, path ...string) error {
+func removePrefixFromStringFieldInSpec(r *k8s.Resource, prefix string, path ...string) error {
 	vo, found, err := unstructured.NestedString(r.Spec, path...)
 	if err != nil {
 		return err
@@ -689,4 +690,45 @@ func RemovePrefixFromStringFieldInSpec(r *k8s.Resource, prefix string, path ...s
 		return err
 	}
 	return nil
+}
+
+// fieldPath is the path to a Terraform field.
+type fieldPath []string
+
+// This function ensures backward compatibility on 'projectRef.external' field for resources that are
+// migrated from DCL-based to TF-based implementation.
+// DCL-based implementation uses format "projects/${PROJECT_ID?}".
+// TF-based implementation may use format "${PROJECT_ID?}" or/and "projects/${PROJECT_ID?}".
+// To ensure users can still use "projects/${PROJECT_ID?}" when the TF-based implementation only supports format "${PROJECT_ID?}",
+// we need to trim the "projects/" prefix before TF actuation,
+// and add back the prefix after TF actuation to preserve the user specified value.
+func handleProjectsPrefixInProjectRefExternalFields(fps []fieldPath) ResourceOverride {
+	o := ResourceOverride{}
+	o.PreActuationTransform = func(r *k8s.Resource) error {
+		for _, fp := range fps {
+			if err := removePrefixFromStringFieldInSpec(r, "projects/", fp...); err != nil {
+				return fmt.Errorf("error removing 'projects/' prefix from field %v in pre-actuation transformation: %w", strings.Join(fp, "."), err)
+			}
+		}
+		return nil
+	}
+	o.PostActuationTransform = func(original, reconciled *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error {
+		for _, fp := range fps {
+			if err := PreserveUserSpecifiedLegacyField(original, reconciled, fp...); err != nil {
+				return fmt.Errorf("error preserving field %v in post-actuation transformation: %w", strings.Join(fp, "."), err)
+			}
+		}
+		return nil
+	}
+	// After status update, the http response is decoded to the original resource object, reverting the prefix removal.
+	// So we need to remove the prefix again to ensure the prefix is removed.
+	o.PostUpdateStatusTransform = func(r *k8s.Resource) error {
+		for _, fp := range fps {
+			if err := removePrefixFromStringFieldInSpec(r, "projects/", fp...); err != nil {
+				return fmt.Errorf("error removing 'projects/' prefix from field %v in post-status update transformation: %w", strings.Join(fp, "."), err)
+			}
+		}
+		return nil
+	}
+	return o
 }

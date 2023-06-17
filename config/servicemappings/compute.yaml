@@ -1552,7 +1552,6 @@ spec:
           kind: RunService
           version: v1beta1
           group: run.cnrm.cloud.google.com
-        dclBasedResource: true
       - key: functionRef
         tfField: cloud_function.function
         description: |-

@@ -70,7 +70,7 @@ var (
 		"recaptchaenterprise":  {"androidrecaptchaenterprisekey"},
 		"redis":                {"redisinstance"},
 		"resourcemanager":      {"resourcemanagerlien"},
-		"run":                  {"runservice"},
+		"run":                  {"runservicebasic"},
 		"secretmanager":        {"secretmanagersecretversion"},
 		"servicedirectory":     {"servicedirectorynamespace"},
 		"servicenetworking":    {"servicenetworkingconnection"},

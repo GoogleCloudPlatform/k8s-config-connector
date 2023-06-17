@@ -198,7 +198,7 @@ type JobSecret struct {
 	// +optional
 	Items []JobItems `json:"items,omitempty"`
 
-	/* Secret represents a secret that should populate this volume. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret */
+	/* The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project. */
 	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
 }
 

@@ -210,6 +210,7 @@ func init() {
 	Handler.Register(GetComputeBackendServiceResourceOverrides())
 	Handler.Register(GetVPCAccessConnectorResourceOverrides())
 	Handler.Register(GetRedisInstanceResourceOverrides())
+	Handler.Register(GetRunServiceResourceOverrides())
 
 	// IAM
 	Handler.Register(GetIAMCustomRoleResourceOverrides())

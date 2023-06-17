@@ -97,6 +97,7 @@ var preferredSampleForResource = map[string]string{
 	"runjob":                            "basic-job",
 	"recaptchaenterprisekey":            "challenge-based-web-recaptcha-enterprise-key",
 	"resourcemanagerpolicy":             "organization-policy-for-project",
+	"runservice":                        "run-service-secret",
 	"secretmanagersecret":               "automatic-secret-replication",
 	"sqlinstance":                       "mysql-sql-instance",
 	"vpcaccessconnector":                "cidr-connector",

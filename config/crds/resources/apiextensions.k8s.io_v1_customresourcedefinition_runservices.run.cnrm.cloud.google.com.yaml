@@ -5,10 +5,10 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
-    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
   name: runservices.run.cnrm.cloud.google.com
 spec:
   group: run.cnrm.cloud.google.com
@@ -61,24 +61,26 @@ spec:
               annotations:
                 additionalProperties:
                   type: string
-                description: 'Unstructured key value map that may be set by external
-                  tools to store and arbitrary metadata. They are not queryable and
-                  should be preserved when modifying objects. Cloud Run will populate
-                  some annotations using ''run.googleapis.com'' or ''serving.knative.dev''
-                  namespaces. This field follows Kubernetes annotations'' namespacing,
-                  limits, and rules. More info: http://kubernetes.io/docs/user-guide/annotations'
+                description: |-
+                  Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.
+
+                  Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected in new resources.
+                  All system annotations in v1 now have a corresponding field in v2 Service.
+
+                  This field follows Kubernetes annotations' namespacing, limits, and rules.
                 type: object
               binaryAuthorization:
                 description: Settings for the Binary Authorization feature.
                 properties:
                   breakglassJustification:
                     description: If present, indicates to use Breakglass using this
-                      justification. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass
+                      justification. If useDefault is False, then it must be empty.
+                      For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass.
                     type: string
                   useDefault:
                     description: If True, indicates to use the default project's binary
                       authorization policy. If False, binary authorization will be
-                      disabled
+                      disabled.
                     type: boolean
                 type: object
               client:
@@ -87,26 +89,35 @@ spec:
               clientVersion:
                 description: Arbitrary version identifier for the API client.
                 type: string
+              customAudiences:
+                description: |-
+                  One or more custom audiences that you want this service to support. Specify each custom audience as the full URL in a string. The custom audiences are encoded in the token and used to authenticate requests.
+                  For more information, see https://cloud.google.com/run/docs/configuring/custom-audiences.
+                items:
+                  type: string
+                type: array
               description:
-                description: User-provided description of the Service.
+                description: User-provided description of the Service. This field
+                  currently has a 512-character limit.
                 type: string
               ingress:
-                description: Provides the ingress settings for this Service. On output,
+                description: 'Provides the ingress settings for this Service. On output,
                   returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED
-                  if no revision is active.
+                  if no revision is active. Possible values: ["INGRESS_TRAFFIC_ALL",
+                  "INGRESS_TRAFFIC_INTERNAL_ONLY", "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"].'
                 type: string
               launchStage:
-                description: 'The launch stage as defined by [Google Cloud Platform
-                  Launch Stages](http://cloud.google.com/terms/launch-stages). Cloud
-                  Run supports `ALPHA`, `BETA`, and `GA`. If no value is specified,
-                  GA is assumed. Possible values: LAUNCH_STAGE_UNSPECIFIED, UNIMPLEMENTED,
-                  PRELAUNCH, EARLY_ACCESS, ALPHA, BETA, GA, DEPRECATED'
+                description: |-
+                  The launch stage as defined by [Google Cloud Platform Launch Stages](https://cloud.google.com/products#product-launch-stages). Cloud Run supports ALPHA, BETA, and GA.
+                  If no value is specified, GA is assumed. Set the launch stage to a preview stage on input to allow use of preview features in that stage. On read (or output), describes whether the resource uses preview features.
+
+                  For example, if ALPHA is provided as input, but only BETA and GA-level features are used, this field will be BETA on output. Possible values: ["UNIMPLEMENTED", "PRELAUNCH", "EARLY_ACCESS", "ALPHA", "BETA", "GA", "DEPRECATED"].
                 type: string
               location:
-                description: Immutable. The location for the resource
+                description: Immutable. The location of the cloud run service.
                 type: string
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
+                description: The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -123,10 +134,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: |-
-                      The project for the resource
-
-                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
+                    description: 'Allowed value: The `name` field of a `Project` resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -141,22 +149,22 @@ spec:
                   is used as the default.
                 type: string
               template:
-                description: Required. The template used to create revisions for this
-                  Service.
+                description: The template used to create revisions for this Service.
                 properties:
                   annotations:
                     additionalProperties:
                       type: string
-                    description: KRM-style annotations for the resource.
+                    description: |-
+                      Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.
+
+                      Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected.
+                      All system annotations in v1 now have a corresponding field in v2 RevisionTemplate.
+
+                      This field follows Kubernetes annotations' namespacing, limits, and rules.
                     type: object
-                  containerConcurrency:
-                    description: Sets the maximum number of requests that each serving
-                      instance can receive.
-                    format: int64
-                    type: integer
                   containers:
-                    description: Holds the single container that defines the unit
-                      of execution for this Revision.
+                    description: Holds the containers that define the unit of execution
+                      for this Service.
                     items:
                       properties:
                         args:
@@ -167,7 +175,7 @@ spec:
                             input string will be unchanged. The $(VAR_NAME) syntax
                             can be escaped with a double $$, ie: $$(VAR_NAME). Escaped
                             references will never be expanded, regardless of whether
-                            the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell'
+                            the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell.'
                           items:
                             type: string
                           type: array
@@ -180,7 +188,14 @@ spec:
                             unchanged. The $(VAR_NAME) syntax can be escaped with
                             a double $$, ie: $$(VAR_NAME). Escaped references will
                             never be expanded, regardless of whether the variable
-                            exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell'
+                            exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell.'
+                          items:
+                            type: string
+                          type: array
+                        dependsOn:
+                          description: Containers which should be started before this
+                            container. If specified the container will wait to start
+                            until all containers with the listed names are healthy.
                           items:
                             type: string
                           type: array
@@ -190,9 +205,8 @@ spec:
                           items:
                             properties:
                               name:
-                                description: Required. Name of the environment variable.
-                                  Must be a C_IDENTIFIER, and mnay not exceed 32768
-                                  characters.
+                                description: Name of the environment variable. Must
+                                  be a C_IDENTIFIER, and mnay not exceed 32768 characters.
                                 type: string
                               value:
                                 description: 'Variable references $(VAR_NAME) are
@@ -215,6 +229,10 @@ spec:
                                       from Cloud Secret Manager.
                                     properties:
                                       secretRef:
+                                        description: 'The name of the secret in Cloud
+                                          Secret Manager. Format: {secretName} if
+                                          the secret is in the same project. projects/{project}/secrets/{secretName}
+                                          if the secret is in a different project.'
                                         oneOf:
                                         - not:
                                             required:
@@ -231,10 +249,8 @@ spec:
                                           - external
                                         properties:
                                           external:
-                                            description: |-
-                                              Required. The name of the secret in Cloud Secret Manager. Format: {secret_name} if the secret is in the same project. projects/{project}/secrets/{secret_name} if the secret is in a different project.
-
-                                              Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resource (format: `projects/{{project}}/secrets/{{name}}`).
+                                            description: 'Allowed value: The `name`
+                                              field of a `SecretManagerSecret` resource.'
                                             type: string
                                           name:
                                             description: 'Name of the referent. More
@@ -246,6 +262,9 @@ spec:
                                             type: string
                                         type: object
                                       versionRef:
+                                        description: The Cloud Secret Manager secret
+                                          version. Can be 'latest' for the latest
+                                          value or an integer for a specific version.
                                         oneOf:
                                         - not:
                                             required:
@@ -262,10 +281,9 @@ spec:
                                           - external
                                         properties:
                                           external:
-                                            description: |-
-                                              The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version.
-
-                                              Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` resource (format: `{{name}}`).
+                                            description: 'Allowed value: The `version`
+                                              field of a `SecretManagerSecretVersion`
+                                              resource.'
                                             type: string
                                           name:
                                             description: 'Name of the referent. More
@@ -285,27 +303,97 @@ spec:
                             type: object
                           type: array
                         image:
-                          description: 'Required. URL of the Container image in Google
-                            Container Registry or Docker More info: https://kubernetes.io/docs/concepts/containers/images'
+                          description: 'URL of the Container image in Google Container
+                            Registry or Google Artifact Registry. More info: https://kubernetes.io/docs/concepts/containers/images.'
                           type: string
+                        livenessProbe:
+                          description: 'Periodic probe of container liveness. Container
+                            will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.'
+                          properties:
+                            failureThreshold:
+                              description: Minimum consecutive failures for the probe
+                                to be considered failed after having succeeded. Defaults
+                                to 3. Minimum value is 1.
+                              type: integer
+                            grpc:
+                              description: GRPC specifies an action involving a GRPC
+                                port.
+                              properties:
+                                port:
+                                  description: |-
+                                    Port number to access on the container. Number must be in the range 1 to 65535.
+                                    If not specified, defaults to the same value as container.ports[0].containerPort.
+                                  type: integer
+                                service:
+                                  description: |-
+                                    The name of the service to place in the gRPC HealthCheckRequest
+                                    (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+                                    If this is not specified, the default behavior is defined by gRPC.
+                                  type: string
+                              type: object
+                            httpGet:
+                              description: HTTPGet specifies the http request to perform.
+                              properties:
+                                httpHeaders:
+                                  description: Custom headers to set in the request.
+                                    HTTP allows repeated headers.
+                                  items:
+                                    properties:
+                                      name:
+                                        description: The header field name.
+                                        type: string
+                                      value:
+                                        description: The header field value.
+                                        type: string
+                                    required:
+                                    - name
+                                    type: object
+                                  type: array
+                                path:
+                                  description: Path to access on the HTTP server.
+                                    Defaults to '/'.
+                                  type: string
+                                port:
+                                  description: |-
+                                    Port number to access on the container. Number must be in the range 1 to 65535.
+                                    If not specified, defaults to the same value as container.ports[0].containerPort.
+                                  type: integer
+                              type: object
+                            initialDelaySeconds:
+                              description: 'Number of seconds after the container
+                                has started before the probe is initiated. Defaults
+                                to 0 seconds. Minimum value is 0. Maximum value for
+                                liveness probe is 3600. Maximum value for startup
+                                probe is 240. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.'
+                              type: integer
+                            periodSeconds:
+                              description: How often (in seconds) to perform the probe.
+                                Default to 10 seconds. Minimum value is 1. Maximum
+                                value for liveness probe is 3600. Maximum value for
+                                startup probe is 240. Must be greater or equal than
+                                timeoutSeconds.
+                              type: integer
+                            timeoutSeconds:
+                              description: 'Number of seconds after which the probe
+                                times out. Defaults to 1 second. Minimum value is
+                                1. Maximum value is 3600. Must be smaller than periodSeconds.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.'
+                              type: integer
+                          type: object
                         name:
                           description: Name of the container specified as a DNS_LABEL.
                           type: string
                         ports:
-                          description: List of ports to expose from the container.
-                            Only a single port can be specified. The specified ports
-                            must be listening on all interfaces (0.0.0.0) within the
-                            container to be accessible. If omitted, a port number
-                            will be chosen and passed to the container through the
-                            PORT environment variable for the container to listen
-                            on.
+                          description: |-
+                            List of ports to expose from the container. Only a single port can be specified. The specified ports must be listening on all interfaces (0.0.0.0) within the container to be accessible.
+
+                            If omitted, a port number will be chosen and passed to the container through the PORT environment variable for the container to listen on.
                           items:
                             properties:
                               containerPort:
                                 description: Port number the container listens on.
-                                  This must be a valid TCP port number, 0 < container_port
+                                  This must be a valid TCP port number, 0 < containerPort
                                   < 65536.
-                                format: int64
                                 type: integer
                               name:
                                 description: If specified, used to specify which protocol
@@ -315,7 +403,7 @@ spec:
                           type: array
                         resources:
                           description: 'Compute Resource requirements by this container.
-                            More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources'
+                            More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources.'
                           properties:
                             cpuIdle:
                               description: Determines whether CPU should be throttled
@@ -326,67 +414,138 @@ spec:
                                 type: string
                               description: 'Only memory and CPU are supported. Note:
                                 The only supported values for CPU are ''1'', ''2'',
-                                and ''4''. Setting 4 CPU requires at least 2Gi of
-                                memory. The values of the map is string form of the
-                                ''quantity'' k8s type: https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go'
+                                ''4'', and ''8''. Setting 4 CPU requires at least
+                                2Gi of memory. The values of the map is string form
+                                of the ''quantity'' k8s type: https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go.'
                               type: object
+                            startupCpuBoost:
+                              description: Determines whether CPU should be boosted
+                                on startup of a new container instance above the requested
+                                CPU threshold, this can help reduce cold-start latency.
+                              type: boolean
+                          type: object
+                        startupProbe:
+                          description: 'Startup probe of application within the container.
+                            All other probes are disabled if a startup probe is provided,
+                            until it succeeds. Container will not be added to service
+                            endpoints if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.'
+                          properties:
+                            failureThreshold:
+                              description: Minimum consecutive failures for the probe
+                                to be considered failed after having succeeded. Defaults
+                                to 3. Minimum value is 1.
+                              type: integer
+                            grpc:
+                              description: GRPC specifies an action involving a GRPC
+                                port.
+                              properties:
+                                port:
+                                  description: |-
+                                    Port number to access on the container. Number must be in the range 1 to 65535.
+                                    If not specified, defaults to the same value as container.ports[0].containerPort.
+                                  type: integer
+                                service:
+                                  description: |-
+                                    The name of the service to place in the gRPC HealthCheckRequest
+                                    (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+                                    If this is not specified, the default behavior is defined by gRPC.
+                                  type: string
+                              type: object
+                            httpGet:
+                              description: HTTPGet specifies the http request to perform.
+                                Exactly one of HTTPGet or TCPSocket must be specified.
+                              properties:
+                                httpHeaders:
+                                  description: Custom headers to set in the request.
+                                    HTTP allows repeated headers.
+                                  items:
+                                    properties:
+                                      name:
+                                        description: The header field name.
+                                        type: string
+                                      value:
+                                        description: The header field value.
+                                        type: string
+                                    required:
+                                    - name
+                                    type: object
+                                  type: array
+                                path:
+                                  description: Path to access on the HTTP server.
+                                    Defaults to '/'.
+                                  type: string
+                                port:
+                                  description: |-
+                                    Port number to access on the container. Must be in the range 1 to 65535.
+                                    If not specified, defaults to the same value as container.ports[0].containerPort.
+                                  type: integer
+                              type: object
+                            initialDelaySeconds:
+                              description: 'Number of seconds after the container
+                                has started before the probe is initiated. Defaults
+                                to 0 seconds. Minimum value is 0. Maximum value for
+                                liveness probe is 3600. Maximum value for startup
+                                probe is 240. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.'
+                              type: integer
+                            periodSeconds:
+                              description: How often (in seconds) to perform the probe.
+                                Default to 10 seconds. Minimum value is 1. Maximum
+                                value for liveness probe is 3600. Maximum value for
+                                startup probe is 240. Must be greater or equal than
+                                timeoutSeconds.
+                              type: integer
+                            tcpSocket:
+                              description: TCPSocket specifies an action involving
+                                a TCP port. Exactly one of HTTPGet or TCPSocket must
+                                be specified.
+                              properties:
+                                port:
+                                  description: |-
+                                    Port number to access on the container. Must be in the range 1 to 65535.
+                                    If not specified, defaults to the same value as container.ports[0].containerPort.
+                                  type: integer
+                              type: object
+                            timeoutSeconds:
+                              description: 'Number of seconds after which the probe
+                                times out. Defaults to 1 second. Minimum value is
+                                1. Maximum value is 3600. Must be smaller than periodSeconds.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.'
+                              type: integer
                           type: object
                         volumeMounts:
                           description: Volume to mount into the container's filesystem.
                           items:
                             properties:
                               mountPath:
-                                description: Required. Path within the container at
-                                  which the volume should be mounted. Must not contain
-                                  ':'. For Cloud SQL volumes, it can be left empty,
-                                  or must otherwise be `/cloudsql`. All instances
-                                  defined in the Volume will be available as `/cloudsql/[instance]`.
+                                description: Path within the container at which the
+                                  volume should be mounted. Must not contain ':'.
+                                  For Cloud SQL volumes, it can be left empty, or
+                                  must otherwise be /cloudsql. All instances defined
+                                  in the Volume will be available as /cloudsql/[instance].
                                   For more information on Cloud SQL volumes, visit
-                                  https://cloud.google.com/sql/docs/mysql/connect-run
+                                  https://cloud.google.com/sql/docs/mysql/connect-run.
                                 type: string
                               name:
-                                description: Required. This must match the Name of
-                                  a Volume.
+                                description: This must match the Name of a Volume.
                                 type: string
                             required:
                             - mountPath
                             - name
                             type: object
                           type: array
+                        workingDir:
+                          description: Container's working directory. If not specified,
+                            the container runtime's default will be used, which might
+                            be configured in the container image.
+                          type: string
                       required:
                       - image
                       type: object
                     type: array
-                  executionEnvironment:
-                    description: 'The sandbox environment to host this Revision. Possible
-                      values: EXECUTION_ENVIRONMENT_UNSPECIFIED, EXECUTION_ENVIRONMENT_GEN1,
-                      EXECUTION_ENVIRONMENT_GEN2'
-                    type: string
-                  labels:
-                    additionalProperties:
-                      type: string
-                    description: KRM-style labels for the resource.
-                    type: object
-                  revision:
-                    description: The unique name for the revision. If this field is
-                      omitted, it will be automatically generated based on the Service
-                      name.
-                    type: string
-                  scaling:
-                    description: Scaling settings for this Revision.
-                    properties:
-                      maxInstanceCount:
-                        description: Maximum number of serving instances that this
-                          resource should have.
-                        format: int64
-                        type: integer
-                      minInstanceCount:
-                        description: Minimum number of serving instances that this
-                          resource should have.
-                        format: int64
-                        type: integer
-                    type: object
-                  serviceAccountRef:
+                  encryptionKeyRef:
+                    description: A reference to a customer managed encryption key
+                      (CMEK) to use to encrypt this container image. For more information,
+                      go to https://cloud.google.com/run/docs/securing/using-cmek
                     oneOf:
                     - not:
                         required:
@@ -403,10 +562,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: |-
-                          Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account.
-
-                          Allowed value: The `email` field of an `IAMServiceAccount` resource.
+                        description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -415,9 +572,82 @@ spec:
                         description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
+                  executionEnvironment:
+                    description: 'The sandbox environment to host this Revision. Possible
+                      values: ["EXECUTION_ENVIRONMENT_GEN1", "EXECUTION_ENVIRONMENT_GEN2"].'
+                    type: string
+                  labels:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      Unstructured key value map that can be used to organize and categorize objects. User-provided labels are shared with Google's billing system, so they can be used to filter, or break down billing charges by team, component, environment, state, etc.
+                      For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels.
+
+                      Cloud Run API v2 does not support labels with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected.
+                      All system labels in v1 now have a corresponding field in v2 RevisionTemplate.
+                    type: object
+                  maxInstanceRequestConcurrency:
+                    description: Sets the maximum number of requests that each serving
+                      instance can receive.
+                    type: integer
+                  revision:
+                    description: The unique name for the revision. If this field is
+                      omitted, it will be automatically generated based on the Service
+                      name.
+                    type: string
+                  scaling:
+                    description: Scaling settings for this Revision.
+                    properties:
+                      maxInstanceCount:
+                        description: Maximum number of serving instances that this
+                          resource should have.
+                        type: integer
+                      minInstanceCount:
+                        description: Minimum number of serving instances that this
+                          resource should have.
+                        type: integer
+                    type: object
+                  serviceAccountRef:
+                    description: Email address of the IAM service account associated
+                      with the revision of the service. The service account represents
+                      the identity of the running revision, and determines what permissions
+                      the revision has. If not provided, the revision will use the
+                      project's default service account.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `email` field of an `IAMServiceAccount`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                  sessionAffinity:
+                    description: Enables session affinity. For more information, go
+                      to https://cloud.google.com/run/docs/configuring/session-affinity.
+                    type: boolean
                   timeout:
-                    description: Max allowed time for an instance to respond to a
-                      request.
+                    description: |-
+                      Max allowed time for an instance to respond to a request.
+
+                      A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".
                     type: string
                   volumes:
                     description: A list of Volumes to make available to containers.
@@ -431,6 +661,11 @@ spec:
                           properties:
                             instances:
                               items:
+                                description: 'The Cloud SQL instance connection names,
+                                  as can be found in https://console.cloud.google.com/sql/instances.
+                                  Visit https://cloud.google.com/sql/docs/mysql/connect-run
+                                  for more information on how to connect Cloud SQL
+                                  and Cloud Run. Format: {project}:{location}:{instance}'
                                 oneOf:
                                 - not:
                                     required:
@@ -447,7 +682,7 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: 'Allowed value: The `instanceName`
+                                    description: 'Allowed value: The `connectionName`
                                       field of a `SQLInstance` resource.'
                                     type: string
                                   name:
@@ -461,33 +696,38 @@ spec:
                                 type: object
                               type: array
                           type: object
+                        emptyDir:
+                          description: Ephemeral storage used as a shared volume.
+                          properties:
+                            medium:
+                              description: 'The different types of medium supported
+                                for EmptyDir. Default value: "MEMORY" Possible values:
+                                ["MEMORY"].'
+                              type: string
+                            sizeLimit:
+                              description: 'Limit on the storage usable by this EmptyDir
+                                volume. The size limit is also applicable for memory
+                                medium. The maximum usage on memory medium EmptyDir
+                                would be the minimum value between the SizeLimit specified
+                                here and the sum of memory limits of all containers
+                                in a pod. This field''s values are of the ''Quantity''
+                                k8s type: https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/.
+                                The default is nil which means that the limit is undefined.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir.'
+                              type: string
+                          type: object
                         name:
-                          description: Required. Volume's name.
+                          description: Volume's name.
                           type: string
                         secret:
                           description: 'Secret represents a secret that should populate
-                            this volume. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret'
+                            this volume. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret.'
                           properties:
                             defaultMode:
-                              description: 'Integer representation of mode bits to
+                              description: Integer representation of mode bits to
                                 use on created files by default. Must be a value between
-                                0000 and 0777 (octal), defaulting to 0644. Directories
+                                0000 and 0777 (octal), defaulting to 0444. Directories
                                 within the path are not affected by this setting.
-                                Notes * Internally, a umask of 0222 will be applied
-                                to any non-zero value. * This is an integer representation
-                                of the mode bits. So, the octal integer value should
-                                look exactly as the chmod numeric notation with a
-                                leading zero. Some examples: for chmod 777 (a=rwx),
-                                set to 0777 (octal) or 511 (base-10). For chmod 640
-                                (u=rw,g=r), set to 0640 (octal) or 416 (base-10).
-                                For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal)
-                                or 493 (base-10). * This might be in conflict with
-                                other options that affect the file mode, like fsGroup,
-                                and the result can be other mode bits set. This might
-                                be in conflict with other options that affect the
-                                file mode, like fsGroup, and as a result, other mode
-                                bits could be set.'
-                              format: int64
                               type: integer
                             items:
                               description: If unspecified, the volume will expose
@@ -500,29 +740,19 @@ spec:
                               items:
                                 properties:
                                   mode:
-                                    description: 'Integer octal mode bits to use on
+                                    description: Integer octal mode bits to use on
                                       this file, must be a value between 01 and 0777
-                                      (octal). If 0 or not set, the Volume''s default
-                                      mode will be used. Notes * Internally, a umask
-                                      of 0222 will be applied to any non-zero value.
-                                      * This is an integer representation of the mode
-                                      bits. So, the octal integer value should look
-                                      exactly as the chmod numeric notation with a
-                                      leading zero. Some examples: for chmod 777 (a=rwx),
-                                      set to 0777 (octal) or 511 (base-10). For chmod
-                                      640 (u=rw,g=r), set to 0640 (octal) or 416 (base-10).
-                                      For chmod 755 (u=rwx,g=rx,o=rx), set to 0755
-                                      (octal) or 493 (base-10). * This might be in
-                                      conflict with other options that affect the
-                                      file mode, like fsGroup, and the result can
-                                      be other mode bits set.'
-                                    format: int64
+                                      (octal). If 0 or not set, the Volume's default
+                                      mode will be used.
                                     type: integer
                                   path:
-                                    description: Required. The relative path of the
-                                      secret in the container.
+                                    description: The relative path of the secret in
+                                      the container.
                                     type: string
                                   versionRef:
+                                    description: The Cloud Secret Manager secret version.
+                                      Can be 'latest' for the latest value or an integer
+                                      for a specific version
                                     oneOf:
                                     - not:
                                         required:
@@ -539,10 +769,9 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: |-
-                                          The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version.
-
-                                          Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` resource (format: `{{name}}`).
+                                        description: 'Allowed value: The `version`
+                                          field of a `SecretManagerSecretVersion`
+                                          resource.'
                                         type: string
                                       name:
                                         description: 'Name of the referent. More info:
@@ -558,6 +787,10 @@ spec:
                                 type: object
                               type: array
                             secretRef:
+                              description: 'The name of the secret in Cloud Secret
+                                Manager. Format: {secret} if the secret is in the
+                                same project. projects/{project}/secrets/{secret}
+                                if the secret is in a different project.'
                               oneOf:
                               - not:
                                   required:
@@ -574,10 +807,8 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: |-
-                                    Required. The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.
-
-                                    Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resource (format: `projects/{{project}}/secrets/{{name}}`).
+                                  description: 'Allowed value: The `name` field of
+                                    a `SecretManagerSecret` resource.'
                                   type: string
                                 name:
                                   description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -595,10 +826,12 @@ spec:
                       type: object
                     type: array
                   vpcAccess:
-                    description: VPC Access configuration to use for this Revision.
-                      For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc.
+                    description: VPC Access configuration to use for this Task. For
+                      more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc.
                     properties:
                       connectorRef:
+                        description: 'VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector},
+                          where {project} can be project id or number.'
                         oneOf:
                         - not:
                             required:
@@ -615,10 +848,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: |-
-                              VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}
-
-                              Allowed value: The Google Cloud resource name of a `VPCAccessConnector` resource (format: `projects/{{project}}/locations/{{location}}/connectors/{{name}}`).
+                            description: 'Allowed value: The `selfLink` field of a
+                              `VPCAccessConnector` resource.'
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -629,21 +860,19 @@ spec:
                         type: object
                       egress:
                         description: 'Traffic VPC egress settings. Possible values:
-                          VPC_EGRESS_UNSPECIFIED, ALL_TRAFFIC, PRIVATE_RANGES_ONLY'
+                          ["ALL_TRAFFIC", "PRIVATE_RANGES_ONLY"].'
                         type: string
                     type: object
                 type: object
               traffic:
                 description: Specifies how to distribute traffic over a collection
                   of Revisions belonging to the Service. If traffic is empty or not
-                  provided, defaults to 100% traffic to the latest `Ready` Revision.
+                  provided, defaults to 100% traffic to the latest Ready Revision.
                 items:
                   properties:
                     percent:
                       description: Specifies percent of the traffic to this Revision.
-                        This defaults to zero if unspecified. Cloud Run currently
-                        requires 100 percent for a single TrafficTarget entry.
-                      format: int64
+                        This defaults to zero if unspecified.
                       type: integer
                     revision:
                       description: Revision to which to send this portion of traffic,
@@ -655,8 +884,7 @@ spec:
                       type: string
                     type:
                       description: 'The allocation type for this traffic target. Possible
-                        values: TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED, TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST,
-                        TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION'
+                        values: ["TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST", "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"].'
                       type: string
                   type: object
                 type: array
@@ -694,52 +922,33 @@ spec:
                   type: object
                 type: array
               createTime:
-                description: Output only. The creation time.
-                format: date-time
+                description: The creation time.
                 type: string
               creator:
-                description: Output only. Email address of the authenticated creator.
+                description: Email address of the authenticated creator.
                 type: string
               deleteTime:
-                description: Output only. The deletion time.
-                format: date-time
+                description: The deletion time.
                 type: string
               etag:
-                description: Output only. A system-generated fingerprint for this
-                  version of the resource. May be used to detect modification conflict
-                  during updates.
+                description: A system-generated fingerprint for this version of the
+                  resource. May be used to detect modification conflict during updates.
                 type: string
               expireTime:
-                description: Output only. For a deleted resource, the time after which
-                  it will be permamently deleted.
-                format: date-time
+                description: For a deleted resource, the time after which it will
+                  be permamently deleted.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Map of string keys and values that can be used to organize
-                  and categorize objects. User-provided labels are shared with Google's
-                  billing system, so they can be used to filter, or break down billing
-                  charges by team, component, environment, state, etc. For more information,
-                  visit https://cloud.google.com/resource-manager/docs/creating-managing-labels
-                  or https://cloud.google.com/run/docs/configuring/labels Cloud Run
-                  will populate some labels with 'run.googleapis.com' or 'serving.knative.dev'
-                  namespaces. Those labels are read-only, and user changes will not
-                  be preserved.
-                type: object
               lastModifier:
-                description: Output only. Email address of the last authenticated
-                  modifier.
+                description: Email address of the last authenticated modifier.
                 type: string
               latestCreatedRevision:
-                description: Output only. Name of the last created revision. See comments
-                  in `reconciling` for additional information on reconciliation process
-                  in Cloud Run.
+                description: Name of the last created revision. See comments in reconciling
+                  for additional information on reconciliation process in Cloud Run.
                 type: string
               latestReadyRevision:
-                description: Output only. Name of the latest revision that is serving
-                  traffic. See comments in `reconciling` for additional information
-                  on reconciliation process in Cloud Run.
+                description: Name of the latest revision that is serving traffic.
+                  See comments in reconciling for additional information on reconciliation
+                  process in Cloud Run.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -749,74 +958,41 @@ spec:
                   the resource.
                 type: integer
               reconciling:
-                description: 'Output only. Returns true if the Service is currently
-                  being acted upon by the system to bring it into the desired state.
-                  When a new Service is created, or an existing one is updated, Cloud
-                  Run will asynchronously perform all necessary steps to bring the
-                  Service to the desired serving state. This process is called reconciliation.
-                  While reconciliation is in process, `observed_generation`, `latest_ready_revison`,
-                  `traffic_statuses`, and `uri` will have transient values that might
-                  mismatch the intended state: Once reconciliation is over (and this
-                  field is false), there are two possible outcomes: reconciliation
-                  succeeded and the serving state matches the Service, or there was
-                  an error, and reconciliation failed. This state can be found in
-                  `terminal_condition.state`. If reconciliation succeeded, the following
-                  fields will match: `traffic` and `traffic_statuses`, `observed_generation`
-                  and `generation`, `latest_ready_revision` and `latest_created_revision`.
-                  If reconciliation failed, `traffic_statuses`, `observed_generation`,
-                  and `latest_ready_revision` will have the state of the last serving
-                  revision, or empty for newly created Services. Additional information
-                  on the failure can be found in `terminal_condition` and `conditions`.'
+                description: |-
+                  Returns true if the Service is currently being acted upon by the system to bring it into the desired state.
+
+                  When a new Service is created, or an existing one is updated, Cloud Run will asynchronously perform all necessary steps to bring the Service to the desired serving state. This process is called reconciliation. While reconciliation is in process, observedGeneration, latest_ready_revison, trafficStatuses, and uri will have transient values that might mismatch the intended state: Once reconciliation is over (and this field is false), there are two possible outcomes: reconciliation succeeded and the serving state matches the Service, or there was an error, and reconciliation failed. This state can be found in terminalCondition.state.
+
+                  If reconciliation succeeded, the following fields will match: traffic and trafficStatuses, observedGeneration and generation, latestReadyRevision and latestCreatedRevision.
+
+                  If reconciliation failed, trafficStatuses, observedGeneration, and latestReadyRevision will have the state of the last serving revision, or empty for newly created Services. Additional information on the failure can be found in terminalCondition and conditions.
                 type: boolean
-              resourceGeneration:
-                description: Output only. A number that monotonically increases every
-                  time the user modifies the desired state.
-                format: int64
-                type: integer
               terminalCondition:
-                description: Output only. The Condition of this Service, containing
-                  its readiness status, and detailed error information in case it
-                  did not reach a serving state. See comments in `reconciling` for
-                  additional information on reconciliation process in Cloud Run.
+                description: The Condition of this Service, containing its readiness
+                  status, and detailed error information in case it did not reach
+                  a serving state. See comments in reconciling for additional information
+                  on reconciliation process in Cloud Run.
                 properties:
-                  jobReason:
-                    description: 'A reason for the job condition. Possible values:
-                      JOB_REASON_UNDEFINED, JOB_STATUS_SERVICE_POLLING_ERROR'
-                    type: string
                   lastTransitionTime:
                     description: Last time the condition transitioned from one status
                       to another.
-                    format: date-time
                     type: string
                   message:
                     description: Human readable message indicating details about the
                       current status.
                     type: string
                   reason:
-                    description: 'A common (service-level) reason for this condition.
-                      Possible values: COMMON_REASON_UNDEFINED, UNKNOWN, REVISION_FAILED,
-                      PROGRESS_DEADLINE_EXCEEDED, CONTAINER_MISSING, CONTAINER_PERMISSION_DENIED,
-                      CONTAINER_IMAGE_UNAUTHORIZED, CONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED,
-                      ENCRYPTION_KEY_PERMISSION_DENIED, ENCRYPTION_KEY_CHECK_FAILED,
-                      SECRETS_ACCESS_CHECK_FAILED, WAITING_FOR_OPERATION, IMMEDIATE_RETRY,
-                      POSTPONED_RETRY, INTERNAL'
+                    description: A common (service-level) reason for this condition.
                     type: string
                   revisionReason:
-                    description: 'A reason for the revision condition. Possible values:
-                      REVISION_REASON_UNDEFINED, PENDING, RESERVE, RETIRED, RETIRING,
-                      RECREATING, HEALTH_CHECK_CONTAINER_ERROR, CUSTOMIZED_PATH_RESPONSE_PENDING,
-                      MIN_INSTANCES_NOT_PROVISIONED, ACTIVE_REVISION_LIMIT_REACHED,
-                      NO_DEPLOYMENT'
+                    description: A reason for the revision condition.
                     type: string
                   severity:
-                    description: 'How to interpret failures of this condition, one
-                      of Error, Warning, Info Possible values: SEVERITY_UNSPECIFIED,
-                      ERROR, WARNING, INFO'
+                    description: How to interpret failures of this condition, one
+                      of Error, Warning, Info.
                     type: string
                   state:
-                    description: 'State of the condition. Possible values: STATE_UNSPECIFIED,
-                      CONDITION_PENDING, CONDITION_RECONCILING, CONDITION_FAILED,
-                      CONDITION_SUCCEEDED'
+                    description: State of the condition.
                     type: string
                   type:
                     description: 'type is used to communicate the status of the reconciliation
@@ -826,14 +1002,13 @@ spec:
                     type: string
                 type: object
               trafficStatuses:
-                description: Output only. Detailed status information for corresponding
-                  traffic targets. See comments in `reconciling` for additional information
+                description: Detailed status information for corresponding traffic
+                  targets. See comments in reconciling for additional information
                   on reconciliation process in Cloud Run.
                 items:
                   properties:
                     percent:
                       description: Specifies percent of the traffic to this Revision.
-                      format: int64
                       type: integer
                     revision:
                       description: Revision to which this traffic is sent.
@@ -843,9 +1018,7 @@ spec:
                         reference this target.
                       type: string
                     type:
-                      description: 'The allocation type for this traffic target. Possible
-                        values: TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED, TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST,
-                        TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION'
+                      description: The allocation type for this traffic target.
                       type: string
                     uri:
                       description: Displays the target URI.
@@ -853,17 +1026,15 @@ spec:
                   type: object
                 type: array
               uid:
-                description: Output only. Server assigned unique identifier for the
-                  trigger. The value is a UUID4 string and guaranteed to remain unchanged
-                  until the resource is deleted.
+                description: Server assigned unique identifier for the trigger. The
+                  value is a UUID4 string and guaranteed to remain unchanged until
+                  the resource is deleted.
                 type: string
               updateTime:
-                description: Output only. The last-modified time.
-                format: date-time
+                description: The last-modified time.
                 type: string
               uri:
-                description: Output only. The main URI in which this Service is serving
-                  traffic.
+                description: The main URI in which this Service is serving traffic.
                 type: string
             type: object
         required:

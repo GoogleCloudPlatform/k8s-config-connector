@@ -4119,7 +4119,7 @@ func TestRemovePrefixFromStringFieldInSpec(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			err := RemovePrefixFromStringFieldInSpec(tc.original, prefixToRemove, tc.fieldPath...)
+			err := removePrefixFromStringFieldInSpec(tc.original, prefixToRemove, tc.fieldPath...)
 			if tc.expectErr {
 				if err == nil {
 					t.Fatalf("got nil, but expect to have error")

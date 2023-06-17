@@ -1276,7 +1276,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Secret represents a secret that should populate this volume. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
