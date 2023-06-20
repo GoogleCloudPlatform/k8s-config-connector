@@ -30,7 +30,7 @@ import (
 
 const ExpectedHost = "serviceusage.googleapis.com"
 
-// MockService represents a mocked cloud billing service.
+// MockService represents a mocked serviceusage service.
 type MockService struct {
 	kube    client.Client
 	storage storage.Storage
