@@ -358,6 +358,56 @@ func replaceResourceNamesWithUniqueIDs(t *testing.T, unstructs []*unstructured.U
 	return newUnstructs
 }
 
+func updateProjectResourceWithExistingResourceIDs(t *testing.T, unstructs []*unstructured.Unstructured) []*unstructured.Unstructured {
+	// Hack: set abandon on delete annotation for dependent project as dynamically creation of billable GCP project is not supported
+	for _, u := range unstructs {
+		kind := u.GetKind()
+		if kind == "Project" {
+			b, found, err := unstructured.NestedString(u.Object, "spec", "billingAccountRef", "external")
+			if err != nil {
+				t.Fatalf("error getting billingAccountRef: %v", err)
+			}
+			// We cannot dynamically create GCP project with billingAccountRef, acquring pre-created project instead.
+			if found && b != "" {
+				annotations := u.GetAnnotations()
+				if annotations == nil {
+					annotations = make(map[string]string)
+				}
+				annotations["cnrm.cloud.google.com/deletion-policy"] = "abandon"
+				u.SetAnnotations(annotations)
+
+				var dp string
+				if annotations["cnrm.cloud.google.com/auto-create-network"] == "false" {
+					// We use a pre-created project without network
+					dp = testgcp.GetDependentNoNetworkProjectID(t)
+				} else {
+					_, projectInFolder, err := unstructured.NestedString(u.Object, "spec", "folderRef", "external")
+					if err != nil {
+						t.Fatalf("error getting folderRef: %v", err)
+					}
+					_, projectInOrg, err := unstructured.NestedString(u.Object, "spec", "organizationRef", "external")
+					if err != nil {
+						t.Fatalf("error getting organizationRef: %v", err)
+					}
+
+					if projectInFolder {
+						dp = testgcp.GetDependentFolderProjectID(t)
+					} else if projectInOrg {
+						dp = testgcp.GetDependentOrgProjectID(t)
+					}
+				}
+
+				if err := unstructured.SetNestedField(u.Object, dp, strings.Split(k8s.ResourceIDFieldPath, ".")...); err != nil {
+					t.Fatalf("error setting resourceID for dependent project: %v", err)
+				}
+			}
+
+		}
+	}
+
+	return unstructs
+}
+
 // generateNewFolderDisplayName returns a string that can be used as a new
 // display name for the given Folder sample. It has the same length as the
 // original display name used in the sample, and it contains enough randomly

@@ -619,9 +619,6 @@ metadata:
   name: resourcemanagerpolicy-dep-proj
 spec:
   name: Org Policy Sample
-  billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID?}"
 ```
 
 

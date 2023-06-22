@@ -1206,11 +1206,8 @@ metadata:
   name: iampartialpolicy-dep-project
 spec:
   name: Config Connector Sample
-  billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID?}"
   organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID of the parent organization
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
     external: "${ORG_ID?}"
 ```
 

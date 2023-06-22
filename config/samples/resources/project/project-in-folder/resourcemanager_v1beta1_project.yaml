@@ -25,6 +25,3 @@ spec:
   folderRef:
     # Replace "${FOLDER_ID?}" with the numeric ID of the parent folder
     external: "${FOLDER_ID?}"
-  billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID?}"
