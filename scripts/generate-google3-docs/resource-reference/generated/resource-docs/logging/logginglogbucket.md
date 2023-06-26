@@ -570,4 +570,6 @@ spec:
 ```
 
 
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
+
 {% endblock %}

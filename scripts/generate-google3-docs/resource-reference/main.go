@@ -189,6 +189,7 @@ func templateForGVK(gvk schema.GroupVersionKind) (*template.Template, error) {
 		filepath.Join(templatesPath, "shared/bigquerydatasetiamnote.tmpl"),
 		filepath.Join(templatesPath, "shared/iamsupport.tmpl"),
 		filepath.Join(templatesPath, "shared/resource.tmpl"),
+		filepath.Join(templatesPath, "shared/endnote.tmpl"),
 	}
 	template, err := template.New(templateFileName).Funcs(sprig.TxtFuncMap()).ParseFiles(templateFiles...)
 	if err != nil {
