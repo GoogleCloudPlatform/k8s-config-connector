@@ -32,6 +32,7 @@ kind: ControllerResource
 metadata:
   name: cnrm-webhook-manager
 spec:
+  replicas: 4
   containers:
     - name: webhook
       resources:

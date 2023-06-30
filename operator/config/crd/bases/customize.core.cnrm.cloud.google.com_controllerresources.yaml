@@ -87,6 +87,12 @@ spec:
                   - resources
                   type: object
                 type: array
+              replicas:
+                description: The number of desired replicas of the config connector
+                  controller. This field takes effect only if the controller name
+                  is "cnrm-webhook-manager".
+                format: int64
+                type: integer
             required:
             - containers
             type: object

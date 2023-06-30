@@ -614,7 +614,7 @@ func (r *ConfigConnectorReconciler) applyControllerResourceCustomization(ctx con
 		r.log.Info(msg)
 		return r.handleApplyCustomizationFailed(ctx, cr.Name, msg)
 	}
-	if err := controllers.ApplyContainerResourceCustomization(false, m, cr.Name, controllerGVK, cr.Spec.Containers); err != nil {
+	if err := controllers.ApplyContainerResourceCustomization(false, m, cr.Name, controllerGVK, cr.Spec.Containers, cr.Spec.Replicas); err != nil {
 		r.log.Error(err, "failed to apply customization", "Name", cr.Name)
 		return r.handleApplyCustomizationFailed(ctx, cr.Name, fmt.Sprintf("failed to apply customization %s: %v", cr.Name, err))
 	}

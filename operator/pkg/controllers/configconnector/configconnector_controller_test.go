@@ -923,9 +923,9 @@ func TestApplyCustomizations(t *testing.T) {
 		skipCheckingCRStatus          bool
 	}{
 		{
-			name:                         "customize the resources and replica for cnrm-controller-manager",
+			name:                         "customize the resources for cnrm-controller-manager",
 			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManager,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerResources,
 			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedControllerManager,
 			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
@@ -936,7 +936,7 @@ func TestApplyCustomizations(t *testing.T) {
 		{
 			name:                         "customize the resources and replica for cnrm-webhook-manager",
 			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManager,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerResourcesAndReplicas,
 			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManager,
 			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
@@ -965,6 +965,28 @@ func TestApplyCustomizations(t *testing.T) {
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: false,
 					Errors:  []string{testcontroller.ErrNonExistingContainer},
+				},
+			},
+		},
+		{
+			name:                         "customize the replicas for cnrm-controller-manager has no effect",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerReplicas,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: true,
+				},
+			},
+		},
+		{
+			name:                         "customize the replicas for cnrm-webhook-manager to a value large than the maxReplicas of HPA",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerWithLargeReplicas,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManagerWithLargeReplicas,
+			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: true,
 				},
 			},
 		},

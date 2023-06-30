@@ -29,6 +29,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/scale/scheme/autoscalingv1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
@@ -142,20 +143,57 @@ func ListControllerResources(ctx context.Context, c client.Client) ([]customizev
 }
 
 // ApplyContainerResourceCustomization applies container resource customizations specified in ControllerResource / NamespacedControllerResource CR.
-func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects, controllerName string, controllerGVK schema.GroupVersionKind, containers []customizev1alpha1.ContainerResourceSpec) error {
+func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects, controllerName string, controllerGVK schema.GroupVersionKind, containers []customizev1alpha1.ContainerResourceSpec, replicas *int64) error {
 	cMap := make(map[string]corev1.ResourceRequirements, len(containers)) // cMap is a map of container name to its corresponding resource customization.
 	cMapApplied := make(map[string]bool)                                  // cMapApplied is a map of container name to a boolean indicating whether the customization for this container is applied.
 	for _, c := range containers {
 		cMap[c.Name] = c.Resources
 		cMapApplied[c.Name] = false
 	}
+	var shouldUpdateHPA bool // shouldUpdateHPA is a boolean indicating if we need to update the "minReplicas" field in the HorizontalPodAutoscaler for webhook manager
 	// apply customization to the matching controller in the manifest
 	for _, item := range m.Items {
 		if item.GroupVersionKind() == controllerGVK { // match GVK
 			if item.GetName() == controllerName { // match exact controller name for cluster-scoped controller
 				// apply container resource customization for this controller.
-				item.MutateContainers(customizeContainerResourcesFn(cMap, cMapApplied))
-				break // we already found the match, no need to keep looking.
+				if err := item.MutateContainers(customizeContainerResourcesFn(cMap, cMapApplied)); err != nil {
+					return err
+				}
+				// apply replicas customization for this controller.
+				if replicas != nil && controllerName == "cnrm-webhook-manager" { // currently only customizing replicas for cnrm-webhook-manager is supported.
+					if err := item.SetNestedField(*replicas, "spec", "replicas"); err != nil {
+						return err
+					}
+					shouldUpdateHPA = true
+				}
+				break // we already found the matching controller, no need to keep looking.
+			}
+		}
+	}
+	// if we update replicas for webhook manager deployment, we need to adjust its HPA as well.
+	if shouldUpdateHPA {
+		HPAGVK := schema.GroupVersionKind{
+			Group:   autoscalingv1.SchemeGroupVersion.Group,
+			Version: autoscalingv1.SchemeGroupVersion.Version,
+			Kind:    "HorizontalPodAutoscaler",
+		}
+		for _, item := range m.Items {
+			if item.GroupVersionKind() == HPAGVK && item.GetName() == "cnrm-webhook" {
+				// update "minReplicas".
+				if err := item.SetNestedField(*replicas, "spec", "minReplicas"); err != nil {
+					return err
+				}
+				// update "maxReplicas" to match "minReplicas" if it is smaller than "minReplicas".
+				maxReplicas, found, err := unstructured.NestedInt64(item.UnstructuredObject().Object, "spec", "maxReplicas")
+				if err != nil {
+					return err
+				}
+				if found && (maxReplicas < *replicas) {
+					if err := item.SetNestedField(*replicas, "spec", "maxReplicas"); err != nil {
+						return err
+					}
+				}
+				break // we already found the HPA, no need to keep looking.
 			}
 		}
 	}

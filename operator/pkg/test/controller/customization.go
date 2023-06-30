@@ -19,13 +19,14 @@ import (
 
 	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 
+	"google.golang.org/protobuf/proto"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var (
-	ControllerResourceCRForControllerManager = &customizev1alpha1.ControllerResource{
+	ControllerResourceCRForControllerManagerResources = &customizev1alpha1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "cnrm-controller-manager",
 		},
@@ -45,11 +46,50 @@ var (
 			},
 		},
 	}
-	ControllerResourceCRForWebhookManager = &customizev1alpha1.ControllerResource{
+	ControllerResourceCRForControllerManagerReplicas = &customizev1alpha1.ControllerResource{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "cnrm-controller-manager",
+		},
+		Spec: customizev1alpha1.ControllerResourceSpec{
+			Replicas: proto.Int64(int64(4)),
+			Containers: []customizev1alpha1.ContainerResourceSpec{
+				{
+					Name: "manager",
+					Resources: corev1.ResourceRequirements{
+						Limits:   corev1.ResourceList{},
+						Requests: corev1.ResourceList{},
+					},
+				},
+			},
+		},
+	}
+	ControllerResourceCRForWebhookManagerResourcesAndReplicas = &customizev1alpha1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "cnrm-webhook-manager",
 		},
 		Spec: customizev1alpha1.ControllerResourceSpec{
+			Replicas: proto.Int64(int64(4)),
+			Containers: []customizev1alpha1.ContainerResourceSpec{
+				{
+					Name: "webhook",
+					Resources: corev1.ResourceRequirements{
+						Limits: corev1.ResourceList{
+							corev1.ResourceMemory: resource.MustParse("512Mi"),
+						},
+						Requests: corev1.ResourceList{
+							corev1.ResourceMemory: resource.MustParse("256Mi"),
+						},
+					},
+				},
+			},
+		},
+	}
+	ControllerResourceCRForWebhookManagerWithLargeReplicas = &customizev1alpha1.ControllerResource{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "cnrm-webhook-manager",
+		},
+		Spec: customizev1alpha1.ControllerResourceSpec{
+			Replicas: proto.Int64(int64(30)), // this value is larger than the default value of "maxReplicas" of HPA in KCC's manifests
 			Containers: []customizev1alpha1.ContainerResourceSpec{
 				{
 					Name: "webhook",
@@ -208,10 +248,29 @@ spec:
       enableServiceLinks: false
       serviceAccountName: cnrm-webhook-manager
       terminationGracePeriodSeconds: 10
+`, `
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
+  labels:
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-webhook
+  namespace: cnrm-system
+spec:
+  maxReplicas: 20
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cnrm-webhook-manager
+  targetCPUUtilizationPercentage: 90
 `}
 
 // ClusterModeComponentsWithCustomizedControllerManager is the same as ClusterModeComponents
-// but with added "resources" section for cnrm-controller-manager/manager container.
+// with the following differences:
+// - the "resources" section for cnrm-controller-manager/manager container.
 var ClusterModeComponentsWithCustomizedControllerManager = []string{`
 apiVersion: v1
 kind: ServiceAccount
@@ -323,10 +382,31 @@ spec:
       enableServiceLinks: false
       serviceAccountName: cnrm-webhook-manager
       terminationGracePeriodSeconds: 10
+`, `
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
+  labels:
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-webhook
+  namespace: cnrm-system
+spec:
+  maxReplicas: 20
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cnrm-webhook-manager
+  targetCPUUtilizationPercentage: 90
 `}
 
 // ClusterModeComponentsWithCustomizedWebhookManager is the same as ClusterModeComponents
-// but with different values for the "resources" section for cnrm-webhook-manager/webhook container.
+// with the following differences:
+// - the "resources" section for cnrm-webhook-manager/webhook container.
+// - the "replicas" field for cnrm-webhook-manger deployment.
+// - the "minReplicas" field for HorizontalPodAutoscaler
 var ClusterModeComponentsWithCustomizedWebhookManager = []string{`
 apiVersion: v1
 kind: ServiceAccount
@@ -394,6 +474,7 @@ metadata:
   name: cnrm-webhook-manager
   namespace: cnrm-system
 spec:
+  replicas: 4
   revisionHistoryLimit: 1
   selector:
     matchLabels:
@@ -438,4 +519,160 @@ spec:
       enableServiceLinks: false
       serviceAccountName: cnrm-webhook-manager
       terminationGracePeriodSeconds: 10
+`, `
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
+  labels:
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-webhook
+  namespace: cnrm-system
+spec:
+  maxReplicas: 20
+  minReplicas: 4
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cnrm-webhook-manager
+  targetCPUUtilizationPercentage: 90
+`}
+
+// ClusterModeComponentsWithCustomizedWebhookManagerWithLargeReplicas is the same as ClusterModeComponents
+// with the following differences:
+// - the "resources" section for cnrm-webhook-manager/webhook container.
+// - the "replicas" field for cnrm-webhook-manger deployment.
+// - the "minReplicas" field for HorizontalPodAutoscaler
+// - the "maxReplicas" field for HorizontalPodAutoscaler is also updated to match the value of "minReplcias".
+var ClusterModeComponentsWithCustomizedWebhookManagerWithLargeReplicas = []string{`
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    iam.gke.io/gcp-service-account: ${SERVICE_ACCOUNT?}
+  name: cnrm-controller-manager
+  namespace: cnrm-system
+`, `
+apiVersion: v1
+kind: Service
+metadata:
+  name: cnrm-manager
+  namespace: cnrm-system
+spec:
+  ports:
+  - name: controller-manager
+    port: 443
+  - name: metrics
+    port: 8888
+  selector:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/system: "true"
+`, `
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-controller-manager
+  namespace: cnrm-system
+spec:
+  selector:
+    matchLabels:
+      cnrm.cloud.google.com/component: cnrm-controller-manager
+      cnrm.cloud.google.com/system: "true"
+  serviceName: cnrm-manager
+  template:
+    metadata:
+      labels:
+        cnrm.cloud.google.com/component: cnrm-controller-manager
+        cnrm.cloud.google.com/system: "true"
+    spec:
+      containers:
+      - args: ["--scoped-namespace=${NAMESPACE?}", "--stderrthreshold=INFO", "--prometheus-scrape-endpoint=:8888"]
+        command: ["/configconnector/manager"]
+        image: gcr.io/gke-release/cnrm/controller:4af93f1
+        name: manager
+        resources:
+          limits:
+            cpu: 200m
+          requests:
+            memory: 256Mi
+      - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
+        image: gke.gcr.io/prometheus-to-sd:v0.9.1
+        name: prom-to-sd
+`, `
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    cnrm.cloud.google.com/component: cnrm-webhook-manager
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-webhook-manager
+  namespace: cnrm-system
+spec:
+  replicas: 30
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      cnrm.cloud.google.com/component: cnrm-webhook-manager
+      cnrm.cloud.google.com/system: "true"
+  template:
+    metadata:
+      labels:
+        cnrm.cloud.google.com/component: cnrm-webhook-manager
+        cnrm.cloud.google.com/system: "true"
+    spec:
+      containers:
+      - command:
+        - /configconnector/webhook
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        image: gcr.io/gke-release/cnrm/webhook:54aab28
+        imagePullPolicy: Always
+        name: webhook
+        ports:
+        - containerPort: 23232
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 23232
+          initialDelaySeconds: 7
+          periodSeconds: 3
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 1000
+      enableServiceLinks: false
+      serviceAccountName: cnrm-webhook-manager
+      terminationGracePeriodSeconds: 10
+`, `
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
+  labels:
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-webhook
+  namespace: cnrm-system
+spec:
+  maxReplicas: 30
+  minReplicas: 30
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cnrm-webhook-manager
+  targetCPUUtilizationPercentage: 90
 `}
