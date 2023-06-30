@@ -17,12 +17,17 @@ package controllers
 import (
 	"context"
 	"fmt"
+	"strings"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
+	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
@@ -117,4 +122,88 @@ func IsControllerManagerService(obj *manifest.Object) bool {
 		return false
 	}
 	return obj.GetName() == k8s.NamespacedManagerServiceTmpl
+}
+
+func GetControllerResource(ctx context.Context, c client.Client, name string) (*customizev1alpha1.ControllerResource, error) {
+	obj := &customizev1alpha1.ControllerResource{}
+	if err := c.Get(ctx, types.NamespacedName{Name: name}, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+// ListControllerResources lists all ControllerResources.
+func ListControllerResources(ctx context.Context, c client.Client) ([]customizev1alpha1.ControllerResource, error) {
+	list := &customizev1alpha1.ControllerResourceList{}
+	if err := c.List(ctx, list); err != nil {
+		return nil, err
+	}
+	return list.Items, nil
+}
+
+// ApplyContainerResourceCustomization applies container resource customizations specified in ControllerResource / NamespacedControllerResource CR.
+func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects, controllerName string, controllerGVK schema.GroupVersionKind, containers []customizev1alpha1.ContainerResourceSpec) error {
+	cMap := make(map[string]corev1.ResourceRequirements, len(containers)) // cMap is a map of container name to its corresponding resource customization.
+	cMapApplied := make(map[string]bool)                                  // cMapApplied is a map of container name to a boolean indicating whether the customization for this container is applied.
+	for _, c := range containers {
+		cMap[c.Name] = c.Resources
+		cMapApplied[c.Name] = false
+	}
+	// apply customization to the matching controller in the manifest
+	for _, item := range m.Items {
+		if item.GroupVersionKind() == controllerGVK { // match GVK
+			if item.GetName() == controllerName { // match exact controller name for cluster-scoped controller
+				// apply container resource customization for this controller.
+				item.MutateContainers(customizeContainerResourcesFn(cMap, cMapApplied))
+				break // we already found the match, no need to keep looking.
+			}
+		}
+	}
+	// check if all container resource customizations are applied
+	var notApplied []string
+	for c, applied := range cMapApplied {
+		if !applied {
+			notApplied = append(notApplied, c)
+		}
+	}
+	if len(notApplied) > 0 {
+		return fmt.Errorf("resource customization failed for the following containers because there are no matching containers in the manifest: %s", strings.Join(notApplied, ", "))
+	}
+	return nil
+}
+
+// customizeContainerResourcesFn returns a function to customize container resources.
+func customizeContainerResourcesFn(cMap map[string]corev1.ResourceRequirements, cMapApplied map[string]bool) func(container map[string]interface{}) error {
+	return func(container map[string]interface{}) error {
+		name, _, err := unstructured.NestedString(container, "name")
+		if err != nil {
+			return fmt.Errorf("error reading container name: %v", err)
+		}
+		r, found := cMap[name]
+		if !found {
+			return nil
+		}
+		if r.Limits != nil && !r.Limits.Cpu().IsZero() {
+			if err := unstructured.SetNestedField(container, r.Limits.Cpu().String(), "resources", "limits", "cpu"); err != nil {
+				return fmt.Errorf("error setting cpu limit: %v", err)
+			}
+		}
+		if r.Limits != nil && !r.Limits.Memory().IsZero() {
+			if err := unstructured.SetNestedField(container, r.Limits.Memory().String(), "resources", "limits", "memory"); err != nil {
+				return fmt.Errorf("error setting memory limit: %v", err)
+			}
+		}
+		if r.Requests != nil && !r.Requests.Cpu().IsZero() {
+			if err := unstructured.SetNestedField(container, r.Requests.Cpu().String(), "resources", "requests", "cpu"); err != nil {
+				return fmt.Errorf("error setting cpu request: %v", err)
+			}
+		}
+		if r.Requests != nil && !r.Requests.Memory().IsZero() {
+			if err := unstructured.SetNestedField(container, r.Requests.Memory().String(), "resources", "requests", "memory"); err != nil {
+				return fmt.Errorf("error setting memory request: %v", err)
+			}
+		}
+		cMapApplied[name] = true
+		return nil
+	}
 }

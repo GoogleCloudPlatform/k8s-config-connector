@@ -125,6 +125,26 @@ rules:
   verbs:
   - update
 - apiGroups:
+    - customize.core.cnrm.cloud.google.com
+  resources:
+    - controllerresources
+  verbs:
+    - create
+    - delete
+    - get
+    - list
+    - patch
+    - update
+    - watch
+- apiGroups:
+    - customize.core.cnrm.cloud.google.com
+  resources:
+    - controllerresources/status
+  verbs:
+    - get
+    - patch
+    - update
+- apiGroups:
   - rbac.authorization.k8s.io
   resources:
   - clusterrolebindings
