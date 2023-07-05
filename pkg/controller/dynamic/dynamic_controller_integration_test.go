@@ -349,29 +349,7 @@ func testUpdate(t *testing.T, testContext testrunner.TestContext, systemContext 
 		if gcpUnstruct.Object["spec"] == nil {
 			t.Fatalf("GCP resource has a nil spec even though it was created using a resource with a non-nil spec")
 		}
-
-		// Do pre-actuation transform for the initialUnstruct and
-		// reconciledUnstruct before asserting diff result of them is contained
-		// in the retrieved gcpUnstruct.
-		//
-		// initialUnstruct and reconciledUnstruct contain user-facing resource
-		// configs that match the CRD after CRDDecorate() in resource overrides
-		// is applied.
-		// However, gcpUnstruct is the live state of the resource and only
-		// contains fields in the CRD before CRDDecorate() is applied.
-		// PreActuationTransform() turns the user-facing resource configs into
-		// "vanilla" configs which only contain the fields in the CRD before
-		// CRDDecorate() is applied and makes it comparable with the retrieved
-		// live state of the resource.
-		transformedInitialUnstruct, err := resourceContext.DoPreActuationTransformFor(initialUnstruct, systemContext.TFProvider, systemContext.SMLoader, systemContext.DCLConverter)
-		if err != nil {
-			t.Fatalf("could not do pre-actuation transfrom for initialUnstruct: %v", err)
-		}
-		transformedReconciledUnstruct, err := resourceContext.DoPreActuationTransformFor(reconciledUnstruct, systemContext.TFProvider, systemContext.SMLoader, systemContext.DCLConverter)
-		if err != nil {
-			t.Fatalf("could not do pre-actuation transfrom for reconciledUnstruct: %v", err)
-		}
-		changedFields := getChangedFields(transformedInitialUnstruct.Object, transformedReconciledUnstruct.Object, "spec")
+		changedFields := getChangedFields(initialUnstruct.Object, reconciledUnstruct.Object, "spec")
 		assertObjectContains(t, gcpUnstruct.Object["spec"].(map[string]interface{}), changedFields)
 	}
 
