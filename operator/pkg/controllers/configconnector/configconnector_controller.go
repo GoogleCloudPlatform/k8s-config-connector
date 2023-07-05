@@ -113,8 +113,10 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*ConfigConnectorReconcile
 
 	r.customizationWatcher = controllers.NewWithDynamicClient(
 		dynamic.NewForConfigOrDie(mgr.GetConfig()),
-		controllers.CustomizationCRDsToWatch,
-		r.log)
+		controllers.CustomizationWatcherOptions{
+			TriggerGVRs: controllers.CustomizationCRsToWatch,
+			Log:         r.log,
+		})
 
 	err := r.reconciler.Init(mgr, &corev1beta1.ConfigConnector{},
 		declarative.WithLabels(r.labelMaker),

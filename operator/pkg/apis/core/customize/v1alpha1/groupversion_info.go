@@ -36,4 +36,10 @@ var (
 		Version: GroupVersion.Version,
 		Kind:    "ControllerResource",
 	}
+
+	NamespacedControllerResourceGroupVersionKind = schema.GroupVersionKind{
+		Group:   GroupVersion.Group,
+		Version: GroupVersion.Version,
+		Kind:    "NamespacedControllerResource",
+	}
 )

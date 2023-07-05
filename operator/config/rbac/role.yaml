@@ -128,6 +128,7 @@ rules:
     - customize.core.cnrm.cloud.google.com
   resources:
     - controllerresources
+    - namespacedcontrollerresources
   verbs:
     - create
     - delete
@@ -140,6 +141,7 @@ rules:
     - customize.core.cnrm.cloud.google.com
   resources:
     - controllerresources/status
+    - namespacedcontrollerresources/status
   verbs:
     - get
     - patch

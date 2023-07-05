@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
@@ -36,12 +37,15 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+	"sigs.k8s.io/controller-runtime/pkg/source"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
@@ -54,12 +58,15 @@ const controllerName = "configconnectorcontext-controller"
 // From the high level, the ConfigConnectorContextReconciler watches `ConfigConnectorContext` kind
 // and is responsible for managing the lifecycle of per-namespace KCC components (e.g. Service, StatefulSet, ServiceAccount and RoleBindings)
 // independently with multiple workers.
+// ConfigConnectorContextReconciler also watches "NamespacedControllerResource" kind and apply
+// customizations specified in "NamespacedControllerResource" CRs to per-namespace KCC components.
 type ConfigConnectorContextReconciler struct {
-	reconciler *declarative.Reconciler
-	client     client.Client
-	recorder   record.EventRecorder
-	labelMaker declarative.LabelMaker
-	log        logr.Logger
+	reconciler           *declarative.Reconciler
+	client               client.Client
+	recorder             record.EventRecorder
+	labelMaker           declarative.LabelMaker
+	log                  logr.Logger
+	customizationWatcher *controllers.CustomizationWatcher
 }
 
 func Add(mgr ctrl.Manager, repoPath string) error {
@@ -74,6 +81,7 @@ func Add(mgr ctrl.Manager, repoPath string) error {
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: 20}).
+		Watches(&source.Channel{Source: r.customizationWatcher.Events()}, &handler.EnqueueRequestForObject{}).
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {
@@ -100,12 +108,20 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*ConfigConnectorContextRe
 		log:        ctrl.Log.WithName(controllerName),
 	}
 
+	r.customizationWatcher = controllers.NewWithDynamicClient(
+		dynamic.NewForConfigOrDie(mgr.GetConfig()),
+		controllers.CustomizationWatcherOptions{
+			TriggerGVRs: controllers.NamespacedCustomizationCRsToWatch,
+			Log:         r.log,
+		})
+
 	err := r.reconciler.Init(mgr, &corev1beta1.ConfigConnectorContext{},
 		declarative.WithPreserveNamespace(),
 		declarative.WithManifestController(manifestLoader),
 		declarative.WithObjectTransform(r.transformNamespacedComponents()),
 		declarative.WithObjectTransform(r.addLabels()),
 		declarative.WithObjectTransform(r.handleCCContextLifecycle()),
+		declarative.WithObjectTransform(r.applyNamespacedCustomizations()),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}),
@@ -128,6 +144,13 @@ func (r *ConfigConnectorContextReconciler) Reconcile(ctx context.Context, req re
 			return reconcile.Result{}, fmt.Errorf("error handling reconciled failed: %v, original reconciliation error: %w", err, reconciliationErr)
 		}
 		return reconcile.Result{}, reconciliationErr
+	}
+	// Setup watch for customization CRDs if not already done so in the previous reconciliations.
+	// When there is a change detected on a customization CR, raises an event on ConfigConnectorContext CR.
+	if err := r.customizationWatcher.EnsureWatchStarted(ctx, req.NamespacedName); err != nil {
+		r.log.Error(err, "ensure watch start for customization CRDs failed")
+		// Don't fail entire reconciliation if we cannot start watch for customization CRDs.
+		// return reconcile.Result{}, err
 	}
 	jitteredPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()
 	r.log.Info("successfully finished reconcile", "ConfigConnectorContext", req.NamespacedName, "time to next reconciliation", jitteredPeriod)
@@ -372,6 +395,99 @@ func (r *ConfigConnectorContextReconciler) verifyCNRMSystemNamespaceIsActive(ctx
 	}
 	if !n.GetDeletionTimestamp().IsZero() {
 		return fmt.Errorf("ConfigConnector system namespace %v is pending deletion, stop the reconcilation", k8s.CNRMSystemNamespace)
+	}
+	return nil
+}
+
+// applyNamespacedCustomizations fetches and applies all namespace-scoped customization CRDs.
+func (r *ConfigConnectorContextReconciler) applyNamespacedCustomizations() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
+		if !ok {
+			return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
+		}
+		// List all the customization CRs in the same namespace as ConfigConnectorContext object.
+		crs, err := controllers.ListNamespacedControllerResources(ctx, r.client, ccc.Namespace)
+		if err != nil {
+			return err
+		}
+		// Apply all the customization CRs in the same namespace as ConfigConnectorContext object.
+		for _, cr := range crs {
+			if cr.Namespace != ccc.Namespace {
+				// this shouldn't happen!
+				r.log.Error(fmt.Errorf("unexpected namespace for NamespacedControllerResource object"), "expected namespace", ccc.Namespace, "got namespace", cr.Namespace)
+			}
+			r.log.Info("applying namespace-scoped controller resource customization", "Namespace", cr.Namespace, "Name", cr.Name)
+			if err := r.applyNamespacedControllerResourceCustomization(ctx, &cr, m); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+}
+
+// applyNamespacedControllerResourceCustomization applies customizations specified in NamespacedControllerResource CR.
+func (r *ConfigConnectorContextReconciler) applyNamespacedControllerResourceCustomization(ctx context.Context, cr *customizev1alpha1.NamespacedControllerResource, m *manifest.Objects) error {
+	if cr.Name != "cnrm-controller-manager" {
+		msg := fmt.Sprintf("resource customization for controller %s is not supported", cr.Name)
+		r.log.Info(msg)
+		return r.handleApplyCustomizationFailed(ctx, cr.Namespace, cr.Name, msg)
+	}
+	controllerGVK := schema.GroupVersionKind{
+		Group:   appsv1.SchemeGroupVersion.Group,
+		Version: appsv1.SchemeGroupVersion.Version,
+		Kind:    "StatefulSet",
+	}
+	if err := controllers.ApplyContainerResourceCustomization(true, m, cr.Name, controllerGVK, cr.Spec.Containers, nil); err != nil {
+		r.log.Error(err, "failed to apply customization", "Namespace", cr.Namespace, "Name", cr.Name)
+		return r.handleApplyCustomizationFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to apply customization %s: %v", cr.Name, err))
+	}
+	return r.handleApplyCustomizationSucceeded(ctx, cr.Namespace, cr.Name)
+}
+
+func (r *ConfigConnectorContextReconciler) handleApplyCustomizationFailed(ctx context.Context, namespace, name string, msg string) error {
+	cr, err := controllers.GetNamespacedControllerResource(ctx, r.client, namespace, name)
+	if err != nil {
+		if apierrors.IsNotFound(err) {
+			r.log.Info("NamespacedControllerResource object not found; skipping the handling of failed customization apply", "namespace", namespace, "name", name)
+			return nil
+		}
+		// Don't fail entire reconciliation if we cannot get NamespacedControllerResource object.
+		// return fmt.Errorf("error getting NamespacedControllerResource object %v/%v: %v", namespace, name, err)
+		r.log.Error(err, "error getting NamespacedControllerResource object %v", "Namespace", namespace, "Name", name)
+		return nil
+	}
+	cr.Status.CommonStatus = v1alpha1.CommonStatus{
+		Healthy: false,
+		Errors:  []string{msg},
+	}
+	return r.updateNamespacedControllerResourceStatus(ctx, cr)
+}
+
+func (r *ConfigConnectorContextReconciler) handleApplyCustomizationSucceeded(ctx context.Context, namespace, name string) error {
+	cr, err := controllers.GetNamespacedControllerResource(ctx, r.client, namespace, name)
+	if err != nil {
+		if apierrors.IsNotFound(err) {
+			r.log.Info("NamespacedControllerResource object not found; skipping the handling of succeeded customization apply", "namespace", namespace, "name", name)
+			return nil
+		}
+		// Don't fail entire reconciliation if we cannot get NamespacedControllerResource object.
+		// return fmt.Errorf("error getting NamespacedControllerResource object %v/%v: %v", namespace, name, err)
+		r.log.Error(err, "error getting NamespacedControllerResource object %v", "Namespace", namespace, "Name", name)
+		return nil
+	}
+	cr.SetCommonStatus(v1alpha1.CommonStatus{
+		Healthy: true,
+		Errors:  []string{},
+	})
+	return r.updateNamespacedControllerResourceStatus(ctx, cr)
+}
+
+func (r *ConfigConnectorContextReconciler) updateNamespacedControllerResourceStatus(ctx context.Context, cr *customizev1alpha1.NamespacedControllerResource) error {
+	if err := r.client.Status().Update(ctx, cr); err != nil {
+		r.log.Error(err, "failed to update NamespacedControllerResource", "Namespace", cr.Namespace, "Name", cr.Name, "Object", cr)
+		// Don't fail entire reconciliation if we cannot update NamespacedControllerResource status.
+		// return fmt.Errorf("failed to update NamespacedControllerResource %v/%v: %v", cr.Namespace, cr.Name, err)
 	}
 	return nil
 }

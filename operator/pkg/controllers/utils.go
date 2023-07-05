@@ -134,10 +134,27 @@ func GetControllerResource(ctx context.Context, c client.Client, name string) (*
 	return obj, nil
 }
 
+func GetNamespacedControllerResource(ctx context.Context, c client.Client, namespace, name string) (*customizev1alpha1.NamespacedControllerResource, error) {
+	obj := &customizev1alpha1.NamespacedControllerResource{}
+	if err := c.Get(ctx, types.NamespacedName{Namespace: namespace, Name: name}, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
 // ListControllerResources lists all ControllerResources.
 func ListControllerResources(ctx context.Context, c client.Client) ([]customizev1alpha1.ControllerResource, error) {
 	list := &customizev1alpha1.ControllerResourceList{}
 	if err := c.List(ctx, list); err != nil {
+		return nil, err
+	}
+	return list.Items, nil
+}
+
+// ListNamespacedControllerResources lists all NamespacedControllerResource CRs in the given namespace.
+func ListNamespacedControllerResources(ctx context.Context, c client.Client, namespace string) ([]customizev1alpha1.NamespacedControllerResource, error) {
+	list := &customizev1alpha1.NamespacedControllerResourceList{}
+	if err := c.List(ctx, list, &client.ListOptions{Namespace: namespace}); err != nil {
 		return nil, err
 	}
 	return list.Items, nil
@@ -155,13 +172,14 @@ func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects,
 	// apply customization to the matching controller in the manifest
 	for _, item := range m.Items {
 		if item.GroupVersionKind() == controllerGVK { // match GVK
-			if item.GetName() == controllerName { // match exact controller name for cluster-scoped controller
+			if (!isNamespaced && item.GetName() == controllerName) || // match exact controller name for cluster-scoped controller
+				(isNamespaced && strings.HasPrefix(item.GetName(), controllerName)) { // match the prefix for namespace-scoped controller, ignore the namespace ID suffix
 				// apply container resource customization for this controller.
 				if err := item.MutateContainers(customizeContainerResourcesFn(cMap, cMapApplied)); err != nil {
 					return err
 				}
 				// apply replicas customization for this controller.
-				if replicas != nil && controllerName == "cnrm-webhook-manager" { // currently only customizing replicas for cnrm-webhook-manager is supported.
+				if replicas != nil && controllerName == "cnrm-webhook-manager" { // currently only support customizing replicas for cnrm-webhook-manager.
 					if err := item.SetNestedField(*replicas, "spec", "replicas"); err != nil {
 						return err
 					}

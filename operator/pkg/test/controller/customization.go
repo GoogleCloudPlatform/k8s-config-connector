@@ -105,6 +105,27 @@ var (
 			},
 		},
 	}
+	NamespacedControllerResourceCRForControllerManagerResources = &customizev1alpha1.NamespacedControllerResource{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "cnrm-controller-manager",
+			Namespace: "foo-ns",
+		},
+		Spec: customizev1alpha1.NamespacedControllerResourceSpec{
+			Containers: []customizev1alpha1.ContainerResourceSpec{
+				{
+					Name: "manager",
+					Resources: corev1.ResourceRequirements{
+						Limits: corev1.ResourceList{
+							corev1.ResourceCPU: resource.MustParse("400m"),
+						},
+						Requests: corev1.ResourceList{
+							corev1.ResourceMemory: resource.MustParse("512Mi"),
+						},
+					},
+				},
+			},
+		},
+	}
 )
 
 var (
@@ -114,6 +135,15 @@ var (
 			Name: nonExistingControllerName,
 		},
 		Spec: customizev1alpha1.ControllerResourceSpec{
+			Containers: []customizev1alpha1.ContainerResourceSpec{},
+		},
+	}
+	NamespacedControllerResourceCRForNonExistingController = &customizev1alpha1.NamespacedControllerResource{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      nonExistingControllerName,
+			Namespace: "foo-ns",
+		},
+		Spec: customizev1alpha1.NamespacedControllerResourceSpec{
 			Containers: []customizev1alpha1.ContainerResourceSpec{},
 		},
 	}
@@ -134,8 +164,43 @@ var (
 			},
 		},
 	}
+	NamespacedControllerResourceCRForNonExistingContainer = &customizev1alpha1.NamespacedControllerResource{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "cnrm-controller-manager",
+			Namespace: "foo-ns",
+		},
+		Spec: customizev1alpha1.NamespacedControllerResourceSpec{
+			Containers: []customizev1alpha1.ContainerResourceSpec{
+				{
+					Name: nonExistingContainerName,
+				},
+			},
+		},
+	}
 	ErrNonExistingContainer = fmt.Sprintf("failed to apply customization cnrm-controller-manager: resource customization failed for the following containers because there are no matching containers in the manifest: %s", nonExistingContainerName)
 )
+
+var NamespacedControllerResourceCRWrongNamespace = &customizev1alpha1.NamespacedControllerResource{
+	ObjectMeta: metav1.ObjectMeta{
+		Name:      "cnrm-controller-manager",
+		Namespace: "does-not-match",
+	},
+	Spec: customizev1alpha1.NamespacedControllerResourceSpec{
+		Containers: []customizev1alpha1.ContainerResourceSpec{
+			{
+				Name: "manager",
+				Resources: corev1.ResourceRequirements{
+					Limits: corev1.ResourceList{
+						corev1.ResourceCPU: resource.MustParse("400m"),
+					},
+					Requests: corev1.ResourceList{
+						corev1.ResourceMemory: resource.MustParse("512Mi"),
+					},
+				},
+			},
+		},
+	},
+}
 
 var ClusterModeComponents = []string{`
 apiVersion: v1
@@ -688,4 +753,120 @@ spec:
     kind: Deployment
     name: cnrm-webhook-manager
   targetCPUUtilizationPercentage: 90
+`}
+
+var NamespacedComponents = []string{`
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    cnrm.cloud.google.com/monitored: "true"
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-manager-${NAMESPACE?}
+  namespace: cnrm-system
+spec:
+  ports:
+  - name: controller-manager
+    port: 443
+  - name: metrics
+    port: 8888
+  selector:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+`, `
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-controller-manager-${NAMESPACE?}
+  namespace: cnrm-system
+spec:
+  selector:
+    matchLabels:
+      cnrm.cloud.google.com/component: cnrm-controller-manager
+      cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+      cnrm.cloud.google.com/system: "true"
+  serviceName: cnrm-manager-${NAMESPACE?}
+  template:
+    metadata:
+      labels:
+        cnrm.cloud.google.com/component: cnrm-controller-manager
+        cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+        cnrm.cloud.google.com/system: "true"
+    spec:
+      containers:
+      - args: ["--scoped-namespace=${NAMESPACE?}", "--stderrthreshold=INFO", "--prometheus-scrape-endpoint=:8888"]
+        command: ["/configconnector/manager"]
+        image: gcr.io/gke-release/cnrm/controller:4af93f1
+        name: manager
+      - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
+        image: gke.gcr.io/prometheus-to-sd:v0.9.1
+        name: prom-to-sd
+`}
+
+// NamespacedComponentsWithCustomizedControllerManager is the same as NamespacedComponents
+// with the following differences:
+// - the "resources" section for cnrm-controller-manager/manager container.
+var NamespacedComponentsWithCustomizedControllerManager = []string{`
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    cnrm.cloud.google.com/monitored: "true"
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-manager-${NAMESPACE?}
+  namespace: cnrm-system
+spec:
+  ports:
+  - name: controller-manager
+    port: 443
+  - name: metrics
+    port: 8888
+  selector:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+`, `
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-controller-manager-${NAMESPACE?}
+  namespace: cnrm-system
+spec:
+  selector:
+    matchLabels:
+      cnrm.cloud.google.com/component: cnrm-controller-manager
+      cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+      cnrm.cloud.google.com/system: "true"
+  serviceName: cnrm-manager-${NAMESPACE?}
+  template:
+    metadata:
+      labels:
+        cnrm.cloud.google.com/component: cnrm-controller-manager
+        cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+        cnrm.cloud.google.com/system: "true"
+    spec:
+      containers:
+      - args: ["--scoped-namespace=${NAMESPACE?}", "--stderrthreshold=INFO", "--prometheus-scrape-endpoint=:8888"]
+        command: ["/configconnector/manager"]
+        image: gcr.io/gke-release/cnrm/controller:4af93f1
+        name: manager
+        resources:
+          limits:
+            cpu: 400m
+          requests:
+            memory: 512Mi
+      - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
+        image: gke.gcr.io/prometheus-to-sd:v0.9.1
+        name: prom-to-sd
 `}
