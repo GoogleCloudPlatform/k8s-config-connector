@@ -16,6 +16,16 @@ diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/goo
 index 42765a1eb..4a8d9f94f 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_flex_template_job.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_flex_template_job.go
+@@ -362,6 +362,9 @@ func resourceDataflowFlexTemplateJobRead(d *schema.ResourceData, meta interface{
+ 	if err := d.Set("network", optionsMap["network"]); err != nil {
+ 		return fmt.Errorf("Error setting network: %s", err)
+ 	}
++	if err := d.Set("additional_experiments", optionsMap["experiments"]); err != nil {
++		return fmt.Errorf("Error setting additional_experiments: %s", err)
++	}
+ 	if err := d.Set("num_workers", optionsMap["numWorkers"]); err != nil {
+ 		return fmt.Errorf("Error setting num_workers: %s", err)
+ 	}
 @@ -382,12 +382,6 @@ func resourceDataflowFlexTemplateJobRead(d *schema.ResourceData, meta interface{
  		return fmt.Errorf("Error setting machine_type: %s", err)
  	}

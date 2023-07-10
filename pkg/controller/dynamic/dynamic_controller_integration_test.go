@@ -21,6 +21,9 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"net/http"
+	"os"
+	"path/filepath"
 	"reflect"
 	"regexp"
 	"strings"
@@ -35,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -47,11 +51,18 @@ import (
 
 	"github.com/cenkalti/backoff"
 	"github.com/ghodss/yaml"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
+
+type httpRoundTripperKeyType int
+
+// httpRoundTripperKey is the key value for http.RoundTripper in a context.Context
+var httpRoundTripperKey httpRoundTripperKeyType
 
 func init() {
 	// run-tests and skip-tests allows you to limit the tests that are run by
@@ -66,6 +77,23 @@ func init() {
 	// To use this flag, you MUST use an equals sign as follows: go test -tags=integration -cleanup-resources=false
 	flag.BoolVar(&cleanupResources, "cleanup-resources", true, "when enabled, "+
 		"cloud resources created by tests will be cleaned up at the end of a test")
+
+	// Allow for capture of http requests during a test.
+	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+		ret := inner
+		if t := ctx.Value(httpRoundTripperKey); t != nil {
+			ret = &http.Client{Transport: t.(http.RoundTripper)}
+		}
+		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
+			log := log.FromContext(ctx)
+			log.Info("env var ARTIFACTS is not set; will not record http log")
+		} else {
+			outputDir := filepath.Join(artifacts, "http-logs")
+			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+			ret = &http.Client{Transport: t}
+		}
+		return ret
+	}
 }
 
 var (
@@ -188,6 +216,7 @@ func testCreate(t *testing.T, testContext testrunner.TestContext, systemContext 
 	if err := kubeClient.Create(context.TODO(), initialUnstruct); err != nil {
 		t.Fatalf("error creating %v resource %v: %v", initialUnstruct.GetKind(), initialUnstruct.GetName(), err)
 	}
+	t.Logf("resource created with %v\r", initialUnstruct)
 	systemContext.Reconciler.Reconcile(initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct), nil)
 	validateCreate(t, testContext, systemContext, resourceContext, initialUnstruct.GetGeneration())
 }
@@ -210,6 +239,7 @@ func validateCreate(t *testing.T, testContext testrunner.TestContext, systemCont
 	if err != nil {
 		t.Fatalf("unexpected error when GETting '%v': %v", initialUnstruct.GetName(), err)
 	}
+	t.Logf("created resource is %v\r", gcpUnstruct)
 	if resourceContext.SupportsLabels(systemContext.SMLoader) {
 		testcontroller.AssertLabelsMatchAndHaveManagedLabel(t, gcpUnstruct.GetLabels(), reconciledUnstruct.GetLabels())
 	}
@@ -312,6 +342,7 @@ func testUpdate(t *testing.T, testContext testrunner.TestContext, systemContext 
 		t.Fatalf("error setting status on updateUnstruct: %v", err)
 	}
 	patch := client.MergeFrom(testContext.CreateUnstruct)
+	t.Logf("patching %v with %v\r", updateUnstruct, patch)
 	if err := kubeClient.Patch(context.TODO(), updateUnstruct, patch); err != nil {
 		t.Fatalf("unexpected error when updating '%v': %v", initialUnstruct.GetName(), err)
 	}
@@ -394,7 +425,9 @@ func testDriftCorrection(t *testing.T, testContext testrunner.TestContext, syste
 	time.Sleep(time.Second * 10)
 
 	// get the current state
+	t.Logf("reconcile with %v\r", testUnstruct)
 	systemContext.Reconciler.Reconcile(testUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testUnstruct), nil)
+	t.Logf("reconciled with %v\r", testUnstruct)
 	validateCreate(t, testContext, systemContext, resourceContext, testUnstruct.GetGeneration())
 }
 

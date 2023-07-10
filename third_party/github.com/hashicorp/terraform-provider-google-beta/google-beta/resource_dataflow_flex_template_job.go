@@ -362,6 +362,9 @@ func resourceDataflowFlexTemplateJobRead(d *schema.ResourceData, meta interface{
 	if err := d.Set("network", optionsMap["network"]); err != nil {
 		return fmt.Errorf("Error setting network: %s", err)
 	}
+	if err := d.Set("additional_experiments", optionsMap["experiments"]); err != nil {
+		return fmt.Errorf("Error setting additional_experiments: %s", err)
+	}
 	if err := d.Set("num_workers", optionsMap["numWorkers"]); err != nil {
 		return fmt.Errorf("Error setting num_workers: %s", err)
 	}
