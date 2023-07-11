@@ -34,12 +34,12 @@ func TestAccComputeManagedSslCertificate_managedSslCertificateBasicExample(t *te
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeManagedSslCertificateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -55,7 +55,7 @@ func TestAccComputeManagedSslCertificate_managedSslCertificateBasicExample(t *te
 }
 
 func testAccComputeManagedSslCertificate_managedSslCertificateBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_managed_ssl_certificate" "default" {
   name = "tf-test-test-cert%{random_suffix}"
 
@@ -121,12 +121,12 @@ func TestAccComputeManagedSslCertificate_managedSslCertificateRecreationExample(
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -146,7 +146,7 @@ func TestAccComputeManagedSslCertificate_managedSslCertificateRecreationExample(
 }
 
 func testAccComputeManagedSslCertificate_managedSslCertificateRecreationExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 // This example allows the list of managed domains to be modified and will
 // recreate the ssl certificate and update the target https proxy correctly
 
@@ -226,7 +226,7 @@ func testAccCheckComputeManagedSslCertificateDestroyProducer(t *testing.T) func(
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/sslCertificates/{{name}}")
 			if err != nil {

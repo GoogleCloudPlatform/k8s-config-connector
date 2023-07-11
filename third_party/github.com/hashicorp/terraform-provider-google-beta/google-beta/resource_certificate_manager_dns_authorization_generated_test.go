@@ -34,12 +34,12 @@ func TestAccCertificateManagerDnsAuthorization_certificateManagerDnsAuthorizatio
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCertificateManagerDnsAuthorizationDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccCertificateManagerDnsAuthorization_certificateManagerDnsAuthorizatio
 }
 
 func testAccCertificateManagerDnsAuthorization_certificateManagerDnsAuthorizationBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_certificate_manager_dns_authorization" "default" {
   name        = "tf-test-dns-auth%{random_suffix}"
   description = "The default dnss"
@@ -87,7 +87,7 @@ func testAccCheckCertificateManagerDnsAuthorizationDestroyProducer(t *testing.T)
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/dnsAuthorizations/{{name}}")
 			if err != nil {

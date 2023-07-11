@@ -3,28 +3,22 @@
 package google
 
 import (
-	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
-	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccGkeonpremVmwareNodePool_vmwareNodePoolUpdate(t *testing.T) {
-	// TODO: https://github.com/hashicorp/terraform-provider-google/issues/14417
-	t.Skip()
-
 	t.Parallel()
 
-	context := map[string]interface{}{}
+	context := map[string]interface{}{
+		"random_suffix": acctest.RandString(t, 10),
+	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGkeonpremVmwareNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -48,11 +42,12 @@ func TestAccGkeonpremVmwareNodePool_vmwareNodePoolUpdate(t *testing.T) {
 }
 
 func testAccGkeonpremVmwareNodePool_vmwareNodePoolUpdateStart(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_vmware_cluster" "cluster" {
-    provider = google-beta  
-    name = "cluster"
+    provider = google-beta
+
+    name = "tf-test-cluster-%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     description = "test cluster"
@@ -94,8 +89,9 @@ func testAccGkeonpremVmwareNodePool_vmwareNodePoolUpdateStart(context map[string
 
   resource "google_gkeonprem_vmware_node_pool" "nodepool" {
     provider = google-beta
+
+    name = "tf-test-nodepool-%{random_suffix}"
     location = "us-west1"
-    name = "nodepool"
     vmware_cluster = google_gkeonprem_vmware_cluster.cluster.name
     annotations = {}
     config {
@@ -121,11 +117,12 @@ func testAccGkeonpremVmwareNodePool_vmwareNodePoolUpdateStart(context map[string
 }
 
 func testAccGkeonpremVmwareNodePool_vmwareNodePoolUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_vmware_cluster" "cluster" {
-    provider = google-beta  
-    name = "cluster"
+    provider = google-beta
+
+    name = "tf-test-cluster-%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     description = "test cluster"
@@ -167,8 +164,9 @@ func testAccGkeonpremVmwareNodePool_vmwareNodePoolUpdate(context map[string]inte
 
   resource "google_gkeonprem_vmware_node_pool" "nodepool" {
     provider = google-beta
+
+    name = "tf-test-nodepool-%{random_suffix}"
     location = "us-west1"
-    name = "nodepool"
     vmware_cluster = google_gkeonprem_vmware_cluster.cluster.name
     annotations = {}
     config {
@@ -191,43 +189,4 @@ func testAccGkeonpremVmwareNodePool_vmwareNodePoolUpdate(context map[string]inte
     }
   }
 `, context)
-}
-
-func testAccCheckGkeonpremVmwareNodePoolDestroyProducer(t *testing.T) func(s *terraform.State) error {
-	return func(s *terraform.State) error {
-		for name, rs := range s.RootModule().Resources {
-			if rs.Type != "google_gkeonprem_vmware_node_pool" {
-				continue
-			}
-			if strings.HasPrefix(name, "data.") {
-				continue
-			}
-
-			config := GoogleProviderConfig(t)
-
-			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{GkeonpremBasePath}}projects/{{project}}/locations/{{location}}/vmwareClusters/{{vmware_cluster}}/vmwareNodePools/{{name}}")
-			if err != nil {
-				return err
-			}
-
-			billingProject := ""
-
-			if config.BillingProject != "" {
-				billingProject = config.BillingProject
-			}
-
-			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
-				Config:    config,
-				Method:    "GET",
-				Project:   billingProject,
-				RawURL:    url,
-				UserAgent: config.UserAgent,
-			})
-			if err == nil {
-				return fmt.Errorf("GkeonpremVmwareNodePool still exists at %s", url)
-			}
-		}
-
-		return nil
-	}
 }

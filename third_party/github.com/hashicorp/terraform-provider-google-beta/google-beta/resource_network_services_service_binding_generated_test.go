@@ -34,12 +34,12 @@ func TestAccNetworkServicesServiceBinding_networkServicesServiceBindingBasicExam
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesServiceBindingDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccNetworkServicesServiceBinding_networkServicesServiceBindingBasicExam
 }
 
 func testAccNetworkServicesServiceBinding_networkServicesServiceBindingBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_directory_namespace" "default" {
   provider     = google-beta
   namespace_id = "tf-test-my-namespace%{random_suffix}"
@@ -96,7 +96,7 @@ func testAccCheckNetworkServicesServiceBindingDestroyProducer(t *testing.T) func
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/serviceBindings/{{name}}")
 			if err != nil {

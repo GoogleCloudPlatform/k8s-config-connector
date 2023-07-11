@@ -24,27 +24,28 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDataplexDatascanIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataplexDatascanIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_dataplex_datascan_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataScans/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-datascan%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataScans/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-datascan%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -54,7 +55,7 @@ func TestAccDataplexDatascanIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataplex_datascan_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataScans/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-datascan%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataScans/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-datascan%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -66,14 +67,14 @@ func TestAccDataplexDatascanIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -81,7 +82,7 @@ func TestAccDataplexDatascanIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataplex_datascan_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataScans/%s roles/viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-datascan%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataScans/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-datascan%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -93,14 +94,14 @@ func TestAccDataplexDatascanIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataplexDatascanIamPolicy_basicGenerated(context),
@@ -108,7 +109,7 @@ func TestAccDataplexDatascanIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataplex_datascan_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataScans/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-datascan%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataScans/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-datascan%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -117,7 +118,7 @@ func TestAccDataplexDatascanIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataplex_datascan_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataScans/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-datascan%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataScans/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-datascan%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -126,7 +127,7 @@ func TestAccDataplexDatascanIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccDataplexDatascanIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataplex_datascan" "basic_profile" {
   location     = "us-central1"
   data_scan_id = "tf-test-datascan%{random_suffix}"
@@ -158,7 +159,7 @@ resource "google_dataplex_datascan_iam_member" "foo" {
 }
 
 func testAccDataplexDatascanIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataplex_datascan" "basic_profile" {
   location     = "us-central1"
   data_scan_id = "tf-test-datascan%{random_suffix}"
@@ -205,7 +206,7 @@ data "google_dataplex_datascan_iam_policy" "foo" {
 }
 
 func testAccDataplexDatascanIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataplex_datascan" "basic_profile" {
   location     = "us-central1"
   data_scan_id = "tf-test-datascan%{random_suffix}"
@@ -239,7 +240,7 @@ resource "google_dataplex_datascan_iam_policy" "foo" {
 }
 
 func testAccDataplexDatascanIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataplex_datascan" "basic_profile" {
   location     = "us-central1"
   data_scan_id = "tf-test-datascan%{random_suffix}"
@@ -271,7 +272,7 @@ resource "google_dataplex_datascan_iam_binding" "foo" {
 }
 
 func testAccDataplexDatascanIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataplex_datascan" "basic_profile" {
   location     = "us-central1"
   data_scan_id = "tf-test-datascan%{random_suffix}"

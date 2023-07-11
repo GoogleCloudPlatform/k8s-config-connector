@@ -8,6 +8,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccBigtableInstanceIamBinding(t *testing.T) {
@@ -15,17 +16,17 @@ func TestAccBigtableInstanceIamBinding(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	instance := "tf-bigtable-iam-" + RandString(t, 10)
-	cluster := "c-" + RandString(t, 10)
-	account := "tf-bigtable-iam-" + RandString(t, 10)
+	instance := "tf-bigtable-iam-" + acctest.RandString(t, 10)
+	cluster := "c-" + acctest.RandString(t, 10)
+	account := "tf-bigtable-iam-" + acctest.RandString(t, 10)
 	role := "roles/bigtable.user"
 
 	importId := fmt.Sprintf("projects/%s/instances/%s %s",
-		acctest.GetTestProjectFromEnv(), instance, role)
+		envvar.GetTestProjectFromEnv(), instance, role)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test IAM Binding creation
@@ -60,20 +61,20 @@ func TestAccBigtableInstanceIamMember(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	instance := "tf-bigtable-iam-" + RandString(t, 10)
-	cluster := "c-" + RandString(t, 10)
-	account := "tf-bigtable-iam-" + RandString(t, 10)
+	instance := "tf-bigtable-iam-" + acctest.RandString(t, 10)
+	cluster := "c-" + acctest.RandString(t, 10)
+	account := "tf-bigtable-iam-" + acctest.RandString(t, 10)
 	role := "roles/bigtable.user"
 
 	importId := fmt.Sprintf("projects/%s/instances/%s %s serviceAccount:%s",
-		acctest.GetTestProjectFromEnv(),
+		envvar.GetTestProjectFromEnv(),
 		instance,
 		role,
 		serviceAccountCanonicalEmail(account))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test IAM Binding creation
@@ -100,17 +101,17 @@ func TestAccBigtableInstanceIamPolicy(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	instance := "tf-bigtable-iam-" + RandString(t, 10)
-	cluster := "c-" + RandString(t, 10)
-	account := "tf-bigtable-iam-" + RandString(t, 10)
+	instance := "tf-bigtable-iam-" + acctest.RandString(t, 10)
+	cluster := "c-" + acctest.RandString(t, 10)
+	account := "tf-bigtable-iam-" + acctest.RandString(t, 10)
 	role := "roles/bigtable.user"
 
 	importId := fmt.Sprintf("projects/%s/instances/%s",
-		acctest.GetTestProjectFromEnv(), instance)
+		envvar.GetTestProjectFromEnv(), instance)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test IAM Binding creation

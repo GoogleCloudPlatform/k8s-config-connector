@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 
@@ -56,7 +57,7 @@ func TestComputeAddressIdParsing(t *testing.T) {
 	}
 
 	for tn, tc := range cases {
-		addressId, err := parseComputeAddressId(tc.ImportId, tc.Config)
+		addressId, err := compute.ParseComputeAddressId(tc.ImportId, tc.Config)
 
 		if tc.ExpectedError && err == nil {
 			t.Fatalf("bad: %s, expected an error", tn)
@@ -69,8 +70,8 @@ func TestComputeAddressIdParsing(t *testing.T) {
 			t.Fatalf("bad: %s, err: %#v", tn, err)
 		}
 
-		if addressId.canonicalId() != tc.ExpectedCanonicalId {
-			t.Fatalf("bad: %s, expected canonical id to be `%s` but is `%s`", tn, tc.ExpectedCanonicalId, addressId.canonicalId())
+		if addressId.CanonicalId() != tc.ExpectedCanonicalId {
+			t.Fatalf("bad: %s, expected canonical id to be `%s` but is `%s`", tn, tc.ExpectedCanonicalId, addressId.CanonicalId())
 		}
 	}
 }
@@ -78,16 +79,16 @@ func TestComputeAddressIdParsing(t *testing.T) {
 func TestAccDataSourceComputeAddress(t *testing.T) {
 	t.Parallel()
 
-	addressName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	addressName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
 	rsName := "foobar"
 	rsFullName := fmt.Sprintf("google_compute_address.%s", rsName)
 	dsName := "my_address"
 	dsFullName := fmt.Sprintf("data.google_compute_address.%s", dsName)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataSourceComputeAddressDestroy(t, rsFullName),
 		Steps: []resource.TestStep{
 			{
@@ -154,9 +155,9 @@ func testAccCheckDataSourceComputeAddressDestroy(t *testing.T, name string) reso
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			addressId, err := parseComputeAddressId(rs.Primary.ID, nil)
+			addressId, err := compute.ParseComputeAddressId(rs.Primary.ID, nil)
 			if err != nil {
 				return err
 			}

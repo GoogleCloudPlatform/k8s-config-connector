@@ -34,12 +34,12 @@ func TestAccDataCatalogPolicyTag_dataCatalogTaxonomiesPolicyTagBasicExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogPolicyTagDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccDataCatalogPolicyTag_dataCatalogTaxonomiesPolicyTagBasicExample(t *t
 }
 
 func testAccDataCatalogPolicyTag_dataCatalogTaxonomiesPolicyTagBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_policy_tag" "basic_policy_tag" {
   taxonomy = google_data_catalog_taxonomy.my_taxonomy.id
   display_name = "Low security"
@@ -75,12 +75,12 @@ func TestAccDataCatalogPolicyTag_dataCatalogTaxonomiesPolicyTagChildPoliciesExam
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogPolicyTagDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -97,7 +97,7 @@ func TestAccDataCatalogPolicyTag_dataCatalogTaxonomiesPolicyTagChildPoliciesExam
 }
 
 func testAccDataCatalogPolicyTag_dataCatalogTaxonomiesPolicyTagChildPoliciesExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_policy_tag" "parent_policy" {
   taxonomy = google_data_catalog_taxonomy.my_taxonomy.id
   display_name = "High"
@@ -138,7 +138,7 @@ func testAccCheckDataCatalogPolicyTagDestroyProducer(t *testing.T) func(s *terra
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DataCatalogBasePath}}{{name}}")
 			if err != nil {

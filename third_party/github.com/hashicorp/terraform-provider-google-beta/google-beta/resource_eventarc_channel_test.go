@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 
 	dcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -22,14 +23,14 @@ func TestAccEventarcChannel_basic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"region":        acctest.GetTestRegionFromEnv(),
-		"project_name":  acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"region":        envvar.GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckEventarcChannelDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -47,22 +48,22 @@ func TestAccEventarcChannel_basic(t *testing.T) {
 func TestAccEventarcChannel_cryptoKeyUpdate(t *testing.T) {
 	t.Parallel()
 
-	region := acctest.GetTestRegionFromEnv()
-	key1 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-channel-key1")
-	key2 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-channel-key2")
+	region := envvar.GetTestRegionFromEnv()
+	key1 := acctest.BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-channel-key1")
+	key2 := acctest.BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-channel-key2")
 
 	context := map[string]interface{}{
 		"region":        region,
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"key_ring":      tpgresource.GetResourceNameFromSelfLink(key1.KeyRing.Name),
 		"key1":          tpgresource.GetResourceNameFromSelfLink(key1.CryptoKey.Name),
 		"key2":          tpgresource.GetResourceNameFromSelfLink(key2.CryptoKey.Name),
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckEventarcChannelDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -86,7 +87,7 @@ func TestAccEventarcChannel_cryptoKeyUpdate(t *testing.T) {
 }
 
 func testAccEventarcChannel_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "test_project" {
 	project_id  = "%{project_name}"
 }
@@ -100,7 +101,7 @@ resource "google_eventarc_channel" "primary" {
 }
 
 func testAccEventarcChannel_setCryptoKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "test_project" {
 	project_id  = "%{project_name}"
 }
@@ -134,7 +135,7 @@ resource "google_eventarc_channel" "primary" {
 }
 
 func testAccEventarcChannel_cryptoKeyUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "test_project" {
 	project_id  = "%{project_name}"
 }
@@ -176,7 +177,7 @@ func testAccCheckEventarcChannelDestroyProducer(t *testing.T) func(s *terraform.
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {

@@ -13,12 +13,12 @@ import (
 func TestAccFilestoreBackup_update(t *testing.T) {
 	t.Parallel()
 
-	instName := fmt.Sprintf("tf-fs-inst-%d", RandInt(t))
-	bkupName := fmt.Sprintf("tf-fs-bkup-%d", RandInt(t))
+	instName := fmt.Sprintf("tf-fs-inst-%d", acctest.RandInt(t))
+	bkupName := fmt.Sprintf("tf-fs-bkup-%d", acctest.RandInt(t))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckFilestoreBackupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -46,21 +46,21 @@ func TestAccFilestoreBackup_update(t *testing.T) {
 func testAccFilestoreBackup_create(instName string, bkupName string) string {
 	return fmt.Sprintf(`
 resource "google_filestore_instance" "instance" {
-  name = "%s"
-  location = "us-central1-b"
-  tier = "BASIC_SSD"
+  name        = "%s"
+  location    = "us-central1-b"
+  tier        = "BASIC_HDD"
+  description = "An instance created during testing."
 
   file_shares {
-    capacity_gb = 2560
+    capacity_gb = 1024
     name        = "share22"
   }
 
   networks {
-    network = "default"
-    modes   = ["MODE_IPV4"]
+    network      = "default"
+    modes        = ["MODE_IPV4"]
     connect_mode = "DIRECT_PEERING"
   }
-  description = "An instance created during testing."
 }
 
 resource "google_filestore_backup" "backup" {
@@ -78,27 +78,26 @@ resource "google_filestore_backup" "backup" {
 func testAccFilestoreBackup_update(instName string, bkupName string) string {
 	return fmt.Sprintf(`
 resource "google_filestore_instance" "instance" {
-  name = "%s"
-  location = "us-central1-b"
-  tier = "BASIC_SSD"
+  name        = "%s"
+  location    = "us-central1-b"
+  tier        = "BASIC_HDD"
+  description = "A modified instance during testing."
 
   file_shares {
-    capacity_gb = 2560
+    capacity_gb = 1024
     name        = "share22"
   }
 
   networks {
-    network = "default"
-    modes   = ["MODE_IPV4"]
+    network      = "default"
+    modes        = ["MODE_IPV4"]
     connect_mode = "DIRECT_PEERING"
   }
 
   labels = {
-	"files":"label1",
-	"other-label": "update"
+	  "files"      : "label1",
+	  "other-label": "update"
   }
-
-  description = "A modified instance during testing."
 }
 
 resource "google_filestore_backup" "backup" {

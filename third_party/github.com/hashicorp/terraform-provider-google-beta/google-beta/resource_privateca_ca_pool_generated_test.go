@@ -34,12 +34,12 @@ func TestAccPrivatecaCaPool_privatecaCapoolBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPrivatecaCaPoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccPrivatecaCaPool_privatecaCapoolBasicExample(t *testing.T) {
 }
 
 func testAccPrivatecaCaPool_privatecaCapoolBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_privateca_ca_pool" "default" {
   name = "tf-test-my-pool%{random_suffix}"
   location = "us-central1"
@@ -76,12 +76,12 @@ func TestAccPrivatecaCaPool_privatecaCapoolAllFieldsExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPrivatecaCaPoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -98,7 +98,7 @@ func TestAccPrivatecaCaPool_privatecaCapoolAllFieldsExample(t *testing.T) {
 }
 
 func testAccPrivatecaCaPool_privatecaCapoolAllFieldsExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_privateca_ca_pool" "default" {
   name = "tf-test-my-pool%{random_suffix}"
   location = "us-central1"
@@ -201,7 +201,7 @@ func testAccCheckPrivatecaCaPoolDestroyProducer(t *testing.T) func(s *terraform.
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{PrivatecaBasePath}}projects/{{project}}/locations/{{location}}/caPools/{{name}}")
 			if err != nil {

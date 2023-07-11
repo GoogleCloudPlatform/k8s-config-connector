@@ -449,6 +449,9 @@ spec:
               updateTime:
                 description: The last update timestamp of a Cloud Function.
                 type: string
+              url:
+                description: Output only. The deployed url for the function.
+                type: string
             type: object
         required:
         - spec

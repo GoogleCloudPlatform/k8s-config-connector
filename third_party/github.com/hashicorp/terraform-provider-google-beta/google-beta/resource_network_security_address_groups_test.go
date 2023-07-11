@@ -4,8 +4,9 @@ package google
 
 import (
 	"fmt"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
@@ -13,12 +14,12 @@ import (
 func TestAccNetworkSecurityAddressGroups_update(t *testing.T) {
 	t.Parallel()
 
-	addressGroupsName := fmt.Sprintf("tf-test-address-group-%s", RandString(t, 10))
+	addressGroupsName := fmt.Sprintf("tf-test-address-group-%s", acctest.RandString(t, 10))
 	projectName := GetTestProjectFromEnv()
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityAddressGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

@@ -34,12 +34,12 @@ func TestAccComputeSslPolicy_sslPolicyBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSslPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -55,7 +55,7 @@ func TestAccComputeSslPolicy_sslPolicyBasicExample(t *testing.T) {
 }
 
 func testAccComputeSslPolicy_sslPolicyBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_ssl_policy" "prod-ssl-policy" {
   name    = "tf-test-production-ssl-policy%{random_suffix}"
   profile = "MODERN"
@@ -86,7 +86,7 @@ func testAccCheckComputeSslPolicyDestroyProducer(t *testing.T) func(s *terraform
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/sslPolicies/{{name}}")
 			if err != nil {

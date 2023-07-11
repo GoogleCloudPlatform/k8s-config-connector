@@ -13,14 +13,14 @@ import (
 )
 
 func TestAccDataSourceGoogleKmsKeyRing_basic(t *testing.T) {
-	kms := BootstrapKMSKey(t)
+	kms := acctest.BootstrapKMSKey(t)
 
 	keyParts := strings.Split(kms.KeyRing.Name, "/")
 	keyRingId := keyParts[len(keyParts)-1]
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleKmsKeyRing_basic(keyRingId),

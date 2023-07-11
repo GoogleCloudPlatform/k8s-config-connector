@@ -13,15 +13,15 @@ import (
 )
 
 func TestAccDataSourceGoogleKmsCryptoKey_basic(t *testing.T) {
-	kms := BootstrapKMSKey(t)
+	kms := acctest.BootstrapKMSKey(t)
 
 	// Name in the KMS client is in the format projects/<project>/locations/<location>/keyRings/<keyRingName>/cryptoKeys/<keyId>
 	keyParts := strings.Split(kms.CryptoKey.Name, "/")
 	cryptoKeyId := keyParts[len(keyParts)-1]
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleKmsCryptoKey_basic(kms.KeyRing.Name, cryptoKeyId),

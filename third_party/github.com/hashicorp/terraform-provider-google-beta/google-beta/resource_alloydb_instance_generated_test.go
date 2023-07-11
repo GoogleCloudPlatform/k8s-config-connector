@@ -34,12 +34,12 @@ func TestAccAlloydbInstance_alloydbInstanceBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAlloydbInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccAlloydbInstance_alloydbInstanceBasicExample(t *testing.T) {
 }
 
 func testAccAlloydbInstance_alloydbInstanceBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_alloydb_instance" "default" {
   cluster       = google_alloydb_cluster.default.name
   instance_id   = "tf-test-alloydb-instance%{random_suffix}"
@@ -72,7 +72,7 @@ resource "google_alloydb_instance" "default" {
 resource "google_alloydb_cluster" "default" {
   cluster_id = "tf-test-alloydb-cluster%{random_suffix}"
   location   = "us-central1"
-  network    = "projects/${data.google_project.project.number}/global/networks/${google_compute_network.default.name}"
+  network    = google_compute_network.default.id
 
   initial_user {
     password = "tf-test-alloydb-cluster%{random_suffix}"
@@ -111,7 +111,7 @@ func testAccCheckAlloydbInstanceDestroyProducer(t *testing.T) func(s *terraform.
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{AlloydbBasePath}}{{cluster}}/instances/{{instance_id}}")
 			if err != nil {

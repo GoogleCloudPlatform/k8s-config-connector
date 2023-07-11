@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -41,8 +42,8 @@ func TestAccContainerAzureCluster_BasicHandWritten(t *testing.T) {
 		"azure_sub":           "00000000-0000-0000-0000-17aad2f0f61f",
 		"azure_tenant":        "00000000-0000-0000-0000-17aad2f0f61f",
 		"byo_prefix":          "mmv2",
-		"project_name":        acctest.GetTestProjectFromEnv(),
-		"project_number":      acctest.GetTestProjectNumberFromEnv(),
+		"project_name":        envvar.GetTestProjectFromEnv(),
+		"project_number":      envvar.GetTestProjectNumberFromEnv(),
 		"random_suffix":       RandString(t, 10),
 	}
 
@@ -81,8 +82,8 @@ func TestAccContainerAzureCluster_BetaBasicHandWritten(t *testing.T) {
 		"azure_sub":           "00000000-0000-0000-0000-17aad2f0f61f",
 		"azure_tenant":        "00000000-0000-0000-0000-17aad2f0f61f",
 		"byo_prefix":          "mmv2",
-		"project_name":        acctest.GetTestProjectFromEnv(),
-		"project_number":      acctest.GetTestProjectNumberFromEnv(),
+		"project_name":        envvar.GetTestProjectFromEnv(),
+		"project_number":      envvar.GetTestProjectNumberFromEnv(),
 		"random_suffix":       RandString(t, 10),
 	}
 
@@ -115,7 +116,7 @@ func TestAccContainerAzureCluster_BetaBasicHandWritten(t *testing.T) {
 }
 
 func testAccContainerAzureCluster_BasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_azure_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
@@ -170,7 +171,7 @@ resource "google_container_azure_client" "basic" {
 }
 
 func testAccContainerAzureCluster_BasicHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_azure_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
@@ -260,7 +261,7 @@ resource "google_container_azure_client" "basic" {
 }
 
 func testAccContainerAzureCluster_BetaBasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_azure_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
@@ -325,7 +326,7 @@ resource "google_container_azure_client" "basic" {
 }
 
 func testAccContainerAzureCluster_BetaBasicHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_azure_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"

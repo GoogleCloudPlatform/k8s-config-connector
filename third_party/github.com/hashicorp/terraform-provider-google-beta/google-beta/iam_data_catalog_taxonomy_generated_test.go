@@ -29,13 +29,13 @@ func TestAccDataCatalogTaxonomyIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataCatalogTaxonomyIamBinding_basicGenerated(context),
@@ -52,13 +52,13 @@ func TestAccDataCatalogTaxonomyIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -72,13 +72,13 @@ func TestAccDataCatalogTaxonomyIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataCatalogTaxonomyIamPolicy_basicGenerated(context),
@@ -92,7 +92,7 @@ func TestAccDataCatalogTaxonomyIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccDataCatalogTaxonomyIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
   display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
@@ -108,7 +108,7 @@ resource "google_data_catalog_taxonomy_iam_member" "foo" {
 }
 
 func testAccDataCatalogTaxonomyIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
   display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
@@ -137,7 +137,7 @@ data "google_data_catalog_taxonomy_iam_policy" "foo" {
 }
 
 func testAccDataCatalogTaxonomyIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
   display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
@@ -155,7 +155,7 @@ resource "google_data_catalog_taxonomy_iam_policy" "foo" {
 }
 
 func testAccDataCatalogTaxonomyIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
   display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
@@ -171,7 +171,7 @@ resource "google_data_catalog_taxonomy_iam_binding" "foo" {
 }
 
 func testAccDataCatalogTaxonomyIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
   display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"

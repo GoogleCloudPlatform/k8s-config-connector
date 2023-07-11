@@ -58,6 +58,10 @@ spec:
             type: object
           spec:
             properties:
+              changeStreamRetention:
+                description: Duration to retain change stream data for the table.
+                  Set to 0 to disable. Must be between 1 and 7 days.
+                type: string
               columnFamily:
                 description: A group of columns within a table which share a common
                   configuration. This can be specified multiple times.

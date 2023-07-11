@@ -24,26 +24,27 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccGKEHubMembershipIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccGKEHubMembershipIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_gke_hub_membership_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/memberships/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("basic%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/memberships/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("basic%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -53,7 +54,7 @@ func TestAccGKEHubMembershipIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_gke_hub_membership_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/memberships/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("basic%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/memberships/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("basic%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -65,13 +66,13 @@ func TestAccGKEHubMembershipIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -79,7 +80,7 @@ func TestAccGKEHubMembershipIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_gke_hub_membership_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/memberships/%s roles/viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("basic%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/memberships/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("basic%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,13 +92,13 @@ func TestAccGKEHubMembershipIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccGKEHubMembershipIamPolicy_basicGenerated(context),
@@ -105,7 +106,7 @@ func TestAccGKEHubMembershipIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_gke_hub_membership_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/memberships/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("basic%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/memberships/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("basic%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -114,7 +115,7 @@ func TestAccGKEHubMembershipIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_gke_hub_membership_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/memberships/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("basic%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/memberships/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("basic%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -123,7 +124,7 @@ func TestAccGKEHubMembershipIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccGKEHubMembershipIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   name               = "basiccluster%{random_suffix}"
   location           = "us-central1-a"
@@ -149,7 +150,7 @@ resource "google_gke_hub_membership_iam_member" "foo" {
 }
 
 func testAccGKEHubMembershipIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   name               = "basiccluster%{random_suffix}"
   location           = "us-central1-a"
@@ -189,7 +190,7 @@ data "google_gke_hub_membership_iam_policy" "foo" {
 }
 
 func testAccGKEHubMembershipIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   name               = "basiccluster%{random_suffix}"
   location           = "us-central1-a"
@@ -217,7 +218,7 @@ resource "google_gke_hub_membership_iam_policy" "foo" {
 }
 
 func testAccGKEHubMembershipIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   name               = "basiccluster%{random_suffix}"
   location           = "us-central1-a"
@@ -243,7 +244,7 @@ resource "google_gke_hub_membership_iam_binding" "foo" {
 }
 
 func testAccGKEHubMembershipIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   name               = "basiccluster%{random_suffix}"
   location           = "us-central1-a"

@@ -34,12 +34,12 @@ func TestAccMLEngineModel_mlModelBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckMLEngineModelDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -55,7 +55,7 @@ func TestAccMLEngineModel_mlModelBasicExample(t *testing.T) {
 }
 
 func testAccMLEngineModel_mlModelBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_ml_engine_model" "default" {
   name        = "default%{random_suffix}"
   description = "My model"
@@ -68,12 +68,12 @@ func TestAccMLEngineModel_mlModelFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckMLEngineModelDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -89,7 +89,7 @@ func TestAccMLEngineModel_mlModelFullExample(t *testing.T) {
 }
 
 func testAccMLEngineModel_mlModelFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_ml_engine_model" "default" {
   name        = "default%{random_suffix}"
   description = "My model"
@@ -113,7 +113,7 @@ func testAccCheckMLEngineModelDestroyProducer(t *testing.T) func(s *terraform.St
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{MLEngineBasePath}}projects/{{project}}/models/{{name}}")
 			if err != nil {

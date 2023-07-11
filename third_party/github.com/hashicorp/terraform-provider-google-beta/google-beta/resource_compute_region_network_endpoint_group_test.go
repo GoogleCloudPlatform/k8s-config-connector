@@ -13,12 +13,12 @@ func TestAccComputeRegionNetworkEndpointGroup_negWithServerlessDeployment(t *tes
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionNetworkEndpointGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -35,7 +35,7 @@ func TestAccComputeRegionNetworkEndpointGroup_negWithServerlessDeployment(t *tes
 }
 
 func testAccComputeRegionNetworkEndpointGroup_negWithServerlessDeployment(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api_gw" {
   api_id = "tf-test-%{random_suffix}"
 }

@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -36,7 +37,7 @@ func TestAccOrgPolicyPolicy_EnforcePolicy(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -61,7 +62,7 @@ func TestAccOrgPolicyPolicy_FolderPolicy(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -95,7 +96,7 @@ func TestAccOrgPolicyPolicy_OrganizationPolicy(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -129,7 +130,7 @@ func TestAccOrgPolicyPolicy_ProjectPolicy(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -161,7 +162,7 @@ func TestAccOrgPolicyPolicy_ProjectPolicy(t *testing.T) {
 }
 
 func testAccOrgPolicyPolicy_EnforcePolicy(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_org_policy_policy" "primary" {
   name   = "projects/${google_project.basic.name}/policies/iam.disableServiceAccountKeyUpload"
   parent = "projects/${google_project.basic.name}"
@@ -184,7 +185,7 @@ resource "google_project" "basic" {
 }
 
 func testAccOrgPolicyPolicy_FolderPolicy(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_org_policy_policy" "primary" {
   name   = "${google_folder.basic.name}/policies/gcp.resourceLocations"
   parent = google_folder.basic.name
@@ -208,7 +209,7 @@ resource "google_folder" "basic" {
 }
 
 func testAccOrgPolicyPolicy_FolderPolicyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_org_policy_policy" "primary" {
   name   = "${google_folder.basic.name}/policies/gcp.resourceLocations"
   parent = google_folder.basic.name
@@ -245,7 +246,7 @@ resource "google_folder" "basic" {
 }
 
 func testAccOrgPolicyPolicy_OrganizationPolicy(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_org_policy_policy" "primary" {
   name   = "organizations/%{org_id}/policies/gcp.detailedAuditLoggingMode"
   parent = "organizations/%{org_id}"
@@ -260,7 +261,7 @@ resource "google_org_policy_policy" "primary" {
 }
 
 func testAccOrgPolicyPolicy_OrganizationPolicyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_org_policy_policy" "primary" {
   name   = "organizations/%{org_id}/policies/gcp.detailedAuditLoggingMode"
   parent = "organizations/%{org_id}"
@@ -279,7 +280,7 @@ resource "google_org_policy_policy" "primary" {
 }
 
 func testAccOrgPolicyPolicy_ProjectPolicy(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_org_policy_policy" "primary" {
   name   = "projects/${google_project.basic.name}/policies/gcp.resourceLocations"
   parent = "projects/${google_project.basic.name}"
@@ -316,7 +317,7 @@ resource "google_project" "basic" {
 }
 
 func testAccOrgPolicyPolicy_ProjectPolicyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_org_policy_policy" "primary" {
   name   = "projects/${google_project.basic.name}/policies/gcp.resourceLocations"
   parent = "projects/${google_project.basic.name}"

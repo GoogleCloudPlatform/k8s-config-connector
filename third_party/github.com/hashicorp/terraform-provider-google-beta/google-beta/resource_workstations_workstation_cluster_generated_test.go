@@ -34,12 +34,12 @@ func TestAccWorkstationsWorkstationCluster_workstationClusterBasicExample(t *tes
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckWorkstationsWorkstationClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccWorkstationsWorkstationCluster_workstationClusterBasicExample(t *tes
 }
 
 func testAccWorkstationsWorkstationCluster_workstationClusterBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_workstations_workstation_cluster" "default" {
   provider               = google-beta
   workstation_cluster_id = "tf-test-workstation-cluster%{random_suffix}"
@@ -97,12 +97,12 @@ func TestAccWorkstationsWorkstationCluster_workstationClusterPrivateExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckWorkstationsWorkstationClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -119,7 +119,7 @@ func TestAccWorkstationsWorkstationCluster_workstationClusterPrivateExample(t *t
 }
 
 func testAccWorkstationsWorkstationCluster_workstationClusterPrivateExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_workstations_workstation_cluster" "default" {
   provider               = google-beta
   workstation_cluster_id = "tf-test-workstation-cluster-private%{random_suffix}"
@@ -170,7 +170,7 @@ func testAccCheckWorkstationsWorkstationClusterDestroyProducer(t *testing.T) fun
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{WorkstationsBasePath}}projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}")
 			if err != nil {

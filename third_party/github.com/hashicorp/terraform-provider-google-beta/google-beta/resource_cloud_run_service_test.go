@@ -5,6 +5,7 @@ package google
 import (
 	"fmt"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -13,12 +14,12 @@ import (
 func TestAccCloudRunService_cloudRunServiceUpdate(t *testing.T) {
 	t.Parallel()
 
-	project := acctest.GetTestProjectFromEnv()
-	name := "tftest-cloudrun-" + RandString(t, 6)
+	project := envvar.GetTestProjectFromEnv()
+	name := "tftest-cloudrun-" + acctest.RandString(t, 6)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudRunService_cloudRunServiceUpdate(name, project, "10", "600"),
@@ -46,12 +47,12 @@ func TestAccCloudRunService_cloudRunServiceUpdate(t *testing.T) {
 func TestAccCloudRunService_foregroundDeletion(t *testing.T) {
 	t.Parallel()
 
-	project := acctest.GetTestProjectFromEnv()
-	name := "tftest-cloudrun-" + RandString(t, 6)
+	project := envvar.GetTestProjectFromEnv()
+	name := "tftest-cloudrun-" + acctest.RandString(t, 6)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudRunService_cloudRunServiceUpdate(name, project, "10", "600"),
@@ -122,15 +123,15 @@ resource "google_cloud_run_service" "default" {
 func TestAccCloudRunService_secretVolume(t *testing.T) {
 	t.Parallel()
 
-	project := acctest.GetTestProjectFromEnv()
-	name := "tftest-cloudrun-" + RandString(t, 6)
+	project := envvar.GetTestProjectFromEnv()
+	name := "tftest-cloudrun-" + acctest.RandString(t, 6)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCloudRunService_cloudRunServiceUpdateWithSecretVolume(name, project, "secret-"+RandString(t, 5), "secret-"+RandString(t, 6), "google_secret_manager_secret.secret1.secret_id"),
+				Config: testAccCloudRunService_cloudRunServiceUpdateWithSecretVolume(name, project, "secret-"+acctest.RandString(t, 5), "secret-"+acctest.RandString(t, 6), "google_secret_manager_secret.secret1.secret_id"),
 			},
 			{
 				ResourceName:            "google_cloud_run_service.default",
@@ -139,7 +140,7 @@ func TestAccCloudRunService_secretVolume(t *testing.T) {
 				ImportStateVerifyIgnore: []string{"metadata.0.resource_version", "status.0.conditions"},
 			},
 			{
-				Config: testAccCloudRunService_cloudRunServiceUpdateWithSecretVolume(name, project, "secret-"+RandString(t, 10), "secret-"+RandString(t, 11), "google_secret_manager_secret.secret2.secret_id"),
+				Config: testAccCloudRunService_cloudRunServiceUpdateWithSecretVolume(name, project, "secret-"+acctest.RandString(t, 10), "secret-"+acctest.RandString(t, 11), "google_secret_manager_secret.secret2.secret_id"),
 			},
 			{
 				ResourceName:            "google_cloud_run_service.default",
@@ -246,15 +247,15 @@ resource "google_cloud_run_service" "default" {
 func TestAccCloudRunService_secretEnvironmentVariable(t *testing.T) {
 	t.Parallel()
 
-	project := acctest.GetTestProjectFromEnv()
-	name := "tftest-cloudrun-" + RandString(t, 6)
+	project := envvar.GetTestProjectFromEnv()
+	name := "tftest-cloudrun-" + acctest.RandString(t, 6)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCloudRunService_cloudRunServiceUpdateWithSecretEnvVar(name, project, "secret-"+RandString(t, 5), "secret-"+RandString(t, 6), "google_secret_manager_secret.secret1.secret_id"),
+				Config: testAccCloudRunService_cloudRunServiceUpdateWithSecretEnvVar(name, project, "secret-"+acctest.RandString(t, 5), "secret-"+acctest.RandString(t, 6), "google_secret_manager_secret.secret1.secret_id"),
 			},
 			{
 				ResourceName:            "google_cloud_run_service.default",
@@ -263,7 +264,7 @@ func TestAccCloudRunService_secretEnvironmentVariable(t *testing.T) {
 				ImportStateVerifyIgnore: []string{"metadata.0.resource_version", "status.0.conditions"},
 			},
 			{
-				Config: testAccCloudRunService_cloudRunServiceUpdateWithSecretEnvVar(name, project, "secret-"+RandString(t, 10), "secret-"+RandString(t, 11), "google_secret_manager_secret.secret2.secret_id"),
+				Config: testAccCloudRunService_cloudRunServiceUpdateWithSecretEnvVar(name, project, "secret-"+acctest.RandString(t, 10), "secret-"+acctest.RandString(t, 11), "google_secret_manager_secret.secret2.secret_id"),
 			},
 			{
 				ResourceName:            "google_cloud_run_service.default",
@@ -365,12 +366,12 @@ resource "google_cloud_run_service" "default" {
 func TestAccCloudRunService_probes(t *testing.T) {
 	t.Parallel()
 
-	project := acctest.GetTestProjectFromEnv()
-	name := "tftest-cloudrun-" + RandString(t, 6)
+	project := envvar.GetTestProjectFromEnv()
+	name := "tftest-cloudrun-" + acctest.RandString(t, 6)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudRunService_cloudRunServiceWithEmptyTCPStartupProbeAndHTTPLivenessProbe(name, project),

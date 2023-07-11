@@ -26,6 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -34,13 +35,13 @@ func TestAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsBasicExample
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityAddressGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -57,9 +58,8 @@ func TestAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsBasicExample
 }
 
 func testAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_security_address_group" "default" {
-  provider    = google-beta
   name        = "tf-test-my-address-groups%{random_suffix}"
   parent      = "projects/%{project}"
   location    = "us-central1"
@@ -74,13 +74,13 @@ func TestAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsOrganization
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityAddressGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -97,9 +97,8 @@ func TestAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsOrganization
 }
 
 func testAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsOrganizationBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_security_address_group" "default" {
-  provider    = google-beta
   name        = "tf-test-my-address-groups%{random_suffix}"
   parent      = "organizations/%{org_id}"
   location    = "us-central1"
@@ -114,13 +113,13 @@ func TestAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsAdvancedExam
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityAddressGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -137,9 +136,8 @@ func TestAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsAdvancedExam
 }
 
 func testAccNetworkSecurityAddressGroup_networkSecurityAddressGroupsAdvancedExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_security_address_group" "default" {
-  provider    = google-beta
   name        = "tf-test-my-address-groups%{random_suffix}"
   parent      = "projects/%{project}"
   location    = "us-central1"
@@ -161,7 +159,7 @@ func testAccCheckNetworkSecurityAddressGroupDestroyProducer(t *testing.T) func(s
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NetworkSecurityBasePath}}{{parent}}/locations/{{location}}/addressGroups/{{name}}")
 			if err != nil {

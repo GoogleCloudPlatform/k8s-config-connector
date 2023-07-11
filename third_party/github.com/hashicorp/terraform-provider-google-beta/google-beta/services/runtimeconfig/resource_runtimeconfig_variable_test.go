@@ -7,7 +7,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -20,16 +19,16 @@ func TestAccRuntimeconfigVariable_basic(t *testing.T) {
 
 	var variable runtimeconfig.Variable
 
-	varName := fmt.Sprintf("variable-test-%s", google.RandString(t, 10))
+	varName := fmt.Sprintf("variable-test-%s", acctest.RandString(t, 10))
 	varText := "this is my test value"
 
-	google.VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: google.ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRuntimeconfigVariableDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccRuntimeconfigVariable_basicText(google.RandString(t, 10), varName, varText),
+				Config: testAccRuntimeconfigVariable_basicText(acctest.RandString(t, 10), varName, varText),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckRuntimeconfigVariableExists(
 						t, "google_runtimeconfig_variable.foobar", &variable),
@@ -51,14 +50,14 @@ func TestAccRuntimeconfigVariable_basicUpdate(t *testing.T) {
 
 	var variable runtimeconfig.Variable
 
-	configName := fmt.Sprintf("some-name-%s", google.RandString(t, 10))
-	varName := fmt.Sprintf("variable-test-%s", google.RandString(t, 10))
+	configName := fmt.Sprintf("some-name-%s", acctest.RandString(t, 10))
+	varName := fmt.Sprintf("variable-test-%s", acctest.RandString(t, 10))
 	varText := "this is my test value"
 	varText2 := "this is my updated value"
 
-	google.VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: google.ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRuntimeconfigVariableDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -85,16 +84,16 @@ func TestAccRuntimeconfigVariable_basicValue(t *testing.T) {
 
 	var variable runtimeconfig.Variable
 
-	varName := fmt.Sprintf("variable-test-%s", google.RandString(t, 10))
+	varName := fmt.Sprintf("variable-test-%s", acctest.RandString(t, 10))
 	varValue := "Zm9vYmFyCg=="
 
-	google.VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: google.ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRuntimeconfigVariableDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccRuntimeconfigVariable_basicValue(google.RandString(t, 10), varName, varValue),
+				Config: testAccRuntimeconfigVariable_basicValue(acctest.RandString(t, 10), varName, varValue),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckRuntimeconfigVariableExists(
 						t, "google_runtimeconfig_variable.foobar", &variable),
@@ -122,7 +121,7 @@ func testAccCheckRuntimeconfigVariableExists(t *testing.T, resourceName string, 
 			return fmt.Errorf("No ID is set")
 		}
 
-		config := google.GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		found, err := config.NewRuntimeconfigClient(config.UserAgent).Projects.Configs.Variables.Get(rs.Primary.ID).Do()
 		if err != nil {
@@ -181,7 +180,7 @@ func testAccCheckRuntimeconfigVariableValue(variable *runtimeconfig.Variable, va
 
 func testAccCheckRuntimeconfigVariableDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := google.GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_runtimeconfig_variable" {

@@ -34,15 +34,15 @@ func TestAccPrivatecaCertificateAuthority_privatecaCertificateAuthorityBasicExam
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"pool_name":           BootstrapSharedCaPoolInLocation(t, "us-central1"),
+		"pool_name":           acctest.BootstrapSharedCaPoolInLocation(t, "us-central1"),
 		"pool_location":       "us-central1",
 		"deletion_protection": false,
-		"random_suffix":       RandString(t, 10),
+		"random_suffix":       acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPrivatecaCertificateAuthorityDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -59,7 +59,7 @@ func TestAccPrivatecaCertificateAuthority_privatecaCertificateAuthorityBasicExam
 }
 
 func testAccPrivatecaCertificateAuthority_privatecaCertificateAuthorityBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_privateca_certificate_authority" "default" {
   // This example assumes this pool already exists.
   // Pools cannot be deleted in normal test circumstances, so we depend on static pools
@@ -116,15 +116,15 @@ func TestAccPrivatecaCertificateAuthority_privatecaCertificateAuthoritySubordina
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"pool_name":           BootstrapSharedCaPoolInLocation(t, "us-central1"),
+		"pool_name":           acctest.BootstrapSharedCaPoolInLocation(t, "us-central1"),
 		"pool_location":       "us-central1",
 		"deletion_protection": false,
-		"random_suffix":       RandString(t, 10),
+		"random_suffix":       acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPrivatecaCertificateAuthorityDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -141,7 +141,7 @@ func TestAccPrivatecaCertificateAuthority_privatecaCertificateAuthoritySubordina
 }
 
 func testAccPrivatecaCertificateAuthority_privatecaCertificateAuthoritySubordinateExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_privateca_certificate_authority" "root-ca" {
   pool = "%{pool_name}"
   certificate_authority_id = "tf-test-my-certificate-authority%{random_suffix}-root"
@@ -249,7 +249,7 @@ func testAccCheckPrivatecaCertificateAuthorityDestroyProducer(t *testing.T) func
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{PrivatecaBasePath}}projects/{{project}}/locations/{{location}}/caPools/{{pool}}/certificateAuthorities/{{certificate_authority_id}}")
 			if err != nil {

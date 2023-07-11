@@ -111,6 +111,11 @@ func (in *CertificateManaged) DeepCopyInto(out *CertificateManaged) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
+	if in.IssuanceConfig != nil {
+		in, out := &in.IssuanceConfig, &out.IssuanceConfig
+		*out = new(string)
+		**out = **in
+	}
 	if in.ProvisioningIssue != nil {
 		in, out := &in.ProvisioningIssue, &out.ProvisioningIssue
 		*out = make([]CertificateProvisioningIssue, len(*in))

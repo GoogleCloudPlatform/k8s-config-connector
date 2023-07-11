@@ -34,12 +34,12 @@ func TestAccComputeNodeTemplate_nodeTemplateBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeNodeTemplateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccComputeNodeTemplate_nodeTemplateBasicExample(t *testing.T) {
 }
 
 func testAccComputeNodeTemplate_nodeTemplateBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_node_template" "template" {
   name      = "tf-test-soletenant-tmpl%{random_suffix}"
   region    = "us-central1"
@@ -69,12 +69,12 @@ func TestAccComputeNodeTemplate_nodeTemplateServerBindingExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeNodeTemplateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -91,7 +91,7 @@ func TestAccComputeNodeTemplate_nodeTemplateServerBindingExample(t *testing.T) {
 }
 
 func testAccComputeNodeTemplate_nodeTemplateServerBindingExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 data "google_compute_node_types" "central1a" {
   zone     = "us-central1-a"
 }
@@ -122,7 +122,7 @@ func testAccCheckComputeNodeTemplateDestroyProducer(t *testing.T) func(s *terraf
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/nodeTemplates/{{name}}")
 			if err != nil {

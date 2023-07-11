@@ -180,6 +180,11 @@ type ComputeDiskSpec struct {
 	// +optional
 	DiskEncryptionKey *DiskDiskEncryptionKey `json:"diskEncryptionKey,omitempty"`
 
+	/* Immutable. Whether this disk is using confidential compute mode.
+	Note: Only supported on hyperdisk skus, disk_encryption_key is required when setting to true. */
+	// +optional
+	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
+
 	/* Immutable. A list of features to enable on the guest operating system.
 	Applicable only for bootable disks. */
 	// +optional
@@ -216,9 +221,17 @@ type ComputeDiskSpec struct {
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/* Immutable. Indicates how many IOPS must be provisioned for the disk. */
+	/* Indicates how many IOPS must be provisioned for the disk.
+	Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
+	allows for an update of IOPS every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it. */
 	// +optional
 	ProvisionedIops *int `json:"provisionedIops,omitempty"`
+
+	/* Indicates how much Throughput must be provisioned for the disk.
+	Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
+	allows for an update of Throughput every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it. */
+	// +optional
+	ProvisionedThroughput *int `json:"provisionedThroughput,omitempty"`
 
 	/* Immutable. URLs of the zones where the disk should be replicated to. */
 	// +optional

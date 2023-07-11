@@ -12,28 +12,29 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/kms"
 )
 
 func TestAccKmsCryptoKeyIamBinding(t *testing.T) {
 	t.Parallel()
 
-	orgId := acctest.GetTestOrgFromEnv(t)
-	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	billingAccount := acctest.GetTestBillingAccountFromEnv(t)
-	account := fmt.Sprintf("tf-test-%d", RandInt(t))
+	orgId := envvar.GetTestOrgFromEnv(t)
+	projectId := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	billingAccount := envvar.GetTestBillingAccountFromEnv(t)
+	account := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	roleId := "roles/cloudkms.cryptoKeyDecrypter"
-	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	keyRingName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 	keyRingId := &kms.KmsKeyRingId{
 		Project:  projectId,
 		Location: DEFAULT_KMS_TEST_LOCATION,
 		Name:     keyRingName,
 	}
-	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cryptoKeyName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Binding creation
@@ -69,23 +70,23 @@ func TestAccKmsCryptoKeyIamBinding(t *testing.T) {
 func TestAccKmsCryptoKeyIamBinding_withCondition(t *testing.T) {
 	t.Parallel()
 
-	orgId := acctest.GetTestOrgFromEnv(t)
-	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	billingAccount := acctest.GetTestBillingAccountFromEnv(t)
-	account := fmt.Sprintf("tf-test-%d", RandInt(t))
+	orgId := envvar.GetTestOrgFromEnv(t)
+	projectId := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	billingAccount := envvar.GetTestBillingAccountFromEnv(t)
+	account := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	roleId := "roles/cloudkms.cryptoKeyDecrypter"
-	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	keyRingName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 	keyRingId := &kms.KmsKeyRingId{
 		Project:  projectId,
 		Location: DEFAULT_KMS_TEST_LOCATION,
 		Name:     keyRingName,
 	}
-	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cryptoKeyName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 	conditionTitle := "expires_after_2019_12_31"
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccKmsCryptoKeyIamBinding_withCondition(projectId, orgId, billingAccount, account, keyRingName, cryptoKeyName, roleId, conditionTitle),
@@ -103,22 +104,22 @@ func TestAccKmsCryptoKeyIamBinding_withCondition(t *testing.T) {
 func TestAccKmsCryptoKeyIamMember(t *testing.T) {
 	t.Parallel()
 
-	orgId := acctest.GetTestOrgFromEnv(t)
-	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	billingAccount := acctest.GetTestBillingAccountFromEnv(t)
-	account := fmt.Sprintf("tf-test-%d", RandInt(t))
+	orgId := envvar.GetTestOrgFromEnv(t)
+	projectId := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	billingAccount := envvar.GetTestBillingAccountFromEnv(t)
+	account := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	roleId := "roles/cloudkms.cryptoKeyEncrypter"
-	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	keyRingName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 	keyRingId := &kms.KmsKeyRingId{
 		Project:  projectId,
 		Location: DEFAULT_KMS_TEST_LOCATION,
 		Name:     keyRingName,
 	}
-	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cryptoKeyName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -140,23 +141,23 @@ func TestAccKmsCryptoKeyIamMember(t *testing.T) {
 func TestAccKmsCryptoKeyIamMember_withCondition(t *testing.T) {
 	t.Parallel()
 
-	orgId := acctest.GetTestOrgFromEnv(t)
-	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	billingAccount := acctest.GetTestBillingAccountFromEnv(t)
-	account := fmt.Sprintf("tf-test-%d", RandInt(t))
+	orgId := envvar.GetTestOrgFromEnv(t)
+	projectId := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	billingAccount := envvar.GetTestBillingAccountFromEnv(t)
+	account := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	roleId := "roles/cloudkms.cryptoKeyEncrypter"
-	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	keyRingName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 	keyRingId := &kms.KmsKeyRingId{
 		Project:  projectId,
 		Location: DEFAULT_KMS_TEST_LOCATION,
 		Name:     keyRingName,
 	}
-	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cryptoKeyName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 	conditionTitle := "expires_after_2019_12_31"
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccKmsCryptoKeyIamMember_withCondition(projectId, orgId, billingAccount, account, keyRingName, cryptoKeyName, roleId, conditionTitle),
@@ -174,23 +175,23 @@ func TestAccKmsCryptoKeyIamMember_withCondition(t *testing.T) {
 func TestAccKmsCryptoKeyIamPolicy(t *testing.T) {
 	t.Parallel()
 
-	orgId := acctest.GetTestOrgFromEnv(t)
-	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	billingAccount := acctest.GetTestBillingAccountFromEnv(t)
-	account := fmt.Sprintf("tf-test-%d", RandInt(t))
+	orgId := envvar.GetTestOrgFromEnv(t)
+	projectId := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	billingAccount := envvar.GetTestBillingAccountFromEnv(t)
+	account := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	roleId := "roles/cloudkms.cryptoKeyEncrypter"
-	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	keyRingName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
 	keyRingId := &kms.KmsKeyRingId{
 		Project:  projectId,
 		Location: DEFAULT_KMS_TEST_LOCATION,
 		Name:     keyRingName,
 	}
-	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cryptoKeyName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccKmsCryptoKeyIamPolicy_basic(projectId, orgId, billingAccount, account, keyRingName, cryptoKeyName, roleId),
@@ -214,24 +215,24 @@ func TestAccKmsCryptoKeyIamPolicy(t *testing.T) {
 func TestAccKmsCryptoKeyIamPolicy_withCondition(t *testing.T) {
 	t.Parallel()
 
-	orgId := acctest.GetTestOrgFromEnv(t)
-	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
-	billingAccount := acctest.GetTestBillingAccountFromEnv(t)
-	account := fmt.Sprintf("tf-test-%d", RandInt(t))
+	orgId := envvar.GetTestOrgFromEnv(t)
+	projectId := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	billingAccount := envvar.GetTestBillingAccountFromEnv(t)
+	account := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	roleId := "roles/cloudkms.cryptoKeyEncrypter"
-	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	keyRingName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
 	keyRingId := &kms.KmsKeyRingId{
 		Project:  projectId,
 		Location: DEFAULT_KMS_TEST_LOCATION,
 		Name:     keyRingName,
 	}
-	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cryptoKeyName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 	conditionTitle := "expires_after_2019_12_31"
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccKmsCryptoKeyIamPolicy_withCondition(projectId, orgId, billingAccount, account, keyRingName, cryptoKeyName, roleId, conditionTitle),
@@ -253,7 +254,7 @@ func testAccCheckGoogleKmsCryptoKeyIamBindingExists(t *testing.T, bindingResourc
 			return fmt.Errorf("Not found: %s", bindingResourceName)
 		}
 
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		cryptoKeyId, err := kms.ParseKmsCryptoKeyId(bindingRs.Primary.Attributes["crypto_key_id"], config)
 
 		if err != nil {
@@ -289,7 +290,7 @@ func testAccCheckGoogleKmsCryptoKeyIamMemberExists(t *testing.T, n, role, member
 			return fmt.Errorf("Not found: %s", n)
 		}
 
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		cryptoKeyId, err := kms.ParseKmsCryptoKeyId(rs.Primary.Attributes["crypto_key_id"], config)
 
 		if err != nil {
@@ -324,7 +325,7 @@ func testAccCheckGoogleCryptoKmsKeyIam(t *testing.T, n, role string, members []s
 			return fmt.Errorf("IAM policy resource not found")
 		}
 
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		cryptoKeyId, err := kms.ParseKmsCryptoKeyId(rs.Primary.Attributes["crypto_key_id"], config)
 
 		if err != nil {

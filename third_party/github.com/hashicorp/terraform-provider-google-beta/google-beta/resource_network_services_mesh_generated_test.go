@@ -34,12 +34,12 @@ func TestAccNetworkServicesMesh_networkServicesMeshBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesMeshDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccNetworkServicesMesh_networkServicesMeshBasicExample(t *testing.T) {
 }
 
 func testAccNetworkServicesMesh_networkServicesMeshBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_services_mesh" "default" {
   provider    = google-beta
   name        = "tf-test-my-mesh%{random_suffix}"
@@ -73,12 +73,12 @@ func TestAccNetworkServicesMesh_networkServicesMeshNoPortExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesMeshDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -95,7 +95,7 @@ func TestAccNetworkServicesMesh_networkServicesMeshNoPortExample(t *testing.T) {
 }
 
 func testAccNetworkServicesMesh_networkServicesMeshNoPortExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_services_mesh" "default" {
   provider    = google-beta
   name        = "tf-test-my-mesh-noport%{random_suffix}"
@@ -117,7 +117,7 @@ func testAccCheckNetworkServicesMeshDestroyProducer(t *testing.T) func(s *terraf
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/meshes/{{name}}")
 			if err != nil {

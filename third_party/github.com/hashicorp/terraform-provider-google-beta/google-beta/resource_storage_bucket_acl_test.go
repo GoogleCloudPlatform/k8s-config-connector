@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/storage"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -30,9 +31,9 @@ func TestAccStorageBucketAcl_basic(t *testing.T) {
 
 	bucketName := testBucketName(t)
 	acctest.SkipIfEnvNotSet(t, "GOOGLE_PROJECT_NUMBER")
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageBucketAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -51,9 +52,9 @@ func TestAccStorageBucketAcl_upgrade(t *testing.T) {
 
 	bucketName := testBucketName(t)
 	acctest.SkipIfEnvNotSet(t, "GOOGLE_PROJECT_NUMBER")
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageBucketAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -89,9 +90,9 @@ func TestAccStorageBucketAcl_upgradeSingleUser(t *testing.T) {
 
 	bucketName := testBucketName(t)
 	acctest.SkipIfEnvNotSet(t, "GOOGLE_PROJECT_NUMBER")
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageBucketAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -127,9 +128,9 @@ func TestAccStorageBucketAcl_downgrade(t *testing.T) {
 
 	bucketName := testBucketName(t)
 	acctest.SkipIfEnvNotSet(t, "GOOGLE_PROJECT_NUMBER")
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageBucketAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -164,9 +165,9 @@ func TestAccStorageBucketAcl_predefined(t *testing.T) {
 	t.Parallel()
 
 	bucketName := testBucketName(t)
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageBucketAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -182,9 +183,9 @@ func TestAccStorageBucketAcl_unordered(t *testing.T) {
 
 	bucketName := testBucketName(t)
 	acctest.SkipIfEnvNotSet(t, "GOOGLE_PROJECT_NUMBER")
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageBucketAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -199,9 +200,9 @@ func TestAccStorageBucketAcl_RemoveOwner(t *testing.T) {
 	t.Parallel()
 
 	bucketName := testBucketName(t)
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageBucketAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -213,8 +214,8 @@ func TestAccStorageBucketAcl_RemoveOwner(t *testing.T) {
 
 func testAccCheckGoogleStorageBucketAclDelete(t *testing.T, bucket, roleEntityS string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		roleEntity, _ := getRoleEntityPair(roleEntityS)
-		config := GoogleProviderConfig(t)
+		roleEntity, _ := storage.GetRoleEntityPair(roleEntityS)
+		config := acctest.GoogleProviderConfig(t)
 
 		_, err := config.NewStorageClient(config.UserAgent).BucketAccessControls.Get(bucket, roleEntity.Entity).Do()
 
@@ -228,8 +229,8 @@ func testAccCheckGoogleStorageBucketAclDelete(t *testing.T, bucket, roleEntityS 
 
 func testAccCheckGoogleStorageBucketAcl(t *testing.T, bucket, roleEntityS string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		roleEntity, _ := getRoleEntityPair(roleEntityS)
-		config := GoogleProviderConfig(t)
+		roleEntity, _ := storage.GetRoleEntityPair(roleEntityS)
+		config := acctest.GoogleProviderConfig(t)
 
 		res, err := config.NewStorageClient(config.UserAgent).BucketAccessControls.Get(bucket, roleEntity.Entity).Do()
 
@@ -247,7 +248,7 @@ func testAccCheckGoogleStorageBucketAcl(t *testing.T, bucket, roleEntityS string
 
 func testAccStorageBucketAclDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_storage_bucket_acl" {

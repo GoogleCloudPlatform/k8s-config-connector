@@ -3,9 +3,7 @@
 package google
 
 import (
-	"context"
 	"fmt"
-	"log"
 	"strings"
 	"testing"
 
@@ -14,72 +12,17 @@ import (
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
-func init() {
-	resource.AddTestSweepers("ComputeRegionInstanceGroupManager", &resource.Sweeper{
-		Name: "ComputeRegionInstanceGroupManager",
-		F:    testSweepComputeRegionInstanceGroupManager,
-	})
-}
-
-// At the time of writing, the CI only passes us-central1 as the region.
-// Since we can read all instances across zones, we don't really use this param.
-func testSweepComputeRegionInstanceGroupManager(region string) error {
-	resourceName := "ComputeRegionInstanceGroupManager"
-	log.Printf("[INFO][SWEEPER_LOG] Starting sweeper for %s", resourceName)
-
-	config, err := acctest.SharedConfigForRegion(region)
-	if err != nil {
-		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
-		return err
-	}
-
-	err = config.LoadAndValidate(context.Background())
-	if err != nil {
-		log.Printf("[INFO][SWEEPER_LOG] error loading: %s", err)
-		return err
-	}
-
-	found, err := config.NewComputeClient(config.UserAgent).RegionInstanceGroupManagers.List(config.Project, region).Do()
-	if err != nil {
-		log.Printf("[INFO][SWEEPER_LOG] Error in response from request: %s", err)
-		return nil
-	}
-
-	// Keep count of items that aren't sweepable for logging.
-	nonPrefixCount := 0
-	for _, rigm := range found.Items {
-		if !acctest.IsSweepableTestResource(rigm.Name) {
-			nonPrefixCount++
-			continue
-		}
-
-		// Don't wait on operations as we may have a lot to delete
-		_, err := config.NewComputeClient(config.UserAgent).RegionInstanceGroupManagers.Delete(config.Project, region, rigm.Name).Do()
-		if err != nil {
-			log.Printf("[INFO][SWEEPER_LOG] Error deleting %s resource %s : %s", resourceName, rigm.Name, err)
-		} else {
-			log.Printf("[INFO][SWEEPER_LOG] Sent delete request for %s resource: %s", resourceName, rigm.Name)
-		}
-	}
-
-	if nonPrefixCount > 0 {
-		log.Printf("[INFO][SWEEPER_LOG] %d items were non-sweepable and skipped.", nonPrefixCount)
-	}
-
-	return nil
-}
-
 func TestAccRegionInstanceGroupManager_basic(t *testing.T) {
 	t.Parallel()
 
-	template := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	target := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	igm1 := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	igm2 := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
+	template := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	target := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	igm1 := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	igm2 := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRegionInstanceGroupManagerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -104,12 +47,12 @@ func TestAccRegionInstanceGroupManager_basic(t *testing.T) {
 func TestAccRegionInstanceGroupManager_targetSizeZero(t *testing.T) {
 	t.Parallel()
 
-	templateName := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	igmName := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
+	templateName := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	igmName := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRegionInstanceGroupManagerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -128,15 +71,15 @@ func TestAccRegionInstanceGroupManager_targetSizeZero(t *testing.T) {
 func TestAccRegionInstanceGroupManager_update(t *testing.T) {
 	t.Parallel()
 
-	template1 := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	target1 := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	target2 := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	template2 := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	igm := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
+	template1 := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	target1 := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	target2 := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	template2 := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	igm := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRegionInstanceGroupManagerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -177,11 +120,11 @@ func TestAccRegionInstanceGroupManager_updateLifecycle(t *testing.T) {
 
 	tag1 := "tag1"
 	tag2 := "tag2"
-	igm := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
+	igm := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRegionInstanceGroupManagerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -211,11 +154,11 @@ func TestAccRegionInstanceGroupManager_rollingUpdatePolicy(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	igm := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
+	igm := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckInstanceGroupManagerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -259,12 +202,12 @@ func TestAccRegionInstanceGroupManager_separateRegions(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	igm1 := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	igm2 := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
+	igm1 := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	igm2 := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRegionInstanceGroupManagerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -289,13 +232,13 @@ func TestAccRegionInstanceGroupManager_separateRegions(t *testing.T) {
 func TestAccRegionInstanceGroupManager_versions(t *testing.T) {
 	t.Parallel()
 
-	primaryTemplate := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	canaryTemplate := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	igm := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
+	primaryTemplate := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	canaryTemplate := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	igm := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRegionInstanceGroupManagerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -314,14 +257,14 @@ func TestAccRegionInstanceGroupManager_versions(t *testing.T) {
 func TestAccRegionInstanceGroupManager_autoHealingPolicies(t *testing.T) {
 	t.Parallel()
 
-	template := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	target := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	igm := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	hck := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
+	template := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	target := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	igm := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	hck := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRegionInstanceGroupManagerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -349,13 +292,13 @@ func TestAccRegionInstanceGroupManager_autoHealingPolicies(t *testing.T) {
 func TestAccRegionInstanceGroupManager_distributionPolicy(t *testing.T) {
 	t.Parallel()
 
-	template := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	igm := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
+	template := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	igm := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
 	zones := []string{"us-central1-a", "us-central1-b"}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRegionInstanceGroupManagerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -376,13 +319,13 @@ func TestAccRegionInstanceGroupManager_stateful(t *testing.T) {
 	t.Skip()
 	t.Parallel()
 
-	template := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	igm := fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10))
-	network := fmt.Sprintf("tf-test-igm-%s", RandString(t, 10))
+	template := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	igm := fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10))
+	network := fmt.Sprintf("tf-test-igm-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckRegionInstanceGroupManagerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -418,7 +361,7 @@ func TestAccRegionInstanceGroupManager_stateful(t *testing.T) {
 
 func testAccCheckRegionInstanceGroupManagerDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_compute_region_instance_group_manager" {
 				continue

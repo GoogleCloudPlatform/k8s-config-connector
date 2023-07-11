@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 
 	resourceManagerV3 "google.golang.org/api/cloudresourcemanager/v3"
 )
@@ -16,15 +17,15 @@ import (
 func TestAccFolder_rename(t *testing.T) {
 	t.Parallel()
 
-	folderDisplayName := "tf-test-" + RandString(t, 10)
-	newFolderDisplayName := "tf-test-renamed-" + RandString(t, 10)
-	org := acctest.GetTestOrgFromEnv(t)
+	folderDisplayName := "tf-test-" + acctest.RandString(t, 10)
+	newFolderDisplayName := "tf-test-renamed-" + acctest.RandString(t, 10)
+	org := envvar.GetTestOrgFromEnv(t)
 	parent := "organizations/" + org
 	folder := resourceManagerV3.Folder{}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckGoogleFolderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -54,16 +55,16 @@ func TestAccFolder_rename(t *testing.T) {
 func TestAccFolder_moveParent(t *testing.T) {
 	t.Parallel()
 
-	folder1DisplayName := "tf-test-" + RandString(t, 10)
-	folder2DisplayName := "tf-test-" + RandString(t, 10)
-	org := acctest.GetTestOrgFromEnv(t)
+	folder1DisplayName := "tf-test-" + acctest.RandString(t, 10)
+	folder2DisplayName := "tf-test-" + acctest.RandString(t, 10)
+	org := envvar.GetTestOrgFromEnv(t)
 	parent := "organizations/" + org
 	folder1 := resourceManagerV3.Folder{}
 	folder2 := resourceManagerV3.Folder{}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckGoogleFolderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -90,7 +91,7 @@ func TestAccFolder_moveParent(t *testing.T) {
 
 func testAccCheckGoogleFolderDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_folder" {
@@ -118,7 +119,7 @@ func testAccCheckGoogleFolderExists(t *testing.T, n string, folder *resourceMana
 			return fmt.Errorf("No ID is set")
 		}
 
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		found, err := config.NewResourceManagerV3Client(config.UserAgent).Folders.Get(rs.Primary.ID).Do()
 		if err != nil {

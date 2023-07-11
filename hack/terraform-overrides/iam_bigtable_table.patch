@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/iam_bigtable_table.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/iam_bigtable_table.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/iam_bigtable_table.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/iam_bigtable_table.go
 index 7bbaa70eb..6ac97ba40 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/iam_bigtable_table.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/iam_bigtable_table.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/iam_bigtable_table.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/iam_bigtable_table.go
 @@ -13,7 +13,7 @@ import (
  )
  

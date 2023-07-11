@@ -23,20 +23,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccFirebaseHostingVersion_firebasehostingVersionRedirectExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseHostingVersion_firebasehostingVersionRedirectExample(context),
@@ -52,7 +52,7 @@ func TestAccFirebaseHostingVersion_firebasehostingVersionRedirectExample(t *test
 }
 
 func testAccFirebaseHostingVersion_firebasehostingVersionRedirectExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"
@@ -84,13 +84,13 @@ func TestAccFirebaseHostingVersion_firebasehostingVersionCloudRunExample(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseHostingVersion_firebasehostingVersionCloudRunExample(context),
@@ -106,7 +106,7 @@ func TestAccFirebaseHostingVersion_firebasehostingVersionCloudRunExample(t *test
 }
 
 func testAccFirebaseHostingVersion_firebasehostingVersionCloudRunExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"
@@ -156,14 +156,14 @@ func TestAccFirebaseHostingVersion_firebasehostingVersionCloudFunctionsExample(t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    acctest.GetTestProjectFromEnv(),
+		"project_id":    envvar.GetTestProjectFromEnv(),
 		"zip_path":      "./test-fixtures/cloudfunctions2/function-source.zip",
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseHostingVersion_firebasehostingVersionCloudFunctionsExample(context),
@@ -179,7 +179,7 @@ func TestAccFirebaseHostingVersion_firebasehostingVersionCloudFunctionsExample(t
 }
 
 func testAccFirebaseHostingVersion_firebasehostingVersionCloudFunctionsExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"

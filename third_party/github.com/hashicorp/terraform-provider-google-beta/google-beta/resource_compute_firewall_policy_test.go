@@ -5,6 +5,7 @@ package google
 import (
 	"fmt"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -13,13 +14,13 @@ import (
 func TestAccComputeFirewallPolicy_update(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	policyName := fmt.Sprintf("tf-test-firewall-policy-%s", RandString(t, 10))
-	folderName := fmt.Sprintf("tf-test-folder-%s", RandString(t, 10))
+	org := envvar.GetTestOrgFromEnv(t)
+	policyName := fmt.Sprintf("tf-test-firewall-policy-%s", acctest.RandString(t, 10))
+	folderName := fmt.Sprintf("tf-test-folder-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeFirewallDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

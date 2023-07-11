@@ -148,8 +148,9 @@ type ComputeRouterPeerSpec struct {
 	PeerAsn int `json:"peerAsn"`
 
 	/* IP address of the BGP interface outside Google Cloud Platform.
-	Only IPv4 is supported. */
-	PeerIpAddress string `json:"peerIpAddress"`
+	Only IPv4 is supported. Required if 'ip_address' is set. */
+	// +optional
+	PeerIpAddress *string `json:"peerIpAddress,omitempty"`
 
 	/* IPv6 address of the BGP interface outside Google Cloud Platform.
 	The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64.

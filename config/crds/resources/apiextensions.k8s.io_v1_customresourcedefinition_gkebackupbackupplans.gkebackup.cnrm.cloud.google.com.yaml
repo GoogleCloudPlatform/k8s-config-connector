@@ -270,6 +270,13 @@ spec:
                 description: The number of Kubernetes Pods backed up in the last successful
                   Backup created via this BackupPlan.
                 type: integer
+              state:
+                description: The State of the BackupPlan.
+                type: string
+              stateReason:
+                description: Detailed description of why BackupPlan is in its current
+                  state.
+                type: string
               uid:
                 description: Server generated, unique identifier of UUID format.
                 type: string

@@ -133,6 +133,7 @@ projectRef:
   name: string
   namespace: string
 resourceID: string
+storageBillingModel: string
 ```
 
 <table class="properties responsive">
@@ -613,6 +614,20 @@ Changing this forces a new resource to be created.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Optional. The datasetId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>storageBillingModel</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Specifies the storage billing model for the dataset.
+Set this flag value to LOGICAL to use logical bytes for storage billing,
+or to PHYSICAL to use physical bytes instead.
+
+LOGICAL is the default if this flag isn't specified.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

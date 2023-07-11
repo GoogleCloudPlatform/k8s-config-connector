@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -18,14 +19,14 @@ func TestAccDataprocWorkflowTemplate_basic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
-		"project":       acctest.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
 		"version":       "2.0.35-debian10",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             funcAccTestDataprocWorkflowTemplateCheckDestroy(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
@@ -47,14 +48,14 @@ func TestAccDataprocWorkflowTemplate_withShieldedVMs(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
-		"project":       acctest.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
 		"version":       "2.0.35-debian10",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             funcAccTestDataprocWorkflowTemplateCheckDestroy(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
@@ -73,7 +74,7 @@ func TestAccDataprocWorkflowTemplate_withShieldedVMs(t *testing.T) {
 }
 
 func testAccDataprocWorkflowTemplate_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataproc_workflow_template" "template" {
   name = "template%{random_suffix}"
   location = "us-central1"
@@ -129,7 +130,7 @@ resource "google_dataproc_workflow_template" "template" {
 }
 
 func testAccDataprocWorkflowTemplate_withShieldedVMs(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataproc_workflow_template" "shielded_vms_template" {
   name = "template%{random_suffix}"
   location = "us-central1"
@@ -199,7 +200,7 @@ func funcAccTestDataprocWorkflowTemplateCheckDestroy(t *testing.T) func(s *terra
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DataprocBasePath}}projects/{{project}}/locations/{{location}}/workflowTemplates/{{name}}")
 			if err != nil {

@@ -34,12 +34,12 @@ func TestAccGameServicesGameServerDeploymentRollout_gameServiceDeploymentRollout
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckGameServicesGameServerDeploymentRolloutDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccGameServicesGameServerDeploymentRollout_gameServiceDeploymentRollout
 }
 
 func testAccGameServicesGameServerDeploymentRollout_gameServiceDeploymentRolloutBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_game_services_game_server_deployment" "default" {
   deployment_id  = "tf-test-tf-test-deployment%{random_suffix}"
   description = "a deployment description"
@@ -93,7 +93,7 @@ func testAccCheckGameServicesGameServerDeploymentRolloutDestroyProducer(t *testi
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{GameServicesBasePath}}projects/{{project}}/locations/global/gameServerDeployments/{{deployment_id}}/rollout")
 			if err != nil {

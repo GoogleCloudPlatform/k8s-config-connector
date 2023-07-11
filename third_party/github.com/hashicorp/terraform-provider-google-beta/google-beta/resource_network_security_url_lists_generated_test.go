@@ -34,12 +34,12 @@ func TestAccNetworkSecurityUrlLists_networkSecurityUrlListsBasicExample(t *testi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityUrlListsDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,9 +56,8 @@ func TestAccNetworkSecurityUrlLists_networkSecurityUrlListsBasicExample(t *testi
 }
 
 func testAccNetworkSecurityUrlLists_networkSecurityUrlListsBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_security_url_lists" "default" {
-  provider    = google-beta
   name        = "tf-test-my-url-lists%{random_suffix}"
   location    = "us-central1"
   values = ["www.example.com"]
@@ -70,12 +69,12 @@ func TestAccNetworkSecurityUrlLists_networkSecurityUrlListsAdvancedExample(t *te
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityUrlListsDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -92,9 +91,8 @@ func TestAccNetworkSecurityUrlLists_networkSecurityUrlListsAdvancedExample(t *te
 }
 
 func testAccNetworkSecurityUrlLists_networkSecurityUrlListsAdvancedExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_security_url_lists" "default" {
-  provider    = google-beta
   name        = "tf-test-my-url-lists%{random_suffix}"
   location    = "us-central1"
   description = "my description"
@@ -113,7 +111,7 @@ func testAccCheckNetworkSecurityUrlListsDestroyProducer(t *testing.T) func(s *te
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NetworkSecurityBasePath}}projects/{{project}}/locations/{{location}}/urlLists/{{name}}")
 			if err != nil {

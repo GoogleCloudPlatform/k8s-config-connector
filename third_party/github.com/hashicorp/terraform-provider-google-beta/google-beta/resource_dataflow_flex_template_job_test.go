@@ -24,14 +24,14 @@ func TestAccDataflowFlexTemplateJob_basic(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := RandString(t, 10)
+	randStr := acctest.RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	bucket := "tf-test-dataflow-bucket-" + randStr
 	topic := "tf-test-topic" + randStr
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,15 +56,15 @@ func TestAccDataflowFlexTemplateJob_streamUpdate(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := RandString(t, 10)
+	randStr := acctest.RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	bucket := "tf-test-dataflow-bucket-" + randStr
 	topic := "tf-test-topic" + randStr
 	topic2 := "tf-test-topic-2" + randStr
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -95,14 +95,14 @@ func TestAccDataflowFlexTemplateJob_streamFailUpdate(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := RandString(t, 10)
+	randStr := acctest.RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	bucket := "tf-test-dataflow-bucket-" + randStr
 	topic := "tf-test-topic" + randStr
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -128,14 +128,14 @@ func TestAccDataflowFlexTemplateJob_FullUpdate(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := RandString(t, 10)
+	randStr := acctest.RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	bucket := "tf-test-dataflow-bucket-" + randStr
 	topic := "tf-test-topic" + randStr
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -163,19 +163,19 @@ func TestAccDataflowFlexTemplateJob_FullUpdate(t *testing.T) {
 func TestAccDataflowFlexTemplateJob_withNetwork(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := RandString(t, 10)
+	randStr := acctest.RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	network1 := "tf-test-dataflow-net" + randStr
 	network2 := "tf-test-dataflow-net2" + randStr
 	bucket := "tf-test-dataflow-bucket-" + randStr
 	topic := "tf-test-topic" + randStr
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -211,10 +211,10 @@ func TestAccDataflowFlexTemplateJob_withNetwork(t *testing.T) {
 func TestAccDataflowFlexTemplateJob_withSubNetwork(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := RandString(t, 10)
+	randStr := acctest.RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	network := "tf-test-dataflow-net" + randStr
 	subnetwork1 := "tf-test-dataflow-subnetwork" + randStr
@@ -222,9 +222,9 @@ func TestAccDataflowFlexTemplateJob_withSubNetwork(t *testing.T) {
 	bucket := "tf-test-dataflow-bucket-" + randStr
 	topic := "tf-test-topic" + randStr
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -260,19 +260,19 @@ func TestAccDataflowFlexTemplateJob_withSubNetwork(t *testing.T) {
 func TestAccDataflowFlexTemplateJob_withIpConfig(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := RandString(t, 10)
+	randStr := acctest.RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	bucket := "tf-test-dataflow-bucket-" + randStr
 	topic := "tf-test-topic" + randStr
 	network := "tf-test-dataflow-net" + randStr
 	subnetwork := "tf-test-dataflow-subnetwork" + randStr
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -294,19 +294,19 @@ func TestAccDataflowFlexTemplateJob_withIpConfig(t *testing.T) {
 func TestAccDataflowFlexTemplateJob_withKmsKey(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := RandString(t, 10)
+	randStr := acctest.RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	key_ring := "tf-test-dataflow-kms-ring-" + randStr
 	crypto_key := "tf-test-dataflow-kms-key-" + randStr
 	bucket := "tf-test-dataflow-bucket-" + randStr
 	topic := "tf-test-topic" + randStr
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -328,18 +328,18 @@ func TestAccDataflowFlexTemplateJob_withKmsKey(t *testing.T) {
 func TestAccDataflowFlexTemplateJob_withAdditionalExperiments(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := RandString(t, 10)
+	randStr := acctest.RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	additionalExperiments := []string{"enable_stackdriver_agent_metrics", "use_runner_v2"}
 	bucket := "tf-test-dataflow-bucket-" + randStr
 	topic := "tf-test-topic" + randStr
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -403,7 +403,7 @@ func testAccDataflowFlexTemplateJobHasAdditionalExperiments(t *testing.T, res st
 		if rs.Primary.ID == "" {
 			return fmt.Errorf("No ID is set")
 		}
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		job, err := config.NewDataflowClient(config.UserAgent).Projects.Jobs.Get(config.Project, rs.Primary.ID).View("JOB_VIEW_ALL").Do()
 		if err != nil {
@@ -436,7 +436,7 @@ func testAccDataflowFlexTemplateGetGeneratedInstanceTemplate(t *testing.T, s *te
 	}
 	filter := fmt.Sprintf("properties.labels.dataflow_job_id = %s", rs.Primary.ID)
 
-	config := GoogleProviderConfig(t)
+	config := acctest.GoogleProviderConfig(t)
 
 	var instanceTemplate *compute.InstanceTemplate
 
@@ -1198,7 +1198,7 @@ func testAccDataflowFlexJobHasOption(t *testing.T, res, option, expectedValue st
 		if rs.Primary.ID == "" {
 			return fmt.Errorf("No ID is set")
 		}
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		job, err := config.NewDataflowClient(config.UserAgent).Projects.Jobs.Get(config.Project, rs.Primary.ID).View("JOB_VIEW_ALL").Do()
 		if err != nil {
@@ -1232,7 +1232,7 @@ func testAccDataflowFlexJobExists(t *testing.T, resource string, wait bool) reso
 			return fmt.Errorf("no ID is set")
 		}
 
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		_, err := config.NewDataflowClient(config.UserAgent).Projects.Locations.Jobs.Get(config.Project, config.Region, rs.Primary.ID).Do()
 		if err != nil {
 			return fmt.Errorf("could not confirm Dataflow Job %q exists: %v", rs.Primary.ID, err)

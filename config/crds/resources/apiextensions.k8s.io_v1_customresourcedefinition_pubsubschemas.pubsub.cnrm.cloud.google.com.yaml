@@ -60,7 +60,7 @@ spec:
             properties:
               definition:
                 description: |-
-                  Immutable. The definition of the schema.
+                  The definition of the schema.
                   This should contain a string representing the full definition of the schema
                   that is a valid schema definition of the type specified in type.
                 type: string
@@ -97,9 +97,8 @@ spec:
                   is used as the default.
                 type: string
               type:
-                description: 'Immutable. The type of the schema definition Default
-                  value: "TYPE_UNSPECIFIED" Possible values: ["TYPE_UNSPECIFIED",
-                  "PROTOCOL_BUFFER", "AVRO"].'
+                description: 'The type of the schema definition Default value: "TYPE_UNSPECIFIED"
+                  Possible values: ["TYPE_UNSPECIFIED", "PROTOCOL_BUFFER", "AVRO"].'
                 type: string
             required:
             - projectRef

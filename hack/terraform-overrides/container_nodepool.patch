@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/resource_container_node_pool.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/resource_container_node_pool.go
 index 441a99237..0094511d2 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/resource_container_node_pool.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/resource_container_node_pool.go
 @@ -131,7 +131,7 @@ var schemaNodePool = map[string]*schema.Schema{
  		Type:        schema.TypeList,
  		Optional:    true,

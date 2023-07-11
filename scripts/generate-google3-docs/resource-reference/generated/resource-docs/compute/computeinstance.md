@@ -135,6 +135,7 @@ bootDisk:
   diskEncryptionKeySha256: string
   initializeParams:
     labels: {}
+    resourceManagerTags: {}
     size: integer
     sourceImageRef:
       external: string
@@ -209,6 +210,8 @@ networkInterface:
     namespace: string
 networkPerformanceConfig:
   totalEgressBandwidthTier: string
+params:
+  resourceManagerTags: {}
 reservationAffinity:
   specificReservation:
     key: string
@@ -607,6 +610,16 @@ zone: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. A set of key/value label pairs assigned to the disk.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bootDisk.initializeParams.resourceManagerTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. A map of resource manager tags. Resource manager tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored (both PUT & PATCH) when empty.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1407,6 +1420,26 @@ zone: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The egress bandwidth tier to enable. Possible values:TIER_1, DEFAULT.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>params</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Stores additional params passed with the request, but not persisted as part of resource payload.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>params.resourceManagerTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. A map of resource manager tags. Resource manager tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored (both PUT & PATCH) when empty.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

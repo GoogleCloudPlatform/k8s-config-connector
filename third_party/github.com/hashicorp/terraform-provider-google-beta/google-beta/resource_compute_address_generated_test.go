@@ -34,12 +34,12 @@ func TestAccComputeAddress_addressBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccComputeAddress_addressBasicExample(t *testing.T) {
 }
 
 func testAccComputeAddress_addressBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_address" "ip_address" {
   name = "tf-test-my-address%{random_suffix}"
 }
@@ -67,12 +67,12 @@ func TestAccComputeAddress_addressWithSubnetworkExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -89,7 +89,7 @@ func TestAccComputeAddress_addressWithSubnetworkExample(t *testing.T) {
 }
 
 func testAccComputeAddress_addressWithSubnetworkExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   name = "tf-test-my-network%{random_suffix}"
 }
@@ -115,12 +115,12 @@ func TestAccComputeAddress_addressWithGceEndpointExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -137,7 +137,7 @@ func TestAccComputeAddress_addressWithGceEndpointExample(t *testing.T) {
 }
 
 func testAccComputeAddress_addressWithGceEndpointExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_address" "internal_with_gce_endpoint" {
   name         = "tf-test-my-internal-address-%{random_suffix}"
   address_type = "INTERNAL"
@@ -150,12 +150,12 @@ func TestAccComputeAddress_addressWithSharedLoadbalancerVipExample(t *testing.T)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -172,7 +172,7 @@ func TestAccComputeAddress_addressWithSharedLoadbalancerVipExample(t *testing.T)
 }
 
 func testAccComputeAddress_addressWithSharedLoadbalancerVipExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_address" "internal_with_shared_loadbalancer_vip" {
   name         = "tf-test-my-internal-address%{random_suffix}"
   address_type = "INTERNAL"
@@ -185,12 +185,12 @@ func TestAccComputeAddress_instanceWithIpExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -207,7 +207,7 @@ func TestAccComputeAddress_instanceWithIpExample(t *testing.T) {
 }
 
 func testAccComputeAddress_instanceWithIpExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_address" "static" {
   name = "tf-test-ipv4-address%{random_suffix}"
 }
@@ -242,12 +242,12 @@ func TestAccComputeAddress_computeAddressIpsecInterconnectExample(t *testing.T) 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -264,7 +264,7 @@ func TestAccComputeAddress_computeAddressIpsecInterconnectExample(t *testing.T) 
 }
 
 func testAccComputeAddress_computeAddressIpsecInterconnectExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_address" "ipsec-interconnect-address" {
   name          = "tf-test-test-address%{random_suffix}"
   address_type  = "INTERNAL"
@@ -291,7 +291,7 @@ func testAccCheckComputeAddressDestroyProducer(t *testing.T) func(s *terraform.S
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/addresses/{{name}}")
 			if err != nil {

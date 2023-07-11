@@ -3,29 +3,22 @@
 package google
 
 import (
-	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
-	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccGkeonpremVmwareCluster_vmwareClusterUpdateBasic(t *testing.T) {
-	// TODO: https://github.com/hashicorp/terraform-provider-google/issues/14417
-	t.Skip()
-
 	t.Parallel()
 
-	context := map[string]interface{}{}
+	context := map[string]interface{}{
+		"random_suffix": acctest.RandString(t, 10),
+	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGkeonpremVmwareClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,16 +42,15 @@ func TestAccGkeonpremVmwareCluster_vmwareClusterUpdateBasic(t *testing.T) {
 }
 
 func TestAccGkeonpremVmwareCluster_vmwareClusterUpdateF5Lb(t *testing.T) {
-	// TODO: https://github.com/hashicorp/terraform-provider-google/issues/14417
-	t.Skip()
-
 	t.Parallel()
 
-	context := map[string]interface{}{}
+	context := map[string]interface{}{
+		"random_suffix": acctest.RandString(t, 10),
+	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGkeonpremVmwareClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -82,18 +74,17 @@ func TestAccGkeonpremVmwareCluster_vmwareClusterUpdateF5Lb(t *testing.T) {
 }
 
 func TestAccGkeonpremVmwareCluster_vmwareClusterUpdateManualLb(t *testing.T) {
-	// TODO: https://github.com/hashicorp/terraform-provider-google/issues/14417
-	t.Skip()
-
 	// VCR fails to handle batched project services
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	context := map[string]interface{}{}
+	context := map[string]interface{}{
+		"random_suffix": acctest.RandString(t, 10),
+	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGkeonpremVmwareClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -117,10 +108,12 @@ func TestAccGkeonpremVmwareCluster_vmwareClusterUpdateManualLb(t *testing.T) {
 }
 
 func testAccGkeonpremVmwareCluster_vmwareClusterUpdateMetalLbStart(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_vmware_cluster" "cluster" {
-    name = "cluster"
+    provider = google-beta
+
+    name = "tf-test-cluster-%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     description = "test cluster"
@@ -158,18 +151,17 @@ func testAccGkeonpremVmwareCluster_vmwareClusterUpdateMetalLbStart(context map[s
         }
       }
     }
-  
-    provider = google-beta
-    
   }
 `, context)
 }
 
 func testAccGkeonpremVmwareCluster_vmwareClusterUpdateMetalLb(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_vmware_cluster" "cluster" {
-    name = "cluster"
+    provider = google-beta
+
+    name = "tf-test-cluster-%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     description = "test cluster updated"
@@ -207,18 +199,17 @@ func testAccGkeonpremVmwareCluster_vmwareClusterUpdateMetalLb(context map[string
         }
       }
     }
-  
-    provider = google-beta
-    
   }
 `, context)
 }
 
 func testAccGkeonpremVmwareCluster_vmwareClusterUpdateF5LbStart(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_vmware_cluster" "cluster" {
-    name = "cluster"
+    provider = google-beta
+
+    name = "tf-test-cluster-%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     description = "test cluster"
@@ -257,18 +248,17 @@ func testAccGkeonpremVmwareCluster_vmwareClusterUpdateF5LbStart(context map[stri
         snat_pool = "test-snap-pool"
       }
     }
-  
-    provider = google-beta
-    
   }
 `, context)
 }
 
 func testAccGkeonpremVmwareCluster_vmwareClusterUpdateF5lb(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_vmware_cluster" "cluster" {
-    name = "cluster"
+    provider = google-beta
+
+    name = "tf-test-cluster-%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     description = "test cluster"
@@ -307,18 +297,17 @@ func testAccGkeonpremVmwareCluster_vmwareClusterUpdateF5lb(context map[string]in
         snat_pool = "test-snap-pool-updated"
       }
     }
-  
-    provider = google-beta
-    
   }
 `, context)
 }
 
 func testAccGkeonpremVmwareCluster_vmwareClusterUpdateManualLbStart(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_vmware_cluster" "cluster" {
-    name = "cluster"
+    provider = google-beta
+
+    name = "tf-test-cluster-%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     description = "test cluster"
@@ -390,18 +379,17 @@ func testAccGkeonpremVmwareCluster_vmwareClusterUpdateManualLbStart(context map[
     auto_repair_config {
       enabled = true
     }
-  
-    provider = google-beta
-    
   }
 `, context)
 }
 
 func testAccGkeonpremVmwareCluster_vmwareClusterUpdateManualLb(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_vmware_cluster" "cluster" {
-    name = "cluster"
+    provider = google-beta
+
+    name = "tf-test-cluster-%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     description = "test cluster"
@@ -473,48 +461,6 @@ func testAccGkeonpremVmwareCluster_vmwareClusterUpdateManualLb(context map[strin
     auto_repair_config {
       enabled = true
     }
-  
-    provider = google-beta
-    
   }
 `, context)
-}
-
-func testAccCheckGkeonpremVmwareClusterDestroyProducer(t *testing.T) func(s *terraform.State) error {
-	return func(s *terraform.State) error {
-		for name, rs := range s.RootModule().Resources {
-			if rs.Type != "google_gkeonprem_vmware_cluster" {
-				continue
-			}
-			if strings.HasPrefix(name, "data.") {
-				continue
-			}
-
-			config := GoogleProviderConfig(t)
-
-			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{GkeonpremBasePath}}projects/{{project}}/locations/{{location}}/vmwareClusters/{{name}}")
-			if err != nil {
-				return err
-			}
-
-			billingProject := ""
-
-			if config.BillingProject != "" {
-				billingProject = config.BillingProject
-			}
-
-			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
-				Config:    config,
-				Method:    "GET",
-				Project:   billingProject,
-				RawURL:    url,
-				UserAgent: config.UserAgent,
-			})
-			if err == nil {
-				return fmt.Errorf("GkeonpremVmwareCluster still exists at %s", url)
-			}
-		}
-
-		return nil
-	}
 }

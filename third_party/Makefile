@@ -23,7 +23,7 @@ all: clone-terraform-google-provider-beta apply-patches
 clone-terraform-google-provider-beta:
 	rm -rf github.com/hashicorp/terraform-provider-google-beta
 	mkdir -p github.com/hashicorp
-	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta --branch v4.69.1 --depth 1
+	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta --branch v4.75.1 --depth 1
 	rm -rf github.com/hashicorp/terraform-provider-google-beta/.git
 
 .PHONY: apply-patches
@@ -272,5 +272,7 @@ apply-patches:
 	# Avoid breaking change from TF with MaxItem = 1, which will update type from array to object in CRD
 	# See b/283317413 for context
 	git apply ../hack/terraform-overrides/compute_forwarding_rule.patch
-	# Pick up the fix for the missing field in VPC Access Connector.
-	git apply ../hack/terraform-overrides/vpc_connected_projects.patch
+	# Fix the incorrect `Computed: true` schema for the immutable, unreadable,
+	# and non-computed `params` field in the
+	# `google_compute_instance_from_template` resource.
+	git apply ../hack/terraform-overrides/compute_instance_from_template_params_field.patch

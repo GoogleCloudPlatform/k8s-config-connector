@@ -34,12 +34,12 @@ func TestAccNetworkServicesTcpRoute_networkServicesTcpRouteBasicExample(t *testi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesTcpRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccNetworkServicesTcpRoute_networkServicesTcpRouteBasicExample(t *testi
 }
 
 func testAccNetworkServicesTcpRoute_networkServicesTcpRouteBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_service" "default" {
   provider               = google-beta
   name          = "tf-test-my-backend-service%{random_suffix}"
@@ -99,12 +99,12 @@ func TestAccNetworkServicesTcpRoute_networkServicesTcpRouteActionsExample(t *tes
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesTcpRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -121,7 +121,7 @@ func TestAccNetworkServicesTcpRoute_networkServicesTcpRouteActionsExample(t *tes
 }
 
 func testAccNetworkServicesTcpRoute_networkServicesTcpRouteActionsExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_service" "default" {
   provider               = google-beta
   name          = "tf-test-my-backend-service%{random_suffix}"
@@ -160,12 +160,12 @@ func TestAccNetworkServicesTcpRoute_networkServicesTcpRouteMeshBasicExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesTcpRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -182,7 +182,7 @@ func TestAccNetworkServicesTcpRoute_networkServicesTcpRouteMeshBasicExample(t *t
 }
 
 func testAccNetworkServicesTcpRoute_networkServicesTcpRouteMeshBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_service" "default" {
   provider               = google-beta
   name          = "tf-test-my-backend-service%{random_suffix}"
@@ -238,12 +238,12 @@ func TestAccNetworkServicesTcpRoute_networkServicesTcpRouteGatewayBasicExample(t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesTcpRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -260,7 +260,7 @@ func TestAccNetworkServicesTcpRoute_networkServicesTcpRouteGatewayBasicExample(t
 }
 
 func testAccNetworkServicesTcpRoute_networkServicesTcpRouteGatewayBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_service" "default" {
   provider               = google-beta
   name          = "tf-test-my-backend-service%{random_suffix}"
@@ -325,7 +325,7 @@ func testAccCheckNetworkServicesTcpRouteDestroyProducer(t *testing.T) func(s *te
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/tcpRoutes/{{name}}")
 			if err != nil {

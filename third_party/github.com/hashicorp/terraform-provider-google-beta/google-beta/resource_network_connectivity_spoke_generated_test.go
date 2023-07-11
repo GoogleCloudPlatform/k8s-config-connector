@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -36,9 +37,9 @@ func TestAccNetworkConnectivitySpoke_RouterApplianceHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
-		"region":        acctest.GetTestRegionFromEnv(),
-		"zone":          acctest.GetTestZoneFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
+		"zone":          envvar.GetTestZoneFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -68,7 +69,7 @@ func TestAccNetworkConnectivitySpoke_RouterApplianceHandWritten(t *testing.T) {
 }
 
 func testAccNetworkConnectivitySpoke_RouterApplianceHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
 resource "google_compute_network" "network" {
   name                    = "tf-test-network%{random_suffix}"
@@ -131,7 +132,7 @@ resource "google_network_connectivity_spoke" "primary" {
 }
 
 func testAccNetworkConnectivitySpoke_RouterApplianceHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
 resource "google_compute_network" "network" {
   name                    = "tf-test-network%{random_suffix}"

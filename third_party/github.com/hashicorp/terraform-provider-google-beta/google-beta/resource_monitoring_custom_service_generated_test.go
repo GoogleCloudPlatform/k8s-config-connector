@@ -34,12 +34,12 @@ func TestAccMonitoringService_monitoringServiceCustomExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckMonitoringServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -55,7 +55,7 @@ func TestAccMonitoringService_monitoringServiceCustomExample(t *testing.T) {
 }
 
 func testAccMonitoringService_monitoringServiceCustomExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_monitoring_custom_service" "custom" {
   service_id = "tf-test-custom-srv%{random_suffix}"
   display_name = "My Custom Service tf-test-custom-srv%{random_suffix}"
@@ -82,7 +82,7 @@ func testAccCheckMonitoringServiceDestroyProducer(t *testing.T) func(s *terrafor
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{MonitoringBasePath}}v3/{{name}}")
 			if err != nil {

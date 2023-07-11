@@ -13,11 +13,11 @@ import (
 func TestAccNetworkServicesGateway_update(t *testing.T) {
 	t.Parallel()
 
-	gatewayName := fmt.Sprintf("tf-test-gateway-%s", RandString(t, 10))
+	gatewayName := fmt.Sprintf("tf-test-gateway-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesGatewayDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -69,22 +69,22 @@ resource "google_network_services_gateway" "foobar" {
 
 // TODO(#14600): Enable the test once the api allows to update the fields for secure web gateway type.
 //func TestAccNetworkServicesGateway_updateSwp(t *testing.T) {
-//cmName := fmt.Sprintf("tf-test-gateway-swp-cm-%s", RandString(t, 10))
-//	netName := fmt.Sprintf("tf-test-gateway-swp-net-%s", RandString(t, 10))
-//	subnetName := fmt.Sprintf("tf-test-gateway-swp-subnet-%s", RandString(t, 10))
-//	pSubnetName := fmt.Sprintf("tf-test-gateway-swp-proxyonly-%s", RandString(t, 10))
-//	policyName := fmt.Sprintf("tf-test-gateway-swp-policy-%s", RandString(t, 10))
-//	ruleName := fmt.Sprintf("tf-test-gateway-swp-rule-%s", RandString(t, 10))
-//  gatewayScope := fmt.Sprintf("tf-test-gateway-swp-scope-%s", RandString(t, 10))
-//	gatewayName := fmt.Sprintf("tf-test-gateway-swp-%s", RandString(t, 10))
+//cmName := fmt.Sprintf("tf-test-gateway-swp-cm-%s", acctest.RandString(t, 10))
+//	netName := fmt.Sprintf("tf-test-gateway-swp-net-%s", acctest.RandString(t, 10))
+//	subnetName := fmt.Sprintf("tf-test-gateway-swp-subnet-%s", acctest.RandString(t, 10))
+//	pSubnetName := fmt.Sprintf("tf-test-gateway-swp-proxyonly-%s", acctest.RandString(t, 10))
+//	policyName := fmt.Sprintf("tf-test-gateway-swp-policy-%s", acctest.RandString(t, 10))
+//	ruleName := fmt.Sprintf("tf-test-gateway-swp-rule-%s", acctest.RandString(t, 10))
+//  gatewayScope := fmt.Sprintf("tf-test-gateway-swp-scope-%s", acctest.RandString(t, 10))
+//	gatewayName := fmt.Sprintf("tf-test-gateway-swp-%s", acctest.RandString(t, 10))
 //	// updates
-//	newCmName := fmt.Sprintf("tf-test-gateway-swp-newcm-%s", RandString(t, 10))
-//	newPolicyName := fmt.Sprintf("tf-test-gateway-swp-newpolicy-%s", RandString(t, 10))
-//	newRuleName := fmt.Sprintf("tf-test-gateway-swp-newrule-%s", RandString(t, 10))
+//	newCmName := fmt.Sprintf("tf-test-gateway-swp-newcm-%s", acctest.RandString(t, 10))
+//	newPolicyName := fmt.Sprintf("tf-test-gateway-swp-newpolicy-%s", acctest.RandString(t, 10))
+//	newRuleName := fmt.Sprintf("tf-test-gateway-swp-newrule-%s", acctest.RandString(t, 10))
 //
-//	VcrTest(t, resource.TestCase{
+//	acctest.VcrTest(t, resource.TestCase{
 //		PreCheck:     func() { acctest.AccTestPreCheck(t) },
-//		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+//		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 //		CheckDestroy: testAccCheckNetworkServicesGatewayDestroyProducer(t),
 //		Steps: []resource.TestStep{
 //			{
@@ -275,21 +275,21 @@ resource "google_network_services_gateway" "foobar" {
 //}
 
 func TestAccNetworkServicesGateway_multipleSwpGatewaysDifferentSubnetwork(t *testing.T) {
-	cmName := fmt.Sprintf("tf-test-gateway-multiswp-cm-%s", RandString(t, 10))
-	netName := fmt.Sprintf("tf-test-gateway-multiswp-net-%s", RandString(t, 10))
-	subnetName := fmt.Sprintf("tf-test-gateway-multiswp-subnet-%s", RandString(t, 10))
-	pSubnetName := fmt.Sprintf("tf-test-gateway-multiswp-proxyonly-%s", RandString(t, 10))
-	policyName := fmt.Sprintf("tf-test-gateway-multiswp-policy-%s", RandString(t, 10))
-	ruleName := fmt.Sprintf("tf-test-gateway-multiswp-rule-%s", RandString(t, 10))
-	gatewayScope := fmt.Sprintf("tf-test-gateway-multiswp-scope-%s", RandString(t, 10))
-	gatewayName := fmt.Sprintf("tf-test-gateway-multiswp-%s", RandString(t, 10))
-	subnet2Name := fmt.Sprintf("tf-test-gateway-multiswp-subnet2-%s", RandString(t, 10))
-	gateway2Name := fmt.Sprintf("tf-test-gateway-multiswp2-%s", RandString(t, 10))
-	gateway2Scope := fmt.Sprintf("tf-test-gateway-multiswp-scope2-%s", RandString(t, 10))
+	cmName := fmt.Sprintf("tf-test-gateway-multiswp-cm-%s", acctest.RandString(t, 10))
+	netName := fmt.Sprintf("tf-test-gateway-multiswp-net-%s", acctest.RandString(t, 10))
+	subnetName := fmt.Sprintf("tf-test-gateway-multiswp-subnet-%s", acctest.RandString(t, 10))
+	pSubnetName := fmt.Sprintf("tf-test-gateway-multiswp-proxyonly-%s", acctest.RandString(t, 10))
+	policyName := fmt.Sprintf("tf-test-gateway-multiswp-policy-%s", acctest.RandString(t, 10))
+	ruleName := fmt.Sprintf("tf-test-gateway-multiswp-rule-%s", acctest.RandString(t, 10))
+	gatewayScope := fmt.Sprintf("tf-test-gateway-multiswp-scope-%s", acctest.RandString(t, 10))
+	gatewayName := fmt.Sprintf("tf-test-gateway-multiswp-%s", acctest.RandString(t, 10))
+	subnet2Name := fmt.Sprintf("tf-test-gateway-multiswp-subnet2-%s", acctest.RandString(t, 10))
+	gateway2Name := fmt.Sprintf("tf-test-gateway-multiswp2-%s", acctest.RandString(t, 10))
+	gateway2Scope := fmt.Sprintf("tf-test-gateway-multiswp-scope2-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesGatewayDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -489,23 +489,23 @@ resource "google_compute_subnetwork" "subnet2" {
 }
 
 func TestAccNetworkServicesGateway_multipleSwpGatewaysDifferentNetwork(t *testing.T) {
-	cmName := fmt.Sprintf("tf-test-gateway-diffswp-cm-%s", RandString(t, 10))
-	netName := fmt.Sprintf("tf-test-gateway-diffswp-net-%s", RandString(t, 10))
-	subnetName := fmt.Sprintf("tf-test-gateway-diffswp-subnet-%s", RandString(t, 10))
-	pSubnetName := fmt.Sprintf("tf-test-gateway-diffswp-proxyonly-%s", RandString(t, 10))
-	policyName := fmt.Sprintf("tf-test-gateway-diffswp-policy-%s", RandString(t, 10))
-	ruleName := fmt.Sprintf("tf-test-gateway-diffswp-rule-%s", RandString(t, 10))
-	gatewayName := fmt.Sprintf("tf-test-gateway-diffswp-%s", RandString(t, 10))
-	gatewayScope := fmt.Sprintf("tf-test-gateway-diffswp-scope-%s", RandString(t, 10))
-	net2Name := fmt.Sprintf("tf-test-gateway-diffswp-net2-%s", RandString(t, 10))
-	subnet2Name := fmt.Sprintf("tf-test-gateway-diffswp-subnet2-%s", RandString(t, 10))
-	pSubnet2Name := fmt.Sprintf("tf-test-gateway-diffswp-proxyonly2-%s", RandString(t, 10))
-	gateway2Name := fmt.Sprintf("tf-test-gateway-diffswp2-%s", RandString(t, 10))
-	gateway2Scope := fmt.Sprintf("tf-test-gateway-diffswp-scope2-%s", RandString(t, 10))
+	cmName := fmt.Sprintf("tf-test-gateway-diffswp-cm-%s", acctest.RandString(t, 10))
+	netName := fmt.Sprintf("tf-test-gateway-diffswp-net-%s", acctest.RandString(t, 10))
+	subnetName := fmt.Sprintf("tf-test-gateway-diffswp-subnet-%s", acctest.RandString(t, 10))
+	pSubnetName := fmt.Sprintf("tf-test-gateway-diffswp-proxyonly-%s", acctest.RandString(t, 10))
+	policyName := fmt.Sprintf("tf-test-gateway-diffswp-policy-%s", acctest.RandString(t, 10))
+	ruleName := fmt.Sprintf("tf-test-gateway-diffswp-rule-%s", acctest.RandString(t, 10))
+	gatewayName := fmt.Sprintf("tf-test-gateway-diffswp-%s", acctest.RandString(t, 10))
+	gatewayScope := fmt.Sprintf("tf-test-gateway-diffswp-scope-%s", acctest.RandString(t, 10))
+	net2Name := fmt.Sprintf("tf-test-gateway-diffswp-net2-%s", acctest.RandString(t, 10))
+	subnet2Name := fmt.Sprintf("tf-test-gateway-diffswp-subnet2-%s", acctest.RandString(t, 10))
+	pSubnet2Name := fmt.Sprintf("tf-test-gateway-diffswp-proxyonly2-%s", acctest.RandString(t, 10))
+	gateway2Name := fmt.Sprintf("tf-test-gateway-diffswp2-%s", acctest.RandString(t, 10))
+	gateway2Scope := fmt.Sprintf("tf-test-gateway-diffswp-scope2-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesGatewayDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 
 	dcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -22,14 +23,14 @@ func TestAccEventarcGoogleChannelConfig_basic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
-		"region":        acctest.GetTestRegionFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckEventarcGoogleChannelConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -47,22 +48,22 @@ func TestAccEventarcGoogleChannelConfig_basic(t *testing.T) {
 func TestAccEventarcGoogleChannelConfig_cryptoKeyUpdate(t *testing.T) {
 	t.Parallel()
 
-	region := acctest.GetTestRegionFromEnv()
-	key1 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-google-channel-config-key1")
-	key2 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-google-channel-config-key2")
+	region := envvar.GetTestRegionFromEnv()
+	key1 := acctest.BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-google-channel-config-key1")
+	key2 := acctest.BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-google-channel-config-key2")
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
-		"region":        acctest.GetTestRegionFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 		"key_ring":      tpgresource.GetResourceNameFromSelfLink(key1.KeyRing.Name),
 		"key1":          tpgresource.GetResourceNameFromSelfLink(key1.CryptoKey.Name),
 		"key2":          tpgresource.GetResourceNameFromSelfLink(key2.CryptoKey.Name),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckEventarcGoogleChannelConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -89,7 +90,7 @@ func TestAccEventarcGoogleChannelConfig_cryptoKeyUpdate(t *testing.T) {
 }
 
 func testAccEventarcGoogleChannelConfig_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_eventarc_google_channel_config" "primary" {
 	location = "%{region}"
 	name     = "projects/%{project_name}/locations/%{region}/googleChannelConfig"
@@ -98,7 +99,7 @@ resource "google_eventarc_google_channel_config" "primary" {
 }
 
 func testAccEventarcGoogleChannelConfig_setCryptoKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "test_project" {
 	project_id  = "%{project_name}"
 }
@@ -130,7 +131,7 @@ resource "google_eventarc_google_channel_config" "primary" {
 }
 
 func testAccEventarcGoogleChannelConfig_cryptoKeyUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "test_project" {
 	project_id  = "%{project_name}"
 }
@@ -162,7 +163,7 @@ resource "google_eventarc_google_channel_config" "primary" {
 }
 
 func testAccEventarcGoogleChannelConfig_deleteCryptoKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_eventarc_google_channel_config" "primary" {
 	location = "%{region}"
 	name     = "projects/%{project_name}/locations/%{region}/googleChannelConfig"
@@ -181,7 +182,7 @@ func testAccCheckEventarcGoogleChannelConfigDestroyProducer(t *testing.T) func(s
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {

@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -36,7 +37,7 @@ func TestAccFirebaserulesRuleset_BasicRuleset(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -60,7 +61,7 @@ func TestAccFirebaserulesRuleset_MinimalRuleset(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -82,7 +83,7 @@ func TestAccFirebaserulesRuleset_MinimalRuleset(t *testing.T) {
 }
 
 func testAccFirebaserulesRuleset_BasicRuleset(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebaserules_ruleset" "primary" {
   source {
     files {
@@ -102,7 +103,7 @@ resource "google_firebaserules_ruleset" "primary" {
 }
 
 func testAccFirebaserulesRuleset_MinimalRuleset(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebaserules_ruleset" "primary" {
   source {
     files {

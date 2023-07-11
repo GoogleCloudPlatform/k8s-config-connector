@@ -118,6 +118,7 @@ networkRef:
   name: string
   namespace: string
 networkTier: string
+noAutomateDnsZone: boolean
 portRange: string
 ports:
 - string
@@ -572,6 +573,16 @@ For regional ForwardingRule, the valid values are 'PREMIUM' and
 If this field is not specified, it is assumed to be 'PREMIUM'.
 If 'IPAddress' is specified, this value must be equal to the
 networkTier of the Address. Possible values: ["PREMIUM", "STANDARD"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>noAutomateDnsZone</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. This is used in PSC consumer ForwardingRule to control whether it should try to auto-generate a DNS zone or not. Non-PSC forwarding rules do not use this field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -34,12 +34,12 @@ func TestAccComputeServiceAttachment_serviceAttachmentBasicExample(t *testing.T)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeServiceAttachmentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccComputeServiceAttachment_serviceAttachmentBasicExample(t *testing.T)
 }
 
 func testAccComputeServiceAttachment_serviceAttachmentBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_service_attachment" "psc_ilb_service_attachment" {
   name        = "tf-test-my-psc-ilb%{random_suffix}"
   region      = "us-west2"
@@ -143,12 +143,12 @@ func TestAccComputeServiceAttachment_serviceAttachmentExplicitProjectsExample(t 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeServiceAttachmentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -165,7 +165,7 @@ func TestAccComputeServiceAttachment_serviceAttachmentExplicitProjectsExample(t 
 }
 
 func testAccComputeServiceAttachment_serviceAttachmentExplicitProjectsExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_service_attachment" "psc_ilb_service_attachment" {
   name        = "tf-test-my-psc-ilb%{random_suffix}"
   region      = "us-west2"
@@ -265,7 +265,7 @@ func testAccCheckComputeServiceAttachmentDestroyProducer(t *testing.T) func(s *t
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}")
 			if err != nil {

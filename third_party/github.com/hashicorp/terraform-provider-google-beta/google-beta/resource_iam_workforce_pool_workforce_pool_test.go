@@ -5,6 +5,7 @@ package google
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"testing"
 )
 
@@ -12,13 +13,13 @@ func TestAccIAMWorkforcePoolWorkforcePool_full(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMWorkforcePoolWorkforcePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -45,13 +46,13 @@ func TestAccIAMWorkforcePoolWorkforcePool_minimal(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMWorkforcePoolWorkforcePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -75,7 +76,7 @@ func TestAccIAMWorkforcePoolWorkforcePool_minimal(t *testing.T) {
 }
 
 func testAccIAMWorkforcePoolWorkforcePool_full(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "my_pool" {
   workforce_pool_id = "my-pool-%{random_suffix}"
   parent            = "organizations/%{org_id}"
@@ -89,7 +90,7 @@ resource "google_iam_workforce_pool" "my_pool" {
 }
 
 func testAccIAMWorkforcePoolWorkforcePool_minimal(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "my_pool" {
   workforce_pool_id = "my-pool-%{random_suffix}"
   parent            = "organizations/%{org_id}"
@@ -99,7 +100,7 @@ resource "google_iam_workforce_pool" "my_pool" {
 }
 
 func testAccIAMWorkforcePoolWorkforcePool_update(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "my_pool" {
   workforce_pool_id = "my-pool-%{random_suffix}"
   parent            = "organizations/%{org_id}"

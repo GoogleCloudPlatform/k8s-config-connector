@@ -36,12 +36,12 @@ func TestAccComputeAutoscaler_autoscalerSingleInstanceExample(t *testing.T) {
 	context := map[string]interface{}{
 		"provider_name":  "google-beta.us-central1",
 		"provider_alias": "alias  = \"us-central1\"",
-		"random_suffix":  RandString(t, 10),
+		"random_suffix":  acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeAutoscalerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -58,7 +58,7 @@ func TestAccComputeAutoscaler_autoscalerSingleInstanceExample(t *testing.T) {
 }
 
 func testAccComputeAutoscaler_autoscalerSingleInstanceExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_autoscaler" "default" {
   provider = %{provider_name}
 
@@ -145,12 +145,12 @@ func TestAccComputeAutoscaler_autoscalerBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeAutoscalerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -167,7 +167,7 @@ func TestAccComputeAutoscaler_autoscalerBasicExample(t *testing.T) {
 }
 
 func testAccComputeAutoscaler_autoscalerBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_autoscaler" "foobar" {
   name   = "tf-test-my-autoscaler%{random_suffix}"
   zone   = "us-central1-f"
@@ -242,7 +242,7 @@ func testAccCheckComputeAutoscalerDestroyProducer(t *testing.T) func(s *terrafor
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/autoscalers/{{name}}")
 			if err != nil {

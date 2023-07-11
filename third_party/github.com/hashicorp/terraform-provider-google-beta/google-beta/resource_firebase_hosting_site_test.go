@@ -4,6 +4,7 @@ package google
 
 import (
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -13,14 +14,14 @@ func TestAccFirebaseHostingSite_firebasehostingSiteUpdate(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 		"site_id":       "tf-test-site-update-app",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckFirebaseHostingSiteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -46,7 +47,7 @@ func TestAccFirebaseHostingSite_firebasehostingSiteUpdate(t *testing.T) {
 }
 
 func testAccFirebaseHostingSite_firebasehostingSiteBeforeUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_web_app" "before" {
   provider = google-beta
   project  = "%{project_id}"
@@ -64,7 +65,7 @@ resource "google_firebase_hosting_site" "update" {
 }
 
 func testAccFirebaseHostingSite_firebasehostingSiteAfterUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_web_app" "after" {
   provider = google-beta
   project  = "%{project_id}"

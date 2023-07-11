@@ -5,21 +5,23 @@ package google
 import (
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
 func TestAccGKEBackupBackupPlan_update(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckGKEBackupBackupPlanDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -43,7 +45,7 @@ func TestAccGKEBackupBackupPlan_update(t *testing.T) {
 }
 
 func testAccGKEBackupBackupPlan_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   name               = "tf-test-testcluster%{random_suffix}"
   location           = "us-central1"
@@ -72,7 +74,7 @@ resource "google_gke_backup_backup_plan" "backupplan" {
 }
 
 func testAccGKEBackupBackupPlan_full(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   name               = "tf-test-testcluster%{random_suffix}"
   location           = "us-central1"

@@ -26,6 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -34,13 +35,13 @@ func TestAccDataLossPreventionInspectTemplate_dlpInspectTemplateBasicExample(t *
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataLossPreventionInspectTemplateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -57,7 +58,7 @@ func TestAccDataLossPreventionInspectTemplate_dlpInspectTemplateBasicExample(t *
 }
 
 func testAccDataLossPreventionInspectTemplate_dlpInspectTemplateBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_loss_prevention_inspect_template" "basic" {
 	parent = "projects/%{project}"
 	description = "My description"
@@ -169,13 +170,13 @@ func TestAccDataLossPreventionInspectTemplate_dlpInspectTemplateCustomTypeExampl
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataLossPreventionInspectTemplateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -192,7 +193,7 @@ func TestAccDataLossPreventionInspectTemplate_dlpInspectTemplateCustomTypeExampl
 }
 
 func testAccDataLossPreventionInspectTemplate_dlpInspectTemplateCustomTypeExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_loss_prevention_inspect_template" "custom" {
 	parent = "projects/%{project}"
 	description = "My description"
@@ -262,13 +263,13 @@ func TestAccDataLossPreventionInspectTemplate_dlpInspectTemplateCustomTypeSurrog
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataLossPreventionInspectTemplateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -285,7 +286,7 @@ func TestAccDataLossPreventionInspectTemplate_dlpInspectTemplateCustomTypeSurrog
 }
 
 func testAccDataLossPreventionInspectTemplate_dlpInspectTemplateCustomTypeSurrogateExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_loss_prevention_inspect_template" "custom_type_surrogate" {
   parent = "projects/%{project}"
   description = "My description"
@@ -353,13 +354,13 @@ func TestAccDataLossPreventionInspectTemplate_dlpInspectTemplateWithTemplateIdEx
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataLossPreventionInspectTemplateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -376,7 +377,7 @@ func TestAccDataLossPreventionInspectTemplate_dlpInspectTemplateWithTemplateIdEx
 }
 
 func testAccDataLossPreventionInspectTemplate_dlpInspectTemplateWithTemplateIdExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_loss_prevention_inspect_template" "with_template_id" {
   parent = "projects/%{project}"
   template_id = "tf-test-my-template%{random_suffix}"
@@ -437,7 +438,7 @@ func testAccCheckDataLossPreventionInspectTemplateDestroyProducer(t *testing.T) 
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DataLossPreventionBasePath}}{{parent}}/inspectTemplates/{{name}}")
 			if err != nil {

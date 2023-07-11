@@ -96,6 +96,8 @@
 ### Spec
 #### Schema
 ```yaml
+annotations:
+  string: string
 binaryAuthorization:
   breakglassJustification: string
   useDefault: boolean
@@ -109,6 +111,8 @@ projectRef:
   namespace: string
 resourceID: string
 template:
+  annotations:
+    string: string
   parallelism: integer
   taskCount: integer
   template:
@@ -206,6 +210,21 @@ template:
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>annotations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.
+
+Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected on new resources.
+All system annotations in v1 now have a corresponding field in v2 Job.
+
+This field follows Kubernetes annotations' namespacing, limits, and rules.{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>binaryAuthorization</code></p>
@@ -337,6 +356,21 @@ For example, if ALPHA is provided as input, but only BETA and GA-level features 
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The template used to create executions for this Job.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.annotations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.
+
+Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected.
+All system annotations in v1 now have a corresponding field in v2 ExecutionTemplate.
+
+This field follows Kubernetes annotations' namespacing, limits, and rules.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1122,7 +1156,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Limit on the storage usable by this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. This field's values are of the 'Quantity' k8s type: https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir.{% endverbatim %}</p>
+            <p>{% verbatim %}Limit on the storage usable by this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. This field's values are of the 'Quantity' k8s type: https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

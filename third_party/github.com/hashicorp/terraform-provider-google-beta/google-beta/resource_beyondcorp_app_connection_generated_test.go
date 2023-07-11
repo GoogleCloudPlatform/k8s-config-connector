@@ -34,12 +34,12 @@ func TestAccBeyondcorpAppConnection_beyondcorpAppConnectionBasicExample(t *testi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBeyondcorpAppConnectionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccBeyondcorpAppConnection_beyondcorpAppConnectionBasicExample(t *testi
 }
 
 func testAccBeyondcorpAppConnection_beyondcorpAppConnectionBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_account" "service_account" {
   account_id   = "tf-test-my-account%{random_suffix}"
   display_name = "Test Service Account"
@@ -87,12 +87,12 @@ func TestAccBeyondcorpAppConnection_beyondcorpAppConnectionFullExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBeyondcorpAppConnectionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -109,7 +109,7 @@ func TestAccBeyondcorpAppConnection_beyondcorpAppConnectionFullExample(t *testin
 }
 
 func testAccBeyondcorpAppConnection_beyondcorpAppConnectionFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_account" "service_account" {
   account_id   = "tf-test-my-account%{random_suffix}"
   display_name = "Test Service Account"
@@ -160,7 +160,7 @@ func testAccCheckBeyondcorpAppConnectionDestroyProducer(t *testing.T) func(s *te
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{BeyondcorpBasePath}}projects/{{project}}/locations/{{region}}/appConnections/{{name}}")
 			if err != nil {

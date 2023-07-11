@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -36,8 +37,8 @@ func TestAccClouddeployTarget_MultiTarget(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
-		"region":        acctest.GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -70,8 +71,8 @@ func TestAccClouddeployTarget_RunTarget(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
-		"region":        acctest.GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -104,8 +105,8 @@ func TestAccClouddeployTarget_Target(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
-		"region":        acctest.GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -159,7 +160,7 @@ func TestAccClouddeployTarget_Target(t *testing.T) {
 }
 
 func testAccClouddeployTarget_MultiTarget(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_clouddeploy_target" "primary" {
   location = "%{region}"
   name     = "tf-test-target%{random_suffix}"
@@ -170,7 +171,8 @@ resource "google_clouddeploy_target" "primary" {
     my_second_annotation = "example-annotation-2"
   }
 
-  description = "multi-target description"
+  deploy_parameters = {}
+  description       = "multi-target description"
 
   execution_configs {
     usages            = ["RENDER", "DEPLOY"]
@@ -196,7 +198,7 @@ resource "google_clouddeploy_target" "primary" {
 }
 
 func testAccClouddeployTarget_MultiTargetUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_clouddeploy_target" "primary" {
   location = "%{region}"
   name     = "tf-test-target%{random_suffix}"
@@ -207,7 +209,8 @@ resource "google_clouddeploy_target" "primary" {
     my_third_annotation = "example-annotation-3"
   }
 
-  description = "updated mutli-target description"
+  deploy_parameters = {}
+  description       = "updated mutli-target description"
 
   labels = {
     my_second_label = "example-label-2"
@@ -228,7 +231,7 @@ resource "google_clouddeploy_target" "primary" {
 }
 
 func testAccClouddeployTarget_RunTarget(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_clouddeploy_target" "primary" {
   location = "%{region}"
   name     = "tf-test-target%{random_suffix}"
@@ -239,7 +242,8 @@ resource "google_clouddeploy_target" "primary" {
     my_second_annotation = "example-annotation-2"
   }
 
-  description = "basic description"
+  deploy_parameters = {}
+  description       = "basic description"
 
   execution_configs {
     usages            = ["RENDER", "DEPLOY"]
@@ -265,7 +269,7 @@ resource "google_clouddeploy_target" "primary" {
 }
 
 func testAccClouddeployTarget_RunTargetUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_clouddeploy_target" "primary" {
   location = "%{region}"
   name     = "tf-test-target%{random_suffix}"
@@ -278,7 +282,8 @@ resource "google_clouddeploy_target" "primary" {
     my_third_annotation = "example-annotation-3"
   }
 
-  description = "basic description"
+  deploy_parameters = {}
+  description       = "basic description"
 
   labels = {
     my_first_label = "example-label-1"
@@ -299,7 +304,7 @@ resource "google_clouddeploy_target" "primary" {
 }
 
 func testAccClouddeployTarget_Target(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_clouddeploy_target" "primary" {
   location = "%{region}"
   name     = "tf-test-target%{random_suffix}"
@@ -308,6 +313,10 @@ resource "google_clouddeploy_target" "primary" {
     my_first_annotation = "example-annotation-1"
 
     my_second_annotation = "example-annotation-2"
+  }
+
+  deploy_parameters = {
+    deployParameterKey = "deployParameterValue"
   }
 
   description = "basic description"
@@ -331,7 +340,7 @@ resource "google_clouddeploy_target" "primary" {
 }
 
 func testAccClouddeployTarget_TargetUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_clouddeploy_target" "primary" {
   location = "%{region}"
   name     = "tf-test-target%{random_suffix}"
@@ -342,7 +351,8 @@ resource "google_clouddeploy_target" "primary" {
     my_third_annotation = "example-annotation-3"
   }
 
-  description = "updated description"
+  deploy_parameters = {}
+  description       = "updated description"
 
   gke {
     cluster     = "projects/%{project_name}/locations/%{region}/clusters/different-example-cluster-name"
@@ -364,7 +374,7 @@ resource "google_clouddeploy_target" "primary" {
 }
 
 func testAccClouddeployTarget_TargetUpdate1(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_clouddeploy_target" "primary" {
   location = "%{region}"
   name     = "tf-test-target%{random_suffix}"
@@ -375,7 +385,8 @@ resource "google_clouddeploy_target" "primary" {
     my_third_annotation = "example-annotation-3"
   }
 
-  description = "updated description"
+  deploy_parameters = {}
+  description       = "updated description"
 
   execution_configs {
     usages           = ["RENDER", "DEPLOY"]
@@ -403,7 +414,7 @@ resource "google_clouddeploy_target" "primary" {
 }
 
 func testAccClouddeployTarget_TargetUpdate2(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_clouddeploy_target" "primary" {
   location = "%{region}"
   name     = "tf-test-target%{random_suffix}"
@@ -414,7 +425,8 @@ resource "google_clouddeploy_target" "primary" {
     my_third_annotation = "example-annotation-3"
   }
 
-  description = "updated description"
+  deploy_parameters = {}
+  description       = "updated description"
 
   execution_configs {
     usages           = ["RENDER"]
@@ -449,7 +461,7 @@ resource "google_clouddeploy_target" "primary" {
 }
 
 func testAccClouddeployTarget_TargetUpdate3(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_clouddeploy_target" "primary" {
   location = "%{region}"
   name     = "tf-test-target%{random_suffix}"
@@ -460,7 +472,8 @@ resource "google_clouddeploy_target" "primary" {
     my_third_annotation = "example-annotation-3"
   }
 
-  description = "updated description"
+  deploy_parameters = {}
+  description       = "updated description"
 
   execution_configs {
     usages           = ["RENDER"]

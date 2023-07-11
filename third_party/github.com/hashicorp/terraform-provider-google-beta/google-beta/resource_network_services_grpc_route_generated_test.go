@@ -34,12 +34,12 @@ func TestAccNetworkServicesGrpcRoute_networkServicesGrpcRouteBasicExample(t *tes
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesGrpcRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccNetworkServicesGrpcRoute_networkServicesGrpcRouteBasicExample(t *tes
 }
 
 func testAccNetworkServicesGrpcRoute_networkServicesGrpcRouteBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_services_grpc_route" "default" {
   provider               = google-beta
   name                   = "tf-test-my-grpc-route%{random_suffix}"
@@ -87,12 +87,12 @@ func TestAccNetworkServicesGrpcRoute_networkServicesGrpcRouteMatchesAndActionsEx
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesGrpcRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -109,7 +109,7 @@ func TestAccNetworkServicesGrpcRoute_networkServicesGrpcRouteMatchesAndActionsEx
 }
 
 func testAccNetworkServicesGrpcRoute_networkServicesGrpcRouteMatchesAndActionsExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_services_grpc_route" "default" {
   provider               = google-beta
   name                   = "tf-test-my-grpc-route%{random_suffix}"
@@ -161,12 +161,12 @@ func TestAccNetworkServicesGrpcRoute_networkServicesGrpcRouteActionsExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesGrpcRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -183,7 +183,7 @@ func TestAccNetworkServicesGrpcRoute_networkServicesGrpcRouteActionsExample(t *t
 }
 
 func testAccNetworkServicesGrpcRoute_networkServicesGrpcRouteActionsExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_services_grpc_route" "default" {
   provider               = google-beta
   name                   = "tf-test-my-grpc-route%{random_suffix}"
@@ -224,7 +224,7 @@ func testAccCheckNetworkServicesGrpcRouteDestroyProducer(t *testing.T) func(s *t
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/grpcRoutes/{{name}}")
 			if err != nil {

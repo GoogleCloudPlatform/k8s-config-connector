@@ -34,12 +34,12 @@ func TestAccComputeForwardingRule_internalHttpLbWithMigBackendExample(t *testing
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,14 +49,14 @@ func TestAccComputeForwardingRule_internalHttpLbWithMigBackendExample(t *testing
 				ResourceName:            "google_compute_forwarding_rule.google_compute_forwarding_rule",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "region", "port_range", "target"},
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "no_automate_dns_zone", "region", "port_range", "target"},
 			},
 		},
 	})
 }
 
 func testAccComputeForwardingRule_internalHttpLbWithMigBackendExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 # Internal HTTP load balancer with a managed instance group backend
 
 # VPC network
@@ -253,12 +253,12 @@ func TestAccComputeForwardingRule_internalTcpUdpLbWithMigBackendExample(t *testi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -268,14 +268,14 @@ func TestAccComputeForwardingRule_internalTcpUdpLbWithMigBackendExample(t *testi
 				ResourceName:            "google_compute_forwarding_rule.google_compute_forwarding_rule",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "region"},
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "no_automate_dns_zone", "region"},
 			},
 		},
 	})
 }
 
 func testAccComputeForwardingRule_internalTcpUdpLbWithMigBackendExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 # Internal TCP/UDP load balancer with a managed instance group backend
 
 # VPC
@@ -461,12 +461,12 @@ func TestAccComputeForwardingRule_forwardingRuleExternallbExample(t *testing.T) 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -476,14 +476,14 @@ func TestAccComputeForwardingRule_forwardingRuleExternallbExample(t *testing.T) 
 				ResourceName:            "google_compute_forwarding_rule.default",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "region", "port_range"},
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "no_automate_dns_zone", "region", "port_range"},
 			},
 		},
 	})
 }
 
 func testAccComputeForwardingRule_forwardingRuleExternallbExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 // Forwarding rule for External Network Load Balancing using Backend Services
 resource "google_compute_forwarding_rule" "default" {
   provider              = google-beta
@@ -517,12 +517,12 @@ func TestAccComputeForwardingRule_forwardingRuleGlobalInternallbExample(t *testi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -532,14 +532,14 @@ func TestAccComputeForwardingRule_forwardingRuleGlobalInternallbExample(t *testi
 				ResourceName:            "google_compute_forwarding_rule.default",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "region"},
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "no_automate_dns_zone", "region"},
 			},
 		},
 	})
 }
 
 func testAccComputeForwardingRule_forwardingRuleGlobalInternallbExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 // Forwarding rule for Internal Load Balancing
 resource "google_compute_forwarding_rule" "default" {
   name                  = "tf-test-website-forwarding-rule%{random_suffix}"
@@ -581,12 +581,12 @@ func TestAccComputeForwardingRule_forwardingRuleBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -596,14 +596,14 @@ func TestAccComputeForwardingRule_forwardingRuleBasicExample(t *testing.T) {
 				ResourceName:            "google_compute_forwarding_rule.default",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "region", "port_range", "target"},
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "no_automate_dns_zone", "region", "port_range", "target"},
 			},
 		},
 	})
 }
 
 func testAccComputeForwardingRule_forwardingRuleBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_forwarding_rule" "default" {
   name       = "tf-test-website-forwarding-rule%{random_suffix}"
   target     = google_compute_target_pool.default.id
@@ -620,12 +620,12 @@ func TestAccComputeForwardingRule_forwardingRuleL3DefaultExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -635,14 +635,14 @@ func TestAccComputeForwardingRule_forwardingRuleL3DefaultExample(t *testing.T) {
 				ResourceName:            "google_compute_forwarding_rule.fwd_rule",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "region"},
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "no_automate_dns_zone", "region"},
 			},
 		},
 	})
 }
 
 func testAccComputeForwardingRule_forwardingRuleL3DefaultExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_forwarding_rule" "fwd_rule" {
   provider        = google-beta
   name            = "tf-test-l3-forwarding-rule%{random_suffix}"
@@ -676,12 +676,12 @@ func TestAccComputeForwardingRule_forwardingRuleInternallbExample(t *testing.T) 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -691,14 +691,14 @@ func TestAccComputeForwardingRule_forwardingRuleInternallbExample(t *testing.T) 
 				ResourceName:            "google_compute_forwarding_rule.default",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "region", "port_range", "target"},
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "no_automate_dns_zone", "region", "port_range", "target"},
 			},
 		},
 	})
 }
 
 func testAccComputeForwardingRule_forwardingRuleInternallbExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 // Forwarding rule for Internal Load Balancing
 resource "google_compute_forwarding_rule" "default" {
   name   = "tf-test-website-forwarding-rule%{random_suffix}"
@@ -745,12 +745,12 @@ func TestAccComputeForwardingRule_forwardingRuleHttpLbExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -760,14 +760,14 @@ func TestAccComputeForwardingRule_forwardingRuleHttpLbExample(t *testing.T) {
 				ResourceName:            "google_compute_forwarding_rule.default",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "region", "port_range", "target"},
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "no_automate_dns_zone", "region", "port_range", "target"},
 			},
 		},
 	})
 }
 
 func testAccComputeForwardingRule_forwardingRuleHttpLbExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 // Forwarding rule for Internal Load Balancing
 resource "google_compute_forwarding_rule" "default" {
   provider = google-beta
@@ -964,12 +964,12 @@ func TestAccComputeForwardingRule_forwardingRuleRegionalHttpXlbExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -979,14 +979,14 @@ func TestAccComputeForwardingRule_forwardingRuleRegionalHttpXlbExample(t *testin
 				ResourceName:            "google_compute_forwarding_rule.default",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "region", "port_range", "target", "ip_address"},
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "no_automate_dns_zone", "region", "port_range", "target", "ip_address"},
 			},
 		},
 	})
 }
 
 func testAccComputeForwardingRule_forwardingRuleRegionalHttpXlbExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 // Forwarding rule for Regional External Load Balancing
 resource "google_compute_forwarding_rule" "default" {
   provider = google-beta
@@ -1190,12 +1190,12 @@ func TestAccComputeForwardingRule_forwardingRuleVpcPscExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1205,14 +1205,14 @@ func TestAccComputeForwardingRule_forwardingRuleVpcPscExample(t *testing.T) {
 				ResourceName:            "google_compute_forwarding_rule.default",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "region", "port_range", "target", "ip_address"},
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "no_automate_dns_zone", "region", "port_range", "target", "ip_address"},
 			},
 		},
 	})
 }
 
 func testAccComputeForwardingRule_forwardingRuleVpcPscExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 // Forwarding rule for VPC private service connect
 resource "google_compute_forwarding_rule" "default" {
   name                    = "tf-test-psc-endpoint%{random_suffix}"
@@ -1310,16 +1310,136 @@ resource "google_compute_health_check" "producer_service_health_check" {
 `, context)
 }
 
+func TestAccComputeForwardingRule_forwardingRuleVpcPscNoAutomateDnsExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": acctest.RandString(t, 10),
+	}
+
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeForwardingRule_forwardingRuleVpcPscNoAutomateDnsExample(context),
+			},
+			{
+				ResourceName:            "google_compute_forwarding_rule.default",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "no_automate_dns_zone", "region", "port_range", "target", "ip_address"},
+			},
+		},
+	})
+}
+
+func testAccComputeForwardingRule_forwardingRuleVpcPscNoAutomateDnsExample(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_compute_forwarding_rule" "default" {
+  name                    = "tf-test-psc-endpoint%{random_suffix}"
+  region                  = "us-central1"
+  load_balancing_scheme   = ""
+  target                  = google_compute_service_attachment.producer_service_attachment.id
+  network                 = google_compute_network.consumer_net.name
+  ip_address              = google_compute_address.consumer_address.id
+  allow_psc_global_access = true
+  no_automate_dns_zone    = true
+}
+
+resource "google_compute_network" "consumer_net" {
+  name                    = "tf-test-consumer-net%{random_suffix}"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "consumer_subnet" {
+  name          = "tf-test-consumer-net%{random_suffix}"
+  ip_cidr_range = "10.0.0.0/16"
+  region        = "us-central1"
+  network       = google_compute_network.consumer_net.id
+}
+
+resource "google_compute_address" "consumer_address" {
+  name         = "tf-test-website-ip%{random_suffix}-1"
+  region       = "us-central1"
+  subnetwork   = google_compute_subnetwork.consumer_subnet.id
+  address_type = "INTERNAL"
+}
+
+
+resource "google_compute_network" "producer_net" {
+  name                    = "tf-test-producer-net%{random_suffix}"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "producer_subnet" {
+  name          = "tf-test-producer-net%{random_suffix}"
+  ip_cidr_range = "10.0.0.0/16"
+  region        = "us-central1"
+  network       = google_compute_network.producer_net.id
+}
+
+resource "google_compute_subnetwork" "psc_producer_subnet" {
+  name          = "tf-test-producer-psc-net%{random_suffix}"
+  ip_cidr_range = "10.1.0.0/16"
+  region        = "us-central1"
+
+  purpose       = "PRIVATE_SERVICE_CONNECT"
+  network       = google_compute_network.producer_net.id
+}
+
+resource "google_compute_service_attachment" "producer_service_attachment" {
+  name        = "tf-test-producer-service%{random_suffix}"
+  region      = "us-central1"
+  description = "A service attachment configured with Terraform"
+
+  enable_proxy_protocol = true
+  connection_preference = "ACCEPT_AUTOMATIC"
+  nat_subnets           = [google_compute_subnetwork.psc_producer_subnet.name]
+  target_service        = google_compute_forwarding_rule.producer_target_service.id
+}
+
+resource "google_compute_forwarding_rule" "producer_target_service" {
+  name     = "tf-test-producer-forwarding-rule%{random_suffix}"
+  region   = "us-central1"
+
+  load_balancing_scheme = "INTERNAL"
+  backend_service       = google_compute_region_backend_service.producer_service_backend.id
+  all_ports             = true
+  network               = google_compute_network.producer_net.name
+  subnetwork            = google_compute_subnetwork.producer_subnet.name
+}
+
+resource "google_compute_region_backend_service" "producer_service_backend" {
+  name     = "tf-test-producer-service-backend%{random_suffix}"
+  region   = "us-central1"
+
+  health_checks = [google_compute_health_check.producer_service_health_check.id]
+}
+
+resource "google_compute_health_check" "producer_service_health_check" {
+  name     = "tf-test-producer-service-health-check%{random_suffix}"
+
+  check_interval_sec = 1
+  timeout_sec        = 1
+  tcp_health_check {
+    port = "80"
+  }
+}
+`, context)
+}
+
 func TestAccComputeForwardingRule_forwardingRuleRegionalSteeringExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1329,14 +1449,14 @@ func TestAccComputeForwardingRule_forwardingRuleRegionalSteeringExample(t *testi
 				ResourceName:            "google_compute_forwarding_rule.steering",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "region"},
+				ImportStateVerifyIgnore: []string{"backend_service", "network", "subnetwork", "no_automate_dns_zone", "region"},
 			},
 		},
 	})
 }
 
 func testAccComputeForwardingRule_forwardingRuleRegionalSteeringExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_forwarding_rule" "steering" {
   name = "tf-test-steering-rule%{random_suffix}"
   region = "us-central1"
@@ -1378,7 +1498,7 @@ func testAccCheckComputeForwardingRuleDestroyProducer(t *testing.T) func(s *terr
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}")
 			if err != nil {

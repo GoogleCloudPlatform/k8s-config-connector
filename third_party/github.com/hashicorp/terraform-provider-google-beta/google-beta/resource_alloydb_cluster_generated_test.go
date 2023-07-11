@@ -34,12 +34,12 @@ func TestAccAlloydbCluster_alloydbClusterBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAlloydbClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,11 +56,11 @@ func TestAccAlloydbCluster_alloydbClusterBasicExample(t *testing.T) {
 }
 
 func testAccAlloydbCluster_alloydbClusterBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_alloydb_cluster" "default" {
   cluster_id = "tf-test-alloydb-cluster%{random_suffix}"
   location   = "us-central1"
-  network    = "projects/${data.google_project.project.number}/global/networks/${google_compute_network.default.name}"
+  network    = google_compute_network.default.id
 }
 
 data "google_project" "project" {}
@@ -75,12 +75,12 @@ func TestAccAlloydbCluster_alloydbClusterFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAlloydbClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -97,11 +97,11 @@ func TestAccAlloydbCluster_alloydbClusterFullExample(t *testing.T) {
 }
 
 func testAccAlloydbCluster_alloydbClusterFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_alloydb_cluster" "full" {
   cluster_id   = "tf-test-alloydb-cluster-full%{random_suffix}"
   location     = "us-central1"
-  network      = "projects/${data.google_project.project.number}/global/networks/${google_compute_network.default.name}"
+  network      = google_compute_network.default.id
 
   initial_user {
     user     = "tf-test-alloydb-cluster-full%{random_suffix}"
@@ -156,7 +156,7 @@ func testAccCheckAlloydbClusterDestroyProducer(t *testing.T) func(s *terraform.S
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
 			if err != nil {

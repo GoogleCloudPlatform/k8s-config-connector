@@ -29,13 +29,13 @@ func TestAccApiGatewayGatewayIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/apigateway.viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayGatewayIamBinding_basicGenerated(context),
@@ -52,13 +52,13 @@ func TestAccApiGatewayGatewayIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/apigateway.viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -72,13 +72,13 @@ func TestAccApiGatewayGatewayIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/apigateway.viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayGatewayIamPolicy_basicGenerated(context),
@@ -92,7 +92,7 @@ func TestAccApiGatewayGatewayIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccApiGatewayGatewayIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api_gw" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -132,7 +132,7 @@ resource "google_api_gateway_gateway_iam_member" "foo" {
 }
 
 func testAccApiGatewayGatewayIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api_gw" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -189,7 +189,7 @@ data "google_api_gateway_gateway_iam_policy" "foo" {
 }
 
 func testAccApiGatewayGatewayIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api_gw" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -232,7 +232,7 @@ resource "google_api_gateway_gateway_iam_policy" "foo" {
 }
 
 func testAccApiGatewayGatewayIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api_gw" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -272,7 +272,7 @@ resource "google_api_gateway_gateway_iam_binding" "foo" {
 }
 
 func testAccApiGatewayGatewayIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api_gw" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"

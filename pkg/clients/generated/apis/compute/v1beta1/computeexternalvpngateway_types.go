@@ -74,6 +74,11 @@ type ComputeExternalVPNGatewayStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeExternalVPNGateway's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The fingerprint used for optimistic locking of this resource.  Used
+	internally during updates. */
+	// +optional
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`

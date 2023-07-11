@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -18,18 +19,18 @@ func TestAccComputeNetworkEndpoint_networkEndpointsBasic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"default_port":  90,
 		"modified_port": 100,
 		"add1_port":     101,
 		"add2_port":     102,
 	}
 	negId := fmt.Sprintf("projects/%s/zones/%s/networkEndpointGroups/tf-test-neg-%s",
-		acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), context["random_suffix"])
+		envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), context["random_suffix"])
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Create one endpoint
@@ -83,7 +84,7 @@ func TestAccComputeNetworkEndpoint_networkEndpointsBasic(t *testing.T) {
 }
 
 func testAccComputeNetworkEndpoint_networkEndpointsBasic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network_endpoint" "default" {
   zone                   = "us-central1-a"
   network_endpoint_group = google_compute_network_endpoint_group.neg.id
@@ -96,7 +97,7 @@ resource "google_compute_network_endpoint" "default" {
 }
 
 func testAccComputeNetworkEndpoint_networkEndpointsModified(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network_endpoint" "default" {
   zone                   = "us-central1-a"
   network_endpoint_group = google_compute_network_endpoint_group.neg.name
@@ -109,7 +110,7 @@ resource "google_compute_network_endpoint" "default" {
 }
 
 func testAccComputeNetworkEndpoint_networkEndpointsAdditional(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network_endpoint" "default" {
   zone                   = "us-central1-a"
   network_endpoint_group = google_compute_network_endpoint_group.neg.id
@@ -140,7 +141,7 @@ resource "google_compute_network_endpoint" "add2" {
 }
 
 func testAccComputeNetworkEndpoint_noNetworkEndpoints(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network_endpoint_group" "neg" {
   name         = "tf-test-neg-%{random_suffix}"
   zone         = "us-central1-a"
@@ -190,7 +191,7 @@ data "google_compute_image" "my_image" {
 // was destroyed properly.
 func testAccCheckComputeNetworkEndpointWithPortsDestroyed(t *testing.T, negId string, ports ...string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		foundPorts, err := testAccComputeNetworkEndpointsListEndpointPorts(t, negId)
+		foundPorts, err := testAccComputeNetworkEndpointListEndpointPorts(t, negId)
 		if err != nil {
 			return fmt.Errorf("unable to confirm endpoints with ports %+v was destroyed: %v", ports, err)
 		}
@@ -204,8 +205,8 @@ func testAccCheckComputeNetworkEndpointWithPortsDestroyed(t *testing.T, negId st
 	}
 }
 
-func testAccComputeNetworkEndpointsListEndpointPorts(t *testing.T, negId string) (map[string]struct{}, error) {
-	config := GoogleProviderConfig(t)
+func testAccComputeNetworkEndpointListEndpointPorts(t *testing.T, negId string) (map[string]struct{}, error) {
+	config := acctest.GoogleProviderConfig(t)
 
 	url := fmt.Sprintf("https://www.googleapis.com/compute/beta/%s/listNetworkEndpoints", negId)
 	res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{

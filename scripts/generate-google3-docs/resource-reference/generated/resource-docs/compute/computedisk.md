@@ -134,6 +134,7 @@ diskEncryptionKey:
         key: string
         name: string
   sha256: string
+enableConfidentialCompute: boolean
 guestOsFeatures:
 - type: string
 imageRef:
@@ -151,6 +152,7 @@ projectRef:
   name: string
   namespace: string
 provisionedIops: integer
+provisionedThroughput: integer
 replicaZones:
 - string
 resourceID: string
@@ -503,6 +505,17 @@ encryption key that protects this resource.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>enableConfidentialCompute</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Whether this disk is using confidential compute mode.
+Note: Only supported on hyperdisk skus, disk_encryption_key is required when setting to true.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>guestOsFeatures</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -683,7 +696,21 @@ the supported values for the caller's project.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Indicates how many IOPS must be provisioned for the disk.{% endverbatim %}</p>
+            <p>{% verbatim %}Indicates how many IOPS must be provisioned for the disk.
+Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
+allows for an update of IOPS every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>provisionedThroughput</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Indicates how much Throughput must be provisioned for the disk.
+Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
+allows for an update of Throughput every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

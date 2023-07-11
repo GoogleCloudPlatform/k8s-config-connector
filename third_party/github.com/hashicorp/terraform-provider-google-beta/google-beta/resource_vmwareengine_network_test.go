@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
@@ -14,16 +15,16 @@ import (
 func TestAccVmwareengineNetwork_vmwareEngineNetworkUpdate(t *testing.T) {
 	t.Parallel()
 	context := map[string]interface{}{
-		"region":          acctest.GetTestRegionFromEnv(),
-		"random_suffix":   RandString(t, 10),
-		"organization":    acctest.GetTestOrgFromEnv(t),
-		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
+		"region":          envvar.GetTestRegionFromEnv(),
+		"random_suffix":   acctest.RandString(t, 10),
+		"organization":    envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
 	}
 
 	configTemplate := vmwareEngineNetworkConfigTemplate(context)
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckVmwareengineNetworkDestroyProducer(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
@@ -53,7 +54,7 @@ func TestAccVmwareengineNetwork_vmwareEngineNetworkUpdate(t *testing.T) {
 }
 
 func vmwareEngineNetworkConfigTemplate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_vmwareengine_network" "default-nw" {
   provider    = google-beta
   project     = google_project_service.acceptance.project

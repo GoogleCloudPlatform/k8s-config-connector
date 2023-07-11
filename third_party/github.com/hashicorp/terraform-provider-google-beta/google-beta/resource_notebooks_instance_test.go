@@ -8,16 +8,17 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccNotebooksInstance_create_vm_image(t *testing.T) {
 	t.Parallel()
 
-	prefix := fmt.Sprintf("%d", RandInt(t))
+	prefix := fmt.Sprintf("%d", acctest.RandInt(t))
 	name := fmt.Sprintf("tf-%s", prefix)
 
-	VcrTest(t, resource.TestCase{
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccNotebooksInstance_create_vm_image(name),
@@ -34,11 +35,11 @@ func TestAccNotebooksInstance_create_vm_image(t *testing.T) {
 
 func TestAccNotebooksInstance_update(t *testing.T) {
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccNotebooksInstance_basic(context),
@@ -98,7 +99,7 @@ resource "google_notebooks_instance" "test" {
 }
 
 func testAccNotebooksInstance_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_instance" "instance" {
   name = "tf-test-notebooks-instance%{random_suffix}"
   location = "us-central1-a"
@@ -124,7 +125,7 @@ resource "google_notebooks_instance" "instance" {
 func testAccNotebooksInstance_update(context map[string]interface{}, preventDestroy bool) string {
 	context["prevent_destroy"] = strconv.FormatBool(preventDestroy)
 
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_instance" "instance" {
   name = "tf-test-notebooks-instance%{random_suffix}"
   location = "us-central1-a"

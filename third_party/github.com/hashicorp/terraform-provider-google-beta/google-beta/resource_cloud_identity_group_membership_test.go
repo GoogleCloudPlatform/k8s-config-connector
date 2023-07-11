@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"google.golang.org/api/iam/v1"
@@ -17,15 +18,15 @@ import (
 
 func testAccCloudIdentityGroupMembership_updateTest(t *testing.T) {
 	context := map[string]interface{}{
-		"org_domain":    acctest.GetTestOrgDomainFromEnv(t),
-		"cust_id":       acctest.GetTestCustIdFromEnv(t),
-		"identity_user": acctest.GetTestIdentityUserFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_domain":    envvar.GetTestOrgDomainFromEnv(t),
+		"cust_id":       envvar.GetTestCustIdFromEnv(t),
+		"identity_user": envvar.GetTestIdentityUserFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudIdentityGroupMembershipDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -57,7 +58,7 @@ func testAccCloudIdentityGroupMembership_updateTest(t *testing.T) {
 }
 
 func testAccCloudIdentityGroupMembership_update1(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_identity_group" "group" {
   display_name = "tf-test-my-identity-group%{random_suffix}"
 
@@ -88,7 +89,7 @@ resource "google_cloud_identity_group_membership" "basic" {
 }
 
 func testAccCloudIdentityGroupMembership_update2(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_identity_group" "group" {
   display_name = "tf-test-my-identity-group%{random_suffix}"
 
@@ -123,15 +124,15 @@ resource "google_cloud_identity_group_membership" "basic" {
 
 func testAccCloudIdentityGroupMembership_importTest(t *testing.T) {
 	context := map[string]interface{}{
-		"org_domain":    acctest.GetTestOrgDomainFromEnv(t),
-		"cust_id":       acctest.GetTestCustIdFromEnv(t),
-		"identity_user": acctest.GetTestIdentityUserFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_domain":    envvar.GetTestOrgDomainFromEnv(t),
+		"cust_id":       envvar.GetTestCustIdFromEnv(t),
+		"identity_user": envvar.GetTestIdentityUserFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudIdentityGroupMembershipDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -147,7 +148,7 @@ func testAccCloudIdentityGroupMembership_importTest(t *testing.T) {
 }
 
 func testAccCloudIdentityGroupMembership_import(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_identity_group" "group" {
   display_name = "tf-test-my-identity-group%{random_suffix}"
 
@@ -186,14 +187,14 @@ func testAccCloudIdentityGroupMembership_membershipDoesNotExistTest(t *testing.T
 	acctest.SkipIfVcr(t)
 
 	context := map[string]interface{}{
-		"org_domain":    acctest.GetTestOrgDomainFromEnv(t),
-		"cust_id":       acctest.GetTestCustIdFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_domain":    envvar.GetTestOrgDomainFromEnv(t),
+		"cust_id":       envvar.GetTestCustIdFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	saId := "tf-test-sa-" + RandString(t, 10)
-	project := acctest.GetTestProjectFromEnv()
-	config := BootstrapConfig(t)
+	saId := "tf-test-sa-" + acctest.RandString(t, 10)
+	project := envvar.GetTestProjectFromEnv()
+	config := acctest.BootstrapConfig(t)
 
 	r := &iam.CreateServiceAccountRequest{
 		AccountId:      saId,
@@ -207,9 +208,9 @@ func testAccCloudIdentityGroupMembership_membershipDoesNotExistTest(t *testing.T
 
 	context["member_id"] = sa.Email
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudIdentityGroupMembershipDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -217,7 +218,7 @@ func testAccCloudIdentityGroupMembership_membershipDoesNotExistTest(t *testing.T
 			},
 			{
 				PreConfig: func() {
-					config := GoogleProviderConfig(t)
+					config := acctest.GoogleProviderConfig(t)
 
 					_, err := config.NewIamClient(config.UserAgent).Projects.ServiceAccounts.Delete(sa.Name).Do()
 					if err != nil {
@@ -234,7 +235,7 @@ func testAccCloudIdentityGroupMembership_membershipDoesNotExistTest(t *testing.T
 }
 
 func testAccCloudIdentityGroupMembership_dne(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_identity_group" "group" {
   display_name = "tf-test-my-identity-group-%{random_suffix}"
 
@@ -265,14 +266,14 @@ resource "google_cloud_identity_group_membership" "basic" {
 
 func testAccCloudIdentityGroupMembership_cloudIdentityGroupMembershipWithMemberKeyTest(t *testing.T) {
 	context := map[string]interface{}{
-		"org_domain":    acctest.GetTestOrgDomainFromEnv(t),
-		"cust_id":       acctest.GetTestCustIdFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_domain":    envvar.GetTestOrgDomainFromEnv(t),
+		"cust_id":       envvar.GetTestCustIdFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudIdentityGroupMembershipDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -288,7 +289,7 @@ func testAccCloudIdentityGroupMembership_cloudIdentityGroupMembershipWithMemberK
 }
 
 func testAccCloudIdentityGroupMembership_cloudIdentityGroupMembershipWithMemberKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_identity_group" "group" {
   display_name = "tf-test-my-identity-group%{random_suffix}"
 
@@ -333,15 +334,15 @@ resource "google_cloud_identity_group_membership" "cloud_identity_group_membersh
 
 func testAccCloudIdentityGroupMembership_cloudIdentityGroupMembershipUserWithMemberKeyTest(t *testing.T) {
 	context := map[string]interface{}{
-		"org_domain":    acctest.GetTestOrgDomainFromEnv(t),
-		"cust_id":       acctest.GetTestCustIdFromEnv(t),
-		"identity_user": acctest.GetTestIdentityUserFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_domain":    envvar.GetTestOrgDomainFromEnv(t),
+		"cust_id":       envvar.GetTestCustIdFromEnv(t),
+		"identity_user": envvar.GetTestIdentityUserFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudIdentityGroupMembershipDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -357,7 +358,7 @@ func testAccCloudIdentityGroupMembership_cloudIdentityGroupMembershipUserWithMem
 }
 
 func testAccCloudIdentityGroupMembership_cloudIdentityGroupMembershipUserWithMemberKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_identity_group" "group" {
   display_name = "tf-test-my-identity-group%{random_suffix}"
 
@@ -392,14 +393,14 @@ resource "google_cloud_identity_group_membership" "cloud_identity_group_membersh
 
 func testAccCloudIdentityGroupMembership_cloudIdentityGroupMembershipExampleTest(t *testing.T) {
 	context := map[string]interface{}{
-		"org_domain":    acctest.GetTestOrgDomainFromEnv(t),
-		"cust_id":       acctest.GetTestCustIdFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_domain":    envvar.GetTestOrgDomainFromEnv(t),
+		"cust_id":       envvar.GetTestCustIdFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudIdentityGroupMembershipDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -416,7 +417,7 @@ func testAccCloudIdentityGroupMembership_cloudIdentityGroupMembershipExampleTest
 }
 
 func testAccCloudIdentityGroupMembership_cloudIdentityGroupMembershipExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_identity_group" "group" {
   display_name = "tf-test-my-identity-group%{random_suffix}"
 
@@ -461,15 +462,15 @@ resource "google_cloud_identity_group_membership" "cloud_identity_group_membersh
 
 func testAccCloudIdentityGroupMembership_cloudIdentityGroupMembershipUserExampleTest(t *testing.T) {
 	context := map[string]interface{}{
-		"org_domain":    acctest.GetTestOrgDomainFromEnv(t),
-		"cust_id":       acctest.GetTestCustIdFromEnv(t),
-		"identity_user": acctest.GetTestIdentityUserFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_domain":    envvar.GetTestOrgDomainFromEnv(t),
+		"cust_id":       envvar.GetTestCustIdFromEnv(t),
+		"identity_user": envvar.GetTestIdentityUserFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudIdentityGroupMembershipDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -486,7 +487,7 @@ func testAccCloudIdentityGroupMembership_cloudIdentityGroupMembershipUserExample
 }
 
 func testAccCloudIdentityGroupMembership_cloudIdentityGroupMembershipUserExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_identity_group" "group" {
   display_name = "tf-test-my-identity-group%{random_suffix}"
 
@@ -529,7 +530,7 @@ func testAccCheckCloudIdentityGroupMembershipDestroyProducer(t *testing.T) func(
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CloudIdentityBasePath}}{{name}}")
 			if err != nil {

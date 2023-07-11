@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/binaryauthorization"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -18,12 +19,12 @@ import (
 func TestAccBinaryAuthorizationPolicy_basic(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := "tf-test-" + RandString(t, 10)
-	billingId := acctest.GetTestBillingAccountFromEnv(t)
-	VcrTest(t, resource.TestCase{
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := "tf-test-" + acctest.RandString(t, 10)
+	billingId := envvar.GetTestBillingAccountFromEnv(t)
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBinaryAuthorizationPolicyBasic(pid, org, billingId),
@@ -46,15 +47,15 @@ func TestAccBinaryAuthorizationPolicy_basic(t *testing.T) {
 func TestAccBinaryAuthorizationPolicy_full(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := "tf-test-" + RandString(t, 10)
-	billingId := acctest.GetTestBillingAccountFromEnv(t)
-	note := RandString(t, 10)
-	attestor := RandString(t, 10)
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := "tf-test-" + acctest.RandString(t, 10)
+	billingId := envvar.GetTestBillingAccountFromEnv(t)
+	note := acctest.RandString(t, 10)
+	attestor := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBinaryAuthorizationPolicyFull(pid, org, billingId, note, attestor, "ENABLE"),
@@ -78,15 +79,15 @@ func TestAccBinaryAuthorizationPolicy_full(t *testing.T) {
 func TestAccBinaryAuthorizationPolicy_separateProject(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := "tf-test-" + RandString(t, 10)
-	billingId := acctest.GetTestBillingAccountFromEnv(t)
-	note := RandString(t, 10)
-	attestor := RandString(t, 10)
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := "tf-test-" + acctest.RandString(t, 10)
+	billingId := envvar.GetTestBillingAccountFromEnv(t)
+	note := acctest.RandString(t, 10)
+	attestor := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBinaryAuthorizationPolicy_separateProject(pid, org, billingId, note, attestor),
@@ -109,15 +110,15 @@ func TestAccBinaryAuthorizationPolicy_separateProject(t *testing.T) {
 func TestAccBinaryAuthorizationPolicy_update(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := "tf-test-" + RandString(t, 10)
-	billingId := acctest.GetTestBillingAccountFromEnv(t)
-	note := RandString(t, 10)
-	attestor := RandString(t, 10)
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := "tf-test-" + acctest.RandString(t, 10)
+	billingId := envvar.GetTestBillingAccountFromEnv(t)
+	note := acctest.RandString(t, 10)
+	attestor := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBinaryAuthorizationPolicyBasic(pid, org, billingId),
@@ -163,7 +164,7 @@ func TestAccBinaryAuthorizationPolicy_update(t *testing.T) {
 
 func testAccCheckBinaryAuthorizationPolicyDefault(t *testing.T, pid string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		url := fmt.Sprintf("https://binaryauthorization.googleapis.com/v1/projects/%s/policy", pid)
 		pol, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
 			Config:    config,

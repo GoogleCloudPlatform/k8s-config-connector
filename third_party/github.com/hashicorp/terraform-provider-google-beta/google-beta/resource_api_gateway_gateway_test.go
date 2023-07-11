@@ -13,12 +13,12 @@ func TestAccApiGatewayGateway_apigatewayGatewayBasicExampleUpdated(t *testing.T)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckApiGatewayGatewayDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -32,7 +32,7 @@ func TestAccApiGatewayGateway_apigatewayGatewayBasicExampleUpdated(t *testing.T)
 }
 
 func testAccApiGatewayGateway_apigatewayGatewayBasicExampleUpdated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api_gw" {
   provider = google-beta
   api_id = "tf-test-api-gw%{random_suffix}"

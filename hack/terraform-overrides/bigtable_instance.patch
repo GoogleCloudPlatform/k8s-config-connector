@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_instance.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/resource_bigtable_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/resource_bigtable_instance.go
 index 7aeb23e6a..a1f152fa0 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_instance.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_instance.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/resource_bigtable_instance.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/resource_bigtable_instance.go
 @@ -62,6 +62,7 @@ func ResourceBigtableInstance() *schema.Resource {
  						},
  						"zone": {

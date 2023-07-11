@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport"
 )
 
 func TestAccDataSourceDnsRecordSet_basic(t *testing.T) {
@@ -19,9 +20,9 @@ func TestAccDataSourceDnsRecordSet_basic(t *testing.T) {
 
 	var ttl1, ttl2 string // ttl is a computed string-type attribute that is easy to compare in the test
 
-	managedZoneName := fmt.Sprintf("tf-test-zone-%s", RandString(t, 10))
+	managedZoneName := fmt.Sprintf("tf-test-zone-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:     func() { acctest.AccTestPreCheck(t) },
 		CheckDestroy: testAccCheckDnsRecordSetDestroyProducerFramework(t),
 		Steps: []resource.TestStep{
@@ -32,19 +33,19 @@ func TestAccDataSourceDnsRecordSet_basic(t *testing.T) {
 						Source:            "hashicorp/google-beta",
 					},
 				},
-				Config: testAccDataSourceDnsRecordSet_basic(managedZoneName, RandString(t, 10)),
+				Config: testAccDataSourceDnsRecordSet_basic(managedZoneName, acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					acctest.CheckDataSourceStateMatchesResourceState("data.google_dns_record_set.rs", "google_dns_record_set.rs"),
-					testExtractResourceAttr("data.google_dns_record_set.rs", "ttl", &ttl1),
+					acctest.TestExtractResourceAttr("data.google_dns_record_set.rs", "ttl", &ttl1),
 				),
 			},
 			{
-				ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
-				Config:                   testAccDataSourceDnsRecordSet_basic(managedZoneName, RandString(t, 10)),
+				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
+				Config:                   testAccDataSourceDnsRecordSet_basic(managedZoneName, acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					acctest.CheckDataSourceStateMatchesResourceState("data.google_dns_record_set.rs", "google_dns_record_set.rs"),
-					testExtractResourceAttr("data.google_dns_record_set.rs", "ttl", &ttl2),
-					testCheckAttributeValuesEqual(&ttl1, &ttl2),
+					acctest.TestExtractResourceAttr("data.google_dns_record_set.rs", "ttl", &ttl2),
+					acctest.TestCheckAttributeValuesEqual(&ttl1, &ttl2),
 				),
 			},
 		},
@@ -88,20 +89,20 @@ func testAccCheckDnsRecordSetDestroyProducerFramework(t *testing.T) func(s *terr
 				continue
 			}
 
-			p := GetFwTestProvider(t)
+			p := acctest.GetFwTestProvider(t)
 
-			url, err := replaceVarsForFrameworkTest(&p.frameworkProvider, rs, "{{DNSBasePath}}projects/{{project}}/managedZones/{{managed_zone}}/rrsets/{{name}}/{{type}}")
+			url, err := acctest.ReplaceVarsForFrameworkTest(&p.FrameworkProvider.FrameworkProviderConfig, rs, "{{DNSBasePath}}projects/{{project}}/managedZones/{{managed_zone}}/rrsets/{{name}}/{{type}}")
 			if err != nil {
 				return err
 			}
 
 			billingProject := ""
 
-			if !p.billingProject.IsNull() && p.billingProject.String() != "" {
-				billingProject = p.billingProject.String()
+			if !p.BillingProject.IsNull() && p.BillingProject.String() != "" {
+				billingProject = p.BillingProject.String()
 			}
 
-			_, diags := sendFrameworkRequest(&p.frameworkProvider, "GET", billingProject, url, p.userAgent, nil)
+			_, diags := fwtransport.SendFrameworkRequest(&p.FrameworkProvider.FrameworkProviderConfig, "GET", billingProject, url, p.UserAgent, nil)
 			if !diags.HasError() {
 				return fmt.Errorf("DNSResourceDnsRecordSet still exists at %s", url)
 			}

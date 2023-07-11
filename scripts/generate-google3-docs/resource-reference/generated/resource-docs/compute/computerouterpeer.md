@@ -357,12 +357,12 @@ Each BGP interface may use a different value.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>peerIpAddress</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}IP address of the BGP interface outside Google Cloud Platform.
-Only IPv4 is supported.{% endverbatim %}</p>
+Only IPv4 is supported. Required if 'ip_address' is set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

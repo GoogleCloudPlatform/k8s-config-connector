@@ -34,12 +34,12 @@ func TestAccCloudBuildBitbucketServerConfig_cloudbuildBitbucketServerConfigExamp
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudBuildBitbucketServerConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccCloudBuildBitbucketServerConfig_cloudbuildBitbucketServerConfigExamp
 }
 
 func testAccCloudBuildBitbucketServerConfig_cloudbuildBitbucketServerConfigExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuild_bitbucket_server_config" "bbs-config" {
     config_id = "tf-test-bbs-config%{random_suffix}"
     location = "us-central1"
@@ -76,13 +76,13 @@ func TestAccCloudBuildBitbucketServerConfig_cloudbuildBitbucketServerConfigPeere
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"network_name":  BootstrapSharedTestNetwork(t, "peered-network"),
-		"random_suffix": RandString(t, 10),
+		"network_name":  acctest.BootstrapSharedTestNetwork(t, "peered-network"),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudBuildBitbucketServerConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -99,7 +99,7 @@ func TestAccCloudBuildBitbucketServerConfig_cloudbuildBitbucketServerConfigPeere
 }
 
 func testAccCloudBuildBitbucketServerConfig_cloudbuildBitbucketServerConfigPeeredNetworkExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "project" {}
 
 resource "google_project_service" "servicenetworking" {
@@ -113,7 +113,7 @@ data "google_compute_network" "vpc_network" {
 }
 
 resource "google_compute_global_address" "private_ip_alloc" {
-  name          = "private-ip-alloc"
+  name          = "tf-test-private-ip-alloc%{random_suffix}"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   prefix_length = 16
@@ -155,7 +155,7 @@ func testAccCheckCloudBuildBitbucketServerConfigDestroyProducer(t *testing.T) fu
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CloudBuildBasePath}}projects/{{project}}/locations/{{location}}/bitbucketServerConfigs/{{config_id}}")
 			if err != nil {

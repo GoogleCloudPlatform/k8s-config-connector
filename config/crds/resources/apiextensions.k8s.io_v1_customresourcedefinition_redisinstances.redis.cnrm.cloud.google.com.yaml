@@ -229,29 +229,6 @@ spec:
                       type: object
                     type: array
                 type: object
-              maintenanceSchedule:
-                description: Upcoming maintenance schedule.
-                properties:
-                  endTime:
-                    description: |-
-                      Output only. The end time of any upcoming scheduled maintenance for this instance.
-                      A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-                      resolution and up to nine fractional digits.
-                    type: string
-                  scheduleDeadlineTime:
-                    description: |-
-                      Output only. The deadline that the maintenance schedule start time
-                      can not go beyond, including reschedule.
-                      A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-                      resolution and up to nine fractional digits.
-                    type: string
-                  startTime:
-                    description: |-
-                      Output only. The start time of any upcoming scheduled maintenance for this instance.
-                      A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-                      resolution and up to nine fractional digits.
-                    type: string
-                type: object
               memorySizeGb:
                 description: Redis memory size in GiB.
                 type: integer
@@ -405,6 +382,31 @@ spec:
                   Hostname or IP address of the exposed Redis endpoint used by clients
                   to connect to the service.
                 type: string
+              maintenanceSchedule:
+                description: Upcoming maintenance schedule.
+                items:
+                  properties:
+                    endTime:
+                      description: |-
+                        Output only. The end time of any upcoming scheduled maintenance for this instance.
+                        A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                        resolution and up to nine fractional digits.
+                      type: string
+                    scheduleDeadlineTime:
+                      description: |-
+                        Output only. The deadline that the maintenance schedule start time
+                        can not go beyond, including reschedule.
+                        A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                        resolution and up to nine fractional digits.
+                      type: string
+                    startTime:
+                      description: |-
+                        Output only. The start time of any upcoming scheduled maintenance for this instance.
+                        A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                        resolution and up to nine fractional digits.
+                      type: string
+                  type: object
+                type: array
               nodes:
                 description: Output only. Info per node.
                 items:

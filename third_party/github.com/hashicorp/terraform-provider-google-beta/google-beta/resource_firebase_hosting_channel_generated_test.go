@@ -26,6 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -34,13 +35,13 @@ func TestAccFirebaseHostingChannel_firebasehostingChannelBasicExample(t *testing
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckFirebaseHostingChannelDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -57,7 +58,7 @@ func TestAccFirebaseHostingChannel_firebasehostingChannelBasicExample(t *testing
 }
 
 func testAccFirebaseHostingChannel_firebasehostingChannelBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"
@@ -76,13 +77,13 @@ func TestAccFirebaseHostingChannel_firebasehostingChannelFullExample(t *testing.
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckFirebaseHostingChannelDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -99,7 +100,7 @@ func TestAccFirebaseHostingChannel_firebasehostingChannelFullExample(t *testing.
 }
 
 func testAccFirebaseHostingChannel_firebasehostingChannelFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"
@@ -129,7 +130,7 @@ func testAccCheckFirebaseHostingChannelDestroyProducer(t *testing.T) func(s *ter
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
 			if err != nil {

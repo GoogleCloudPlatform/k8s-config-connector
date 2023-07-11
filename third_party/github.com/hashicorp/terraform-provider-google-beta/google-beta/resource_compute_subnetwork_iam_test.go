@@ -8,6 +8,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 // Even though the resource has generated tests, keep this one around until we are able to generate
@@ -15,15 +16,15 @@ import (
 func TestAccComputeSubnetworkIamPolicy(t *testing.T) {
 	t.Parallel()
 
-	project := acctest.GetTestProjectFromEnv()
-	account := fmt.Sprintf("tf-test-%d", RandInt(t))
+	project := envvar.GetTestProjectFromEnv()
+	account := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	role := "roles/compute.networkUser"
-	region := acctest.GetTestRegionFromEnv()
-	subnetwork := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	region := envvar.GetTestRegionFromEnv()
+	subnetwork := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeSubnetworkIamPolicy_basic(account, region, subnetwork, role),

@@ -36,12 +36,12 @@ func TestAccDatastreamStream_datastreamStreamBasicExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"deletion_protection": false,
-		"random_suffix":       RandString(t, 10),
+		"random_suffix":       acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -62,7 +62,7 @@ func TestAccDatastreamStream_datastreamStreamBasicExample(t *testing.T) {
 }
 
 func testAccDatastreamStream_datastreamStreamBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "project" {
 }
 
@@ -198,13 +198,13 @@ func TestAccDatastreamStream_datastreamStreamFullExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"deletion_protection": false,
-		"stream_cmek":         BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
-		"random_suffix":       RandString(t, 10),
+		"stream_cmek":         acctest.BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
+		"random_suffix":       acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -225,7 +225,7 @@ func TestAccDatastreamStream_datastreamStreamFullExample(t *testing.T) {
 }
 
 func testAccDatastreamStream_datastreamStreamFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "project" {
 }
 
@@ -429,12 +429,12 @@ func TestAccDatastreamStream_datastreamStreamPostgresqlBigqueryDatasetIdExample(
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -455,7 +455,7 @@ func TestAccDatastreamStream_datastreamStreamPostgresqlBigqueryDatasetIdExample(
 }
 
 func testAccDatastreamStream_datastreamStreamPostgresqlBigqueryDatasetIdExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 
 resource "google_bigquery_dataset" "postgres" {
   dataset_id    = "postgres%{random_suffix}"
@@ -571,13 +571,13 @@ func TestAccDatastreamStream_datastreamStreamBigqueryExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"deletion_protection":                     false,
-		"bigquery_destination_table_kms_key_name": BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
-		"random_suffix":                           RandString(t, 10),
+		"bigquery_destination_table_kms_key_name": acctest.BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
+		"random_suffix":                           acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -598,7 +598,7 @@ func TestAccDatastreamStream_datastreamStreamBigqueryExample(t *testing.T) {
 }
 
 func testAccDatastreamStream_datastreamStreamBigqueryExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "project" {
 }
 
@@ -726,7 +726,7 @@ func testAccCheckDatastreamStreamDestroyProducer(t *testing.T) func(s *terraform
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DatastreamBasePath}}projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
 			if err != nil {

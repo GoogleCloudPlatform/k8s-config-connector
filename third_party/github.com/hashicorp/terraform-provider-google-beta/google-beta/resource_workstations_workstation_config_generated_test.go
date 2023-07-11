@@ -34,12 +34,12 @@ func TestAccWorkstationsWorkstationConfig_workstationConfigBasicExample(t *testi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckWorkstationsWorkstationConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccWorkstationsWorkstationConfig_workstationConfigBasicExample(t *testi
 }
 
 func testAccWorkstationsWorkstationConfig_workstationConfigBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   provider                = google-beta
   name                    = "tf-test-workstation-cluster%{random_suffix}"
@@ -111,12 +111,12 @@ func TestAccWorkstationsWorkstationConfig_workstationConfigContainerExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckWorkstationsWorkstationConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -133,7 +133,7 @@ func TestAccWorkstationsWorkstationConfig_workstationConfigContainerExample(t *t
 }
 
 func testAccWorkstationsWorkstationConfig_workstationConfigContainerExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   provider                = google-beta
   name                    = "tf-test-workstation-cluster%{random_suffix}"
@@ -193,12 +193,12 @@ func TestAccWorkstationsWorkstationConfig_workstationConfigPersistentDirectories
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckWorkstationsWorkstationConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -215,7 +215,7 @@ func TestAccWorkstationsWorkstationConfig_workstationConfigPersistentDirectories
 }
 
 func testAccWorkstationsWorkstationConfig_workstationConfigPersistentDirectoriesExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   provider                = google-beta
   name                    = "tf-test-workstation-cluster%{random_suffix}"
@@ -281,12 +281,12 @@ func TestAccWorkstationsWorkstationConfig_workstationConfigSourceSnapshotExample
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckWorkstationsWorkstationConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -303,7 +303,7 @@ func TestAccWorkstationsWorkstationConfig_workstationConfigSourceSnapshotExample
 }
 
 func testAccWorkstationsWorkstationConfig_workstationConfigSourceSnapshotExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   provider                = google-beta
   name                    = "tf-test-workstation-cluster%{random_suffix}"
@@ -363,12 +363,12 @@ func TestAccWorkstationsWorkstationConfig_workstationConfigShieldedInstanceConfi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckWorkstationsWorkstationConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -385,7 +385,7 @@ func TestAccWorkstationsWorkstationConfig_workstationConfigShieldedInstanceConfi
 }
 
 func testAccWorkstationsWorkstationConfig_workstationConfigShieldedInstanceConfigExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   provider                = google-beta
   name                    = "tf-test-workstation-cluster%{random_suffix}"
@@ -441,12 +441,12 @@ func TestAccWorkstationsWorkstationConfig_workstationConfigEncryptionKeyExample(
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckWorkstationsWorkstationConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -463,15 +463,17 @@ func TestAccWorkstationsWorkstationConfig_workstationConfigEncryptionKeyExample(
 }
 
 func testAccWorkstationsWorkstationConfig_workstationConfigEncryptionKeyExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
-  provider                = google-beta
+  provider = google-beta
+
   name                    = "tf-test-workstation-cluster%{random_suffix}"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "default" {
-  provider      = google-beta
+  provider = google-beta
+
   name          = "tf-test-workstation-cluster%{random_suffix}"
   ip_cidr_range = "10.0.0.0/24"
   region        = "us-central1"
@@ -479,7 +481,8 @@ resource "google_compute_subnetwork" "default" {
 }
 
 resource "google_workstations_workstation_cluster" "default" {
-  provider               = google-beta
+  provider = google-beta
+
   workstation_cluster_id = "tf-test-workstation-cluster%{random_suffix}"
   network                = google_compute_network.default.id
   subnetwork             = google_compute_subnetwork.default.id
@@ -495,25 +498,29 @@ resource "google_workstations_workstation_cluster" "default" {
 }
 
 resource "google_kms_key_ring" "default" {
-  name     = "tf-test-workstation-cluster%{random_suffix}"
-  location = "global"
   provider = google-beta
+
+  name     = "tf-test-workstation-cluster%{random_suffix}"
+  location = "us-central1"
 }
 
 resource "google_kms_crypto_key" "default" {
+  provider = google-beta
+
   name            = "tf-test-workstation-cluster%{random_suffix}"
   key_ring        = google_kms_key_ring.default.id
-  provider        = google-beta
 }
 
 resource "google_service_account" "default" {
+  provider = google-beta
+
   account_id   = "tf-test-my-account%{random_suffix}"
   display_name = "Service Account"
-  provider = google-beta
 }
 
 resource "google_workstations_workstation_config" "default" {
   provider               = google-beta
+
   workstation_config_id  = "tf-test-workstation-config%{random_suffix}"
   workstation_cluster_id = google_workstations_workstation_cluster.default.workstation_cluster_id
   location   		         = "us-central1"
@@ -548,7 +555,7 @@ func testAccCheckWorkstationsWorkstationConfigDestroyProducer(t *testing.T) func
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{WorkstationsBasePath}}projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}")
 			if err != nil {

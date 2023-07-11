@@ -380,7 +380,7 @@ the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The number of days between snapshots.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Defines a schedule with units measured in days. The value determines how many days pass between the start of each cycle. Days in cycle for snapshot schedule policy must be 1.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

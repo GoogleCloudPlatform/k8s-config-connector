@@ -23,20 +23,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccFirebaseProject_firebaseProjectBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseProject_firebaseProjectBasicExample(context),
@@ -51,12 +51,12 @@ func TestAccFirebaseProject_firebaseProjectBasicExample(t *testing.T) {
 }
 
 func testAccFirebaseProject_firebaseProjectBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "default" {
   provider = google-beta
 
-  project_id = "tf-test%{random_suffix}"
-  name       = "tf-test%{random_suffix}"
+  project_id = "tf-test-my-project%{random_suffix}"
+  name       = "tf-test-my-project%{random_suffix}"
   org_id     = "%{org_id}"
 
   labels = {

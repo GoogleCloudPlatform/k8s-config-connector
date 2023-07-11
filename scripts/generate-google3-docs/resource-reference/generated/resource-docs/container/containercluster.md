@@ -279,6 +279,8 @@ nodeConfig:
     enabled: boolean
   guestAccelerator:
   - count: integer
+    gpuDriverInstallationConfig:
+      gpuDriverVersion: string
     gpuPartitionSize: string
     gpuSharingConfig:
       gpuSharingStrategy: string
@@ -328,6 +330,12 @@ nodeConfig:
   shieldedInstanceConfig:
     enableIntegrityMonitoring: boolean
     enableSecureBoot: boolean
+  soleTenantConfig:
+    nodeAffinity:
+    - key: string
+      operator: string
+      values:
+      - string
   spot: boolean
   tags:
   - string
@@ -388,6 +396,9 @@ resourceUsageExportConfig:
     datasetId: string
   enableNetworkEgressMetering: boolean
   enableResourceConsumptionMetering: boolean
+securityPostureConfig:
+  mode: string
+  vulnerabilityMode: string
 serviceExternalIpsConfig:
   enabled: boolean
 subnetworkRef:
@@ -2295,6 +2306,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.guestAccelerator[].gpuDriverInstallationConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Configuration for auto installation of GPU driver.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.guestAccelerator[].gpuDriverInstallationConfig.gpuDriverVersion</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Mode for how the GPU driver is installed.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.guestAccelerator[].gpuPartitionSize</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2743,6 +2774,76 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Immutable. Defines whether the instance has Secure Boot enabled.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Node affinity options for sole tenant node pools.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[].key</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[].operator</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[].values</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[].values[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3358,6 +3459,36 @@ will be provisioned.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. Defaults to true.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>securityPostureConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Defines the config needed to enable/disable features for the Security Posture API.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>securityPostureConfig.mode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Sets the mode of the Kubernetes security posture API's off-cluster features. Available options include DISABLED and BASIC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>securityPostureConfig.vulnerabilityMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Sets the mode of the Kubernetes security posture API's workload vulnerability scanning. Available options include VULNERABILITY_DISABLED and VULNERABILITY_BASIC.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

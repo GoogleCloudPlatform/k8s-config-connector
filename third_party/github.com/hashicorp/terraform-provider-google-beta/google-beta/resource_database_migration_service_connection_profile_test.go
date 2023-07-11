@@ -13,12 +13,12 @@ func TestAccDatabaseMigrationServiceConnectionProfile_update(t *testing.T) {
 	t.Parallel()
 
 	suffix := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDatabaseMigrationServiceConnectionProfile_basic(suffix),
@@ -43,7 +43,7 @@ func TestAccDatabaseMigrationServiceConnectionProfile_update(t *testing.T) {
 }
 
 func testAccDatabaseMigrationServiceConnectionProfile_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_database_migration_service_connection_profile" "default" {
 	location = "us-central1"
 	connection_profile_id = "tf-test-dbms-connection-profile%{random_suffix}"
@@ -62,7 +62,7 @@ resource "google_database_migration_service_connection_profile" "default" {
 }
 
 func testAccDatabaseMigrationServiceConnectionProfile_update(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_database_migration_service_connection_profile" "default" {
 	location = "us-central1"
 	connection_profile_id = "tf-test-dbms-connection-profile%{random_suffix}"

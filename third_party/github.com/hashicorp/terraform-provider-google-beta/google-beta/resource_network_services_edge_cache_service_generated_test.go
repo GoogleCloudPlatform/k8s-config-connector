@@ -34,12 +34,12 @@ func TestAccNetworkServicesEdgeCacheService_networkServicesEdgeCacheServiceBasic
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesEdgeCacheServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccNetworkServicesEdgeCacheService_networkServicesEdgeCacheServiceBasic
 }
 
 func testAccNetworkServicesEdgeCacheService_networkServicesEdgeCacheServiceBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "dest" {
   name          = "tf-test-my-bucket%{random_suffix}"
   location      = "US"
@@ -114,12 +114,12 @@ func TestAccNetworkServicesEdgeCacheService_networkServicesEdgeCacheServiceAdvan
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesEdgeCacheServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -136,7 +136,7 @@ func TestAccNetworkServicesEdgeCacheService_networkServicesEdgeCacheServiceAdvan
 }
 
 func testAccNetworkServicesEdgeCacheService_networkServicesEdgeCacheServiceAdvancedExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "dest" {
   name          = "tf-test-my-bucket%{random_suffix}"
   location      = "US"
@@ -328,12 +328,12 @@ func TestAccNetworkServicesEdgeCacheService_networkServicesEdgeCacheServiceDualT
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesEdgeCacheServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -350,7 +350,7 @@ func TestAccNetworkServicesEdgeCacheService_networkServicesEdgeCacheServiceDualT
 }
 
 func testAccNetworkServicesEdgeCacheService_networkServicesEdgeCacheServiceDualTokenExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_secret_manager_secret" "secret-basic" {
   secret_id = "tf-test-secret-name%{random_suffix}"
 
@@ -479,7 +479,7 @@ func testAccCheckNetworkServicesEdgeCacheServiceDestroyProducer(t *testing.T) fu
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/edgeCacheServices/{{name}}")
 			if err != nil {

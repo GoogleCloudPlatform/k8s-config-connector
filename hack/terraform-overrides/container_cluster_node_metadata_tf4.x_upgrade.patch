@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/node_config.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/node_config.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/node_config.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/node_config.go
 index a0a740bd8..a990653dd 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/node_config.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/node_config.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/node_config.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/node_config.go
 @@ -280,9 +280,18 @@ func schemaNodeConfig() *schema.Schema {
  					Description: `The workload metadata configuration for this node.`,
  					Elem: &schema.Resource{

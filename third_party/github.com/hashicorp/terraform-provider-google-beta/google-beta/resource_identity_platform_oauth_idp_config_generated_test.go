@@ -34,13 +34,13 @@ func TestAccIdentityPlatformOauthIdpConfig_identityPlatformOauthIdpConfigBasicEx
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"name":          "oidc.oauth-idp-config-" + RandString(t, 10),
-		"random_suffix": RandString(t, 10),
+		"name":          "oidc.oauth-idp-config-" + acctest.RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIdentityPlatformOauthIdpConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccIdentityPlatformOauthIdpConfig_identityPlatformOauthIdpConfigBasicEx
 }
 
 func testAccIdentityPlatformOauthIdpConfig_identityPlatformOauthIdpConfigBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_identity_platform_oauth_idp_config" "oauth_idp_config" {
   name          = "%{name}"
   display_name  = "Display Name"
@@ -78,7 +78,7 @@ func testAccCheckIdentityPlatformOauthIdpConfigDestroyProducer(t *testing.T) fun
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{IdentityPlatformBasePath}}projects/{{project}}/oauthIdpConfigs/{{name}}")
 			if err != nil {

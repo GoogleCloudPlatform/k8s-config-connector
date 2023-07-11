@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -36,8 +37,8 @@ func TestAccApikeysKey_AndroidKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
-		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -69,8 +70,8 @@ func TestAccApikeysKey_BasicKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
-		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -102,8 +103,8 @@ func TestAccApikeysKey_IosKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
-		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -135,8 +136,8 @@ func TestAccApikeysKey_MinimalKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
-		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -160,8 +161,8 @@ func TestAccApikeysKey_ServerKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
-		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -191,7 +192,7 @@ func TestAccApikeysKey_ServerKey(t *testing.T) {
 }
 
 func testAccApikeysKey_AndroidKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -223,7 +224,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_AndroidKeyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -255,7 +256,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_BasicKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -284,7 +285,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_BasicKeyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key-update"
@@ -313,7 +314,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_IosKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -342,7 +343,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_IosKeyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -371,7 +372,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_MinimalKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -389,7 +390,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_ServerKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -418,7 +419,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_ServerKeyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"

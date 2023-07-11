@@ -7,17 +7,18 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccInstanceTemplateDatasource_name(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccInstanceTemplate_name(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccInstanceTemplate_name(envvar.GetTestProjectFromEnv(), acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_instance_template.default",
@@ -33,12 +34,12 @@ func TestAccInstanceTemplateDatasource_name(t *testing.T) {
 func TestAccInstanceTemplateDatasource_filter(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccInstanceTemplate_filter(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccInstanceTemplate_filter(envvar.GetTestProjectFromEnv(), acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_instance_template.default",
@@ -54,12 +55,12 @@ func TestAccInstanceTemplateDatasource_filter(t *testing.T) {
 func TestAccInstanceTemplateDatasource_filter_mostRecent(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccInstanceTemplate_filter_mostRecent(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccInstanceTemplate_filter_mostRecent(envvar.GetTestProjectFromEnv(), acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_instance_template.default",
@@ -75,12 +76,12 @@ func TestAccInstanceTemplateDatasource_filter_mostRecent(t *testing.T) {
 func TestAccInstanceTemplateDatasource_self_link_unique(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccInstanceTemplate_self_link_unique(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccInstanceTemplate_self_link_unique(envvar.GetTestProjectFromEnv(), acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_instance_template.default",
@@ -98,7 +99,7 @@ func TestAccInstanceTemplateDatasource_self_link_unique(t *testing.T) {
 }
 
 func testAccInstanceTemplate_name(project, suffix string) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance_template" "default" {
   name        = "tf-test-template-%{suffix}"
   description = "Example template."
@@ -126,7 +127,7 @@ data "google_compute_instance_template" "default" {
 }
 
 func testAccInstanceTemplate_filter(project, suffix string) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance_template" "a" {
   name        = "tf-test-template-a-%{suffix}"
   description = "Example template."
@@ -192,7 +193,7 @@ data "google_compute_instance_template" "default" {
 }
 
 func testAccInstanceTemplate_filter_mostRecent(project, suffix string) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance_template" "a" {
   name        = "tf-test-template-%{suffix}-a"
   description = "tf-test-instance-template"
@@ -268,7 +269,7 @@ data "google_compute_instance_template" "default" {
 }
 
 func testAccInstanceTemplate_self_link_unique(project, suffix string) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance_template" "default" {
   name        = "tf-test-template-%{suffix}"
   description = "Example template."

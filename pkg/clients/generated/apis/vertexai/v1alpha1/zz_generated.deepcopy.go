@@ -560,6 +560,11 @@ func (in *IndexConfig) DeepCopyInto(out *IndexConfig) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ShardSize != nil {
+		in, out := &in.ShardSize, &out.ShardSize
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -1194,6 +1199,11 @@ func (in *VertexAIFeaturestoreEntityTypeFeatureStatus) DeepCopyInto(out *VertexA
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
 		*out = new(int)
+		**out = **in
+	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
 		**out = **in
 	}
 	if in.UpdateTime != nil {

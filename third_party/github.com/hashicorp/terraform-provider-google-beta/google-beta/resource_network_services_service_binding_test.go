@@ -13,13 +13,13 @@ import (
 func TestAccNetworkServicesServiceBinding_update(t *testing.T) {
 	t.Parallel()
 
-	serviceNamespace := fmt.Sprintf("tf-test-service-namespace-%s", RandString(t, 10))
-	serviceName := fmt.Sprintf("tf-test-service-%s", RandString(t, 10))
-	serviceBindingName := fmt.Sprintf("tf-test-service-binding-%s", RandString(t, 10))
+	serviceNamespace := fmt.Sprintf("tf-test-service-namespace-%s", acctest.RandString(t, 10))
+	serviceName := fmt.Sprintf("tf-test-service-%s", acctest.RandString(t, 10))
+	serviceBindingName := fmt.Sprintf("tf-test-service-binding-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesServiceBindingDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

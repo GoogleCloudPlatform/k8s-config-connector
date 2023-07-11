@@ -13,13 +13,13 @@ import (
 func TestAccNetworkServicesTcpRoute_update(t *testing.T) {
 	t.Parallel()
 
-	tcpServiceName := fmt.Sprintf("tf-test-tcp-service-%s", RandString(t, 10))
-	tcpHealthCheckName := fmt.Sprintf("tf-test-tcp-healthcheck-%s", RandString(t, 10))
-	tcpRouteName := fmt.Sprintf("tf-test-tcp-route-%s", RandString(t, 10))
+	tcpServiceName := fmt.Sprintf("tf-test-tcp-service-%s", acctest.RandString(t, 10))
+	tcpHealthCheckName := fmt.Sprintf("tf-test-tcp-healthcheck-%s", acctest.RandString(t, 10))
+	tcpRouteName := fmt.Sprintf("tf-test-tcp-route-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesTcpRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

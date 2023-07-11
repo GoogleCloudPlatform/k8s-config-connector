@@ -234,6 +234,14 @@ type BigQueryDatasetSpec struct {
 	/* Immutable. Optional. The datasetId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Specifies the storage billing model for the dataset.
+	Set this flag value to LOGICAL to use logical bytes for storage billing,
+	or to PHYSICAL to use physical bytes instead.
+
+	LOGICAL is the default if this flag isn't specified. */
+	// +optional
+	StorageBillingModel *string `json:"storageBillingModel,omitempty"`
 }
 
 type BigQueryDatasetStatus struct {

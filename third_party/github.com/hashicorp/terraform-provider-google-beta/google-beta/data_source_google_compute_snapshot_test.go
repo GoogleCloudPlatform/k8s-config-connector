@@ -7,17 +7,18 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccSnapshotDatasource_name(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccSnapshot_name(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccSnapshot_name(envvar.GetTestProjectFromEnv(), acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_snapshot.default",
@@ -33,12 +34,12 @@ func TestAccSnapshotDatasource_name(t *testing.T) {
 func TestAccSnapshotDatasource_filter(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccSnapshot_filter(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccSnapshot_filter(envvar.GetTestProjectFromEnv(), acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_snapshot.default",
@@ -54,12 +55,12 @@ func TestAccSnapshotDatasource_filter(t *testing.T) {
 func TestAccSnapshotDatasource_filterMostRecent(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccSnapshot_filter_mostRecent(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccSnapshot_filter_mostRecent(envvar.GetTestProjectFromEnv(), acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_snapshot.default",
@@ -73,7 +74,7 @@ func TestAccSnapshotDatasource_filterMostRecent(t *testing.T) {
 }
 
 func testAccSnapshot_name(project, suffix string) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 	data "google_compute_image" "tf-test-image" {
 		family  = "debian-11"
 		project = "debian-cloud"
@@ -105,7 +106,7 @@ func testAccSnapshot_name(project, suffix string) string {
 }
 
 func testAccSnapshot_filter(project, suffix string) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 	data "google_compute_image" "tf-test-image" {
 		family  = "debian-11"
 		project = "debian-cloud"
@@ -156,7 +157,7 @@ func testAccSnapshot_filter(project, suffix string) string {
 }
 
 func testAccSnapshot_filter_mostRecent(project, suffix string) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 	data "google_compute_image" "tf-test-image" {
 		family  = "debian-11"
 		project = "debian-cloud"

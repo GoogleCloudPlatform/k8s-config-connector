@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 
 	dcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -21,23 +22,23 @@ import (
 func TestAccEventarcTrigger_channel(t *testing.T) {
 	t.Parallel()
 
-	region := acctest.GetTestRegionFromEnv()
-	key1 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-trigger-key1")
-	key2 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-trigger-key2")
+	region := envvar.GetTestRegionFromEnv()
+	key1 := acctest.BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-trigger-key1")
+	key2 := acctest.BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-trigger-key2")
 
 	context := map[string]interface{}{
 		"region":          region,
-		"project_name":    acctest.GetTestProjectFromEnv(),
-		"service_account": acctest.GetTestServiceAccountFromEnv(t),
+		"project_name":    envvar.GetTestProjectFromEnv(),
+		"service_account": envvar.GetTestServiceAccountFromEnv(t),
 		"key_ring":        tpgresource.GetResourceNameFromSelfLink(key1.KeyRing.Name),
 		"key1":            tpgresource.GetResourceNameFromSelfLink(key1.CryptoKey.Name),
 		"key2":            tpgresource.GetResourceNameFromSelfLink(key2.CryptoKey.Name),
-		"random_suffix":   RandString(t, 10),
+		"random_suffix":   acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckEventarcChannelTriggerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -53,7 +54,7 @@ func TestAccEventarcTrigger_channel(t *testing.T) {
 }
 
 func testAccEventarcTrigger_createTriggerWithChannelName(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "test_project" {
 	project_id  = "%{project_name}"
 }
@@ -143,7 +144,7 @@ func testAccCheckEventarcChannelTriggerDestroyProducer(t *testing.T) func(s *ter
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {

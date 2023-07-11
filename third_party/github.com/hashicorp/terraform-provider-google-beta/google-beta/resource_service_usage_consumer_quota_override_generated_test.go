@@ -26,6 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -34,13 +35,13 @@ func TestAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideExample(t *te
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckServiceUsageConsumerQuotaOverrideDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -57,7 +58,7 @@ func TestAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideExample(t *te
 }
 
 func testAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "my_project" {
   provider   = google-beta
   name       = "tf-test-project"
@@ -81,13 +82,13 @@ func TestAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideZeroValueExam
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckServiceUsageConsumerQuotaOverrideDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -104,7 +105,7 @@ func TestAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideZeroValueExam
 }
 
 func testAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideZeroValueExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "my_project" {
   provider   = google-beta
   name       = "tf-test-project"
@@ -128,13 +129,13 @@ func TestAccServiceUsageConsumerQuotaOverride_regionConsumerQuotaOverrideExample
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckServiceUsageConsumerQuotaOverrideDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -151,7 +152,7 @@ func TestAccServiceUsageConsumerQuotaOverride_regionConsumerQuotaOverrideExample
 }
 
 func testAccServiceUsageConsumerQuotaOverride_regionConsumerQuotaOverrideExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "my_project" {
   provider   = google-beta
   name       = "tf-test-project"
@@ -178,13 +179,13 @@ func TestAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideCustomDimensi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckServiceUsageConsumerQuotaOverrideDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -201,7 +202,7 @@ func TestAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideCustomDimensi
 }
 
 func testAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideCustomDimensionExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "my_project" {
   provider   = google-beta
   name       = "tf-test-project"
@@ -234,7 +235,7 @@ func testAccCheckServiceUsageConsumerQuotaOverrideDestroyProducer(t *testing.T) 
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ServiceUsageBasePath}}projects/{{project}}/services/{{service}}/consumerQuotaMetrics/{{metric}}/limits/{{limit}}/consumerOverrides/")
 			if err != nil {

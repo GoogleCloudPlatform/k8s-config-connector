@@ -25,13 +25,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccIapTunnelInstanceIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/iap.tunnelResourceAccessor",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -40,16 +41,16 @@ func TestAccIapTunnelInstanceIamBindingGenerated(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIapTunnelInstanceIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -59,7 +60,7 @@ func TestAccIapTunnelInstanceIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -71,7 +72,7 @@ func TestAccIapTunnelInstanceIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/iap.tunnelResourceAccessor",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -80,9 +81,9 @@ func TestAccIapTunnelInstanceIamMemberGenerated(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -90,7 +91,7 @@ func TestAccIapTunnelInstanceIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -102,7 +103,7 @@ func TestAccIapTunnelInstanceIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/iap.tunnelResourceAccessor",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -111,9 +112,9 @@ func TestAccIapTunnelInstanceIamPolicyGenerated(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIapTunnelInstanceIamPolicy_basicGenerated(context),
@@ -121,7 +122,7 @@ func TestAccIapTunnelInstanceIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -130,7 +131,7 @@ func TestAccIapTunnelInstanceIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -142,7 +143,7 @@ func TestAccIapTunnelInstanceIamBindingGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/iap.tunnelResourceAccessor",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -151,16 +152,16 @@ func TestAccIapTunnelInstanceIamBindingGenerated_withCondition(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIapTunnelInstanceIamBinding_withConditionGenerated(context),
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor %s", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"]), context["condition_title"]),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor %s", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"]), context["condition_title"]),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -174,7 +175,7 @@ func TestAccIapTunnelInstanceIamBindingGenerated_withAndWithoutCondition(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/iap.tunnelResourceAccessor",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -183,28 +184,28 @@ func TestAccIapTunnelInstanceIamBindingGenerated_withAndWithoutCondition(t *test
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIapTunnelInstanceIamBinding_withAndWithoutConditionGenerated(context),
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_binding.foo2",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor %s", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"]), context["condition_title"]),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor %s", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"]), context["condition_title"]),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_binding.foo3",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor %s", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"]), context["condition_title_no_desc"]),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor %s", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"]), context["condition_title_no_desc"]),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -216,7 +217,7 @@ func TestAccIapTunnelInstanceIamMemberGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/iap.tunnelResourceAccessor",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -225,16 +226,16 @@ func TestAccIapTunnelInstanceIamMemberGenerated_withCondition(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIapTunnelInstanceIamMember_withConditionGenerated(context),
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor user:admin@hashicorptest.com %s", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"]), context["condition_title"]),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor user:admin@hashicorptest.com %s", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"]), context["condition_title"]),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -248,7 +249,7 @@ func TestAccIapTunnelInstanceIamMemberGenerated_withAndWithoutCondition(t *testi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/iap.tunnelResourceAccessor",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -257,28 +258,28 @@ func TestAccIapTunnelInstanceIamMemberGenerated_withAndWithoutCondition(t *testi
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIapTunnelInstanceIamMember_withAndWithoutConditionGenerated(context),
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_member.foo2",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor user:admin@hashicorptest.com %s", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"]), context["condition_title"]),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor user:admin@hashicorptest.com %s", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"]), context["condition_title"]),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_member.foo3",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor user:admin@hashicorptest.com %s", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"]), context["condition_title_no_desc"]),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s roles/iap.tunnelResourceAccessor user:admin@hashicorptest.com %s", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"]), context["condition_title_no_desc"]),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -290,7 +291,7 @@ func TestAccIapTunnelInstanceIamPolicyGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/iap.tunnelResourceAccessor",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -300,12 +301,12 @@ func TestAccIapTunnelInstanceIamPolicyGenerated_withCondition(t *testing.T) {
 	}
 
 	// Test should have 2 bindings: one with a description and one without. Any < chars are converted to a unicode character by the API.
-	expectedPolicyData := Nprintf(`{"bindings":[{"condition":{"description":"%{condition_desc}","expression":"%{condition_expr}","title":"%{condition_title}"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"},{"condition":{"expression":"%{condition_expr}","title":"%{condition_title}-no-description"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"}]}`, context)
+	expectedPolicyData := acctest.Nprintf(`{"bindings":[{"condition":{"description":"%{condition_desc}","expression":"%{condition_expr}","title":"%{condition_title}"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"},{"condition":{"expression":"%{condition_expr}","title":"%{condition_title}-no-description"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"}]}`, context)
 	expectedPolicyData = strings.Replace(expectedPolicyData, "<", "\\u003c", -1)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIapTunnelInstanceIamPolicy_withConditionGenerated(context),
@@ -318,7 +319,7 @@ func TestAccIapTunnelInstanceIamPolicyGenerated_withCondition(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_iap_tunnel_instance_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/iap_tunnel/zones/%s/instances/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), fmt.Sprintf("tf-test-tunnel-vm%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -327,7 +328,7 @@ func TestAccIapTunnelInstanceIamPolicyGenerated_withCondition(t *testing.T) {
 }
 
 func testAccIapTunnelInstanceIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance" "tunnelvm" {
   name         = "tf-test-tunnel-vm%{random_suffix}"
   zone         = ""
@@ -355,7 +356,7 @@ resource "google_iap_tunnel_instance_iam_member" "foo" {
 }
 
 func testAccIapTunnelInstanceIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance" "tunnelvm" {
   name         = "tf-test-tunnel-vm%{random_suffix}"
   zone         = ""
@@ -398,7 +399,7 @@ data "google_iap_tunnel_instance_iam_policy" "foo" {
 }
 
 func testAccIapTunnelInstanceIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance" "tunnelvm" {
   name         = "tf-test-tunnel-vm%{random_suffix}"
   zone         = ""
@@ -428,7 +429,7 @@ resource "google_iap_tunnel_instance_iam_policy" "foo" {
 }
 
 func testAccIapTunnelInstanceIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance" "tunnelvm" {
   name         = "tf-test-tunnel-vm%{random_suffix}"
   zone         = ""
@@ -456,7 +457,7 @@ resource "google_iap_tunnel_instance_iam_binding" "foo" {
 }
 
 func testAccIapTunnelInstanceIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance" "tunnelvm" {
   name         = "tf-test-tunnel-vm%{random_suffix}"
   zone         = ""
@@ -484,7 +485,7 @@ resource "google_iap_tunnel_instance_iam_binding" "foo" {
 }
 
 func testAccIapTunnelInstanceIamBinding_withConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance" "tunnelvm" {
   name         = "tf-test-tunnel-vm%{random_suffix}"
   zone         = ""
@@ -517,7 +518,7 @@ resource "google_iap_tunnel_instance_iam_binding" "foo" {
 }
 
 func testAccIapTunnelInstanceIamBinding_withAndWithoutConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance" "tunnelvm" {
   name         = "tf-test-tunnel-vm%{random_suffix}"
   zone         = ""
@@ -572,7 +573,7 @@ resource "google_iap_tunnel_instance_iam_binding" "foo3" {
 }
 
 func testAccIapTunnelInstanceIamMember_withConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance" "tunnelvm" {
   name         = "tf-test-tunnel-vm%{random_suffix}"
   zone         = ""
@@ -605,7 +606,7 @@ resource "google_iap_tunnel_instance_iam_member" "foo" {
 }
 
 func testAccIapTunnelInstanceIamMember_withAndWithoutConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance" "tunnelvm" {
   name         = "tf-test-tunnel-vm%{random_suffix}"
   zone         = ""
@@ -660,7 +661,7 @@ resource "google_iap_tunnel_instance_iam_member" "foo3" {
 }
 
 func testAccIapTunnelInstanceIamPolicy_withConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_instance" "tunnelvm" {
   name         = "tf-test-tunnel-vm%{random_suffix}"
   zone         = ""

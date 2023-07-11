@@ -34,12 +34,12 @@ func TestAccDialogflowCXEntityType_dialogflowcxEntityTypeFullExample(t *testing.
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDialogflowCXEntityTypeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccDialogflowCXEntityType_dialogflowcxEntityTypeFullExample(t *testing.
 }
 
 func testAccDialogflowCXEntityType_dialogflowcxEntityTypeFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dialogflow_cx_agent" "agent" {
   display_name = "tf-test-dialogflowcx-agent%{random_suffix}"
   location = "global"
@@ -100,7 +100,7 @@ func testAccCheckDialogflowCXEntityTypeDestroyProducer(t *testing.T) func(s *ter
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DialogflowCXBasePath}}{{parent}}/entityTypes/{{name}}")
 			if err != nil {

@@ -24,26 +24,27 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccPubsubTopicIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccPubsubTopicIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_pubsub_topic_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/topics/%s roles/viewer", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-topic%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/topics/%s roles/viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-topic%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -53,7 +54,7 @@ func TestAccPubsubTopicIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_pubsub_topic_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/topics/%s roles/viewer", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-topic%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/topics/%s roles/viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-topic%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -65,13 +66,13 @@ func TestAccPubsubTopicIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -79,7 +80,7 @@ func TestAccPubsubTopicIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_pubsub_topic_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/topics/%s roles/viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-topic%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/topics/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-topic%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,13 +92,13 @@ func TestAccPubsubTopicIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccPubsubTopicIamPolicy_basicGenerated(context),
@@ -105,7 +106,7 @@ func TestAccPubsubTopicIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_pubsub_topic_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/topics/%s", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-topic%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/topics/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-topic%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -114,7 +115,7 @@ func TestAccPubsubTopicIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_pubsub_topic_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/topics/%s", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-topic%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/topics/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-topic%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -123,7 +124,7 @@ func TestAccPubsubTopicIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccPubsubTopicIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_pubsub_topic" "example" {
   name = "tf-test-example-topic%{random_suffix}"
 
@@ -144,7 +145,7 @@ resource "google_pubsub_topic_iam_member" "foo" {
 }
 
 func testAccPubsubTopicIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_pubsub_topic" "example" {
   name = "tf-test-example-topic%{random_suffix}"
 
@@ -179,7 +180,7 @@ data "google_pubsub_topic_iam_policy" "foo" {
 }
 
 func testAccPubsubTopicIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_pubsub_topic" "example" {
   name = "tf-test-example-topic%{random_suffix}"
 
@@ -202,7 +203,7 @@ resource "google_pubsub_topic_iam_policy" "foo" {
 }
 
 func testAccPubsubTopicIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_pubsub_topic" "example" {
   name = "tf-test-example-topic%{random_suffix}"
 
@@ -223,7 +224,7 @@ resource "google_pubsub_topic_iam_binding" "foo" {
 }
 
 func testAccPubsubTopicIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_pubsub_topic" "example" {
   name = "tf-test-example-topic%{random_suffix}"
 

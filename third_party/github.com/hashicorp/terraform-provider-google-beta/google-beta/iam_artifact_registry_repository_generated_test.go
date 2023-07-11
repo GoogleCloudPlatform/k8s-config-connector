@@ -24,26 +24,27 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccArtifactRegistryRepositoryIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/artifactregistry.reader",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccArtifactRegistryRepositoryIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_artifact_registry_repository_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s roles/artifactregistry.reader", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s roles/artifactregistry.reader", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -53,7 +54,7 @@ func TestAccArtifactRegistryRepositoryIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_artifact_registry_repository_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s roles/artifactregistry.reader", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s roles/artifactregistry.reader", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -65,13 +66,13 @@ func TestAccArtifactRegistryRepositoryIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/artifactregistry.reader",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -79,7 +80,7 @@ func TestAccArtifactRegistryRepositoryIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_artifact_registry_repository_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s roles/artifactregistry.reader user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s roles/artifactregistry.reader user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,13 +92,13 @@ func TestAccArtifactRegistryRepositoryIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/artifactregistry.reader",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccArtifactRegistryRepositoryIamPolicy_basicGenerated(context),
@@ -105,7 +106,7 @@ func TestAccArtifactRegistryRepositoryIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_artifact_registry_repository_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -114,7 +115,7 @@ func TestAccArtifactRegistryRepositoryIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_artifact_registry_repository_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/repositories/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-repository%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -123,7 +124,7 @@ func TestAccArtifactRegistryRepositoryIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccArtifactRegistryRepositoryIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
@@ -142,7 +143,7 @@ resource "google_artifact_registry_repository_iam_member" "foo" {
 }
 
 func testAccArtifactRegistryRepositoryIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
@@ -176,7 +177,7 @@ data "google_artifact_registry_repository_iam_policy" "foo" {
 }
 
 func testAccArtifactRegistryRepositoryIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
@@ -197,7 +198,7 @@ resource "google_artifact_registry_repository_iam_policy" "foo" {
 }
 
 func testAccArtifactRegistryRepositoryIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
@@ -216,7 +217,7 @@ resource "google_artifact_registry_repository_iam_binding" "foo" {
 }
 
 func testAccArtifactRegistryRepositoryIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"

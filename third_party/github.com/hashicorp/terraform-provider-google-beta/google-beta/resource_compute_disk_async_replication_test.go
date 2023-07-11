@@ -8,6 +8,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 )
 
@@ -38,14 +39,14 @@ func TestAccComputeDiskAsyncReplication(t *testing.T) {
 		secondaryRegion = "australia-southeast1"
 	}
 
-	primaryDisk := fmt.Sprintf("tf-test-disk-primary-%s", RandString(t, 10))
-	secondaryDisk := fmt.Sprintf("tf-test-disk-secondary-%s", RandString(t, 10))
-	primaryRegionalDisk := fmt.Sprintf("tf-test-disk-rprimary-%s", RandString(t, 10))
-	secondaryRegionalDisk := fmt.Sprintf("tf-test-disk-rsecondary-%s", RandString(t, 10))
+	primaryDisk := fmt.Sprintf("tf-test-disk-primary-%s", acctest.RandString(t, 10))
+	secondaryDisk := fmt.Sprintf("tf-test-disk-secondary-%s", acctest.RandString(t, 10))
+	primaryRegionalDisk := fmt.Sprintf("tf-test-disk-rprimary-%s", acctest.RandString(t, 10))
+	secondaryRegionalDisk := fmt.Sprintf("tf-test-disk-rsecondary-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeDiskAsyncReplication_basicZonal(region, secondaryRegion, primaryDisk, secondaryDisk),
@@ -76,8 +77,6 @@ func TestAccComputeDiskAsyncReplication(t *testing.T) {
 func testAccComputeDiskAsyncReplication_basicZonal(region, secondaryRegion, primaryDisk, secondaryDisk string) string {
 	return fmt.Sprintf(`
 resource "google_compute_disk" "primary" {
-	provider = google-beta
-
 	zone = "%s-a"
 	name = "%s"
 	type = "pd-ssd"
@@ -86,8 +85,6 @@ resource "google_compute_disk" "primary" {
 }
 	
 resource "google_compute_disk" "secondary" {
-	provider = google-beta
-	
 	name = "%s"
 	type = "pd-ssd"
 	zone = "%s-b"
@@ -100,8 +97,6 @@ resource "google_compute_disk" "secondary" {
 }
 	
 resource "google_compute_disk_async_replication" "replication" {
-	provider = google-beta
-	
 	primary_disk = google_compute_disk.primary.id
 
 	secondary_disk {
@@ -114,8 +109,6 @@ resource "google_compute_disk_async_replication" "replication" {
 func testAccComputeDiskAsyncReplication_basicRegional(region, secondaryRegion, primaryDisk, secondaryDisk string) string {
 	return fmt.Sprintf(`
 resource "google_compute_region_disk" "primary" {
-	provider = google-beta
-	
 	region = "%s"
 	name   = "%s"
 	type   = "pd-ssd"
@@ -129,8 +122,6 @@ resource "google_compute_region_disk" "primary" {
 }
 	
 resource "google_compute_region_disk" "secondary" {
-    provider = google-beta
-	
 	region = "%s"
 	name   = "%s"
 	type   = "pd-ssd"
@@ -148,8 +139,6 @@ resource "google_compute_region_disk" "secondary" {
 }
 	
 resource "google_compute_disk_async_replication" "replication" {
-	provider = google-beta
-	
 	primary_disk = google_compute_region_disk.primary.id
 
 	secondary_disk {

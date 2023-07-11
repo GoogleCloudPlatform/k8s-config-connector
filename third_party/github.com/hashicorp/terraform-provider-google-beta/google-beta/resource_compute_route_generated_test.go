@@ -34,12 +34,12 @@ func TestAccComputeRoute_routeBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccComputeRoute_routeBasicExample(t *testing.T) {
 }
 
 func testAccComputeRoute_routeBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_route" "default" {
   name        = "tf-test-network-route%{random_suffix}"
   dest_range  = "15.0.0.0/24"
@@ -75,12 +75,12 @@ func TestAccComputeRoute_routeIlbExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -97,7 +97,7 @@ func TestAccComputeRoute_routeIlbExample(t *testing.T) {
 }
 
 func testAccComputeRoute_routeIlbExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   name                    = "tf-test-compute-network%{random_suffix}"
   auto_create_subnetworks = false
@@ -151,12 +151,12 @@ func TestAccComputeRoute_routeIlbVipExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -173,7 +173,7 @@ func TestAccComputeRoute_routeIlbVipExample(t *testing.T) {
 }
 
 func testAccComputeRoute_routeIlbVipExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "producer" {
   provider                = google-beta
   name                    = "producer%{random_suffix}-vpc"
@@ -273,7 +273,7 @@ func testAccCheckComputeRouteDestroyProducer(t *testing.T) func(s *terraform.Sta
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/routes/{{name}}")
 			if err != nil {

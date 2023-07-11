@@ -34,12 +34,12 @@ func TestAccVertexAITensorboard_vertexAiTensorboardExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckVertexAITensorboardDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccVertexAITensorboard_vertexAiTensorboardExample(t *testing.T) {
 }
 
 func testAccVertexAITensorboard_vertexAiTensorboardExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_vertex_ai_tensorboard" "tensorboard" {
   display_name = "terraform%{random_suffix}"
   description  = "sample description"
@@ -73,13 +73,13 @@ func TestAccVertexAITensorboard_vertexAiTensorboardFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"kms_key_name":  BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
-		"random_suffix": RandString(t, 10),
+		"kms_key_name":  acctest.BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckVertexAITensorboardDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -96,7 +96,7 @@ func TestAccVertexAITensorboard_vertexAiTensorboardFullExample(t *testing.T) {
 }
 
 func testAccVertexAITensorboard_vertexAiTensorboardFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_vertex_ai_tensorboard" "tensorboard" {
   display_name = "terraform%{random_suffix}"
   description  = "sample description"
@@ -131,7 +131,7 @@ func testAccCheckVertexAITensorboardDestroyProducer(t *testing.T) func(s *terraf
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{VertexAIBasePath}}{{name}}")
 			if err != nil {

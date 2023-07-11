@@ -26,6 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -34,14 +35,14 @@ func TestAccCloudAssetOrganizationFeed_cloudAssetOrganizationFeedExample(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudAssetOrganizationFeedDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -58,7 +59,7 @@ func TestAccCloudAssetOrganizationFeed_cloudAssetOrganizationFeedExample(t *test
 }
 
 func testAccCloudAssetOrganizationFeed_cloudAssetOrganizationFeedExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 # Create a feed that sends notifications about network resource updates under a
 # particular organization.
 resource "google_cloud_asset_organization_feed" "organization_feed" {
@@ -112,7 +113,7 @@ func testAccCheckCloudAssetOrganizationFeedDestroyProducer(t *testing.T) func(s 
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CloudAssetBasePath}}{{name}}")
 			if err != nil {

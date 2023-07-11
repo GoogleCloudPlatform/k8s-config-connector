@@ -265,6 +265,11 @@ spec:
                       encryption key that protects this resource.
                     type: string
                 type: object
+              enableConfidentialCompute:
+                description: |-
+                  Immutable. Whether this disk is using confidential compute mode.
+                  Note: Only supported on hyperdisk skus, disk_encryption_key is required when setting to true.
+                type: boolean
               guestOsFeatures:
                 description: |-
                   Immutable. A list of features to enable on the guest operating system.
@@ -368,8 +373,16 @@ spec:
                     type: string
                 type: object
               provisionedIops:
-                description: Immutable. Indicates how many IOPS must be provisioned
-                  for the disk.
+                description: |-
+                  Indicates how many IOPS must be provisioned for the disk.
+                  Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
+                  allows for an update of IOPS every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it.
+                type: integer
+              provisionedThroughput:
+                description: |-
+                  Indicates how much Throughput must be provisioned for the disk.
+                  Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
+                  allows for an update of Throughput every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it.
                 type: integer
               replicaZones:
                 description: Immutable. URLs of the zones where the disk should be

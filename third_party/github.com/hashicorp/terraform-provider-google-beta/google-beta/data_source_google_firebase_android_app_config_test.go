@@ -4,25 +4,27 @@ package google
 
 import (
 	"fmt"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
-	"testing"
-
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"testing"
 )
 
 func TestAccDataSourceGoogleFirebaseAndroidAppConfig(t *testing.T) {
 	t.Parallel()
+	// Framework-based resources and datasources don't work with VCR yet
+	acctest.SkipIfVcr(t)
 
 	context := map[string]interface{}{
-		"project_id":   acctest.GetTestProjectFromEnv(),
-		"package_name": "android.app." + RandString(t, 5),
+		"project_id":   envvar.GetTestProjectFromEnv(),
+		"package_name": "android.app." + acctest.RandString(t, 5),
 		"display_name": "tf-test Display Name AndroidAppConfig DataSource",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleFirebaseAndroidAppConfig(context),
@@ -35,7 +37,7 @@ func TestAccDataSourceGoogleFirebaseAndroidAppConfig(t *testing.T) {
 }
 
 func testAccDataSourceGoogleFirebaseAndroidAppConfig(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_android_app" "my_app_config" {
   project = "%{project_id}"
   package_name = "%{package_name}"

@@ -277,6 +277,17 @@ spec:
                           description: Immutable. The number of the accelerator cards
                             exposed to an instance.
                           type: integer
+                        gpuDriverInstallationConfig:
+                          description: Immutable. Configuration for auto installation
+                            of GPU driver.
+                          properties:
+                            gpuDriverVersion:
+                              description: Immutable. Mode for how the GPU driver
+                                is installed.
+                              type: string
+                          required:
+                          - gpuDriverVersion
+                          type: object
                         gpuPartitionSize:
                           description: Immutable. Size of partitions to create on
                             the GPU. Valid values are described in the NVIDIA mig
@@ -509,6 +520,34 @@ spec:
                           Boot enabled.
                         type: boolean
                     type: object
+                  soleTenantConfig:
+                    description: Immutable. Node affinity options for sole tenant
+                      node pools.
+                    properties:
+                      nodeAffinity:
+                        description: Immutable. .
+                        items:
+                          properties:
+                            key:
+                              description: Immutable. .
+                              type: string
+                            operator:
+                              description: Immutable. .
+                              type: string
+                            values:
+                              description: Immutable. .
+                              items:
+                                type: string
+                              type: array
+                          required:
+                          - key
+                          - operator
+                          - values
+                          type: object
+                        type: array
+                    required:
+                    - nodeAffinity
+                    type: object
                   spot:
                     description: Immutable. Whether the nodes are created as spot
                       VM instances.
@@ -568,6 +607,9 @@ spec:
               placementPolicy:
                 description: Immutable. Specifies the node placement policy.
                 properties:
+                  tpuTopology:
+                    description: TPU placement topology for pod slice node pool. https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies.
+                    type: string
                   type:
                     description: Type defines the type of placement policy.
                     type: string

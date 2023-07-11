@@ -35,12 +35,12 @@ func TestAccDataCatalogTag_dataCatalogEntryTagBasicExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"force_delete":  true,
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogTagDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -57,7 +57,7 @@ func TestAccDataCatalogTag_dataCatalogEntryTagBasicExample(t *testing.T) {
 }
 
 func testAccDataCatalogTag_dataCatalogEntryTagBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_entry" "entry" {
   entry_group = google_data_catalog_entry_group.entry_group.id
   entry_id = "tf_test_my_entry%{random_suffix}"
@@ -130,12 +130,12 @@ func TestAccDataCatalogTag_dataCatalogEntryGroupTagExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"force_delete":  true,
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogTagDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -152,7 +152,7 @@ func TestAccDataCatalogTag_dataCatalogEntryGroupTagExample(t *testing.T) {
 }
 
 func testAccDataCatalogTag_dataCatalogEntryGroupTagExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_entry" "first_entry" {
   entry_group = google_data_catalog_entry_group.entry_group.id
   entry_id = "tf_test_first_entry%{random_suffix}"
@@ -234,12 +234,12 @@ func TestAccDataCatalogTag_dataCatalogEntryTagFullExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"force_delete":  true,
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogTagDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -256,7 +256,7 @@ func TestAccDataCatalogTag_dataCatalogEntryTagFullExample(t *testing.T) {
 }
 
 func testAccDataCatalogTag_dataCatalogEntryTagFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_entry" "entry" {
   entry_group = google_data_catalog_entry_group.entry_group.id
   entry_id = "tf_test_my_entry%{random_suffix}"
@@ -397,12 +397,12 @@ func TestAccDataCatalogTag_dataCatalogEntryTagFalseExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"force_delete":  true,
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogTagDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -419,7 +419,7 @@ func TestAccDataCatalogTag_dataCatalogEntryTagFalseExample(t *testing.T) {
 }
 
 func testAccDataCatalogTag_dataCatalogEntryTagFalseExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_entry" "entry" {
   entry_group = google_data_catalog_entry_group.entry_group.id
   entry_id = "tf_test_my_entry%{random_suffix}"
@@ -497,7 +497,7 @@ func testAccCheckDataCatalogTagDestroyProducer(t *testing.T) func(s *terraform.S
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DataCatalogBasePath}}{{parent}}/tags")
 			if err != nil {

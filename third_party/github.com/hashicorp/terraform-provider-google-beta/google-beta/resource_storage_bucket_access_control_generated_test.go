@@ -34,12 +34,12 @@ func TestAccStorageBucketAccessControl_storageBucketAccessControlPublicBucketExa
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckStorageBucketAccessControlDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccStorageBucketAccessControl_storageBucketAccessControlPublicBucketExa
 }
 
 func testAccStorageBucketAccessControl_storageBucketAccessControlPublicBucketExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket_access_control" "public_rule" {
   bucket = google_storage_bucket.bucket.name
   role   = "READER"
@@ -80,7 +80,7 @@ func testAccCheckStorageBucketAccessControlDestroyProducer(t *testing.T) func(s 
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{StorageBasePath}}b/{{bucket}}/acl/{{entity}}")
 			if err != nil {

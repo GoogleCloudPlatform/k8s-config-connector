@@ -5,6 +5,7 @@ package google
 import (
 	"fmt"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"regexp"
 	"testing"
 
@@ -24,13 +25,13 @@ func projectIamBindingImportStep(resourceName, pid, role string) resource.TestSt
 func TestAccProjectIamBinding_basic(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	role := "roles/compute.instanceAdmin"
 	member := "user:admin@hashicorptest.com"
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
@@ -52,15 +53,15 @@ func TestAccProjectIamBinding_basic(t *testing.T) {
 func TestAccProjectIamBinding_multiple(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	role := "roles/compute.instanceAdmin"
 	role2 := "roles/viewer"
 	member := "user:admin@hashicorptest.com"
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
@@ -89,14 +90,14 @@ func TestAccProjectIamBinding_multipleAtOnce(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	role := "roles/compute.instanceAdmin"
 	role2 := "roles/viewer"
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
@@ -119,14 +120,14 @@ func TestAccProjectIamBinding_multipleAtOnce(t *testing.T) {
 func TestAccProjectIamBinding_update(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	role := "roles/compute.instanceAdmin"
 	member := "user:admin@hashicorptest.com"
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
@@ -162,14 +163,14 @@ func TestAccProjectIamBinding_remove(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	role := "roles/compute.instanceAdmin"
 	role2 := "roles/viewer"
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
@@ -200,12 +201,12 @@ func TestAccProjectIamBinding_remove(t *testing.T) {
 func TestAccProjectIamBinding_noMembers(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	role := "roles/compute.instanceAdmin"
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
@@ -226,13 +227,13 @@ func TestAccProjectIamBinding_noMembers(t *testing.T) {
 func TestAccProjectIamBinding_withCondition(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	role := "roles/compute.instanceAdmin"
 	conditionTitle := "expires_after_2019_12_31"
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
@@ -259,12 +260,12 @@ func TestAccProjectIamBinding_withCondition(t *testing.T) {
 func TestAccProjectIamBinding_invalidMembers(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	role := "roles/compute.instanceAdmin"
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config:      testAccProjectAssociateBindingBasic(pid, org, role, "admin@hashicorptest.com"),

@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -36,7 +37,7 @@ func TestAccNetworkConnectivityHub_BasicHub(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -66,7 +67,7 @@ func TestAccNetworkConnectivityHub_BasicHub(t *testing.T) {
 }
 
 func testAccNetworkConnectivityHub_BasicHub(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_connectivity_hub" "primary" {
   name        = "tf-test-hub%{random_suffix}"
   description = "A sample hub"
@@ -83,7 +84,7 @@ resource "google_network_connectivity_hub" "primary" {
 }
 
 func testAccNetworkConnectivityHub_BasicHubUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_connectivity_hub" "primary" {
   name        = "tf-test-hub%{random_suffix}"
   description = "An updated sample hub"

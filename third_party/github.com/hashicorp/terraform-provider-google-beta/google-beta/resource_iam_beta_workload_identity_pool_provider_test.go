@@ -13,12 +13,12 @@ func TestAccIAMBetaWorkloadIdentityPoolProvider_aws(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMBetaWorkloadIdentityPoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -53,12 +53,12 @@ func TestAccIAMBetaWorkloadIdentityPoolProvider_oidc(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMBetaWorkloadIdentityPoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -90,7 +90,7 @@ func TestAccIAMBetaWorkloadIdentityPoolProvider_oidc(t *testing.T) {
 }
 
 func testAccIAMBetaWorkloadIdentityPoolProvider_aws_full(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workload_identity_pool" "my_pool" {
   workload_identity_pool_id = "my-pool-%{random_suffix}"
 }
@@ -115,7 +115,7 @@ resource "google_iam_workload_identity_pool_provider" "my_provider" {
 }
 
 func testAccIAMBetaWorkloadIdentityPoolProvider_aws_enabled(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workload_identity_pool" "my_pool" {
   workload_identity_pool_id = "my-pool-%{random_suffix}"
 }
@@ -140,7 +140,7 @@ resource "google_iam_workload_identity_pool_provider" "my_provider" {
 }
 
 func testAccIAMBetaWorkloadIdentityPoolProvider_oidc_full(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workload_identity_pool" "my_pool" {
   workload_identity_pool_id = "my-pool-%{random_suffix}"
 }
@@ -165,13 +165,14 @@ EOT
   oidc {
     allowed_audiences = ["https://example.com/gcp-oidc-federation", "example.com/gcp-oidc-federation"]
     issuer_uri        = "https://sts.windows.net/azure-tenant-id-full"
+    jwks_json         = "{\"keys\":[{\"kty\":\"RSA\",\"alg\":\"RS256\",\"kid\":\"sif0AR-F6MuvksAyAOv-Pds08Bcf2eUMlxE30NofddA\",\"use\":\"sig\",\"e\":\"AQAB\",\"n\":\"ylH1Chl1tpfti3lh51E1g5dPogzXDaQseqjsefGLknaNl5W6Wd4frBhHyE2t41Q5zgz_Ll0-NvWm0FlaG6brhrN9QZu6sJP1bM8WPfJVPgXOanxi7d7TXCkeNubGeiLTf5R3UXtS9Lm_guemU7MxDjDTelxnlgGCihOVTcL526suNJUdfXtpwUsvdU6_ZnAp9IpsuYjCtwPm9hPumlcZGMbxstdh07O4y4O90cVQClJOKSGQjAUCKJWXIQ0cqffGS_HuS_725CPzQ85SzYZzaNpgfhAER7kx_9P16ARM3BJz0PI5fe2hECE61J4GYU_BY43sxDfs7HyJpEXKLU9eWw\"}]}"
   }
 }
 `, context)
 }
 
 func testAccIAMBetaWorkloadIdentityPoolProvider_oidc_update(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workload_identity_pool" "my_pool" {
   workload_identity_pool_id = "my-pool-%{random_suffix}"
 }
@@ -196,13 +197,15 @@ EOT
   oidc {
     allowed_audiences = ["https://example.com/gcp-oidc-federation-update", "example.com/gcp-oidc-federation-update"]
     issuer_uri        = "https://sts.windows.net/azure-tenant-id-update"
+    jwks_json         = "{\"keys\":[{\"kty\":\"RSA\",\"alg\":\"RS256\",\"kid\":\"F6MuvksAyAOv-Pds08Bcf2eUMlxE30NofddA\",\"use\":\"sig\",\"e\":\"AQAB\",\"n\":\"ylH1Chl1tpfti3lh51E1g5dPogzXDaQseqjsefGLknaNl5W6Wd4frBhHyE2t41Q5zgz_Ll0-NvWm0FlaG6brhrN9QZu6sJP1bM8WPfJVPgXOanxi7d7TXCkeNubGeiLTf5R3UXtS9Lm_guemU7MxDjDTelxnlgGCihOVTcL526suNJUdfXtpwUsvdU6_ZnAp9IpsuYjCtwPm9hPumlcZGMbxstdh07O4y4O90cVQClJOKSGQjAUCKJWXIQ0cqffGS_HuS_725CPzQ85SzYZzaNpgfhAER7kx_9P16ARM3BJz0PI5fe2hECE61J4GYU_BY43sxDfs7HyJpEXKLU9eWw\"}]}"
+
   }
 }
 `, context)
 }
 
 func testAccIAMBetaWorkloadIdentityPoolProvider_aws_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workload_identity_pool" "my_pool" {
   workload_identity_pool_id = "my-pool-%{random_suffix}"
 }
@@ -218,7 +221,7 @@ resource "google_iam_workload_identity_pool_provider" "my_provider" {
 }
 
 func testAccIAMBetaWorkloadIdentityPoolProvider_oidc_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workload_identity_pool" "my_pool" {
   workload_identity_pool_id = "my-pool-%{random_suffix}"
 }

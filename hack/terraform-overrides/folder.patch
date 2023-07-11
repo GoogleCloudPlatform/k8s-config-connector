@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_folder.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_folder.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_folder.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_folder.go
 index 856e09b83..34624045c 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_folder.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_folder.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_folder.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_folder.go
 @@ -4,7 +4,9 @@ package google
  
  import (

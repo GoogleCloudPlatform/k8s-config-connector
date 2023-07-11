@@ -4,38 +4,51 @@ package google
 
 import (
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"testing"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
-	"testing"
 )
 
 func TestAccIAMWorkforcePoolWorkforcePoolProvider_oidc(t *testing.T) {
 	t.Parallel()
 
-	random_suffix := RandString(t, 10)
+	random_suffix := acctest.RandString(t, 10)
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": random_suffix,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMWorkforcePoolWorkforcePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIAMWorkforcePoolWorkforcePoolProvider_oidc_full(context),
 			},
 			{
-				ResourceName:      "google_iam_workforce_pool_provider.my_provider",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_iam_workforce_pool_provider.my_provider",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"oidc.0.client_secret.0.value.0.plain_text"},
 			},
 			{
 				Config: testAccIAMWorkforcePoolWorkforcePoolProvider_oidc_update(context),
+			},
+			{
+				ResourceName:            "google_iam_workforce_pool_provider.my_provider",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"oidc.0.client_secret.0.value.0.plain_text"},
+			},
+			{
+				Config: testAccIAMWorkforcePoolWorkforcePoolProvider_oidc_update_clearClientSecret(context),
 			},
 			{
 				ResourceName:      "google_iam_workforce_pool_provider.my_provider",
@@ -46,9 +59,10 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_oidc(t *testing.T) {
 				Config: testAccIAMWorkforcePoolWorkforcePoolProvider_oidc_basic(context),
 			},
 			{
-				ResourceName:      "google_iam_workforce_pool_provider.my_provider",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_iam_workforce_pool_provider.my_provider",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"oidc.0.client_secret.0.value.0.plain_text"},
 			},
 			{
 				Config: testAccIAMWorkforcePoolWorkforcePoolProvider_destroy(context),
@@ -63,15 +77,15 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_oidc(t *testing.T) {
 func TestAccIAMWorkforcePoolWorkforcePoolProvider_saml(t *testing.T) {
 	t.Parallel()
 
-	random_suffix := RandString(t, 10)
+	random_suffix := acctest.RandString(t, 10)
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": random_suffix,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMWorkforcePoolWorkforcePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -115,7 +129,7 @@ func testAccCheckIAMWorkforcePoolWorkforcePoolProviderAccess(t *testing.T, rando
 		if !ok {
 			return fmt.Errorf("Resource %s Not found", pool_resource_name)
 		}
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		pool_url, err := tpgresource.ReplaceVarsForTest(config, pool_rs, "{{IAMWorkforcePoolBasePath}}locations/{{location}}/workforcePools/{{workforce_pool_id}}")
 		if err != nil {
@@ -142,7 +156,7 @@ func testAccCheckIAMWorkforcePoolWorkforcePoolProviderAccess(t *testing.T, rando
 }
 
 func testAccIAMWorkforcePoolWorkforcePoolProvider_oidc_full(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "my_pool" {
   workforce_pool_id = "my-pool-%{random_suffix}"
   parent            = "organizations/%{org_id}"
@@ -159,9 +173,14 @@ resource "google_iam_workforce_pool_provider" "my_provider" {
   oidc {
     issuer_uri        = "https://accounts.thirdparty.com"
     client_id         = "client-id"
+    client_secret {
+      value {
+        plain_text = "client-secret"
+      }
+    }
     web_sso_config {
-      response_type             = "ID_TOKEN"
-      assertion_claims_behavior = "ONLY_ID_TOKEN_CLAIMS"
+      response_type             = "CODE"
+      assertion_claims_behavior = "MERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS"
     }
   }
   display_name        = "Display name"
@@ -173,6 +192,42 @@ resource "google_iam_workforce_pool_provider" "my_provider" {
 }
 
 func testAccIAMWorkforcePoolWorkforcePoolProvider_oidc_update(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_iam_workforce_pool" "my_pool" {
+  workforce_pool_id = "my-pool-%{random_suffix}"
+  parent            = "organizations/%{org_id}"
+  location          = "global"
+}
+
+resource "google_iam_workforce_pool_provider" "my_provider" {
+  workforce_pool_id   = google_iam_workforce_pool.my_pool.workforce_pool_id
+  location            = google_iam_workforce_pool.my_pool.location
+  provider_id         = "my-provider-%{random_suffix}"
+  attribute_mapping   = {
+    "google.subject"  = "false"
+  }
+  oidc {
+    issuer_uri        = "https://test.thirdparty.com"
+    client_id         = "new-client-id"
+    client_secret {
+      value {
+        plain_text = "new-client-secret"
+      }
+    }
+    web_sso_config {
+      response_type             = "ID_TOKEN"
+      assertion_claims_behavior = "ONLY_ID_TOKEN_CLAIMS"
+    }
+  }
+  display_name        = "New Display name"
+  description         = "A sample OIDC workforce pool provider with updated description."
+  disabled            = true
+  attribute_condition = "false"
+}
+`, context)
+}
+
+func testAccIAMWorkforcePoolWorkforcePoolProvider_oidc_update_clearClientSecret(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_iam_workforce_pool" "my_pool" {
   workforce_pool_id = "my-pool-%{random_suffix}"
@@ -204,7 +259,7 @@ resource "google_iam_workforce_pool_provider" "my_provider" {
 }
 
 func testAccIAMWorkforcePoolWorkforcePoolProvider_oidc_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "my_pool" {
   workforce_pool_id = "my-pool-%{random_suffix}"
   parent            = "organizations/%{org_id}"
@@ -221,9 +276,14 @@ resource "google_iam_workforce_pool_provider" "my_provider" {
   oidc {
     issuer_uri       = "https://accounts.thirdparty.com"
     client_id        = "client-id"
+    client_secret {
+      value {
+        plain_text = "client-secret"
+      }
+    }
     web_sso_config {
-      response_type             = "ID_TOKEN"
-      assertion_claims_behavior = "ONLY_ID_TOKEN_CLAIMS"
+      response_type             = "CODE"
+      assertion_claims_behavior = "MERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS"
     }
   }
 }
@@ -231,7 +291,7 @@ resource "google_iam_workforce_pool_provider" "my_provider" {
 }
 
 func testAccIAMWorkforcePoolWorkforcePoolProvider_saml_full(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "my_pool" {
   workforce_pool_id = "my-pool-%{random_suffix}"
   parent            = "organizations/%{org_id}"
@@ -257,7 +317,7 @@ resource "google_iam_workforce_pool_provider" "my_provider" {
 }
 
 func testAccIAMWorkforcePoolWorkforcePoolProvider_saml_update(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "my_pool" {
   workforce_pool_id = "my-pool-%{random_suffix}"
   parent            = "organizations/%{org_id}"
@@ -283,7 +343,7 @@ resource "google_iam_workforce_pool_provider" "my_provider" {
 }
 
 func testAccIAMWorkforcePoolWorkforcePoolProvider_saml_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "my_pool" {
   workforce_pool_id = "my-pool-%{random_suffix}"
   parent            = "organizations/%{org_id}"
@@ -305,7 +365,7 @@ resource "google_iam_workforce_pool_provider" "my_provider" {
 }
 
 func testAccIAMWorkforcePoolWorkforcePoolProvider_destroy(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "my_pool" {
   workforce_pool_id = "my-pool-%{random_suffix}"
   parent            = "organizations/%{org_id}"

@@ -24,26 +24,27 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccNotebooksRuntimeIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccNotebooksRuntimeIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_notebooks_runtime_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/runtimes/%s roles/viewer", acctest.GetTestProjectFromEnv(), "us-central1", fmt.Sprintf("tf-test-notebooks-runtime%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/runtimes/%s roles/viewer", envvar.GetTestProjectFromEnv(), "us-central1", fmt.Sprintf("tf-test-notebooks-runtime%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -53,7 +54,7 @@ func TestAccNotebooksRuntimeIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_notebooks_runtime_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/runtimes/%s roles/viewer", acctest.GetTestProjectFromEnv(), "us-central1", fmt.Sprintf("tf-test-notebooks-runtime%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/runtimes/%s roles/viewer", envvar.GetTestProjectFromEnv(), "us-central1", fmt.Sprintf("tf-test-notebooks-runtime%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -65,13 +66,13 @@ func TestAccNotebooksRuntimeIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -79,7 +80,7 @@ func TestAccNotebooksRuntimeIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_notebooks_runtime_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/runtimes/%s roles/viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), "us-central1", fmt.Sprintf("tf-test-notebooks-runtime%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/runtimes/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), "us-central1", fmt.Sprintf("tf-test-notebooks-runtime%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,13 +92,13 @@ func TestAccNotebooksRuntimeIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccNotebooksRuntimeIamPolicy_basicGenerated(context),
@@ -105,7 +106,7 @@ func TestAccNotebooksRuntimeIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_notebooks_runtime_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/runtimes/%s", acctest.GetTestProjectFromEnv(), "us-central1", fmt.Sprintf("tf-test-notebooks-runtime%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/runtimes/%s", envvar.GetTestProjectFromEnv(), "us-central1", fmt.Sprintf("tf-test-notebooks-runtime%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -114,7 +115,7 @@ func TestAccNotebooksRuntimeIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_notebooks_runtime_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/runtimes/%s", acctest.GetTestProjectFromEnv(), "us-central1", fmt.Sprintf("tf-test-notebooks-runtime%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/runtimes/%s", envvar.GetTestProjectFromEnv(), "us-central1", fmt.Sprintf("tf-test-notebooks-runtime%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -123,7 +124,7 @@ func TestAccNotebooksRuntimeIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccNotebooksRuntimeIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_runtime" "runtime" {
   name = "tf-test-notebooks-runtime%{random_suffix}"
   location = "us-central1"
@@ -155,7 +156,7 @@ resource "google_notebooks_runtime_iam_member" "foo" {
 }
 
 func testAccNotebooksRuntimeIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_runtime" "runtime" {
   name = "tf-test-notebooks-runtime%{random_suffix}"
   location = "us-central1"
@@ -202,7 +203,7 @@ data "google_notebooks_runtime_iam_policy" "foo" {
 }
 
 func testAccNotebooksRuntimeIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_runtime" "runtime" {
   name = "tf-test-notebooks-runtime%{random_suffix}"
   location = "us-central1"
@@ -236,7 +237,7 @@ resource "google_notebooks_runtime_iam_policy" "foo" {
 }
 
 func testAccNotebooksRuntimeIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_runtime" "runtime" {
   name = "tf-test-notebooks-runtime%{random_suffix}"
   location = "us-central1"
@@ -268,7 +269,7 @@ resource "google_notebooks_runtime_iam_binding" "foo" {
 }
 
 func testAccNotebooksRuntimeIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_runtime" "runtime" {
   name = "tf-test-notebooks-runtime%{random_suffix}"
   location = "us-central1"

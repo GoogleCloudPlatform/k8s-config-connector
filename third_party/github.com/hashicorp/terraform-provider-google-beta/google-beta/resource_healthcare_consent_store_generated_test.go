@@ -34,12 +34,12 @@ func TestAccHealthcareConsentStore_healthcareConsentStoreBasicExample(t *testing
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckHealthcareConsentStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccHealthcareConsentStore_healthcareConsentStoreBasicExample(t *testing
 }
 
 func testAccHealthcareConsentStore_healthcareConsentStoreBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_healthcare_dataset" "dataset" {
   location = "us-central1"
   name     = "tf-test-my-dataset%{random_suffix}"
@@ -73,12 +73,12 @@ func TestAccHealthcareConsentStore_healthcareConsentStoreFullExample(t *testing.
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckHealthcareConsentStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -95,7 +95,7 @@ func TestAccHealthcareConsentStore_healthcareConsentStoreFullExample(t *testing.
 }
 
 func testAccHealthcareConsentStore_healthcareConsentStoreFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 
 resource "google_healthcare_dataset" "dataset" {
   location = "us-central1"
@@ -120,12 +120,12 @@ func TestAccHealthcareConsentStore_healthcareConsentStoreIamExample(t *testing.T
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckHealthcareConsentStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -142,7 +142,7 @@ func TestAccHealthcareConsentStore_healthcareConsentStoreIamExample(t *testing.T
 }
 
 func testAccHealthcareConsentStore_healthcareConsentStoreIamExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_healthcare_dataset" "dataset" {
   location = "us-central1"
   name     = "tf-test-my-dataset%{random_suffix}"
@@ -177,7 +177,7 @@ func testAccCheckHealthcareConsentStoreDestroyProducer(t *testing.T) func(s *ter
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{HealthcareBasePath}}{{dataset}}/consentStores/{{name}}")
 			if err != nil {

@@ -120,6 +120,9 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              region:
+                description: The region of the feature.
+                type: string
               updateTime:
                 description: The timestamp when the entity type was most recently
                   updated in RFC3339 UTC "Zulu" format, with nanosecond resolution

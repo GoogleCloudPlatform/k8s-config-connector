@@ -34,12 +34,12 @@ func TestAccCloudTasksQueue_queueBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudTasksQueueDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccCloudTasksQueue_queueBasicExample(t *testing.T) {
 }
 
 func testAccCloudTasksQueue_queueBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_tasks_queue" "default" {
   name = "tf-test-cloud-tasks-queue-test%{random_suffix}"
   location = "us-central1"
@@ -68,12 +68,12 @@ func TestAccCloudTasksQueue_cloudTasksQueueAdvancedExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudTasksQueueDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -90,7 +90,7 @@ func TestAccCloudTasksQueue_cloudTasksQueueAdvancedExample(t *testing.T) {
 }
 
 func testAccCloudTasksQueue_cloudTasksQueueAdvancedExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_tasks_queue" "advanced_configuration" {
   name = "tf-test-instance-name%{random_suffix}"
   location = "us-central1"
@@ -131,7 +131,7 @@ func testAccCheckCloudTasksQueueDestroyProducer(t *testing.T) func(s *terraform.
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CloudTasksBasePath}}projects/{{project}}/locations/{{location}}/queues/{{name}}")
 			if err != nil {

@@ -29,13 +29,13 @@ func TestAccDataCatalogPolicyTagIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataCatalogPolicyTagIamBinding_basicGenerated(context),
@@ -52,13 +52,13 @@ func TestAccDataCatalogPolicyTagIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -72,13 +72,13 @@ func TestAccDataCatalogPolicyTagIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataCatalogPolicyTagIamPolicy_basicGenerated(context),
@@ -92,7 +92,7 @@ func TestAccDataCatalogPolicyTagIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccDataCatalogPolicyTagIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_policy_tag" "basic_policy_tag" {
   taxonomy = google_data_catalog_taxonomy.my_taxonomy.id
   display_name = "Low security"
@@ -114,7 +114,7 @@ resource "google_data_catalog_policy_tag_iam_member" "foo" {
 }
 
 func testAccDataCatalogPolicyTagIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_policy_tag" "basic_policy_tag" {
   taxonomy = google_data_catalog_taxonomy.my_taxonomy.id
   display_name = "Low security"
@@ -149,7 +149,7 @@ data "google_data_catalog_policy_tag_iam_policy" "foo" {
 }
 
 func testAccDataCatalogPolicyTagIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_policy_tag" "basic_policy_tag" {
   taxonomy = google_data_catalog_taxonomy.my_taxonomy.id
   display_name = "Low security"
@@ -173,7 +173,7 @@ resource "google_data_catalog_policy_tag_iam_policy" "foo" {
 }
 
 func testAccDataCatalogPolicyTagIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_policy_tag" "basic_policy_tag" {
   taxonomy = google_data_catalog_taxonomy.my_taxonomy.id
   display_name = "Low security"
@@ -195,7 +195,7 @@ resource "google_data_catalog_policy_tag_iam_binding" "foo" {
 }
 
 func testAccDataCatalogPolicyTagIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_policy_tag" "basic_policy_tag" {
   taxonomy = google_data_catalog_taxonomy.my_taxonomy.id
   display_name = "Low security"

@@ -5,6 +5,7 @@ package google
 import (
 	"fmt"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"regexp"
 	"testing"
 
@@ -24,14 +25,14 @@ func projectIamMemberImportStep(resourceName, pid, role, member string) resource
 func TestAccProjectIamMember_basic(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	resourceName := "google_project_iam_member.acceptance"
 	role := "roles/compute.instanceAdmin"
 	member := "user:admin@hashicorptest.com"
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
@@ -55,19 +56,19 @@ func TestAccProjectIamMember_multiple(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
+	org := envvar.GetTestOrgFromEnv(t)
 	acctest.SkipIfEnvNotSet(t, "GOOGLE_ORG")
 
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	resourceName := "google_project_iam_member.acceptance"
 	resourceName2 := "google_project_iam_member.multiple"
 	role := "roles/compute.instanceAdmin"
 	member := "user:admin@hashicorptest.com"
 	member2 := "user:gterraformtest1@gmail.com"
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
@@ -98,18 +99,18 @@ func TestAccProjectIamMember_remove(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
+	org := envvar.GetTestOrgFromEnv(t)
 	acctest.SkipIfEnvNotSet(t, "GOOGLE_ORG")
 
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	resourceName := "google_project_iam_member.acceptance"
 	role := "roles/compute.instanceAdmin"
 	member := "user:admin@hashicorptest.com"
 	member2 := "user:gterraformtest1@gmail.com"
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
@@ -140,15 +141,15 @@ func TestAccProjectIamMember_remove(t *testing.T) {
 func TestAccProjectIamMember_withCondition(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	resourceName := "google_project_iam_member.acceptance"
 	role := "roles/compute.instanceAdmin"
 	member := "user:admin@hashicorptest.com"
 	conditionTitle := "expires_after_2019_12_31"
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
@@ -174,13 +175,13 @@ func TestAccProjectIamMember_withCondition(t *testing.T) {
 func TestAccProjectIamMember_invalidMembers(t *testing.T) {
 	t.Parallel()
 
-	org := acctest.GetTestOrgFromEnv(t)
-	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
+	org := envvar.GetTestOrgFromEnv(t)
+	pid := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	role := "roles/compute.instanceAdmin"
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config:      testAccProjectAssociateMemberBasic(pid, org, role, "admin@hashicorptest.com"),

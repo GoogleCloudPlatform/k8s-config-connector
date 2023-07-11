@@ -34,12 +34,12 @@ func TestAccComputeGlobalNetworkEndpointGroup_globalNetworkEndpointGroupExample(
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeGlobalNetworkEndpointGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -55,7 +55,7 @@ func TestAccComputeGlobalNetworkEndpointGroup_globalNetworkEndpointGroupExample(
 }
 
 func testAccComputeGlobalNetworkEndpointGroup_globalNetworkEndpointGroupExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_global_network_endpoint_group" "neg" {
   name                  = "tf-test-my-lb-neg%{random_suffix}"
   default_port          = "90"
@@ -68,12 +68,12 @@ func TestAccComputeGlobalNetworkEndpointGroup_globalNetworkEndpointGroupIpAddres
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeGlobalNetworkEndpointGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -89,7 +89,7 @@ func TestAccComputeGlobalNetworkEndpointGroup_globalNetworkEndpointGroupIpAddres
 }
 
 func testAccComputeGlobalNetworkEndpointGroup_globalNetworkEndpointGroupIpAddressExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_global_network_endpoint_group" "neg" {
   name                  = "tf-test-my-lb-neg%{random_suffix}"
   network_endpoint_type = "INTERNET_IP_PORT"
@@ -108,7 +108,7 @@ func testAccCheckComputeGlobalNetworkEndpointGroupDestroyProducer(t *testing.T) 
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/networkEndpointGroups/{{name}}")
 			if err != nil {

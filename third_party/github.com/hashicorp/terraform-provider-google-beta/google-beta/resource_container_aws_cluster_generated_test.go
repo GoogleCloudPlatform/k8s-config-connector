@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -44,9 +45,9 @@ func TestAccContainerAwsCluster_BasicHandWritten(t *testing.T) {
 		"aws_vol_key":    "00000000-0000-0000-0000-17aad2f0f61f",
 		"aws_vpc":        "vpc-0b3f63cb91b247628",
 		"byo_prefix":     "mmv2",
-		"project_name":   acctest.GetTestProjectFromEnv(),
-		"project_number": acctest.GetTestProjectNumberFromEnv(),
-		"service_acct":   acctest.GetTestServiceAccountFromEnv(t),
+		"project_name":   envvar.GetTestProjectFromEnv(),
+		"project_number": envvar.GetTestProjectNumberFromEnv(),
+		"service_acct":   envvar.GetTestServiceAccountFromEnv(t),
 		"random_suffix":  RandString(t, 10),
 	}
 
@@ -88,9 +89,9 @@ func TestAccContainerAwsCluster_BetaBasicHandWritten(t *testing.T) {
 		"aws_vol_key":    "00000000-0000-0000-0000-17aad2f0f61f",
 		"aws_vpc":        "vpc-0b3f63cb91b247628",
 		"byo_prefix":     "mmv2",
-		"project_name":   acctest.GetTestProjectFromEnv(),
-		"project_number": acctest.GetTestProjectNumberFromEnv(),
-		"service_acct":   acctest.GetTestServiceAccountFromEnv(t),
+		"project_name":   envvar.GetTestProjectFromEnv(),
+		"project_number": envvar.GetTestProjectNumberFromEnv(),
+		"service_acct":   envvar.GetTestServiceAccountFromEnv(t),
 		"random_suffix":  RandString(t, 10),
 	}
 
@@ -123,7 +124,7 @@ func TestAccContainerAwsCluster_BetaBasicHandWritten(t *testing.T) {
 }
 
 func testAccContainerAwsCluster_BasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_aws_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
@@ -213,7 +214,7 @@ resource "google_container_aws_cluster" "primary" {
 }
 
 func testAccContainerAwsCluster_BasicHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_aws_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
@@ -303,7 +304,7 @@ resource "google_container_aws_cluster" "primary" {
 }
 
 func testAccContainerAwsCluster_BetaBasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_aws_versions" "versions" {
   provider = google-beta
   project = "%{project_name}"
@@ -406,7 +407,7 @@ resource "google_container_aws_cluster" "primary" {
 }
 
 func testAccContainerAwsCluster_BetaBasicHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_aws_versions" "versions" {
   provider = google-beta
   project = "%{project_name}"

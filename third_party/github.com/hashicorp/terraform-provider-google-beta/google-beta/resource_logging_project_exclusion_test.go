@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 // Logging exclusions don't always work when making parallel requests, so run tests serially
@@ -35,11 +36,11 @@ func TestAccLoggingProjectExclusion(t *testing.T) {
 }
 
 func testAccLoggingProjectExclusion_basic(t *testing.T) {
-	exclusionName := "tf-test-exclusion-" + RandString(t, 10)
+	exclusionName := "tf-test-exclusion-" + acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingProjectExclusionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -55,11 +56,11 @@ func testAccLoggingProjectExclusion_basic(t *testing.T) {
 }
 
 func testAccLoggingProjectExclusion_disablePreservesFilter(t *testing.T) {
-	exclusionName := "tf-test-exclusion-" + RandString(t, 10)
+	exclusionName := "tf-test-exclusion-" + acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingProjectExclusionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -83,11 +84,11 @@ func testAccLoggingProjectExclusion_disablePreservesFilter(t *testing.T) {
 }
 
 func testAccLoggingProjectExclusion_update(t *testing.T) {
-	exclusionName := "tf-test-exclusion-" + RandString(t, 10)
+	exclusionName := "tf-test-exclusion-" + acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingProjectExclusionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -111,13 +112,13 @@ func testAccLoggingProjectExclusion_update(t *testing.T) {
 }
 
 func testAccLoggingProjectExclusion_multiple(t *testing.T) {
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingProjectExclusionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccLoggingProjectExclusion_multipleCfg("tf-test-exclusion-" + RandString(t, 10)),
+				Config: testAccLoggingProjectExclusion_multipleCfg("tf-test-exclusion-" + acctest.RandString(t, 10)),
 			},
 			{
 				ResourceName:      "google_logging_project_exclusion.basic0",
@@ -140,7 +141,7 @@ func testAccLoggingProjectExclusion_multiple(t *testing.T) {
 
 func testAccCheckLoggingProjectExclusionDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_logging_project_exclusion" {
@@ -166,7 +167,7 @@ resource "google_logging_project_exclusion" "basic" {
   description = "Basic Project Logging Exclusion"
   filter      = "logName=\"projects/%s/logs/compute.googleapis.com%%2Factivity_log\" AND severity>=ERROR"
 }
-`, name, acctest.GetTestProjectFromEnv())
+`, name, envvar.GetTestProjectFromEnv())
 }
 
 func testAccLoggingProjectExclusion_basicUpdated(name string) string {
@@ -176,7 +177,7 @@ resource "google_logging_project_exclusion" "basic" {
   description = "Basic Project Logging Exclusion"
   filter      = "logName=\"projects/%s/logs/compute.googleapis.com%%2Factivity_log\" AND severity>=INFO"
 }
-`, name, acctest.GetTestProjectFromEnv())
+`, name, envvar.GetTestProjectFromEnv())
 }
 
 func testAccLoggingProjectExclusion_basicDisabled(name string) string {
@@ -187,7 +188,7 @@ resource "google_logging_project_exclusion" "basic" {
   filter      = "logName=\"projects/%s/logs/compute.googleapis.com%%2Factivity_log\" AND severity>=ERROR"
   disabled    = true
 }
-`, name, acctest.GetTestProjectFromEnv())
+`, name, envvar.GetTestProjectFromEnv())
 }
 
 func testAccLoggingProjectExclusion_multipleCfg(exclusionName string) string {
@@ -199,7 +200,7 @@ resource "google_logging_project_exclusion" "basic%d" {
 	description = "Basic Project Logging Exclusion"
 	filter = "logName=\"projects/%s/logs/compute.googleapis.com%%2Factivity_log\" AND severity>=ERROR"
 }
-`, i, exclusionName, i, acctest.GetTestProjectFromEnv())
+`, i, exclusionName, i, envvar.GetTestProjectFromEnv())
 	}
 	return s
 }

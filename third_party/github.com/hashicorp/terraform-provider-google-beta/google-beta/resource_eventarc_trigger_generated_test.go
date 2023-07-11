@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -36,8 +37,8 @@ func TestAccEventarcTrigger_BasicHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
-		"region":        acctest.GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -75,7 +76,7 @@ func TestAccEventarcTrigger_BasicHandWritten(t *testing.T) {
 }
 
 func testAccEventarcTrigger_BasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_eventarc_trigger" "primary" {
 	name = "tf-test-name%{random_suffix}"
 	location = "europe-west1"
@@ -129,7 +130,7 @@ resource "google_cloud_run_service" "default" {
 }
 
 func testAccEventarcTrigger_BasicHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_eventarc_trigger" "primary" {
 	name = "tf-test-name%{random_suffix}"
 	location = "europe-west1"
@@ -212,7 +213,7 @@ resource "google_cloud_run_service" "default2" {
 }
 
 func testAccEventarcTrigger_BasicHandWrittenUpdate1(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_eventarc_trigger" "primary" {
 	name = "tf-test-name%{random_suffix}"
 	location = "europe-west1"

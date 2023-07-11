@@ -4,6 +4,7 @@ package google
 
 import (
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -13,13 +14,13 @@ func TestAccOrgPolicyCustomConstraint_update(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckOrgPolicyCustomConstraintDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -45,7 +46,7 @@ func TestAccOrgPolicyCustomConstraint_update(t *testing.T) {
 }
 
 func testAccOrgPolicyCustomConstraint_v1(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_org_policy_custom_constraint" "constraint" {
   name         = "custom.tfTest%{random_suffix}"
   parent       = "organizations/%{org_id}"
@@ -61,7 +62,7 @@ resource "google_org_policy_custom_constraint" "constraint" {
 }
 
 func testAccOrgPolicyCustomConstraint_v2(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_org_policy_custom_constraint" "constraint" {
   name         = "custom.tfTest%{random_suffix}"
   parent       = "organizations/%{org_id}"

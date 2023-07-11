@@ -7,18 +7,19 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccNetworkSecurityTlsInspectionPolicy_update(t *testing.T) {
 	t.Parallel()
 
-	tlsInspectionPolicyName := fmt.Sprintf("tf-test-tls-inspection-policy-%s", RandString(t, 10))
-	caPoolName := fmt.Sprintf("tf-test-tls-ca-pool-%s", RandString(t, 10))
-	certificateAuthorityName := fmt.Sprintf("tf-test-tls-certificate-authority-%s", RandString(t, 10))
+	tlsInspectionPolicyName := fmt.Sprintf("tf-test-tls-inspection-policy-%s", acctest.RandString(t, 10))
+	caPoolName := fmt.Sprintf("tf-test-tls-ca-pool-%s", acctest.RandString(t, 10))
+	certificateAuthorityName := fmt.Sprintf("tf-test-tls-certificate-authority-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityTlsInspectionPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -104,11 +105,21 @@ resource "google_privateca_certificate_authority" "default" {
   }
 }
 
+resource "google_project_service_identity" "ns_sa" {
+  service = "networksecurity.googleapis.com"
+}
+
+resource "google_privateca_ca_pool_iam_member" "tls_inspection_permission" {
+  ca_pool = google_privateca_ca_pool.default.id
+  role = "roles/privateca.certificateManager"
+  member = "serviceAccount:${google_project_service_identity.ns_sa.email}"
+}
+
 resource "google_network_security_tls_inspection_policy" "foobar" {
   name     = "%s"
   location = "us-central1"
   ca_pool    = google_privateca_ca_pool.default.id
-  depends_on = [google_privateca_ca_pool.default, google_privateca_certificate_authority.default]
+  depends_on = [google_privateca_ca_pool.default, google_privateca_certificate_authority.default, google_privateca_ca_pool_iam_member.tls_inspection_permission]
 }
 `, caPoolName, certificateAuthorityName, tlsInspectionPolicyName)
 }
@@ -176,12 +187,22 @@ resource "google_privateca_certificate_authority" "default" {
   }
 }
 
+resource "google_project_service_identity" "ns_sa" {
+  service = "networksecurity.googleapis.com"
+}
+
+resource "google_privateca_ca_pool_iam_member" "tls_inspection_permission" {
+  ca_pool = google_privateca_ca_pool.default.id
+  role = "roles/privateca.certificateManager"
+  member = "serviceAccount:${google_project_service_identity.ns_sa.email}"
+}
+
 resource "google_network_security_tls_inspection_policy" "foobar" {
   name        = "%s"
   location    = "us-central1"
   description = "my tls inspection policy updated"
   ca_pool     = google_privateca_ca_pool.default.id
-  depends_on = [google_privateca_ca_pool.default, google_privateca_certificate_authority.default]
+  depends_on = [google_privateca_ca_pool.default, google_privateca_certificate_authority.default, google_privateca_ca_pool_iam_member.tls_inspection_permission]
 }
 `, caPoolName, certificateAuthorityName, tlsInspectionPolicyName)
 }

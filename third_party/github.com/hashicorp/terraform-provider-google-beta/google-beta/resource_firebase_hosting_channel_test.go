@@ -4,6 +4,7 @@ package google
 
 import (
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -13,13 +14,13 @@ func TestAccFirebaseHostingChannel_firebasehostingChannelUpdate(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckFirebaseHostingChannelDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -99,7 +100,7 @@ func TestAccFirebaseHostingChannel_firebasehostingChannelUpdate(t *testing.T) {
 }
 
 func testAccFirebaseHostingChannel_firebasehostingChannelBasic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"
@@ -116,7 +117,7 @@ resource "google_firebase_hosting_channel" "update" {
 
 func testAccFirebaseHostingChannel_firebasehostingChannelTtl(context map[string]interface{}, ttl string) string {
 	context["ttl"] = ttl
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"
@@ -134,7 +135,7 @@ resource "google_firebase_hosting_channel" "update" {
 
 func testAccFirebaseHostingChannel_firebasehostingChannelRetainedReleaseCount(context map[string]interface{}, retainedReleaseCount int) string {
 	context["retained_release_count"] = retainedReleaseCount
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"
@@ -152,7 +153,7 @@ resource "google_firebase_hosting_channel" "update" {
 }
 
 func testAccFirebaseHostingChannel_firebasehostingChannelLabels(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"
@@ -173,7 +174,7 @@ resource "google_firebase_hosting_channel" "update" {
 }
 
 func testAccFirebaseHostingChannel_firebasehostingChannelMultipleFields(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"

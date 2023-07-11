@@ -8,19 +8,20 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func testAccDataSourceCloudIdentityGroups_basicTest(t *testing.T) {
 
 	context := map[string]interface{}{
-		"org_domain":    acctest.GetTestOrgDomainFromEnv(t),
-		"cust_id":       acctest.GetTestCustIdFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_domain":    envvar.GetTestOrgDomainFromEnv(t),
+		"cust_id":       envvar.GetTestCustIdFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudIdentityGroupConfig(context),
@@ -36,7 +37,7 @@ func testAccDataSourceCloudIdentityGroups_basicTest(t *testing.T) {
 }
 
 func testAccCloudIdentityGroupConfig(context map[string]interface{}) string {
-	return testAccCloudIdentityGroup_cloudIdentityGroupsBasicExample(context) + Nprintf(`
+	return testAccCloudIdentityGroup_cloudIdentityGroupsBasicExample(context) + acctest.Nprintf(`
 
 data "google_cloud_identity_groups" "groups" {
   parent = google_cloud_identity_group.cloud_identity_group_basic.parent

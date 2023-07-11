@@ -34,12 +34,12 @@ func TestAccComputeRegionDiskResourcePolicyAttachment_regionDiskResourcePolicyAt
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskResourcePolicyAttachmentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccComputeRegionDiskResourcePolicyAttachment_regionDiskResourcePolicyAt
 }
 
 func testAccComputeRegionDiskResourcePolicyAttachment_regionDiskResourcePolicyAttachmentBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_disk_resource_policy_attachment" "attachment" {
   name = google_compute_resource_policy.policy.name
   disk = google_compute_region_disk.ssd.name
@@ -116,7 +116,7 @@ func testAccCheckComputeRegionDiskResourcePolicyAttachmentDestroyProducer(t *tes
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/disks/{{disk}}")
 			if err != nil {

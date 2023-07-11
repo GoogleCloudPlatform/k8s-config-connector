@@ -61,6 +61,15 @@ spec:
               description:
                 description: Immutable. An optional description of this resource.
                 type: string
+              httpKeepAliveTimeoutSec:
+                description: |-
+                  Immutable. Specifies how long to keep a connection open, after completing a response,
+                  while there is no matching traffic (in seconds). If an HTTP keepalive is
+                  not specified, a default value (610 seconds) will be used. For Global
+                  external HTTP(S) load balancer, the minimum allowed value is 5 seconds and
+                  the maximum allowed value is 1200 seconds. For Global external HTTP(S)
+                  load balancer (classic), this option is not available publicly.
+                type: integer
               location:
                 description: 'Location represents the geographical location of the
                   ComputeTargetHTTPProxy. Specify a region name or "global" for global

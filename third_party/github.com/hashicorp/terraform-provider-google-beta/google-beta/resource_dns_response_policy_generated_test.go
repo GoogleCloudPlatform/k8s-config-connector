@@ -34,12 +34,12 @@ func TestAccDNSResponsePolicy_dnsResponsePolicyBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSResponsePolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -55,24 +55,18 @@ func TestAccDNSResponsePolicy_dnsResponsePolicyBasicExample(t *testing.T) {
 }
 
 func testAccDNSResponsePolicy_dnsResponsePolicyBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "network-1" {
-  provider = google-beta
-
   name                    = "tf-test-network-1%{random_suffix}"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_network" "network-2" {
-  provider = google-beta
-  
   name                    = "tf-test-network-2%{random_suffix}"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "subnetwork-1" {
-  provider = google-beta
-
   name                     = google_compute_network.network-1.name
   network                  = google_compute_network.network-1.name
   ip_cidr_range            = "10.0.36.0/24"
@@ -91,8 +85,6 @@ resource "google_compute_subnetwork" "subnetwork-1" {
 }
 
 resource "google_container_cluster" "cluster-1" {
-  provider = google-beta
-
   name               = "tf-test-cluster-1%{random_suffix}"
   location           = "us-central1-c"
   initial_node_count = 1
@@ -121,10 +113,8 @@ resource "google_container_cluster" "cluster-1" {
 }
 
 resource "google_dns_response_policy" "example-response-policy" {
-  provider = google-beta
-  
   response_policy_name = "tf-test-example-response-policy%{random_suffix}"
-  
+
   networks {
     network_url = google_compute_network.network-1.id
   }
@@ -148,7 +138,7 @@ func testAccCheckDNSResponsePolicyDestroyProducer(t *testing.T) func(s *terrafor
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
 			if err != nil {

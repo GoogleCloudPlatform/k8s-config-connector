@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -36,7 +37,7 @@ func TestAccComputeNetworkFirewallPolicyAssociation_GlobalHandWritten(t *testing
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -66,7 +67,7 @@ func TestAccComputeNetworkFirewallPolicyAssociation_GlobalHandWritten(t *testing
 }
 
 func testAccComputeNetworkFirewallPolicyAssociation_GlobalHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network_firewall_policy" "network_firewall_policy" {
   name = "tf-test-policy%{random_suffix}"
   project = "%{project_name}"
@@ -88,7 +89,7 @@ resource "google_compute_network_firewall_policy_association" "primary" {
 }
 
 func testAccComputeNetworkFirewallPolicyAssociation_GlobalHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network_firewall_policy" "network_firewall_policy" {
   name = "tf-test-policy%{random_suffix}"
   project = "%{project_name}"

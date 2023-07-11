@@ -17,12 +17,12 @@ func TestAccDataSourceSqlDatabaseInstances_basic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -47,12 +47,12 @@ func TestAccDataSourceSqlDatabaseInstances_databaseVersionFilter(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -77,12 +77,12 @@ func TestAccDataSourceSqlDatabaseInstances_regionFilter(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -107,12 +107,12 @@ func TestAccDataSourceSqlDatabaseInstances_tierFilter(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -134,7 +134,7 @@ func TestAccDataSourceSqlDatabaseInstances_tierFilter(t *testing.T) {
 }
 
 func testAccDataSourceSqlDatabaseInstances_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_sql_database_instance" "main" {
   name             = "tf-test-instance-%{random_suffix}"
   database_version = "POSTGRES_14"
@@ -174,7 +174,7 @@ data "google_sql_database_instances" "qa" {
 }
 
 func testAccDataSourceSqlDatabaseInstances_databaseVersionFilter(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_sql_database_instance" "main" {
   name             = "tf-test-instance-%{random_suffix}"
   database_version = "POSTGRES_14"
@@ -215,7 +215,7 @@ data "google_sql_database_instances" "qa" {
 }
 
 func testAccDataSourceSqlDatabaseInstances_regionFilter(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_sql_database_instance" "main" {
   name             = "tf-test-instance-%{random_suffix}"
   database_version = "POSTGRES_14"
@@ -256,7 +256,7 @@ data "google_sql_database_instances" "qa" {
 }
 
 func testAccDataSourceSqlDatabaseInstances_tierFilter(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_sql_database_instance" "main" {
   name             = "tf-test-instance-%{random_suffix}"
   database_version = "POSTGRES_14"

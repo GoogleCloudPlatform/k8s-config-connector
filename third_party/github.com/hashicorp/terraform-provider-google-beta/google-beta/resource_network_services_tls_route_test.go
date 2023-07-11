@@ -13,13 +13,13 @@ import (
 func TestAccNetworkServicesTlsRoute_update(t *testing.T) {
 	t.Parallel()
 
-	tlsServiceName := fmt.Sprintf("tf-test-tls-service-%s", RandString(t, 10))
-	tlsHealthCheckName := fmt.Sprintf("tf-test-tls-healthcheck-%s", RandString(t, 10))
-	tlsRouteName := fmt.Sprintf("tf-test-tls-route-%s", RandString(t, 10))
+	tlsServiceName := fmt.Sprintf("tf-test-tls-service-%s", acctest.RandString(t, 10))
+	tlsHealthCheckName := fmt.Sprintf("tf-test-tls-healthcheck-%s", acctest.RandString(t, 10))
+	tlsRouteName := fmt.Sprintf("tf-test-tls-route-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesTlsRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

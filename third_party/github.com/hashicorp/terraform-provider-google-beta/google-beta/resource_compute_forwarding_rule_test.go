@@ -13,12 +13,12 @@ import (
 func TestAccComputeForwardingRule_update(t *testing.T) {
 	t.Parallel()
 
-	poolName := fmt.Sprintf("tf-%s", RandString(t, 10))
-	ruleName := fmt.Sprintf("tf-%s", RandString(t, 10))
+	poolName := fmt.Sprintf("tf-%s", acctest.RandString(t, 10))
+	ruleName := fmt.Sprintf("tf-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -44,15 +44,15 @@ func TestAccComputeForwardingRule_update(t *testing.T) {
 func TestAccComputeForwardingRule_ip(t *testing.T) {
 	t.Parallel()
 
-	addrName := fmt.Sprintf("tf-%s", RandString(t, 10))
-	poolName := fmt.Sprintf("tf-%s", RandString(t, 10))
-	ruleName := fmt.Sprintf("tf-%s", RandString(t, 10))
+	addrName := fmt.Sprintf("tf-%s", acctest.RandString(t, 10))
+	poolName := fmt.Sprintf("tf-%s", acctest.RandString(t, 10))
+	ruleName := fmt.Sprintf("tf-%s", acctest.RandString(t, 10))
 	addressRefFieldRaw := "address"
 	addressRefFieldID := "id"
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -80,12 +80,12 @@ func TestAccComputeForwardingRule_internalTcpUdpLbWithMigBackendExampleUpdate(t 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -113,12 +113,12 @@ func TestAccComputeForwardingRule_internalTcpUdpLbWithMigBackendExampleUpdate(t 
 func TestAccComputeForwardingRule_networkTier(t *testing.T) {
 	t.Parallel()
 
-	poolName := fmt.Sprintf("tf-%s", RandString(t, 10))
-	ruleName := fmt.Sprintf("tf-%s", RandString(t, 10))
+	poolName := fmt.Sprintf("tf-%s", acctest.RandString(t, 10))
+	ruleName := fmt.Sprintf("tf-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -137,14 +137,14 @@ func TestAccComputeForwardingRule_networkTier(t *testing.T) {
 func TestAccComputeForwardingRule_serviceDirectoryRegistrations(t *testing.T) {
 	t.Parallel()
 
-	poolName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	ruleName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	svcDirNamespace := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	serviceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	poolName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	ruleName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	svcDirNamespace := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	serviceName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -164,12 +164,12 @@ func TestAccComputeForwardingRule_forwardingRuleVpcPscExampleUpdate(t *testing.T
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -196,12 +196,12 @@ func TestAccComputeForwardingRule_forwardingRuleRegionalSteeringExampleUpdate(t 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -298,7 +298,7 @@ resource "google_compute_forwarding_rule" "foobar" {
 }
 
 func testAccComputeForwardingRule_internalTcpUdpLbWithMigBackendExampleUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 # Internal TCP/UDP load balancer with a managed instance group backend
 
 # VPC
@@ -539,7 +539,7 @@ resource "google_service_directory_service" "examplesvc" {
 }
 
 func testAccComputeForwardingRule_forwardingRuleVpcPscExampleUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 // Forwarding rule for VPC private service connect
 resource "google_compute_forwarding_rule" "default" {
   name                    = "tf-test-psc-endpoint%{random_suffix}"
@@ -638,7 +638,7 @@ resource "google_compute_health_check" "producer_service_health_check" {
 }
 
 func testAccComputeForwardingRule_forwardingRuleRegionalSteeringExampleUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_forwarding_rule" "steering" {
   name = "tf-test-steering-rule%{random_suffix}"
   region = "us-central1"

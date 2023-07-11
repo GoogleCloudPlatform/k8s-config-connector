@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -36,7 +37,7 @@ func TestAccRecaptchaEnterpriseKey_AndroidKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -68,7 +69,7 @@ func TestAccRecaptchaEnterpriseKey_IosKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -100,7 +101,7 @@ func TestAccRecaptchaEnterpriseKey_MinimalKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -124,7 +125,7 @@ func TestAccRecaptchaEnterpriseKey_WebKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -156,7 +157,7 @@ func TestAccRecaptchaEnterpriseKey_WebScoreKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -186,7 +187,7 @@ func TestAccRecaptchaEnterpriseKey_WebScoreKey(t *testing.T) {
 }
 
 func testAccRecaptchaEnterpriseKey_AndroidKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_recaptcha_enterprise_key" "primary" {
   display_name = "display-name-one"
 
@@ -211,7 +212,7 @@ resource "google_recaptcha_enterprise_key" "primary" {
 }
 
 func testAccRecaptchaEnterpriseKey_AndroidKeyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_recaptcha_enterprise_key" "primary" {
   display_name = "display-name-two"
 
@@ -236,7 +237,7 @@ resource "google_recaptcha_enterprise_key" "primary" {
 }
 
 func testAccRecaptchaEnterpriseKey_IosKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_recaptcha_enterprise_key" "primary" {
   display_name = "display-name-one"
 
@@ -261,7 +262,7 @@ resource "google_recaptcha_enterprise_key" "primary" {
 }
 
 func testAccRecaptchaEnterpriseKey_IosKeyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_recaptcha_enterprise_key" "primary" {
   display_name = "display-name-two"
 
@@ -286,7 +287,7 @@ resource "google_recaptcha_enterprise_key" "primary" {
 }
 
 func testAccRecaptchaEnterpriseKey_MinimalKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_recaptcha_enterprise_key" "primary" {
   display_name = "display-name-one"
   labels       = {}
@@ -303,7 +304,7 @@ resource "google_recaptcha_enterprise_key" "primary" {
 }
 
 func testAccRecaptchaEnterpriseKey_WebKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_recaptcha_enterprise_key" "primary" {
   display_name = "display-name-one"
 
@@ -331,7 +332,7 @@ resource "google_recaptcha_enterprise_key" "primary" {
 }
 
 func testAccRecaptchaEnterpriseKey_WebKeyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_recaptcha_enterprise_key" "primary" {
   display_name = "display-name-two"
 
@@ -359,7 +360,7 @@ resource "google_recaptcha_enterprise_key" "primary" {
 }
 
 func testAccRecaptchaEnterpriseKey_WebScoreKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_recaptcha_enterprise_key" "primary" {
   display_name = "display-name-one"
 
@@ -386,7 +387,7 @@ resource "google_recaptcha_enterprise_key" "primary" {
 }
 
 func testAccRecaptchaEnterpriseKey_WebScoreKeyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_recaptcha_enterprise_key" "primary" {
   display_name = "display-name-two"
 

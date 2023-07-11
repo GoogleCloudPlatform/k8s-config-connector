@@ -9,17 +9,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"google.golang.org/api/bigquery/v2"
 )
 
 func TestAccBigQueryDataset_basic(t *testing.T) {
 	t.Parallel()
 
-	datasetID := fmt.Sprintf("tf_test_%s", RandString(t, 10))
+	datasetID := fmt.Sprintf("tf_test_%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigQueryDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -53,12 +54,12 @@ func TestAccBigQueryDataset_basic(t *testing.T) {
 func TestAccBigQueryDataset_datasetWithContents(t *testing.T) {
 	t.Parallel()
 
-	datasetID := fmt.Sprintf("tf_test_%s", RandString(t, 10))
-	tableID := fmt.Sprintf("tf_test_%s", RandString(t, 10))
+	datasetID := fmt.Sprintf("tf_test_%s", acctest.RandString(t, 10))
+	tableID := fmt.Sprintf("tf_test_%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigQueryDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -78,13 +79,13 @@ func TestAccBigQueryDataset_datasetWithContents(t *testing.T) {
 func TestAccBigQueryDataset_access(t *testing.T) {
 	t.Parallel()
 
-	datasetID := fmt.Sprintf("tf_test_access_%s", RandString(t, 10))
-	otherDatasetID := fmt.Sprintf("tf_test_other_%s", RandString(t, 10))
-	otherTableID := fmt.Sprintf("tf_test_other_%s", RandString(t, 10))
+	datasetID := fmt.Sprintf("tf_test_access_%s", acctest.RandString(t, 10))
+	otherDatasetID := fmt.Sprintf("tf_test_other_%s", acctest.RandString(t, 10))
+	otherTableID := fmt.Sprintf("tf_test_other_%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigQueryDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -126,11 +127,11 @@ func TestAccBigQueryDataset_access(t *testing.T) {
 func TestAccBigQueryDataset_regionalLocation(t *testing.T) {
 	t.Parallel()
 
-	datasetID1 := fmt.Sprintf("tf_test_%s", RandString(t, 10))
+	datasetID1 := fmt.Sprintf("tf_test_%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigQueryDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -148,13 +149,13 @@ func TestAccBigQueryDataset_regionalLocation(t *testing.T) {
 func TestAccBigQueryDataset_cmek(t *testing.T) {
 	t.Parallel()
 
-	kms := BootstrapKMSKeyInLocation(t, "us")
-	pid := acctest.GetTestProjectFromEnv()
-	datasetID1 := fmt.Sprintf("tf_test_%s", RandString(t, 10))
+	kms := acctest.BootstrapKMSKeyInLocation(t, "us")
+	pid := envvar.GetTestProjectFromEnv()
+	datasetID1 := fmt.Sprintf("tf_test_%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigQueryDataset_cmek(pid, datasetID1, kms.CryptoKey.Name),
@@ -168,10 +169,32 @@ func TestAccBigQueryDataset_cmek(t *testing.T) {
 	})
 }
 
+func TestAccBigQueryDataset_storageBillModel(t *testing.T) {
+	t.Parallel()
+
+	datasetID := fmt.Sprintf("tf_test_%s", RandString(t, 10))
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckBigQueryDatasetDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccBigQueryDatasetStorageBillingModel(datasetID),
+			},
+			{
+				ResourceName:      "google_bigquery_dataset.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func testAccAddTable(t *testing.T, datasetID string, tableID string) resource.TestCheckFunc {
 	// Not actually a check, but adds a table independently of terraform
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		table := &bigquery.Table{
 			TableReference: &bigquery.TableReference{
 				DatasetId: datasetID,
@@ -389,4 +412,23 @@ resource "google_bigquery_dataset" "test" {
   project = google_project_iam_member.kms-project-binding.project
 }
 `, pid, datasetID, kmsKey)
+}
+
+func testAccBigQueryDatasetStorageBillingModel(datasetID string) string {
+	return fmt.Sprintf(`
+resource "google_bigquery_dataset" "test" {
+  dataset_id                      = "%s"
+  friendly_name                   = "foo"
+  description                     = "This is a foo description"
+  location                        = "EU"
+  default_partition_expiration_ms = 3600000
+  default_table_expiration_ms     = 3600000
+  storage_billing_model           = "PHYSICAL"
+
+  labels = {
+    env                         = "foo"
+    default_table_expiration_ms = 3600000
+  }
+}
+`, datasetID)
 }

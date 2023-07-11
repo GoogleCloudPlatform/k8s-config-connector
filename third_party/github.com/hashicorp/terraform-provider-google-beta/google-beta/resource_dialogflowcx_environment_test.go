@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -19,14 +20,14 @@ func TestAccDialogflowCXEnvironment_update(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          acctest.GetTestOrgFromEnv(t),
-		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
-		"random_suffix":   RandString(t, 10),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDialogflowCXEnvironment_basic(context),
@@ -49,7 +50,7 @@ func TestAccDialogflowCXEnvironment_update(t *testing.T) {
 }
 
 func testAccDialogflowCXEnvironment_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 	data "google_project" "project" {}
 
 	resource "google_service_account" "dialogflowcx_service_account" {
@@ -90,7 +91,7 @@ func testAccDialogflowCXEnvironment_basic(context map[string]interface{}) string
 }
 
 func testAccDialogflowCXEnvironment_full(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 	data "google_project" "project" {}
 
 	resource "google_service_account" "dialogflowcx_service_account" {
@@ -140,12 +141,12 @@ func TestAccDialogflowCXEnvironment_dialogflowcxEnvironmentFullExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDialogflowCXEnvironmentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -162,7 +163,7 @@ func TestAccDialogflowCXEnvironment_dialogflowcxEnvironmentFullExample(t *testin
 }
 
 func testAccDialogflowCXEnvironment_dialogflowcxEnvironmentFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dialogflow_cx_agent" "agent" {
   display_name = "tf-test-dialogflowcx-agent%{random_suffix}"
   location = "global"
@@ -199,12 +200,12 @@ func TestAccDialogflowCXEnvironment_dialogflowcxEnvironmentRegional(t *testing.T
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDialogflowCXEnvironmentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -221,7 +222,7 @@ func TestAccDialogflowCXEnvironment_dialogflowcxEnvironmentRegional(t *testing.T
 }
 
 func testAccDialogflowCXEnvironment_dialogflowcxEnvironmentFRegional(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dialogflow_cx_agent" "agent" {
 	display_name = "issue12880"
 	location = "europe-west2"
@@ -262,7 +263,7 @@ func testAccCheckDialogflowCXEnvironmentDestroyProducer(t *testing.T) func(s *te
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DialogflowCXBasePath}}{{parent}}/environments/{{name}}")
 			if err != nil {

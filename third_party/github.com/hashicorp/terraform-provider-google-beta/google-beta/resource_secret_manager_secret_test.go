@@ -5,20 +5,22 @@ package google
 import (
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
 func TestAccSecretManagerSecret_import(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSecretManagerSecretDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -37,17 +39,17 @@ func TestAccSecretManagerSecret_import(t *testing.T) {
 func TestAccSecretManagerSecret_cmek(t *testing.T) {
 	t.Parallel()
 
-	kmscentral := BootstrapKMSKeyInLocation(t, "us-central1")
-	kmseast := BootstrapKMSKeyInLocation(t, "us-east1")
+	kmscentral := acctest.BootstrapKMSKeyInLocation(t, "us-central1")
+	kmseast := acctest.BootstrapKMSKeyInLocation(t, "us-east1")
 	context1 := map[string]interface{}{
-		"pid":                  acctest.GetTestProjectFromEnv(),
-		"random_suffix":        RandString(t, 10),
+		"pid":                  envvar.GetTestProjectFromEnv(),
+		"random_suffix":        acctest.RandString(t, 10),
 		"kms_key_name_central": kmscentral.CryptoKey.Name,
 		"kms_key_name_east":    kmseast.CryptoKey.Name,
 	}
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSecretManagerSecretDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -64,7 +66,7 @@ func TestAccSecretManagerSecret_cmek(t *testing.T) {
 }
 
 func testAccSecretManagerSecret_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_secret_manager_secret" "secret-basic" {
   secret_id = "tf-test-secret-%{random_suffix}"
   
@@ -90,7 +92,7 @@ resource "google_secret_manager_secret" "secret-basic" {
 }
 
 func testAccSecretMangerSecret_cmek(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "project" {
   project_id = "%{pid}"
 }

@@ -24,27 +24,28 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDataCatalogTagTemplateIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 		"force_delete":  true,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataCatalogTagTemplateIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_data_catalog_tag_template_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/tagTemplates/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf_test_my_template%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/tagTemplates/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf_test_my_template%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -54,7 +55,7 @@ func TestAccDataCatalogTagTemplateIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_data_catalog_tag_template_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/tagTemplates/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf_test_my_template%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/tagTemplates/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf_test_my_template%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -66,14 +67,14 @@ func TestAccDataCatalogTagTemplateIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 		"force_delete":  true,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -81,7 +82,7 @@ func TestAccDataCatalogTagTemplateIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_data_catalog_tag_template_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/tagTemplates/%s roles/viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf_test_my_template%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/tagTemplates/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf_test_my_template%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -93,14 +94,14 @@ func TestAccDataCatalogTagTemplateIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 		"force_delete":  true,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataCatalogTagTemplateIamPolicy_basicGenerated(context),
@@ -108,7 +109,7 @@ func TestAccDataCatalogTagTemplateIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_data_catalog_tag_template_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/tagTemplates/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf_test_my_template%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/tagTemplates/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf_test_my_template%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -117,7 +118,7 @@ func TestAccDataCatalogTagTemplateIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_data_catalog_tag_template_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/tagTemplates/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf_test_my_template%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/tagTemplates/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf_test_my_template%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -126,7 +127,7 @@ func TestAccDataCatalogTagTemplateIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccDataCatalogTagTemplateIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_tag_template" "basic_tag_template" {
   tag_template_id = "tf_test_my_template%{random_suffix}"
   region = "us-central1"
@@ -179,7 +180,7 @@ resource "google_data_catalog_tag_template_iam_member" "foo" {
 }
 
 func testAccDataCatalogTagTemplateIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_tag_template" "basic_tag_template" {
   tag_template_id = "tf_test_my_template%{random_suffix}"
   region = "us-central1"
@@ -245,7 +246,7 @@ data "google_data_catalog_tag_template_iam_policy" "foo" {
 }
 
 func testAccDataCatalogTagTemplateIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_tag_template" "basic_tag_template" {
   tag_template_id = "tf_test_my_template%{random_suffix}"
   region = "us-central1"
@@ -300,7 +301,7 @@ resource "google_data_catalog_tag_template_iam_policy" "foo" {
 }
 
 func testAccDataCatalogTagTemplateIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_tag_template" "basic_tag_template" {
   tag_template_id = "tf_test_my_template%{random_suffix}"
   region = "us-central1"
@@ -353,7 +354,7 @@ resource "google_data_catalog_tag_template_iam_binding" "foo" {
 }
 
 func testAccDataCatalogTagTemplateIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_tag_template" "basic_tag_template" {
   tag_template_id = "tf_test_my_template%{random_suffix}"
   region = "us-central1"

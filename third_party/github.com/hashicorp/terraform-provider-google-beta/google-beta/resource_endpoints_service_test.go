@@ -3,11 +3,11 @@
 package google
 
 import (
-	"reflect"
 	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 
 	"fmt"
 
@@ -20,23 +20,23 @@ func TestAccEndpointsService_basic(t *testing.T) {
 	// Uses random provider
 	acctest.SkipIfVcr(t)
 	t.Parallel()
-	serviceId := "tf-test" + RandString(t, 10)
+	serviceId := "tf-test" + acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		CheckDestroy:             testAccCheckEndpointServiceDestroyProducer(t),
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccEndpointsService_basic(serviceId, acctest.GetTestProjectFromEnv(), "1"),
+				Config: testAccEndpointsService_basic(serviceId, envvar.GetTestProjectFromEnv(), "1"),
 				Check:  testAccCheckEndpointExistsByName(t, serviceId),
 			},
 			{
-				Config: testAccEndpointsService_basic(serviceId, acctest.GetTestProjectFromEnv(), "2"),
+				Config: testAccEndpointsService_basic(serviceId, envvar.GetTestProjectFromEnv(), "2"),
 				Check:  testAccCheckEndpointExistsByName(t, serviceId),
 			},
 			{
-				Config: testAccEndpointsService_basic(serviceId, acctest.GetTestProjectFromEnv(), "3"),
+				Config: testAccEndpointsService_basic(serviceId, envvar.GetTestProjectFromEnv(), "3"),
 				Check:  testAccCheckEndpointExistsByName(t, serviceId),
 			},
 		},
@@ -45,71 +45,19 @@ func TestAccEndpointsService_basic(t *testing.T) {
 
 func TestAccEndpointsService_grpc(t *testing.T) {
 	t.Parallel()
-	serviceId := "tf-test" + RandString(t, 10)
+	serviceId := "tf-test" + acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckEndpointServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccEndpointsService_grpc(serviceId, acctest.GetTestProjectFromEnv()),
+				Config: testAccEndpointsService_grpc(serviceId, envvar.GetTestProjectFromEnv()),
 				Check:  testAccCheckEndpointExistsByName(t, serviceId),
 			},
 		},
 	})
-}
-
-func TestEndpointsService_grpcMigrateState(t *testing.T) {
-	cases := map[string]struct {
-		StateVersion       int
-		Attributes         map[string]string
-		ExpectedAttributes map[string]string
-		Meta               interface{}
-	}{
-		"update from protoc_output to protoc_output_base64": {
-			StateVersion: 0,
-			Attributes: map[string]string{
-				"protoc_output": "123456789",
-				"name":          "testcase",
-			},
-			ExpectedAttributes: map[string]string{
-				"protoc_output_base64": "MTIzNDU2Nzg5",
-				"protoc_output":        "",
-				"name":                 "testcase",
-			},
-			Meta: &transport_tpg.Config{Project: "gcp-project", Region: "us-central1"},
-		},
-		"update from non-protoc_output": {
-			StateVersion: 0,
-			Attributes: map[string]string{
-				"openapi_config": "foo bar baz",
-				"name":           "testcase-2",
-			},
-			ExpectedAttributes: map[string]string{
-				"openapi_config": "foo bar baz",
-				"name":           "testcase-2",
-			},
-			Meta: &transport_tpg.Config{Project: "gcp-project", Region: "us-central1"},
-		},
-	}
-
-	for tn, tc := range cases {
-		is := &terraform.InstanceState{
-			ID:         tc.Attributes["name"],
-			Attributes: tc.Attributes,
-		}
-
-		is, err := migrateEndpointsService(tc.StateVersion, is, tc.Meta)
-
-		if err != nil {
-			t.Fatalf("bad: %s, err: %#v", tn, err)
-		}
-
-		if !reflect.DeepEqual(is.Attributes, tc.ExpectedAttributes) {
-			t.Fatalf("Attributes should be `%s` but are `%s`", tc.ExpectedAttributes, is.Attributes)
-		}
-	}
 }
 
 func testAccEndpointsService_basic(serviceId, project, rev string) string {
@@ -185,7 +133,7 @@ EOF
 
 func testAccCheckEndpointExistsByName(t *testing.T, serviceId string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		service, err := config.NewServiceManClient(config.UserAgent).Services.GetConfig(
 			fmt.Sprintf("%s.endpoints.%s.cloud.goog", serviceId, config.Project)).Do()
 		if err != nil {
@@ -201,7 +149,7 @@ func testAccCheckEndpointExistsByName(t *testing.T, serviceId string) resource.T
 
 func testAccCheckEndpointServiceDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		for name, rs := range s.RootModule().Resources {
 			if strings.HasPrefix(name, "data.") {

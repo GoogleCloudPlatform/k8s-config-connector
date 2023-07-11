@@ -34,12 +34,12 @@ func TestAccAppEngineDomainMapping_appEngineDomainMappingBasicExample(t *testing
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAppEngineDomainMappingDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccAppEngineDomainMapping_appEngineDomainMappingBasicExample(t *testing
 }
 
 func testAccAppEngineDomainMapping_appEngineDomainMappingBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_app_engine_domain_mapping" "domain_mapping" {
   domain_name = "tf-test-domain%{random_suffix}.gcp.tfacc.hashicorptest.com"
 
@@ -77,7 +77,7 @@ func testAccCheckAppEngineDomainMappingDestroyProducer(t *testing.T) func(s *ter
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{AppEngineBasePath}}apps/{{project}}/domainMappings/{{domain_name}}")
 			if err != nil {

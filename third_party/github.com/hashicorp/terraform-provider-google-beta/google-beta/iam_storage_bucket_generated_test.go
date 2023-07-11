@@ -25,13 +25,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccStorageBucketIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/storage.objectViewer",
 		"admin_role":              "roles/storage.admin",
 		"condition_title":         "expires_after_2019_12_31",
@@ -41,9 +42,9 @@ func TestAccStorageBucketIamBindingGenerated(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccStorageBucketIamBinding_basicGenerated(context),
@@ -72,7 +73,7 @@ func TestAccStorageBucketIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/storage.objectViewer",
 		"admin_role":              "roles/storage.admin",
 		"condition_title":         "expires_after_2019_12_31",
@@ -82,9 +83,9 @@ func TestAccStorageBucketIamMemberGenerated(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -104,9 +105,9 @@ func TestAccStorageBucketIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	// This may skip test, so do it first
-	sa := acctest.GetTestServiceAccountFromEnv(t)
+	sa := envvar.GetTestServiceAccountFromEnv(t)
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/storage.objectViewer",
 		"admin_role":              "roles/storage.admin",
 		"condition_title":         "expires_after_2019_12_31",
@@ -117,9 +118,9 @@ func TestAccStorageBucketIamPolicyGenerated(t *testing.T) {
 	}
 	context["service_account"] = sa
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccStorageBucketIamPolicy_basicGenerated(context),
@@ -148,7 +149,7 @@ func TestAccStorageBucketIamBindingGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/storage.objectViewer",
 		"admin_role":              "roles/storage.admin",
 		"condition_title":         "expires_after_2019_12_31",
@@ -158,9 +159,9 @@ func TestAccStorageBucketIamBindingGenerated_withCondition(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccStorageBucketIamBinding_withConditionGenerated(context),
@@ -181,7 +182,7 @@ func TestAccStorageBucketIamBindingGenerated_withAndWithoutCondition(t *testing.
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/storage.objectViewer",
 		"admin_role":              "roles/storage.admin",
 		"condition_title":         "expires_after_2019_12_31",
@@ -191,9 +192,9 @@ func TestAccStorageBucketIamBindingGenerated_withAndWithoutCondition(t *testing.
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccStorageBucketIamBinding_withAndWithoutConditionGenerated(context),
@@ -224,7 +225,7 @@ func TestAccStorageBucketIamMemberGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/storage.objectViewer",
 		"admin_role":              "roles/storage.admin",
 		"condition_title":         "expires_after_2019_12_31",
@@ -234,9 +235,9 @@ func TestAccStorageBucketIamMemberGenerated_withCondition(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccStorageBucketIamMember_withConditionGenerated(context),
@@ -257,7 +258,7 @@ func TestAccStorageBucketIamMemberGenerated_withAndWithoutCondition(t *testing.T
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/storage.objectViewer",
 		"admin_role":              "roles/storage.admin",
 		"condition_title":         "expires_after_2019_12_31",
@@ -267,9 +268,9 @@ func TestAccStorageBucketIamMemberGenerated_withAndWithoutCondition(t *testing.T
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccStorageBucketIamMember_withAndWithoutConditionGenerated(context),
@@ -300,9 +301,9 @@ func TestAccStorageBucketIamPolicyGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	// This may skip test, so do it first
-	sa := acctest.GetTestServiceAccountFromEnv(t)
+	sa := envvar.GetTestServiceAccountFromEnv(t)
 	context := map[string]interface{}{
-		"random_suffix":           RandString(t, 10),
+		"random_suffix":           acctest.RandString(t, 10),
 		"role":                    "roles/storage.objectViewer",
 		"admin_role":              "roles/storage.admin",
 		"condition_title":         "expires_after_2019_12_31",
@@ -314,12 +315,12 @@ func TestAccStorageBucketIamPolicyGenerated_withCondition(t *testing.T) {
 	context["service_account"] = sa
 
 	// Test should have 3 bindings: one with a description and one without, and a third for an admin role. Any < chars are converted to a unicode character by the API.
-	expectedPolicyData := Nprintf(`{"bindings":[{"members":["serviceAccount:%{service_account}"],"role":"%{admin_role}"},{"condition":{"description":"%{condition_desc}","expression":"%{condition_expr}","title":"%{condition_title}"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"},{"condition":{"expression":"%{condition_expr}","title":"%{condition_title}-no-description"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"}]}`, context)
+	expectedPolicyData := acctest.Nprintf(`{"bindings":[{"members":["serviceAccount:%{service_account}"],"role":"%{admin_role}"},{"condition":{"description":"%{condition_desc}","expression":"%{condition_expr}","title":"%{condition_title}"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"},{"condition":{"expression":"%{condition_expr}","title":"%{condition_title}-no-description"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"}]}`, context)
 	expectedPolicyData = strings.Replace(expectedPolicyData, "<", "\\u003c", -1)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccStorageBucketIamPolicy_withConditionGenerated(context),
@@ -341,7 +342,7 @@ func TestAccStorageBucketIamPolicyGenerated_withCondition(t *testing.T) {
 }
 
 func testAccStorageBucketIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "default" {
   name                        = "tf-test-my-bucket%{random_suffix}"
   location                    = "US"
@@ -357,7 +358,7 @@ resource "google_storage_bucket_iam_member" "foo" {
 }
 
 func testAccStorageBucketIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "default" {
   name                        = "tf-test-my-bucket%{random_suffix}"
   location                    = "US"
@@ -390,7 +391,7 @@ data "google_storage_bucket_iam_policy" "foo" {
 }
 
 func testAccStorageBucketIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "default" {
   name                        = "tf-test-my-bucket%{random_suffix}"
   location                    = "US"
@@ -408,7 +409,7 @@ resource "google_storage_bucket_iam_policy" "foo" {
 }
 
 func testAccStorageBucketIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "default" {
   name                        = "tf-test-my-bucket%{random_suffix}"
   location                    = "US"
@@ -424,7 +425,7 @@ resource "google_storage_bucket_iam_binding" "foo" {
 }
 
 func testAccStorageBucketIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "default" {
   name                        = "tf-test-my-bucket%{random_suffix}"
   location                    = "US"
@@ -440,7 +441,7 @@ resource "google_storage_bucket_iam_binding" "foo" {
 }
 
 func testAccStorageBucketIamBinding_withConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "default" {
   name                        = "tf-test-my-bucket%{random_suffix}"
   location                    = "US"
@@ -461,7 +462,7 @@ resource "google_storage_bucket_iam_binding" "foo" {
 }
 
 func testAccStorageBucketIamBinding_withAndWithoutConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "default" {
   name                        = "tf-test-my-bucket%{random_suffix}"
   location                    = "US"
@@ -500,7 +501,7 @@ resource "google_storage_bucket_iam_binding" "foo3" {
 }
 
 func testAccStorageBucketIamMember_withConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "default" {
   name                        = "tf-test-my-bucket%{random_suffix}"
   location                    = "US"
@@ -521,7 +522,7 @@ resource "google_storage_bucket_iam_member" "foo" {
 }
 
 func testAccStorageBucketIamMember_withAndWithoutConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "default" {
   name                        = "tf-test-my-bucket%{random_suffix}"
   location                    = "US"
@@ -560,7 +561,7 @@ resource "google_storage_bucket_iam_member" "foo3" {
 }
 
 func testAccStorageBucketIamPolicy_withConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "default" {
   name                        = "tf-test-my-bucket%{random_suffix}"
   location                    = "US"

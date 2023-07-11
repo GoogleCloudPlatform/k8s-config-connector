@@ -24,26 +24,27 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccApiGatewayApiIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/apigateway.viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayApiIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_api_gateway_api_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s roles/apigateway.viewer", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s roles/apigateway.viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -53,7 +54,7 @@ func TestAccApiGatewayApiIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_api_gateway_api_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s roles/apigateway.viewer", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s roles/apigateway.viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -65,13 +66,13 @@ func TestAccApiGatewayApiIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/apigateway.viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -79,7 +80,7 @@ func TestAccApiGatewayApiIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_api_gateway_api_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s roles/apigateway.viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s roles/apigateway.viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,13 +92,13 @@ func TestAccApiGatewayApiIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/apigateway.viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayApiIamPolicy_basicGenerated(context),
@@ -105,7 +106,7 @@ func TestAccApiGatewayApiIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_api_gateway_api_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -114,7 +115,7 @@ func TestAccApiGatewayApiIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_api_gateway_api_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -123,7 +124,7 @@ func TestAccApiGatewayApiIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccApiGatewayApiIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -140,7 +141,7 @@ resource "google_api_gateway_api_iam_member" "foo" {
 }
 
 func testAccApiGatewayApiIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -173,7 +174,7 @@ data "google_api_gateway_api_iam_policy" "foo" {
 }
 
 func testAccApiGatewayApiIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -193,7 +194,7 @@ resource "google_api_gateway_api_iam_policy" "foo" {
 }
 
 func testAccApiGatewayApiIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -210,7 +211,7 @@ resource "google_api_gateway_api_iam_binding" "foo" {
 }
 
 func testAccApiGatewayApiIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"

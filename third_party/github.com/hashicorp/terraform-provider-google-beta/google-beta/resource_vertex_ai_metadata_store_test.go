@@ -17,12 +17,12 @@ import (
 func TestAccVertexAIMetadataStore_vertexAiMetadataStoreExample(t *testing.T) {
 	t.Parallel()
 
-	kms := BootstrapKMSKeyInLocation(t, "us-central1")
-	name := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	kms := acctest.BootstrapKMSKeyInLocation(t, "us-central1")
+	name := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckVertexAIMetadataStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -61,7 +61,7 @@ func testAccCheckVertexAIMetadataStoreDestroyProducer(t *testing.T) func(s *terr
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{VertexAIBasePath}}{{name}}")
 			if err != nil {

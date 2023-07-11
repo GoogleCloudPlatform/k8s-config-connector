@@ -3,28 +3,20 @@
 package google
 
 import (
-	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
-	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBasic(t *testing.T) {
-	// TODO: https://github.com/hashicorp/terraform-provider-google/issues/14417
-	t.Skip()
-
 	t.Parallel()
 
 	context := map[string]interface{}{}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGkeonpremBareMetalClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -48,16 +40,13 @@ func TestAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBasic(t *testing.T) 
 }
 
 func TestAccGkeonpremBareMetalCluster_bareMetalClusterUpdateManualLb(t *testing.T) {
-	// TODO: https://github.com/hashicorp/terraform-provider-google/issues/14417
-	t.Skip()
-
 	t.Parallel()
 
 	context := map[string]interface{}{}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGkeonpremBareMetalClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -81,16 +70,13 @@ func TestAccGkeonpremBareMetalCluster_bareMetalClusterUpdateManualLb(t *testing.
 }
 
 func TestAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBgpLb(t *testing.T) {
-	// TODO: https://github.com/hashicorp/terraform-provider-google/issues/14417
-	t.Skip()
-
 	t.Parallel()
 
 	context := map[string]interface{}{}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGkeonpremBareMetalClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -114,7 +100,7 @@ func TestAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBgpLb(t *testing.T) 
 }
 
 func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateMetalLbStart(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_bare_metal_cluster" "cluster-metallb" {
     provider = google-beta
@@ -190,7 +176,7 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateMetalLbStart(context
 }
 
 func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateMetalLb(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_bare_metal_cluster" "cluster-metallb" {
     provider = google-beta
@@ -264,7 +250,7 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateMetalLb(context map[
 }
 
 func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateManualLbStart(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_bare_metal_cluster" "cluster-manuallb" {
     provider = google-beta
@@ -338,7 +324,7 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateManualLbStart(contex
 }
 
 func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateManualLb(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_bare_metal_cluster" "cluster-manuallb" {
     provider = google-beta
@@ -401,7 +387,7 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateManualLb(context map
 }
 
 func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBgpLbStart(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_bare_metal_cluster" "cluster-bgplb" {
     provider = google-beta
@@ -486,7 +472,7 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBgpLbStart(context m
 }
 
 func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBgpLb(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
   resource "google_gkeonprem_bare_metal_cluster" "cluster-bgplb" {
     provider = google-beta
@@ -568,43 +554,4 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBgpLb(context map[st
     }
   }
 `, context)
-}
-
-func testAccCheckGkeonpremBareMetalClusterDestroyProducer(t *testing.T) func(s *terraform.State) error {
-	return func(s *terraform.State) error {
-		for name, rs := range s.RootModule().Resources {
-			if rs.Type != "google_gkeonprem_bare_metal_cluster" {
-				continue
-			}
-			if strings.HasPrefix(name, "data.") {
-				continue
-			}
-
-			config := GoogleProviderConfig(t)
-
-			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{GkeonpremBasePath}}projects/{{project}}/locations/{{location}}/bareMetalClusters/{{name}}")
-			if err != nil {
-				return err
-			}
-
-			billingProject := ""
-
-			if config.BillingProject != "" {
-				billingProject = config.BillingProject
-			}
-
-			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
-				Config:    config,
-				Method:    "GET",
-				Project:   billingProject,
-				RawURL:    url,
-				UserAgent: config.UserAgent,
-			})
-			if err == nil {
-				return fmt.Errorf("GkeonpremBareMetalCluster still exists at %s", url)
-			}
-		}
-
-		return nil
-	}
 }

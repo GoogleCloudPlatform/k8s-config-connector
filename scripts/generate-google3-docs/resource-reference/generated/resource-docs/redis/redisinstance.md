@@ -106,10 +106,6 @@ maintenancePolicy:
       minutes: integer
       nanos: integer
       seconds: integer
-maintenanceSchedule:
-  endTime: string
-  scheduleDeadlineTime: string
-  startTime: string
 memorySizeGb: integer
 persistenceConfig:
   persistenceMode: string
@@ -442,53 +438,6 @@ An API may allow the value 60 if it allows leap-seconds.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>maintenanceSchedule</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Upcoming maintenance schedule.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>maintenanceSchedule.endTime</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The end time of any upcoming scheduled maintenance for this instance.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-resolution and up to nine fractional digits.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>maintenanceSchedule.scheduleDeadlineTime</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The deadline that the maintenance schedule start time
-can not go beyond, including reschedule.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-resolution and up to nine fractional digits.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>maintenanceSchedule.startTime</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The start time of any upcoming scheduled maintenance for this instance.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
-resolution and up to nine fractional digits.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
             <p><code>memorySizeGb</code></p>
             <p><i>Required</i></p>
         </td>
@@ -706,6 +655,10 @@ conditions:
 createTime: string
 currentLocationId: string
 host: string
+maintenanceSchedule:
+- endTime: string
+  scheduleDeadlineTime: string
+  startTime: string
 nodes:
 - id: string
   zone: string
@@ -803,6 +756,48 @@ and can change after a failover event.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Hostname or IP address of the exposed Redis endpoint used by clients
 to connect to the service.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>maintenanceSchedule</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Upcoming maintenance schedule.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>maintenanceSchedule[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>maintenanceSchedule[].endTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The end time of any upcoming scheduled maintenance for this instance.
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+resolution and up to nine fractional digits.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>maintenanceSchedule[].scheduleDeadlineTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The deadline that the maintenance schedule start time
+can not go beyond, including reschedule.
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+resolution and up to nine fractional digits.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>maintenanceSchedule[].startTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The start time of any upcoming scheduled maintenance for this instance.
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

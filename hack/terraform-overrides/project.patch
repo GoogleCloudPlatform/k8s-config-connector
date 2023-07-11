@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project.go
 index 89c686401..b4ab2ccbf 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project.go
 @@ -259,7 +259,9 @@ func resourceGoogleProjectRead(d *schema.ResourceData, meta interface{}) error {
  	p, err := readGoogleProject(d, config, userAgent)
  	if err != nil {

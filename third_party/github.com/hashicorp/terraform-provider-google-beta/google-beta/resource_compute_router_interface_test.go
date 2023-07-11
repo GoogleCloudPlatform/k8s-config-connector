@@ -9,21 +9,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccComputeRouterInterface_basic(t *testing.T) {
 	t.Parallel()
 
-	name := fmt.Sprintf("tf-test-router-%s", RandString(t, 10))
+	name := fmt.Sprintf("tf-test-router-%s", acctest.RandString(t, 10))
 	context := map[string]interface{}{
 		"name":   name,
 		"region": "us-central1",
 	}
-	importIdFourPart := fmt.Sprintf("%s/%s/%s/%s", acctest.GetTestProjectFromEnv(), context["region"], context["name"], context["name"]) // name reused in config
+	importIdFourPart := fmt.Sprintf("%s/%s/%s/%s", envvar.GetTestProjectFromEnv(), context["region"], context["name"], context["name"]) // name reused in config
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouterInterfaceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -54,10 +55,10 @@ func TestAccComputeRouterInterface_basic(t *testing.T) {
 func TestAccComputeRouterInterface_redundant(t *testing.T) {
 	t.Parallel()
 
-	routerName := fmt.Sprintf("tf-test-router-%s", RandString(t, 10))
-	VcrTest(t, resource.TestCase{
+	routerName := fmt.Sprintf("tf-test-router-%s", acctest.RandString(t, 10))
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouterInterfaceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -77,10 +78,10 @@ func TestAccComputeRouterInterface_redundant(t *testing.T) {
 func TestAccComputeRouterInterface_withTunnel(t *testing.T) {
 	t.Parallel()
 
-	routerName := fmt.Sprintf("tf-test-router-%s", RandString(t, 10))
-	VcrTest(t, resource.TestCase{
+	routerName := fmt.Sprintf("tf-test-router-%s", acctest.RandString(t, 10))
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouterInterfaceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -100,10 +101,10 @@ func TestAccComputeRouterInterface_withTunnel(t *testing.T) {
 func TestAccComputeRouterInterface_withPrivateIpAddress(t *testing.T) {
 	t.Parallel()
 
-	routerName := fmt.Sprintf("tf-test-router-%s", RandString(t, 10))
-	VcrTest(t, resource.TestCase{
+	routerName := fmt.Sprintf("tf-test-router-%s", acctest.RandString(t, 10))
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouterInterfaceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -122,7 +123,7 @@ func TestAccComputeRouterInterface_withPrivateIpAddress(t *testing.T) {
 
 func testAccCheckComputeRouterInterfaceDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		routersService := config.NewComputeClient(config.UserAgent).Routers
 
@@ -157,7 +158,7 @@ func testAccCheckComputeRouterInterfaceDestroyProducer(t *testing.T) func(s *ter
 
 func testAccCheckComputeRouterInterfaceDelete(t *testing.T, n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		routersService := config.NewComputeClient(config.UserAgent).Routers
 
@@ -209,7 +210,7 @@ func testAccCheckComputeRouterInterfaceExists(t *testing.T, n string) resource.T
 			return fmt.Errorf("No ID is set")
 		}
 
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		project, err := acctest.GetTestProject(rs.Primary, config)
 		if err != nil {
@@ -243,7 +244,7 @@ func testAccCheckComputeRouterInterfaceExists(t *testing.T, n string) resource.T
 }
 
 func testAccComputeRouterInterfaceBasic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "foobar" {
   name = "%{name}-net"
 }

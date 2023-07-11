@@ -29,13 +29,13 @@ func TestAccServiceDirectoryServiceIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceDirectoryServiceIamBinding_basicGenerated(context),
@@ -52,13 +52,13 @@ func TestAccServiceDirectoryServiceIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -72,13 +72,13 @@ func TestAccServiceDirectoryServiceIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceDirectoryServiceIamPolicy_basicGenerated(context),
@@ -92,7 +92,7 @@ func TestAccServiceDirectoryServiceIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccServiceDirectoryServiceIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_directory_namespace" "example" {
   provider     = google-beta
   namespace_id = "tf-test-example-namespace%{random_suffix}"
@@ -120,7 +120,7 @@ resource "google_service_directory_service_iam_member" "foo" {
 }
 
 func testAccServiceDirectoryServiceIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_directory_namespace" "example" {
   provider     = google-beta
   namespace_id = "tf-test-example-namespace%{random_suffix}"
@@ -163,7 +163,7 @@ data "google_service_directory_service_iam_policy" "foo" {
 }
 
 func testAccServiceDirectoryServiceIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_directory_namespace" "example" {
   provider     = google-beta
   namespace_id = "tf-test-example-namespace%{random_suffix}"
@@ -194,7 +194,7 @@ resource "google_service_directory_service_iam_policy" "foo" {
 }
 
 func testAccServiceDirectoryServiceIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_directory_namespace" "example" {
   provider     = google-beta
   namespace_id = "tf-test-example-namespace%{random_suffix}"
@@ -222,7 +222,7 @@ resource "google_service_directory_service_iam_binding" "foo" {
 }
 
 func testAccServiceDirectoryServiceIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_directory_namespace" "example" {
   provider     = google-beta
   namespace_id = "tf-test-example-namespace%{random_suffix}"

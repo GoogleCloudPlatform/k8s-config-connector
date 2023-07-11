@@ -71,7 +71,7 @@ type CertificateManaged struct {
 	// +optional
 	AuthorizationAttemptInfo []CertificateAuthorizationAttemptInfo `json:"authorizationAttemptInfo,omitempty"`
 
-	/* Immutable. Authorizations that will be used for performing domain authorization. */
+	/* Immutable. Authorizations that will be used for performing domain authorization. Either issuanceConfig or dnsAuthorizations should be specificed, but not both. */
 	// +optional
 	DnsAuthorizations []string `json:"dnsAuthorizations,omitempty"`
 
@@ -79,6 +79,12 @@ type CertificateManaged struct {
 	Wildcard domains are only supported with DNS challenge resolution. */
 	// +optional
 	Domains []string `json:"domains,omitempty"`
+
+	/* Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/* /locations/* /certificateIssuanceConfigs/*.
+	If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
+	Either issuanceConfig or dnsAuthorizations should be specificed, but not both. */
+	// +optional
+	IssuanceConfig *string `json:"issuanceConfig,omitempty"`
 
 	/* Information about issues with provisioning this Managed Certificate. */
 	// +optional

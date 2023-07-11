@@ -34,12 +34,12 @@ func TestAccCertificateManagerCertificateMapEntry_certificateManagerCertificateM
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCertificateManagerCertificateMapEntryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccCertificateManagerCertificateMapEntry_certificateManagerCertificateM
 }
 
 func testAccCertificateManagerCertificateMapEntry_certificateManagerCertificateMapEntryFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_certificate_manager_certificate_map" "certificate_map" {
   name        = "tf-test-cert-map-entry%{random_suffix}"
   description = "My acceptance test certificate map"
@@ -119,7 +119,7 @@ func testAccCheckCertificateManagerCertificateMapEntryDestroyProducer(t *testing
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}")
 			if err != nil {

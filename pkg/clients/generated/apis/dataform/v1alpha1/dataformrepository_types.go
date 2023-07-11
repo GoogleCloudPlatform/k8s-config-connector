@@ -50,6 +50,20 @@ type RepositoryGitRemoteSettings struct {
 	Url string `json:"url"`
 }
 
+type RepositoryWorkspaceCompilationOverrides struct {
+	/* Optional. The default database (Google Cloud project ID). */
+	// +optional
+	DefaultDatabase *string `json:"defaultDatabase,omitempty"`
+
+	/* Optional. The suffix that should be appended to all schema (BigQuery dataset ID) names. */
+	// +optional
+	SchemaSuffix *string `json:"schemaSuffix,omitempty"`
+
+	/* Optional. The prefix that should be prepended to all table names. */
+	// +optional
+	TablePrefix *string `json:"tablePrefix,omitempty"`
+}
+
 type DataformRepositorySpec struct {
 	/* Optional. If set, configures this repository to be linked to a Git remote. */
 	// +optional
@@ -64,6 +78,10 @@ type DataformRepositorySpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Optional. If set, fields of workspaceCompilationOverrides override the default compilation settings that are specified in dataform.json when creating workspace-scoped compilation results. */
+	// +optional
+	WorkspaceCompilationOverrides *RepositoryWorkspaceCompilationOverrides `json:"workspaceCompilationOverrides,omitempty"`
 }
 
 type DataformRepositoryStatus struct {

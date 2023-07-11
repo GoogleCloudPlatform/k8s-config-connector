@@ -11,12 +11,12 @@ import (
 
 func TestAccNotebooksRuntime_update(t *testing.T) {
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksRuntimeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -48,7 +48,7 @@ func TestAccNotebooksRuntime_update(t *testing.T) {
 }
 
 func testAccNotebooksRuntime_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_runtime" "runtime" {
   name = "tf-test-notebooks-runtime%{random_suffix}"
   location = "us-central1"
@@ -74,7 +74,7 @@ resource "google_notebooks_runtime" "runtime" {
 }
 
 func testAccNotebooksRuntime_update(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_runtime" "runtime" {
   name = "tf-test-notebooks-runtime%{random_suffix}"
   location = "us-central1"

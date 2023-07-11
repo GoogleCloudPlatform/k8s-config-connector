@@ -13,11 +13,11 @@ import (
 func TestAccDNSResponsePolicy_update(t *testing.T) {
 	t.Parallel()
 
-	responsePolicySuffix := RandString(t, 10)
+	responsePolicySuffix := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckDNSResponsePolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

@@ -23,19 +23,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 )
 
 func TestAccComputeNetworkPeeringRoutesConfig_networkPeeringRoutesConfigBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeNetworkPeeringRoutesConfig_networkPeeringRoutesConfigBasicExample(context),
@@ -51,7 +50,7 @@ func TestAccComputeNetworkPeeringRoutesConfig_networkPeeringRoutesConfigBasicExa
 }
 
 func testAccComputeNetworkPeeringRoutesConfig_networkPeeringRoutesConfigBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network_peering_routes_config" "peering_primary_routes" {
   peering = google_compute_network_peering.peering_primary.name
   network = google_compute_network.network_primary.name
@@ -91,12 +90,12 @@ func TestAccComputeNetworkPeeringRoutesConfig_networkPeeringRoutesConfigGkeExamp
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeNetworkPeeringRoutesConfig_networkPeeringRoutesConfigGkeExample(context),
@@ -112,7 +111,7 @@ func TestAccComputeNetworkPeeringRoutesConfig_networkPeeringRoutesConfigGkeExamp
 }
 
 func testAccComputeNetworkPeeringRoutesConfig_networkPeeringRoutesConfigGkeExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network_peering_routes_config" "peering_gke_routes" {
   peering = google_container_cluster.private_cluster.private_cluster_config[0].peering_name
   network = google_compute_network.container_network.name

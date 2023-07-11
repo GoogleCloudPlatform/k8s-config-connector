@@ -13,11 +13,11 @@ import (
 func TestAccIAMBetaWorkloadIdentityPool_full(t *testing.T) {
 	t.Parallel()
 
-	randomSuffix := RandString(t, 10)
+	randomSuffix := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMBetaWorkloadIdentityPoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -43,11 +43,11 @@ func TestAccIAMBetaWorkloadIdentityPool_full(t *testing.T) {
 func TestAccIAMBetaWorkloadIdentityPool_minimal(t *testing.T) {
 	t.Parallel()
 
-	randomSuffix := RandString(t, 10)
+	randomSuffix := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMBetaWorkloadIdentityPoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

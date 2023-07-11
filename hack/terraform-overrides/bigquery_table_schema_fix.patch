@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigquery_table.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigquery_table.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigquery/resource_bigquery_table.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigquery/resource_bigquery_table.go
 index 3aada3d6..f0f660eb 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigquery_table.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigquery_table.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigquery/resource_bigquery_table.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigquery/resource_bigquery_table.go
 @@ -731,7 +731,7 @@ func resourceBigQueryTableRead(d *schema.ResourceData, meta interface{}) error {
  			return err
  		}

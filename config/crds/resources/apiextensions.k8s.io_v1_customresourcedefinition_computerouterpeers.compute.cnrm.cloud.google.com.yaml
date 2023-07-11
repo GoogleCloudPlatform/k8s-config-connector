@@ -177,7 +177,7 @@ spec:
               peerIpAddress:
                 description: |-
                   IP address of the BGP interface outside Google Cloud Platform.
-                  Only IPv4 is supported.
+                  Only IPv4 is supported. Required if 'ip_address' is set.
                 type: string
               peerIpv6NexthopAddress:
                 description: |-
@@ -287,7 +287,6 @@ spec:
                 type: object
             required:
             - peerAsn
-            - peerIpAddress
             - region
             - routerInterfaceRef
             - routerRef

@@ -1,19 +1,19 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider/provider.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider/provider.go
 index 64552d974..04b78afc1 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-@@ -1459,6 +1459,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider/provider.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider/provider.go
+@@ -1448,6 +1448,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
  			"google_healthcare_fhir_store":                                   healthcare.ResourceHealthcareFhirStore(),
  			"google_healthcare_hl7_v2_store":                                 healthcare.ResourceHealthcareHl7V2Store(),
  			"google_iam_access_boundary_policy":                              iam2.ResourceIAM2AccessBoundaryPolicy(),
-+			"google_iam_custom_role":                                         resourceIamCustomRole(),
++			"google_iam_custom_role":                                         resourcemanager.ResourceIamCustomRole(),
  			"google_iam_deny_policy":                                         iam2.ResourceIAM2DenyPolicy(),
  			"google_iam_workload_identity_pool":                              iambeta.ResourceIAMBetaWorkloadIdentityPool(),
  			"google_iam_workload_identity_pool_provider":                     iambeta.ResourceIAMBetaWorkloadIdentityPoolProvider(),
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_organization_iam_custom_role.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_organization_iam_custom_role.go
 index 2bf76615c..47b7fc6fa 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_organization_iam_custom_role.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_organization_iam_custom_role.go
 @@ -65,7 +65,7 @@ func resourceGoogleOrganizationIamCustomRole() *schema.Resource {
  			"name": {
  				Type:        schema.TypeString,
@@ -23,10 +23,10 @@ index 2bf76615c..47b7fc6fa 100644
  			},
  		},
  		UseJSONNumber: true,
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_iam_custom_role.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_iam_custom_role.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project_iam_custom_role.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project_iam_custom_role.go
 index 13ab566b6..9b783e789 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_iam_custom_role.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_iam_custom_role.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project_iam_custom_role.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project_iam_custom_role.go
 @@ -68,7 +68,7 @@ func resourceGoogleProjectIamCustomRole() *schema.Resource {
  			"name": {
  				Type:        schema.TypeString,
@@ -36,26 +36,27 @@ index 13ab566b6..9b783e789 100644
  			},
  		},
  		UseJSONNumber: true,
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_iam_custom_role.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_iam_custom_role.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_iam_custom_role.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_iam_custom_role.go
 new file mode 100644
 index 000000000..bc140f89e
 --- /dev/null
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_iam_custom_role.go
-@@ -0,0 +1,50 @@
-+package google
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_iam_custom_role.go
+@@ -0,0 +1,51 @@
++package resourcemanager
 +
 +import (
 +	"fmt"
 +	"strings"
 +
 +	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
++	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 +)
 +
-+func resourceIamCustomRole() *schema.Resource {
-+	return combinedResource(
++func ResourceIamCustomRole() *schema.Resource {
++	return tpgresource.CombinedResource(
 +		map[string]*schema.Resource{
-+			projectType: ResourceGoogleProjectIamCustomRole(),
-+			orgType:     ResourceGoogleOrganizationIamCustomRole(),
++			tpgresource.ProjectType: ResourceGoogleProjectIamCustomRole(),
++			tpgresource.OrgType:     ResourceGoogleOrganizationIamCustomRole(),
 +		}, func(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 +			// FROM: {{project?}}#{{org_id?}}#{{role_id}}
 +			// TO:
@@ -68,20 +69,20 @@ index 000000000..bc140f89e
 +			}
 +			roleID := partitions[2]
 +			for roleType, parentVal := range map[string]string{
-+				projectType: partitions[0],
-+				orgType:     partitions[1],
++				tpgresource.ProjectType: partitions[0],
++				tpgresource.OrgType:     partitions[1],
 +			} {
 +				if parentVal == "" {
 +					continue
 +				}
-+				if err := d.Set(fieldForParentType(roleType), parentVal); err != nil {
++				if err := d.Set(tpgresource.FieldForParentType(roleType), parentVal); err != nil {
 +					return nil, fmt.Errorf("error setting role parent ID: %w", err)
 +				}
 +				var id string
 +				switch roleType {
-+				case projectType:
++				case tpgresource.ProjectType:
 +					id = fmt.Sprintf("projects/%v/roles/%v", parentVal, roleID)
-+				case orgType:
++				case tpgresource.OrgType:
 +					id = fmt.Sprintf("organizations/%v/roles/%v", parentVal, roleID)
 +				default:
 +					return nil, fmt.Errorf("unknown role type in import ID")

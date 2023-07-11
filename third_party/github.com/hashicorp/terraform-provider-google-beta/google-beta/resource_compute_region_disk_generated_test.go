@@ -34,12 +34,12 @@ func TestAccComputeRegionDisk_regionDiskBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccComputeRegionDisk_regionDiskBasicExample(t *testing.T) {
 }
 
 func testAccComputeRegionDisk_regionDiskBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_disk" "regiondisk" {
   name                      = "tf-test-my-region-disk%{random_suffix}"
   snapshot                  = google_compute_snapshot.snapdisk.id
@@ -87,12 +87,12 @@ func TestAccComputeRegionDisk_regionDiskAsyncExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -109,10 +109,8 @@ func TestAccComputeRegionDisk_regionDiskAsyncExample(t *testing.T) {
 }
 
 func testAccComputeRegionDisk_regionDiskAsyncExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_disk" "primary" {
-  provider = google-beta
-
   name                      = "tf-test-primary-region-disk%{random_suffix}"
   type                      = "pd-ssd"
   region                    = "us-central1"
@@ -122,8 +120,6 @@ resource "google_compute_region_disk" "primary" {
 }
 
 resource "google_compute_region_disk" "secondary" {
-  provider = google-beta
-
   name                      = "tf-test-secondary-region-disk%{random_suffix}"
   type                      = "pd-ssd"
   region                    = "us-east1"
@@ -142,12 +138,12 @@ func TestAccComputeRegionDisk_regionDiskFeaturesExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -164,7 +160,7 @@ func TestAccComputeRegionDisk_regionDiskFeaturesExample(t *testing.T) {
 }
 
 func testAccComputeRegionDisk_regionDiskFeaturesExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_disk" "regiondisk" {
   name                      = "tf-test-my-region-features-disk%{random_suffix}"
   type                      = "pd-ssd"
@@ -200,7 +196,7 @@ func testAccCheckComputeRegionDiskDestroyProducer(t *testing.T) func(s *terrafor
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/disks/{{name}}")
 			if err != nil {

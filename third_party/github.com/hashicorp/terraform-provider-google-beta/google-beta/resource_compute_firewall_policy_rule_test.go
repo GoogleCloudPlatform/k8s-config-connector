@@ -8,19 +8,20 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccComputeFirewallPolicyRule_update(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
-		"org_name":      fmt.Sprintf("organizations/%s", acctest.GetTestOrgFromEnv(t)),
+		"random_suffix": acctest.RandString(t, 10),
+		"org_name":      fmt.Sprintf("organizations/%s", envvar.GetTestOrgFromEnv(t)),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeFirewallPolicyRule_start(context),
@@ -67,7 +68,7 @@ func TestAccComputeFirewallPolicyRule_update(t *testing.T) {
 }
 
 func testAccComputeFirewallPolicyRule_start(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_account" "service_account" {
   account_id = "tf-test-sa-%{random_suffix}"
 }
@@ -131,7 +132,7 @@ resource "google_compute_firewall_policy_rule" "default" {
 }
 
 func testAccComputeFirewallPolicyRule_update(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_account" "service_account" {
   account_id = "tf-test-sa-%{random_suffix}"
 }
@@ -202,7 +203,7 @@ resource "google_compute_firewall_policy_rule" "default" {
 }
 
 func testAccComputeFirewallPolicyRule_removeConfigs(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_account" "service_account" {
   account_id = "tf-test-sa-%{random_suffix}"
 }
@@ -270,13 +271,13 @@ func TestAccComputeFirewallPolicyRule_multipleRules(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
-		"org_name":      fmt.Sprintf("organizations/%s", acctest.GetTestOrgFromEnv(t)),
+		"random_suffix": acctest.RandString(t, 10),
+		"org_name":      fmt.Sprintf("organizations/%s", envvar.GetTestOrgFromEnv(t)),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeFirewallPolicyRule_multiple(context),
@@ -313,7 +314,7 @@ func TestAccComputeFirewallPolicyRule_multipleRules(t *testing.T) {
 }
 
 func testAccComputeFirewallPolicyRule_multiple(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_folder" "folder" {
   display_name = "tf-test-folder-%{random_suffix}"
   parent       = "%{org_name}"
@@ -383,7 +384,7 @@ resource "google_compute_firewall_policy_rule" "rule2" {
 }
 
 func testAccComputeFirewallPolicyRule_multipleAdd(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_folder" "folder" {
   display_name = "tf-test-folder-%{random_suffix}"
   parent       = "%{org_name}"
@@ -473,7 +474,7 @@ resource "google_compute_firewall_policy_rule" "rule3" {
 }
 
 func testAccComputeFirewallPolicyRule_multipleRemove(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_folder" "folder" {
   display_name = "tf-test-folder-%{random_suffix}"
   parent       = "%{org_name}"

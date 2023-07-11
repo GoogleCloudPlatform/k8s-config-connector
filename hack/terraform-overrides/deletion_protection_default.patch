@@ -20,10 +20,10 @@ index 828f785dc..b10a3a69e 100644
  		return nil, fmt.Errorf("Error setting deletion_protection: %s", err)
  	}
  
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sql_database_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sql_database_instance.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sql/resource_sql_database_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sql/resource_sql_database_instance.go
 index 8a4a785b3..170e1e1a8 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sql_database_instance.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sql_database_instance.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sql/resource_sql_database_instance.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sql/resource_sql_database_instance.go
 @@ -116,7 +116,7 @@ func resourceSqlDatabaseInstance() *schema.Resource {
  			},
  			"deletion_protection": {

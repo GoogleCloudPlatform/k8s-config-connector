@@ -4,6 +4,7 @@ package google
 
 import (
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -13,13 +14,13 @@ func TestAccComputeOrganizationSecurityPolicyRule_organizationSecurityPolicyRule
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeOrganizationSecurityPolicyRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -43,7 +44,7 @@ func TestAccComputeOrganizationSecurityPolicyRule_organizationSecurityPolicyRule
 }
 
 func testAccComputeOrganizationSecurityPolicyRule_organizationSecurityPolicyRulePreUpdateExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_folder" "security_policy_target" {
   display_name = "tf-test-secpol-%{random_suffix}"
   parent       = "organizations/%{org_id}"
@@ -77,7 +78,7 @@ resource "google_compute_organization_security_policy_rule" "policy" {
 }
 
 func testAccComputeOrganizationSecurityPolicyRule_organizationSecurityPolicyRulePostUpdateExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_folder" "security_policy_target" {
   display_name = "tf-test-secpol-%{random_suffix}"
   parent       = "organizations/%{org_id}"

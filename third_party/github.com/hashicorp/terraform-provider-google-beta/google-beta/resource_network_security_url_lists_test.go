@@ -13,11 +13,11 @@ import (
 func TestAccNetworkSecurityUrlLists_update(t *testing.T) {
 	t.Parallel()
 
-	urlListsName := fmt.Sprintf("tf-test-url-lists-%s", RandString(t, 10))
+	urlListsName := fmt.Sprintf("tf-test-url-lists-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityUrlListsDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

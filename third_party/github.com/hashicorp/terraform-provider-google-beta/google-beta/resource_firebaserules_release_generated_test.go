@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -36,7 +37,7 @@ func TestAccFirebaserulesRelease_FirestoreReleaseHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -68,8 +69,8 @@ func TestAccFirebaserulesRelease_StorageReleaseHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
-		"region":        acctest.GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -92,7 +93,7 @@ func TestAccFirebaserulesRelease_StorageReleaseHandWritten(t *testing.T) {
 }
 
 func testAccFirebaserulesRelease_FirestoreReleaseHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebaserules_release" "primary" {
   name         = "cloud.firestore"
   ruleset_name = "projects/%{project_name}/rulesets/${google_firebaserules_ruleset.firestore.name}"
@@ -120,7 +121,7 @@ resource "google_firebaserules_ruleset" "firestore" {
 }
 
 func testAccFirebaserulesRelease_FirestoreReleaseHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebaserules_release" "primary" {
   name         = "cloud.firestore"
   ruleset_name = "projects/%{project_name}/rulesets/${google_firebaserules_ruleset.firestore.name}"
@@ -148,7 +149,7 @@ resource "google_firebaserules_ruleset" "firestore" {
 }
 
 func testAccFirebaserulesRelease_StorageReleaseHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebaserules_release" "primary" {
   provider     = google-beta
   name         = "firebase.storage/${google_storage_bucket.bucket.name}"

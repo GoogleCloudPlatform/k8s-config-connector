@@ -98,7 +98,8 @@ spec:
                     type: array
                   dnsAuthorizations:
                     description: Immutable. Authorizations that will be used for performing
-                      domain authorization.
+                      domain authorization. Either issuanceConfig or dnsAuthorizations
+                      should be specificed, but not both.
                     items:
                       type: string
                     type: array
@@ -109,6 +110,12 @@ spec:
                     items:
                       type: string
                     type: array
+                  issuanceConfig:
+                    description: |-
+                      Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/*/locations/*/certificateIssuanceConfigs/*.
+                      If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
+                      Either issuanceConfig or dnsAuthorizations should be specificed, but not both.
+                    type: string
                   provisioningIssue:
                     description: Information about issues with provisioning this Managed
                       Certificate.

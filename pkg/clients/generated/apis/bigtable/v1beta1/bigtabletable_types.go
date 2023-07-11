@@ -41,6 +41,10 @@ type TableColumnFamily struct {
 }
 
 type BigtableTableSpec struct {
+	/* Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days. */
+	// +optional
+	ChangeStreamRetention *string `json:"changeStreamRetention,omitempty"`
+
 	/* A group of columns within a table which share a common configuration. This can be specified multiple times. */
 	// +optional
 	ColumnFamily []TableColumnFamily `json:"columnFamily,omitempty"`

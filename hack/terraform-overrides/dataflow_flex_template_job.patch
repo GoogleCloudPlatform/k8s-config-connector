@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_flex_template_job.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_flex_template_job.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataflow/resource_dataflow_flex_template_job.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataflow/resource_dataflow_flex_template_job.go
 index 42765a1eb..4a8d9f94f 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_flex_template_job.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_flex_template_job.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataflow/resource_dataflow_flex_template_job.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataflow/resource_dataflow_flex_template_job.go
 @@ -362,6 +362,9 @@ func resourceDataflowFlexTemplateJobRead(d *schema.ResourceData, meta interface{
  	if err := d.Set("network", optionsMap["network"]); err != nil {
  		return fmt.Errorf("Error setting network: %s", err)

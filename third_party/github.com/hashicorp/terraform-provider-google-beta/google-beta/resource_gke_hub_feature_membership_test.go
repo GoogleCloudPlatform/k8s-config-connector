@@ -5,13 +5,15 @@ package google
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
 
 	dcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	gkehub "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/gkehub/beta"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -21,14 +23,14 @@ func TestAccGKEHubFeatureMembership_gkehubFeatureAcmUpdate(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   RandString(t, 10),
-		"org_id":          acctest.GetTestOrgFromEnv(t),
-		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGKEHubFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -86,7 +88,7 @@ func TestAccGKEHubFeatureMembership_gkehubFeatureAcmUpdate(t *testing.T) {
 }
 
 func testAccGKEHubFeatureMembership_gkehubFeatureAcmUpdateStart(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup(context) + acctest.Nprintf(`
 resource "google_gke_hub_feature" "feature" {
   project = google_project.project.project_id
   name = "configmanagement"
@@ -105,7 +107,7 @@ resource "google_gke_hub_feature_membership" "feature_member_1" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     config_sync {
       source_format = "hierarchy"
       git {
@@ -123,7 +125,7 @@ resource "google_gke_hub_feature_membership" "feature_member_2" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_second.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     config_sync {
       source_format = "hierarchy"
       git {
@@ -138,7 +140,7 @@ resource "google_gke_hub_feature_membership" "feature_member_2" {
 }
 
 func testAccGKEHubFeatureMembership_gkehubFeatureAcmMembershipUpdate(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup(context) + acctest.Nprintf(`
 resource "google_gke_hub_feature" "feature" {
   project = google_project.project.project_id
   name = "configmanagement"
@@ -157,7 +159,7 @@ resource "google_gke_hub_feature_membership" "feature_member_1" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     config_sync {
       source_format = "hierarchy"
       git {
@@ -175,7 +177,7 @@ resource "google_gke_hub_feature_membership" "feature_member_2" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_second.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     config_sync {
       source_format = "hierarchy"
       git {
@@ -196,7 +198,7 @@ resource "google_gke_hub_feature_membership" "feature_member_2" {
 }
 
 func testAccGKEHubFeatureMembership_gkehubFeatureAcmAddHierarchyController(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup(context) + acctest.Nprintf(`
 resource "google_gke_hub_feature" "feature" {
   project = google_project.project.project_id
   name = "configmanagement"
@@ -215,7 +217,7 @@ resource "google_gke_hub_feature_membership" "feature_member_2" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_second.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     config_sync {
       source_format = "unstructured"
       git {
@@ -244,7 +246,7 @@ resource "google_gke_hub_feature_membership" "feature_member_3" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_third.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     config_sync {
       source_format = "hierarchy"
       git {
@@ -273,7 +275,7 @@ resource "google_gke_hub_feature_membership" "feature_member_4" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_fourth.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     policy_controller {
       enabled = true
       audit_interval_seconds = "100"
@@ -293,7 +295,7 @@ resource "google_gke_hub_feature_membership" "feature_member_4" {
 }
 
 func testAccGKEHubFeatureMembership_gkehubFeatureAcmRemoveFields(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup(context) + acctest.Nprintf(`
 resource "google_gke_hub_feature" "feature" {
   project = google_project.project.project_id
   name = "configmanagement"
@@ -312,7 +314,7 @@ resource "google_gke_hub_feature_membership" "feature_member_3" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_third.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     policy_controller {
       enabled = true
       audit_interval_seconds = "100"
@@ -331,14 +333,14 @@ func TestAccGKEHubFeatureMembership_gkehubFeatureAcmAllFields(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   RandString(t, 10),
-		"org_id":          acctest.GetTestOrgFromEnv(t),
-		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGKEHubFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -390,7 +392,7 @@ func TestAccGKEHubFeatureMembership_gkehubFeatureAcmAllFields(t *testing.T) {
 }
 
 func testAccGKEHubFeatureMembership_gkehubFeatureAcmAllFields(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   project = google_project.project.project_id
   name               = "tf-test-cl%{random_suffix}"
@@ -430,7 +432,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     config_sync {
       git {
         sync_repo      = "https://github.com/hashicorp/terraform"
@@ -457,7 +459,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
 }
 
 func testAccGKEHubFeatureMembership_gkehubFeatureWithPreventDriftField(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   project = google_project.project.project_id
   name               = "tf-test-cl%{random_suffix}"
@@ -497,7 +499,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     config_sync {
       git {
         sync_repo      = "https://github.com/hashicorp/terraform"
@@ -525,7 +527,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
 }
 
 func testAccGKEHubFeatureMembership_gkehubFeatureAcmFewFields(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   project = google_project.project.project_id
   name               = "tf-test-cl%{random_suffix}"
@@ -571,7 +573,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     config_sync {
       git {
         sync_repo   = "https://github.com/hashicorp/terraform"
@@ -590,14 +592,14 @@ func TestAccGKEHubFeatureMembership_gkehubFeatureAcmOci(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   RandString(t, 10),
-		"org_id":          acctest.GetTestOrgFromEnv(t),
-		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGKEHubFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -638,7 +640,7 @@ func TestAccGKEHubFeatureMembership_gkehubFeatureAcmOci(t *testing.T) {
 }
 
 func testAccGKEHubFeatureMembership_gkehubFeatureAcmOciStart(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup_ACMOCI(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup_ACMOCI(context) + acctest.Nprintf(`
 resource "google_gke_hub_feature" "feature" {
   project = google_project.project.project_id
   name = "configmanagement"
@@ -663,7 +665,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_acmoci.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     config_sync {
       source_format = "unstructured"
       oci {
@@ -690,7 +692,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
 }
 
 func testAccGKEHubFeatureMembership_gkehubFeatureAcmOciUpdate(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup_ACMOCI(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup_ACMOCI(context) + acctest.Nprintf(`
 resource "google_gke_hub_feature" "feature" {
   project = google_project.project.project_id
   name = "configmanagement"
@@ -715,7 +717,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_acmoci.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     config_sync {
       source_format = "hierarchy"
       oci {
@@ -742,7 +744,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
 }
 
 func testAccGKEHubFeatureMembership_gkehubFeatureAcmOciRemoveFields(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup_ACMOCI(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup_ACMOCI(context) + acctest.Nprintf(`
 resource "google_gke_hub_feature" "feature" {
   project = google_project.project.project_id
   name = "configmanagement"
@@ -767,7 +769,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
   feature = google_gke_hub_feature.feature.name
   membership = google_gke_hub_membership.membership_acmoci.membership_id
   configmanagement {
-    version = "1.12.0"
+    version = "1.15.1"
     policy_controller {
       enabled = true
       audit_interval_seconds = "100"
@@ -788,14 +790,14 @@ func TestAccGKEHubFeatureMembership_gkehubFeatureMesh(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   RandString(t, 10),
-		"org_id":          acctest.GetTestOrgFromEnv(t),
-		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckGKEHubFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -836,7 +838,7 @@ func TestAccGKEHubFeatureMembership_gkehubFeatureMesh(t *testing.T) {
 }
 
 func testAccGKEHubFeatureMembership_meshStart(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   project = google_project.project.project_id
   name               = "tf-test-cl%{random_suffix}"
@@ -891,7 +893,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
 }
 
 func testAccGKEHubFeatureMembership_meshUpdateManagement(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   project = google_project.project.project_id
   name               = "tf-test-cl%{random_suffix}"
@@ -945,7 +947,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
 }
 
 func testAccGKEHubFeatureMembership_meshUpdateControlPlane(context map[string]interface{}) string {
-	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+	return gkeHubFeatureProjectSetup(context) + acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   project = google_project.project.project_id
   name               = "tf-test-cl%{random_suffix}"
@@ -999,7 +1001,7 @@ resource "google_gke_hub_feature_membership" "feature_member" {
 }
 
 func gkeHubClusterMembershipSetup(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_container_cluster" "primary" {
   name               = "tf-test-cl%{random_suffix}"
   location           = "us-central1-a"
@@ -1088,7 +1090,7 @@ resource "google_gke_hub_membership" "membership_fourth" {
 }
 
 func gkeHubClusterMembershipSetup_ACMOCI(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
 resource "google_compute_network" "testnetwork" {
     project                 = google_project.project.project_id
@@ -1124,7 +1126,7 @@ resource "google_gke_hub_membership" "membership_acmoci" {
 
 func testAccCheckGkeHubFeatureMembershipPresent(t *testing.T, project, location, feature, membership string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		obj := &gkehub.FeatureMembership{
 			Feature:    dcl.StringOrNil(feature),
 			Location:   dcl.StringOrNil(location),
@@ -1142,7 +1144,7 @@ func testAccCheckGkeHubFeatureMembershipPresent(t *testing.T, project, location,
 
 func testAccCheckGkeHubFeatureMembershipNotPresent(t *testing.T, project, location, feature, membership string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		obj := &gkehub.FeatureMembership{
 			Feature:    dcl.StringOrNil(feature),
 			Location:   dcl.StringOrNil(location),

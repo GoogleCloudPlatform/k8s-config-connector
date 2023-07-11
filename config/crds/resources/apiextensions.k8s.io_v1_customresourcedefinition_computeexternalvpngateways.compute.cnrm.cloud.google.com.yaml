@@ -122,6 +122,11 @@ spec:
                       type: string
                   type: object
                 type: array
+              labelFingerprint:
+                description: |-
+                  The fingerprint used for optimistic locking of this resource.  Used
+                  internally during updates.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.

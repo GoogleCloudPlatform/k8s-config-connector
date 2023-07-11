@@ -8,22 +8,23 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDataprocJobIamBinding(t *testing.T) {
 	t.Parallel()
 
-	cluster := "tf-dataproc-iam-cluster" + RandString(t, 10)
-	job := "tf-dataproc-iam-job-" + RandString(t, 10)
-	account := "tf-dataproc-iam-" + RandString(t, 10)
+	cluster := "tf-dataproc-iam-cluster" + acctest.RandString(t, 10)
+	job := "tf-dataproc-iam-job-" + acctest.RandString(t, 10)
+	account := "tf-dataproc-iam-" + acctest.RandString(t, 10)
 	role := "roles/editor"
 
 	importId := fmt.Sprintf("projects/%s/regions/%s/jobs/%s %s",
-		acctest.GetTestProjectFromEnv(), "us-central1", job, role)
+		envvar.GetTestProjectFromEnv(), "us-central1", job, role)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test IAM Binding creation
@@ -52,21 +53,21 @@ func TestAccDataprocJobIamBinding(t *testing.T) {
 func TestAccDataprocJobIamMember(t *testing.T) {
 	t.Parallel()
 
-	cluster := "tf-dataproc-iam-cluster" + RandString(t, 10)
-	job := "tf-dataproc-iam-jobid-" + RandString(t, 10)
-	account := "tf-dataproc-iam-" + RandString(t, 10)
+	cluster := "tf-dataproc-iam-cluster" + acctest.RandString(t, 10)
+	job := "tf-dataproc-iam-jobid-" + acctest.RandString(t, 10)
+	account := "tf-dataproc-iam-" + acctest.RandString(t, 10)
 	role := "roles/editor"
 
 	importId := fmt.Sprintf("projects/%s/regions/%s/jobs/%s %s serviceAccount:%s",
-		acctest.GetTestProjectFromEnv(),
+		envvar.GetTestProjectFromEnv(),
 		"us-central1",
 		job,
 		role,
 		serviceAccountCanonicalEmail(account))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test IAM Binding creation
@@ -85,17 +86,17 @@ func TestAccDataprocJobIamMember(t *testing.T) {
 func TestAccDataprocJobIamPolicy(t *testing.T) {
 	t.Parallel()
 
-	cluster := "tf-dataproc-iam-cluster" + RandString(t, 10)
-	job := "tf-dataproc-iam-jobid-" + RandString(t, 10)
-	account := "tf-dataproc-iam-" + RandString(t, 10)
+	cluster := "tf-dataproc-iam-cluster" + acctest.RandString(t, 10)
+	job := "tf-dataproc-iam-jobid-" + acctest.RandString(t, 10)
+	account := "tf-dataproc-iam-" + acctest.RandString(t, 10)
 	role := "roles/editor"
 
 	importId := fmt.Sprintf("projects/%s/regions/%s/jobs/%s",
-		acctest.GetTestProjectFromEnv(), "us-central1", job)
+		envvar.GetTestProjectFromEnv(), "us-central1", job)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test IAM Binding creation

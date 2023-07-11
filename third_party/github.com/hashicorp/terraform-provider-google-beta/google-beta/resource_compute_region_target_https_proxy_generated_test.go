@@ -34,12 +34,12 @@ func TestAccComputeRegionTargetHttpsProxy_regionTargetHttpsProxyBasicExample(t *
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionTargetHttpsProxyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccComputeRegionTargetHttpsProxy_regionTargetHttpsProxyBasicExample(t *
 }
 
 func testAccComputeRegionTargetHttpsProxy_regionTargetHttpsProxyBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_target_https_proxy" "default" {
   region           = "us-central1"
   name             = "tf-test-test-proxy%{random_suffix}"
@@ -124,7 +124,7 @@ func testAccCheckComputeRegionTargetHttpsProxyDestroyProducer(t *testing.T) func
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/targetHttpsProxies/{{name}}")
 			if err != nil {

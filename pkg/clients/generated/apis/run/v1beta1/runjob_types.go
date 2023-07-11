@@ -99,7 +99,7 @@ type JobEmptyDir struct {
 	// +optional
 	Medium *string `json:"medium,omitempty"`
 
-	/* Limit on the storage usable by this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. This field's values are of the 'Quantity' k8s type: https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir. */
+	/* Limit on the storage usable by this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. This field's values are of the 'Quantity' k8s type: https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir. */
 	// +optional
 	SizeLimit *string `json:"sizeLimit,omitempty"`
 }
@@ -304,6 +304,15 @@ type JobVpcAccess struct {
 }
 
 type RunJobSpec struct {
+	/* Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.
+
+	Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected on new resources.
+	All system annotations in v1 now have a corresponding field in v2 Job.
+
+	This field follows Kubernetes annotations' namespacing, limits, and rules. */
+	// +optional
+	Annotations map[string]string `json:"annotations,omitempty"`
+
 	/* Settings for the Binary Authorization feature. */
 	// +optional
 	BinaryAuthorization *JobBinaryAuthorization `json:"binaryAuthorization,omitempty"`

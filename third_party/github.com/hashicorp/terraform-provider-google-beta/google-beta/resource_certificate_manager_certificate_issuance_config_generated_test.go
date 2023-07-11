@@ -34,12 +34,12 @@ func TestAccCertificateManagerCertificateIssuanceConfig_certificateManagerCertif
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCertificateManagerCertificateIssuanceConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccCertificateManagerCertificateIssuanceConfig_certificateManagerCertif
 }
 
 func testAccCertificateManagerCertificateIssuanceConfig_certificateManagerCertificateIssuanceConfigExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_certificate_manager_certificate_issuance_config" "default" {
   name    = "issuanceconfigtestterraform"
   description = "sample description for the certificate issuanceConfigs"
@@ -130,7 +130,7 @@ func testAccCheckCertificateManagerCertificateIssuanceConfigDestroyProducer(t *t
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CertificateManagerBasePath}}projects/{{project}}/locations/{{location}}/certificateIssuanceConfigs/{{name}}")
 			if err != nil {

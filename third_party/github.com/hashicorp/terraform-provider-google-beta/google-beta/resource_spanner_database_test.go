@@ -9,20 +9,21 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/spanner"
 )
 
 func TestAccSpannerDatabase_basic(t *testing.T) {
 	t.Parallel()
 
-	project := acctest.GetTestProjectFromEnv()
-	rnd := RandString(t, 10)
+	project := envvar.GetTestProjectFromEnv()
+	rnd := acctest.RandString(t, 10)
 	instanceName := fmt.Sprintf("tf-test-%s", rnd)
 	databaseName := fmt.Sprintf("tfgen_%s", rnd)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -154,13 +155,13 @@ resource "google_spanner_database" "basic" {
 func TestAccSpannerDatabase_postgres(t *testing.T) {
 	t.Parallel()
 
-	rnd := RandString(t, 10)
+	rnd := acctest.RandString(t, 10)
 	instanceName := fmt.Sprintf("tf-test-%s", rnd)
 	databaseName := fmt.Sprintf("tfgen_%s", rnd)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -243,13 +244,13 @@ resource "google_spanner_database" "basic_spangres" {
 func TestAccSpannerDatabase_versionRetentionPeriod(t *testing.T) {
 	t.Parallel()
 
-	rnd := RandString(t, 10)
+	rnd := acctest.RandString(t, 10)
 	instanceName := fmt.Sprintf("tf-test-%s", rnd)
 	databaseName := fmt.Sprintf("tfgen_%s", rnd)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -390,18 +391,6 @@ resource "google_spanner_database" "basic" {
 `, instanceName, instanceName, databaseName, databaseName, databaseName)
 }
 
-// Unit Tests for type spannerDatabaseId
-func TestDatabaseNameForApi(t *testing.T) {
-	id := spannerDatabaseId{
-		Project:  "project123",
-		Instance: "instance456",
-		Database: "db789",
-	}
-	actual := id.databaseUri()
-	expected := "projects/project123/instances/instance456/databases/db789"
-	expectEquals(t, expected, actual)
-}
-
 // Unit Tests for validation of retention period argument
 func TestValidateDatabaseRetentionPeriod(t *testing.T) {
 	t.Parallel()
@@ -478,12 +467,12 @@ func TestAccSpannerDatabase_deletionProtection(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -508,7 +497,7 @@ func TestAccSpannerDatabase_deletionProtection(t *testing.T) {
 }
 
 func testAccSpannerDatabase_deletionProtection(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_spanner_instance" "main" {
   config       = "regional-europe-west1"
   display_name = "main-instance"
@@ -531,12 +520,12 @@ func TestAccSpannerDatabase_cmek(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -553,7 +542,7 @@ func TestAccSpannerDatabase_cmek(t *testing.T) {
 }
 
 func testAccSpannerDatabase_cmek(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_spanner_instance" "main" {
   provider     = google-beta
   config       = "regional-europe-west1"

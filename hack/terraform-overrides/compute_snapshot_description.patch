@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_snapshot.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_snapshot.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_snapshot.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_snapshot.go
 index 33d3e1fa..2fbb5b51 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_snapshot.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_snapshot.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_snapshot.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_snapshot.go
 @@ -164,7 +164,7 @@ snapshot using a customer-supplied encryption key.`,
  			"storage_bytes": {
  				Type:     schema.TypeInt,

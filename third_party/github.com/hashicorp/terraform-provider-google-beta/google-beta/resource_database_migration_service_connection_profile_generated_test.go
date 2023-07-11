@@ -34,12 +34,12 @@ func TestAccDatabaseMigrationServiceConnectionProfile_databaseMigrationServiceCo
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDatabaseMigrationServiceConnectionProfileDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccDatabaseMigrationServiceConnectionProfile_databaseMigrationServiceCo
 }
 
 func testAccDatabaseMigrationServiceConnectionProfile_databaseMigrationServiceConnectionProfileCloudsqlExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "project" {
 }
 
@@ -150,12 +150,12 @@ func TestAccDatabaseMigrationServiceConnectionProfile_databaseMigrationServiceCo
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDatabaseMigrationServiceConnectionProfileDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -172,7 +172,7 @@ func TestAccDatabaseMigrationServiceConnectionProfile_databaseMigrationServiceCo
 }
 
 func testAccDatabaseMigrationServiceConnectionProfile_databaseMigrationServiceConnectionProfilePostgresExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_sql_database_instance" "postgresqldb" {
   name             = "tf-test-my-database%{random_suffix}"
   database_version = "POSTGRES_12"
@@ -226,12 +226,12 @@ func TestAccDatabaseMigrationServiceConnectionProfile_databaseMigrationServiceCo
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDatabaseMigrationServiceConnectionProfileDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -248,30 +248,26 @@ func TestAccDatabaseMigrationServiceConnectionProfile_databaseMigrationServiceCo
 }
 
 func testAccDatabaseMigrationServiceConnectionProfile_databaseMigrationServiceConnectionProfileAlloydbExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "project" {
 }
 
 resource "google_compute_network" "default" {
-  name = "tf-test-alloydb-cp%{random_suffix}"
+  name = "tf-test-vpc-network%{random_suffix}"
 }
 
 resource "google_compute_global_address" "private_ip_alloc" {
-  name          =  "private-ip-alloc%{random_suffix}"
+  name          =  "tf-test-private-ip-alloc%{random_suffix}"
   address_type  = "INTERNAL"
   purpose       = "VPC_PEERING"
   prefix_length = 16
   network       = google_compute_network.default.id
-
-  depends_on    = [google_compute_network.default]
 }
 
 resource "google_service_networking_connection" "vpc_connection" {
   network                 = google_compute_network.default.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_alloc.name]
-
-  depends_on = [google_compute_global_address.private_ip_alloc]
 }
 
 
@@ -289,7 +285,7 @@ resource "google_database_migration_service_connection_profile" "alloydbprofile"
         user = "alloyuser%{random_suffix}"
         password = "alloypass%{random_suffix}"
       }
-      vpc_network = "projects/${data.google_project.project.number}/global/networks/${google_compute_network.default.name}"
+      vpc_network = google_compute_network.default.id
       labels  = { 
         alloyfoo = "alloybar" 
       }
@@ -322,7 +318,7 @@ func testAccCheckDatabaseMigrationServiceConnectionProfileDestroyProducer(t *tes
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DatabaseMigrationServiceBasePath}}projects/{{project}}/locations/{{location}}/connectionProfiles/{{connection_profile_id}}")
 			if err != nil {

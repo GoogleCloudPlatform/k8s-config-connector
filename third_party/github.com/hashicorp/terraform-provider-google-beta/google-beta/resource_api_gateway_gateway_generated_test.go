@@ -34,12 +34,12 @@ func TestAccApiGatewayGateway_apigatewayGatewayBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckApiGatewayGatewayDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccApiGatewayGateway_apigatewayGatewayBasicExample(t *testing.T) {
 }
 
 func testAccApiGatewayGateway_apigatewayGatewayBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api_gw" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -90,12 +90,12 @@ func TestAccApiGatewayGateway_apigatewayGatewayFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckApiGatewayGatewayDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -112,7 +112,7 @@ func TestAccApiGatewayGateway_apigatewayGatewayFullExample(t *testing.T) {
 }
 
 func testAccApiGatewayGateway_apigatewayGatewayFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_api_gateway_api" "api_gw" {
   provider = google-beta
   api_id = "tf-test-my-api%{random_suffix}"
@@ -154,7 +154,7 @@ func testAccCheckApiGatewayGatewayDestroyProducer(t *testing.T) func(s *terrafor
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ApiGatewayBasePath}}projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
 			if err != nil {

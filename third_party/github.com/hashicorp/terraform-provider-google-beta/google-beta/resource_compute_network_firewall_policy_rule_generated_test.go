@@ -29,27 +29,27 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
-func TestAccComputeNetworkFirewallPolicyRule_GlobalNetSecRuleHandWritten(t *testing.T) {
+func TestAccComputeNetworkFirewallPolicyRule_GlobalHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"project_name":  acctest.GetTestProjectFromEnv(),
-		"service_acct":  acctest.GetTestServiceAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"service_acct":  envvar.GetTestServiceAccountFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { acctest.AccTestPreCheck(t) },
-
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeNetworkFirewallPolicyRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeNetworkFirewallPolicyRule_GlobalNetSecRuleHandWritten(context),
+				Config: testAccComputeNetworkFirewallPolicyRule_GlobalHandWritten(context),
 			},
 			{
 				ResourceName:      "google_compute_network_firewall_policy_rule.primary",
@@ -57,7 +57,7 @@ func TestAccComputeNetworkFirewallPolicyRule_GlobalNetSecRuleHandWritten(t *test
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccComputeNetworkFirewallPolicyRule_GlobalNetSecRuleHandWrittenUpdate0(context),
+				Config: testAccComputeNetworkFirewallPolicyRule_GlobalHandWrittenUpdate0(context),
 			},
 			{
 				ResourceName:      "google_compute_network_firewall_policy_rule.primary",
@@ -68,11 +68,9 @@ func TestAccComputeNetworkFirewallPolicyRule_GlobalNetSecRuleHandWritten(t *test
 	})
 }
 
-func testAccComputeNetworkFirewallPolicyRule_GlobalNetSecRuleHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+func testAccComputeNetworkFirewallPolicyRule_GlobalHandWritten(context map[string]interface{}) string {
+	return acctest.Nprintf(`
 resource "google_network_security_address_group" "basic_global_networksecurity_address_group" {
-  provider = google-beta
-
   name        = "tf-test-policy%{random_suffix}"
   parent      = "projects/%{project_name}"
   description = "Sample global networksecurity_address_group"
@@ -83,16 +81,12 @@ resource "google_network_security_address_group" "basic_global_networksecurity_a
 }
 
 resource "google_compute_network_firewall_policy" "basic_network_firewall_policy" {
-  provider = google-beta
-
   name        = "tf-test-policy%{random_suffix}"
   description = "Sample global network firewall policy"
   project     = "%{project_name}"
 }
 
 resource "google_compute_network_firewall_policy_rule" "primary" {
-  provider = google-beta
-
   action                  = "allow"
   description             = "This is a simple rule description"
   direction               = "INGRESS"
@@ -122,14 +116,10 @@ resource "google_compute_network_firewall_policy_rule" "primary" {
 }
 
 resource "google_compute_network" "basic_network" {
-  provider = google-beta
-
   name = "tf-test-network%{random_suffix}"
 }
 
 resource "google_tags_tag_key" "basic_key" {
-  provider = google-beta
-
   description = "For keyname resources."
   parent      = "organizations/%{org_id}"
   purpose     = "GCE_FIREWALL"
@@ -140,8 +130,6 @@ resource "google_tags_tag_key" "basic_key" {
 }
 
 resource "google_tags_tag_value" "basic_value" {
-  provider = google-beta
-
   description = "For valuename resources."
   parent      = "tagKeys/${google_tags_tag_key.basic_key.name}"
   short_name  = "tf-test-tagvalue%{random_suffix}"
@@ -150,11 +138,9 @@ resource "google_tags_tag_value" "basic_value" {
 `, context)
 }
 
-func testAccComputeNetworkFirewallPolicyRule_GlobalNetSecRuleHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+func testAccComputeNetworkFirewallPolicyRule_GlobalHandWrittenUpdate0(context map[string]interface{}) string {
+	return acctest.Nprintf(`
 resource "google_network_security_address_group" "basic_global_networksecurity_address_group" {
-  provider = google-beta
-
   name        = "tf-test-policy%{random_suffix}"
   parent      = "projects/%{project_name}"
   description = "Sample global networksecurity_address_group. Update"
@@ -165,16 +151,12 @@ resource "google_network_security_address_group" "basic_global_networksecurity_a
 }
 
 resource "google_compute_network_firewall_policy" "basic_network_firewall_policy" {
-  provider = google-beta
-
   name        = "tf-test-policy%{random_suffix}"
   description = "Sample global network firewall policy"
   project     = "%{project_name}"
 }
 
 resource "google_compute_network_firewall_policy_rule" "primary" {
-  provider = google-beta
-
   action          = "deny"
   description     = "This is an updated rule description"
   direction       = "EGRESS"
@@ -205,14 +187,10 @@ resource "google_compute_network_firewall_policy_rule" "primary" {
 }
 
 resource "google_compute_network" "basic_network" {
-  provider = google-beta
-
   name = "tf-test-network%{random_suffix}"
 }
 
 resource "google_tags_tag_key" "basic_key" {
-  provider = google-beta
-
   description = "For keyname resources."
   parent      = "organizations/%{org_id}"
   purpose     = "GCE_FIREWALL"
@@ -225,8 +203,6 @@ resource "google_tags_tag_key" "basic_key" {
 
 
 resource "google_tags_tag_value" "basic_value" {
-  provider = google-beta
-
   description = "For valuename resources."
   parent      = "tagKeys/${google_tags_tag_key.basic_key.name}"
   short_name  = "tf-test-tagvalue%{random_suffix}"

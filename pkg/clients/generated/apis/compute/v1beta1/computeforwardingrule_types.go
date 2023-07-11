@@ -243,6 +243,10 @@ type ComputeForwardingRuleSpec struct {
 	// +optional
 	NetworkTier *string `json:"networkTier,omitempty"`
 
+	/* Immutable. This is used in PSC consumer ForwardingRule to control whether it should try to auto-generate a DNS zone or not. Non-PSC forwarding rules do not use this field. */
+	// +optional
+	NoAutomateDnsZone *bool `json:"noAutomateDnsZone,omitempty"`
+
 	/* Immutable. This field can only be used:
 
 	* If 'IPProtocol' is one of TCP, UDP, or SCTP.

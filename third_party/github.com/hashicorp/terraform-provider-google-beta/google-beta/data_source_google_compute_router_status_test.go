@@ -13,13 +13,13 @@ func TestAccDataSourceComputeRouterStatus(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"suffix": RandString(t, 10),
+		"suffix": acctest.RandString(t, 10),
 		"region": "us-central1",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"time": {},
 		},
@@ -42,7 +42,7 @@ func TestAccDataSourceComputeRouterStatus(t *testing.T) {
 }
 
 func testAccDataSourceComputeRouterStatusConfig(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "network1" {
   name                    = "network1-%{suffix}"
   routing_mode            = "GLOBAL"

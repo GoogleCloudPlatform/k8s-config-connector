@@ -34,12 +34,12 @@ func TestAccServiceDirectoryNamespace_serviceDirectoryNamespaceBasicExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckServiceDirectoryNamespaceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccServiceDirectoryNamespace_serviceDirectoryNamespaceBasicExample(t *t
 }
 
 func testAccServiceDirectoryNamespace_serviceDirectoryNamespaceBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_directory_namespace" "example" {
   provider     = google-beta
   namespace_id = "tf-test-example-namespace%{random_suffix}"
@@ -80,7 +80,7 @@ func testAccCheckServiceDirectoryNamespaceDestroyProducer(t *testing.T) func(s *
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ServiceDirectoryBasePath}}{{name}}")
 			if err != nil {

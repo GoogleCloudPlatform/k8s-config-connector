@@ -155,6 +155,10 @@ type InstanceInitializeParams struct {
 	// +optional
 	Labels *InstanceLabels `json:"labels,omitempty"`
 
+	/* Immutable. A map of resource manager tags. Resource manager tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored (both PUT & PATCH) when empty. */
+	// +optional
+	ResourceManagerTags *InstanceResourceManagerTags `json:"resourceManagerTags,omitempty"`
+
 	/* Immutable. The size of the image in gigabytes. */
 	// +optional
 	Size *int `json:"size,omitempty"`
@@ -268,6 +272,12 @@ type InstanceNodeAffinities struct {
 	Value *InstanceValue `json:"value,omitempty"`
 }
 
+type InstanceParams struct {
+	/* Immutable. A map of resource manager tags. Resource manager tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored (both PUT & PATCH) when empty. */
+	// +optional
+	ResourceManagerTags *InstanceResourceManagerTags `json:"resourceManagerTags,omitempty"`
+}
+
 type InstanceReservationAffinity struct {
 	/* Immutable. Specifies the label selector for the reservation to use. */
 	// +optional
@@ -275,6 +285,9 @@ type InstanceReservationAffinity struct {
 
 	/* Immutable. The type of reservation from which this instance can consume resources. */
 	Type string `json:"type"`
+}
+
+type InstanceResourceManagerTags struct {
 }
 
 type InstanceScheduling struct {
@@ -431,6 +444,10 @@ type ComputeInstanceSpec struct {
 	/* Immutable. Configures network performance settings for the instance. If not specified, the instance will be created with its default network performance configuration. */
 	// +optional
 	NetworkPerformanceConfig *InstanceNetworkPerformanceConfig `json:"networkPerformanceConfig,omitempty"`
+
+	/* Immutable. Stores additional params passed with the request, but not persisted as part of resource payload. */
+	// +optional
+	Params *InstanceParams `json:"params,omitempty"`
 
 	/* Immutable. Specifies the reservations that this instance can consume from. */
 	// +optional

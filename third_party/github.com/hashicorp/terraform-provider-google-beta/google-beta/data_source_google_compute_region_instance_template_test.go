@@ -7,17 +7,18 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccRegionInstanceTemplateDatasource_name(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccRegionInstanceTemplate_name(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccRegionInstanceTemplate_name(envvar.GetTestProjectFromEnv(), acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_region_instance_template.default",
@@ -33,12 +34,12 @@ func TestAccRegionInstanceTemplateDatasource_name(t *testing.T) {
 func TestAccRegionInstanceTemplateDatasource_filter(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccRegionInstanceTemplate_filter(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccRegionInstanceTemplate_filter(envvar.GetTestProjectFromEnv(), acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_region_instance_template.default",
@@ -54,12 +55,12 @@ func TestAccRegionInstanceTemplateDatasource_filter(t *testing.T) {
 func TestAccRegionInstanceTemplateDatasource_filter_mostRecent(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccRegionInstanceTemplate_filter_mostRecent(acctest.GetTestProjectFromEnv(), RandString(t, 10)),
+				Config: testAccRegionInstanceTemplate_filter_mostRecent(envvar.GetTestProjectFromEnv(), acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_region_instance_template.default",
@@ -73,7 +74,7 @@ func TestAccRegionInstanceTemplateDatasource_filter_mostRecent(t *testing.T) {
 }
 
 func testAccRegionInstanceTemplate_name(project, suffix string) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_instance_template" "default" {
   name        = "tf-test-template-%{suffix}"
   description = "Example template."
@@ -98,7 +99,7 @@ data "google_compute_region_instance_template" "default" {
 }
 
 func testAccRegionInstanceTemplate_filter(project, suffix string) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_instance_template" "a" {
   name        = "tf-test-template-a-%{suffix}"
   description = "Example template."
@@ -158,7 +159,7 @@ data "google_compute_region_instance_template" "default" {
 }
 
 func testAccRegionInstanceTemplate_filter_mostRecent(project, suffix string) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_instance_template" "a" {
   name        = "tf-test-template-%{suffix}-a"
   description = "tf-test-instance-template"

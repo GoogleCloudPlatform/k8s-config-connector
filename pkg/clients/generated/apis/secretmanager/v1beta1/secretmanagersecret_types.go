@@ -54,7 +54,7 @@ type SecretReplication struct {
 	// +optional
 	Automatic *bool `json:"automatic,omitempty"`
 
-	/* Immutable. The Secret will automatically be replicated without any restrictions. */
+	/* Immutable. The Secret will be replicated to the regions specified by the user. */
 	// +optional
 	UserManaged *SecretUserManaged `json:"userManaged,omitempty"`
 }

@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -36,9 +37,9 @@ func TestAccAssuredWorkloadsWorkload_BasicHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"region":        acctest.GetTestRegionFromEnv(),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -72,9 +73,9 @@ func TestAccAssuredWorkloadsWorkload_FullHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  acctest.GetTestBillingAccountFromEnv(t),
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"region":        acctest.GetTestRegionFromEnv(),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -97,7 +98,7 @@ func TestAccAssuredWorkloadsWorkload_FullHandWritten(t *testing.T) {
 }
 
 func testAccAssuredWorkloadsWorkload_BasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_assured_workloads_workload" "primary" {
   display_name = "tf-test-name%{random_suffix}"
   labels = {
@@ -118,7 +119,7 @@ resource "google_folder" "folder1" {
 }
 
 func testAccAssuredWorkloadsWorkload_BasicHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_assured_workloads_workload" "primary" {
   display_name = "tf-test-name%{random_suffix}"
   labels = {
@@ -139,7 +140,7 @@ resource "google_folder" "folder1" {
 }
 
 func testAccAssuredWorkloadsWorkload_FullHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_assured_workloads_workload" "primary" {
   display_name = "tf-test-name%{random_suffix}"
   billing_account = "billingAccounts/%{billing_acct}"

@@ -24,26 +24,27 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccBinaryAuthorizationAttestorIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBinaryAuthorizationAttestorIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_binary_authorization_attestor_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/attestors/%s roles/viewer", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-test-attestor%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/attestors/%s roles/viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-test-attestor%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -53,7 +54,7 @@ func TestAccBinaryAuthorizationAttestorIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_binary_authorization_attestor_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/attestors/%s roles/viewer", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-test-attestor%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/attestors/%s roles/viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-test-attestor%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -65,13 +66,13 @@ func TestAccBinaryAuthorizationAttestorIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -79,7 +80,7 @@ func TestAccBinaryAuthorizationAttestorIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_binary_authorization_attestor_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/attestors/%s roles/viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-test-attestor%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/attestors/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-test-attestor%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,13 +92,13 @@ func TestAccBinaryAuthorizationAttestorIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBinaryAuthorizationAttestorIamPolicy_basicGenerated(context),
@@ -105,7 +106,7 @@ func TestAccBinaryAuthorizationAttestorIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_binary_authorization_attestor_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/attestors/%s", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-test-attestor%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/attestors/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-test-attestor%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -114,7 +115,7 @@ func TestAccBinaryAuthorizationAttestorIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_binary_authorization_attestor_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/attestors/%s", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-test-attestor%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/attestors/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-test-attestor%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -123,7 +124,7 @@ func TestAccBinaryAuthorizationAttestorIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccBinaryAuthorizationAttestorIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_binary_authorization_attestor" "attestor" {
   name = "tf-test-test-attestor%{random_suffix}"
   attestation_authority_note {
@@ -170,7 +171,7 @@ resource "google_binary_authorization_attestor_iam_member" "foo" {
 }
 
 func testAccBinaryAuthorizationAttestorIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_binary_authorization_attestor" "attestor" {
   name = "tf-test-test-attestor%{random_suffix}"
   attestation_authority_note {
@@ -231,7 +232,7 @@ data "google_binary_authorization_attestor_iam_policy" "foo" {
 }
 
 func testAccBinaryAuthorizationAttestorIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_binary_authorization_attestor" "attestor" {
   name = "tf-test-test-attestor%{random_suffix}"
   attestation_authority_note {
@@ -280,7 +281,7 @@ resource "google_binary_authorization_attestor_iam_policy" "foo" {
 }
 
 func testAccBinaryAuthorizationAttestorIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_binary_authorization_attestor" "attestor" {
   name = "tf-test-test-attestor%{random_suffix}"
   attestation_authority_note {
@@ -327,7 +328,7 @@ resource "google_binary_authorization_attestor_iam_binding" "foo" {
 }
 
 func testAccBinaryAuthorizationAttestorIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_binary_authorization_attestor" "attestor" {
   name = "tf-test-test-attestor%{random_suffix}"
   attestation_authority_note {

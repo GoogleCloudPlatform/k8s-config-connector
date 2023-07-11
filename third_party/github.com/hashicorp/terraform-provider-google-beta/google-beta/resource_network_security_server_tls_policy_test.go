@@ -7,16 +7,17 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccNetworkSecurityServerTlsPolicy_update(t *testing.T) {
 	t.Parallel()
 
-	serverTlsPolicyName := fmt.Sprintf("tf-test-server-tls-policy-%s", RandString(t, 10))
+	serverTlsPolicyName := fmt.Sprintf("tf-test-server-tls-policy-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityServerTlsPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

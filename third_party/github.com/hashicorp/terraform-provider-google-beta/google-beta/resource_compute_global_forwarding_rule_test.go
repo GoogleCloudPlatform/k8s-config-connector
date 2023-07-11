@@ -14,16 +14,16 @@ import (
 func TestAccComputeGlobalForwardingRule_updateTarget(t *testing.T) {
 	t.Parallel()
 
-	fr := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	proxy := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	proxyUpdated := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	backend := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	hc := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	urlmap := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
+	fr := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	proxy := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	proxyUpdated := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	backend := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	hc := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	urlmap := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeGlobalForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -59,15 +59,15 @@ func TestAccComputeGlobalForwardingRule_updateTarget(t *testing.T) {
 func TestAccComputeGlobalForwardingRule_ipv6(t *testing.T) {
 	t.Parallel()
 
-	fr := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	proxy := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	backend := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	hc := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	urlmap := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
+	fr := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	proxy := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	backend := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	hc := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	urlmap := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeGlobalForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -90,15 +90,15 @@ func TestAccComputeGlobalForwardingRule_ipv6(t *testing.T) {
 func TestAccComputeGlobalForwardingRule_labels(t *testing.T) {
 	t.Parallel()
 
-	fr := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	proxy := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	backend := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	hc := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
-	urlmap := fmt.Sprintf("forwardrule-test-%s", RandString(t, 10))
+	fr := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	proxy := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	backend := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	hc := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
+	urlmap := fmt.Sprintf("forwardrule-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeGlobalForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -126,17 +126,17 @@ func TestAccComputeGlobalForwardingRule_labels(t *testing.T) {
 func TestAccComputeGlobalForwardingRule_internalLoadBalancing(t *testing.T) {
 	t.Parallel()
 
-	fr := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	proxy := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	backend := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	hc := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	urlmap := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	igm := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	it := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	fr := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	proxy := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	backend := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	hc := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	urlmap := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	igm := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	it := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeGlobalForwardingRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

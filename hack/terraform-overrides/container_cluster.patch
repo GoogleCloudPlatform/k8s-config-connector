@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/resource_container_cluster.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/resource_container_cluster.go
 index da9bc8449..dff9ffa1a 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/resource_container_cluster.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/resource_container_cluster.go
 @@ -547,7 +547,6 @@ func ResourceContainerCluster() *schema.Resource {
  									"disk_type": {
  										Type:             schema.TypeString,
@@ -146,7 +146,7 @@ index da9bc8449..dff9ffa1a 100644
 +		}
 +
 +		// Call update serially.
-+		if err := lockedCall(lockKey, updateF); err != nil {
++		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
 +			return err
 +		}
 +
@@ -226,7 +226,7 @@ index da9bc8449..dff9ffa1a 100644
 +		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
 +		"(?P<location>[^/]+)/(?P<name>[^/]+)",
 +	}
-+	if err := ParseImportId(idRegexes, d, config); err != nil {
++	if err := tpgresource.ParseImportId(idRegexes, d, config); err != nil {
  		return nil, err
  	}
  	project, err := tpgresource.GetProject(d, config)
@@ -242,23 +242,23 @@ index da9bc8449..dff9ffa1a 100644
 +	//}
  
  	d.SetId(containerClusterFullName(project, location, clusterName))
- 
+
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
-index dcf0fa4ba..f61174e7d 100644
+index 72aa2c52e..291591981 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
-@@ -3546,30 +3546,6 @@ func TestAccContainerCluster_withGatewayApiConfig(t *testing.T) {
+@@ -3512,30 +3512,6 @@ func TestAccContainerCluster_withGatewayApiConfig(t *testing.T) {
  	})
  }
  
 -func TestAccContainerCluster_withTPUConfig(t *testing.T) {
 -	t.Parallel()
 -
--	clusterName := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
--	containerNetName := fmt.Sprintf("tf-test-container-net-%s", RandString(t, 10))
--	VcrTest(t, resource.TestCase{
+-	clusterName := fmt.Sprintf("tf-test-cluster-%s", acctest.RandString(t, 10))
+-	containerNetName := fmt.Sprintf("tf-test-container-net-%s", acctest.RandString(t, 10))
+-	acctest.VcrTest(t, resource.TestCase{
 -		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
--		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+-		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 -		CheckDestroy:             testAccCheckContainerClusterDestroyProducer(t),
 -		Steps: []resource.TestStep{
 -			{
@@ -278,7 +278,7 @@ index dcf0fa4ba..f61174e7d 100644
  func TestAccContainerCluster_withProtectConfig(t *testing.T) {
  	t.Parallel()
  
-@@ -7393,62 +7369,6 @@ resource "google_container_cluster" "primary" {
+@@ -7462,62 +7438,6 @@ resource "google_container_cluster" "primary" {
  `, name, name, name)
  }
  

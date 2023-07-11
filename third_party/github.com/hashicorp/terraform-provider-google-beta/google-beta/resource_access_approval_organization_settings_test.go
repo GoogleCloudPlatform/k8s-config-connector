@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -36,15 +37,15 @@ func TestAccAccessApprovalSettings(t *testing.T) {
 
 func testAccAccessApprovalOrganizationSettings(t *testing.T) {
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"location":      acctest.GetTestRegionFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"location":      envvar.GetTestRegionFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAccessApprovalOrganizationSettingsDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -79,7 +80,7 @@ func testAccAccessApprovalOrganizationSettings(t *testing.T) {
 }
 
 func testAccAccessApprovalOrganizationSettings_full(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_organization_access_approval_settings" "organization_access_approval" {
   organization_id     = "%{org_id}"
   notification_emails = ["testuser@example.com"]
@@ -97,7 +98,7 @@ resource "google_organization_access_approval_settings" "organization_access_app
 }
 
 func testAccAccessApprovalOrganizationSettings_update(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_organization_access_approval_settings" "organization_access_approval" {
   organization_id     = "%{org_id}"
   notification_emails = ["testuser@example.com", "example.user@example.com"]
@@ -111,7 +112,7 @@ resource "google_organization_access_approval_settings" "organization_access_app
 }
 
 func testAccAccessApprovalOrganizationSettings_activeKeyVersion(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_kms_key_ring" "key_ring" {
   name     = "tf-test-%{random_suffix}"
   project  = "%{project}"

@@ -34,12 +34,12 @@ func TestAccComputeResourcePolicy_resourcePolicyBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeResourcePolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccComputeResourcePolicy_resourcePolicyBasicExample(t *testing.T) {
 }
 
 func testAccComputeResourcePolicy_resourcePolicyBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_resource_policy" "foo" {
   name   = "tf-test-gce-policy%{random_suffix}"
   region = "us-central1"
@@ -76,12 +76,12 @@ func TestAccComputeResourcePolicy_resourcePolicyFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeResourcePolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -98,7 +98,7 @@ func TestAccComputeResourcePolicy_resourcePolicyFullExample(t *testing.T) {
 }
 
 func testAccComputeResourcePolicy_resourcePolicyFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_resource_policy" "bar" {
   name   = "tf-test-gce-policy%{random_suffix}"
   region = "us-central1"
@@ -129,12 +129,12 @@ func TestAccComputeResourcePolicy_resourcePolicyPlacementPolicyExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeResourcePolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -151,7 +151,7 @@ func TestAccComputeResourcePolicy_resourcePolicyPlacementPolicyExample(t *testin
 }
 
 func testAccComputeResourcePolicy_resourcePolicyPlacementPolicyExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_resource_policy" "baz" {
   name   = "tf-test-gce-policy%{random_suffix}"
   region = "us-central1"
@@ -167,12 +167,12 @@ func TestAccComputeResourcePolicy_resourcePolicyPlacementPolicyMaxDistanceExampl
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeResourcePolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -189,7 +189,7 @@ func TestAccComputeResourcePolicy_resourcePolicyPlacementPolicyMaxDistanceExampl
 }
 
 func testAccComputeResourcePolicy_resourcePolicyPlacementPolicyMaxDistanceExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_resource_policy" "baz" {
   name   = "tf-test-gce-policy%{random_suffix}"
   region = "us-central1"
@@ -207,12 +207,12 @@ func TestAccComputeResourcePolicy_resourcePolicyInstanceSchedulePolicyExample(t 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeResourcePolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -229,7 +229,7 @@ func TestAccComputeResourcePolicy_resourcePolicyInstanceSchedulePolicyExample(t 
 }
 
 func testAccComputeResourcePolicy_resourcePolicyInstanceSchedulePolicyExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_resource_policy" "hourly" {
   name   = "tf-test-gce-policy%{random_suffix}"
   region = "us-central1"
@@ -251,12 +251,12 @@ func TestAccComputeResourcePolicy_resourcePolicySnapshotScheduleChainNameExample
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeResourcePolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -273,7 +273,7 @@ func TestAccComputeResourcePolicy_resourcePolicySnapshotScheduleChainNameExample
 }
 
 func testAccComputeResourcePolicy_resourcePolicySnapshotScheduleChainNameExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_resource_policy" "hourly" {
   name   = "tf-test-gce-policy%{random_suffix}"
   region = "us-central1"
@@ -306,12 +306,12 @@ func TestAccComputeResourcePolicy_resourcePolicyConsistencyGroupExample(t *testi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeResourcePolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -328,10 +328,8 @@ func TestAccComputeResourcePolicy_resourcePolicyConsistencyGroupExample(t *testi
 }
 
 func testAccComputeResourcePolicy_resourcePolicyConsistencyGroupExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_resource_policy" "cgroup" {
-  provider = google-beta
-
   name   = "tf-test-gce-policy%{random_suffix}"
   region = "europe-west1"
   disk_consistency_group_policy {
@@ -351,7 +349,7 @@ func testAccCheckComputeResourcePolicyDestroyProducer(t *testing.T) func(s *terr
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/resourcePolicies/{{name}}")
 			if err != nil {

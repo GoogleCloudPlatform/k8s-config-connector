@@ -34,12 +34,12 @@ func TestAccNetworkServicesHttpRoute_networkServicesHttpRouteBasicExample(t *tes
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesHttpRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccNetworkServicesHttpRoute_networkServicesHttpRouteBasicExample(t *tes
 }
 
 func testAccNetworkServicesHttpRoute_networkServicesHttpRouteBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_services_http_route" "default" {
   provider               = google-beta
   name                   = "tf-test-my-http-route%{random_suffix}"
@@ -82,12 +82,12 @@ func TestAccNetworkServicesHttpRoute_networkServicesHttpRouteMatchesAndActionsEx
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesHttpRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -104,7 +104,7 @@ func TestAccNetworkServicesHttpRoute_networkServicesHttpRouteMatchesAndActionsEx
 }
 
 func testAccNetworkServicesHttpRoute_networkServicesHttpRouteMatchesAndActionsExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_services_http_route" "default" {
   provider               = google-beta
   name                   = "tf-test-my-http-route%{random_suffix}"
@@ -196,12 +196,12 @@ func TestAccNetworkServicesHttpRoute_networkServicesHttpRouteActionsExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesHttpRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -218,7 +218,7 @@ func TestAccNetworkServicesHttpRoute_networkServicesHttpRouteActionsExample(t *t
 }
 
 func testAccNetworkServicesHttpRoute_networkServicesHttpRouteActionsExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_services_http_route" "default" {
   provider               = google-beta
   name                   = "tf-test-my-http-route%{random_suffix}"
@@ -283,12 +283,12 @@ func TestAccNetworkServicesHttpRoute_networkServicesHttpRouteMeshBasicExample(t 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesHttpRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -305,7 +305,7 @@ func TestAccNetworkServicesHttpRoute_networkServicesHttpRouteMeshBasicExample(t 
 }
 
 func testAccNetworkServicesHttpRoute_networkServicesHttpRouteMeshBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_network_services_mesh" "default" {
   provider    = google-beta
   name        = "tf-test-my-http-route%{random_suffix}"
@@ -349,7 +349,7 @@ func testAccCheckNetworkServicesHttpRouteDestroyProducer(t *testing.T) func(s *t
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/httpRoutes/{{name}}")
 			if err != nil {

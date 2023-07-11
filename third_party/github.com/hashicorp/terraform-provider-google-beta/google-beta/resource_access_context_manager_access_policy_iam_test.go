@@ -8,18 +8,19 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccAccessContextManagerAccessPolicyIamBinding(t *testing.T) {
 	acctest.SkipIfVcr(t)
 
-	org := acctest.GetTestOrgFromEnv(t)
-	account := "tf-test-" + RandString(t, 10)
+	org := envvar.GetTestOrgFromEnv(t)
+	account := "tf-test-" + acctest.RandString(t, 10)
 	role := "roles/accesscontextmanager.policyAdmin"
 	policy := createScopedPolicy(t, org)
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test IAM Binding creation
@@ -36,13 +37,13 @@ func TestAccAccessContextManagerAccessPolicyIamBinding(t *testing.T) {
 func TestAccAccessContextManagerAccessPolicyIamMember(t *testing.T) {
 	acctest.SkipIfVcr(t)
 
-	org := acctest.GetTestOrgFromEnv(t)
-	account := "tf-test-" + RandString(t, 10)
+	org := envvar.GetTestOrgFromEnv(t)
+	account := "tf-test-" + acctest.RandString(t, 10)
 	role := "roles/accesscontextmanager.policyAdmin"
 	policy := createScopedPolicy(t, org)
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test IAM Binding creation
@@ -61,13 +62,13 @@ func TestAccAccessContextManagerAccessPolicyIamMember(t *testing.T) {
 func TestAccAccessContextManagerAccessPolicyIamPolicy(t *testing.T) {
 	acctest.SkipIfVcr(t)
 
-	org := acctest.GetTestOrgFromEnv(t)
-	account := "tf-test-" + RandString(t, 10)
+	org := envvar.GetTestOrgFromEnv(t)
+	account := "tf-test-" + acctest.RandString(t, 10)
 	role := "roles/accesscontextmanager.policyAdmin"
 	policy := createScopedPolicy(t, org)
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test IAM Binding creation
@@ -133,7 +134,7 @@ resource google_access_context_manager_access_policy_iam_policy policy {
 }
 
 func createScopedPolicy(t *testing.T, org string) string {
-	rand := RandString(t, 10)
+	rand := acctest.RandString(t, 10)
 	return fmt.Sprintf(`
 		resource "google_project" "project" {
 		project_id      = "acm-tf-test-%s"

@@ -100,7 +100,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The definition of the schema.
+            <p>{% verbatim %}The definition of the schema.
 This should contain a string representing the full definition of the schema
 that is a valid schema definition of the type specified in type.{% endverbatim %}</p>
         </td>
@@ -162,7 +162,7 @@ that is a valid schema definition of the type specified in type.{% endverbatim %
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The type of the schema definition Default value: "TYPE_UNSPECIFIED" Possible values: ["TYPE_UNSPECIFIED", "PROTOCOL_BUFFER", "AVRO"].{% endverbatim %}</p>
+            <p>{% verbatim %}The type of the schema definition Default value: "TYPE_UNSPECIFIED" Possible values: ["TYPE_UNSPECIFIED", "PROTOCOL_BUFFER", "AVRO"].{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

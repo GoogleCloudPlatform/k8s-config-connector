@@ -24,26 +24,27 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccComputeBackendBucketIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeBackendBucketIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_compute_backend_bucket_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/global/backendBuckets/%s roles/viewer", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-image-backend-bucket%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/global/backendBuckets/%s roles/viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-image-backend-bucket%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -53,7 +54,7 @@ func TestAccComputeBackendBucketIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_compute_backend_bucket_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/global/backendBuckets/%s roles/viewer", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-image-backend-bucket%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/global/backendBuckets/%s roles/viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-image-backend-bucket%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -65,13 +66,13 @@ func TestAccComputeBackendBucketIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -79,7 +80,7 @@ func TestAccComputeBackendBucketIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_compute_backend_bucket_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/global/backendBuckets/%s roles/viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-image-backend-bucket%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/global/backendBuckets/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-image-backend-bucket%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,13 +92,13 @@ func TestAccComputeBackendBucketIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeBackendBucketIamPolicy_basicGenerated(context),
@@ -105,7 +106,7 @@ func TestAccComputeBackendBucketIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_compute_backend_bucket_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/global/backendBuckets/%s", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-image-backend-bucket%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/global/backendBuckets/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-image-backend-bucket%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -114,7 +115,7 @@ func TestAccComputeBackendBucketIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_compute_backend_bucket_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/global/backendBuckets/%s", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-image-backend-bucket%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/global/backendBuckets/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-image-backend-bucket%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -123,7 +124,7 @@ func TestAccComputeBackendBucketIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccComputeBackendBucketIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket" "image_backend" {
   name        = "tf-test-image-backend-bucket%{random_suffix}"
   description = "Contains beautiful images"
@@ -146,7 +147,7 @@ resource "google_compute_backend_bucket_iam_member" "foo" {
 }
 
 func testAccComputeBackendBucketIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket" "image_backend" {
   name        = "tf-test-image-backend-bucket%{random_suffix}"
   description = "Contains beautiful images"
@@ -183,7 +184,7 @@ data "google_compute_backend_bucket_iam_policy" "foo" {
 }
 
 func testAccComputeBackendBucketIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket" "image_backend" {
   name        = "tf-test-image-backend-bucket%{random_suffix}"
   description = "Contains beautiful images"
@@ -208,7 +209,7 @@ resource "google_compute_backend_bucket_iam_policy" "foo" {
 }
 
 func testAccComputeBackendBucketIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket" "image_backend" {
   name        = "tf-test-image-backend-bucket%{random_suffix}"
   description = "Contains beautiful images"
@@ -231,7 +232,7 @@ resource "google_compute_backend_bucket_iam_binding" "foo" {
 }
 
 func testAccComputeBackendBucketIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket" "image_backend" {
   name        = "tf-test-image-backend-bucket%{random_suffix}"
   description = "Contains beautiful images"

@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccFirestoreField_firestoreFieldUpdateAddIndexExample(t *testing.T) {
@@ -14,7 +15,7 @@ func TestAccFirestoreField_firestoreFieldUpdateAddIndexExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"project_id":    GetTestFirestoreProjectFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"resource_name": "add_index",
 	}
 	testAccFirestoreField_runUpdateTest(testAccFirestoreField_firestoreFieldUpdateAddIndexExample(context), t, context)
@@ -25,7 +26,7 @@ func TestAccFirestoreField_firestoreFieldUpdateAddTTLExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"project_id":    GetTestFirestoreProjectFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"resource_name": "add_ttl",
 	}
 	testAccFirestoreField_runUpdateTest(testAccFirestoreField_firestoreFieldUpdateAddTTLExample(context), t, context)
@@ -34,9 +35,9 @@ func TestAccFirestoreField_firestoreFieldUpdateAddTTLExample(t *testing.T) {
 func testAccFirestoreField_runUpdateTest(updateConfig string, t *testing.T, context map[string]interface{}) {
 	resourceName := context["resource_name"].(string)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckFirestoreFieldDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -71,7 +72,7 @@ func testAccFirestoreField_runUpdateTest(updateConfig string, t *testing.T, cont
 }
 
 func testAccFirestoreField_firestoreFieldUpdateInitialExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firestore_field" "%{resource_name}" {
 	project = "%{project_id}"
 	collection = "chatrooms_%{random_suffix}"
@@ -91,7 +92,7 @@ resource "google_firestore_field" "%{resource_name}" {
 }
 
 func testAccFirestoreField_firestoreFieldUpdateAddTTLExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firestore_field" "%{resource_name}" {
 	project = "%{project_id}"
 	collection = "chatrooms_%{random_suffix}"
@@ -113,7 +114,7 @@ resource "google_firestore_field" "%{resource_name}" {
 }
 
 func testAccFirestoreField_firestoreFieldUpdateAddIndexExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firestore_field" "%{resource_name}" {
 	project = "%{project_id}"
 	collection = "chatrooms_%{random_suffix}"

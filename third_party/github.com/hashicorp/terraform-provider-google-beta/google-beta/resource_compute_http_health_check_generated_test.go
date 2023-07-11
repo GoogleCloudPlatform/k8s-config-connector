@@ -34,12 +34,12 @@ func TestAccComputeHttpHealthCheck_httpHealthCheckBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHttpHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -55,7 +55,7 @@ func TestAccComputeHttpHealthCheck_httpHealthCheckBasicExample(t *testing.T) {
 }
 
 func testAccComputeHttpHealthCheck_httpHealthCheckBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_http_health_check" "default" {
   name         = "tf-test-authentication-health-check%{random_suffix}"
   request_path = "/health_check"
@@ -76,7 +76,7 @@ func testAccCheckComputeHttpHealthCheckDestroyProducer(t *testing.T) func(s *ter
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/httpHealthChecks/{{name}}")
 			if err != nil {

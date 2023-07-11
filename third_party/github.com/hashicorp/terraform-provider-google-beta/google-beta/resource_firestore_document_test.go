@@ -8,17 +8,18 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccFirestoreDocument_update(t *testing.T) {
 	t.Parallel()
 
-	name := fmt.Sprintf("tf-test-%d", RandInt(t))
-	project := acctest.GetTestFirestoreProjectFromEnv(t)
+	name := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	project := envvar.GetTestFirestoreProjectFromEnv(t)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirestoreDocument_update(project, name),

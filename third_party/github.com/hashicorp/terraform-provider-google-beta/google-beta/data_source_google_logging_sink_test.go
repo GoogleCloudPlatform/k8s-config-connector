@@ -7,20 +7,21 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDataSourceGoogleLoggingSink_basic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name": acctest.GetTestProjectFromEnv(),
-		"sink_name":    "tf-test-sink-ds-" + RandString(t, 10),
-		"bucket_name":  "tf-test-sink-ds-bucket-" + RandString(t, 10),
+		"project_name": envvar.GetTestProjectFromEnv(),
+		"sink_name":    "tf-test-sink-ds-" + acctest.RandString(t, 10),
+		"bucket_name":  "tf-test-sink-ds-bucket-" + acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleLoggingSink_basic(context),
@@ -40,7 +41,7 @@ func TestAccDataSourceGoogleLoggingSink_basic(t *testing.T) {
 }
 
 func testAccDataSourceGoogleLoggingSink_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_logging_project_sink" "basic" {
   name        = "%{sink_name}"
   project     = "%{project_name}"

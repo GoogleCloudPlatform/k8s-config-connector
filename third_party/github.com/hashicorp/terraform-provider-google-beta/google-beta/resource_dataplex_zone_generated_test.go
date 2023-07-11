@@ -29,6 +29,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -36,8 +37,8 @@ func TestAccDataplexZone_BasicZone(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  acctest.GetTestProjectFromEnv(),
-		"region":        acctest.GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
@@ -67,7 +68,7 @@ func TestAccDataplexZone_BasicZone(t *testing.T) {
 }
 
 func testAccDataplexZone_BasicZone(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataplex_zone" "primary" {
   discovery_spec {
     enabled = false
@@ -106,7 +107,7 @@ resource "google_dataplex_lake" "basic" {
 }
 
 func testAccDataplexZone_BasicZoneUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataplex_zone" "primary" {
   discovery_spec {
     enabled = false

@@ -24,26 +24,27 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccWorkstationsWorkstationIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccWorkstationsWorkstationIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_workstations_workstation_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/workstationClusters/%s/workstationConfigs/%s/workstations/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-workstation-cluster%s", context["random_suffix"]), fmt.Sprintf("tf-test-workstation-config%s", context["random_suffix"]), fmt.Sprintf("tf-test-work-station%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/workstationClusters/%s/workstationConfigs/%s/workstations/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-workstation-cluster%s", context["random_suffix"]), fmt.Sprintf("tf-test-workstation-config%s", context["random_suffix"]), fmt.Sprintf("tf-test-work-station%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -53,7 +54,7 @@ func TestAccWorkstationsWorkstationIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_workstations_workstation_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/workstationClusters/%s/workstationConfigs/%s/workstations/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-workstation-cluster%s", context["random_suffix"]), fmt.Sprintf("tf-test-workstation-config%s", context["random_suffix"]), fmt.Sprintf("tf-test-work-station%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/workstationClusters/%s/workstationConfigs/%s/workstations/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-workstation-cluster%s", context["random_suffix"]), fmt.Sprintf("tf-test-workstation-config%s", context["random_suffix"]), fmt.Sprintf("tf-test-work-station%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -65,13 +66,13 @@ func TestAccWorkstationsWorkstationIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -79,7 +80,7 @@ func TestAccWorkstationsWorkstationIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_workstations_workstation_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/workstationClusters/%s/workstationConfigs/%s/workstations/%s roles/viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-workstation-cluster%s", context["random_suffix"]), fmt.Sprintf("tf-test-workstation-config%s", context["random_suffix"]), fmt.Sprintf("tf-test-work-station%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/workstationClusters/%s/workstationConfigs/%s/workstations/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-workstation-cluster%s", context["random_suffix"]), fmt.Sprintf("tf-test-workstation-config%s", context["random_suffix"]), fmt.Sprintf("tf-test-work-station%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,13 +92,13 @@ func TestAccWorkstationsWorkstationIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccWorkstationsWorkstationIamPolicy_basicGenerated(context),
@@ -105,7 +106,7 @@ func TestAccWorkstationsWorkstationIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_workstations_workstation_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/workstationClusters/%s/workstationConfigs/%s/workstations/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-workstation-cluster%s", context["random_suffix"]), fmt.Sprintf("tf-test-workstation-config%s", context["random_suffix"]), fmt.Sprintf("tf-test-work-station%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/workstationClusters/%s/workstationConfigs/%s/workstations/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-workstation-cluster%s", context["random_suffix"]), fmt.Sprintf("tf-test-workstation-config%s", context["random_suffix"]), fmt.Sprintf("tf-test-work-station%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -114,7 +115,7 @@ func TestAccWorkstationsWorkstationIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_workstations_workstation_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/workstationClusters/%s/workstationConfigs/%s/workstations/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-workstation-cluster%s", context["random_suffix"]), fmt.Sprintf("tf-test-workstation-config%s", context["random_suffix"]), fmt.Sprintf("tf-test-work-station%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/workstationClusters/%s/workstationConfigs/%s/workstations/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-workstation-cluster%s", context["random_suffix"]), fmt.Sprintf("tf-test-workstation-config%s", context["random_suffix"]), fmt.Sprintf("tf-test-work-station%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -123,7 +124,7 @@ func TestAccWorkstationsWorkstationIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccWorkstationsWorkstationIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   provider                = google-beta
   name                    = "tf-test-workstation-cluster%{random_suffix}"
@@ -199,7 +200,7 @@ resource "google_workstations_workstation_iam_member" "foo" {
 }
 
 func testAccWorkstationsWorkstationIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   provider                = google-beta
   name                    = "tf-test-workstation-cluster%{random_suffix}"
@@ -294,7 +295,7 @@ data "google_workstations_workstation_iam_policy" "foo" {
 }
 
 func testAccWorkstationsWorkstationIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   provider                = google-beta
   name                    = "tf-test-workstation-cluster%{random_suffix}"
@@ -373,7 +374,7 @@ resource "google_workstations_workstation_iam_policy" "foo" {
 }
 
 func testAccWorkstationsWorkstationIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   provider                = google-beta
   name                    = "tf-test-workstation-cluster%{random_suffix}"
@@ -449,7 +450,7 @@ resource "google_workstations_workstation_iam_binding" "foo" {
 }
 
 func testAccWorkstationsWorkstationIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   provider                = google-beta
   name                    = "tf-test-workstation-cluster%{random_suffix}"

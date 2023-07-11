@@ -26,6 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -34,13 +35,13 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlBa
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -57,7 +58,7 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlBa
 }
 
 func testAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "pool" {
   workforce_pool_id = "tf-test-example-pool%{random_suffix}"
   parent            = "organizations/%{org_id}"
@@ -82,13 +83,13 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlFu
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -105,7 +106,7 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlFu
 }
 
 func testAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "pool" {
   workforce_pool_id = "tf-test-example-pool%{random_suffix}"
   parent            = "organizations/%{org_id}"
@@ -134,13 +135,13 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcBa
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -150,14 +151,14 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcBa
 				ResourceName:            "google_iam_workforce_pool_provider.example",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"location", "workforce_pool_id", "provider_id"},
+				ImportStateVerifyIgnore: []string{"location", "workforce_pool_id", "provider_id", "oidc.0.client_secret.0.value.0.plain_text"},
 			},
 		},
 	})
 }
 
 func testAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "pool" {
   workforce_pool_id = "tf-test-example-pool%{random_suffix}"
   parent            = "organizations/%{org_id}"
@@ -174,9 +175,14 @@ resource "google_iam_workforce_pool_provider" "example" {
   oidc {
     issuer_uri       = "https://accounts.thirdparty.com"
     client_id        = "client-id"
+    client_secret {
+      value {
+        plain_text = "client-secret"
+      }
+    }
     web_sso_config {
-      response_type             = "ID_TOKEN"
-      assertion_claims_behavior = "ONLY_ID_TOKEN_CLAIMS"
+      response_type             = "CODE"
+      assertion_claims_behavior = "MERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS"
     }
   }
 }
@@ -187,13 +193,13 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcFu
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -203,14 +209,14 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcFu
 				ResourceName:            "google_iam_workforce_pool_provider.example",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"location", "workforce_pool_id", "provider_id"},
+				ImportStateVerifyIgnore: []string{"location", "workforce_pool_id", "provider_id", "oidc.0.client_secret.0.value.0.plain_text"},
 			},
 		},
 	})
 }
 
 func testAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_workforce_pool" "pool" {
   workforce_pool_id = "tf-test-example-pool%{random_suffix}"
   parent            = "organizations/%{org_id}"
@@ -227,9 +233,14 @@ resource "google_iam_workforce_pool_provider" "example" {
   oidc {
     issuer_uri        = "https://accounts.thirdparty.com"
     client_id         = "client-id"
+    client_secret {
+      value {
+        plain_text = "client-secret"
+      }
+    }
     web_sso_config {
-      response_type             = "ID_TOKEN"
-      assertion_claims_behavior = "ONLY_ID_TOKEN_CLAIMS"
+      response_type             = "CODE"
+      assertion_claims_behavior = "MERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS"
     }
   }
   display_name        = "Display name"
@@ -250,7 +261,7 @@ func testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t *testing
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{IAMWorkforcePoolBasePath}}locations/{{location}}/workforcePools/{{workforce_pool_id}}/providers/{{provider_id}}")
 			if err != nil {

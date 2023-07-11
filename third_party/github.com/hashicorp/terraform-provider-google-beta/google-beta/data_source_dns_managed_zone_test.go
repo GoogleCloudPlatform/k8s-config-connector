@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport"
 )
 
 func TestAccDataSourceDnsManagedZone_basic(t *testing.T) {
@@ -17,7 +18,7 @@ func TestAccDataSourceDnsManagedZone_basic(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:     func() { acctest.AccTestPreCheck(t) },
 		CheckDestroy: testAccCheckDNSManagedZoneDestroyProducerFramework(t),
 		Steps: []resource.TestStep{
@@ -28,7 +29,7 @@ func TestAccDataSourceDnsManagedZone_basic(t *testing.T) {
 						Source:            "hashicorp/google-beta",
 					},
 				},
-				Config: testAccDataSourceDnsManagedZone_basic(RandString(t, 10)),
+				Config: testAccDataSourceDnsManagedZone_basic(acctest.RandString(t, 10)),
 				Check: acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 					"data.google_dns_managed_zone.qa",
 					"google_dns_managed_zone.foo",
@@ -48,8 +49,8 @@ func TestAccDataSourceDnsManagedZone_basic(t *testing.T) {
 				),
 			},
 			{
-				ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
-				Config:                   testAccDataSourceDnsManagedZone_basic(RandString(t, 10)),
+				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
+				Config:                   testAccDataSourceDnsManagedZone_basic(acctest.RandString(t, 10)),
 				Check: acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 					"data.google_dns_managed_zone.qa",
 					"google_dns_managed_zone.foo",
@@ -98,20 +99,20 @@ func testAccCheckDNSManagedZoneDestroyProducerFramework(t *testing.T) func(s *te
 				continue
 			}
 
-			p := GetFwTestProvider(t)
+			p := acctest.GetFwTestProvider(t)
 
-			url, err := replaceVarsForFrameworkTest(&p.frameworkProvider, rs, "{{DNSBasePath}}projects/{{project}}/managedZones/{{name}}")
+			url, err := acctest.ReplaceVarsForFrameworkTest(&p.FrameworkProvider.FrameworkProviderConfig, rs, "{{DNSBasePath}}projects/{{project}}/managedZones/{{name}}")
 			if err != nil {
 				return err
 			}
 
 			billingProject := ""
 
-			if !p.billingProject.IsNull() && p.billingProject.String() != "" {
-				billingProject = p.billingProject.String()
+			if !p.BillingProject.IsNull() && p.BillingProject.String() != "" {
+				billingProject = p.BillingProject.String()
 			}
 
-			_, diags := sendFrameworkRequest(&p.frameworkProvider, "GET", billingProject, url, p.userAgent, nil)
+			_, diags := fwtransport.SendFrameworkRequest(&p.FrameworkProvider.FrameworkProviderConfig, "GET", billingProject, url, p.UserAgent, nil)
 			if !diags.HasError() {
 				return fmt.Errorf("DNSManagedZone still exists at %s", url)
 			}

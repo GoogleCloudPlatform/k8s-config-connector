@@ -34,12 +34,12 @@ func TestAccFilestoreSnapshot_filestoreSnapshotBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckFilestoreSnapshotDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,16 +56,16 @@ func TestAccFilestoreSnapshot_filestoreSnapshotBasicExample(t *testing.T) {
 }
 
 func testAccFilestoreSnapshot_filestoreSnapshotBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_filestore_snapshot" "snapshot" {
   name     = "tf-test-test-snapshot%{random_suffix}"
   instance = google_filestore_instance.instance.name
-  location = "us-central1"
+  location = "us-east1"
 }
 
 resource "google_filestore_instance" "instance" {
   name     = "tf-test-test-instance-for-snapshot%{random_suffix}"
-  location = "us-central1"
+  location = "us-east1"
   tier     = "ENTERPRISE"
 
   file_shares {
@@ -85,12 +85,12 @@ func TestAccFilestoreSnapshot_filestoreSnapshotFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckFilestoreSnapshotDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -107,11 +107,11 @@ func TestAccFilestoreSnapshot_filestoreSnapshotFullExample(t *testing.T) {
 }
 
 func testAccFilestoreSnapshot_filestoreSnapshotFullExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_filestore_snapshot" "snapshot" {
   name     = "tf-test-test-snapshot%{random_suffix}"
   instance = google_filestore_instance.instance.name
-  location = "us-central1"
+  location = "us-west1"
 
   description = "Snapshot of tf-test-test-instance-for-snapshot%{random_suffix}"
 
@@ -122,7 +122,7 @@ resource "google_filestore_snapshot" "snapshot" {
 
 resource "google_filestore_instance" "instance" {
   name     = "tf-test-test-instance-for-snapshot%{random_suffix}"
-  location = "us-central1"
+  location = "us-west1"
   tier     = "ENTERPRISE"
 
   file_shares {
@@ -148,7 +148,7 @@ func testAccCheckFilestoreSnapshotDestroyProducer(t *testing.T) func(s *terrafor
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{FilestoreBasePath}}projects/{{project}}/locations/{{location}}/instances/{{instance}}/snapshots/{{name}}")
 			if err != nil {
@@ -167,7 +167,7 @@ func testAccCheckFilestoreSnapshotDestroyProducer(t *testing.T) func(s *terrafor
 				Project:              billingProject,
 				RawURL:               url,
 				UserAgent:            config.UserAgent,
-				ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.IsNotFilestoreQuotaError},
+				ErrorAbortPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.Is429QuotaError},
 			})
 			if err == nil {
 				return fmt.Errorf("FilestoreSnapshot still exists at %s", url)

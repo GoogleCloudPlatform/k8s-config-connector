@@ -48,6 +48,15 @@ type ComputeTargetHTTPSProxySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Immutable. Specifies how long to keep a connection open, after completing a response,
+	while there is no matching traffic (in seconds). If an HTTP keepalive is
+	not specified, a default value (610 seconds) will be used. For Global
+	external HTTP(S) load balancer, the minimum allowed value is 5 seconds and
+	the maximum allowed value is 1200 seconds. For Global external HTTP(S)
+	load balancer (classic), this option is not available publicly. */
+	// +optional
+	HttpKeepAliveTimeoutSec *int `json:"httpKeepAliveTimeoutSec,omitempty"`
+
 	/* Location represents the geographical location of the ComputeTargetHTTPSProxy. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 

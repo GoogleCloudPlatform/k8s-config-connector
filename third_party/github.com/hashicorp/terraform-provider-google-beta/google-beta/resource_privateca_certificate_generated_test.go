@@ -26,6 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
@@ -34,13 +35,13 @@ func TestAccPrivatecaCertificate_privatecaCertificateConfigExample(t *testing.T)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPrivatecaCertificateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -57,7 +58,7 @@ func TestAccPrivatecaCertificate_privatecaCertificateConfigExample(t *testing.T)
 }
 
 func testAccPrivatecaCertificate_privatecaCertificateConfigExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_privateca_ca_pool" "default" {
   location = "us-central1"
   name = "tf-test-my-pool%{random_suffix}"
@@ -164,13 +165,13 @@ func TestAccPrivatecaCertificate_privatecaCertificateWithTemplateExample(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPrivatecaCertificateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -187,7 +188,7 @@ func TestAccPrivatecaCertificate_privatecaCertificateWithTemplateExample(t *test
 }
 
 func testAccPrivatecaCertificate_privatecaCertificateWithTemplateExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_privateca_ca_pool" "default" {
   location = "us-central1"
   name = "tf-test-my-pool%{random_suffix}"
@@ -327,13 +328,13 @@ func TestAccPrivatecaCertificate_privatecaCertificateCsrExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPrivatecaCertificateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -350,7 +351,7 @@ func TestAccPrivatecaCertificate_privatecaCertificateCsrExample(t *testing.T) {
 }
 
 func testAccPrivatecaCertificate_privatecaCertificateCsrExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_privateca_ca_pool" "default" {
   location = "us-central1"
   name = "tf-test-my-pool%{random_suffix}"
@@ -414,13 +415,13 @@ func TestAccPrivatecaCertificate_privatecaCertificateNoAuthorityExample(t *testi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       acctest.GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPrivatecaCertificateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -437,7 +438,7 @@ func TestAccPrivatecaCertificate_privatecaCertificateNoAuthorityExample(t *testi
 }
 
 func testAccPrivatecaCertificate_privatecaCertificateNoAuthorityExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_privateca_ca_pool" "default" {
   location = "us-central1"
   name = "tf-test-my-pool%{random_suffix}"
@@ -539,7 +540,7 @@ func testAccCheckPrivatecaCertificateDestroyProducer(t *testing.T) func(s *terra
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{PrivatecaBasePath}}projects/{{project}}/locations/{{location}}/caPools/{{pool}}/certificates/{{name}}")
 			if err != nil {

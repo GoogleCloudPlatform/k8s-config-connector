@@ -34,12 +34,12 @@ func TestAccComputeTargetSslProxy_targetSslProxyBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeTargetSslProxyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccComputeTargetSslProxy_targetSslProxyBasicExample(t *testing.T) {
 }
 
 func testAccComputeTargetSslProxy_targetSslProxyBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_target_ssl_proxy" "default" {
   name             = "tf-test-test-proxy%{random_suffix}"
   backend_service  = google_compute_backend_service.default.id
@@ -96,7 +96,7 @@ func testAccCheckComputeTargetSslProxyDestroyProducer(t *testing.T) func(s *terr
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/targetSslProxies/{{name}}")
 			if err != nil {

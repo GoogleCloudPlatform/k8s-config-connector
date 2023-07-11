@@ -24,26 +24,27 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccComputeSnapshotIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeSnapshotIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_compute_snapshot_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/global/snapshots/%s roles/viewer", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-snapshot%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/global/snapshots/%s roles/viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-snapshot%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -53,7 +54,7 @@ func TestAccComputeSnapshotIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_compute_snapshot_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/global/snapshots/%s roles/viewer", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-snapshot%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/global/snapshots/%s roles/viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-snapshot%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -65,13 +66,13 @@ func TestAccComputeSnapshotIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -79,7 +80,7 @@ func TestAccComputeSnapshotIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_compute_snapshot_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/global/snapshots/%s roles/viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-snapshot%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/global/snapshots/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-snapshot%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -91,13 +92,13 @@ func TestAccComputeSnapshotIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeSnapshotIamPolicy_basicGenerated(context),
@@ -105,7 +106,7 @@ func TestAccComputeSnapshotIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_compute_snapshot_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/global/snapshots/%s", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-snapshot%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/global/snapshots/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-snapshot%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -114,7 +115,7 @@ func TestAccComputeSnapshotIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_compute_snapshot_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/global/snapshots/%s", acctest.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-snapshot%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/global/snapshots/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-snapshot%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -123,7 +124,7 @@ func TestAccComputeSnapshotIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccComputeSnapshotIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_snapshot" "snapshot" {
   name        = "tf-test-my-snapshot%{random_suffix}"
   source_disk = google_compute_disk.persistent.id
@@ -157,7 +158,7 @@ resource "google_compute_snapshot_iam_member" "foo" {
 }
 
 func testAccComputeSnapshotIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_snapshot" "snapshot" {
   name        = "tf-test-my-snapshot%{random_suffix}"
   source_disk = google_compute_disk.persistent.id
@@ -205,7 +206,7 @@ data "google_compute_snapshot_iam_policy" "foo" {
 }
 
 func testAccComputeSnapshotIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_snapshot" "snapshot" {
   name        = "tf-test-my-snapshot%{random_suffix}"
   source_disk = google_compute_disk.persistent.id
@@ -241,7 +242,7 @@ resource "google_compute_snapshot_iam_policy" "foo" {
 }
 
 func testAccComputeSnapshotIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_snapshot" "snapshot" {
   name        = "tf-test-my-snapshot%{random_suffix}"
   source_disk = google_compute_disk.persistent.id
@@ -275,7 +276,7 @@ resource "google_compute_snapshot_iam_binding" "foo" {
 }
 
 func testAccComputeSnapshotIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_snapshot" "snapshot" {
   name        = "tf-test-my-snapshot%{random_suffix}"
   source_disk = google_compute_disk.persistent.id

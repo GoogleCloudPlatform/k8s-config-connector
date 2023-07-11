@@ -12,8 +12,8 @@ import (
 func TestAccSecurityScannerScanConfig_scanConfigUpdate(t *testing.T) {
 	t.Parallel()
 
-	firstAddressSuffix := RandString(t, 10)
-	secondAddressSuffix := RandString(t, 10)
+	firstAddressSuffix := acctest.RandString(t, 10)
+	secondAddressSuffix := acctest.RandString(t, 10)
 	context := map[string]interface{}{
 		"random_suffix":       firstAddressSuffix,
 		"random_suffix2":      secondAddressSuffix,
@@ -31,9 +31,9 @@ func TestAccSecurityScannerScanConfig_scanConfigUpdate(t *testing.T) {
 		"max_qps":             20,
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSecurityScannerScanConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -52,7 +52,7 @@ func TestAccSecurityScannerScanConfig_scanConfigUpdate(t *testing.T) {
 }
 
 func testAccSecurityScannerScanConfig(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_address" "scanner_static_ip" {
   name     = "scan-static-ip-%{random_suffix}"
 }

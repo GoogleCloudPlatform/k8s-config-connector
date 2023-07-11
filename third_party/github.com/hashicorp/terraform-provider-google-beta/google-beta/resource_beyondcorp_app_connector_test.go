@@ -13,12 +13,12 @@ func TestAccBeyondcorpAppConnector_beyondcorpAppConnectorUpdateExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBeyondcorpAppConnectorDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -47,7 +47,7 @@ func TestAccBeyondcorpAppConnector_beyondcorpAppConnectorUpdateExample(t *testin
 }
 
 func testAccBeyondcorpAppConnector_beyondcorpAppConnectorUpdateExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_service_account" "service_account" {
   account_id   = "tf-test-my-account%{random_suffix}"
   display_name = "Test Service Account"

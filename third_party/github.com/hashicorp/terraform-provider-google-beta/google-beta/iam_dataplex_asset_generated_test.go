@@ -24,27 +24,28 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDataplexAssetIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataplexAssetIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_dataplex_asset_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"]), fmt.Sprintf("tf-test-zone%s", context["random_suffix"]), fmt.Sprintf("tf-test-asset%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"]), fmt.Sprintf("tf-test-zone%s", context["random_suffix"]), fmt.Sprintf("tf-test-asset%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -54,7 +55,7 @@ func TestAccDataplexAssetIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataplex_asset_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s roles/viewer", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"]), fmt.Sprintf("tf-test-zone%s", context["random_suffix"]), fmt.Sprintf("tf-test-asset%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"]), fmt.Sprintf("tf-test-zone%s", context["random_suffix"]), fmt.Sprintf("tf-test-asset%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -66,14 +67,14 @@ func TestAccDataplexAssetIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -81,7 +82,7 @@ func TestAccDataplexAssetIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataplex_asset_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s roles/viewer user:admin@hashicorptest.com", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"]), fmt.Sprintf("tf-test-zone%s", context["random_suffix"]), fmt.Sprintf("tf-test-asset%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"]), fmt.Sprintf("tf-test-zone%s", context["random_suffix"]), fmt.Sprintf("tf-test-asset%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -93,14 +94,14 @@ func TestAccDataplexAssetIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
-		"project_name":  acctest.GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataplexAssetIamPolicy_basicGenerated(context),
@@ -108,7 +109,7 @@ func TestAccDataplexAssetIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataplex_asset_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"]), fmt.Sprintf("tf-test-zone%s", context["random_suffix"]), fmt.Sprintf("tf-test-asset%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"]), fmt.Sprintf("tf-test-zone%s", context["random_suffix"]), fmt.Sprintf("tf-test-asset%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -117,7 +118,7 @@ func TestAccDataplexAssetIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataplex_asset_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s", acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"]), fmt.Sprintf("tf-test-zone%s", context["random_suffix"]), fmt.Sprintf("tf-test-asset%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s/assets/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"]), fmt.Sprintf("tf-test-zone%s", context["random_suffix"]), fmt.Sprintf("tf-test-asset%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -126,7 +127,7 @@ func TestAccDataplexAssetIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccDataplexAssetIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "primary_bucket" {
   name          = "dataplex-bucket-%{random_suffix}"
   location      = "us-central1"
@@ -201,7 +202,7 @@ resource "google_dataplex_asset_iam_member" "foo" {
 }
 
 func testAccDataplexAssetIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "primary_bucket" {
   name          = "dataplex-bucket-%{random_suffix}"
   location      = "us-central1"
@@ -293,7 +294,7 @@ data "google_dataplex_asset_iam_policy" "foo" {
 }
 
 func testAccDataplexAssetIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "primary_bucket" {
   name          = "dataplex-bucket-%{random_suffix}"
   location      = "us-central1"
@@ -370,7 +371,7 @@ resource "google_dataplex_asset_iam_policy" "foo" {
 }
 
 func testAccDataplexAssetIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "primary_bucket" {
   name          = "dataplex-bucket-%{random_suffix}"
   location      = "us-central1"
@@ -445,7 +446,7 @@ resource "google_dataplex_asset_iam_binding" "foo" {
 }
 
 func testAccDataplexAssetIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "primary_bucket" {
   name          = "dataplex-bucket-%{random_suffix}"
   location      = "us-central1"

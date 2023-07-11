@@ -63,9 +63,9 @@ spec:
                 description: The MySQL, PostgreSQL or SQL Server (beta) version to
                   use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6,
                   POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14,
-                  SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS,
-                  SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date
-                  reference of supported versions.
+                  POSTGRES_15, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE,
+                  SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies
+                  includes an up-to-date reference of supported versions.
                 type: string
               encryptionKMSCryptoKeyRef:
                 oneOf:
@@ -349,6 +349,13 @@ spec:
                       DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
                       Specifying this field has no-ops; it's recommended to remove this field from your configuration.
                     type: boolean
+                  dataCacheConfig:
+                    description: Data cache configurations.
+                    properties:
+                      dataCacheEnabled:
+                        description: Whether data cache is enabled for the instance.
+                        type: boolean
+                    type: object
                   databaseFlags:
                     items:
                       properties:
@@ -406,6 +413,10 @@ spec:
                   diskType:
                     description: 'Immutable. The type of data disk: PD_SSD or PD_HDD.
                       Defaults to PD_SSD.'
+                    type: string
+                  edition:
+                    description: The edition of the instance, can be ENTERPRISE or
+                      ENTERPRISE_PLUS.
                     type: string
                   insightsConfig:
                     description: Configuration of Query Insights.

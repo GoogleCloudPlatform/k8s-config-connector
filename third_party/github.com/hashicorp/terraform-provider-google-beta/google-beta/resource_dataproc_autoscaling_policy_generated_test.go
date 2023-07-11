@@ -34,12 +34,12 @@ func TestAccDataprocAutoscalingPolicy_dataprocAutoscalingPolicyBasicExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataprocAutoscalingPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccDataprocAutoscalingPolicy_dataprocAutoscalingPolicyBasicExample(t *t
 }
 
 func testAccDataprocAutoscalingPolicy_dataprocAutoscalingPolicyBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataproc_autoscaling_policy" "basic" {
   policy_id = "tf-test-dataproc-policy%{random_suffix}"
   location  = "us-central1"
@@ -81,12 +81,12 @@ func TestAccDataprocAutoscalingPolicy_dataprocAutoscalingPolicyExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataprocAutoscalingPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -103,7 +103,7 @@ func TestAccDataprocAutoscalingPolicy_dataprocAutoscalingPolicyExample(t *testin
 }
 
 func testAccDataprocAutoscalingPolicy_dataprocAutoscalingPolicyExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataproc_cluster" "basic" {
   name     = "tf-test-dataproc-policy%{random_suffix}"
   region   = "us-central1"
@@ -145,7 +145,7 @@ func testAccCheckDataprocAutoscalingPolicyDestroyProducer(t *testing.T) func(s *
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DataprocBasePath}}projects/{{project}}/locations/{{location}}/autoscalingPolicies/{{policy_id}}")
 			if err != nil {

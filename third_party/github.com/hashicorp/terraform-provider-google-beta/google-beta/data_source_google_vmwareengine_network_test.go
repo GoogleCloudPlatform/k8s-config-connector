@@ -4,6 +4,7 @@ package google
 
 import (
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -13,15 +14,15 @@ func TestAccDataSourceVmwareEngineNetwork_basic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"region":          acctest.GetTestRegionFromEnv(),
-		"random_suffix":   RandString(t, 10),
-		"organization":    acctest.GetTestOrgFromEnv(t),
-		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
+		"region":          envvar.GetTestRegionFromEnv(),
+		"random_suffix":   acctest.RandString(t, 10),
+		"organization":    envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckVmwareengineNetworkDestroyProducer(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"time": {},
@@ -38,7 +39,7 @@ func TestAccDataSourceVmwareEngineNetwork_basic(t *testing.T) {
 }
 
 func testAccDataSourceVmwareEngineNetworkConfig(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
  # there can be only 1 Legacy network per region for a given project, so creating new project to isolate tests.
 resource "google_project" "acceptance" {
   name            = "tf-test-%{random_suffix}"

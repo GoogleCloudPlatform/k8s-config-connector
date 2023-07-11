@@ -13,11 +13,11 @@ import (
 func TestAccNetworkServicesHttpRoute_update(t *testing.T) {
 	t.Parallel()
 
-	httpRouteName := fmt.Sprintf("tf-test-http-route-%s", RandString(t, 10))
+	httpRouteName := fmt.Sprintf("tf-test-http-route-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkServicesHttpRouteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

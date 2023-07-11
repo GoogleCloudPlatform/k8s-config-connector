@@ -8,14 +8,15 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 // Tests schema version migration by creating a certificate with an old version of the provider (4.59.0)
 // and then updating it with the current version the provider.
 func TestAccCertificateManagerCertificate_migration(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
-	name := fmt.Sprintf("tf-test-%d", RandInt(t))
+	name := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 
 	oldVersion := map[string]resource.ExternalProvider{
 		"google": {
@@ -24,11 +25,11 @@ func TestAccCertificateManagerCertificate_migration(t *testing.T) {
 		},
 	}
 	newVersion := map[string]func() (*schema.Provider, error){
-		"mynewprovider": func() (*schema.Provider, error) { return TestAccProviders["google"], nil },
+		"mynewprovider": func() (*schema.Provider, error) { return acctest.TestAccProviders["google"], nil },
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { AccTestPreCheck(t) },
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:     func() { acctest.AccTestPreCheck(t) },
 		CheckDestroy: testAccCheckCertificateManagerCertificateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

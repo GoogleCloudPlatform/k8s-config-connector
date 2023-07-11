@@ -34,12 +34,12 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckHealthcareFhirStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,11 +56,12 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreBasicExample(t *testing.T) {
 }
 
 func testAccHealthcareFhirStore_healthcareFhirStoreBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_healthcare_fhir_store" "default" {
   name    = "tf-test-example-fhir-store%{random_suffix}"
   dataset = google_healthcare_dataset.dataset.id
   version = "R4"
+  complex_data_type_reference_parsing = "DISABLED"
 
   enable_update_create          = false
   disable_referential_integrity = false
@@ -91,13 +92,13 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreStreamingConfigExample(t *tes
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"policyChanged": BootstrapPSARoles(t, "service-", "gcp-sa-healthcare", []string{"roles/bigquery.dataEditor", "roles/bigquery.jobUser"}),
-		"random_suffix": RandString(t, 10),
+		"policyChanged": acctest.BootstrapPSARoles(t, "service-", "gcp-sa-healthcare", []string{"roles/bigquery.dataEditor", "roles/bigquery.jobUser"}),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckHealthcareFhirStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -114,7 +115,7 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreStreamingConfigExample(t *tes
 }
 
 func testAccHealthcareFhirStore_healthcareFhirStoreStreamingConfigExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_healthcare_fhir_store" "default" {
   name    = "tf-test-example-fhir-store%{random_suffix}"
   dataset = google_healthcare_dataset.dataset.id
@@ -163,12 +164,12 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreNotificationConfigExample(t *
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckHealthcareFhirStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -185,7 +186,7 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreNotificationConfigExample(t *
 }
 
 func testAccHealthcareFhirStore_healthcareFhirStoreNotificationConfigExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_healthcare_fhir_store" "default" {
   name    = "tf-test-example-fhir-store%{random_suffix}"
   dataset = google_healthcare_dataset.dataset.id
@@ -220,12 +221,12 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreNotificationConfigsExample(t 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckHealthcareFhirStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -242,7 +243,7 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreNotificationConfigsExample(t 
 }
 
 func testAccHealthcareFhirStore_healthcareFhirStoreNotificationConfigsExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_healthcare_fhir_store" "default" {
   provider = google-beta
   name     = "tf-test-example-fhir-store%{random_suffix}"
@@ -287,7 +288,7 @@ func testAccCheckHealthcareFhirStoreDestroyProducer(t *testing.T) func(s *terraf
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{HealthcareBasePath}}{{dataset}}/fhirStores/{{name}}")
 			if err != nil {

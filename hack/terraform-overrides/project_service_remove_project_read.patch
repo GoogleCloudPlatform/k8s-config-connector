@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_service.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_service.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project_service.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project_service.go
 index 3b20ff852..59adfbf26 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_service.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_service.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project_service.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project_service.go
 @@ -12,7 +12,6 @@ import (
  	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
  	"github.com/hashicorp/terraform-provider-google-beta/google-beta/verify"

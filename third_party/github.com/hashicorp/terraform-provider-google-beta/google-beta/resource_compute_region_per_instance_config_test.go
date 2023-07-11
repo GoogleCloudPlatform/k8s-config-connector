@@ -5,6 +5,7 @@ package google
 import (
 	"fmt"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -16,22 +17,22 @@ func TestAccComputeRegionPerInstanceConfig_statefulBasic(t *testing.T) {
 	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	suffix := RandString(t, 10)
+	suffix := acctest.RandString(t, 10)
 	rigmName := fmt.Sprintf("tf-test-rigm-%s", suffix)
 	context := map[string]interface{}{
 		"rigm_name":     rigmName,
 		"random_suffix": suffix,
-		"config_name":   fmt.Sprintf("instance-%s", RandString(t, 10)),
-		"config_name2":  fmt.Sprintf("instance-%s", RandString(t, 10)),
-		"config_name3":  fmt.Sprintf("instance-%s", RandString(t, 10)),
-		"config_name4":  fmt.Sprintf("instance-%s", RandString(t, 10)),
+		"config_name":   fmt.Sprintf("instance-%s", acctest.RandString(t, 10)),
+		"config_name2":  fmt.Sprintf("instance-%s", acctest.RandString(t, 10)),
+		"config_name3":  fmt.Sprintf("instance-%s", acctest.RandString(t, 10)),
+		"config_name4":  fmt.Sprintf("instance-%s", acctest.RandString(t, 10)),
 	}
 	rigmId := fmt.Sprintf("projects/%s/regions/%s/instanceGroupManagers/%s",
-		acctest.GetTestProjectFromEnv(), acctest.GetTestRegionFromEnv(), rigmName)
+		envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), rigmName)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Create one endpoint
@@ -95,14 +96,14 @@ func TestAccComputeRegionPerInstanceConfig_update(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
-		"rigm_name":     fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10)),
-		"config_name":   fmt.Sprintf("instance-%s", RandString(t, 10)),
+		"random_suffix": acctest.RandString(t, 10),
+		"rigm_name":     fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10)),
+		"config_name":   fmt.Sprintf("instance-%s", acctest.RandString(t, 10)),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Create one config
@@ -131,18 +132,18 @@ func TestAccComputeRegionPerInstanceConfig_statefulIps(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
-		"rigm_name":     fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10)),
-		"config_name":   fmt.Sprintf("instance-%s", RandString(t, 10)),
-		"network":       fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10)),
-		"subnetwork":    fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10)),
-		"address1":      fmt.Sprintf("tf-test-rigm-address%s", RandString(t, 10)),
-		"address2":      fmt.Sprintf("tf-test-rigm-address%s", RandString(t, 10)),
+		"random_suffix": acctest.RandString(t, 10),
+		"rigm_name":     fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10)),
+		"config_name":   fmt.Sprintf("instance-%s", acctest.RandString(t, 10)),
+		"network":       fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10)),
+		"subnetwork":    fmt.Sprintf("tf-test-rigm-%s", acctest.RandString(t, 10)),
+		"address1":      fmt.Sprintf("tf-test-rigm-address%s", acctest.RandString(t, 10)),
+		"address2":      fmt.Sprintf("tf-test-rigm-address%s", acctest.RandString(t, 10)),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Create one config
@@ -169,7 +170,7 @@ func TestAccComputeRegionPerInstanceConfig_statefulIps(t *testing.T) {
 }
 
 func testAccComputeRegionPerInstanceConfig_statefulBasic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_per_instance_config" "default" {
 	region_instance_group_manager = google_compute_region_instance_group_manager.rigm.name
 	name = "%{config_name}"
@@ -184,7 +185,7 @@ resource "google_compute_region_per_instance_config" "default" {
 }
 
 func testAccComputeRegionPerInstanceConfig_update(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_per_instance_config" "default" {
 	region_instance_group_manager = google_compute_region_instance_group_manager.rigm.name
 	name = "%{config_name}"
@@ -200,7 +201,7 @@ resource "google_compute_region_per_instance_config" "default" {
 }
 
 func testAccComputeRegionPerInstanceConfig_statefulModified(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_per_instance_config" "default" {
 	region = google_compute_region_instance_group_manager.rigm.region
 	region_instance_group_manager = google_compute_region_instance_group_manager.rigm.name
@@ -216,7 +217,7 @@ resource "google_compute_region_per_instance_config" "default" {
 }
 
 func testAccComputeRegionPerInstanceConfig_statefulAdditional(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_per_instance_config" "default" {
 	region = google_compute_region_instance_group_manager.rigm.region
 	region_instance_group_manager = google_compute_region_instance_group_manager.rigm.name
@@ -296,7 +297,7 @@ resource "google_compute_disk" "disk2" {
 }
 
 func testAccComputeRegionPerInstanceConfig_rigm(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_compute_image" "my_image" {
   family  = "debian-11"
   project = "debian-cloud"
@@ -346,7 +347,7 @@ resource "google_compute_region_instance_group_manager" "rigm" {
 `, context)
 }
 func testAccComputeRegionPerInstanceConfig_statefulIpsBasic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   name = "%{network}"
 }
@@ -422,7 +423,7 @@ resource "google_compute_disk" "disk1" {
 }
 
 func testAccComputeRegionPerInstanceConfig_statefulIpsUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   name = "%{network}"
 }

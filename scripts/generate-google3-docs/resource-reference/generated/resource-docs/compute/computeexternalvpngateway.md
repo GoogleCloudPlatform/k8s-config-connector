@@ -186,6 +186,7 @@ conditions:
   reason: string
   status: string
   type: string
+labelFingerprint: string
 observedGeneration: integer
 selfLink: string
 ```
@@ -244,6 +245,14 @@ selfLink: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Type is the type of the condition.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>labelFingerprint</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The fingerprint used for optimistic locking of this resource.  Used
+internally during updates.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

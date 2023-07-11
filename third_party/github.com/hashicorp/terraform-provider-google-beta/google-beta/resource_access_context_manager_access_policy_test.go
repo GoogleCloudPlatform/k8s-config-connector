@@ -3,90 +3,16 @@
 package google
 
 import (
-	"context"
 	"fmt"
-	"log"
-	neturl "net/url"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
-
-func init() {
-	resource.AddTestSweepers("gcp_access_context_manager_policy", &resource.Sweeper{
-		Name: "gcp_access_context_manager_policy",
-		F:    testSweepAccessContextManagerPolicies,
-	})
-}
-
-func testSweepAccessContextManagerPolicies(region string) error {
-	config, err := acctest.SharedConfigForRegion(region)
-	if err != nil {
-		log.Fatalf("error getting shared config for region %q: %s", region, err)
-	}
-
-	err = config.LoadAndValidate(context.Background())
-	if err != nil {
-		log.Fatalf("error loading and validating shared config for region %q: %s", region, err)
-	}
-
-	testOrg := acctest.GetTestOrgFromEnv(nil)
-	if testOrg == "" {
-		log.Printf("test org not set for test environment, skip sweep")
-		return nil
-	}
-
-	log.Printf("[DEBUG] Listing Access Policies for org %q", testOrg)
-
-	parent := neturl.QueryEscape(fmt.Sprintf("organizations/%s", testOrg))
-	listUrl := fmt.Sprintf("%saccessPolicies?parent=%s", config.AccessContextManagerBasePath, parent)
-
-	resp, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
-		Config:    config,
-		Method:    "GET",
-		RawURL:    listUrl,
-		UserAgent: config.UserAgent,
-	})
-	if err != nil && !transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
-		log.Printf("unable to list AccessPolicies for organization %q: %v", testOrg, err)
-		return nil
-	}
-	var policies []interface{}
-	if resp != nil {
-		if v, ok := resp["accessPolicies"]; ok {
-			policies = v.([]interface{})
-		}
-	}
-
-	if len(policies) == 0 {
-		log.Printf("[DEBUG] no access policies found, exiting sweeper")
-		return nil
-	}
-	if len(policies) > 1 {
-		log.Printf("unexpected - more than one access policies found, change the tests")
-		return nil
-	}
-
-	policy := policies[0].(map[string]interface{})
-	log.Printf("[DEBUG] Deleting test Access Policies %q", policy["name"])
-
-	policyUrl := config.AccessContextManagerBasePath + policy["name"].(string)
-	if _, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
-		Config:    config,
-		Method:    "DELETE",
-		RawURL:    policyUrl,
-		UserAgent: config.UserAgent,
-	}); err != nil && !transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
-		log.Printf("unable to delete access policy %q", policy["name"].(string))
-		return nil
-	}
-
-	return nil
-}
 
 // Since each test here is acting on the same organization and only one AccessPolicy
 // can exist, they need to be run serially
@@ -122,11 +48,11 @@ func TestAccAccessContextManager(t *testing.T) {
 }
 
 func testAccAccessContextManagerAccessPolicy_basicTest(t *testing.T) {
-	org := acctest.GetTestOrgFromEnv(t)
+	org := envvar.GetTestOrgFromEnv(t)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAccessContextManagerAccessPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -156,7 +82,7 @@ func testAccCheckAccessContextManagerAccessPolicyDestroyProducer(t *testing.T) f
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{AccessContextManagerBasePath}}accessPolicies/{{name}}")
 			if err != nil {
@@ -188,11 +114,11 @@ resource "google_access_context_manager_access_policy" "test-access" {
 }
 
 func testAccAccessContextManagerAccessPolicy_scopedTest(t *testing.T) {
-	org := acctest.GetTestOrgFromEnv(t)
+	org := envvar.GetTestOrgFromEnv(t)
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAccessContextManagerAccessPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

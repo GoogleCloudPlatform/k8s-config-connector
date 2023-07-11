@@ -34,12 +34,12 @@ func TestAccSQLSourceRepresentationInstance_sqlSourceRepresentationInstanceBasic
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSQLSourceRepresentationInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func TestAccSQLSourceRepresentationInstance_sqlSourceRepresentationInstanceBasic
 }
 
 func testAccSQLSourceRepresentationInstance_sqlSourceRepresentationInstanceBasicExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_sql_source_representation_instance" "instance" {
   name               = "tf-test-my-instance%{random_suffix}"
   region             = "us-central1"
@@ -74,12 +74,12 @@ func TestAccSQLSourceRepresentationInstance_sqlSourceRepresentationInstancePostg
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSQLSourceRepresentationInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -96,7 +96,7 @@ func TestAccSQLSourceRepresentationInstance_sqlSourceRepresentationInstancePostg
 }
 
 func testAccSQLSourceRepresentationInstance_sqlSourceRepresentationInstancePostgresExample(context map[string]interface{}) string {
-	return tpgresource.Nprintf(`
+	return acctest.Nprintf(`
 resource "google_sql_source_representation_instance" "instance" {
   name               = "tf-test-my-instance%{random_suffix}"
   region             = "us-central1"
@@ -120,7 +120,7 @@ func testAccCheckSQLSourceRepresentationInstanceDestroyProducer(t *testing.T) fu
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{SQLBasePath}}projects/{{project}}/instances/{{name}}")
 			if err != nil {

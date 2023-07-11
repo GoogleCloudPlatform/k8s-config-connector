@@ -4,6 +4,8 @@ package google
 
 import (
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -13,14 +15,14 @@ func TestAccIAM2DenyPolicy_iamDenyPolicyUpdate(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          acctest.GetTestOrgFromEnv(t),
-		"billing_account": acctest.GetTestBillingAccountFromEnv(t),
-		"random_suffix":   RandString(t, 10),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckIAM2DenyPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -58,13 +60,13 @@ func TestAccIAM2DenyPolicy_iamDenyPolicyFolderParent(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        acctest.GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
+	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckIAM2DenyPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -90,7 +92,7 @@ func TestAccIAM2DenyPolicy_iamDenyPolicyFolderParent(t *testing.T) {
 }
 
 func testAccIAM2DenyPolicy_iamDenyPolicyUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   provider        = google-beta
   project_id      = "tf-test%{random_suffix}"
@@ -139,7 +141,7 @@ resource "google_service_account" "test-account" {
 }
 
 func testAccIAM2DenyPolicy_iamDenyPolicyUpdate2(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   provider        = google-beta
   project_id      = "tf-test%{random_suffix}"
@@ -178,7 +180,7 @@ resource "google_service_account" "test-account" {
 }
 
 func testAccIAM2DenyPolicy_iamDenyPolicyFolder(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_deny_policy" "example" {
   provider = google-beta
   parent   = urlencode("cloudresourcemanager.googleapis.com/${google_folder.folder.id}")
@@ -206,7 +208,7 @@ resource "google_folder" "folder" {
 }
 
 func testAccIAM2DenyPolicy_iamDenyPolicyFolderUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_iam_deny_policy" "example" {
   provider = google-beta
   parent   = urlencode("cloudresourcemanager.googleapis.com/${google_folder.folder.id}")
