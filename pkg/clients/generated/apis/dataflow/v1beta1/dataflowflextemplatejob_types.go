@@ -38,8 +38,50 @@ import (
 type FlextemplatejobParameters struct {
 }
 
+type FlextemplatejobTransformNameMapping struct {
+}
+
 type DataflowFlexTemplateJobSpec struct {
+	/* List of experiments that should be used by the job. An example value is ["enable_stackdriver_agent_metrics"]. */
+	// +optional
+	AdditionalExperiments []string `json:"additionalExperiments,omitempty"`
+
+	/* The algorithm to use for autoscaling. */
+	// +optional
+	AutoscalingAlgorithm *string `json:"autoscalingAlgorithm,omitempty"`
+
 	ContainerSpecGcsPath string `json:"containerSpecGcsPath"`
+
+	/* Immutable. Indicates if the job should use the streaming engine feature. */
+	// +optional
+	EnableStreamingEngine *bool `json:"enableStreamingEngine,omitempty"`
+
+	/* The configuration for VM IPs. Options are "WORKER_IP_PUBLIC" or "WORKER_IP_PRIVATE". */
+	// +optional
+	IpConfiguration *string `json:"ipConfiguration,omitempty"`
+
+	/* The name for the Cloud KMS key for the job. */
+	// +optional
+	KmsKeyNameRef *v1alpha1.ResourceRef `json:"kmsKeyNameRef,omitempty"`
+
+	/* The machine type to use for launching the job. The default is n1-standard-1. */
+	// +optional
+	LauncherMachineType *string `json:"launcherMachineType,omitempty"`
+
+	/* The machine type to use for the job. */
+	// +optional
+	MachineType *string `json:"machineType,omitempty"`
+
+	/* Immutable. The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000. */
+	// +optional
+	MaxWorkers *int `json:"maxWorkers,omitempty"`
+
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
+	/* Immutable. The initial number of Google Compute Engine instances for the job. */
+	// +optional
+	NumWorkers *int `json:"numWorkers,omitempty"`
 
 	// +optional
 	Parameters *FlextemplatejobParameters `json:"parameters,omitempty"`
@@ -47,6 +89,28 @@ type DataflowFlexTemplateJobSpec struct {
 	/* Immutable. The region in which the created job should run. */
 	// +optional
 	Region *string `json:"region,omitempty"`
+
+	/* Docker registry location of container image to use for the 'worker harness. Default is the container for the version of the SDK. Note this field is only valid for portable pipelines. */
+	// +optional
+	SdkContainerImage *string `json:"sdkContainerImage,omitempty"`
+
+	// +optional
+	ServiceAccountEmailRef *v1alpha1.ResourceRef `json:"serviceAccountEmailRef,omitempty"`
+
+	/* The Cloud Storage path to use for staging files. Must be a valid Cloud Storage URL, beginning with gs://. */
+	// +optional
+	StagingLocation *string `json:"stagingLocation,omitempty"`
+
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+
+	/* The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with gs://. */
+	// +optional
+	TempLocation *string `json:"tempLocation,omitempty"`
+
+	/* Only applicable when updating a pipeline. Map of transform name prefixes of the job to be replaced with the corresponding name prefixes of the new job. */
+	// +optional
+	TransformNameMapping *FlextemplatejobTransformNameMapping `json:"transformNameMapping,omitempty"`
 }
 
 type DataflowFlexTemplateJobStatus struct {
