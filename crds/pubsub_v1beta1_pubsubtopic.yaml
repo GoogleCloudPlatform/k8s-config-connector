@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.105.0
+    cnrm.cloud.google.com/version: 1.106.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -144,9 +144,9 @@ spec:
                   schema.
                 properties:
                   encoding:
-                    description: 'Immutable. The encoding of messages validated against
-                      schema. Default value: "ENCODING_UNSPECIFIED" Possible values:
-                      ["ENCODING_UNSPECIFIED", "JSON", "BINARY"].'
+                    description: 'The encoding of messages validated against schema.
+                      Default value: "ENCODING_UNSPECIFIED" Possible values: ["ENCODING_UNSPECIFIED",
+                      "JSON", "BINARY"].'
                     type: string
                   schemaRef:
                     oneOf:
