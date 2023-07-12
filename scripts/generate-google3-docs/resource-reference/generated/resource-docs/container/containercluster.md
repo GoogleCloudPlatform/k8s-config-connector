@@ -12,6 +12,13 @@ Note: The ContainerCluster annotation can include
 If set to <code>true</code>, the <code>remove-default-node-pool</code> directive
 removes the default node pool created during cluster creation.
 
+Note: In <code>maintenancePolicy</code>, specify <code>startTime</code> and
+<code>endTime</code> in RFC3339 Zulu date format. Specify <code>recurrence</code>
+in RFC5545 RRULE format. GKE may accept other formats, but will return values in UTC,
+causing a permanent diff. For more details on how to debug and fix an issue which
+could lead to a permanent diff, please refer to the
+<a href="/config-connector/docs/troubleshooting#resource_keeps_updating_every_5-15_mins">Config Connector Troubleshooting page</a>
+
 <table>
 <thead>
 <tr>
