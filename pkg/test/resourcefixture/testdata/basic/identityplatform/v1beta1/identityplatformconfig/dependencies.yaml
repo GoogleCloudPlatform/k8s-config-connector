@@ -27,7 +27,7 @@ metadata:
   name: cloudfunctionsfunction-1-${uniqueId}
 spec:
   region: "us-west2"
-  runtime: "nodejs8"
+  runtime: "nodejs10"
   availableMemoryMb: 128
   sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
   timeout: "60s"
@@ -45,7 +45,7 @@ metadata:
   name: cloudfunctionsfunction-2-${uniqueId}
 spec:
   region: "us-west2"
-  runtime: "nodejs8"
+  runtime: "nodejs10"
   availableMemoryMb: 128
   sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
   timeout: "60s"
