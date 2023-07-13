@@ -26,4 +26,4 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: webhook-manager
-  targetCPUUtilizationPercentage: 90
+  targetCPUUtilizationPercentage: 70
