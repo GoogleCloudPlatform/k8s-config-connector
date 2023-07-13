@@ -40,9 +40,6 @@ spec:
           key: projectRef
       directives:
         - delete_contents_on_destroy
-      ignoredFields:
-        # TODO(b/263163112): Support the reference to BigQueryRoutine.
-        - access.routine
       resourceReferences:
         - key: projectRef
           tfField: project

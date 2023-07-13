@@ -105,6 +105,10 @@ access:
   domain: string
   groupByEmail: string
   role: string
+  routine:
+    datasetId: string
+    projectId: string
+    routineId: string
   specialGroup: string
   userByEmail: string
   view:
@@ -252,6 +256,52 @@ member of the access object. Basic, predefined, and custom roles
 are supported. Predefined roles that have equivalent basic roles
 are swapped by the API to their basic counterparts. See
 [official docs](https://cloud.google.com/bigquery/docs/access-control).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>access[].routine</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A routine from a different dataset to grant access to. Queries
+executed against that routine will have read access to tables in
+this dataset. The role field is not required when this field is
+set. If that routine is updated by any user, access to the routine
+needs to be granted again via an update operation.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>access[].routine.datasetId</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The ID of the dataset containing this table.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>access[].routine.projectId</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The ID of the project containing this table.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>access[].routine.routineId</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The ID of the routine. The ID must contain only letters (a-z,
+A-Z), numbers (0-9), or underscores (_). The maximum length
+is 256 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

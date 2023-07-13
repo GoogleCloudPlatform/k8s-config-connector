@@ -57,6 +57,14 @@ type DatasetAccess struct {
 	// +optional
 	Role *string `json:"role,omitempty"`
 
+	/* A routine from a different dataset to grant access to. Queries
+	executed against that routine will have read access to tables in
+	this dataset. The role field is not required when this field is
+	set. If that routine is updated by any user, access to the routine
+	needs to be granted again via an update operation. */
+	// +optional
+	Routine *DatasetRoutine `json:"routine,omitempty"`
+
 	/* A special group to grant access to. Possible values include:
 
 
@@ -100,6 +108,19 @@ type DatasetDefaultEncryptionConfiguration struct {
 	BigQuery table. The BigQuery Service Account associated with your project requires
 	access to this encryption key. */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+}
+
+type DatasetRoutine struct {
+	/* The ID of the dataset containing this table. */
+	DatasetId string `json:"datasetId"`
+
+	/* The ID of the project containing this table. */
+	ProjectId string `json:"projectId"`
+
+	/* The ID of the routine. The ID must contain only letters (a-z,
+	A-Z), numbers (0-9), or underscores (_). The maximum length
+	is 256 characters. */
+	RoutineId string `json:"routineId"`
 }
 
 type DatasetView struct {
