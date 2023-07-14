@@ -699,7 +699,7 @@ kind: BigQueryDataset
 metadata:
   name: dlpstoredinfotypedepbigqueryfieldstoredinfotype
 spec:
-  location: US
+  location: us-west1
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable

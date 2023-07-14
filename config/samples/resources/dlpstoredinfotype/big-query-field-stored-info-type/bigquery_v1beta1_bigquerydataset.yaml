@@ -17,4 +17,4 @@ kind: BigQueryDataset
 metadata:
   name: dlpstoredinfotypedepbigqueryfieldstoredinfotype
 spec:
-  location: US
+  location: us-west1
