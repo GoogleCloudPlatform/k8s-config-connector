@@ -25,6 +25,7 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -221,6 +222,8 @@ func customizeContainerResourcesFn(cMap map[string]corev1.ResourceRequirements, 
 		if !found {
 			return nil
 		}
+
+		shouldUpdateGOMEMLIMIT := false // we need to update the GOMEMLIMIT environment variable if we update the memory request.
 		if r.Limits != nil && !r.Limits.Cpu().IsZero() {
 			if err := unstructured.SetNestedField(container, r.Limits.Cpu().String(), "resources", "limits", "cpu"); err != nil {
 				return fmt.Errorf("error setting cpu limit: %v", err)
@@ -240,8 +243,61 @@ func customizeContainerResourcesFn(cMap map[string]corev1.ResourceRequirements, 
 			if err := unstructured.SetNestedField(container, r.Requests.Memory().String(), "resources", "requests", "memory"); err != nil {
 				return fmt.Errorf("error setting memory request: %v", err)
 			}
+			shouldUpdateGOMEMLIMIT = true
 		}
+
+		// update the GOMEMLIMIT environment variable if we update the memory request.
+		if shouldUpdateGOMEMLIMIT {
+			if err := updateContainerEnvIfFound(container, "GOMEMLIMIT", calculateGoMemLimit(r.Requests.Memory().Value())); err != nil {
+				return err
+			}
+		}
+
 		cMapApplied[name] = true
 		return nil
 	}
+}
+
+// calculateGoMemLimit returns 85% of the input requested memory with the correct format.
+func calculateGoMemLimit(requestedMemory int64) string {
+	goMemLimit := resource.NewQuantity(requestedMemory*17/20, resource.BinarySI) // setting GOMEMLIMIT as 85% of the requested memory.
+	goMemLimitFormatted := goMemLimit.String() + "B"                             // adding suffix "B" to accommodate the format supported by GOMEMLIMIT.
+	return goMemLimitFormatted
+}
+
+// updateContainerEnvIfFound updates the value of the environment variable in the container's environment variable list.
+// If the environment variable is not found, the function is no-op.
+func updateContainerEnvIfFound(container map[string]interface{}, name, value string) error {
+	// retrieve env list
+	envs, found, err := unstructured.NestedSlice(container, "env")
+	if err != nil {
+		return fmt.Errorf("error getting container env list: %v", err)
+	}
+	if !found { // do not update the value if we cannot find the environment variable.
+		return nil
+	}
+
+	// update env list
+	for _, e := range envs {
+		env, ok := e.(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("failed to parse container env %v", e)
+		}
+		envName, ok, err := unstructured.NestedFieldNoCopy(env, "name")
+		if err != nil {
+			return fmt.Errorf("error getting \"name\" field from container env %v: %v", env, err)
+		}
+		if ok && envName == name { // found a match
+			if err := unstructured.SetNestedField(env, value, "value"); err != nil {
+				return fmt.Errorf("error setting container env %s: %v", name, err)
+			}
+			break
+		}
+	}
+
+	// write back env list
+	if unstructured.SetNestedSlice(container, envs, "env"); err != nil {
+		return fmt.Errorf("error setting container env list: %v", err)
+	}
+	return nil
 }

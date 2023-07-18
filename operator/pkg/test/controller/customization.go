@@ -219,6 +219,8 @@ spec:
       - command:
         - /configconnector/webhook
         env:
+        - name: GOMEMLIMIT
+          value: 110MiB
         - name: NAMESPACE
           valueFrom:
             fieldRef:
@@ -271,6 +273,9 @@ spec:
 // ClusterModeComponentsWithCustomizedControllerManager is the same as ClusterModeComponents
 // with the following differences:
 // - the "resources" section for cnrm-controller-manager/manager container.
+//
+// Note that the GOMEMLIMIT env for the webhook manager deployment still has the default "110MiB" value,
+// because there was no memory customization on the webhook manager.
 var ClusterModeComponentsWithCustomizedControllerManager = []string{`
 apiVersion: v1
 kind: ServiceAccount
@@ -353,6 +358,8 @@ spec:
       - command:
         - /configconnector/webhook
         env:
+        - name: GOMEMLIMIT
+          value: 110MiB
         - name: NAMESPACE
           valueFrom:
             fieldRef:
@@ -406,7 +413,8 @@ spec:
 // with the following differences:
 // - the "resources" section for cnrm-webhook-manager/webhook container.
 // - the "replicas" field for cnrm-webhook-manger deployment.
-// - the "minReplicas" field for HorizontalPodAutoscaler
+// - the "minReplicas" field for HorizontalPodAutoscaler.
+// - the "GOMEMLIMIT" environment variable.
 var ClusterModeComponentsWithCustomizedWebhookManager = []string{`
 apiVersion: v1
 kind: ServiceAccount
@@ -490,6 +498,8 @@ spec:
       - command:
         - /configconnector/webhook
         env:
+        - name: GOMEMLIMIT
+          value: "228170137B"
         - name: NAMESPACE
           valueFrom:
             fieldRef:
@@ -543,8 +553,9 @@ spec:
 // with the following differences:
 // - the "resources" section for cnrm-webhook-manager/webhook container.
 // - the "replicas" field for cnrm-webhook-manger deployment.
-// - the "minReplicas" field for HorizontalPodAutoscaler
+// - the "minReplicas" field for HorizontalPodAutoscaler.
 // - the "maxReplicas" field for HorizontalPodAutoscaler is also updated to match the value of "minReplcias".
+// - the "GOMEMLIMIT" environment variable.
 var ClusterModeComponentsWithCustomizedWebhookManagerWithLargeReplicas = []string{`
 apiVersion: v1
 kind: ServiceAccount
@@ -628,6 +639,8 @@ spec:
       - command:
         - /configconnector/webhook
         env:
+        - name: GOMEMLIMIT
+          value: "228170137B"
         - name: NAMESPACE
           valueFrom:
             fieldRef:
