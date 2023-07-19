@@ -56,9 +56,17 @@ echo "Cleaning up the existing auto-generated files..."
 CD_GENERATED_COMMAND="cd ${LOCAL_CNRM_REPO}/scripts/resource-autogen/generated"
 echo "${CD_GENERATED_COMMAND}"
 eval "${CD_GENERATED_COMMAND}"
-RM_COMMAND="rm -r ./samples ./servicemappings"
-echo "${RM_COMMAND}"
-eval "${RM_COMMAND}"
+
+if [ -d ./samples ]; then
+    RM_COMMAND="rm -r ./samples"
+    echo "${RM_COMMAND}"
+    eval "${RM_COMMAND}"
+fi
+if [ -d ./servicemappings ]; then
+    RM_COMMAND="rm -r ./servicemappings"
+    echo "${RM_COMMAND}"
+    eval "${RM_COMMAND}"
+fi
 
 echo "Generating service mappings using the KCC provider in magic-modules..."
 CD_MM_COMMAND="cd ${LOCAL_MM_REPO}/mmv1"
