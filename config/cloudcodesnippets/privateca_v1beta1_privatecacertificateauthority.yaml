@@ -19,7 +19,7 @@ insertText: |
       subjectConfig:
         subject:
           organization: \${9:Example}
-          common-name: \${10:my-certificate-authority}
+          commonName: \${10:my-certificate-authority}
         subjectAltName:
           dnsNames:
           - \${11:example.com}
