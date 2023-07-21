@@ -30,11 +30,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
 	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
+	"golang.org/x/oauth2/google"
 
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -186,6 +188,21 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
 	}
 
+	// Log DCL requests
+	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
+		outputDir := filepath.Join(artifacts, "http-logs")
+		if kccConfig.HTTPClient == nil {
+			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
+			if err != nil {
+				t.Fatalf("error creating the http client to be used by DCL: %v", err)
+			}
+			kccConfig.HTTPClient = httpClient
+		}
+		t := test.NewHTTPRecorder(kccConfig.HTTPClient.Transport, outputDir)
+		kccConfig.HTTPClient = &http.Client{Transport: t}
+	}
+
+	// Log TF requests
 	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
 		if t := ctx.Value(httpRoundTripperKey); t != nil {
@@ -201,6 +218,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		return ret
 	}
 
+	// Log TF oauth requests
 	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
 		if t := ctx.Value(httpRoundTripperKey); t != nil {
