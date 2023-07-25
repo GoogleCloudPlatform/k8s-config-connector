@@ -17,11 +17,13 @@ package e2e
 import (
 	"context"
 	"os"
+	"path/filepath"
 	"strconv"
 	"testing"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -30,6 +32,7 @@ import (
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 )
 
@@ -100,8 +103,10 @@ func TestAllInSeries(t *testing.T) {
 				Name: fixture.Name,
 			}
 
-			initialUnstruct := bytesToUnstructured(t, fixture.Create, testID, project)
-			s.Resources = append(s.Resources, initialUnstruct)
+			createResource := bytesToUnstructured(t, fixture.Create, testID, project)
+			s.Resources = append(s.Resources, createResource)
+
+			exportResources := []*unstructured.Unstructured{createResource}
 
 			if fixture.Dependencies != nil {
 				dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
@@ -116,10 +121,43 @@ func TestAllInSeries(t *testing.T) {
 
 				h := testHarness.ForSubtest(t)
 
-				cleanupResources := true
-
 				create.SetupNamespacesAndApplyDefaults(h, []create.Sample{s}, project)
+				cleanupResources := false // We delete explicitly below
 				create.RunCreateDeleteTest(h, s.Resources, cleanupResources)
+
+				for _, exportResource := range exportResources {
+					exportURI := ""
+
+					gvk := exportResource.GroupVersionKind()
+					switch gvk.GroupKind() {
+					case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
+						name := exportResource.GetName()
+						projectID := project.ProjectID
+						exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + name
+					}
+
+					if exportURI == "" {
+						continue
+					}
+
+					exportParams := h.ExportParams()
+					exportParams.IAMFormat = "partialpolicy"
+					exportParams.ResourceFormat = "krm"
+					outputDir := h.TempDir()
+					outputPath := filepath.Join(outputDir, "export.yaml")
+					exportParams.Output = outputPath
+					exportParams.URI = exportURI
+					if err := export.Execute(h.Ctx, &exportParams); err != nil {
+						t.Errorf("error from export.Execute: %v", err)
+						continue
+					}
+
+					expectedPath := filepath.Join(fixture.SourceDir, "export.yaml")
+					output := h.MustReadFile(outputPath)
+					h.CompareGoldenFile(expectedPath, string(output), h.IgnoreComments, h.ReplaceString(project.ProjectID, "example-project-id"))
+				}
+
+				create.DeleteResources(h, s.Resources)
 			})
 		}
 	})

@@ -19,10 +19,12 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"testing"
 	"time"
 
+	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
@@ -36,6 +38,7 @@ import (
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 	"golang.org/x/oauth2/google"
 
+	"github.com/google/go-cmp/cmp"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -58,6 +61,9 @@ type Harness struct {
 
 	client     client.Client
 	restConfig *rest.Config
+
+	// gcpAccessToken is set to the oauth2 token to use for GCP, primarily when GCP is mocked.
+	gcpAccessToken string
 }
 
 // ForSubtest returns a harness scoped to a subtest (created by t.Run).
@@ -195,7 +201,8 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 
 		kccConfig.HTTPClient = &http.Client{Transport: roundTripper}
 
-		kccConfig.AccessToken = "dummytoken"
+		h.gcpAccessToken = "dummytoken"
+		kccConfig.GCPAccessToken = h.gcpAccessToken
 	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
 		t.Logf("targeting real GCP")
 	} else {
@@ -283,6 +290,13 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	return h
 }
 
+// ExportParams returns the default parameters.Parameters to use for an export
+func (h *Harness) ExportParams() exportparameters.Parameters {
+	var exportParams exportparameters.Parameters
+	exportParams.GCPAccessToken = h.gcpAccessToken
+	return exportParams
+}
+
 func (h *Harness) GetClient() client.Client {
 	return h.client
 }
@@ -344,15 +358,75 @@ func (t *Harness) waitForCRDReady(obj client.Object) {
 		// CRDs do not have observedGeneration
 		for _, condition := range objectStatus.Conditions {
 			if condition.Type == "Established" && condition.Status == "True" {
-				logger.Info("crd is ready", "kind", kind, "id", id)
+				logger.V(2).Info("crd is ready", "kind", kind, "id", id)
 				return true, nil
 			}
 		}
 		// This resource is not completely ready. Let's keep polling.
-		logger.Info("CRD is not ready", "kind", kind, "id", id, "conditions", objectStatus.Conditions)
+		logger.V(2).Info("CRD is not ready", "kind", kind, "id", id, "conditions", objectStatus.Conditions)
 		return false, nil
 	}); err != nil {
 		t.Errorf("error while polling for ready on %v %v: %v", kind, id, err)
 		return
+	}
+}
+
+func (h *Harness) CompareGoldenFile(p string, got string, normalizers ...func(s string) string) {
+	if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+		// Short-circuit when the output is correct
+		b, err := os.ReadFile(p)
+		if err == nil {
+			want := string(b)
+			for _, normalizer := range normalizers {
+				got = normalizer(got)
+				want = normalizer(want)
+			}
+			if want == got {
+				return
+			}
+		}
+
+		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
+			h.Fatalf("failed to write golden output %s: %v", p, err)
+		}
+		h.Errorf("wrote output to %s", p)
+	} else {
+		want := string(h.MustReadFile(p))
+
+		for _, normalizer := range normalizers {
+			got = normalizer(got)
+			want = normalizer(want)
+		}
+
+		if diff := cmp.Diff(want, got); diff != "" {
+			h.Errorf("unexpected diff in %s: %s", p, diff)
+		}
+	}
+}
+
+func (h *Harness) MustReadFile(p string) []byte {
+	b, err := os.ReadFile(p)
+	if err != nil {
+		h.Fatalf("error from ReadFile(%q): %v", p, err)
+	}
+	return b
+}
+
+// IgnoreComments is a normalization function that strips comments.
+func (h *Harness) IgnoreComments(s string) string {
+	lines := strings.Split(s, "\n")
+	for i, line := range lines {
+		if strings.HasPrefix(line, "#") {
+			lines[i] = ""
+		}
+	}
+	s = strings.Join(lines, "\n")
+	return strings.TrimSpace(s)
+}
+
+// ReplaceString is a normalization function that replaces a string, useful for e.g. project IDs.
+func (h *Harness) ReplaceString(from, to string) func(string) string {
+	return func(s string) string {
+		return strings.ReplaceAll(s, from, to)
 	}
 }

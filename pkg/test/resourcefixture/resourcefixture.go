@@ -51,6 +51,7 @@ const (
 type ResourceFixture struct {
 	GVK          schema.GroupVersionKind
 	Name         string
+	SourceDir    string
 	Create       []byte
 	Update       []byte
 	Dependencies []byte
@@ -133,10 +134,11 @@ func loadResourceFixture(t *testing.T, testName string, testType TestType, dir, 
 	}
 
 	rf := ResourceFixture{
-		Name:   testName,
-		GVK:    gvk,
-		Create: createConfig,
-		Type:   testType,
+		Name:      testName,
+		SourceDir: dir,
+		GVK:       gvk,
+		Create:    createConfig,
+		Type:      testType,
 	}
 
 	if updateFile != "" {

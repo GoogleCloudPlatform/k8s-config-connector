@@ -100,7 +100,7 @@ func RunCreateDeleteTest(t *Harness, unstructs []*unstructured.Unstructured, cle
 	waitForReady(t, unstructs)
 	// Clean up resources on success or if cleanupResources flag is true
 	if cleanupResources {
-		cleanup(t, unstructs)
+		DeleteResources(t, unstructs)
 	}
 }
 
@@ -175,7 +175,7 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 	t.Errorf("%v, final status: %+v", baseMsg, objectStatus)
 }
 
-func cleanup(t *Harness, unstructs []*unstructured.Unstructured) {
+func DeleteResources(t *Harness, unstructs []*unstructured.Unstructured) {
 	logger := log.FromContext(t.Ctx)
 
 	for _, u := range unstructs {
