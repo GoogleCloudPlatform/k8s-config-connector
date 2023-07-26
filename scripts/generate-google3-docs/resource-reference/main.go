@@ -22,7 +22,10 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"text/template"
+
+	// We use test/template for generating html docs not yaml
+	// as such its not a yaml injection vulnerability.
+	"text/template" // NOLINT
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
