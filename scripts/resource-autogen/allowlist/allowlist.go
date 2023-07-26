@@ -60,6 +60,7 @@ var (
 		"bigquery_connection/google_bigquery_connection",
 		"bigquery_datapolicy/google_bigquery_datapolicy_data_policy",
 		"bigquery_data_transfer/google_bigquery_data_transfer_config",
+		"bigquery_reservation/google_bigquery_capacity_commitment",
 		"bigquery_reservation/google_bigquery_reservation",
 		"certificate_manager/google_certificate_manager_certificate",
 		"certificate_manager/google_certificate_manager_certificate_map",
