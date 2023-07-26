@@ -766,8 +766,9 @@ spec:
   region: "us-west2"
   runtime: "nodejs10"
   availableMemoryMb: 128
-  # Replace ${PROJECT_ID?} with your project ID
-  serviceAccountEmail: "${PROJECT_ID?}@appspot.gserviceaccount.com"
+  serviceAccountRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "${PROJECT_ID?}@appspot.gserviceaccount.com"
   # Replace ${REPO_URL?} with your cloud source repository url
   # Example: https://source.developers.google.com/projects/config-connector-samples/repos/config-connnector-samples/moveable-aliases/main/paths/cloudfunctionsfunction
   sourceRepository:
