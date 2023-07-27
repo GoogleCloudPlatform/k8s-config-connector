@@ -1,0 +1,163 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: certificatemanager.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: CertificateManager
+  version: v1beta1
+  serviceHostName: certificatemanager.googleapis.com
+  resources:
+    - name: google_certificate_manager_certificate
+      kind: CertificateManagerCertificate
+      idTemplate: "projects/{{project}}/locations/{{location}}/certificates/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: managed.dns_authorizations
+          key: dnsAuthorizationsRefs
+          description: |-
+            Authorizations that will be used for performing domain authorization. Either issuanceConfig or dnsAuthorizations should be specificed, but not both.
+          gvk:
+            kind: CertificateManagerDNSAuthorization
+            version: v1beta1
+            group: certificatemanager.cnrm.cloud.google.com
+          valueTemplate: projects/{{project}}/locations/global/dnsAuthorizations/{{value}}
+        - tfField: managed.issuance_config
+          key: issuanceConfigRef
+          # TODO (b/298972959): Remove it once the CA enabling issue is resolved.
+          description: |-
+            Only the `external` field is supported to configure the reference.
+
+            Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/*/locations/*/certificateIssuanceConfigs/*.
+            If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
+            Either issuanceConfig or dnsAuthorizations should be specificed, but not both.
+          gvk:
+            kind: CertificateManagerCertificateIssuanceConfig
+            version: v1beta1
+            group: certificatemanager.cnrm.cloud.google.com
+          valueTemplate: projects/{{project}}/locations/{{location}}/certificateIssuanceConfigs/{{name}}
+    - name: google_certificate_manager_certificate_map
+      kind: CertificateManagerCertificateMap
+      idTemplate: "projects/{{project}}/locations/global/certificateMaps/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+    - name: google_certificate_manager_certificate_map_entry
+      kind: CertificateManagerCertificateMapEntry
+      idTemplate: "projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: map
+          key: mapRef
+          description: |-
+            A map entry that is inputted into the cetrificate map.
+          gvk:
+            kind: CertificateManagerCertificateMap
+            version: v1beta1
+            group: certificatemanager.cnrm.cloud.google.com
+          parent: true
+        - tfField: certificates
+          key: certificatesRefs
+          description: |-
+            A set of Certificates defines for the given hostname.
+            There can be defined up to fifteen certificates in each Certificate Map Entry.
+            Each certificate must match pattern projects/*/locations/*/certificates/*.
+          gvk:
+            kind: CertificateManagerCertificate
+            version: v1beta1
+            group: certificatemanager.cnrm.cloud.google.com
+          valueTemplate: projects/{{project}}/locations/{{location}}/certificates/{{value}}
+    - name: google_certificate_manager_dns_authorization
+      kind: CertificateManagerDNSAuthorization
+      idTemplate: "projects/{{project}}/locations/global/dnsAuthorizations/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com

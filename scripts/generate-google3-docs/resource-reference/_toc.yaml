@@ -49,6 +49,16 @@ toc:
     path: /config-connector/docs/reference/resource-docs/binaryauthorization/binaryauthorizationattestor.md
   - title: "BinaryAuthorizationPolicy"
     path: /config-connector/docs/reference/resource-docs/binaryauthorization/binaryauthorizationpolicy.md
+- title: "Certificate Manager"
+  section:
+  - title: "CertificateManagerCertificate"
+    path: /config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagercertificate.md
+  - title: "CertificateManagerCertificateMap"
+    path: /config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagercertificatemap.md
+  - title: "CertificateManagerCertificateMapEntry"
+    path: /config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagercertificatemapentry.md
+  - title: "CertificateManagerDNSAuthorization"
+    path: /config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagerdnsauthorization.md
 - title: "Cloud Bigtable"
   section:
   - title: "BigtableAppProfile"

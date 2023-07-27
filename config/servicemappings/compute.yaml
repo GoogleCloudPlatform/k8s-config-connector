@@ -2394,10 +2394,7 @@ spec:
           targetField: self_link
         - key: certificateMapRef
           tfField: certificate_map
-          # TODO (b/203667132): Fix the reference config after CertificateManagerCertificateMap is supported.
           description: |-
-            Only the `external` field is supported to configure the reference.
-
             A reference to the CertificateMap resource uri that identifies a
             certificate map associated with the given target proxy. This field
             can only be set for global target proxies.
@@ -2536,8 +2533,6 @@ spec:
           targetField: self_link
         - tfField: certificate_map
           description: |-
-            Only `external` field is supported to configure the reference.
-
             A reference to the CertificateMap resource uri that identifies a
             certificate map associated with the given target proxy. This
             field can only be set for global target proxies. Accepted format is

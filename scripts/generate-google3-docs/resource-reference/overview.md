@@ -109,6 +109,22 @@ Custom Resource Definitions in the GitHub repository. For example, this
   <td><a href="/config-connector/docs/reference/resource-docs/cloudscheduler/cloudschedulerjob.md">CloudSchedulerJob</a></td>
 </tr>
 <tr>
+  <td><a href="/compute/docs/">{{certificate_manager_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagercertificate.md">CertificateManagerCertificate</a></td>
+</tr>
+<tr>
+  <td><a href="/compute/docs/">{{certificate_manager_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagercertificatemap.md">CertificateManagerCertificateMap</a></td>
+</tr>
+<tr>
+  <td><a href="/compute/docs/">{{certificate_manager_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagercertificatemapentry.md">CertificateManagerCertificateMapEntry</a></td>
+</tr>
+<tr>
+  <td><a href="/compute/docs/">{{certificate_manager_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagerdnsauthorization.md">CertificateManagerDNSAuthorization</a></td>
+</tr>
+<tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/compute/computeaddress.md">ComputeAddress</a></td>
 </tr>

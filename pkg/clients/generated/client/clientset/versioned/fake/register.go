@@ -41,7 +41,7 @@ import (
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/billingbudgets/v1beta1"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/binaryauthorization/v1beta1"
-	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1alpha1"
+	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1beta1"
 	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudasset/v1alpha1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudbuild/v1beta1"
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudfunctions/v1beta1"
@@ -162,7 +162,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	bigtablev1beta1.AddToScheme,
 	billingbudgetsv1beta1.AddToScheme,
 	binaryauthorizationv1beta1.AddToScheme,
-	certificatemanagerv1alpha1.AddToScheme,
+	certificatemanagerv1beta1.AddToScheme,
 	cloudassetv1alpha1.AddToScheme,
 	cloudbuildv1beta1.AddToScheme,
 	cloudfunctionsv1beta1.AddToScheme,

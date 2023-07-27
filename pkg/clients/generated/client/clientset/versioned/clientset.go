@@ -44,7 +44,7 @@ import (
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigtable/v1beta1"
 	billingbudgetsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/billingbudgets/v1beta1"
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
-	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1alpha1"
+	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1beta1"
 	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudasset/v1alpha1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1beta1"
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions/v1beta1"
@@ -161,7 +161,7 @@ type Interface interface {
 	BigtableV1beta1() bigtablev1beta1.BigtableV1beta1Interface
 	BillingbudgetsV1beta1() billingbudgetsv1beta1.BillingbudgetsV1beta1Interface
 	BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface
-	CertificatemanagerV1alpha1() certificatemanagerv1alpha1.CertificatemanagerV1alpha1Interface
+	CertificatemanagerV1beta1() certificatemanagerv1beta1.CertificatemanagerV1beta1Interface
 	CloudassetV1alpha1() cloudassetv1alpha1.CloudassetV1alpha1Interface
 	CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Interface
 	CloudfunctionsV1beta1() cloudfunctionsv1beta1.CloudfunctionsV1beta1Interface
@@ -277,7 +277,7 @@ type Clientset struct {
 	bigtableV1beta1              *bigtablev1beta1.BigtableV1beta1Client
 	billingbudgetsV1beta1        *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
 	binaryauthorizationV1beta1   *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
-	certificatemanagerV1alpha1   *certificatemanagerv1alpha1.CertificatemanagerV1alpha1Client
+	certificatemanagerV1beta1    *certificatemanagerv1beta1.CertificatemanagerV1beta1Client
 	cloudassetV1alpha1           *cloudassetv1alpha1.CloudassetV1alpha1Client
 	cloudbuildV1beta1            *cloudbuildv1beta1.CloudbuildV1beta1Client
 	cloudfunctionsV1beta1        *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
@@ -465,9 +465,9 @@ func (c *Clientset) BinaryauthorizationV1beta1() binaryauthorizationv1beta1.Bina
 	return c.binaryauthorizationV1beta1
 }
 
-// CertificatemanagerV1alpha1 retrieves the CertificatemanagerV1alpha1Client
-func (c *Clientset) CertificatemanagerV1alpha1() certificatemanagerv1alpha1.CertificatemanagerV1alpha1Interface {
-	return c.certificatemanagerV1alpha1
+// CertificatemanagerV1beta1 retrieves the CertificatemanagerV1beta1Client
+func (c *Clientset) CertificatemanagerV1beta1() certificatemanagerv1beta1.CertificatemanagerV1beta1Interface {
+	return c.certificatemanagerV1beta1
 }
 
 // CloudassetV1alpha1 retrieves the CloudassetV1alpha1Client
@@ -1040,7 +1040,7 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.certificatemanagerV1alpha1, err = certificatemanagerv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	cs.certificatemanagerV1beta1, err = certificatemanagerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1444,7 +1444,7 @@ func New(c rest.Interface) *Clientset {
 	cs.bigtableV1beta1 = bigtablev1beta1.New(c)
 	cs.billingbudgetsV1beta1 = billingbudgetsv1beta1.New(c)
 	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.New(c)
-	cs.certificatemanagerV1alpha1 = certificatemanagerv1alpha1.New(c)
+	cs.certificatemanagerV1beta1 = certificatemanagerv1beta1.New(c)
 	cs.cloudassetV1alpha1 = cloudassetv1alpha1.New(c)
 	cs.cloudbuildV1beta1 = cloudbuildv1beta1.New(c)
 	cs.cloudfunctionsV1beta1 = cloudfunctionsv1beta1.New(c)

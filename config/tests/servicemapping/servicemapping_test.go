@@ -425,11 +425,6 @@ func validateTypeConfigGVK(t *testing.T, rc v1alpha1.ResourceConfig, ref v1alpha
 			Kind:    "NetworkSecurityClientTLSPolicy",
 		},
 		{
-			Group:   "certificatemanager.cnrm.cloud.google.com",
-			Version: "v1beta1",
-			Kind:    "CertificateManagerCertificateMap",
-		},
-		{
 			Group:   "cloudbuild.cnrm.cloud.google.com",
 			Version: "v1beta1",
 			Kind:    "CloudBuildGithubEnterpriseConfig",
@@ -443,6 +438,11 @@ func validateTypeConfigGVK(t *testing.T, rc v1alpha1.ResourceConfig, ref v1alpha
 			Group:   "cloudbuild.cnrm.cloud.google.com",
 			Version: "v1beta1",
 			Kind:    "CloudBuildV2Repository",
+		},
+		{
+			Group:   "certificatemanager.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "CertificateManagerCertificateIssuanceConfig",
 		},
 	}
 	for _, g := range ignoredGVKList {

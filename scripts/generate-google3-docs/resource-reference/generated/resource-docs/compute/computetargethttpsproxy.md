@@ -118,9 +118,7 @@ urlMapRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Only the `external` field is supported to configure the reference.
-
-A reference to the CertificateMap resource uri that identifies a
+            <p>{% verbatim %}A reference to the CertificateMap resource uri that identifies a
 certificate map associated with the given target proxy. This field
 can only be set for global target proxies.{% endverbatim %}</p>
         </td>

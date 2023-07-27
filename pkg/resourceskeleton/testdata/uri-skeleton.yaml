@@ -954,7 +954,6 @@
 - ExpectedSkeleton: null
   ResourceConfigId: RunJob
   URI: ""
-
 - ExpectedSkeleton:
     apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
     kind: VPCAccessConnector
@@ -969,3 +968,46 @@
 - ExpectedSkeleton: null
   ResourceConfigId: RunService
   URI: ""
+- ExpectedSkeleton:
+    apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+    kind: CertificateManagerCertificate
+    metadata:
+      name: certificate-test
+    spec:
+      location: europe-west1
+      projectRef:
+        external: kcc-test
+  ResourceConfigId: CertificateManagerCertificate
+  URI: "https://certificatemanager.googleapis.com/v1/projects/kcc-test/locations/europe-west1/certificates/certificate-test?alt=json"
+- ExpectedSkeleton:
+    apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+    kind: CertificateManagerCertificateMap
+    metadata:
+      name: certificatemap-test
+    spec:
+      projectRef:
+        external: kcc-test
+  ResourceConfigId: CertificateManagerCertificateMap
+  URI: "https://certificatemanager.googleapis.com/v1/projects/kcc-test/locations/global/certificateMaps/certificatemap-test?alt=json"
+- ExpectedSkeleton:
+    apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+    kind: CertificateManagerCertificateMapEntry
+    metadata:
+      name: certificatemapentry-test
+    spec:
+      projectRef:
+        external: kcc-test
+      mapRef:
+        external: certificatemap-test
+  ResourceConfigId: CertificateManagerCertificateMapEntry
+  URI: "https://certificatemanager.googleapis.com/v1/projects/kcc-test/locations/global/certificateMaps/certificatemap-test/certificateMapEntries/certificatemapentry-test?alt=json"
+- ExpectedSkeleton:
+    apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+    kind: CertificateManagerDNSAuthorization
+    metadata:
+      name: dnsauthorization-test
+    spec:
+      projectRef:
+        external: kcc-test
+  ResourceConfigId: CertificateManagerDNSAuthorization
+  URI: "https://certificatemanager.googleapis.com/v1/projects/kcc-test/locations/global/dnsAuthorizations/dnsauthorization-test?alt=json"

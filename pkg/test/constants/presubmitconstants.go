@@ -36,6 +36,7 @@ var (
 		"bigtable":             {"bigtablegcpolicy"},
 		"billingbudgets":       {"custombudget"},
 		"binaryauthorization":  {"namespacepolicytoclusterpolicy"},
+		"certificatemanager":   {"certificatemanagercertificatemapentry"},
 		"cloudbuild":           {"cloudbuildtrigger"},
 		"cloudfunctions":       {"httpsfunction"},
 		"cloudidentity":        {"addexpirydatecloudidentitymembership"},

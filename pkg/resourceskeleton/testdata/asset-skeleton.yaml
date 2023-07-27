@@ -91,6 +91,15 @@
       instanceRef:
         external: btinstance-m38iaxbeplv6bltdk5pz
   resourceConfigId: BigtableTable
+
+# not supported by asset inventory
+- resourceConfigId: CertificateManagerCertificate
+# not supported by asset inventory
+- resourceConfigId: CertificateManagerCertificateMap
+# not supported by asset inventory
+- resourceConfigId: CertificateManagerCertificateMapEntry
+# not supported by asset inventory
+- resourceConfigId: CertificateManagerDNSAuthorization
 # not supported by asset inventory
 - resourceConfigId: CloudBuildTrigger
 # not supported by asset inventory

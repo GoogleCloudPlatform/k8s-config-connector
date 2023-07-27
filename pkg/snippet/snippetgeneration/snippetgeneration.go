@@ -37,6 +37,7 @@ var preferredSampleForResource = map[string]string{
 	"bigtableinstance":                  "replicated-instance",
 	"billingbudgetsbudget":              "calendar-budget",
 	"binaryauthorizationpolicy":         "cluster-policy",
+	"certificatemanagercertificate":     "self-managed-certificate",
 	"cloudbuildtrigger":                 "build-trigger-for-cloud-source-repo",
 	"cloudfunctionsfunction":            "httpstrigger",
 	"cloudidentitymembership":           "membership-with-manager-role",
