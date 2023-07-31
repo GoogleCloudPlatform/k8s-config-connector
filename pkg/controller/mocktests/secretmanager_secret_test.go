@@ -92,8 +92,7 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 	}
 
 	t.Logf("creating tfprovider config")
-	tfConfig := tfprovider.NewConfig()
-	tfConfig.AccessToken = "dummytoken"
+	tfConfig := tfprovider.UnitTestConfig()
 
 	t.Logf("creating tfprovider")
 	tfProvider, err := tfprovider.New(h.Ctx, tfConfig)

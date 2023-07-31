@@ -33,7 +33,7 @@ const hclStreamFile = "testdata/expected-hcl-stream.golden.yaml"
 
 func TestHCLStream(t *testing.T) {
 	smLoader := testservicemappingloader.New(t)
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.NewConfig())
+	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	hclStream := stream.NewHCLStream(newTestUnstructuredResourceStreamFromAsset(t, newTestAssetStream(t)), smLoader, tfProvider)
 	bytes := hclStreamToBytes(t, hclStream)
 	validateHCLBytesMatchesExpectedFile(t, bytes)

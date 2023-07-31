@@ -56,6 +56,18 @@ type Config struct {
 
 var DefaultConfig = NewConfig()
 
+func UnitTestConfig() Config {
+	return Config{
+		Scopes: append(deepcopy.StringSlice(transport_tpg.DefaultClientScopes),
+
+			// Needed by the KCC controller to be able to create resources that
+			// read Google Drive files.
+			"https://www.googleapis.com/auth/drive.readonly",
+		),
+		AccessToken: "dummyToken",
+	}
+}
+
 func NewConfig() Config {
 	return Config{
 		Scopes: append(deepcopy.StringSlice(transport_tpg.DefaultClientScopes),

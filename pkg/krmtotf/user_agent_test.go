@@ -53,7 +53,7 @@ func TestSetBlueprintAttribution(t *testing.T) {
 		},
 	}
 	expectedAttribution := "blueprints/test"
-	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			resource := &krmtotf.Resource{}

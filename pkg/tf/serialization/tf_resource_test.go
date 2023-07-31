@@ -35,7 +35,7 @@ func TestSerializeCluster(t *testing.T) {
 }
 
 func testSerialize(t *testing.T, instanceStateFile, tfType, goldenFile string) string {
-	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	b, err := ioutil.ReadFile(instanceStateFile)
 	if err != nil {
 		t.Fatalf("failed to load instance state for instance, %s", err.Error())

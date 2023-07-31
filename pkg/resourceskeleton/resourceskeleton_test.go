@@ -58,7 +58,7 @@ type URISkeletonTestCase struct {
 }
 
 func TestNewFromURI(t *testing.T) {
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	smLoader := testservicemappingloader.New(t)
 	idToRC := make(map[string]v1alpha1.ResourceConfig)
 	for _, sm := range smLoader.GetServiceMappings() {
@@ -92,7 +92,7 @@ type AssetSkeletonTestCase struct {
 }
 
 func TestNewFromAsset(t *testing.T) {
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	smLoader := testservicemappingloader.New(t)
 	mockServiceClient := serviceclient.NewMockServiceClient(t)
 	testCases := loadAssetSkeletonTestCases(t)

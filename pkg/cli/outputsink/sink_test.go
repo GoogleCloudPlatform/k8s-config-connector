@@ -40,7 +40,7 @@ func TestDirectorySinkShouldIgnoreTransmissionTerminator(t *testing.T) {
 
 	tmpDir, cleanup := newTmpDir(t)
 	defer cleanup()
-	dirSink := outputsink.NewKRMYAMLDirectory(tfprovider.NewOrLogFatal(tfprovider.NewConfig()), tmpDir)
+	dirSink := outputsink.NewKRMYAMLDirectory(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), tmpDir)
 	if err := dirSink.Receive(ctx, []byte("..."), nil); err != nil {
 		t.Fatalf("unexpected error: got '%v', want 'nil", err)
 	}
@@ -88,7 +88,7 @@ func TestDirectorySink(t *testing.T) {
 			expectedFilePath: "projects/my-project/ContainerCluster/us-central1-c/twenty-namespaces.tf",
 		},
 	}
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.NewConfig())
+	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	for _, tc := range testCases {
 		t.Run(tc.testCaseFile, func(t *testing.T) {
 			tmpDir, cleanup := newTmpDir(t)
@@ -103,7 +103,7 @@ func TestDirectorySink(t *testing.T) {
 func TestDirectorySinkShouldHandleResourcesWithTheSameName(t *testing.T) {
 	tmpDir, cleanup := newTmpDir(t)
 	defer cleanup()
-	dirSink := outputsink.NewKRMYAMLDirectory(tfprovider.NewOrLogFatal(tfprovider.NewConfig()), tmpDir)
+	dirSink := outputsink.NewKRMYAMLDirectory(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), tmpDir)
 	testDirectorySink(t, dirSink, tmpDir, "pubsubtopic-project1.yaml", "pubsubtopic-project1.yaml", "projects/project1/PubSubTopic/pubsubtopic.yaml")
 	testDirectorySink(t, dirSink, tmpDir, "pubsubtopic-project2.yaml", "pubsubtopic-project2.yaml", "projects/project2/PubSubTopic/pubsubtopic.yaml")
 }
@@ -215,7 +215,7 @@ func TestNewEmptyOutputParamShouldResultInStdoutWriter(t *testing.T) {
 }
 
 func testNewEmptyOutputParamShouldResultInStdoutWriter(t *testing.T, resourceFormat outputsink.ResourceFormat) {
-	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.NewConfig()), "", resourceFormat)
+	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), "", resourceFormat)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -230,7 +230,7 @@ func TestNewWithExistingFileForOutputParam(t *testing.T) {
 func testNewWithExistingFileForOutputParam(t *testing.T, resourceFormat outputsink.ResourceFormat) {
 	tmpDir, cleanup := newTmpDir(t)
 	defer cleanup()
-	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.NewConfig()), tmpDir, resourceFormat)
+	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), tmpDir, resourceFormat)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -246,7 +246,7 @@ func testNewWithSlashAtEndOfOutputParam(t *testing.T, resourceFormat outputsink.
 	tmpDir, cleanup := newTmpDir(t)
 	defer cleanup()
 	output := fmt.Sprintf("%v%v", filepath.Join(tmpDir, "mypathwithaslash"), string(os.PathSeparator))
-	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.NewConfig()), output, resourceFormat)
+	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), output, resourceFormat)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -269,7 +269,7 @@ func testNewWithNonExistentFileInExistingDirectoryOutputParam(t *testing.T, reso
 	tmpDir, cleanup := newTmpDir(t)
 	defer cleanup()
 	output := filepath.Join(tmpDir, "my-new-file")
-	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.NewConfig()), output, resourceFormat)
+	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), output, resourceFormat)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -284,7 +284,7 @@ func TestNewWithExistingFileOutputParam(t *testing.T) {
 func testNewWithExistingFileOutputParam(t *testing.T, resourceFormat outputsink.ResourceFormat) {
 	f, cleanup := newTmpFile(t)
 	defer cleanup()
-	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.NewConfig()), f.Name(), resourceFormat)
+	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), f.Name(), resourceFormat)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -297,7 +297,7 @@ func TestNewWithInvalidDeviceFileShouldError(t *testing.T) {
 }
 
 func testNewWithInvalidDeviceFileShouldError(t *testing.T, resourceFormat outputsink.ResourceFormat) {
-	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.NewConfig()), "/dev/null", resourceFormat)
+	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), "/dev/null", resourceFormat)
 	if err == nil {
 		t.Fatalf("expected an error, instead got 'nil'")
 	}
@@ -319,7 +319,7 @@ func testParentPathIsFileShouldError(t *testing.T, resourceFormat outputsink.Res
 	f, cleanup := newTmpFile(t)
 	defer cleanup()
 	output := filepath.Join(f.Name(), "my-file")
-	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.NewConfig()), output, resourceFormat)
+	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), output, resourceFormat)
 	if err == nil {
 		t.Fatalf("exepcted an error, instead got 'nil'")
 	}
@@ -342,7 +342,7 @@ func testMultipleNewDirectories(t *testing.T, resourceFormat outputsink.Resource
 	tmpDir, cleanup := newTmpDir(t)
 	defer cleanup()
 	output := filepath.Join(tmpDir, "my", "new", "path")
-	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.NewConfig()), output, resourceFormat)
+	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), output, resourceFormat)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

@@ -39,7 +39,7 @@ func TestURLToUnstructuredStream(t *testing.T) {
 
 func newTestUnstructuredResourceStreamFromURL(t *testing.T, url string) *stream.URLToUnstructuredResourceStream {
 	mockClient := newMockGCPClient(t)
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	smLoader := testservicemappingloader.New(t)
 	return stream.NewUnstructuredResourceStreamFromURL(url, tfProvider, smLoader, mockClient)
 }

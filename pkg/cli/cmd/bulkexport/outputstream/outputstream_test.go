@@ -33,12 +33,13 @@ func TestNewUnstructuredSTreamWithUnknownIAMOption(t *testing.T) {
 	defer cleanup()
 	params := parameters.Parameters{}
 	params.IAMFormat = "garbage"
+	params.OAuth2Token = "dummyToken"
 	assetStream, err := inputstream.NewAssetStream(&params, stdin)
 	if err != nil {
 		t.Fatalf("error creating asset stream: %v", err)
 	}
 	defer closeStream(t, assetStream)
-	_, err = outputstream.NewUnstructuredStream(&params, assetStream, tfprovider.NewOrLogFatal(tfprovider.NewConfig()),
+	_, err = outputstream.NewUnstructuredStream(&params, assetStream, tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()),
 		testservicemappingloader.New(t))
 	if err == nil {
 		t.Fatal("invalid error value: got 'nil', want an error")
@@ -72,7 +73,8 @@ func testNewUnstructuredStreamWithIAMOption(t *testing.T, iamFormatOption string
 	}
 	defer closeStream(t, assetStream)
 	params.IAMFormat = iamFormatOption
-	unstructuredStream, err := outputstream.NewUnstructuredStream(&params, assetStream, tfprovider.NewOrLogFatal(tfprovider.NewConfig()),
+	params.OAuth2Token = "dummyToken"
+	unstructuredStream, err := outputstream.NewUnstructuredStream(&params, assetStream, tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()),
 		testservicemappingloader.New(t))
 	if err != nil {
 		t.Fatalf("error creating stream: %v", err)

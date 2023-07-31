@@ -211,7 +211,7 @@ func TestResourcesListedAlphabetically(t *testing.T) {
 func TestTerraformFieldsAreInResourceSchema(t *testing.T) {
 	t.Parallel()
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
-	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	for _, sm := range serviceMappings {
 		sm := sm
 		t.Run(sm.Name, func(t *testing.T) {
@@ -259,7 +259,7 @@ func TestTerraformFieldsAreInResourceSchema(t *testing.T) {
 func TestReferencedTargetFieldsAreInReferencedResourceSchema(t *testing.T) {
 	t.Parallel()
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
-	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	kindToTFResources := createKindToTFResourcesMap(serviceMappings)
 	for _, sm := range serviceMappings {
 		sm := sm
@@ -648,7 +648,7 @@ func IDTemplateContainsServerGeneratedIDField(t *testing.T, rc v1alpha1.Resource
 func TestMutableButUnreadableFields(t *testing.T) {
 	t.Parallel()
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
-	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	for _, sm := range serviceMappings {
 		sm := sm
 		t.Run(sm.Name, func(t *testing.T) {
@@ -799,7 +799,7 @@ func assertAllOrNoneSupportAuditConfigs(t *testing.T, kind string, rcs []v1alpha
 }
 
 func getAssociatedTerraformIAMPolicyResource(rc v1alpha1.ResourceConfig) (string, *schema.Resource) {
-	schemaProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	schemaProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	tfIamPolicyResourceName := formatAssociatedTerraformIAMPolicyResourceName(rc)
 	return tfIamPolicyResourceName, schemaProvider.ResourcesMap[tfIamPolicyResourceName]
 }
@@ -815,7 +815,7 @@ func formatAssociatedTerraformIAMPolicyResourceName(rc v1alpha1.ResourceConfig) 
 }
 
 func getAssociatedTerraformIAMPolicyMemberResource(rc v1alpha1.ResourceConfig) (string, *schema.Resource) {
-	schemaProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	schemaProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	tfIamPolicyResourceName := formatAssociatedTerraformIAMPolicyMemberResourceName(rc)
 	return tfIamPolicyResourceName, schemaProvider.ResourcesMap[tfIamPolicyResourceName]
 }
@@ -830,7 +830,7 @@ func formatAssociatedTerraformIAMPolicyMemberResourceName(rc v1alpha1.ResourceCo
 }
 
 func getAssociatedTerraformIAMAuditConfigResource(rc v1alpha1.ResourceConfig) (string, *schema.Resource) {
-	schemaProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	schemaProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	tfIamAuditConfigResourceName := formatAssociatedTerraformIAMAuditConfigResourceName(rc)
 	return tfIamAuditConfigResourceName, schemaProvider.ResourcesMap[tfIamAuditConfigResourceName]
 }
@@ -859,7 +859,7 @@ func createKindToTFResourcesMap(sms []v1alpha1.ServiceMapping) map[string][]stri
 func TestIAMMemberReferenceConfig(t *testing.T) {
 	t.Parallel()
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
-	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	for _, sm := range serviceMappings {
 		sm := sm
 		t.Run(sm.Name, func(t *testing.T) {
