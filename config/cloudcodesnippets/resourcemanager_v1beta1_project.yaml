@@ -11,5 +11,3 @@ insertText: |
     name: \${4:Config Connector Sample}
     folderRef:
       external: \${5:[FOLDER_ID?]}
-    billingAccountRef:
-      external: \${6:[BILLING_ACCOUNT_ID?]}
