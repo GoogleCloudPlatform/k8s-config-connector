@@ -1038,6 +1038,18 @@ func TestApplyCustomizations(t *testing.T) {
 			},
 		},
 		{
+			name:                         "customize for a the same controller multiple times in the CR fails",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForDuplicatedContainer,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: false,
+					Errors:  []string{testcontroller.ErrDuplicatedContainer},
+				},
+			},
+		},
+		{
 			name:                         "customize for a non-existing container in a valid controller fails",
 			manifests:                    testcontroller.ClusterModeComponents,
 			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingContainer,

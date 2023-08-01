@@ -180,6 +180,28 @@ var (
 	ErrNonExistingContainer = fmt.Sprintf("failed to apply customization cnrm-controller-manager: resource customization failed for the following containers because there are no matching containers in the manifest: %s", nonExistingContainerName)
 )
 
+var (
+	ControllerResourceCRForDuplicatedContainer = &customizev1alpha1.ControllerResource{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "cnrm-controller-manager",
+		},
+		Spec: customizev1alpha1.ControllerResourceSpec{
+			Containers: []customizev1alpha1.ContainerResourceSpec{
+				{
+					Name: "manager", // a valid container name
+				},
+				{
+					Name: "prom-to-sd", // another valid container name
+				},
+				{
+					Name: "manager", // a valid container name but duplicated
+				},
+			},
+		},
+	}
+	ErrDuplicatedContainer = fmt.Sprintf("failed to apply customization cnrm-controller-manager: the following containers are specified multiple times in the Spec: manager")
+)
+
 var NamespacedControllerResourceCRWrongNamespace = &customizev1alpha1.NamespacedControllerResource{
 	ObjectMeta: metav1.ObjectMeta{
 		Name:      "cnrm-controller-manager",

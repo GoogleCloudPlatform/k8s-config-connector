@@ -162,6 +162,9 @@ func ListNamespacedControllerResources(ctx context.Context, c client.Client, nam
 
 // ApplyContainerResourceCustomization applies container resource customizations specified in ControllerResource / NamespacedControllerResource CR.
 func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects, controllerName string, controllerGVK schema.GroupVersionKind, containers []customizev1alpha1.ContainerResourceSpec, replicas *int64) error {
+	if err := checkForDuplicate(containers); err != nil {
+		return err
+	}
 	cMap := make(map[string]corev1.ResourceRequirements, len(containers)) // cMap is a map of container name to its corresponding resource customization.
 	cMapApplied := make(map[string]bool)                                  // cMapApplied is a map of container name to a boolean indicating whether the customization for this container is applied.
 	for _, c := range containers {
@@ -316,6 +319,23 @@ func updateContainerEnvIfFound(container map[string]interface{}, name, value str
 	// write back env list
 	if unstructured.SetNestedSlice(container, envs, "env"); err != nil {
 		return fmt.Errorf("error setting container env list: %v", err)
+	}
+	return nil
+}
+
+func checkForDuplicate(containers []customizev1alpha1.ContainerResourceSpec) error {
+	counter := make(map[string]int)
+	for _, c := range containers {
+		counter[c.Name]++
+	}
+	var duplicates []string
+	for c, cnt := range counter {
+		if cnt > 1 {
+			duplicates = append(duplicates, c)
+		}
+	}
+	if len(duplicates) > 0 {
+		return fmt.Errorf("the following containers are specified multiple times in the Spec: %s", strings.Join(duplicates, ", "))
 	}
 	return nil
 }
