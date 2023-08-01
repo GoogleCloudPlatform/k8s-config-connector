@@ -17,8 +17,6 @@ kind: DialogflowFulfillment
 metadata:
   name: dialogflowfulfillment-${uniqueId}
 spec:
-  dependsOn:
-  - ${google_dialogflow_agent.basic_agent}
   displayName: basic-fulfillment
   enabled: true
   genericWebService:

@@ -18,8 +18,6 @@ metadata:
   name: alloydbbackup-${uniqueId}
 spec:
   clusterName: ""
-  dependsOn:
-  - ${google_alloydb_instance.default}
   location: us-central1
   projectRef:
     external: ${projectId}

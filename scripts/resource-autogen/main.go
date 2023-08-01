@@ -45,6 +45,17 @@ import (
 var (
 	randomSuffixKeyword = "%{random_suffix}"
 	uniqueIDHolder      = "${uniqueId}"
+	// tfReservedFields are reserved field names for TF related metadata.
+	// related to TF GCP types.
+	tfReservedFields = []string{
+		"provider",
+		"lifecycle",
+		"depends_on",
+	}
+	// tfOnlyTypes are non GCP TF types.
+	tfOnlyTypes = map[string]bool{
+		"time_sleep": true,
+	}
 	// nonIDKRMFieldsRequiringUniqueValuesMap is the map of KRM kinds and the
 	// map of their non-ID string fields that require unique values.
 	nonIDKRMFieldsRequiringUniqueValuesMap = map[string]map[string]bool{
@@ -287,6 +298,9 @@ func tfSampleToKRMTestData(testKind string, tf map[string]interface{}, tfToGVK m
 	for tfType, resource := range resources {
 		gvk, ok := tfToGVK[tfType]
 		if !ok {
+			if _, ok := tfOnlyTypes[tfType]; ok {
+				continue
+			}
 			return nil, nil, fmt.Errorf("TF type %v doesn't exist in the service mappings", tfType)
 		}
 		// No need to parse the config for organizational resources that
@@ -394,17 +408,11 @@ func cleanupTFFields(configRaw interface{}, tfType string, dependencyGraph *samp
 		return "", nil, nil, fmt.Errorf("configuration value should be in the format of 'map[string]interface{}' but not %T", specArray[0])
 	}
 
-	provider, ok := spec["provider"]
-	if ok {
-		if provider != "${google-beta}" {
-			return "", nil, nil, fmt.Errorf("illegal provider value: %s", provider)
+	for _, field := range tfReservedFields {
+		_, ok := spec[field]
+		if ok {
+			delete(spec, field)
 		}
-		delete(spec, "provider")
-	}
-
-	_, ok = spec["lifecycle"]
-	if ok {
-		delete(spec, "lifecycle")
 	}
 
 	additionalRequiredFields, ok := additionalRequiredFieldsMap[rc.Kind]

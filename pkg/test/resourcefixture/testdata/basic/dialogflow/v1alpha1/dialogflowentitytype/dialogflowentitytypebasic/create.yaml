@@ -17,8 +17,6 @@ kind: DialogflowEntityType
 metadata:
   name: dialogflowentitytype-${uniqueId}
 spec:
-  dependsOn:
-  - ${google_dialogflow_agent.basic_agent}
   displayName: ""
   entities:
   - synonyms:

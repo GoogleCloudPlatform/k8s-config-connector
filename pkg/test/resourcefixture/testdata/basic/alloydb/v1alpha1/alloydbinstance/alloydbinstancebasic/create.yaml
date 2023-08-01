@@ -18,8 +18,6 @@ metadata:
   name: alloydbinstance-${uniqueId}
 spec:
   cluster: ""
-  dependsOn:
-  - ${google_service_networking_connection.vpc_connection}
   instanceType: PRIMARY
   machineConfig:
   - cpuCount: 2
