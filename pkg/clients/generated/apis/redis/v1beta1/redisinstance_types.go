@@ -61,6 +61,27 @@ type InstanceMaintenancePolicy struct {
 	WeeklyMaintenanceWindow []InstanceWeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
 }
 
+type InstanceMaintenanceSchedule struct {
+	/* Output only. The end time of any upcoming scheduled maintenance for this instance.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	// +optional
+	EndTime *string `json:"endTime,omitempty"`
+
+	/* Output only. The deadline that the maintenance schedule start time
+	can not go beyond, including reschedule.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	// +optional
+	ScheduleDeadlineTime *string `json:"scheduleDeadlineTime,omitempty"`
+
+	/* Output only. The start time of any upcoming scheduled maintenance for this instance.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
+}
+
 type InstancePersistenceConfig struct {
 	/* Optional. Controls whether Persistence features are enabled. If not provided, the existing value will be used.
 
@@ -187,6 +208,10 @@ type RedisInstanceSpec struct {
 	/* Maintenance policy for an instance. */
 	// +optional
 	MaintenancePolicy *InstanceMaintenancePolicy `json:"maintenancePolicy,omitempty"`
+
+	/* Upcoming maintenance schedule. */
+	// +optional
+	MaintenanceSchedule []InstanceMaintenanceSchedule `json:"maintenanceSchedule,omitempty"`
 
 	/* Redis memory size in GiB. */
 	MemorySizeGb int `json:"memorySizeGb"`

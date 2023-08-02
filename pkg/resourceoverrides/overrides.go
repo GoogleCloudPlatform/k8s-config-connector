@@ -209,6 +209,7 @@ func init() {
 	Handler.Register(GetDNSRecordSetOverrides())
 	Handler.Register(GetComputeBackendServiceResourceOverrides())
 	Handler.Register(GetVPCAccessConnectorResourceOverrides())
+	Handler.Register(GetRedisInstanceResourceOverrides())
 
 	// IAM
 	Handler.Register(GetIAMCustomRoleResourceOverrides())
