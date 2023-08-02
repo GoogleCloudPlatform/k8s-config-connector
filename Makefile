@@ -35,8 +35,7 @@ all: test manager operator config-connector
 # Run tests
 .PHONY: test
 test: generate fmt vet manifests
-	make -C operator test
-	go test -v ./pkg/... ./cmd/... ./config/tests/... ./scripts/generate-go-crd-clients/... -coverprofile cover.out -count=1
+	./scripts/unit-test.sh
 
 # Build config-connector binary
 .PHONY: config-connector
