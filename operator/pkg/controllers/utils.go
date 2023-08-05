@@ -244,6 +244,11 @@ func customizeContainerResourcesFn(cMap map[string]corev1.ResourceRequirements, 
 			return nil
 		}
 
+		// validate the container resource values before applying them to the manifest object.
+		if err := validateContainerResourceCustomizationValues(r, container); err != nil {
+			return fmt.Errorf("the resources customization for container \"%s\" is invalid: %w", name, err)
+		}
+
 		shouldUpdateGOMEMLIMIT := false // we need to update the GOMEMLIMIT environment variable if we update the memory request.
 		if r.Limits != nil && !r.Limits.Cpu().IsZero() {
 			if err := unstructured.SetNestedField(container, r.Limits.Cpu().String(), "resources", "limits", "cpu"); err != nil {
@@ -372,4 +377,89 @@ func ListMutatingWebhookConfigurationCustomizations(ctx context.Context, c clien
 		return nil, err
 	}
 	return list.Items, nil
+}
+
+// validateContainerResourceCustomizationValues validates the container resource values specified by the user.
+// If both `request` and `limit` values are specified by the user, they are checked against each other.
+// Otherwise, the specified value is checked against the default value found in the KCC manifest object.
+func validateContainerResourceCustomizationValues(r corev1.ResourceRequirements, container map[string]interface{}) error {
+	// 1. validate CPU request and limit.
+	cpuLimitIsSet := r.Limits != nil && !r.Limits.Cpu().IsZero()
+	cpuRequestIsSet := r.Requests != nil && !r.Requests.Cpu().IsZero()
+	if cpuRequestIsSet && cpuLimitIsSet {
+		// `request` and `limit` are both set - check against each other.
+		if r.Limits.Cpu().Cmp(*r.Requests.Cpu()) < 0 {
+			return fmt.Errorf("cpu limit %s is less than cpu request %s", r.Limits.Cpu().String(), r.Requests.Cpu().String())
+		}
+	} else if cpuRequestIsSet {
+		// only `request` is set - check against the default limit value in manifest.
+		defaultCPULimitString, found, err := unstructured.NestedString(container, "resources", "limits", "cpu")
+		if err != nil {
+			return fmt.Errorf("unexpected error when fetching the container cpu limit: %w", err)
+		}
+		if found {
+			defaultCPULimit, err := resource.ParseQuantity(defaultCPULimitString)
+			if err != nil {
+				return fmt.Errorf("unexpected error when parsing the quantity string %s: %w", defaultCPULimitString, err)
+			}
+			if defaultCPULimit.Cmp(*r.Requests.Cpu()) < 0 {
+				return fmt.Errorf("default cpu limit %s in the manifest is less than the cpu request %s", defaultCPULimitString, r.Requests.Cpu().String())
+			}
+		}
+	} else if cpuLimitIsSet {
+		// only `limit` is set - check against the default request value in manifest.
+		defaultCPURequestString, found, err := unstructured.NestedString(container, "resources", "requests", "cpu")
+		if err != nil {
+			return fmt.Errorf("unexpected error when fetching the container cpu request: %w", err)
+		}
+		if found {
+			defaultCPURequest, err := resource.ParseQuantity(defaultCPURequestString)
+			if err != nil {
+				return fmt.Errorf("unexpected error when parsing the quantity string %s: %w", defaultCPURequestString, err)
+			}
+			if defaultCPURequest.Cmp(*r.Limits.Cpu()) > 0 {
+				return fmt.Errorf("cpu limit %s is less than the default cpu request %s in the manifest", r.Limits.Cpu().String(), defaultCPURequestString)
+			}
+		}
+	}
+	// 2. validate memory request and limit.
+	memoryLimitIsSet := r.Limits != nil && !r.Limits.Memory().IsZero()
+	memoryRequestIsSet := r.Requests != nil && !r.Requests.Memory().IsZero()
+	if memoryRequestIsSet && memoryLimitIsSet {
+		// `request` and `limit` are both set - check against each other.
+		if r.Limits.Memory().Cmp(*r.Requests.Memory()) < 0 {
+			return fmt.Errorf("memory limit %s is less than memory request %s", r.Limits.Memory().String(), r.Requests.Memory().String())
+		}
+	} else if memoryRequestIsSet {
+		// only `request` is set - check against the default limit value in manifest.
+		defaultMemoryLimitString, found, err := unstructured.NestedString(container, "resources", "limits", "memory")
+		if err != nil {
+			return fmt.Errorf("unexpected error when fetching the container memory limit: %w", err)
+		}
+		if found {
+			defaultMemoryLimit, err := resource.ParseQuantity(defaultMemoryLimitString)
+			if err != nil {
+				return fmt.Errorf("unexpected error when parsing the quantity string %s: %w", defaultMemoryLimitString, err)
+			}
+			if defaultMemoryLimit.Cmp(*r.Requests.Memory()) < 0 {
+				return fmt.Errorf("default memory limit %s in the manifest is less than the memory request %s", defaultMemoryLimitString, r.Requests.Memory().String())
+			}
+		}
+	} else if memoryLimitIsSet {
+		// only `limit` is set - check against the default request value in manifest.
+		defaultMemoryRequestString, found, err := unstructured.NestedString(container, "resources", "requests", "memory")
+		if err != nil {
+			return fmt.Errorf("unexpected error when fetching the container memory request: %w", err)
+		}
+		if found {
+			defaultMemoryRequest, err := resource.ParseQuantity(defaultMemoryRequestString)
+			if err != nil {
+				return fmt.Errorf("unexpected error when parsing the quantity string %s: %w", defaultMemoryRequestString, err)
+			}
+			if defaultMemoryRequest.Cmp(*r.Limits.Memory()) > 0 {
+				return fmt.Errorf("memory limit %s is less than the default memory request %s in the manifest", r.Limits.Memory().String(), defaultMemoryRequestString)
+			}
+		}
+	}
+	return nil
 }

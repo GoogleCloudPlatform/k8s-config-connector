@@ -1038,7 +1038,7 @@ func TestApplyCustomizations(t *testing.T) {
 			},
 		},
 		{
-			name:                         "customize for a the same controller multiple times in the CR fails",
+			name:                         "customize for the same container multiple times in the CR fails",
 			manifests:                    testcontroller.ClusterModeComponents,
 			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForDuplicatedContainer,
 			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
