@@ -3,7 +3,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
 go 1.21.5
 
 require (
-	cloud.google.com/go/iam v1.1.1
+	cloud.google.com/go/iam v1.1.2
 	cloud.google.com/go/longrunning v0.5.1
 	github.com/golang/protobuf v1.5.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
