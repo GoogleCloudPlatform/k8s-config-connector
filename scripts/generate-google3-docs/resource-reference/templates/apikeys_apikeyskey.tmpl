@@ -1,0 +1,59 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>API Keys</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/api-keys/docs/">/api-keys/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>
+apikeys.keys
+</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td>
+<a href="/api-keys/docs/reference/rpc/google.api.apikeys.v2">/api-keys/docs/reference/rpc/google.api.apikeys.v2</a>
+</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>apikeys.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+<tr>
+<td>{{"{{product_name_short}}"}} Default Average Reconcile Interval In Seconds</td>
+<td>{{ .DefaultReconcileInterval}}</td>
+</tr>
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{{template "endnote.tmpl" .}}
+{% endblock %}

@@ -24,6 +24,8 @@
 - resourceConfigId: AlloyDBCluster
 # not supported by asset inventory
 - resourceConfigId: AlloyDBInstance
+# TODO: Check this is correct
+- resourceConfigId: APIKeysKey
 # not supported by asset inventory
 - resourceConfigId: AlloyDBUser
 # not supported by asset inventory
