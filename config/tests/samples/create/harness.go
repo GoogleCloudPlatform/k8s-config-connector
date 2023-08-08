@@ -341,6 +341,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			}
 
 			switch gvk.GroupKind() {
+			case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
+
 			case schema.GroupKind{Group: "cloudfunctions.cnrm.cloud.google.com", Kind: "CloudFunctionsFunction"}:
 
 			case schema.GroupKind{Group: "containerattached.cnrm.cloud.google.com", Kind: "ContainerAttachedCluster"}:
