@@ -120,7 +120,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 	if err != nil {
 		return nil, fmt.Errorf("error creating new controller: %v", err)
 	}
-	logger.Info("Registered dcl controller", "kind", kind, "apiVersion", apiVersion)
+	logger.V(2).Info("Registered dcl controller", "kind", kind, "apiVersion", apiVersion)
 	return r, nil
 }
 
