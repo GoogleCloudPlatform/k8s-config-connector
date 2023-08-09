@@ -255,7 +255,7 @@ func TestAll(t *testing.T) {
 				logger.Info("Acquired network semaphore for test", "testName", s.Name)
 				defer releaseFunc(s, networkCount)
 			}
-			RunCreateDeleteTest(h, s.Resources, cleanupResources)
+			RunCreateDeleteTest(h, CreateDeleteTestOptions{Create: s.Resources, CleanupResources: cleanupResources})
 		})
 	}
 }

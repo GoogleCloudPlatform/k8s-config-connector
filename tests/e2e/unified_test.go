@@ -72,8 +72,6 @@ func TestAllInSeries(t *testing.T) {
 
 				h := testHarness.ForSubtest(t)
 
-				cleanupResources := true
-
 				create.SetupNamespacesAndApplyDefaults(h, []create.Sample{s}, project)
 
 				// Hack: set project-id because mockkubeapiserver does not support webhooks
@@ -86,7 +84,7 @@ func TestAllInSeries(t *testing.T) {
 					u.SetAnnotations(annotations)
 				}
 
-				create.RunCreateDeleteTest(h, s.Resources, cleanupResources)
+				create.RunCreateDeleteTest(h, create.CreateDeleteTestOptions{Create: s.Resources, CleanupResources: true})
 			})
 		}
 	})
@@ -116,14 +114,21 @@ func TestAllInSeries(t *testing.T) {
 				}
 			}
 
+			opt := create.CreateDeleteTestOptions{Create: s.Resources, CleanupResources: true}
+			if fixture.Update != nil {
+				u := bytesToUnstructured(t, fixture.Update, testID, project)
+				opt.Updates = append(opt.Updates, u)
+			}
+
 			t.Run(s.Name, func(t *testing.T) {
 				create.MaybeSkip(t, s.Name, s.Resources)
 
 				h := testHarness.ForSubtest(t)
 
 				create.SetupNamespacesAndApplyDefaults(h, []create.Sample{s}, project)
-				cleanupResources := false // We delete explicitly below
-				create.RunCreateDeleteTest(h, s.Resources, cleanupResources)
+
+				opt.CleanupResources = false // We delete explicitly below
+				create.RunCreateDeleteTest(h, opt)
 
 				for _, exportResource := range exportResources {
 					exportURI := ""
