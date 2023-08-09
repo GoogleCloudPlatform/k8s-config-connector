@@ -80,7 +80,7 @@ func getNamespaceID(t *testing.T, mgr manager.Manager) string {
 }
 
 func testDeleteNamespaceID(t *testing.T, mgr manager.Manager) {
-	if err := cluster.DeleteNamespaceID(namespaceIDConfigMapNN, mgr.GetClient(), context.TODO(), namespaceName); err != nil {
+	if err := cluster.DeleteNamespaceID(context.TODO(), namespaceIDConfigMapNN, mgr.GetClient(), namespaceName); err != nil {
 		t.Fatalf("unexpected error when deleting namespace id: %v", err)
 	}
 

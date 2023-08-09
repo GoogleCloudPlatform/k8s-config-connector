@@ -34,7 +34,6 @@ import (
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 
 	"github.com/blang/semver"
-	"github.com/cenkalti/backoff"
 	"github.com/go-logr/logr"
 	"github.com/go-logr/zapr"
 	"go.uber.org/zap"
@@ -1503,16 +1502,19 @@ func createCredentialSecret(serviceAccEmail, projectID, secretName string, k *ku
 }
 
 func addIAMBindingForServiceAcc(serviceAccEmail, member, role, projectID string) error {
-	addIAMBindingFunc := func() error {
+	return wait.ExponentialBackoff(defaultBackOff, func() (bool, error) {
 		cmd := exec.Command(
 			"gcloud", "iam", "service-accounts", "add-iam-policy-binding", serviceAccEmail,
 			"--member", member,
 			"--role", role,
 			"--project", projectID,
 		)
-		return utils.Execute(cmd)
-	}
-	return backoff.Retry(addIAMBindingFunc, backoff.NewExponentialBackOff())
+		err := utils.Execute(cmd)
+		if err != nil {
+			return false, err
+		}
+		return true, nil
+	})
 }
 
 func createGKECluster(containerClient *containerBeta.Service, clusterName, projectID, location string, log logr.Logger) error {

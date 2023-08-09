@@ -286,7 +286,7 @@ func (r *ConfigConnectorContextReconciler) finalizeCCContextDeletion(ctx context
 	if err := r.finalizeNamespacedComponentsDeletion(ctx, ccc, m); err != nil {
 		return err
 	}
-	if err := cluster.DeleteNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, r.client, ctx, ccc.Namespace); err != nil {
+	if err := cluster.DeleteNamespaceID(ctx, k8s.OperatorNamespaceIDConfigMapNN, r.client, ccc.Namespace); err != nil {
 		return err
 	}
 	r.log.Info("Successfully finalized ConfigConnectorContext deletion...", "name", ccc.Name, "namespace", ccc.Namespace)
