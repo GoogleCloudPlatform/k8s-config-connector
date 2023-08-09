@@ -128,7 +128,7 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	}
 }
 
-func waitForReady(t *Harness, unstructs []*unstructured.Unstructured) {
+func WaitForReady(t *Harness, unstructs []*unstructured.Unstructured) {
 	var wg sync.WaitGroup
 	for _, u := range unstructs {
 		wg.Add(1)
