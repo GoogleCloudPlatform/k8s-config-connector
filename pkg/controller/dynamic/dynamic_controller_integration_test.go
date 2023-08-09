@@ -48,11 +48,11 @@ import (
 	testrunner "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/runner"
 	testservicemapping "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemapping"
 
-	"github.com/cenkalti/backoff"
 	"github.com/ghodss/yaml"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -497,21 +497,24 @@ func testDelete(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 			t.Errorf("expected resource %s to exist after deletion, but got error: %s", initialUnstruct.GetName(), err)
 		}
 	} else {
-		getFunc := func() error {
+		var lastObject *unstructured.Unstructured
+		getFunc := func() (bool, error) {
 			// for some resources, Get after Delete is eventually consistent, for that reason we retry until an error is returned
-			_, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+			u, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
 			if err == nil {
-				return fmt.Errorf("expected error, instead got 'nil'")
+				lastObject = u
+				return false, nil
 			}
-			return backoff.Permanent(err)
+			return false, err
 		}
-		expBackoff := backoff.NewExponentialBackOff()
-		expBackoff.MaxElapsedTime = 60 * time.Second
-		expBackoff.MaxInterval = 10 * time.Second
-		err := backoff.Retry(getFunc, expBackoff)
+		backoff := wait.Backoff{
+			Steps:    20,
+			Duration: 3 * time.Second,
+		}
+		err := wait.ExponentialBackoff(backoff, getFunc)
 		// TODO: remove gcp.IsNotFoundError(...) once all resources are converted to use terraform for ResourceContext Create / Get
 		if !gcp.IsNotFoundError(err) && !contexts.IsNotFoundError(err) {
-			t.Errorf("expected GCP client to return NotFound for '%v', instead got: %v", initialUnstruct.GetName(), err)
+			t.Errorf("expected GCP client to return NotFound for '%v', instead got: %v", initialUnstruct.GetName(), lastObject)
 		}
 
 		err = kubeClient.Get(ctx, testContext.NamespacedName, initialUnstruct)
