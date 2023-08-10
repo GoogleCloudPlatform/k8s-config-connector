@@ -110,11 +110,15 @@ and
     source ~/.profile
     ```
 
-1.  Set up a GKE cluster for testing purposes.
+1.  Set up a GKE cluster for testing purposes. The script `gcp-setup.sh` also
+    deploys Config Connector CRDs and workloads including controller manager and
+    webhooks into the cluster.
 
-    NOTE: `gcp-setup.sh` assumes the VM you are running it from is in a GCP
-    project which does not already have a GKE cluster with Config Connector
-    already set up.
+    NOTE: `gcp-setup.sh` assumes there is a GKE cluster named "cnrm-dev" in your
+    default GCP project configured through gcloud, and creates one if it doesn't
+    exist. If you prefer to use an existing GKE cluster, you can modify
+    `CLUSTER_NAME` in the script and use the existing cluster name instead. Make
+    sure the existing GKE cluster has workload identity enabled.
 
     ```shell
     ./gcp-setup.sh
@@ -194,32 +198,44 @@ At this point, your cluster is running a CNRM Controller Manager image built on
 your system. Let's make a code change to verify that you are ready to start
 development.
 
-1.  Edit
-    $GOPATH/src/github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager/main.go.
-    Insert the `log.Printf(...)` statement below on the first line of the
-    `main()` function.
+Edit cmd/manager/main.go in your local repository.
+Insert the `log.Printf(...)` statement below on the first line of the
+`main()` function.
 
-    ```shell
-    package manager
+```shell
+package manager
 
-    func main() {
-        log.Printf("I have finished the getting started guide.")
-        ...
-    }
-    ```
+func main() {
+    log.Printf("I have finished the getting started guide.")
+    ...
+}
+```
 
-1.  Build and deploy your change, force a pull of the container image.
+To apply the change, you can either deploy the container image into the GKE
+Cluster, or run the Controller Manager directly as a local executable.
 
-    ```shell
-    make deploy-controller && kubectl delete pods --namespace cnrm-system --all
-    ```
+#### Build and Deploy the Controller Manager into the GKE Cluster
 
-1.  Verify your new log statement is on the first line of the logs for the CNRM
-    Controller Manager pod.
+Build and deploy your change, force a pull of the container image.
 
-    ```shell
-    kubectl --namespace cnrm-system logs cnrm-controller-manager-0
-    ```
+```
+make deploy-controller && kubectl delete pods --namespace cnrm-system --all
+```
+
+Verify your new log statement is on the first line of the logs for the CNRM
+Controller Manager pod.
+
+```
+kubectl --namespace cnrm-system logs cnrm-controller-manager-0
+```
+
+#### Build and Run the Controller Manager locally
+
+If you don't want to deploy the controller manager into your dev cluster,
+you can run it locally on your dev machine with the steps below.
+
+1. `kubectl edit statefulset cnrm-controller-manager -n cnrm-system` and scale down the replica to 0.
+2. Run `make run` and inspect the output logs.
 
 ## Contributing to Config Connector
 

@@ -192,3 +192,8 @@ generate-go-client: client-types
 	go generate ./pkg/clients/generated/...
 	./scripts/generate-go-crd-clients/generate-clients.sh
 
+# Run against the configured Kubernetes cluster in ~/.kube/config
+.PHONY: run
+run: generate fmt vet
+	SERVICE_MAPPING_DIR=config/servicemappings/ go run ./cmd/manager/main.go
+
