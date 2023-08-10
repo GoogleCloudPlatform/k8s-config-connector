@@ -165,7 +165,7 @@ func (s *ServerV1) PatchServiceAccount(ctx context.Context, req *pb.PatchService
 	paths := req.GetUpdateMask().GetPaths()
 	for _, path := range paths {
 		switch path {
-		case "display_name":
+		case "display_name", "displayName":
 			sa.DisplayName = req.GetServiceAccount().GetDisplayName()
 		case "description":
 			sa.Description = req.GetServiceAccount().GetDescription()
