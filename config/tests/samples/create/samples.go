@@ -174,12 +174,12 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 		}
 		for _, c := range objectStatus.Conditions {
 			if c.Type == "Ready" && c.Status == "True" {
-				logger.Info("resource is ready", "kind", u.GetKind(), "name", u.GetName())
+				logger.V(2).Info("resource is ready", "kind", u.GetKind(), "name", u.GetName())
 				return true, nil
 			}
 		}
 		// This resource is not completely ready. Let's keep polling.
-		logger.Info("resource is not ready", "kind", u.GetKind(), "name", u.GetName(),
+		logger.Info("resource is not yet ready", "kind", u.GetKind(), "name", u.GetName(),
 			"conditions", objectStatus.Conditions)
 		return false, nil
 	})

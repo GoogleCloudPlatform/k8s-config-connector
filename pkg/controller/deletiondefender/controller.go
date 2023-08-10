@@ -72,7 +72,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %v", err)
 	}
-	logger.Info("Registered controller", "kind", kind, "apiVersion", apiVersion)
+	logger.V(2).Info("Registered controller", "kind", kind, "apiVersion", apiVersion)
 	return nil
 }
 
