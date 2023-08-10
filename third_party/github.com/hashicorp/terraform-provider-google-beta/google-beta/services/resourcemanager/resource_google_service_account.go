@@ -235,7 +235,7 @@ func resourceGoogleServiceAccountUpdate(d *schema.ResourceData, meta interface{}
 		updateMask = append(updateMask, "description")
 	}
 	if d.HasChange("display_name") {
-		updateMask = append(updateMask, "display_name")
+		updateMask = append(updateMask, "displayName")
 	}
 
 	// We want to skip the Patch Call below if only the disabled field has been changed
