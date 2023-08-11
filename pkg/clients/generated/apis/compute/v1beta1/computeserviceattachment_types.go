@@ -43,6 +43,34 @@ type ServiceattachmentConsumerAcceptLists struct {
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 
+type ServiceattachmentConsumerRejectLists struct {
+	/* Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`). */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type ServiceattachmentNatSubnets struct {
+	/* Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ComputeServiceAttachmentSpec struct {
 	/* The connection preference of service attachment. The value can be set to `ACCEPT_AUTOMATIC`. An `ACCEPT_AUTOMATIC` service attachment is one that always accepts the connection from consumer forwarding rules. Possible values: CONNECTION_PREFERENCE_UNSPECIFIED, ACCEPT_AUTOMATIC, ACCEPT_MANUAL */
 	ConnectionPreference string `json:"connectionPreference"`
@@ -52,7 +80,7 @@ type ComputeServiceAttachmentSpec struct {
 	ConsumerAcceptLists []ServiceattachmentConsumerAcceptLists `json:"consumerAcceptLists,omitempty"`
 
 	// +optional
-	ConsumerRejectLists []v1alpha1.ResourceRef `json:"consumerRejectLists,omitempty"`
+	ConsumerRejectLists []ServiceattachmentConsumerRejectLists `json:"consumerRejectLists,omitempty"`
 
 	/* An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
@@ -65,7 +93,7 @@ type ComputeServiceAttachmentSpec struct {
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	NatSubnets []v1alpha1.ResourceRef `json:"natSubnets"`
+	NatSubnets []ServiceattachmentNatSubnets `json:"natSubnets"`
 
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`

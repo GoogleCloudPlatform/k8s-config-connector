@@ -44,12 +44,28 @@ type AuditconfigAuditLogConfigs struct {
 	LogType string `json:"logType"`
 }
 
+type AuditconfigResourceRef struct {
+	// +optional
+	ApiVersion *string `json:"apiVersion,omitempty"`
+
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	Kind string `json:"kind"`
+
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type IAMAuditConfigSpec struct {
 	/* Required. The configuration for logging of each type of permission. */
 	AuditLogConfigs []AuditconfigAuditLogConfigs `json:"auditLogConfigs"`
 
 	/* Immutable. Required. The GCP resource to set the IAMAuditConfig on (e.g. project). */
-	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
+	ResourceRef AuditconfigResourceRef `json:"resourceRef"`
 
 	/* Immutable. Required. The service for which to enable Data Access audit logs. The special value 'allServices' covers all services. Note that if there are audit configs covering both 'allServices' and a specific service, then the union of the two audit configs is used for that service: the 'logTypes' specified in each 'auditLogConfig' are enabled, and the 'exemptedMembers' in each 'auditLogConfg' are exempted. */
 	Service string `json:"service"`

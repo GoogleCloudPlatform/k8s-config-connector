@@ -57,7 +57,7 @@ type FunctionEventTrigger struct {
 	FailurePolicy *bool `json:"failurePolicy,omitempty"`
 
 	/* Immutable. */
-	ResourceRef v1alpha1.ResourceRef `json:"resourceRef"`
+	ResourceRef FunctionResourceRef `json:"resourceRef"`
 
 	/* Immutable. The hostname of the service that should be observed.
 
@@ -72,6 +72,46 @@ type FunctionHttpsTrigger struct {
 	/* Immutable. Both HTTP and HTTPS requests with URLs that match the handler succeed without redirects. The application can examine the request to determine which protocol was used and respond accordingly. Possible values: SECURITY_LEVEL_UNSPECIFIED, SECURE_ALWAYS, SECURE_OPTIONAL */
 	// +optional
 	SecurityLevel *string `json:"securityLevel,omitempty"`
+}
+
+type FunctionResourceRef struct {
+	/* Required. The resource(s) from which to observe events, for example,
+	`projects/_/buckets/myBucket`.
+
+	Not all syntactically correct values are accepted by all services. For
+	example:
+
+	1. The authorization model must support it. Google Cloud Functions
+	only allows EventTriggers to be deployed that observe resources in the
+	same project as the `Function`.
+	2. The resource type must match the pattern expected for an
+	`event_type`. For example, an `EventTrigger` that has an
+	`event_type` of "google.pubsub.topic.publish" should have a resource
+	that matches Google Cloud Pub/Sub topics.
+
+	Additionally, some services may support short names when creating an
+	`EventTrigger`. These will always be returned in the normalized "long"
+	format.
+
+	See each *service's* documentation for supported formats.
+
+	Allowed values:
+	* The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).
+	* The Google Cloud resource name of a `PubSubTopic` resource (format: `projects/{{project}}/topics/{{name}}`). */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Kind of the referent. Allowed values: StorageBucket,PubSubTopic */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type FunctionSourceRepository struct {

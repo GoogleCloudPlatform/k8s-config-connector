@@ -87,6 +87,20 @@ type DiskRawKey struct {
 	ValueFrom *DiskValueFrom `json:"valueFrom,omitempty"`
 }
 
+type DiskResourcePolicies struct {
+	/* Allowed value: The `selfLink` field of a `ComputeResourcePolicy` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type DiskRsaEncryptedKey struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional
@@ -95,6 +109,14 @@ type DiskRsaEncryptedKey struct {
 	/* Source for the field's value. Cannot be used if 'value' is specified. */
 	// +optional
 	ValueFrom *DiskValueFrom `json:"valueFrom,omitempty"`
+}
+
+type DiskSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
 }
 
 type DiskSourceImageEncryptionKey struct {
@@ -152,7 +174,7 @@ type DiskSourceSnapshotEncryptionKey struct {
 type DiskValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *DiskSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeDiskSpec struct {
@@ -242,7 +264,7 @@ type ComputeDiskSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+	ResourcePolicies []DiskResourcePolicies `json:"resourcePolicies,omitempty"`
 
 	/* Size of the persistent disk, specified in GB. You can specify this
 	field when creating a persistent disk using the 'image' or

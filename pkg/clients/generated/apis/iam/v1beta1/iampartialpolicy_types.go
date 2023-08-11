@@ -57,22 +57,29 @@ type PartialpolicyCondition struct {
 	Title string `json:"title"`
 }
 
+type PartialpolicyLogSinkRef struct {
+	Name string `json:"name"`
+
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type PartialpolicyMemberFrom struct {
 	/* The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
 	// +optional
-	LogSinkRef *v1alpha1.IAMResourceRef `json:"logSinkRef,omitempty"`
+	LogSinkRef *PartialpolicyLogSinkRef `json:"logSinkRef,omitempty"`
 
 	/* The IAMServiceAccount to be bound to the role. */
 	// +optional
-	ServiceAccountRef *v1alpha1.IAMResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *PartialpolicyServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	/* The ServiceIdentity whose service account (i.e., its 'status.email') is to be bound to the role. */
 	// +optional
-	ServiceIdentityRef *v1alpha1.IAMResourceRef `json:"serviceIdentityRef,omitempty"`
+	ServiceIdentityRef *PartialpolicyServiceIdentityRef `json:"serviceIdentityRef,omitempty"`
 
 	/* The SQLInstance whose service account (i.e. its 'status.serviceAccountEmailAddress') is to be bound to the role. */
 	// +optional
-	SqlInstanceRef *v1alpha1.IAMResourceRef `json:"sqlInstanceRef,omitempty"`
+	SqlInstanceRef *PartialpolicySqlInstanceRef `json:"sqlInstanceRef,omitempty"`
 }
 
 type PartialpolicyMembers struct {
@@ -85,13 +92,50 @@ type PartialpolicyMembers struct {
 	MemberFrom *PartialpolicyMemberFrom `json:"memberFrom,omitempty"`
 }
 
+type PartialpolicyResourceRef struct {
+	// +optional
+	ApiVersion *string `json:"apiVersion,omitempty"`
+
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	Kind string `json:"kind"`
+
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type PartialpolicyServiceAccountRef struct {
+	Name string `json:"name"`
+
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type PartialpolicyServiceIdentityRef struct {
+	Name string `json:"name"`
+
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type PartialpolicySqlInstanceRef struct {
+	Name string `json:"name"`
+
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type IAMPartialPolicySpec struct {
 	/* Optional. The list of IAM bindings managed by Config Connector. */
 	// +optional
 	Bindings []PartialpolicyBindings `json:"bindings,omitempty"`
 
 	/* Immutable. Required. The GCP resource to set the IAM policy on. */
-	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
+	ResourceRef PartialpolicyResourceRef `json:"resourceRef"`
 }
 
 type PartialpolicyAllBindingsStatus struct {

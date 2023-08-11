@@ -35,6 +35,20 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type TargethttpsproxySslCertificates struct {
+	/* Allowed value: The `selfLink` field of a `ComputeSSLCertificate` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ComputeTargetHTTPSProxySpec struct {
 	/* Only the `external` field is supported to configure the reference.
 
@@ -77,7 +91,7 @@ type ComputeTargetHTTPSProxySpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates,omitempty"`
+	SslCertificates []TargethttpsproxySslCertificates `json:"sslCertificates,omitempty"`
 
 	/* A reference to the ComputeSSLPolicy resource that will be
 	associated with the ComputeTargetHTTPSProxy resource. If not set,

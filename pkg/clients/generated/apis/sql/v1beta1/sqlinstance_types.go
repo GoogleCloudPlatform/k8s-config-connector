@@ -283,6 +283,14 @@ type InstanceRootPassword struct {
 	ValueFrom *InstanceValueFrom `json:"valueFrom,omitempty"`
 }
 
+type InstanceSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type InstanceSettings struct {
 	/* This specifies when the instance should be active. Can be either ALWAYS, NEVER or ON_DEMAND. */
 	// +optional
@@ -412,7 +420,7 @@ type InstanceSqlServerAuditConfig struct {
 type InstanceValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *InstanceSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type SQLInstanceSpec struct {

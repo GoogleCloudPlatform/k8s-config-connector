@@ -51,6 +51,14 @@ type EdgecachekeysetPublicKey struct {
 	Value *EdgecachekeysetValue `json:"value,omitempty"`
 }
 
+type EdgecachekeysetSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type EdgecachekeysetValidationSharedKeys struct {
 	/* The name of the secret version in Secret Manager.
 
@@ -75,7 +83,7 @@ type EdgecachekeysetValue struct {
 type EdgecachekeysetValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *EdgecachekeysetSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type NetworkServicesEdgeCacheKeysetSpec struct {

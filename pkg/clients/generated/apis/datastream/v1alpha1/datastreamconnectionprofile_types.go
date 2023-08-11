@@ -181,6 +181,14 @@ type ConnectionprofilePrivateKey struct {
 	ValueFrom *ConnectionprofileValueFrom `json:"valueFrom,omitempty"`
 }
 
+type ConnectionprofileSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type ConnectionprofileSslConfig struct {
 	/* Immutable. PEM-encoded certificate of the CA that signed the source database
 	server's certificate. */
@@ -216,7 +224,7 @@ type ConnectionprofileSslConfig struct {
 type ConnectionprofileValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *ConnectionprofileSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type DatastreamConnectionProfileSpec struct {

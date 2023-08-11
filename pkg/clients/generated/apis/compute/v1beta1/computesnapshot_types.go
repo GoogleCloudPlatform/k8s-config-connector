@@ -45,6 +45,14 @@ type SnapshotRawKey struct {
 	ValueFrom *SnapshotValueFrom `json:"valueFrom,omitempty"`
 }
 
+type SnapshotSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type SnapshotSnapshotEncryptionKey struct {
 	/* The encryption key that is stored in Google Cloud KMS. */
 	// +optional
@@ -81,7 +89,7 @@ type SnapshotSourceDiskEncryptionKey struct {
 type SnapshotValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *SnapshotSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeSnapshotSpec struct {

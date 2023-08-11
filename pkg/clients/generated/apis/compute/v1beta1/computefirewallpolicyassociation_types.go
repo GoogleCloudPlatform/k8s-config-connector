@@ -35,9 +35,32 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type FirewallpolicyassociationAttachmentTargetRef struct {
+	/* The target that the firewall policy is attached to.
+
+	Allowed values:
+	* The Google Cloud resource name of a `Folder` resource (format: `folders/{{name}}`).
+	* The Google Cloud resource name of a Google Cloud Organization (format: `organizations/{{name}}`). */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Kind of the referent. Allowed values: Folder */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* [WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
+	Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ComputeFirewallPolicyAssociationSpec struct {
 	/* Immutable. */
-	AttachmentTargetRef v1alpha1.ResourceRef `json:"attachmentTargetRef"`
+	AttachmentTargetRef FirewallpolicyassociationAttachmentTargetRef `json:"attachmentTargetRef"`
 
 	/* Immutable. */
 	FirewallPolicyRef v1alpha1.ResourceRef `json:"firewallPolicyRef"`

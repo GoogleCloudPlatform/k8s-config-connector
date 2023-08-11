@@ -49,7 +49,7 @@ type PolicyClusterAdmissionRules struct {
 	EvaluationMode string `json:"evaluationMode"`
 
 	// +optional
-	RequireAttestationsBy []v1alpha1.ResourceRef `json:"requireAttestationsBy,omitempty"`
+	RequireAttestationsBy []PolicyRequireAttestationsBy `json:"requireAttestationsBy,omitempty"`
 }
 
 type PolicyDefaultAdmissionRule struct {
@@ -60,7 +60,7 @@ type PolicyDefaultAdmissionRule struct {
 	EvaluationMode string `json:"evaluationMode"`
 
 	// +optional
-	RequireAttestationsBy []v1alpha1.ResourceRef `json:"requireAttestationsBy,omitempty"`
+	RequireAttestationsBy []PolicyRequireAttestationsBy `json:"requireAttestationsBy,omitempty"`
 }
 
 type PolicyIstioServiceIdentityAdmissionRules struct {
@@ -71,7 +71,7 @@ type PolicyIstioServiceIdentityAdmissionRules struct {
 	EvaluationMode string `json:"evaluationMode"`
 
 	// +optional
-	RequireAttestationsBy []v1alpha1.ResourceRef `json:"requireAttestationsBy,omitempty"`
+	RequireAttestationsBy []PolicyRequireAttestationsBy `json:"requireAttestationsBy,omitempty"`
 }
 
 type PolicyKubernetesNamespaceAdmissionRules struct {
@@ -82,7 +82,7 @@ type PolicyKubernetesNamespaceAdmissionRules struct {
 	EvaluationMode string `json:"evaluationMode"`
 
 	// +optional
-	RequireAttestationsBy []v1alpha1.ResourceRef `json:"requireAttestationsBy,omitempty"`
+	RequireAttestationsBy []PolicyRequireAttestationsBy `json:"requireAttestationsBy,omitempty"`
 }
 
 type PolicyKubernetesServiceAccountAdmissionRules struct {
@@ -93,7 +93,21 @@ type PolicyKubernetesServiceAccountAdmissionRules struct {
 	EvaluationMode string `json:"evaluationMode"`
 
 	// +optional
-	RequireAttestationsBy []v1alpha1.ResourceRef `json:"requireAttestationsBy,omitempty"`
+	RequireAttestationsBy []PolicyRequireAttestationsBy `json:"requireAttestationsBy,omitempty"`
+}
+
+type PolicyRequireAttestationsBy struct {
+	/* Allowed value: The Google Cloud resource name of a `BinaryAuthorizationAttestor` resource (format: `projects/{{project}}/attestors/{{name}}`). */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type BinaryAuthorizationPolicySpec struct {

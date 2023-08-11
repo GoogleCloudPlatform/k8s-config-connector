@@ -47,7 +47,7 @@ type ServiceBinaryAuthorization struct {
 
 type ServiceCloudSqlInstance struct {
 	// +optional
-	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+	Instances []ServiceInstances `json:"instances,omitempty"`
 }
 
 type ServiceContainers struct {
@@ -94,6 +94,20 @@ type ServiceEnv struct {
 	/* Source for the environment variable's value. */
 	// +optional
 	ValueSource *ServiceValueSource `json:"valueSource,omitempty"`
+}
+
+type ServiceInstances struct {
+	/* Allowed value: The `instanceName` field of a `SQLInstance` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type ServiceItems struct {
@@ -148,6 +162,13 @@ type ServiceSecret struct {
 	Items []ServiceItems `json:"items,omitempty"`
 
 	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+}
+
+type ServiceSecretKeyRef struct {
+	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+
+	// +optional
+	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
 
 type ServiceTemplate struct {
@@ -216,7 +237,7 @@ type ServiceTraffic struct {
 type ServiceValueSource struct {
 	/* Selects a secret and a specific version from Cloud Secret Manager. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *ServiceSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ServiceVolumeMounts struct {

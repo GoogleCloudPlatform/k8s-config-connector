@@ -44,22 +44,66 @@ type PolicymemberCondition struct {
 	Title string `json:"title"`
 }
 
+type PolicymemberLogSinkRef struct {
+	Name string `json:"name"`
+
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type PolicymemberMemberFrom struct {
 	/* The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role. */
 	// +optional
-	LogSinkRef *v1alpha1.IAMResourceRef `json:"logSinkRef,omitempty"`
+	LogSinkRef *PolicymemberLogSinkRef `json:"logSinkRef,omitempty"`
 
 	/* The IAMServiceAccount to be bound to the role. */
 	// +optional
-	ServiceAccountRef *v1alpha1.IAMResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *PolicymemberServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	/* The ServiceIdentity whose service account (i.e., its 'status.email') is to be bound to the role. */
 	// +optional
-	ServiceIdentityRef *v1alpha1.IAMResourceRef `json:"serviceIdentityRef,omitempty"`
+	ServiceIdentityRef *PolicymemberServiceIdentityRef `json:"serviceIdentityRef,omitempty"`
 
 	/* The SQLInstance whose service account (i.e. its 'status.serviceAccountEmailAddress') is to be bound to the role. */
 	// +optional
-	SqlInstanceRef *v1alpha1.IAMResourceRef `json:"sqlInstanceRef,omitempty"`
+	SqlInstanceRef *PolicymemberSqlInstanceRef `json:"sqlInstanceRef,omitempty"`
+}
+
+type PolicymemberResourceRef struct {
+	// +optional
+	ApiVersion *string `json:"apiVersion,omitempty"`
+
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	Kind string `json:"kind"`
+
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type PolicymemberServiceAccountRef struct {
+	Name string `json:"name"`
+
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type PolicymemberServiceIdentityRef struct {
+	Name string `json:"name"`
+
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type PolicymemberSqlInstanceRef struct {
+	Name string `json:"name"`
+
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type IAMPolicyMemberSpec struct {
@@ -76,7 +120,7 @@ type IAMPolicyMemberSpec struct {
 	MemberFrom *PolicymemberMemberFrom `json:"memberFrom,omitempty"`
 
 	/* Immutable. Required. The GCP resource to set the IAM policy on. */
-	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
+	ResourceRef PolicymemberResourceRef `json:"resourceRef"`
 
 	/* Immutable. Required. The role for which the Member will be bound. */
 	Role string `json:"role"`

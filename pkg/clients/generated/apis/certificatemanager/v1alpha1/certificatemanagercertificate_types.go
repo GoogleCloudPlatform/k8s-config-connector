@@ -127,6 +127,14 @@ type CertificateProvisioningIssue struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
+type CertificateSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type CertificateSelfManaged struct {
 	/* DEPRECATED. Deprecated in favor of `pem_certificate`. Immutable. **Deprecated** The certificate chain in PEM-encoded form.
 
@@ -152,7 +160,7 @@ type CertificateSelfManaged struct {
 type CertificateValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *CertificateSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type CertificateManagerCertificateSpec struct {

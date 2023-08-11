@@ -35,6 +35,20 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type InterconnectattachmentIpsecInternalAddresses struct {
+	/* Allowed value: The `selfLink` field of a `ComputeAddress` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ComputeInterconnectAttachmentSpec struct {
 	/* Whether the VLAN attachment is enabled or disabled.  When using
 	PARTNER type this will Pre-Activate the interconnect attachment. */
@@ -95,7 +109,7 @@ type ComputeInterconnectAttachmentSpec struct {
 	Interconnect *string `json:"interconnect,omitempty"`
 
 	// +optional
-	IpsecInternalAddresses []v1alpha1.ResourceRef `json:"ipsecInternalAddresses,omitempty"`
+	IpsecInternalAddresses []InterconnectattachmentIpsecInternalAddresses `json:"ipsecInternalAddresses,omitempty"`
 
 	/* Maximum Transmission Unit (MTU), in bytes, of packets passing through
 	this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not specified, the value will default to 1440. */

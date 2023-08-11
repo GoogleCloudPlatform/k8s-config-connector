@@ -50,7 +50,7 @@ type SpokeLinkedInterconnectAttachments struct {
 	SiteToSiteDataTransfer bool `json:"siteToSiteDataTransfer"`
 
 	/* Immutable. */
-	Uris []v1alpha1.ResourceRef `json:"uris"`
+	Uris []SpokeUris `json:"uris"`
 }
 
 type SpokeLinkedRouterApplianceInstances struct {
@@ -66,7 +66,21 @@ type SpokeLinkedVpnTunnels struct {
 	SiteToSiteDataTransfer bool `json:"siteToSiteDataTransfer"`
 
 	/* Immutable. */
-	Uris []v1alpha1.ResourceRef `json:"uris"`
+	Uris []SpokeUris `json:"uris"`
+}
+
+type SpokeUris struct {
+	/* Allowed value: The `selfLink` field of a `ComputeVPNTunnel` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type NetworkConnectivitySpokeSpec struct {

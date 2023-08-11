@@ -97,7 +97,7 @@ type GuestpolicyAssignment struct {
 	InstanceNamePrefixes []string `json:"instanceNamePrefixes,omitempty"`
 
 	// +optional
-	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+	Instances []GuestpolicyInstances `json:"instances,omitempty"`
 
 	/* Targets VM instances matching at least one of the following OS types. VM instances must match all supplied criteria for a given OsType to be included. */
 	// +optional
@@ -205,6 +205,20 @@ type GuestpolicyInstallSteps struct {
 	/* Runs commands in a shell. */
 	// +optional
 	ScriptRun *GuestpolicyScriptRun `json:"scriptRun,omitempty"`
+}
+
+type GuestpolicyInstances struct {
+	/* Allowed value: The `selfLink` field of a `ComputeInstance` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type GuestpolicyMsiInstallation struct {

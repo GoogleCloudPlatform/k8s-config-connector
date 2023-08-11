@@ -89,6 +89,34 @@ type FirewallpolicyruleMatch struct {
 	SrcThreatIntelligences []string `json:"srcThreatIntelligences,omitempty"`
 }
 
+type FirewallpolicyruleTargetResources struct {
+	/* Allowed value: The `selfLink` field of a `ComputeNetwork` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type FirewallpolicyruleTargetServiceAccounts struct {
+	/* Allowed value: The Google Cloud resource name of an `IAMServiceAccount` resource (format: `projects/{{project}}/serviceAccounts/{{name}}@{{project}}.iam.gserviceaccount.com`). */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ComputeFirewallPolicyRuleSpec struct {
 	/* The Action to perform when the client connection triggers the rule. Valid actions are "allow", "deny" and "goto_next". */
 	Action string `json:"action"`
@@ -118,10 +146,10 @@ type ComputeFirewallPolicyRuleSpec struct {
 	Priority int `json:"priority"`
 
 	// +optional
-	TargetResources []v1alpha1.ResourceRef `json:"targetResources,omitempty"`
+	TargetResources []FirewallpolicyruleTargetResources `json:"targetResources,omitempty"`
 
 	// +optional
-	TargetServiceAccounts []v1alpha1.ResourceRef `json:"targetServiceAccounts,omitempty"`
+	TargetServiceAccounts []FirewallpolicyruleTargetServiceAccounts `json:"targetServiceAccounts,omitempty"`
 }
 
 type ComputeFirewallPolicyRuleStatus struct {

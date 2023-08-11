@@ -66,6 +66,14 @@ type UserPasswordPolicy struct {
 	Status []UserStatus `json:"status,omitempty"`
 }
 
+type UserSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type UserStatus struct {
 	/* If true, user does not have login privileges. */
 	// +optional
@@ -79,7 +87,7 @@ type UserStatus struct {
 type UserValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *UserSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type SQLUserSpec struct {

@@ -218,6 +218,14 @@ type JobSecretAccessKey struct {
 	ValueFrom *JobValueFrom `json:"valueFrom,omitempty"`
 }
 
+type JobSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type JobStartTimeOfDay struct {
 	/* Hours of day in 24 hour format. Should be from 0 to 23. */
 	Hours int `json:"hours"`
@@ -299,7 +307,7 @@ type JobTransferSpec struct {
 type JobValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *JobSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type StorageTransferJobSpec struct {

@@ -40,6 +40,20 @@ type TargetpoolHealthChecks struct {
 	HttpHealthCheckRef *v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
 }
 
+type TargetpoolInstances struct {
+	/* Allowed value: The `selfLink` field of a `ComputeInstance` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ComputeTargetPoolSpec struct {
 	// +optional
 	BackupTargetPoolRef *v1alpha1.ResourceRef `json:"backupTargetPoolRef,omitempty"`
@@ -56,7 +70,7 @@ type ComputeTargetPoolSpec struct {
 	HealthChecks []TargetpoolHealthChecks `json:"healthChecks,omitempty"`
 
 	// +optional
-	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+	Instances []TargetpoolInstances `json:"instances,omitempty"`
 
 	/* Immutable. Where the target pool resides. Defaults to project region. */
 	Region string `json:"region"`

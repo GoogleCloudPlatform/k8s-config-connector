@@ -121,6 +121,20 @@ type InstancegroupmanagerStatefulPolicy struct {
 	PreservedState *InstancegroupmanagerPreservedState `json:"preservedState,omitempty"`
 }
 
+type InstancegroupmanagerTargetPools struct {
+	/* Allowed value: The `selfLink` field of a `ComputeTargetPool` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type InstancegroupmanagerTargetSize struct {
 	/* [Output Only] Absolute value of VM instances calculated based on the specific mode. - If the value is `fixed`, then the `calculated` value is equal to the `fixed` value. - If the value is a `percent`, then the `calculated` value is `percent`/100 * `targetSize`. For example, the `calculated` value of a 80% of a managed instance group with 150 instances would be (80/100 * 150) = 120 VM instances. If there is a remainder, the number is rounded. */
 	// +optional
@@ -235,7 +249,7 @@ type ComputeInstanceGroupManagerSpec struct {
 	StatefulPolicy *InstancegroupmanagerStatefulPolicy `json:"statefulPolicy,omitempty"`
 
 	// +optional
-	TargetPools []v1alpha1.ResourceRef `json:"targetPools,omitempty"`
+	TargetPools []InstancegroupmanagerTargetPools `json:"targetPools,omitempty"`
 
 	/* The target number of running instances for this managed instance group. You can reduce this number by using the instanceGroupManager deleteInstances or abandonInstances methods. Resizing the group also changes this number. */
 	TargetSize int `json:"targetSize"`

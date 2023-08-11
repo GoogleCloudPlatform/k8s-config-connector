@@ -526,6 +526,20 @@ type AlertpolicyNotificationChannelStrategy struct {
 	RenotifyInterval *string `json:"renotifyInterval,omitempty"`
 }
 
+type AlertpolicyNotificationChannels struct {
+	/* Allowed value: The `name` field of a `MonitoringNotificationChannel` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type AlertpolicyNotificationRateLimit struct {
 	/* Not more than one notification per period. */
 	// +optional
@@ -580,7 +594,7 @@ type MonitoringAlertPolicySpec struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// +optional
-	NotificationChannels []v1alpha1.ResourceRef `json:"notificationChannels,omitempty"`
+	NotificationChannels []AlertpolicyNotificationChannels `json:"notificationChannels,omitempty"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional

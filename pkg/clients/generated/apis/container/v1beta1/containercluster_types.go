@@ -852,6 +852,14 @@ type ClusterSandboxConfig struct {
 	SandboxType string `json:"sandboxType"`
 }
 
+type ClusterSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type ClusterSecurityPostureConfig struct {
 	/* Sets the mode of the Kubernetes security posture API's off-cluster features. Available options include DISABLED and BASIC. */
 	// +optional
@@ -940,7 +948,7 @@ type ClusterUpgradeSettings struct {
 type ClusterValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *ClusterSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ClusterVerticalPodAutoscaling struct {

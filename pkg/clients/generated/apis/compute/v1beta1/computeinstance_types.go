@@ -237,7 +237,7 @@ type InstanceNetworkInterface struct {
 	NetworkIp *string `json:"networkIp,omitempty"`
 
 	// +optional
-	NetworkIpRef *v1alpha1.ResourceRef `json:"networkIpRef,omitempty"`
+	NetworkIpRef *InstanceNetworkIpRef `json:"networkIpRef,omitempty"`
 
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
@@ -260,6 +260,24 @@ type InstanceNetworkInterface struct {
 
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+}
+
+type InstanceNetworkIpRef struct {
+	/* Allowed value: The `address` field of a `ComputeAddress` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Kind of the referent. Allowed values: ComputeAddress */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type InstanceNetworkPerformanceConfig struct {
@@ -288,6 +306,20 @@ type InstanceReservationAffinity struct {
 }
 
 type InstanceResourceManagerTags struct {
+}
+
+type InstanceResourcePolicies struct {
+	/* Allowed value: The `selfLink` field of a `ComputeResourcePolicy` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type InstanceScheduling struct {
@@ -335,6 +367,14 @@ type InstanceScratchDisk struct {
 	Size *int `json:"size,omitempty"`
 }
 
+type InstanceSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type InstanceServiceAccount struct {
 	/* A list of service scopes. */
 	Scopes []string `json:"scopes"`
@@ -371,7 +411,7 @@ type InstanceValue struct {
 type InstanceValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *InstanceSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeInstanceSpec struct {
@@ -458,7 +498,7 @@ type ComputeInstanceSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+	ResourcePolicies []InstanceResourcePolicies `json:"resourcePolicies,omitempty"`
 
 	/* The scheduling strategy being used by the instance. */
 	// +optional

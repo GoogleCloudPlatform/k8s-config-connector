@@ -75,6 +75,14 @@ type ConfigSecretAccessKey struct {
 	ValueFrom *ConfigValueFrom `json:"valueFrom,omitempty"`
 }
 
+type ConfigSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type ConfigSensitiveParams struct {
 	/* The Secret Access Key of the AWS account transferring data from. */
 	SecretAccessKey ConfigSecretAccessKey `json:"secretAccessKey"`
@@ -83,7 +91,7 @@ type ConfigSensitiveParams struct {
 type ConfigValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *ConfigSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type BigQueryDataTransferConfigSpec struct {

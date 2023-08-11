@@ -130,7 +130,7 @@ type DashboardLogsPanel struct {
 	Filter *string `json:"filter,omitempty"`
 
 	// +optional
-	ResourceNames []v1alpha1.ResourceRef `json:"resourceNames,omitempty"`
+	ResourceNames []DashboardResourceNames `json:"resourceNames,omitempty"`
 }
 
 type DashboardMosaicLayout struct {
@@ -164,6 +164,20 @@ type DashboardPickTimeSeriesFilter struct {
 	/* `ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series. Possible values: METHOD_UNSPECIFIED, METHOD_MEAN, METHOD_MAX, METHOD_MIN, METHOD_SUM, METHOD_LATEST */
 	// +optional
 	RankingMethod *string `json:"rankingMethod,omitempty"`
+}
+
+type DashboardResourceNames struct {
+	/* Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`). */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type DashboardRowLayout struct {

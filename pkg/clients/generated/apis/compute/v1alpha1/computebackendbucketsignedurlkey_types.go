@@ -45,10 +45,18 @@ type BackendbucketsignedurlkeyKeyValue struct {
 	ValueFrom *BackendbucketsignedurlkeyValueFrom `json:"valueFrom,omitempty"`
 }
 
+type BackendbucketsignedurlkeySecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type BackendbucketsignedurlkeyValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *BackendbucketsignedurlkeySecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeBackendBucketSignedURLKeySpec struct {

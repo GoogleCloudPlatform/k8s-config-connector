@@ -79,6 +79,29 @@ type ConfigClient struct {
 	Permissions *ConfigPermissions `json:"permissions,omitempty"`
 }
 
+type ConfigDefaultTenantLocationRef struct {
+	/* The default cloud parent org or folder that the tenant project should be created under. The parent resource name should be in the format of "<type>/<number>", such as "folders/123" or "organizations/456". If the value is not set, the tenant will be created under the same organization or folder as the agent project.
+
+	Allowed values:
+	* The Google Cloud resource name of a `Folder` resource (format: `folders/{{name}}`).
+	* The Google Cloud resource name of a Google Cloud Organization (format: `organizations/{{name}}`). */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Kind of the referent. Allowed values: Folder */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* [WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
+	Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ConfigDnsInfo struct {
 	/* Whether to use custom domain. */
 	// +optional
@@ -113,7 +136,7 @@ type ConfigMultiTenant struct {
 	AllowTenants *bool `json:"allowTenants,omitempty"`
 
 	// +optional
-	DefaultTenantLocationRef *v1alpha1.ResourceRef `json:"defaultTenantLocationRef,omitempty"`
+	DefaultTenantLocationRef *ConfigDefaultTenantLocationRef `json:"defaultTenantLocationRef,omitempty"`
 }
 
 type ConfigNotification struct {
@@ -222,6 +245,14 @@ type ConfigRevertSecondFactorAdditionTemplate struct {
 	/* Subject of the email */
 	// +optional
 	Subject *string `json:"subject,omitempty"`
+}
+
+type ConfigSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
 }
 
 type ConfigSendEmail struct {
@@ -334,7 +365,7 @@ type ConfigTriggers struct {
 type ConfigValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *ConfigSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ConfigVerifyEmailTemplate struct {

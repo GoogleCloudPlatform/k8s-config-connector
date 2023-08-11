@@ -636,6 +636,14 @@ type BackendservicePolicy struct {
 	Name string `json:"name"`
 }
 
+type BackendserviceSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type BackendserviceSecuritySettings struct {
 	/* ClientTlsPolicy is a resource that specifies how a client should
 	authenticate connections to backends of a service. This resource itself
@@ -670,7 +678,7 @@ type BackendserviceTtl struct {
 type BackendserviceValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *BackendserviceSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ComputeBackendServiceSpec struct {

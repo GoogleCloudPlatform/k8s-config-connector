@@ -119,6 +119,14 @@ type UptimecheckconfigResourceGroup struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
+type UptimecheckconfigSecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
+
 type UptimecheckconfigTcpCheck struct {
 	/* The TCP port on the server against which to run the check. Will be combined with host (specified within the `monitored_resource`) to construct the full URL. Required. */
 	Port int `json:"port"`
@@ -127,7 +135,7 @@ type UptimecheckconfigTcpCheck struct {
 type UptimecheckconfigValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *UptimecheckconfigSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type MonitoringUptimeCheckConfigSpec struct {

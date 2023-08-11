@@ -74,6 +74,22 @@ type PolicyCondition struct {
 	Title string `json:"title"`
 }
 
+type PolicyResourceRef struct {
+	// +optional
+	ApiVersion *string `json:"apiVersion,omitempty"`
+
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	Kind string `json:"kind"`
+
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type IAMPolicySpec struct {
 	/* Optional. The list of IAM audit configs. */
 	// +optional
@@ -84,7 +100,7 @@ type IAMPolicySpec struct {
 	Bindings []PolicyBindings `json:"bindings,omitempty"`
 
 	/* Immutable. Required. The GCP resource to set the IAM policy on. */
-	ResourceRef v1alpha1.IAMResourceRef `json:"resourceRef"`
+	ResourceRef PolicyResourceRef `json:"resourceRef"`
 }
 
 type IAMPolicyStatus struct {
