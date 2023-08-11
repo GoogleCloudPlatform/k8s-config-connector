@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,18 +7,20 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
 func TestAccDataSourceGoogleMonitoringNotificationChannel_byDisplayName(t *testing.T) {
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceGoogleMonitoringNotificationChannel_byDisplayName(fmt.Sprintf("tf-test-%d", RandInt(t))),
+				Config: testAccDataSourceGoogleMonitoringNotificationChannel_byDisplayName(fmt.Sprintf("tf-test-%d", acctest.RandInt(t))),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceState(
+					acctest.CheckDataSourceStateMatchesResourceState(
 						"data.google_monitoring_notification_channel.default",
 						"google_monitoring_notification_channel.default"),
 				),
@@ -26,14 +30,14 @@ func TestAccDataSourceGoogleMonitoringNotificationChannel_byDisplayName(t *testi
 }
 
 func TestAccDataSourceGoogleMonitoringNotificationChannel_byTypeAndLabel(t *testing.T) {
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceGoogleMonitoringNotificationChannel_byTypeAndLabel(fmt.Sprintf("tf-test-%d", RandInt(t))),
+				Config: testAccDataSourceGoogleMonitoringNotificationChannel_byTypeAndLabel(fmt.Sprintf("tf-test-%d", acctest.RandInt(t))),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceState(
+					acctest.CheckDataSourceStateMatchesResourceState(
 						"data.google_monitoring_notification_channel.default",
 						"google_monitoring_notification_channel.default"),
 				),
@@ -43,14 +47,14 @@ func TestAccDataSourceGoogleMonitoringNotificationChannel_byTypeAndLabel(t *test
 }
 
 func TestAccDataSourceGoogleMonitoringNotificationChannel_UserLabel(t *testing.T) {
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceGoogleMonitoringNotificationChannel_byTypeAndUserLabel(fmt.Sprintf("tf-test-%d", RandInt(t))),
+				Config: testAccDataSourceGoogleMonitoringNotificationChannel_byTypeAndUserLabel(fmt.Sprintf("tf-test-%d", acctest.RandInt(t))),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceState(
+					acctest.CheckDataSourceStateMatchesResourceState(
 						"data.google_monitoring_notification_channel.default",
 						"google_monitoring_notification_channel.default"),
 				),
@@ -60,14 +64,14 @@ func TestAccDataSourceGoogleMonitoringNotificationChannel_UserLabel(t *testing.T
 }
 
 func TestAccDataSourceGoogleMonitoringNotificationChannel_byDisplayNameAndType(t *testing.T) {
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceGoogleMonitoringNotificationChannel_byDisplayNameAndType(fmt.Sprintf("tf-test-%d", RandInt(t))),
+				Config: testAccDataSourceGoogleMonitoringNotificationChannel_byDisplayNameAndType(fmt.Sprintf("tf-test-%d", acctest.RandInt(t))),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceState(
+					acctest.CheckDataSourceStateMatchesResourceState(
 						"data.google_monitoring_notification_channel.email",
 						"google_monitoring_notification_channel.email"),
 				),
@@ -77,9 +81,9 @@ func TestAccDataSourceGoogleMonitoringNotificationChannel_byDisplayNameAndType(t
 }
 
 func TestAccDataSourceGoogleMonitoringNotificationChannel_ErrorNoDisplayNameOrType(t *testing.T) {
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config:      testAccDataSourceGoogleMonitoringNotificationChannel_NoDisplayNameOrType(),
@@ -90,11 +94,11 @@ func TestAccDataSourceGoogleMonitoringNotificationChannel_ErrorNoDisplayNameOrTy
 }
 
 func TestAccDataSourceGoogleMonitoringNotificationChannel_ErrorNotFound(t *testing.T) {
-	displayName := fmt.Sprintf("tf-test-%d", RandInt(t))
+	displayName := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config:      testAccDataSourceGoogleMonitoringNotificationChannel_NotFound(displayName),
@@ -105,10 +109,10 @@ func TestAccDataSourceGoogleMonitoringNotificationChannel_ErrorNotFound(t *testi
 }
 
 func TestAccDataSourceGoogleMonitoringNotificationChannel_ErrorNotUnique(t *testing.T) {
-	displayName := fmt.Sprintf("tf-test-%d", RandInt(t))
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	displayName := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleMonitoringNotificationChannel_NotUnique(displayName),

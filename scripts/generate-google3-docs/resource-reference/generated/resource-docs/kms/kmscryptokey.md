@@ -187,7 +187,8 @@ If not specified at creation time, the default duration is 24 hours.{% endverbat
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The immutable purpose of this CryptoKey. See the
 [purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT_DECRYPT", "ASYMMETRIC_SIGN", "ASYMMETRIC_DECRYPT", "MAC"].{% endverbatim %}</p>
+for possible inputs.
+Default value is "ENCRYPT_DECRYPT".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -220,7 +221,7 @@ letter 's' (seconds). It must be greater than a day (ie, 86400).{% endverbatim %
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions. 
+            <p>{% verbatim %}Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions.
 You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion.{% endverbatim %}</p>
         </td>
     </tr>
@@ -389,5 +390,7 @@ spec:
   location: us-central1
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

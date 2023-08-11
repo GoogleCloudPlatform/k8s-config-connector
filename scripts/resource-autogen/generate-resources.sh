@@ -56,9 +56,17 @@ echo "Cleaning up the existing auto-generated files..."
 CD_GENERATED_COMMAND="cd ${LOCAL_CNRM_REPO}/scripts/resource-autogen/generated"
 echo "${CD_GENERATED_COMMAND}"
 eval "${CD_GENERATED_COMMAND}"
-RM_COMMAND="rm -r ./samples ./servicemappings"
-echo "${RM_COMMAND}"
-eval "${RM_COMMAND}"
+
+if [ -d ./samples ]; then
+    RM_COMMAND="rm -r ./samples"
+    echo "${RM_COMMAND}"
+    eval "${RM_COMMAND}"
+fi
+if [ -d ./servicemappings ]; then
+    RM_COMMAND="rm -r ./servicemappings"
+    echo "${RM_COMMAND}"
+    eval "${RM_COMMAND}"
+fi
 
 echo "Generating service mappings using the KCC provider in magic-modules..."
 CD_MM_COMMAND="cd ${LOCAL_MM_REPO}/mmv1"
@@ -89,9 +97,11 @@ MAKE_GENERATE_COMMAND="make generate"
 echo "${MAKE_GENERATE_COMMAND}"
 eval "${MAKE_GENERATE_COMMAND}"
 
+# It's possible to have errors when generating the testdata, but the errors
+# shouldn't block this script.
 CONVERT_SAMPLES_COMMAND="go run scripts/resource-autogen/main.go"
 echo "${CONVERT_SAMPLES_COMMAND}"
-eval "${CONVERT_SAMPLES_COMMAND}"
+eval "${CONVERT_SAMPLES_COMMAND} || true"
 
 echo "Generating CRDs for allowlisted resources..."
 GENERATE_CRDS_COMMAND="make manifests"

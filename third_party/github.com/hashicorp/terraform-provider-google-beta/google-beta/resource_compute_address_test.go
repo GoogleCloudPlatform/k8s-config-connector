@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,18 +7,19 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccComputeAddress_networkTier(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeAddress_networkTier(RandString(t, 10)),
+				Config: testAccComputeAddress_networkTier(acctest.RandString(t, 10)),
 			},
 			{
 				ResourceName:      "google_compute_address.foobar",
@@ -28,13 +31,13 @@ func TestAccComputeAddress_networkTier(t *testing.T) {
 }
 
 func TestAccComputeAddress_internal(t *testing.T) {
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeAddress_internal(RandString(t, 10)),
+				Config: testAccComputeAddress_internal(acctest.RandString(t, 10)),
 			},
 			{
 				ResourceName:      "google_compute_address.internal",

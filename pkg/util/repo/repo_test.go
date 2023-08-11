@@ -15,25 +15,11 @@
 package repo_test
 
 import (
-	"fmt"
-	"go/build"
 	"os"
-	"path/filepath"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 )
-
-func TestGetRepoRoot(t *testing.T) {
-	repoRoot, err := repo.GetRoot()
-	if err != nil {
-		t.Errorf("error getting root: %v", err)
-	}
-	expectedPath := fmt.Sprintf("%v%v%v", build.Default.GOPATH, string(filepath.Separator), "src/github.com/GoogleCloudPlatform/k8s-config-connector")
-	if repoRoot != expectedPath {
-		t.Errorf("unexpected value for repoRoot: got '%v', want '%v'", repoRoot, expectedPath)
-	}
-}
 
 func TestGetCallerPackagePath(t *testing.T) {
 	path, err := repo.GetCallerPackagePath()

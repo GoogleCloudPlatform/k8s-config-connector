@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -24,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccContainerAzureCluster_BasicHandWritten(t *testing.T) {
@@ -35,13 +42,13 @@ func TestAccContainerAzureCluster_BasicHandWritten(t *testing.T) {
 		"azure_sub":           "00000000-0000-0000-0000-17aad2f0f61f",
 		"azure_tenant":        "00000000-0000-0000-0000-17aad2f0f61f",
 		"byo_prefix":          "mmv2",
-		"project_name":        GetTestProjectFromEnv(),
-		"project_number":      GetTestProjectNumberFromEnv(),
+		"project_name":        envvar.GetTestProjectFromEnv(),
+		"project_number":      envvar.GetTestProjectNumberFromEnv(),
 		"random_suffix":       RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckContainerAzureClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -75,13 +82,13 @@ func TestAccContainerAzureCluster_BetaBasicHandWritten(t *testing.T) {
 		"azure_sub":           "00000000-0000-0000-0000-17aad2f0f61f",
 		"azure_tenant":        "00000000-0000-0000-0000-17aad2f0f61f",
 		"byo_prefix":          "mmv2",
-		"project_name":        GetTestProjectFromEnv(),
-		"project_number":      GetTestProjectNumberFromEnv(),
+		"project_name":        envvar.GetTestProjectFromEnv(),
+		"project_number":      envvar.GetTestProjectNumberFromEnv(),
 		"random_suffix":       RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
+		PreCheck: func() { acctest.AccTestPreCheck(t) },
 
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckContainerAzureClusterDestroyProducer(t),
@@ -109,7 +116,7 @@ func TestAccContainerAzureCluster_BetaBasicHandWritten(t *testing.T) {
 }
 
 func testAccContainerAzureCluster_BasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_azure_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
@@ -164,7 +171,7 @@ resource "google_container_azure_client" "basic" {
 }
 
 func testAccContainerAzureCluster_BasicHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_azure_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
@@ -254,7 +261,7 @@ resource "google_container_azure_client" "basic" {
 }
 
 func testAccContainerAzureCluster_BetaBasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_azure_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
@@ -319,7 +326,7 @@ resource "google_container_azure_client" "basic" {
 }
 
 func testAccContainerAzureCluster_BetaBasicHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_azure_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
@@ -452,7 +459,7 @@ func testAccCheckContainerAzureClusterDestroyProducer(t *testing.T) func(s *terr
 				UpdateTime:      dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLContainerAzureClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLContainerAzureClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetCluster(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_container_azure_cluster still exists %v", obj)

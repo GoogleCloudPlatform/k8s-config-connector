@@ -32,7 +32,7 @@ func TestServiceAccount(t *testing.T) {
 
 func testAssetType(t *testing.T, assetType string, expectedResult bool) {
 	smLoader := testservicemappingloader.New(t)
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	saKeyAsset := asset.Asset{
 		AssetType: assetType,
 	}
@@ -44,7 +44,7 @@ func testAssetType(t *testing.T, assetType string, expectedResult bool) {
 
 func TestIsDefaultNetworkingAsset(t *testing.T) {
 	smLoader := testservicemappingloader.New(t)
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	testCases := []struct {
 		Name                     string
 		Asset                    *asset.Asset

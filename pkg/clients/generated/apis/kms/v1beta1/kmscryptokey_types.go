@@ -60,7 +60,8 @@ type KMSCryptoKeySpec struct {
 
 	/* Immutable. The immutable purpose of this CryptoKey. See the
 	[purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-	for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT_DECRYPT", "ASYMMETRIC_SIGN", "ASYMMETRIC_DECRYPT", "MAC"]. */
+	for possible inputs.
+	Default value is "ENCRYPT_DECRYPT". */
 	// +optional
 	Purpose *string `json:"purpose,omitempty"`
 

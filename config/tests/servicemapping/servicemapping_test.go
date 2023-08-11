@@ -22,6 +22,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
@@ -210,7 +211,7 @@ func TestResourcesListedAlphabetically(t *testing.T) {
 func TestTerraformFieldsAreInResourceSchema(t *testing.T) {
 	t.Parallel()
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
-	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	for _, sm := range serviceMappings {
 		sm := sm
 		t.Run(sm.Name, func(t *testing.T) {
@@ -242,8 +243,8 @@ func TestTerraformFieldsAreInResourceSchema(t *testing.T) {
 						continue
 					}
 					if !tfresource.TFResourceHasField(tfResource, f) {
-						if isAutogenAlphaResource(&sm, &rc) {
-							// TODO(b/278948939): Remove once the unknown fields are cleaned up.
+						// TODO(b/278948939): Remove once the unknown fields are cleaned up in google_apigee_addons_config.
+						if rc.Name == "google_apigee_addons_config" {
 							t.Logf("field '%v' mentioned in ServiceMapping for the auto-generated v1alpha1 resource '%v' but is not found in resource schema", f, rc.Name)
 						} else {
 							t.Errorf("field '%v' mentioned in ServiceMapping for '%v' but is not found in resource schema", f, rc.Name)
@@ -258,7 +259,7 @@ func TestTerraformFieldsAreInResourceSchema(t *testing.T) {
 func TestReferencedTargetFieldsAreInReferencedResourceSchema(t *testing.T) {
 	t.Parallel()
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
-	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	kindToTFResources := createKindToTFResourcesMap(serviceMappings)
 	for _, sm := range serviceMappings {
 		sm := sm
@@ -435,6 +436,11 @@ func validateTypeConfigGVK(t *testing.T, rc v1alpha1.ResourceConfig, ref v1alpha
 			Group:   "cloudbuild.cnrm.cloud.google.com",
 			Version: "v1beta1",
 			Kind:    "CloudBuildBitbucketServerConfig",
+		},
+		{
+			Group:   "cloudbuild.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "CloudBuildV2Repository",
 		},
 	}
 	for _, g := range ignoredGVKList {
@@ -642,7 +648,7 @@ func IDTemplateContainsServerGeneratedIDField(t *testing.T, rc v1alpha1.Resource
 func TestMutableButUnreadableFields(t *testing.T) {
 	t.Parallel()
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
-	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	for _, sm := range serviceMappings {
 		sm := sm
 		t.Run(sm.Name, func(t *testing.T) {
@@ -793,7 +799,7 @@ func assertAllOrNoneSupportAuditConfigs(t *testing.T, kind string, rcs []v1alpha
 }
 
 func getAssociatedTerraformIAMPolicyResource(rc v1alpha1.ResourceConfig) (string, *schema.Resource) {
-	schemaProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	schemaProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	tfIamPolicyResourceName := formatAssociatedTerraformIAMPolicyResourceName(rc)
 	return tfIamPolicyResourceName, schemaProvider.ResourcesMap[tfIamPolicyResourceName]
 }
@@ -809,7 +815,7 @@ func formatAssociatedTerraformIAMPolicyResourceName(rc v1alpha1.ResourceConfig) 
 }
 
 func getAssociatedTerraformIAMPolicyMemberResource(rc v1alpha1.ResourceConfig) (string, *schema.Resource) {
-	schemaProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	schemaProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	tfIamPolicyResourceName := formatAssociatedTerraformIAMPolicyMemberResourceName(rc)
 	return tfIamPolicyResourceName, schemaProvider.ResourcesMap[tfIamPolicyResourceName]
 }
@@ -824,7 +830,7 @@ func formatAssociatedTerraformIAMPolicyMemberResourceName(rc v1alpha1.ResourceCo
 }
 
 func getAssociatedTerraformIAMAuditConfigResource(rc v1alpha1.ResourceConfig) (string, *schema.Resource) {
-	schemaProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	schemaProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	tfIamAuditConfigResourceName := formatAssociatedTerraformIAMAuditConfigResourceName(rc)
 	return tfIamAuditConfigResourceName, schemaProvider.ResourcesMap[tfIamAuditConfigResourceName]
 }
@@ -853,7 +859,7 @@ func createKindToTFResourcesMap(sms []v1alpha1.ServiceMapping) map[string][]stri
 func TestIAMMemberReferenceConfig(t *testing.T) {
 	t.Parallel()
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
-	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	for _, sm := range serviceMappings {
 		sm := sm
 		t.Run(sm.Name, func(t *testing.T) {
@@ -1135,4 +1141,40 @@ func isAutogenAlphaResource(sm *v1alpha1.ServiceMapping, rc *v1alpha1.ResourceCo
 		return true
 	}
 	return false
+}
+
+func TestDCLBasedResourceIsTrueIFFIsDCLBasedResource(t *testing.T) {
+	t.Parallel()
+	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
+	referencedDCLResources := make([]k8sschema.GroupVersionKind, 0)
+	referencedTFResources := make([]k8sschema.GroupVersionKind, 0)
+	for _, sm := range serviceMappings {
+		for _, r := range sm.Spec.Resources {
+			if r.AutoGenerated {
+				continue
+			}
+			for _, rr := range r.ResourceReferences {
+				if rr.DCLBasedResource {
+					referencedDCLResources = append(referencedDCLResources, rr.GVK)
+				} else {
+					referencedTFResources = append(referencedTFResources, rr.GVK)
+				}
+			}
+		}
+	}
+	smLoader := dclmetadata.New()
+	for _, gvk := range referencedDCLResources {
+		r, found := smLoader.GetResourceWithGVK(gvk)
+		if !found || !r.Releasable {
+			t.Errorf("%v is listed in servicemappings as a resource reference with "+
+				"`DCLBasedResource: true`, but it is not a DCL-based resource", gvk)
+		}
+	}
+	for _, gvk := range referencedTFResources {
+		r, found := smLoader.GetResourceWithGVK(gvk)
+		if found && r.Releasable {
+			t.Errorf("%v is listed in servicemappings as a resource reference with "+
+				"`DCLBasedResource: false`, but it is a DCL-based resource", gvk)
+		}
+	}
 }

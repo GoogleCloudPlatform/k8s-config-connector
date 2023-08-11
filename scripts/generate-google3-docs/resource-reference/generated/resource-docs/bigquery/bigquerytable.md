@@ -133,7 +133,14 @@ externalDataConfiguration:
     requirePartitionFilter: boolean
     sourceUriPrefix: string
   ignoreUnknownValues: boolean
+  jsonOptions:
+    encoding: string
   maxBadRecords: integer
+  metadataCacheMode: string
+  objectMetadata: string
+  parquetOptions:
+    enableListInference: boolean
+    enumAsString: boolean
   referenceFileSchemaUri: string
   schema: string
   sourceFormat: string
@@ -521,12 +528,82 @@ view:
     </tr>
     <tr>
         <td>
+            <p><code>externalDataConfiguration.jsonOptions</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Additional properties to set if sourceFormat is set to JSON.".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>externalDataConfiguration.jsonOptions.encoding</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The character encoding of the data. The supported values are UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE. The default value is UTF-8.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>externalDataConfiguration.maxBadRecords</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The maximum number of bad records that BigQuery can ignore when reading data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>externalDataConfiguration.metadataCacheMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Metadata Cache Mode for the table. Set this to enable caching of metadata from external data source.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>externalDataConfiguration.objectMetadata</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Object Metadata is used to create Object Tables. Object Tables contain a listing of objects (with their metadata) found at the sourceUris. If ObjectMetadata is set, sourceFormat should be omitted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>externalDataConfiguration.parquetOptions</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Additional properties to set if sourceFormat is set to PARQUET.".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>externalDataConfiguration.parquetOptions.enableListInference</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Indicates whether to use schema inference specifically for Parquet LIST logical type.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>externalDataConfiguration.parquetOptions.enumAsString</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Indicates whether to infer Parquet ENUM logical type as STRING instead of BYTES by default.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -552,11 +629,11 @@ view:
     <tr>
         <td>
             <p><code>externalDataConfiguration.sourceFormat</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The data format. Supported values are: "CSV", "GOOGLE_SHEETS", "NEWLINE_DELIMITED_JSON", "AVRO", "PARQUET", "ORC" and "DATASTORE_BACKUP". To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly".{% endverbatim %}</p>
+            <p>{% verbatim %} Please see sourceFormat under ExternalDataConfiguration in Bigquery's public API documentation (https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration) for supported formats. To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -994,5 +1071,7 @@ spec:
   friendlyName: bigquerytable-dep
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

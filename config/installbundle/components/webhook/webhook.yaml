@@ -40,6 +40,8 @@ spec:
         image: webhook:latest
         imagePullPolicy: Always
         env:
+          - name: GOMEMLIMIT
+            value: 110MiB
           - name: NAMESPACE
             valueFrom:
               fieldRef:

@@ -1,7 +1,10 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -10,11 +13,11 @@ import (
 func TestAccCloudTasksQueue_update(t *testing.T) {
 	t.Parallel()
 
-	name := "cloudtasksqueuetest-" + RandString(t, 10)
+	name := "cloudtasksqueuetest-" + acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudTasksQueue_full(name),
@@ -41,11 +44,11 @@ func TestAccCloudTasksQueue_update(t *testing.T) {
 func TestAccCloudTasksQueue_update2Basic(t *testing.T) {
 	t.Parallel()
 
-	name := "cloudtasksqueuetest-" + RandString(t, 10)
+	name := "cloudtasksqueuetest-" + acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudTasksQueue_full(name),
@@ -71,11 +74,11 @@ func TestAccCloudTasksQueue_update2Basic(t *testing.T) {
 
 func TestAccCloudTasksQueue_MaxRetryDiffSuppress0s(t *testing.T) {
 	t.Parallel()
-	testID := RandString(t, 10)
+	testID := acctest.RandString(t, 10)
 	cloudTaskName := fmt.Sprintf("tf-test-%s", testID)
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudtasksQueueMaxRetry0s(cloudTaskName),

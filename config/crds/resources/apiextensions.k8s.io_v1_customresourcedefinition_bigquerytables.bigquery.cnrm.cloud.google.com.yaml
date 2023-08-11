@@ -244,10 +244,43 @@ spec:
                       an invalid error is returned in the job result. The default
                       value is false.
                     type: boolean
+                  jsonOptions:
+                    description: Additional properties to set if sourceFormat is set
+                      to JSON.".
+                    properties:
+                      encoding:
+                        description: The character encoding of the data. The supported
+                          values are UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE.
+                          The default value is UTF-8.
+                        type: string
+                    type: object
                   maxBadRecords:
                     description: The maximum number of bad records that BigQuery can
                       ignore when reading data.
                     type: integer
+                  metadataCacheMode:
+                    description: Metadata Cache Mode for the table. Set this to enable
+                      caching of metadata from external data source.
+                    type: string
+                  objectMetadata:
+                    description: Object Metadata is used to create Object Tables.
+                      Object Tables contain a listing of objects (with their metadata)
+                      found at the sourceUris. If ObjectMetadata is set, sourceFormat
+                      should be omitted.
+                    type: string
+                  parquetOptions:
+                    description: Additional properties to set if sourceFormat is set
+                      to PARQUET.".
+                    properties:
+                      enableListInference:
+                        description: Indicates whether to use schema inference specifically
+                          for Parquet LIST logical type.
+                        type: boolean
+                      enumAsString:
+                        description: Indicates whether to infer Parquet ENUM logical
+                          type as STRING instead of BYTES by default.
+                        type: boolean
+                    type: object
                   referenceFileSchemaUri:
                     description: 'When creating an external table, the user can provide
                       a reference file with the table schema. This is enabled for
@@ -260,9 +293,10 @@ spec:
                       formats when using external tables.
                     type: string
                   sourceFormat:
-                    description: 'The data format. Supported values are: "CSV", "GOOGLE_SHEETS",
-                      "NEWLINE_DELIMITED_JSON", "AVRO", "PARQUET", "ORC" and "DATASTORE_BACKUP".
-                      To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly".'
+                    description: ' Please see sourceFormat under ExternalDataConfiguration
+                      in Bigquery''s public API documentation (https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration)
+                      for supported formats. To use "GOOGLE_SHEETS" the scopes must
+                      include "googleapis.com/auth/drive.readonly".'
                     type: string
                   sourceUris:
                     description: A list of the fully-qualified URIs that point to
@@ -272,7 +306,6 @@ spec:
                     type: array
                 required:
                 - autodetect
-                - sourceFormat
                 - sourceUris
                 type: object
               friendlyName:

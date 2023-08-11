@@ -122,6 +122,7 @@ transferSpec:
             key: string
             name: string
     bucketName: string
+    path: string
     roleArn: string
   azureBlobStorageDataSource:
     azureCredentials:
@@ -595,6 +596,16 @@ transferSpec:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}S3 Bucket name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>transferSpec.awsS3DataSource.path</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}S3 Bucket path in bucket to transfer.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1264,5 +1275,7 @@ metadata:
   name: ${PROJECT_ID?}-storagetransferjob-dep2
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

@@ -36,7 +36,7 @@ import (
 )
 
 type ImageGuestOsFeatures struct {
-	/* Immutable. The type of supported feature. Read [Enabling guest operating system features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features) to see a list of available options. Possible values: ["MULTI_IP_SUBNET", "SECURE_BOOT", "SEV_CAPABLE", "UEFI_COMPATIBLE", "VIRTIO_SCSI_MULTIQUEUE", "WINDOWS", "GVNIC", "SEV_LIVE_MIGRATABLE"]. */
+	/* Immutable. The type of supported feature. Read [Enabling guest operating system features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features) to see a list of available options. Possible values: ["MULTI_IP_SUBNET", "SECURE_BOOT", "SEV_CAPABLE", "UEFI_COMPATIBLE", "VIRTIO_SCSI_MULTIQUEUE", "WINDOWS", "GVNIC", "SEV_LIVE_MIGRATABLE", "SEV_SNP_CAPABLE", "SUSPEND_RESUME_COMPATIBLE", "TDX_CAPABLE"]. */
 	Type string `json:"type"`
 }
 
@@ -128,6 +128,12 @@ type ComputeImageSpec struct {
 	/* The source snapshot used to create this image. */
 	// +optional
 	SourceSnapshotRef *v1alpha1.ResourceRef `json:"sourceSnapshotRef,omitempty"`
+
+	/* Immutable. Cloud Storage bucket storage location of the image
+	(regional or multi-regional).
+	Reference link: https://cloud.google.com/compute/docs/reference/rest/v1/images. */
+	// +optional
+	StorageLocations []string `json:"storageLocations,omitempty"`
 }
 
 type ComputeImageStatus struct {

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,16 +7,17 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccNotebooksInstance_create_gpu(t *testing.T) {
 	t.Parallel()
 
-	prefix := fmt.Sprintf("%d", RandInt(t))
+	prefix := fmt.Sprintf("%d", acctest.RandInt(t))
 	name := fmt.Sprintf("tf-%s", prefix)
 
-	VcrTest(t, resource.TestCase{
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccNotebooksInstance_create_gpu(name),

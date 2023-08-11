@@ -1,9 +1,14 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"log"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -14,15 +19,15 @@ import (
 // See AccessApprovalOrganizationSettings for the test runner.
 func testAccAccessApprovalProjectSettings(t *testing.T) {
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
-		"org_id":        GetTestOrgFromEnv(t),
-		"location":      GetTestRegionFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"location":      envvar.GetTestRegionFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAccessApprovalProjectSettingsDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -57,7 +62,7 @@ func testAccAccessApprovalProjectSettings(t *testing.T) {
 }
 
 func testAccAccessApprovalProjectSettings_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project_access_approval_settings" "project_access_approval" {
   project_id          = "%{project}"
 
@@ -70,7 +75,7 @@ resource "google_project_access_approval_settings" "project_access_approval" {
 }
 
 func testAccAccessApprovalProjectSettings_update(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project_access_approval_settings" "project_access_approval" {
   project_id          = "%{project}"
   notification_emails = ["testuser@example.com", "example.user@example.com"]
@@ -84,7 +89,7 @@ resource "google_project_access_approval_settings" "project_access_approval" {
 }
 
 func testAccAccessApprovalProjectSettings_activeKeyVersion(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_kms_key_ring" "key_ring" {
   name     = "tf-test-%{random_suffix}"
   project  = "%{project}"

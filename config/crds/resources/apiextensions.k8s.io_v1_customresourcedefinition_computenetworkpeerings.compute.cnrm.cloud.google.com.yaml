@@ -131,6 +131,11 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              stackType:
+                description: 'Which IP version(s) of traffic and routes are allowed
+                  to be imported or exported between peer networks. The default value
+                  is IPV4_ONLY. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].'
+                type: string
             required:
             - networkRef
             - peerNetworkRef

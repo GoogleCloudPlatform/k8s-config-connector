@@ -73,7 +73,7 @@ type KMSSecretCiphertextSpec struct {
 	/* Immutable. The plaintext to be encrypted. */
 	Plaintext SecretciphertextPlaintext `json:"plaintext"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* Immutable. Optional. The service-generated ciphertext of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }

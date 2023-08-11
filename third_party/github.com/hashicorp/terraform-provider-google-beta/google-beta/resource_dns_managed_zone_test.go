@@ -1,7 +1,14 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	tpgdns "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dns"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -12,11 +19,11 @@ import (
 func TestAccDNSManagedZone_update(t *testing.T) {
 	t.Parallel()
 
-	zoneSuffix := RandString(t, 10)
+	zoneSuffix := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -42,11 +49,11 @@ func TestAccDNSManagedZone_update(t *testing.T) {
 func TestAccDNSManagedZone_privateUpdate(t *testing.T) {
 	t.Parallel()
 
-	zoneSuffix := RandString(t, 10)
+	zoneSuffix := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -72,11 +79,11 @@ func TestAccDNSManagedZone_privateUpdate(t *testing.T) {
 func TestAccDNSManagedZone_dnssec_update(t *testing.T) {
 	t.Parallel()
 
-	zoneSuffix := RandString(t, 10)
+	zoneSuffix := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -102,11 +109,11 @@ func TestAccDNSManagedZone_dnssec_update(t *testing.T) {
 func TestAccDNSManagedZone_dnssec_empty(t *testing.T) {
 	t.Parallel()
 
-	zoneSuffix := RandString(t, 10)
+	zoneSuffix := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -124,11 +131,11 @@ func TestAccDNSManagedZone_dnssec_empty(t *testing.T) {
 func TestAccDNSManagedZone_privateForwardingUpdate(t *testing.T) {
 	t.Parallel()
 
-	zoneSuffix := RandString(t, 10)
+	zoneSuffix := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -154,11 +161,11 @@ func TestAccDNSManagedZone_privateForwardingUpdate(t *testing.T) {
 func TestAccDNSManagedZone_cloudLoggingConfigUpdate(t *testing.T) {
 	t.Parallel()
 
-	zoneSuffix := RandString(t, 10)
+	zoneSuffix := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -192,11 +199,11 @@ func TestAccDNSManagedZone_cloudLoggingConfigUpdate(t *testing.T) {
 func TestAccDNSManagedZone_reverseLookup(t *testing.T) {
 	t.Parallel()
 
-	zoneSuffix := RandString(t, 10)
+	zoneSuffix := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -214,12 +221,12 @@ func TestAccDNSManagedZone_reverseLookup(t *testing.T) {
 func TestAccDNSManagedZone_forceDestroy(t *testing.T) {
 	//t.Parallel()
 
-	zoneSuffix := RandString(t, 10)
-	project := GetTestProjectFromEnv()
+	zoneSuffix := acctest.RandString(t, 10)
+	project := envvar.GetTestProjectFromEnv()
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -234,7 +241,7 @@ func TestAccDNSManagedZone_forceDestroy(t *testing.T) {
 
 func testAccCheckManagedZoneCreateRRs(t *testing.T, zoneSuffix string, project string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		zone := fmt.Sprintf("mzone-test-%s", zoneSuffix)
 		// Build the change
 		chg := &dns.Change{
@@ -265,7 +272,7 @@ func testAccCheckManagedZoneCreateRRs(t *testing.T, zoneSuffix string, project s
 			return fmt.Errorf("Error creating DNS RecordSet: %s", err)
 		}
 
-		w := &DnsChangeWaiter{
+		w := &tpgdns.DnsChangeWaiter{
 			Service:     config.NewDnsClient(config.UserAgent),
 			Change:      chg,
 			Project:     project,
@@ -546,7 +553,7 @@ func TestDnsManagedZoneImport_parseImportId(t *testing.T) {
 	cases := map[string]struct {
 		ImportId             string
 		IdRegexes            []string
-		Config               *Config
+		Config               *transport_tpg.Config
 		ExpectedSchemaValues map[string]interface{}
 		ExpectError          bool
 	}{
@@ -577,7 +584,7 @@ func TestDnsManagedZoneImport_parseImportId(t *testing.T) {
 		"short id with default project and region": {
 			IdRegexes: zoneRegexes,
 			ImportId:  "my-zone",
-			Config: &Config{
+			Config: &transport_tpg.Config{
 				Project: "default-project",
 			},
 			ExpectedSchemaValues: map[string]interface{}{
@@ -588,16 +595,16 @@ func TestDnsManagedZoneImport_parseImportId(t *testing.T) {
 	}
 
 	for tn, tc := range cases {
-		d := &ResourceDataMock{
+		d := &tpgresource.ResourceDataMock{
 			FieldsInSchema: make(map[string]interface{}),
-			id:             tc.ImportId,
 		}
+		d.SetId(tc.ImportId)
 		config := tc.Config
 		if config == nil {
-			config = &Config{}
+			config = &transport_tpg.Config{}
 		}
 		//
-		if err := ParseImportId(tc.IdRegexes, d, config); err == nil {
+		if err := tpgresource.ParseImportId(tc.IdRegexes, d, config); err == nil {
 			for k, expectedValue := range tc.ExpectedSchemaValues {
 				if v, ok := d.GetOk(k); ok {
 					if v != expectedValue {
@@ -616,12 +623,12 @@ func TestDnsManagedZoneImport_parseImportId(t *testing.T) {
 func TestAccDNSManagedZone_importWithProject(t *testing.T) {
 	t.Parallel()
 
-	zoneSuffix := RandString(t, 10)
-	project := GetTestProjectFromEnv()
+	zoneSuffix := acctest.RandString(t, 10)
+	project := envvar.GetTestProjectFromEnv()
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

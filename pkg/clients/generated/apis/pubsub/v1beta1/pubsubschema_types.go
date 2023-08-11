@@ -36,7 +36,7 @@ import (
 )
 
 type PubSubSchemaSpec struct {
-	/* Immutable. The definition of the schema.
+	/* The definition of the schema.
 	This should contain a string representing the full definition of the schema
 	that is a valid schema definition of the type specified in type. */
 	// +optional
@@ -49,7 +49,7 @@ type PubSubSchemaSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The type of the schema definition Default value: "TYPE_UNSPECIFIED" Possible values: ["TYPE_UNSPECIFIED", "PROTOCOL_BUFFER", "AVRO"]. */
+	/* The type of the schema definition Default value: "TYPE_UNSPECIFIED" Possible values: ["TYPE_UNSPECIFIED", "PROTOCOL_BUFFER", "AVRO"]. */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }

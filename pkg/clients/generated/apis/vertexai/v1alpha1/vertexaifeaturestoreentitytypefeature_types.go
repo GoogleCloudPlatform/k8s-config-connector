@@ -67,6 +67,10 @@ type VertexAIFeaturestoreEntityTypeFeatureStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
+	/* The region of the feature. */
+	// +optional
+	Region *string `json:"region,omitempty"`
+
 	/* The timestamp when the entity type was most recently updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`

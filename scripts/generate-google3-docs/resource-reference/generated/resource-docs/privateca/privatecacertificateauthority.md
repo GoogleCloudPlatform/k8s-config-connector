@@ -2027,7 +2027,7 @@ spec:
     subjectConfig:
       subject:
         organization: Example
-        common-name: my-certificate-authority
+        commonName: my-certificate-authority
       subjectAltName:
         dnsNames:
         - example.com
@@ -2128,5 +2128,7 @@ spec:
         - 7
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

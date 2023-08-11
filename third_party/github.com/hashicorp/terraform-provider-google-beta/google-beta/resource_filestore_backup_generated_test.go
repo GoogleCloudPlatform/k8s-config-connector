@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccFilestoreBackup_filestoreBackupBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckFilestoreBackupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,32 +56,31 @@ func TestAccFilestoreBackup_filestoreBackupBasicExample(t *testing.T) {
 }
 
 func testAccFilestoreBackup_filestoreBackupBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
-
+	return acctest.Nprintf(`
 resource "google_filestore_instance" "instance" {
-  name = "tf-test-tf-fs-inst%{random_suffix}"
+  name     = "tf-test-tf-fs-inst%{random_suffix}"
   location = "us-central1-b"
-  tier = "BASIC_SSD"
+  tier     = "BASIC_HDD"
 
   file_shares {
-    capacity_gb = 2560
+    capacity_gb = 1024
     name        = "share1"
   }
 
   networks {
-    network = "default"
-    modes   = ["MODE_IPV4"]
+    network      = "default"
+    modes        = ["MODE_IPV4"]
     connect_mode = "DIRECT_PEERING"
   }
 }
 
 resource "google_filestore_backup" "backup" {
-  name        = "tf-test-tf-fs-bkup%{random_suffix}"
-  location    = "us-central1"
+  name              = "tf-test-tf-fs-bkup%{random_suffix}"
+  location          = "us-central1"
+  description       = "This is a filestore backup for the test instance"
   source_instance   = google_filestore_instance.instance.id
   source_file_share = "share1"
 
-  description = "This is a filestore backup for the test instance"
   labels = {
     "files":"label1",
     "other-label": "label2"
@@ -93,9 +99,9 @@ func testAccCheckFilestoreBackupDestroyProducer(t *testing.T) func(s *terraform.
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{FilestoreBasePath}}projects/{{project}}/locations/{{location}}/backups/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{FilestoreBasePath}}projects/{{project}}/locations/{{location}}/backups/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -106,7 +112,14 @@ func testAccCheckFilestoreBackupDestroyProducer(t *testing.T) func(s *terraform.
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, IsNotFilestoreQuotaError)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:               config,
+				Method:               "GET",
+				Project:              billingProject,
+				RawURL:               url,
+				UserAgent:            config.UserAgent,
+				ErrorAbortPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.Is429QuotaError},
+			})
 			if err == nil {
 				return fmt.Errorf("FilestoreBackup still exists at %s", url)
 			}

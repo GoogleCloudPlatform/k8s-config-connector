@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,19 +24,24 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccLoggingLogView_loggingLogViewBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingLogViewDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -50,7 +58,7 @@ func TestAccLoggingLogView_loggingLogViewBasicExample(t *testing.T) {
 }
 
 func testAccLoggingLogView_loggingLogViewBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_logging_project_bucket_config" "logging_log_view" {
     project        = "%{project}"
     location       = "global"
@@ -59,7 +67,7 @@ resource "google_logging_project_bucket_config" "logging_log_view" {
 }
 
 resource "google_logging_log_view" "logging_log_view" {
-  name        = "tf-test-view%{random_suffix}"
+  name        = "tf-test-my-view%{random_suffix}"
   bucket      = google_logging_project_bucket_config.logging_log_view.id
   description = "A logging view configured with Terraform"
   filter      = "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
@@ -71,13 +79,13 @@ func TestAccLoggingLogView_loggingLogViewLongNameExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingLogViewDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -94,7 +102,7 @@ func TestAccLoggingLogView_loggingLogViewLongNameExample(t *testing.T) {
 }
 
 func testAccLoggingLogView_loggingLogViewLongNameExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_logging_project_bucket_config" "logging_log_view" {
     project        = "%{project}"
     location       = "global"
@@ -121,9 +129,9 @@ func testAccCheckLoggingLogViewDestroyProducer(t *testing.T) func(s *terraform.S
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{LoggingBasePath}}{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{LoggingBasePath}}{{parent}}/locations/{{location}}/buckets/{{bucket}}/views/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -134,7 +142,13 @@ func testAccCheckLoggingLogViewDestroyProducer(t *testing.T) func(s *terraform.S
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("LoggingLogView still exists at %s", url)
 			}

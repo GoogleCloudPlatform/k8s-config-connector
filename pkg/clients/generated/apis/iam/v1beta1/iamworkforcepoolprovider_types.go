@@ -41,11 +41,22 @@ type WorkforcepoolproviderOidc struct {
 
 	/* Required. The OIDC issuer URI. Must be a valid URI using the 'https' scheme. */
 	IssuerUri string `json:"issuerUri"`
+
+	/* Required. Configuration for web single sign-on for the OIDC provider. Here, web sign-in refers to console sign-in and gcloud sign-in through the browser. */
+	WebSsoConfig WorkforcepoolproviderWebSsoConfig `json:"webSsoConfig"`
 }
 
 type WorkforcepoolproviderSaml struct {
 	/* Required. SAML Identity provider configuration metadata xml doc. The xml document should comply with [SAML 2.0 specification](https://docs.oasis-open.org/security/saml/v2.0/saml-metadata-2.0-os.pdf). The max size of the acceptable xml document will be bounded to 128k characters. The metadata xml document should satisfy the following constraints: 1) Must contain an Identity Provider Entity ID. 2) Must contain at least one non-expired signing key certificate. 3) For each signing key: a) Valid from should be no more than 7 days from now. b) Valid to should be no more than 10 years in the future. 4) Up to 3 IdP signing keys are allowed in the metadata xml. When updating the provider's metadata xml, at least one non-expired signing key must overlap with the existing metadata. This requirement is skipped if there are no non-expired signing keys present in the existing metadata. */
 	IdpMetadataXml string `json:"idpMetadataXml"`
+}
+
+type WorkforcepoolproviderWebSsoConfig struct {
+	/* Required. The behavior for how OIDC Claims are included in the `assertion` object used for attribute mapping and attribute condition. Possible values: ASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED, ONLY_ID_TOKEN_CLAIMS */
+	AssertionClaimsBehavior string `json:"assertionClaimsBehavior"`
+
+	/* Required. The Response Type to request for in the OIDC Authorization Request for web sign-in. Possible values: RESPONSE_TYPE_UNSPECIFIED, ID_TOKEN */
+	ResponseType string `json:"responseType"`
 }
 
 type IAMWorkforcePoolProviderSpec struct {

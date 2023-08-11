@@ -48,7 +48,7 @@ index 087911715..f87ec3ecd 100644
 -		obj["kmsKeyName"] = kmsKeyNameProp
 -	}
  
- 	url, err := replaceVars(d, config, "{{ArtifactRegistryBasePath}}projects/{{project}}/locations/{{location}}/repositories/{{repository_id}}")
+ 	url, err := tpgresource.ReplaceVars(d, config, "{{ArtifactRegistryBasePath}}projects/{{project}}/locations/{{location}}/repositories/{{repository_id}}")
  	if err != nil {
 @@ -312,13 +301,28 @@ func resourceArtifactRegistryRepositoryUpdate(d *schema.ResourceData, meta inter
  	}

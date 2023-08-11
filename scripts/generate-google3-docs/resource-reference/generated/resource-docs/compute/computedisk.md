@@ -106,6 +106,11 @@ use the name of a zone or region respectively.
 ### Spec
 #### Schema
 ```yaml
+asyncPrimaryDisk:
+  diskRef:
+    external: string
+    name: string
+    namespace: string
 description: string
 diskEncryptionKey:
   kmsKeyRef:
@@ -129,11 +134,16 @@ diskEncryptionKey:
         key: string
         name: string
   sha256: string
+enableConfidentialCompute: boolean
+guestOsFeatures:
+- type: string
 imageRef:
   external: string
   name: string
   namespace: string
 interface: string
+licenses:
+- string
 location: string
 multiWriter: boolean
 physicalBlockSizeBytes: integer
@@ -142,6 +152,7 @@ projectRef:
   name: string
   namespace: string
 provisionedIops: integer
+provisionedThroughput: integer
 replicaZones:
 - string
 resourceID: string
@@ -190,6 +201,56 @@ type: string
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>asyncPrimaryDisk</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. A nested object resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>asyncPrimaryDisk.diskRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Primary disk for asynchronous disk replication.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>asyncPrimaryDisk.diskRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeDisk` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>asyncPrimaryDisk.diskRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>asyncPrimaryDisk.diskRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>description</code></p>
@@ -376,8 +437,8 @@ RFC 4648 base64 to either encrypt or decrypt this resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit 
-customer-supplied encryption key to either encrypt or decrypt 
+            <p>{% verbatim %}Immutable. Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit
+customer-supplied encryption key to either encrypt or decrypt
 this resource. You can provide either the rawKey or the rsaEncryptedKey.{% endverbatim %}</p>
         </td>
     </tr>
@@ -444,6 +505,48 @@ encryption key that protects this resource.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>enableConfidentialCompute</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Whether this disk is using confidential compute mode.
+Note: Only supported on hyperdisk skus, disk_encryption_key is required when setting to true.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>guestOsFeatures</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Immutable. A list of features to enable on the guest operating system.
+Applicable only for bootable disks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>guestOsFeatures[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>guestOsFeatures[].type</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The type of supported feature. Read [Enabling guest operating system features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features) to see a list of available options. Possible values: ["MULTI_IP_SUBNET", "SECURE_BOOT", "SEV_CAPABLE", "UEFI_COMPATIBLE", "VIRTIO_SCSI_MULTIQUEUE", "WINDOWS", "GVNIC", "SEV_LIVE_MIGRATABLE", "SEV_SNP_CAPABLE", "SUSPEND_RESUME_COMPATIBLE", "TDX_CAPABLE"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>imageRef</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -490,6 +593,26 @@ encryption key that protects this resource.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}DEPRECATED. This field is no longer in use, disk interfaces will be automatically determined on attachment. To resolve this issue, remove this field from your config. Immutable. Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>licenses</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Immutable. Any applicable license URI.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>licenses[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -573,7 +696,21 @@ the supported values for the caller's project.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Indicates how many IOPS must be provisioned for the disk.{% endverbatim %}</p>
+            <p>{% verbatim %}Indicates how many IOPS must be provisioned for the disk.
+Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
+allows for an update of IOPS every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>provisionedThroughput</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Indicates how much Throughput must be provisioned for the disk.
+Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
+allows for an update of Throughput every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1323,5 +1460,7 @@ stringData:
   sharedSecret: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

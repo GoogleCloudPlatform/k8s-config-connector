@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,23 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccNotebooksInstance_notebookInstanceBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,7 +57,7 @@ func TestAccNotebooksInstance_notebookInstanceBasicExample(t *testing.T) {
 }
 
 func testAccNotebooksInstance_notebookInstanceBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_instance" "instance" {
   name = "tf-test-notebooks-instance%{random_suffix}"
   location = "us-west1-a"
@@ -66,12 +74,12 @@ func TestAccNotebooksInstance_notebookInstanceBasicContainerExample(t *testing.T
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -88,7 +96,7 @@ func TestAccNotebooksInstance_notebookInstanceBasicContainerExample(t *testing.T
 }
 
 func testAccNotebooksInstance_notebookInstanceBasicContainerExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_instance" "instance" {
   name = "tf-test-notebooks-instance%{random_suffix}"
   location = "us-west1-a"
@@ -109,12 +117,12 @@ func TestAccNotebooksInstance_notebookInstanceBasicGpuExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -131,7 +139,7 @@ func TestAccNotebooksInstance_notebookInstanceBasicGpuExample(t *testing.T) {
 }
 
 func testAccNotebooksInstance_notebookInstanceBasicGpuExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_instance" "instance" {
   name = "tf-test-notebooks-instance%{random_suffix}"
   location = "us-west1-a"
@@ -154,13 +162,13 @@ func TestAccNotebooksInstance_notebookInstanceFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"service_account": GetTestServiceAccountFromEnv(t),
-		"random_suffix":   RandString(t, 10),
+		"service_account": envvar.GetTestServiceAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -177,7 +185,7 @@ func TestAccNotebooksInstance_notebookInstanceFullExample(t *testing.T) {
 }
 
 func testAccNotebooksInstance_notebookInstanceFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_instance" "instance" {
   name = "tf-test-notebooks-instance%{random_suffix}"
   location = "us-central1-a"
@@ -231,9 +239,9 @@ func testAccCheckNotebooksInstanceDestroyProducer(t *testing.T) func(s *terrafor
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/instances/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/instances/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -244,7 +252,13 @@ func testAccCheckNotebooksInstanceDestroyProducer(t *testing.T) func(s *terrafor
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("NotebooksInstance still exists at %s", url)
 			}

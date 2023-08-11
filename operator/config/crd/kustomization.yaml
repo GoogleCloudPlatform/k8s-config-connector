@@ -18,6 +18,8 @@
 resources:
 - bases/core.cnrm.cloud.google.com_configconnectors.yaml
 - bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
+- bases/customize.core.cnrm.cloud.google.com_controllerresources.yaml
+- bases/customize.core.cnrm.cloud.google.com_namespacedcontrollerresources.yaml
 
 patchesJson6902:
 - target:

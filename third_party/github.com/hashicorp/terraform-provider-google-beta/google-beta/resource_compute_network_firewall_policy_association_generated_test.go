@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -24,18 +27,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeNetworkFirewallPolicyAssociation_GlobalHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeNetworkFirewallPolicyAssociationDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -60,7 +67,7 @@ func TestAccComputeNetworkFirewallPolicyAssociation_GlobalHandWritten(t *testing
 }
 
 func testAccComputeNetworkFirewallPolicyAssociation_GlobalHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network_firewall_policy" "network_firewall_policy" {
   name = "tf-test-policy%{random_suffix}"
   project = "%{project_name}"
@@ -82,7 +89,7 @@ resource "google_compute_network_firewall_policy_association" "primary" {
 }
 
 func testAccComputeNetworkFirewallPolicyAssociation_GlobalHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network_firewall_policy" "network_firewall_policy" {
   name = "tf-test-policy%{random_suffix}"
   project = "%{project_name}"
@@ -132,7 +139,7 @@ func testAccCheckComputeNetworkFirewallPolicyAssociationDestroyProducer(t *testi
 				ShortName:        dcl.StringOrNil(rs.Primary.Attributes["short_name"]),
 			}
 
-			client := NewDCLComputeClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLComputeClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetNetworkFirewallPolicyAssociation(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_compute_network_firewall_policy_association still exists %v", obj)

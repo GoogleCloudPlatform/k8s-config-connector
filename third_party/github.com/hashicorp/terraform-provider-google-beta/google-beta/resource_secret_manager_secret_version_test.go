@@ -1,21 +1,24 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccSecretManagerSecretVersion_update(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSecretManagerSecretVersionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -50,7 +53,7 @@ func TestAccSecretManagerSecretVersion_update(t *testing.T) {
 }
 
 func testAccSecretManagerSecretVersion_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_secret_manager_secret" "secret-basic" {
   secret_id = "tf-test-secret-version-%{random_suffix}"
   
@@ -73,7 +76,7 @@ resource "google_secret_manager_secret_version" "secret-version-basic" {
 }
 
 func testAccSecretManagerSecretVersion_disable(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_secret_manager_secret" "secret-basic" {
   secret_id = "tf-test-secret-version-%{random_suffix}"
 

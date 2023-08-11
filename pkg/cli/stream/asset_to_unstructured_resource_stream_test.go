@@ -43,7 +43,7 @@ func TestAssetToUnstructuredStream(t *testing.T) {
 func newTestUnstructuredResourceStreamFromAsset(t *testing.T, assetStream stream.AssetStream) *stream.AssetToUnstructuredResourceStream {
 	mockClient := newMockGCPClient(t)
 	serviceClient := serviceclient.NewMockServiceClient(t)
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.NewConfig())
+	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	unstructuredStream, err := stream.NewUnstructuredResourceStreamFromAssetStream(assetStream, mockClient, tfProvider, &serviceClient)
 	if err != nil {
 		t.Fatalf("error creating unstructured stream: %v", err)

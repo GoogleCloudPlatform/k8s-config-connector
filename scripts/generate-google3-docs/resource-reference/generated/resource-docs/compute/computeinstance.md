@@ -135,6 +135,7 @@ bootDisk:
   diskEncryptionKeySha256: string
   initializeParams:
     labels: {}
+    resourceManagerTags: {}
     size: integer
     sourceImageRef:
       external: string
@@ -209,6 +210,8 @@ networkInterface:
     namespace: string
 networkPerformanceConfig:
   totalEgressBandwidthTier: string
+params:
+  resourceManagerTags: {}
 reservationAffinity:
   specificReservation:
     key: string
@@ -611,6 +614,16 @@ zone: string
     </tr>
     <tr>
         <td>
+            <p><code>bootDisk.initializeParams.resourceManagerTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. A map of resource manager tags. Resource manager tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored (both PUT & PATCH) when empty.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>bootDisk.initializeParams.size</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -626,7 +639,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The image from which to initialize this disk.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -726,7 +739,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The source disk used to create this disk.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1411,6 +1424,26 @@ zone: string
     </tr>
     <tr>
         <td>
+            <p><code>params</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Stores additional params passed with the request, but not persisted as part of resource payload.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>params.resourceManagerTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. A map of resource manager tags. Resource manager tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored (both PUT & PATCH) when empty.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>reservationAffinity</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1946,7 +1979,10 @@ tagsFingerprint: string
         <td><code>currentStatus</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Current status of the instance.{% endverbatim %}</p>
+            <p>{% verbatim %}
+					Current status of the instance.
+					This could be one of the following values: PROVISIONING, STAGING, RUNNING, STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED.
+					For more information about the status of the instance, see [Instance life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2395,5 +2431,7 @@ stringData:
   diskEncryptionKey: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

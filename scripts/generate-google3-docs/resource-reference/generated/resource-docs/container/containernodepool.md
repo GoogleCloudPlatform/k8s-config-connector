@@ -121,6 +121,8 @@ nodeConfig:
     enabled: boolean
   guestAccelerator:
   - count: integer
+    gpuDriverInstallationConfig:
+      gpuDriverVersion: string
     gpuPartitionSize: string
     gpuSharingConfig:
       gpuSharingStrategy: string
@@ -170,6 +172,12 @@ nodeConfig:
   shieldedInstanceConfig:
     enableIntegrityMonitoring: boolean
     enableSecureBoot: boolean
+  soleTenantConfig:
+    nodeAffinity:
+    - key: string
+      operator: string
+      values:
+      - string
   spot: boolean
   tags:
   - string
@@ -184,6 +192,7 @@ nodeCount: integer
 nodeLocations:
 - string
 placementPolicy:
+  tpuTopology: string
   type: string
 resourceID: string
 upgradeSettings:
@@ -624,6 +633,26 @@ version: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Immutable. The number of the accelerator cards exposed to an instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.guestAccelerator[].gpuDriverInstallationConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Configuration for auto installation of GPU driver.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.guestAccelerator[].gpuDriverInstallationConfig.gpuDriverVersion</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Mode for how the GPU driver is installed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1080,6 +1109,76 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.soleTenantConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Node affinity options for sole tenant node pools.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[].key</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[].operator</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[].values</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[].values[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.spot</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1226,6 +1325,16 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. Specifies the node placement policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placementPolicy.tpuTopology</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}TPU placement topology for pod slice node pool. https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1609,5 +1718,7 @@ spec:
   initialNodeCount: 1
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,19 +7,23 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/billing"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccBillingBudget_billingBudgetCurrencycode(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestMasterBillingAccountFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"billing_acct":  envvar.GetTestMasterBillingAccountFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBillingBudgetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -29,7 +35,7 @@ func TestAccBillingBudget_billingBudgetCurrencycode(t *testing.T) {
 }
 
 func testAccBillingBudget_billingBudgetCurrencycode(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_billing_account" "account" {
   billing_account = "%{billing_acct}"
 }
@@ -69,13 +75,13 @@ func TestAccBillingBudget_billingBudgetUpdate(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestMasterBillingAccountFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"billing_acct":  envvar.GetTestMasterBillingAccountFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBillingBudgetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -126,13 +132,13 @@ func TestAccBillingBudget_billingFilterSubaccounts(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"master_billing_acct": GetTestMasterBillingAccountFromEnv(t),
-		"random_suffix":       RandString(t, 10),
+		"master_billing_acct": envvar.GetTestMasterBillingAccountFromEnv(t),
+		"random_suffix":       acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBillingBudgetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -156,7 +162,7 @@ func TestAccBillingBudget_billingFilterSubaccounts(t *testing.T) {
 }
 
 func testAccBillingBudget_billingFilterSubaccounts(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_billing_account" "account" {
   billing_account = "%{master_billing_acct}"
 }
@@ -200,7 +206,7 @@ resource "google_billing_budget" "budget" {
 }
 
 func testAccBillingBudget_billingFilterRemoveSubaccounts(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_billing_account" "account" {
   billing_account = "%{master_billing_acct}"
 }
@@ -238,7 +244,7 @@ resource "google_billing_budget" "budget" {
 }
 
 func testAccBillingBudget_billingBudgetUpdateStart(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_pubsub_topic" "topic1" {
   name = "tf-test-billing-budget1-%{random_suffix}"
 }
@@ -288,7 +294,7 @@ resource "google_billing_budget" "budget" {
 }
 
 func testAccBillingBudget_billingBudgetUpdateRemoveFilter(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_pubsub_topic" "topic1" {
   name = "tf-test-billing-budget1-%{random_suffix}"
 }
@@ -334,7 +340,7 @@ resource "google_billing_budget" "budget" {
 }
 
 func testAccBillingBudget_billingBudgetUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_pubsub_topic" "topic1" {
   name = "tf-test-billing-budget1-%{random_suffix}"
 }
@@ -385,7 +391,7 @@ resource "google_billing_budget" "budget" {
 }
 
 func testAccBillingBudget_billingBudgetCalendarUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_pubsub_topic" "topic1" {
   name = "tf-test-billing-budget1-%{random_suffix}"
 }
@@ -433,7 +439,7 @@ resource "google_billing_budget" "budget" {
 }
 
 func testAccBillingBudget_billingBudgetCustomPeriodUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_pubsub_topic" "topic1" {
   name = "tf-test-billing-budget1-%{random_suffix}"
 }
@@ -507,7 +513,7 @@ func TestBillingBudgetStateUpgradeV0(t *testing.T) {
 			Expected: map[string]string{
 				"name": "9188612e-e4c0-4e69-9d14-9befebbcb87d",
 			},
-			Meta: &Config{},
+			Meta: &transport_tpg.Config{},
 		},
 		"short name stays": {
 			Attributes: map[string]interface{}{
@@ -516,12 +522,12 @@ func TestBillingBudgetStateUpgradeV0(t *testing.T) {
 			Expected: map[string]string{
 				"name": "9188612e-e4c0-4e69-9d14-9befebbcb87d",
 			},
-			Meta: &Config{},
+			Meta: &transport_tpg.Config{},
 		},
 	}
 	for tn, tc := range cases {
 		t.Run(tn, func(t *testing.T) {
-			actual, err := ResourceBillingBudgetUpgradeV0(context.Background(), tc.Attributes, tc.Meta)
+			actual, err := billing.ResourceBillingBudgetUpgradeV0(context.Background(), tc.Attributes, tc.Meta)
 
 			if err != nil {
 				t.Error(err)
@@ -541,16 +547,16 @@ func TestAccBillingBudget_budgetFilterProjectsOrdering(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org":                  GetTestOrgFromEnv(t),
-		"billing_acct":         GetTestMasterBillingAccountFromEnv(t),
-		"project_billing_acct": GetTestBillingAccountFromEnv(t),
-		"random_suffix_1":      RandString(t, 10),
-		"random_suffix_2":      RandString(t, 10),
+		"org":                  envvar.GetTestOrgFromEnv(t),
+		"billing_acct":         envvar.GetTestMasterBillingAccountFromEnv(t),
+		"project_billing_acct": envvar.GetTestBillingAccountFromEnv(t),
+		"random_suffix_1":      acctest.RandString(t, 10),
+		"random_suffix_2":      acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBillingBudgetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -577,7 +583,7 @@ func TestAccBillingBudget_budgetFilterProjectsOrdering(t *testing.T) {
 }
 
 func testAccBillingBudget_budgetFilterProjectsOrdering1(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
 data "google_billing_account" "account" {
 	billing_account = "%{billing_acct}"
@@ -621,7 +627,7 @@ resource "google_billing_budget" "budget" {
 }
 
 func testAccBillingBudget_budgetFilterProjectsOrdering2(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
 data "google_billing_account" "account" {
 	billing_account = "%{billing_acct}"

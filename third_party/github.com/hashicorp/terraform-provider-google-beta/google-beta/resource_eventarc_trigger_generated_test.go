@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -24,19 +27,23 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccEventarcTrigger_BasicHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckEventarcTriggerDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -69,7 +76,7 @@ func TestAccEventarcTrigger_BasicHandWritten(t *testing.T) {
 }
 
 func testAccEventarcTrigger_BasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_eventarc_trigger" "primary" {
 	name = "tf-test-name%{random_suffix}"
 	location = "europe-west1"
@@ -123,7 +130,7 @@ resource "google_cloud_run_service" "default" {
 }
 
 func testAccEventarcTrigger_BasicHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_eventarc_trigger" "primary" {
 	name = "tf-test-name%{random_suffix}"
 	location = "europe-west1"
@@ -206,7 +213,7 @@ resource "google_cloud_run_service" "default2" {
 }
 
 func testAccEventarcTrigger_BasicHandWrittenUpdate1(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_eventarc_trigger" "primary" {
 	name = "tf-test-name%{random_suffix}"
 	location = "europe-west1"
@@ -326,7 +333,7 @@ func testAccCheckEventarcTriggerDestroyProducer(t *testing.T) func(s *terraform.
 				UpdateTime:     dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLEventarcClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLEventarcClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetTrigger(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_eventarc_trigger still exists %v", obj)

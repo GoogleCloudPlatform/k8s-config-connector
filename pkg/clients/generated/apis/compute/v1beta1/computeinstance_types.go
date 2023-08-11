@@ -122,6 +122,7 @@ type InstanceBootDisk struct {
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
+	/* Immutable. The source disk used to create this disk. */
 	// +optional
 	SourceDiskRef *v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
 }
@@ -154,10 +155,15 @@ type InstanceInitializeParams struct {
 	// +optional
 	Labels *InstanceLabels `json:"labels,omitempty"`
 
+	/* Immutable. A map of resource manager tags. Resource manager tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored (both PUT & PATCH) when empty. */
+	// +optional
+	ResourceManagerTags *InstanceResourceManagerTags `json:"resourceManagerTags,omitempty"`
+
 	/* Immutable. The size of the image in gigabytes. */
 	// +optional
 	Size *int `json:"size,omitempty"`
 
+	/* Immutable. The image from which to initialize this disk. */
 	// +optional
 	SourceImageRef *v1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
 
@@ -266,6 +272,12 @@ type InstanceNodeAffinities struct {
 	Value *InstanceValue `json:"value,omitempty"`
 }
 
+type InstanceParams struct {
+	/* Immutable. A map of resource manager tags. Resource manager tag keys and values have the same definition as resource manager tags. Keys must be in the format tagKeys/{tag_key_id}, and values are in the format tagValues/456. The field is ignored (both PUT & PATCH) when empty. */
+	// +optional
+	ResourceManagerTags *InstanceResourceManagerTags `json:"resourceManagerTags,omitempty"`
+}
+
 type InstanceReservationAffinity struct {
 	/* Immutable. Specifies the label selector for the reservation to use. */
 	// +optional
@@ -273,6 +285,9 @@ type InstanceReservationAffinity struct {
 
 	/* Immutable. The type of reservation from which this instance can consume resources. */
 	Type string `json:"type"`
+}
+
+type InstanceResourceManagerTags struct {
 }
 
 type InstanceScheduling struct {
@@ -430,6 +445,10 @@ type ComputeInstanceSpec struct {
 	// +optional
 	NetworkPerformanceConfig *InstanceNetworkPerformanceConfig `json:"networkPerformanceConfig,omitempty"`
 
+	/* Immutable. Stores additional params passed with the request, but not persisted as part of resource payload. */
+	// +optional
+	Params *InstanceParams `json:"params,omitempty"`
+
 	/* Immutable. Specifies the reservations that this instance can consume from. */
 	// +optional
 	ReservationAffinity *InstanceReservationAffinity `json:"reservationAffinity,omitempty"`
@@ -474,7 +493,9 @@ type ComputeInstanceStatus struct {
 	// +optional
 	CpuPlatform *string `json:"cpuPlatform,omitempty"`
 
-	/* Current status of the instance. */
+	/* Current status of the instance.
+	This could be one of the following values: PROVISIONING, STAGING, RUNNING, STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED.
+	For more information about the status of the instance, see [Instance life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle). */
 	// +optional
 	CurrentStatus *string `json:"currentStatus,omitempty"`
 

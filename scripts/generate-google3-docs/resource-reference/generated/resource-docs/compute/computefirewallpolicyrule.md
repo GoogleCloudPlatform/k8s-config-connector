@@ -86,13 +86,29 @@ firewallPolicyRef:
   name: string
   namespace: string
 match:
+  destAddressGroups:
+  - string
+  destFqdns:
+  - string
   destIPRanges:
+  - string
+  destRegionCodes:
+  - string
+  destThreatIntelligences:
   - string
   layer4Configs:
   - ipProtocol: string
     ports:
     - string
+  srcAddressGroups:
+  - string
+  srcFqdns:
+  - string
   srcIPRanges:
+  - string
+  srcRegionCodes:
+  - string
+  srcThreatIntelligences:
   - string
 priority: integer
 targetResources:
@@ -119,7 +135,7 @@ targetServiceAccounts:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Action to perform when the client connection triggers the rule. Can currently be either "allow" or "deny()" where valid values for status are 403, 404, and 502.{% endverbatim %}</p>
+            <p>{% verbatim %}The Action to perform when the client connection triggers the rule. Valid actions are "allow", "deny" and "goto_next".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -216,6 +232,46 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
     </tr>
     <tr>
         <td>
+            <p><code>match.destAddressGroups</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Address groups which should be matched against the traffic destination. Maximum number of destination address groups is 10. Destination address groups is only supported in Egress rules.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.destAddressGroups[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.destFqdns</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Domain names that will be used to match against the resolved domain name of destination of traffic. Can only be specified if DIRECTION is egress.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.destFqdns[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>match.destIPRanges</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -227,6 +283,46 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
     <tr>
         <td>
             <p><code>match.destIPRanges[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.destRegionCodes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The Unicode country codes whose IP addresses will be used to match against the source of traffic. Can only be specified if DIRECTION is egress.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.destRegionCodes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.destThreatIntelligences</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Name of the Google Cloud Threat Intelligence list.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.destThreatIntelligences[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -286,6 +382,46 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
     </tr>
     <tr>
         <td>
+            <p><code>match.srcAddressGroups</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Address groups which should be matched against the traffic source. Maximum number of source address groups is 10. Source address groups is only supported in Ingress rules.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.srcAddressGroups[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.srcFqdns</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Domain names that will be used to match against the resolved domain name of source of traffic. Can only be specified if DIRECTION is ingress.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.srcFqdns[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>match.srcIPRanges</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -297,6 +433,46 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
     <tr>
         <td>
             <p><code>match.srcIPRanges[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.srcRegionCodes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The Unicode country codes whose IP addresses will be used to match against the source of traffic. Can only be specified if DIRECTION is ingress.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.srcRegionCodes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.srcThreatIntelligences</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Name of the Google Cloud Threat Intelligence list.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>match.srcThreatIntelligences[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -584,5 +760,7 @@ metadata:
   name: firewallpolicyrule-dep
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

@@ -1,21 +1,24 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccEssentialContactsContact_update(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckEssentialContactsContactDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,7 +52,7 @@ func TestAccEssentialContactsContact_update(t *testing.T) {
 }
 
 func testAccEssentialContactsContact_v1(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "project" {
 }
 
@@ -63,7 +66,7 @@ resource "google_essential_contacts_contact" "contact" {
 }
 
 func testAccEssentialContactsContact_v2(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "project" {
 }
 

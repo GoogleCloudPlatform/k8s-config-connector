@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccDNSManagedZone_dnsManagedZoneQuickstartExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,7 +56,7 @@ func TestAccDNSManagedZone_dnsManagedZoneQuickstartExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZoneQuickstartExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 # to setup a web-server
 resource "google_compute_instance" "default" {
   name         = "tf-test-dns-compute-instance%{random_suffix}"
@@ -111,12 +118,12 @@ func TestAccDNSManagedZone_dnsRecordSetBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -132,7 +139,7 @@ func TestAccDNSManagedZone_dnsRecordSetBasicExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsRecordSetBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dns_managed_zone" "parent-zone" {
   name        = "tf-test-sample-zone%{random_suffix}"
   dns_name    = "tf-test-sample-zone%{random_suffix}.hashicorptest.com."
@@ -150,16 +157,16 @@ resource "google_dns_record_set" "default" {
 }
 
 func TestAccDNSManagedZone_dnsManagedZoneBasicExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -179,7 +186,7 @@ func TestAccDNSManagedZone_dnsManagedZoneBasicExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZoneBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dns_managed_zone" "example-zone" {
   name        = "example-zone"
   dns_name    = "example-${random_id.rnd.hex}.com."
@@ -199,12 +206,12 @@ func TestAccDNSManagedZone_dnsManagedZonePrivateExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -220,7 +227,7 @@ func TestAccDNSManagedZone_dnsManagedZonePrivateExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZonePrivateExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dns_managed_zone" "private-zone" {
   name        = "tf-test-private-zone%{random_suffix}"
   dns_name    = "private.example.com."
@@ -257,12 +264,12 @@ func TestAccDNSManagedZone_dnsManagedZonePrivateGkeExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -278,7 +285,7 @@ func TestAccDNSManagedZone_dnsManagedZonePrivateGkeExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZonePrivateGkeExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dns_managed_zone" "private-zone-gke" {
   name        = "tf-test-private-zone%{random_suffix}"
   dns_name    = "private.example.com."
@@ -356,12 +363,12 @@ func TestAccDNSManagedZone_dnsManagedZonePrivatePeeringExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -377,7 +384,7 @@ func TestAccDNSManagedZone_dnsManagedZonePrivatePeeringExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZonePrivatePeeringExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dns_managed_zone" "peering-zone" {
   name        = "tf-test-peering-zone%{random_suffix}"
   dns_name    = "peering.example.com."
@@ -414,12 +421,12 @@ func TestAccDNSManagedZone_dnsManagedZoneServiceDirectoryExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -435,7 +442,7 @@ func TestAccDNSManagedZone_dnsManagedZoneServiceDirectoryExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZoneServiceDirectoryExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dns_managed_zone" "sd-zone" {
   provider = google-beta
 
@@ -472,12 +479,12 @@ func TestAccDNSManagedZone_dnsManagedZoneCloudLoggingExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDNSManagedZoneDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -493,7 +500,7 @@ func TestAccDNSManagedZone_dnsManagedZoneCloudLoggingExample(t *testing.T) {
 }
 
 func testAccDNSManagedZone_dnsManagedZoneCloudLoggingExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dns_managed_zone" "cloud-logging-enabled-zone" {
   name        = "tf-test-cloud-logging-enabled-zone%{random_suffix}"
   dns_name    = "services.example.com."
@@ -519,9 +526,9 @@ func testAccCheckDNSManagedZoneDestroyProducer(t *testing.T) func(s *terraform.S
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{DNSBasePath}}projects/{{project}}/managedZones/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DNSBasePath}}projects/{{project}}/managedZones/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -532,7 +539,13 @@ func testAccCheckDNSManagedZoneDestroyProducer(t *testing.T) func(s *terraform.S
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("DNSManagedZone still exists at %s", url)
 			}

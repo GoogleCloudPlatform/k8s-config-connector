@@ -1,11 +1,11 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"bytes"
 	"fmt"
-	"log"
 	"os"
-	"strings"
 	"testing"
 
 	"archive/zip"
@@ -13,6 +13,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	tpgcloudfunctions "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/cloudfunctions"
 	"google.golang.org/api/cloudfunctions/v1"
 )
 
@@ -27,226 +30,6 @@ const testBucketTriggerPath = "./test-fixtures/cloudfunctions/bucket_trigger.js"
 const testFirestoreTriggerPath = "./test-fixtures/cloudfunctions/firestore_trigger.js"
 const testSecretEnvVarFunctionPath = "./test-fixtures/cloudfunctions/secret_environment_variables.js"
 const testSecretVolumesMountFunctionPath = "./test-fixtures/cloudfunctions/secret_volumes_mount.js"
-const testFunctionsSourceArchivePrefix = "cloudfunczip"
-
-func init() {
-	resource.AddTestSweepers("gcp_cloud_function_source_archive", &resource.Sweeper{
-		Name: "gcp_cloud_function_source_archive",
-		F:    sweepCloudFunctionSourceZipArchives,
-	})
-}
-
-func TestCloudFunctionsFunction_nameValidator(t *testing.T) {
-	validNames := []string{
-		"a",
-		"aA",
-		"a0",
-		"has-hyphen",
-		"has_underscore",
-		"hasUpperCase",
-		"allChars_-A0",
-		"StartsUpperCase",
-		"endsUpperCasE",
-	}
-	for _, tc := range validNames {
-		wrns, errs := validateResourceCloudFunctionsFunctionName(tc, "function.name")
-		if len(wrns) > 0 {
-			t.Errorf("Expected no validation warnings for test case %q, got: %+v", tc, wrns)
-		}
-		if len(errs) > 0 {
-			t.Errorf("Expected no validation errors for test name %q, got: %+v", tc, errs)
-		}
-	}
-
-	invalidNames := []string{
-		"0startsWithNumber",
-		"endsWith_",
-		"endsWith-",
-		"bad*Character",
-		"aCloudFunctionsFunctionNameThatIsSeventyFiveCharactersLongWhichIsMoreThan63",
-	}
-	for _, tc := range invalidNames {
-		_, errs := validateResourceCloudFunctionsFunctionName(tc, "function.name")
-		if len(errs) == 0 {
-			t.Errorf("Expected errors for invalid test name %q, got none", tc)
-		}
-	}
-}
-
-func TestValidLabelKeys(t *testing.T) {
-	testCases := []struct {
-		labelKey string
-		valid    bool
-	}{
-		{
-			"test-label", true,
-		},
-		{
-			"test_label", true,
-		},
-		{
-			"MixedCase", false,
-		},
-		{
-			"number-09-dash", true,
-		},
-		{
-			"", false,
-		},
-		{
-			"test-label", true,
-		},
-		{
-			"mixed*symbol", false,
-		},
-		{
-			"intérnätional", true,
-		},
-	}
-
-	for _, tc := range testCases {
-		labels := make(map[string]interface{})
-		labels[tc.labelKey] = "test value"
-
-		_, errs := labelKeyValidator(labels, "")
-		if tc.valid && len(errs) > 0 {
-			t.Errorf("Validation failure, key: '%s' should be valid but actual errors were %q", tc.labelKey, errs)
-		}
-		if !tc.valid && len(errs) < 1 {
-			t.Errorf("Validation failure, key: '%s' should fail but actual errors were %q", tc.labelKey, errs)
-		}
-	}
-}
-
-func TestCompareSelfLinkOrResourceNameWithMultipleParts(t *testing.T) {
-	cases := map[string]struct {
-		Old, New           string
-		ExpectDiffSuppress bool
-	}{
-		"projects to no projects doc": {
-			Old:                "projects/myproject/databases/default/documents/resource",
-			New:                "resource",
-			ExpectDiffSuppress: true,
-		},
-		"no projects to projects doc": {
-			Old:                "resource",
-			New:                "projects/myproject/databases/default/documents/resource",
-			ExpectDiffSuppress: true,
-		},
-		"projects to projects doc": {
-			Old:                "projects/myproject/databases/default/documents/resource",
-			New:                "projects/myproject/databases/default/documents/resource",
-			ExpectDiffSuppress: true,
-		},
-		"multi messages doc": {
-			Old:                "messages/{messageId}",
-			New:                "projects/myproject/databases/(default)/documents/messages/{messageId}",
-			ExpectDiffSuppress: true,
-		},
-		"multi messages 2 doc": {
-			Old:                "projects/myproject/databases/(default)/documents/messages/{messageId}",
-			New:                "messages/{messageId}",
-			ExpectDiffSuppress: true,
-		},
-		"projects to no projects topics": {
-			Old:                "projects/myproject/topics/resource",
-			New:                "resource",
-			ExpectDiffSuppress: true,
-		},
-		"no projects to projects topics": {
-			Old:                "resource",
-			New:                "projects/myproject/topics/resource",
-			ExpectDiffSuppress: true,
-		},
-		"projects to projects topics": {
-			Old:                "projects/myproject/topics/resource",
-			New:                "projects/myproject/topics/resource",
-			ExpectDiffSuppress: true,
-		},
-
-		"unmatched projects to no projects doc": {
-			Old:                "projects/myproject/databases/default/documents/resource",
-			New:                "resourcex",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched no projects to projects doc": {
-			Old:                "resourcex",
-			New:                "projects/myproject/databases/default/documents/resource",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched projects to projects doc": {
-			Old:                "projects/myproject/databases/default/documents/resource",
-			New:                "projects/myproject/databases/default/documents/resourcex",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched projects to projects 2 doc": {
-			Old:                "projects/myprojectx/databases/default/documents/resource",
-			New:                "projects/myproject/databases/default/documents/resource",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched projects to empty doc": {
-			Old:                "",
-			New:                "projects/myproject/databases/default/documents/resource",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched empty to projects 2 doc": {
-			Old:                "projects/myprojectx/databases/default/documents/resource",
-			New:                "",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched default to default2 doc": {
-			Old:                "projects/myproject/databases/default/documents/resource",
-			New:                "projects/myproject/databases/default2/documents/resource",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched projects to no projects topics": {
-			Old:                "projects/myproject/topics/resource",
-			New:                "resourcex",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched no projects to projects topics": {
-			Old:                "resourcex",
-			New:                "projects/myproject/topics/resource",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched projects to projects topics": {
-			Old:                "projects/myproject/topics/resource",
-			New:                "projects/myproject/topics/resourcex",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched projects to projects 2 topics": {
-			Old:                "projects/myprojectx/topics/resource",
-			New:                "projects/myproject/topics/resource",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched projects to empty topics": {
-			Old:                "projects/myproject/topics/resource",
-			New:                "",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched empty to projects topics": {
-			Old:                "",
-			New:                "projects/myproject/topics/resource",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched resource to resource-partial": {
-			Old:                "resource",
-			New:                "resource-partial",
-			ExpectDiffSuppress: false,
-		},
-		"unmatched resource-partial to projects": {
-			Old:                "resource-partial",
-			New:                "projects/myproject/topics/resource",
-			ExpectDiffSuppress: false,
-		},
-	}
-
-	for tn, tc := range cases {
-		if compareSelfLinkOrResourceNameWithMultipleParts("resource", tc.Old, tc.New, nil) != tc.ExpectDiffSuppress {
-			t.Fatalf("bad: %s, '%s' => '%s' expect %t", tn, tc.Old, tc.New, tc.ExpectDiffSuppress)
-		}
-	}
-}
 
 func TestAccCloudFunctionsFunction_basic(t *testing.T) {
 	t.Parallel()
@@ -254,14 +37,14 @@ func TestAccCloudFunctionsFunction_basic(t *testing.T) {
 	var function cloudfunctions.CloudFunction
 
 	funcResourceName := "google_cloudfunctions_function.function"
-	functionName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	bucketName := fmt.Sprintf("tf-test-bucket-%d", RandInt(t))
+	functionName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	bucketName := fmt.Sprintf("tf-test-bucket-%d", acctest.RandInt(t))
 	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath)
 	defer os.Remove(zipFilePath) // clean up
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -283,6 +66,8 @@ func TestAccCloudFunctionsFunction_basic(t *testing.T) {
 						"min_instances", "3"),
 					resource.TestCheckResourceAttr(funcResourceName,
 						"ingress_settings", "ALLOW_INTERNAL_ONLY"),
+					resource.TestCheckResourceAttr(funcResourceName,
+						"status", "ACTIVE"),
 					testAccCloudFunctionsFunctionSource(fmt.Sprintf("gs://%s/index.zip", bucketName), &function),
 					testAccCloudFunctionsFunctionTrigger(FUNCTION_TRIGGER_HTTP, &function),
 					resource.TestCheckResourceAttr(funcResourceName,
@@ -312,16 +97,16 @@ func TestAccCloudFunctionsFunction_update(t *testing.T) {
 	var function cloudfunctions.CloudFunction
 
 	funcResourceName := "google_cloudfunctions_function.function"
-	functionName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	bucketName := fmt.Sprintf("tf-test-bucket-%d", RandInt(t))
+	functionName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	bucketName := fmt.Sprintf("tf-test-bucket-%d", acctest.RandInt(t))
 	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath)
 	zipFileUpdatePath := createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerUpdatePath)
-	random_suffix := RandString(t, 10)
+	random_suffix := acctest.RandString(t, 10)
 	defer os.Remove(zipFilePath) // clean up
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudFunctionsFunction_basic(functionName, bucketName, zipFilePath),
@@ -382,17 +167,17 @@ func TestAccCloudFunctionsFunction_buildworkerpool(t *testing.T) {
 	var function cloudfunctions.CloudFunction
 
 	funcResourceName := "google_cloudfunctions_function.function"
-	functionName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	bucketName := fmt.Sprintf("tf-test-bucket-%d", RandInt(t))
+	functionName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	bucketName := fmt.Sprintf("tf-test-bucket-%d", acctest.RandInt(t))
 	location := "us-central1"
 	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath)
-	proj := GetTestProjectFromEnv()
+	proj := envvar.GetTestProjectFromEnv()
 
 	defer os.Remove(zipFilePath) // clean up
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -420,15 +205,15 @@ func TestAccCloudFunctionsFunction_pubsub(t *testing.T) {
 	t.Parallel()
 
 	funcResourceName := "google_cloudfunctions_function.function"
-	functionName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	bucketName := fmt.Sprintf("tf-test-bucket-%d", RandInt(t))
-	topicName := fmt.Sprintf("tf-test-sub-%s", RandString(t, 10))
+	functionName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	bucketName := fmt.Sprintf("tf-test-bucket-%d", acctest.RandInt(t))
+	topicName := fmt.Sprintf("tf-test-sub-%s", acctest.RandString(t, 10))
 	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testPubSubTriggerPath)
 	defer os.Remove(zipFilePath) // clean up
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -452,14 +237,14 @@ func TestAccCloudFunctionsFunction_pubsub(t *testing.T) {
 func TestAccCloudFunctionsFunction_bucket(t *testing.T) {
 	t.Parallel()
 	funcResourceName := "google_cloudfunctions_function.function"
-	functionName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	bucketName := fmt.Sprintf("tf-test-bucket-%d", RandInt(t))
+	functionName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	bucketName := fmt.Sprintf("tf-test-bucket-%d", acctest.RandInt(t))
 	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testBucketTriggerPath)
 	defer os.Remove(zipFilePath) // clean up
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -487,15 +272,15 @@ func TestAccCloudFunctionsFunction_bucket(t *testing.T) {
 func TestAccCloudFunctionsFunction_dockerRepository(t *testing.T) {
 	t.Parallel()
 	funcResourceName := "google_cloudfunctions_function.function"
-	arRepoName := fmt.Sprintf("tf-ar-test-docker-repository-%s", RandString(t, 10))
-	functionName := fmt.Sprintf("tf-ar-test-%s", RandString(t, 10))
-	bucketName := fmt.Sprintf("tf-ar-test-bucket-%d", RandInt(t))
+	arRepoName := fmt.Sprintf("tf-ar-test-docker-repository-%s", acctest.RandString(t, 10))
+	functionName := fmt.Sprintf("tf-ar-test-%s", acctest.RandString(t, 10))
+	bucketName := fmt.Sprintf("tf-ar-test-bucket-%d", acctest.RandInt(t))
 	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath)
 	defer os.Remove(zipFilePath) // clean up
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -513,17 +298,17 @@ func TestAccCloudFunctionsFunction_dockerRepository(t *testing.T) {
 
 func TestAccCloudFunctionsFunction_cmek(t *testing.T) {
 	t.Parallel()
-	kmsKey := BootstrapKMSKeyInLocation(t, "us-central1")
+	kmsKey := acctest.BootstrapKMSKeyInLocation(t, "us-central1")
 	funcResourceName := "google_cloudfunctions_function.function"
-	arRepoName := fmt.Sprintf("tf-cmek-test-docker-repository-%s", RandString(t, 10))
-	functionName := fmt.Sprintf("tf-cmek-test-%s", RandString(t, 10))
-	bucketName := fmt.Sprintf("tf-cmek-test-bucket-%d", RandInt(t))
+	arRepoName := fmt.Sprintf("tf-cmek-test-docker-repository-%s", acctest.RandString(t, 10))
+	functionName := fmt.Sprintf("tf-cmek-test-%s", acctest.RandString(t, 10))
+	bucketName := fmt.Sprintf("tf-cmek-test-bucket-%d", acctest.RandInt(t))
 	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath)
 	defer os.Remove(zipFilePath) // clean up
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -542,14 +327,14 @@ func TestAccCloudFunctionsFunction_cmek(t *testing.T) {
 func TestAccCloudFunctionsFunction_firestore(t *testing.T) {
 	t.Parallel()
 	funcResourceName := "google_cloudfunctions_function.function"
-	functionName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	bucketName := fmt.Sprintf("tf-test-bucket-%d", RandInt(t))
+	functionName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	bucketName := fmt.Sprintf("tf-test-bucket-%d", acctest.RandInt(t))
 	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testFirestoreTriggerPath)
 	defer os.Remove(zipFilePath) // clean up
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -569,12 +354,12 @@ func TestAccCloudFunctionsFunction_sourceRepo(t *testing.T) {
 	t.Parallel()
 
 	funcResourceName := "google_cloudfunctions_function.function"
-	functionName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	proj := GetTestProjectFromEnv()
+	functionName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	proj := envvar.GetTestProjectFromEnv()
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -594,14 +379,14 @@ func TestAccCloudFunctionsFunction_serviceAccountEmail(t *testing.T) {
 	t.Parallel()
 
 	funcResourceName := "google_cloudfunctions_function.function"
-	functionName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	bucketName := fmt.Sprintf("tf-test-bucket-%d", RandInt(t))
+	functionName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	bucketName := fmt.Sprintf("tf-test-bucket-%d", acctest.RandInt(t))
 	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath)
 	defer os.Remove(zipFilePath) // clean up
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -621,17 +406,17 @@ func TestAccCloudFunctionsFunction_vpcConnector(t *testing.T) {
 	t.Parallel()
 
 	funcResourceName := "google_cloudfunctions_function.function"
-	functionName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	bucketName := fmt.Sprintf("tf-test-bucket-%d", RandInt(t))
-	networkName := fmt.Sprintf("tf-test-net-%d", RandInt(t))
-	vpcConnectorName := fmt.Sprintf("tf-test-conn-%s", RandString(t, 5))
+	functionName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	bucketName := fmt.Sprintf("tf-test-bucket-%d", acctest.RandInt(t))
+	networkName := fmt.Sprintf("tf-test-net-%d", acctest.RandInt(t))
+	vpcConnectorName := fmt.Sprintf("tf-test-conn-%s", acctest.RandString(t, 5))
 	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath)
 	projectNumber := os.Getenv("GOOGLE_PROJECT_NUMBER")
 	defer os.Remove(zipFilePath) // clean up
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -659,20 +444,20 @@ func TestAccCloudFunctionsFunction_vpcConnector(t *testing.T) {
 func TestAccCloudFunctionsFunction_secretEnvVar(t *testing.T) {
 	t.Parallel()
 
-	randomSecretSuffix := RandString(t, 10)
+	randomSecretSuffix := acctest.RandString(t, 10)
 	accountId := fmt.Sprintf("tf-test-account-%s", randomSecretSuffix)
 	secretName := fmt.Sprintf("tf-test-secret-%s", randomSecretSuffix)
 	versionName1 := fmt.Sprintf("tf-test-version1-%s", randomSecretSuffix)
 	versionName2 := fmt.Sprintf("tf-test-version2-%s", randomSecretSuffix)
-	bucketName := fmt.Sprintf("tf-test-bucket-%d", RandInt(t))
+	bucketName := fmt.Sprintf("tf-test-bucket-%d", acctest.RandInt(t))
 	functionName := fmt.Sprintf("tf-test-%s", randomSecretSuffix)
 	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testSecretEnvVarFunctionPath)
 	funcResourceName := "google_cloudfunctions_function.function"
 	defer os.Remove(zipFilePath) // clean up
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -701,20 +486,20 @@ func TestAccCloudFunctionsFunction_secretMount(t *testing.T) {
 	t.Parallel()
 
 	projectNumber := os.Getenv("GOOGLE_PROJECT_NUMBER")
-	randomSecretSuffix := RandString(t, 10)
+	randomSecretSuffix := acctest.RandString(t, 10)
 	accountId := fmt.Sprintf("tf-test-account-%s", randomSecretSuffix)
 	secretName := fmt.Sprintf("tf-test-secret-%s", randomSecretSuffix)
 	versionName1 := fmt.Sprintf("tf-test-version1-%s", randomSecretSuffix)
 	versionName2 := fmt.Sprintf("tf-test-version2-%s", randomSecretSuffix)
-	bucketName := fmt.Sprintf("tf-test-bucket-%d", RandInt(t))
+	bucketName := fmt.Sprintf("tf-test-bucket-%d", acctest.RandInt(t))
 	functionName := fmt.Sprintf("tf-test-%s", randomSecretSuffix)
 	zipFilePath := createZIPArchiveForCloudFunctionSource(t, testSecretVolumesMountFunctionPath)
 	funcResourceName := "google_cloudfunctions_function.function"
 	defer os.Remove(zipFilePath) // clean up
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudFunctionsFunctionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -741,7 +526,7 @@ func TestAccCloudFunctionsFunction_secretMount(t *testing.T) {
 
 func testAccCheckCloudFunctionsFunctionDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_cloudfunctions_function" {
@@ -751,12 +536,12 @@ func testAccCheckCloudFunctionsFunctionDestroyProducer(t *testing.T) func(s *ter
 			name := rs.Primary.Attributes["name"]
 			project := rs.Primary.Attributes["project"]
 			region := rs.Primary.Attributes["region"]
-			cloudFuncId := &cloudFunctionId{
+			cloudFuncId := &tpgcloudfunctions.CloudFunctionId{
 				Project: project,
 				Region:  region,
 				Name:    name,
 			}
-			_, err := config.NewCloudFunctionsClient(config.UserAgent).Projects.Locations.Functions.Get(cloudFuncId.cloudFunctionId()).Do()
+			_, err := config.NewCloudFunctionsClient(config.UserAgent).Projects.Locations.Functions.Get(cloudFuncId.CloudFunctionId()).Do()
 			if err == nil {
 				return fmt.Errorf("Function still exists")
 			}
@@ -777,16 +562,16 @@ func testAccCloudFunctionsFunctionExists(t *testing.T, n string, function *cloud
 		if rs.Primary.ID == "" {
 			return fmt.Errorf("No ID is set")
 		}
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		name := rs.Primary.Attributes["name"]
 		project := rs.Primary.Attributes["project"]
 		region := rs.Primary.Attributes["region"]
-		cloudFuncId := &cloudFunctionId{
+		cloudFuncId := &tpgcloudfunctions.CloudFunctionId{
 			Project: project,
 			Region:  region,
 			Name:    name,
 		}
-		found, err := config.NewCloudFunctionsClient(config.UserAgent).Projects.Locations.Functions.Get(cloudFuncId.cloudFunctionId()).Do()
+		found, err := config.NewCloudFunctionsClient(config.UserAgent).Projects.Locations.Functions.Get(cloudFuncId.CloudFunctionId()).Do()
 		if err != nil {
 			return fmt.Errorf("CloudFunctions Function not present")
 		}
@@ -888,28 +673,6 @@ func createZIPArchiveForCloudFunctionSource(t *testing.T, sourcePath string) str
 		t.Fatal(err.Error())
 	}
 	return tmpfile.Name()
-}
-
-func sweepCloudFunctionSourceZipArchives(_ string) error {
-	files, err := ioutil.ReadDir(os.TempDir())
-	if err != nil {
-		log.Printf("Error reading files: %s", err)
-		return nil
-	}
-	for _, f := range files {
-		if f.IsDir() {
-			continue
-		}
-		if strings.HasPrefix(f.Name(), testFunctionsSourceArchivePrefix) {
-			filepath := fmt.Sprintf("%s/%s", os.TempDir(), f.Name())
-			if err := os.Remove(filepath); err != nil {
-				log.Printf("Error removing files: %s", err)
-				return nil
-			}
-			log.Printf("[INFO] cloud functions sweeper removed old file %s", filepath)
-		}
-	}
-	return nil
 }
 
 func testAccCloudFunctionsFunction_basic(functionName string, bucketName string, zipFilePath string) string {

@@ -149,10 +149,10 @@ spec:
                   type: object
                 type: array
               createTime:
-                description: "Creation timestamp of a Certificate Map Entry. Timestamp
-                  in RFC3339 UTC \"Zulu\" format, \nwith nanosecond resolution and
-                  up to nine fractional digits. \nExamples: \"2014-10-02T15:01:23Z\"
-                  and \"2014-10-02T15:01:23.045123456Z\"."
+                description: |-
+                  Creation timestamp of a Certificate Map Entry. Timestamp in RFC3339 UTC "Zulu" format,
+                  with nanosecond resolution and up to nine fractional digits.
+                  Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -165,10 +165,10 @@ spec:
                 description: A serving state of this Certificate Map Entry.
                 type: string
               updateTime:
-                description: "Update timestamp of a Certificate Map Entry. Timestamp
-                  in RFC3339 UTC \"Zulu\" format, \nwith nanosecond resolution and
-                  up to nine fractional digits. \nExamples: \"2014-10-02T15:01:23Z\"
-                  and \"2014-10-02T15:01:23.045123456Z\"."
+                description: |-
+                  Update timestamp of a Certificate Map Entry. Timestamp in RFC3339 UTC "Zulu" format,
+                  with nanosecond resolution and up to nine fractional digits.
+                  Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
                 type: string
             type: object
         required:

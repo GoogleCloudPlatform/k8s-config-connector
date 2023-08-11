@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -6,18 +8,21 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute"
 )
 
 func TestAccComputeAttachedDisk_basic(t *testing.T) {
 	t.Parallel()
 
-	diskName := fmt.Sprintf("tf-test-disk-%d", RandInt(t))
-	instanceName := fmt.Sprintf("tf-test-inst-%d", RandInt(t))
-	importID := fmt.Sprintf("%s/us-central1-a/%s/%s", GetTestProjectFromEnv(), instanceName, diskName)
+	diskName := fmt.Sprintf("tf-test-disk-%d", acctest.RandInt(t))
+	instanceName := fmt.Sprintf("tf-test-inst-%d", acctest.RandInt(t))
+	importID := fmt.Sprintf("%s/us-central1-a/%s/%s", envvar.GetTestProjectFromEnv(), instanceName, diskName)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		// Check destroy isn't a good test here, see comment on testCheckAttachedDiskIsNowDetached
 		CheckDestroy: nil,
 		Steps: []resource.TestStep{
@@ -43,13 +48,13 @@ func TestAccComputeAttachedDisk_basic(t *testing.T) {
 func TestAccComputeAttachedDisk_full(t *testing.T) {
 	t.Parallel()
 
-	diskName := fmt.Sprintf("tf-test-%d", RandInt(t))
-	instanceName := fmt.Sprintf("tf-test-%d", RandInt(t))
-	importID := fmt.Sprintf("%s/us-central1-a/%s/%s", GetTestProjectFromEnv(), instanceName, diskName)
+	diskName := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	instanceName := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	importID := fmt.Sprintf("%s/us-central1-a/%s/%s", envvar.GetTestProjectFromEnv(), instanceName, diskName)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		// Check destroy isn't a good test here, see comment on testCheckAttachedDiskIsNowDetached
 		CheckDestroy: nil,
 		Steps: []resource.TestStep{
@@ -70,13 +75,13 @@ func TestAccComputeAttachedDisk_full(t *testing.T) {
 func TestAccComputeAttachedDisk_region(t *testing.T) {
 	t.Parallel()
 
-	diskName := fmt.Sprintf("tf-test-%d", RandInt(t))
-	instanceName := fmt.Sprintf("tf-test-%d", RandInt(t))
-	importID := fmt.Sprintf("%s/us-central1-a/%s/%s", GetTestProjectFromEnv(), instanceName, diskName)
+	diskName := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	instanceName := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	importID := fmt.Sprintf("%s/us-central1-a/%s/%s", envvar.GetTestProjectFromEnv(), instanceName, diskName)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		// Check destroy isn't a good test here, see comment on testCheckAttachedDiskIsNowDetached
 		CheckDestroy: nil,
 		Steps: []resource.TestStep{
@@ -97,13 +102,13 @@ func TestAccComputeAttachedDisk_region(t *testing.T) {
 func TestAccComputeAttachedDisk_count(t *testing.T) {
 	t.Parallel()
 
-	diskPrefix := fmt.Sprintf("tf-test-%d", RandInt(t))
-	instanceName := fmt.Sprintf("tf-test-%d", RandInt(t))
+	diskPrefix := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	instanceName := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 	count := 2
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             nil,
 		Steps: []resource.TestStep{
 			{
@@ -126,14 +131,14 @@ func TestAccComputeAttachedDisk_count(t *testing.T) {
 // situation where the detach fails but since the instance/disk get destroyed we wouldn't notice.
 func testCheckAttachedDiskIsNowDetached(t *testing.T, instanceName, diskName string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
-		instance, err := config.NewComputeClient(config.UserAgent).Instances.Get(GetTestProjectFromEnv(), "us-central1-a", instanceName).Do()
+		instance, err := config.NewComputeClient(config.UserAgent).Instances.Get(envvar.GetTestProjectFromEnv(), "us-central1-a", instanceName).Do()
 		if err != nil {
 			return err
 		}
 
-		ad := findDiskByName(instance.Disks, diskName)
+		ad := compute.FindDiskByName(instance.Disks, diskName)
 		if ad != nil {
 			return fmt.Errorf("compute disk is still attached to compute instance")
 		}
@@ -144,9 +149,9 @@ func testCheckAttachedDiskIsNowDetached(t *testing.T, instanceName, diskName str
 
 func testCheckAttachedDiskContainsManyDisks(t *testing.T, instanceName string, count int) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
-		instance, err := config.NewComputeClient(config.UserAgent).Instances.Get(GetTestProjectFromEnv(), "us-central1-a", instanceName).Do()
+		instance, err := config.NewComputeClient(config.UserAgent).Instances.Get(envvar.GetTestProjectFromEnv(), "us-central1-a", instanceName).Do()
 		if err != nil {
 			return err
 		}

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -19,26 +22,29 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDNSManagedZoneIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDNSManagedZoneIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_dns_managed_zone_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/managedZones/%s roles/viewer", GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-zone-googlecloudexample%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/managedZones/%s roles/viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-zone-googlecloudexample%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -48,7 +54,7 @@ func TestAccDNSManagedZoneIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dns_managed_zone_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/managedZones/%s roles/viewer", GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-zone-googlecloudexample%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/managedZones/%s roles/viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-zone-googlecloudexample%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -60,13 +66,13 @@ func TestAccDNSManagedZoneIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -74,7 +80,7 @@ func TestAccDNSManagedZoneIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dns_managed_zone_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/managedZones/%s roles/viewer user:admin@hashicorptest.com", GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-zone-googlecloudexample%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/managedZones/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-zone-googlecloudexample%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -86,20 +92,21 @@ func TestAccDNSManagedZoneIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDNSManagedZoneIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_dns_managed_zone_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_dns_managed_zone_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/managedZones/%s", GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-zone-googlecloudexample%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/managedZones/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-zone-googlecloudexample%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -108,7 +115,7 @@ func TestAccDNSManagedZoneIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dns_managed_zone_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/managedZones/%s", GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-zone-googlecloudexample%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/managedZones/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("tf-test-example-zone-googlecloudexample%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -117,7 +124,7 @@ func TestAccDNSManagedZoneIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccDNSManagedZoneIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 # to setup a web-server
 resource "google_compute_instance" "default" {
   name         = "tf-test-dns-compute-instance%{random_suffix}"
@@ -183,7 +190,7 @@ resource "google_dns_managed_zone_iam_member" "foo" {
 }
 
 func testAccDNSManagedZoneIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 # to setup a web-server
 resource "google_compute_instance" "default" {
   name         = "tf-test-dns-compute-instance%{random_suffix}"
@@ -251,11 +258,19 @@ resource "google_dns_managed_zone_iam_policy" "foo" {
   managed_zone = google_dns_managed_zone.default.name
   policy_data = data.google_iam_policy.foo.policy_data
 }
+
+data "google_dns_managed_zone_iam_policy" "foo" {
+  project = google_dns_managed_zone.default.project
+  managed_zone = google_dns_managed_zone.default.name
+  depends_on = [
+    google_dns_managed_zone_iam_policy.foo
+  ]
+}
 `, context)
 }
 
 func testAccDNSManagedZoneIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 # to setup a web-server
 resource "google_compute_instance" "default" {
   name         = "tf-test-dns-compute-instance%{random_suffix}"
@@ -323,7 +338,7 @@ resource "google_dns_managed_zone_iam_policy" "foo" {
 }
 
 func testAccDNSManagedZoneIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 # to setup a web-server
 resource "google_compute_instance" "default" {
   name         = "tf-test-dns-compute-instance%{random_suffix}"
@@ -389,7 +404,7 @@ resource "google_dns_managed_zone_iam_binding" "foo" {
 }
 
 func testAccDNSManagedZoneIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 # to setup a web-server
 resource "google_compute_instance" "default" {
   name         = "tf-test-dns-compute-instance%{random_suffix}"

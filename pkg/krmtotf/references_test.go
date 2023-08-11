@@ -35,7 +35,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-func TestResolveResourceReference(t *testing.T) {
+func TestResolveResourceReferenceToTFResource(t *testing.T) {
 	testId := testvariable.NewUniqueId()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Foo"}
@@ -642,7 +642,293 @@ func TestResolveResourceReference(t *testing.T) {
 	}
 }
 
-func TestResolveResourceReferenceWithResourceID(t *testing.T) {
+func TestResolveResourceReferenceToDCLResourceWithResourceID(t *testing.T) {
+	testId := testvariable.NewUniqueId()
+	c := mgr.GetClient()
+	gvk := schema.GroupVersionKind{
+		Group:   "test1.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "Foo",
+	}
+	ns := testId
+	testcontroller.EnsureNamespaceExists(c, ns)
+	resource := &Resource{}
+	resource.SetGroupVersionKind(gvk)
+	resource.SetNamespace(ns)
+	tfField := "bar_field"
+	tests := []struct {
+		name                string
+		config              map[string]interface{}
+		referencedResources []*unstructured.Unstructured
+		refConfig           v1alpha1.ReferenceConfig
+		expectedFinalConfig map[string]interface{}
+		hasError            bool
+	}{
+		{
+			name: "refResource with spec.resourceID",
+			config: map[string]interface{}{
+				"userSpecifiedResourceIDKindRef": map[string]interface{}{
+					"name": "ref-resource-with-id",
+				},
+			},
+			referencedResources: []*unstructured.Unstructured{
+				{
+					Object: map[string]interface{}{
+						"apiVersion": "test4.cnrm.cloud.google.com/v1alpha1",
+						"kind":       "Test4DCLResourceUserSpecifiedResourceIDKind",
+						"metadata": map[string]interface{}{
+							"name":      "ref-resource-with-id",
+							"namespace": ns,
+						},
+						"spec": map[string]interface{}{
+							"resourceID": "user-specified-id",
+						},
+						"status": map[string]interface{}{
+							"conditions": []interface{}{
+								map[string]interface{}{
+									"type":   "Ready",
+									"status": corev1.ConditionTrue,
+								},
+							},
+						},
+					},
+				},
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: tfField,
+				TypeConfig: v1alpha1.TypeConfig{
+					Key: "userSpecifiedResourceIDKindRef",
+					GVK: schema.GroupVersionKind{
+						Group:   "test4.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test4DCLResourceUserSpecifiedResourceIDKind",
+					},
+					DCLBasedResource: true,
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"barField": "user-specified-id",
+			},
+		},
+		{
+			name: "reference config has a value template",
+			config: map[string]interface{}{
+				"userSpecifiedResourceIDKindRef": map[string]interface{}{
+					"name": "ref-resource-with-id",
+				},
+			},
+			referencedResources: []*unstructured.Unstructured{
+				{
+					Object: map[string]interface{}{
+						"apiVersion": "test4.cnrm.cloud.google.com/v1alpha1",
+						"kind":       "Test4DCLResourceUserSpecifiedResourceIDKind",
+						"metadata": map[string]interface{}{
+							"name":      "ref-resource-with-id",
+							"namespace": ns,
+						},
+						"spec": map[string]interface{}{
+							"resourceID": "user-specified-id",
+						},
+						"status": map[string]interface{}{
+							"conditions": []interface{}{
+								map[string]interface{}{
+									"type":   "Ready",
+									"status": corev1.ConditionTrue,
+								},
+							},
+						},
+					},
+				},
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: tfField,
+				TypeConfig: v1alpha1.TypeConfig{
+					Key: "userSpecifiedResourceIDKindRef",
+					GVK: schema.GroupVersionKind{
+						Group:   "test4.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test4DCLResourceUserSpecifiedResourceIDKind",
+					},
+					ValueTemplate:    "user:{{value}}",
+					DCLBasedResource: true,
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"barField": "user:user-specified-id",
+			},
+		},
+		{
+			name: "uses the unresolved value of spec.resourceID when " +
+				"reference config has a value template referencing the " +
+				"target field via '{{value}}'",
+			config: map[string]interface{}{
+				"serverGeneratedResourceIDKindRef": map[string]interface{}{
+					"name": "ref-resource-with-value-template",
+				},
+			},
+			referencedResources: []*unstructured.Unstructured{
+				{
+					Object: map[string]interface{}{
+						"apiVersion": "test4.cnrm.cloud.google.com/v1alpha1",
+						"kind":       "Test4DCLResourceServerGeneratedResourceIDKind",
+						"metadata": map[string]interface{}{
+							"name":      "ref-resource-with-value-template",
+							"namespace": ns,
+						},
+						"spec": map[string]interface{}{
+							"resourceID": "server-generated-id",
+						},
+						"status": map[string]interface{}{
+							"conditions": []interface{}{
+								map[string]interface{}{
+									"type":   "Ready",
+									"status": corev1.ConditionTrue,
+								},
+							},
+						},
+					},
+				},
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: tfField,
+				TypeConfig: v1alpha1.TypeConfig{
+					Key: "serverGeneratedResourceIDKindRef",
+					GVK: schema.GroupVersionKind{
+						Group:   "test4.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test4DCLResourceServerGeneratedResourceIDKind",
+					},
+					ValueTemplate:    "user:{{value}}",
+					DCLBasedResource: true,
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"barField": "user:server-generated-id",
+			},
+		},
+		{
+			name: "uses the target field rather than the resolved value of " +
+				"spec.resourceID when reference config has a value template " +
+				"explicitly referencing the target field of resource ID",
+			config: map[string]interface{}{
+				"serverGeneratedResourceIDKindRef": map[string]interface{}{
+					"name": "ref-resource-with-status-field",
+				},
+			},
+			referencedResources: []*unstructured.Unstructured{
+				{
+					Object: map[string]interface{}{
+						"apiVersion": "test4.cnrm.cloud.google.com/v1alpha1",
+						"kind":       "Test4DCLResourceServerGeneratedResourceIDKind",
+						"metadata": map[string]interface{}{
+							"name":      "ref-resource-with-status-field",
+							"namespace": ns,
+						},
+						"spec": map[string]interface{}{
+							"resourceID": "server-generated-id",
+						},
+						"status": map[string]interface{}{
+							"conditions": []interface{}{
+								map[string]interface{}{
+									"type":   "Ready",
+									"status": corev1.ConditionTrue,
+								},
+							},
+							"resourceIdField": "the-correct-id",
+						},
+					},
+				},
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: tfField,
+				TypeConfig: v1alpha1.TypeConfig{
+					Key: "serverGeneratedResourceIDKindRef",
+					GVK: schema.GroupVersionKind{
+						Group:   "test4.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test4DCLResourceServerGeneratedResourceIDKind",
+					},
+					ValueTemplate:    "user:{{resource_id_field}}",
+					DCLBasedResource: true,
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"barField": "user:the-correct-id",
+			},
+		},
+		{
+			name: "refResource empty spec.resourceID",
+			config: map[string]interface{}{
+				"userSpecifiedResourceIDKindRef": map[string]interface{}{
+					"name": "ref-resource-with-empty-id",
+				},
+			},
+			referencedResources: []*unstructured.Unstructured{
+				{
+					Object: map[string]interface{}{
+						"apiVersion": "test4.cnrm.cloud.google.com/v1alpha1",
+						"kind":       "Test4DCLResourceUserSpecifiedResourceIDKind",
+						"metadata": map[string]interface{}{
+							"name":      "ref-resource-with-empty-id",
+							"namespace": ns,
+						},
+						"spec": map[string]interface{}{
+							"resourceID": "",
+						},
+						"status": map[string]interface{}{
+							"conditions": []interface{}{
+								map[string]interface{}{
+									"type":   "Ready",
+									"status": corev1.ConditionTrue,
+								},
+							},
+						},
+					},
+				},
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: tfField,
+				TypeConfig: v1alpha1.TypeConfig{
+					Key: "userSpecifiedResourceIDKindRef",
+					GVK: schema.GroupVersionKind{
+						Group:   "test4.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test4DCLResourceUserSpecifiedResourceIDKind",
+					},
+					DCLBasedResource: true,
+				},
+			},
+			hasError: true,
+		},
+	}
+	smLoader := testservicemappingloader.NewForUnitTest(t)
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			test.EnsureObjectsExist(t, tc.referencedResources, c)
+			config := tc.config
+			path := strings.Split(tc.refConfig.TFField, ".")
+			err := ResolveResourceReference(path, config, tc.refConfig,
+				resource, c, smLoader)
+			if tc.hasError {
+				if err == nil {
+					t.Fatalf("got nil, want an error")
+				}
+				return
+			} else if err != nil {
+				t.Fatalf("error resolving resource references that "+
+					"support resource ID field: %v", err)
+				return
+			}
+			if got, want := config, tc.expectedFinalConfig; !reflect.DeepEqual(got, want) {
+				t.Fatalf("got: %v, want: %v", got, want)
+			}
+		})
+	}
+}
+
+func TestResolveResourceReferenceToTFResourceWithResourceID(t *testing.T) {
 	testId := testvariable.NewUniqueId()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{
@@ -1012,7 +1298,147 @@ func TestResolveResourceReferenceWithResourceID(t *testing.T) {
 	}
 }
 
-func TestResource_GetReferencedResource(t *testing.T) {
+func TestResource_GetReferencedDCLResource(t *testing.T) {
+	testId := testvariable.NewUniqueId()
+	c := mgr.GetClient()
+	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Foo"}
+	ns1 := testId + "-1"
+	ns2 := testId + "-2"
+	testcontroller.EnsureNamespaceExistsT(t, c, ns1)
+	testcontroller.EnsureNamespaceExistsT(t, c, ns2)
+	resource := &Resource{}
+	resource.SetGroupVersionKind(gvk)
+	resource.SetNamespace(ns1)
+	tests := []struct {
+		name               string
+		referencedResource *unstructured.Unstructured
+		reference          *v1alpha1.ResourceReference
+		refConfig          v1alpha1.ReferenceConfig
+		shouldError        bool
+	}{
+		{
+			name: "reference in same namespace",
+			referencedResource: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
+					"kind":       "Test1Bar",
+					"metadata": map[string]interface{}{
+						"name":      "reference-in-same-namespace",
+						"namespace": ns1,
+					},
+				},
+			},
+			reference: &v1alpha1.ResourceReference{
+				Name: "reference-in-same-namespace",
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TypeConfig: v1alpha1.TypeConfig{
+					GVK: schema.GroupVersionKind{
+						Group:   "test1.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test1Bar",
+					},
+					DCLBasedResource: true,
+				},
+			},
+		},
+		{
+			name: "reference in different namespace",
+			referencedResource: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
+					"kind":       "Test1Bar",
+					"metadata": map[string]interface{}{
+						"name":      "reference-in-different-namespace",
+						"namespace": ns2,
+					},
+				},
+			},
+			reference: &v1alpha1.ResourceReference{
+				Name:      "reference-in-different-namespace",
+				Namespace: ns2,
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TypeConfig: v1alpha1.TypeConfig{
+					GVK: schema.GroupVersionKind{
+						Group:   "test1.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test1Bar",
+					},
+					DCLBasedResource: true,
+				},
+			},
+		},
+		{
+			name: "cross-group reference",
+			referencedResource: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "test2.cnrm.cloud.google.com/v1alpha1",
+					"kind":       "Test2Baz",
+					"metadata": map[string]interface{}{
+						"name":      "cross-group-reference",
+						"namespace": ns1,
+					},
+				},
+			},
+			reference: &v1alpha1.ResourceReference{
+				Name: "cross-group-reference",
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TypeConfig: v1alpha1.TypeConfig{
+					GVK: schema.GroupVersionKind{
+						Group:   "test2.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test2Baz",
+					},
+					DCLBasedResource: true,
+				},
+			},
+		},
+		{
+			name: "external reference",
+			reference: &v1alpha1.ResourceReference{
+				External: "external-reference",
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TypeConfig: v1alpha1.TypeConfig{
+					GVK: schema.GroupVersionKind{
+						Group:   "test1.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test1Bar",
+					},
+					DCLBasedResource: true,
+				},
+			},
+			shouldError: true,
+		},
+	}
+	smLoader := testservicemappingloader.NewForUnitTest(t)
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			if tc.referencedResource != nil {
+				if err := c.Create(context.Background(), tc.referencedResource); err != nil {
+					t.Fatalf("error creating referenced resource in API server: %v", err)
+				}
+			}
+			rsrc, err := GetReferencedResource(resource, tc.refConfig.TypeConfig, tc.reference, c, smLoader)
+			if err != nil {
+				if tc.shouldError {
+					return
+				}
+				t.Fatalf("error getting referenced resource: %v", err)
+			}
+			if rsrc.GetName() != tc.referencedResource.GetName() {
+				t.Fatalf("got unexpected referenced resource %v", rsrc.GetName())
+			}
+			if rsrc.ResourceConfig.Kind != "" {
+				t.Fatalf("got the ResourceConfig Kind, but wanted an empty string")
+			}
+		})
+	}
+}
+
+func TestResource_GetReferencedTFResource(t *testing.T) {
 	testId := testvariable.NewUniqueId()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Foo"}
@@ -1131,7 +1557,7 @@ func TestResource_GetReferencedResource(t *testing.T) {
 					t.Fatalf("error creating referenced resource in API server: %v", err)
 				}
 			}
-			rsrc, err := GetReferencedResource(resource, tc.refConfig.TypeConfig.GVK, tc.reference, c, smLoader)
+			rsrc, err := GetReferencedResource(resource, tc.refConfig.TypeConfig, tc.reference, c, smLoader)
 			if err != nil {
 				if tc.shouldError {
 					return

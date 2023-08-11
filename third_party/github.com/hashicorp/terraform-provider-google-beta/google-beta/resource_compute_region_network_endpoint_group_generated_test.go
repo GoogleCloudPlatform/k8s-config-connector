@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,6 +24,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupFunctionsExample(t *testing.T) {
@@ -28,12 +35,12 @@ func TestAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupFunction
 
 	context := map[string]interface{}{
 		"zip_path":      createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath),
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionNetworkEndpointGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -50,7 +57,7 @@ func TestAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupFunction
 }
 
 func testAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupFunctionsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 // Cloud Functions Example
 resource "google_compute_region_network_endpoint_group" "function_neg" {
   name                  = "tf-test-function-neg%{random_suffix}"
@@ -91,12 +98,12 @@ func TestAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupCloudrun
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionNetworkEndpointGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -113,7 +120,7 @@ func TestAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupCloudrun
 }
 
 func testAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupCloudrunExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 // Cloud Run Example
 resource "google_compute_region_network_endpoint_group" "cloudrun_neg" {
   name                  = "tf-test-cloudrun-neg%{random_suffix}"
@@ -148,12 +155,12 @@ func TestAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupAppengin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionNetworkEndpointGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -170,7 +177,7 @@ func TestAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupAppengin
 }
 
 func testAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupAppengineExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 // App Engine Example
 resource "google_compute_region_network_endpoint_group" "appengine_neg" {
   name                  = "tf-test-appengine-neg%{random_suffix}"
@@ -228,7 +235,7 @@ resource "google_app_engine_flexible_app_version" "appengine_neg" {
     }
   }
 
-  noop_on_destroy = true
+  delete_service_on_destroy = true
 }
 
 resource "google_storage_bucket" "appengine_neg" {
@@ -248,12 +255,12 @@ func TestAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupPscExamp
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionNetworkEndpointGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -270,7 +277,7 @@ func TestAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupPscExamp
 }
 
 func testAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupPscExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_network_endpoint_group" "psc_neg" {
   name                  = "tf-test-psc-neg%{random_suffix}"
   region                = "asia-northeast3"
@@ -285,12 +292,12 @@ func TestAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupPscServi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionNetworkEndpointGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -307,7 +314,7 @@ func TestAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupPscServi
 }
 
 func testAccComputeRegionNetworkEndpointGroup_regionNetworkEndpointGroupPscServiceAttachmentExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   name = "tf-test-psc-network%{random_suffix}"
 }
@@ -388,9 +395,9 @@ func testAccCheckComputeRegionNetworkEndpointGroupDestroyProducer(t *testing.T) 
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/networkEndpointGroups/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/networkEndpointGroups/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -401,7 +408,13 @@ func testAccCheckComputeRegionNetworkEndpointGroupDestroyProducer(t *testing.T) 
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeRegionNetworkEndpointGroup still exists at %s", url)
 			}

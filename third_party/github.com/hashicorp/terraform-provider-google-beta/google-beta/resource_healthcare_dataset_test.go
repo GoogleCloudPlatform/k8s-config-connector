@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -6,6 +8,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/healthcare"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccHealthcareDatasetIdParsing(t *testing.T) {
@@ -16,7 +22,7 @@ func TestAccHealthcareDatasetIdParsing(t *testing.T) {
 		ExpectedError       bool
 		ExpectedTerraformId string
 		ExpectedDatasetId   string
-		Config              *Config
+		Config              *transport_tpg.Config
 	}{
 		"id is in project/location/datasetName format": {
 			ImportId:            "test-project/us-central1/test-dataset",
@@ -35,17 +41,17 @@ func TestAccHealthcareDatasetIdParsing(t *testing.T) {
 			ExpectedError:       false,
 			ExpectedTerraformId: "test-project/us-central1/test-dataset",
 			ExpectedDatasetId:   "projects/test-project/locations/us-central1/datasets/test-dataset",
-			Config:              &Config{Project: "test-project"},
+			Config:              &transport_tpg.Config{Project: "test-project"},
 		},
 		"id is in location/datasetName format without project in config": {
 			ImportId:      "us-central1/test-dataset",
 			ExpectedError: true,
-			Config:        &Config{Project: ""},
+			Config:        &transport_tpg.Config{Project: ""},
 		},
 	}
 
 	for tn, tc := range cases {
-		datasetId, err := ParseHealthcareDatasetId(tc.ImportId, tc.Config)
+		datasetId, err := healthcare.ParseHealthcareDatasetId(tc.ImportId, tc.Config)
 
 		if tc.ExpectedError && err == nil {
 			t.Fatalf("bad: %s, expected an error", tn)
@@ -72,13 +78,13 @@ func TestAccHealthcareDataset_basic(t *testing.T) {
 	t.Parallel()
 
 	location := "us-central1"
-	datasetName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	datasetName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 	timeZone := "America/New_York"
 	resourceName := "google_healthcare_dataset.dataset"
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckHealthcareDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -111,9 +117,9 @@ func testAccCheckGoogleHealthcareDatasetUpdate(t *testing.T, timeZone string) re
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			gcpResourceUri, err := replaceVarsForTest(config, rs, "projects/{{project}}/locations/{{location}}/datasets/{{name}}")
+			gcpResourceUri, err := tpgresource.ReplaceVarsForTest(config, rs, "projects/{{project}}/locations/{{location}}/datasets/{{name}}")
 			if err != nil {
 				return err
 			}

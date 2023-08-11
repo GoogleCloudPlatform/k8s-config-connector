@@ -134,18 +134,16 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 			logger.Info("resource does not yet have status or conditions", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
 		}
-		cond := dynamic.GetConditions(t.T, u)
-		if len(cond) == 0 {
-			return false, nil
-		}
-		c := cond[0]
-		if c.Reason == "UpToDate" || c.Status == "True" {
-			logger.Info("resource is ready", "kind", u.GetKind(), "name", u.GetName())
-			return true, nil
+		conditions := dynamic.GetConditions(t.T, u)
+		for _, c := range conditions {
+			if c.Type == "Ready" && c.Status == "True" {
+				logger.Info("resource is ready", "kind", u.GetKind(), "name", u.GetName())
+				return true, nil
+			}
 		}
 		// This resource is not completely ready. Let's keep polling.
 		logger.Info("resource is not ready", "kind", u.GetKind(), "name", u.GetName(),
-			"status", c.Status, "reason", c.Reason, "message", c.Message)
+			"conditions", conditions)
 		return false, nil
 	})
 	if err == nil {
@@ -165,8 +163,7 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 		t.Errorf("%v, no conditions on resource", baseMsg)
 		return
 	}
-	c := conditions[0]
-	t.Errorf("%v, final status.conditions[0] status '%v' and reason '%v': %v", baseMsg, c.Status, c.Reason, c.Message)
+	t.Errorf("%v, final status.conditions: %v", baseMsg, conditions)
 }
 
 func cleanup(t *Harness, unstructs []*unstructured.Unstructured) {
@@ -359,6 +356,56 @@ func replaceResourceNamesWithUniqueIDs(t *testing.T, unstructs []*unstructured.U
 		newUnstructs = append(newUnstructs, newUnstruct)
 	}
 	return newUnstructs
+}
+
+func updateProjectResourceWithExistingResourceIDs(t *testing.T, unstructs []*unstructured.Unstructured) []*unstructured.Unstructured {
+	// Hack: set abandon on delete annotation for dependent project as dynamically creation of billable GCP project is not supported
+	for _, u := range unstructs {
+		kind := u.GetKind()
+		if kind == "Project" {
+			b, found, err := unstructured.NestedString(u.Object, "spec", "billingAccountRef", "external")
+			if err != nil {
+				t.Fatalf("error getting billingAccountRef: %v", err)
+			}
+			// We cannot dynamically create GCP project with billingAccountRef, acquring pre-created project instead.
+			if found && b != "" {
+				annotations := u.GetAnnotations()
+				if annotations == nil {
+					annotations = make(map[string]string)
+				}
+				annotations["cnrm.cloud.google.com/deletion-policy"] = "abandon"
+				u.SetAnnotations(annotations)
+
+				var dp string
+				if annotations["cnrm.cloud.google.com/auto-create-network"] == "false" {
+					// We use a pre-created project without network
+					dp = testgcp.GetDependentNoNetworkProjectID(t)
+				} else {
+					_, projectInFolder, err := unstructured.NestedString(u.Object, "spec", "folderRef", "external")
+					if err != nil {
+						t.Fatalf("error getting folderRef: %v", err)
+					}
+					_, projectInOrg, err := unstructured.NestedString(u.Object, "spec", "organizationRef", "external")
+					if err != nil {
+						t.Fatalf("error getting organizationRef: %v", err)
+					}
+
+					if projectInFolder {
+						dp = testgcp.GetDependentFolderProjectID(t)
+					} else if projectInOrg {
+						dp = testgcp.GetDependentOrgProjectID(t)
+					}
+				}
+
+				if err := unstructured.SetNestedField(u.Object, dp, strings.Split(k8s.ResourceIDFieldPath, ".")...); err != nil {
+					t.Fatalf("error setting resourceID for dependent project: %v", err)
+				}
+			}
+
+		}
+	}
+
+	return unstructs
 }
 
 // generateNewFolderDisplayName returns a string that can be used as a new

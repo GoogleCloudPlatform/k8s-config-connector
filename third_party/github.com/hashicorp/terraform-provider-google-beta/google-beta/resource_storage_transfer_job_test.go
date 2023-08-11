@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -6,26 +8,28 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccStorageTransferJob_basic(t *testing.T) {
 	t.Parallel()
 
-	testDataSourceBucketName := RandString(t, 10)
-	testDataSinkName := RandString(t, 10)
-	testTransferJobDescription := RandString(t, 10)
-	testUpdatedDataSourceBucketName := RandString(t, 10)
-	testUpdatedDataSinkBucketName := RandString(t, 10)
-	testUpdatedTransferJobDescription := RandString(t, 10)
-	testPubSubTopicName := fmt.Sprintf("tf-test-topic-%s", RandString(t, 10))
+	testDataSourceBucketName := acctest.RandString(t, 10)
+	testDataSinkName := acctest.RandString(t, 10)
+	testTransferJobDescription := acctest.RandString(t, 10)
+	testUpdatedDataSourceBucketName := acctest.RandString(t, 10)
+	testUpdatedDataSinkBucketName := acctest.RandString(t, 10)
+	testUpdatedTransferJobDescription := acctest.RandString(t, 10)
+	testPubSubTopicName := fmt.Sprintf("tf-test-topic-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageTransferJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccStorageTransferJob_omitNotificationConfig(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription),
+				Config: testAccStorageTransferJob_omitNotificationConfig(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -33,7 +37,7 @@ func TestAccStorageTransferJob_basic(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_omitSchedule(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription),
+				Config: testAccStorageTransferJob_omitSchedule(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -41,7 +45,7 @@ func TestAccStorageTransferJob_basic(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_basic(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicName),
+				Config: testAccStorageTransferJob_basic(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -49,7 +53,7 @@ func TestAccStorageTransferJob_basic(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_basic(GetTestProjectFromEnv(), testUpdatedDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicName),
+				Config: testAccStorageTransferJob_basic(envvar.GetTestProjectFromEnv(), testUpdatedDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -57,7 +61,7 @@ func TestAccStorageTransferJob_basic(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_basic(GetTestProjectFromEnv(), testUpdatedDataSourceBucketName, testUpdatedDataSinkBucketName, testTransferJobDescription, testPubSubTopicName),
+				Config: testAccStorageTransferJob_basic(envvar.GetTestProjectFromEnv(), testUpdatedDataSourceBucketName, testUpdatedDataSinkBucketName, testTransferJobDescription, testPubSubTopicName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -65,7 +69,7 @@ func TestAccStorageTransferJob_basic(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_basic(GetTestProjectFromEnv(), testUpdatedDataSourceBucketName, testUpdatedDataSinkBucketName, testUpdatedTransferJobDescription, testPubSubTopicName),
+				Config: testAccStorageTransferJob_basic(envvar.GetTestProjectFromEnv(), testUpdatedDataSourceBucketName, testUpdatedDataSinkBucketName, testUpdatedTransferJobDescription, testPubSubTopicName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -79,17 +83,17 @@ func TestAccStorageTransferJob_basic(t *testing.T) {
 func TestAccStorageTransferJob_omitScheduleEndDate(t *testing.T) {
 	t.Parallel()
 
-	testDataSourceBucketName := RandString(t, 10)
-	testDataSinkName := RandString(t, 10)
-	testTransferJobDescription := RandString(t, 10)
+	testDataSourceBucketName := acctest.RandString(t, 10)
+	testDataSinkName := acctest.RandString(t, 10)
+	testTransferJobDescription := acctest.RandString(t, 10)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageTransferJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccStorageTransferJob_omitScheduleEndDate(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription),
+				Config: testAccStorageTransferJob_omitScheduleEndDate(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -103,17 +107,17 @@ func TestAccStorageTransferJob_omitScheduleEndDate(t *testing.T) {
 func TestAccStorageTransferJob_posixSource(t *testing.T) {
 	t.Parallel()
 
-	testDataSinkName := RandString(t, 10)
-	testTransferJobDescription := RandString(t, 10)
-	testSourceAgentPoolName := fmt.Sprintf("tf-test-source-agent-pool-%s", RandString(t, 10))
+	testDataSinkName := acctest.RandString(t, 10)
+	testTransferJobDescription := acctest.RandString(t, 10)
+	testSourceAgentPoolName := fmt.Sprintf("tf-test-source-agent-pool-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageTransferJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccStorageTransferJob_posixSource(GetTestProjectFromEnv(), testDataSinkName, testTransferJobDescription, testSourceAgentPoolName),
+				Config: testAccStorageTransferJob_posixSource(envvar.GetTestProjectFromEnv(), testDataSinkName, testTransferJobDescription, testSourceAgentPoolName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -126,17 +130,17 @@ func TestAccStorageTransferJob_posixSource(t *testing.T) {
 func TestAccStorageTransferJob_posixSink(t *testing.T) {
 	t.Parallel()
 
-	testDataSourceName := RandString(t, 10)
-	testTransferJobDescription := RandString(t, 10)
-	testSinkAgentPoolName := fmt.Sprintf("tf-test-sink-agent-pool-%s", RandString(t, 10))
+	testDataSourceName := acctest.RandString(t, 10)
+	testTransferJobDescription := acctest.RandString(t, 10)
+	testSinkAgentPoolName := fmt.Sprintf("tf-test-sink-agent-pool-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageTransferJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccStorageTransferJob_posixSink(GetTestProjectFromEnv(), testDataSourceName, testTransferJobDescription, testSinkAgentPoolName),
+				Config: testAccStorageTransferJob_posixSink(envvar.GetTestProjectFromEnv(), testDataSourceName, testTransferJobDescription, testSinkAgentPoolName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -150,19 +154,19 @@ func TestAccStorageTransferJob_posixSink(t *testing.T) {
 func TestAccStorageTransferJob_transferOptions(t *testing.T) {
 	t.Parallel()
 
-	testDataSourceBucketName := RandString(t, 10)
-	testDataSinkName := RandString(t, 10)
-	testTransferJobDescription := RandString(t, 10)
+	testDataSourceBucketName := acctest.RandString(t, 10)
+	testDataSinkName := acctest.RandString(t, 10)
+	testTransferJobDescription := acctest.RandString(t, 10)
 	testOverwriteWhen := []string{"ALWAYS", "NEVER", "DIFFERENT"}
-	testPubSubTopicName := fmt.Sprintf("tf-test-topic-%s", RandString(t, 10))
+	testPubSubTopicName := fmt.Sprintf("tf-test-topic-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageTransferJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccStorageTransferJob_basic(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicName),
+				Config: testAccStorageTransferJob_basic(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -170,7 +174,7 @@ func TestAccStorageTransferJob_transferOptions(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_transferOptions(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, false, false, false, testOverwriteWhen[0], testPubSubTopicName),
+				Config: testAccStorageTransferJob_transferOptions(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, false, false, false, testOverwriteWhen[0], testPubSubTopicName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -178,7 +182,7 @@ func TestAccStorageTransferJob_transferOptions(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_transferOptions(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, true, true, false, testOverwriteWhen[1], testPubSubTopicName),
+				Config: testAccStorageTransferJob_transferOptions(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, true, true, false, testOverwriteWhen[1], testPubSubTopicName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -186,7 +190,7 @@ func TestAccStorageTransferJob_transferOptions(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_transferOptions(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, true, false, true, testOverwriteWhen[2], testPubSubTopicName),
+				Config: testAccStorageTransferJob_transferOptions(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, true, false, true, testOverwriteWhen[2], testPubSubTopicName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -200,18 +204,18 @@ func TestAccStorageTransferJob_transferOptions(t *testing.T) {
 func TestAccStorageTransferJob_objectConditions(t *testing.T) {
 	t.Parallel()
 
-	testDataSourceBucketName := RandString(t, 10)
-	testDataSinkName := RandString(t, 10)
-	testTransferJobDescription := RandString(t, 10)
-	testPubSubTopicName := fmt.Sprintf("tf-test-topic-%s", RandString(t, 10))
+	testDataSourceBucketName := acctest.RandString(t, 10)
+	testDataSinkName := acctest.RandString(t, 10)
+	testTransferJobDescription := acctest.RandString(t, 10)
+	testPubSubTopicName := fmt.Sprintf("tf-test-topic-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageTransferJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccStorageTransferJob_basic(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicName),
+				Config: testAccStorageTransferJob_basic(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -219,7 +223,7 @@ func TestAccStorageTransferJob_objectConditions(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_objectConditions(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicName),
+				Config: testAccStorageTransferJob_objectConditions(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -233,20 +237,20 @@ func TestAccStorageTransferJob_objectConditions(t *testing.T) {
 func TestAccStorageTransferJob_notificationConfig(t *testing.T) {
 	t.Parallel()
 
-	testDataSourceBucketName := RandString(t, 10)
-	testDataSinkName := RandString(t, 10)
-	testTransferJobDescription := RandString(t, 10)
+	testDataSourceBucketName := acctest.RandString(t, 10)
+	testDataSinkName := acctest.RandString(t, 10)
+	testTransferJobDescription := acctest.RandString(t, 10)
 	noneNotificationConfigPayloadFormat := "NONE"
-	testPubSubTopicName := fmt.Sprintf("tf-test-topic-%s", RandString(t, 10))
-	testPubSubTopicNameUpdate := fmt.Sprintf("tf-test-topic-%s", RandString(t, 10))
+	testPubSubTopicName := fmt.Sprintf("tf-test-topic-%s", acctest.RandString(t, 10))
+	testPubSubTopicNameUpdate := fmt.Sprintf("tf-test-topic-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccStorageTransferJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccStorageTransferJob_basic(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicName),
+				Config: testAccStorageTransferJob_basic(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicName),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -254,7 +258,7 @@ func TestAccStorageTransferJob_notificationConfig(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_basic(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicNameUpdate),
+				Config: testAccStorageTransferJob_basic(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicNameUpdate),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -262,7 +266,7 @@ func TestAccStorageTransferJob_notificationConfig(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_notificationPayloadFormat(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicNameUpdate, noneNotificationConfigPayloadFormat),
+				Config: testAccStorageTransferJob_notificationPayloadFormat(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicNameUpdate, noneNotificationConfigPayloadFormat),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -270,7 +274,7 @@ func TestAccStorageTransferJob_notificationConfig(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_notificationEventTypesUpdate(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicNameUpdate, noneNotificationConfigPayloadFormat),
+				Config: testAccStorageTransferJob_notificationEventTypesUpdate(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicNameUpdate, noneNotificationConfigPayloadFormat),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -278,7 +282,7 @@ func TestAccStorageTransferJob_notificationConfig(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccStorageTransferJob_omitNotificationEventTypes(GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicNameUpdate),
+				Config: testAccStorageTransferJob_omitNotificationEventTypes(envvar.GetTestProjectFromEnv(), testDataSourceBucketName, testDataSinkName, testTransferJobDescription, testPubSubTopicNameUpdate),
 			},
 			{
 				ResourceName:      "google_storage_transfer_job.transfer_job",
@@ -291,7 +295,7 @@ func TestAccStorageTransferJob_notificationConfig(t *testing.T) {
 
 func testAccStorageTransferJobDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_storage_transfer_job" {
@@ -304,7 +308,7 @@ func testAccStorageTransferJobDestroyProducer(t *testing.T) func(s *terraform.St
 				return fmt.Errorf("No name set")
 			}
 
-			project, err := GetTestProject(rs.Primary, config)
+			project, err := acctest.GetTestProject(rs.Primary, config)
 			if err != nil {
 				return err
 			}

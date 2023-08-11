@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -19,26 +22,29 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDataprocAutoscalingPolicyIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataprocAutoscalingPolicyIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_dataproc_autoscaling_policy_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/autoscalingPolicies/%s roles/viewer", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-dataproc-policy%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/autoscalingPolicies/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-dataproc-policy%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -48,7 +54,7 @@ func TestAccDataprocAutoscalingPolicyIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataproc_autoscaling_policy_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/autoscalingPolicies/%s roles/viewer", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-dataproc-policy%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/autoscalingPolicies/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-dataproc-policy%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -60,13 +66,13 @@ func TestAccDataprocAutoscalingPolicyIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -74,7 +80,7 @@ func TestAccDataprocAutoscalingPolicyIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataproc_autoscaling_policy_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/autoscalingPolicies/%s roles/viewer user:admin@hashicorptest.com", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-dataproc-policy%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/autoscalingPolicies/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-dataproc-policy%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -86,20 +92,21 @@ func TestAccDataprocAutoscalingPolicyIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataprocAutoscalingPolicyIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_dataproc_autoscaling_policy_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_dataproc_autoscaling_policy_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/autoscalingPolicies/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-dataproc-policy%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/autoscalingPolicies/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-dataproc-policy%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -108,7 +115,7 @@ func TestAccDataprocAutoscalingPolicyIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataproc_autoscaling_policy_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/autoscalingPolicies/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-dataproc-policy%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/autoscalingPolicies/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-dataproc-policy%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -117,7 +124,7 @@ func TestAccDataprocAutoscalingPolicyIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccDataprocAutoscalingPolicyIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataproc_autoscaling_policy" "basic" {
   policy_id = "tf-test-dataproc-policy%{random_suffix}"
   location  = "us-central1"
@@ -147,7 +154,7 @@ resource "google_dataproc_autoscaling_policy_iam_member" "foo" {
 }
 
 func testAccDataprocAutoscalingPolicyIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataproc_autoscaling_policy" "basic" {
   policy_id = "tf-test-dataproc-policy%{random_suffix}"
   location  = "us-central1"
@@ -179,11 +186,20 @@ resource "google_dataproc_autoscaling_policy_iam_policy" "foo" {
   policy_id = google_dataproc_autoscaling_policy.basic.policy_id
   policy_data = data.google_iam_policy.foo.policy_data
 }
+
+data "google_dataproc_autoscaling_policy_iam_policy" "foo" {
+  project = google_dataproc_autoscaling_policy.basic.project
+  location = google_dataproc_autoscaling_policy.basic.location
+  policy_id = google_dataproc_autoscaling_policy.basic.policy_id
+  depends_on = [
+    google_dataproc_autoscaling_policy_iam_policy.foo
+  ]
+}
 `, context)
 }
 
 func testAccDataprocAutoscalingPolicyIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataproc_autoscaling_policy" "basic" {
   policy_id = "tf-test-dataproc-policy%{random_suffix}"
   location  = "us-central1"
@@ -215,7 +231,7 @@ resource "google_dataproc_autoscaling_policy_iam_policy" "foo" {
 }
 
 func testAccDataprocAutoscalingPolicyIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataproc_autoscaling_policy" "basic" {
   policy_id = "tf-test-dataproc-policy%{random_suffix}"
   location  = "us-central1"
@@ -245,7 +261,7 @@ resource "google_dataproc_autoscaling_policy_iam_binding" "foo" {
 }
 
 func testAccDataprocAutoscalingPolicyIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataproc_autoscaling_policy" "basic" {
   policy_id = "tf-test-dataproc-policy%{random_suffix}"
   location  = "us-central1"

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeBackendBucket_backendBucketBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeBackendBucketDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -48,7 +55,7 @@ func TestAccComputeBackendBucket_backendBucketBasicExample(t *testing.T) {
 }
 
 func testAccComputeBackendBucket_backendBucketBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket" "image_backend" {
   name        = "tf-test-image-backend-bucket%{random_suffix}"
   description = "Contains beautiful images"
@@ -67,12 +74,12 @@ func TestAccComputeBackendBucket_backendBucketFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeBackendBucketDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -88,7 +95,7 @@ func TestAccComputeBackendBucket_backendBucketFullExample(t *testing.T) {
 }
 
 func testAccComputeBackendBucket_backendBucketFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket" "image_backend_full" {
   name        = "tf-test-image-backend-bucket-full%{random_suffix}"
   description = "Contains beautiful beta mages"
@@ -118,12 +125,12 @@ func TestAccComputeBackendBucket_backendBucketSecurityPolicyExample(t *testing.T
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeBackendBucketDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -139,7 +146,7 @@ func TestAccComputeBackendBucket_backendBucketSecurityPolicyExample(t *testing.T
 }
 
 func testAccComputeBackendBucket_backendBucketSecurityPolicyExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket" "image_backend" {
   name        = "tf-test-image-backend-bucket%{random_suffix}"
   description = "Contains beautiful images"
@@ -165,12 +172,12 @@ func TestAccComputeBackendBucket_backendBucketQueryStringWhitelistExample(t *tes
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeBackendBucketDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -186,7 +193,7 @@ func TestAccComputeBackendBucket_backendBucketQueryStringWhitelistExample(t *tes
 }
 
 func testAccComputeBackendBucket_backendBucketQueryStringWhitelistExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket" "image_backend" {
   name        = "tf-test-image-backend-bucket%{random_suffix}"
   description = "Contains beautiful images"
@@ -210,12 +217,12 @@ func TestAccComputeBackendBucket_backendBucketIncludeHttpHeadersExample(t *testi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeBackendBucketDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -231,7 +238,7 @@ func TestAccComputeBackendBucket_backendBucketIncludeHttpHeadersExample(t *testi
 }
 
 func testAccComputeBackendBucket_backendBucketIncludeHttpHeadersExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket" "image_backend" {
   name        = "tf-test-image-backend-bucket%{random_suffix}"
   description = "Contains beautiful images"
@@ -255,12 +262,12 @@ func TestAccComputeBackendBucket_externalCdnLbWithBackendBucketExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeBackendBucketDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -276,7 +283,7 @@ func TestAccComputeBackendBucket_externalCdnLbWithBackendBucketExample(t *testin
 }
 
 func testAccComputeBackendBucket_externalCdnLbWithBackendBucketExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 # CDN load balancer with Cloud bucket as backend
 
 # Cloud Storage bucket
@@ -385,12 +392,12 @@ func TestAccComputeBackendBucket_backendBucketBypassCacheExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeBackendBucketDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -406,7 +413,7 @@ func TestAccComputeBackendBucket_backendBucketBypassCacheExample(t *testing.T) {
 }
 
 func testAccComputeBackendBucket_backendBucketBypassCacheExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket" "image_backend" {
   name        = "tf-test-image-backend-bucket%{random_suffix}"
   description = "Contains beautiful images"
@@ -430,12 +437,12 @@ func TestAccComputeBackendBucket_backendBucketCoalescingExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeBackendBucketDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -451,7 +458,7 @@ func TestAccComputeBackendBucket_backendBucketCoalescingExample(t *testing.T) {
 }
 
 func testAccComputeBackendBucket_backendBucketCoalescingExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket" "image_backend" {
   name        = "tf-test-image-backend-bucket%{random_suffix}"
   description = "Contains beautiful images"
@@ -479,9 +486,9 @@ func testAccCheckComputeBackendBucketDestroyProducer(t *testing.T) func(s *terra
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -492,7 +499,13 @@ func testAccCheckComputeBackendBucketDestroyProducer(t *testing.T) func(s *terra
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeBackendBucket still exists at %s", url)
 			}

@@ -623,6 +623,11 @@ spec:
                     name:
                       description: The name of the network_interface.
                       type: string
+                    networkAttachment:
+                      description: 'Immutable. The URL of the network attachment that
+                        this interface should connect to in the following format:
+                        projects/{projectNumber}/regions/{region_name}/networkAttachments/{network_attachment_name}.'
+                      type: string
                     networkIp:
                       description: Immutable. The private IP address to assign to
                         the instance. If empty, the address will be automatically

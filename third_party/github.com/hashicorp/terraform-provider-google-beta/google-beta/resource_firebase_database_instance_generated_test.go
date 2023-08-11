@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,19 +24,24 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccFirebaseDatabaseInstance_firebaseDatabaseInstanceBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckFirebaseDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -50,7 +58,7 @@ func TestAccFirebaseDatabaseInstance_firebaseDatabaseInstanceBasicExample(t *tes
 }
 
 func testAccFirebaseDatabaseInstance_firebaseDatabaseInstanceBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_database_instance" "basic" {
   provider = google-beta
   project  = "%{project_id}"
@@ -64,13 +72,13 @@ func TestAccFirebaseDatabaseInstance_firebaseDatabaseInstanceFullExample(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckFirebaseDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -87,7 +95,7 @@ func TestAccFirebaseDatabaseInstance_firebaseDatabaseInstanceFullExample(t *test
 }
 
 func testAccFirebaseDatabaseInstance_firebaseDatabaseInstanceFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_database_instance" "full" {
   provider = google-beta
   project  = "%{project_id}"
@@ -103,13 +111,13 @@ func TestAccFirebaseDatabaseInstance_firebaseDatabaseInstanceDefaultDatabaseExam
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckFirebaseDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -126,7 +134,7 @@ func TestAccFirebaseDatabaseInstance_firebaseDatabaseInstanceDefaultDatabaseExam
 }
 
 func testAccFirebaseDatabaseInstance_firebaseDatabaseInstanceDefaultDatabaseExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "default" {
   provider = google-beta
   project_id = "tf-test-rtdb-project%{random_suffix}"
@@ -169,9 +177,9 @@ func testAccCheckFirebaseDatabaseInstanceDestroyProducer(t *testing.T) func(s *t
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances/{{instance_id}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances/{{instance_id}}")
 			if err != nil {
 				return err
 			}
@@ -182,7 +190,13 @@ func testAccCheckFirebaseDatabaseInstanceDestroyProducer(t *testing.T) func(s *t
 				billingProject = config.BillingProject
 			}
 
-			res, err := SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err != nil {
 				return err // RTDB only supports soft-delete.
 			}

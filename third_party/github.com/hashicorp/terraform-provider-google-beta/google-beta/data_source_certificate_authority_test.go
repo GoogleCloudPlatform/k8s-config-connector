@@ -1,23 +1,26 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccDataSourcePrivatecaCertificateAuthority_privatecaCertificateAuthorityBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"pool_name":     BootstrapSharedCaPoolInLocation(t, "us-central1"),
+		"pool_name":     acctest.BootstrapSharedCaPoolInLocation(t, "us-central1"),
 		"pool_location": "us-central1",
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckPrivatecaCertificateAuthorityDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -31,7 +34,7 @@ func TestAccDataSourcePrivatecaCertificateAuthority_privatecaCertificateAuthorit
 }
 
 func testAccDataSourcePrivatecaCertificateAuthority_privatecaCertificateAuthorityBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_privateca_certificate_authority" "default" {
   // This example assumes this pool already exists.
   // Pools cannot be deleted in normal test circumstances, so we depend on static pools

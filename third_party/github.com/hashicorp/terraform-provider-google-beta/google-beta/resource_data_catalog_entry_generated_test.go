@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccDataCatalogEntry_dataCatalogEntryBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogEntryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,7 +56,7 @@ func TestAccDataCatalogEntry_dataCatalogEntryBasicExample(t *testing.T) {
 }
 
 func testAccDataCatalogEntry_dataCatalogEntryBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_entry" "basic_entry" {
   entry_group = google_data_catalog_entry_group.entry_group.id
   entry_id = "tf_test_my_entry%{random_suffix}"
@@ -68,12 +75,12 @@ func TestAccDataCatalogEntry_dataCatalogEntryFilesetExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogEntryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -90,7 +97,7 @@ func TestAccDataCatalogEntry_dataCatalogEntryFilesetExample(t *testing.T) {
 }
 
 func testAccDataCatalogEntry_dataCatalogEntryFilesetExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_entry" "basic_entry" {
   entry_group = google_data_catalog_entry_group.entry_group.id
   entry_id = "tf_test_my_entry%{random_suffix}"
@@ -112,12 +119,12 @@ func TestAccDataCatalogEntry_dataCatalogEntryFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogEntryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -134,7 +141,7 @@ func TestAccDataCatalogEntry_dataCatalogEntryFullExample(t *testing.T) {
 }
 
 func testAccDataCatalogEntry_dataCatalogEntryFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_entry" "basic_entry" {
   entry_group = google_data_catalog_entry_group.entry_group.id
   entry_id = "tf_test_my_entry%{random_suffix}"
@@ -202,9 +209,9 @@ func testAccCheckDataCatalogEntryDestroyProducer(t *testing.T) func(s *terraform
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{DataCatalogBasePath}}{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DataCatalogBasePath}}{{name}}")
 			if err != nil {
 				return err
 			}
@@ -215,7 +222,13 @@ func testAccCheckDataCatalogEntryDestroyProducer(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("DataCatalogEntry still exists at %s", url)
 			}

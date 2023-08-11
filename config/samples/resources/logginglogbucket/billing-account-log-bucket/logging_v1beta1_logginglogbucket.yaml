@@ -20,6 +20,6 @@ spec:
   # At the organization, folder, or billing account level _Default and _Required are the only valid resource names
   resourceID: "_Default"
   billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID?}"
+    # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
   location: "global"

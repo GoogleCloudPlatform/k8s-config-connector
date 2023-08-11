@@ -36,7 +36,7 @@ import (
 )
 
 type ResourcepolicyDailySchedule struct {
-	/* Immutable. The number of days between snapshots. */
+	/* Immutable. Defines a schedule with units measured in days. The value determines how many days pass between the start of each cycle. Days in cycle for snapshot schedule policy must be 1. */
 	DaysInCycle int `json:"daysInCycle"`
 
 	/* Immutable. This must be in UTC format that resolves to one of
@@ -52,6 +52,11 @@ type ResourcepolicyDayOfWeeks struct {
 	/* Immutable. Time within the window to start the operations.
 	It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT. */
 	StartTime string `json:"startTime"`
+}
+
+type ResourcepolicyDiskConsistencyGroupPolicy struct {
+	/* Immutable. Enable disk consistency on the resource policy. */
+	Enabled bool `json:"enabled"`
 }
 
 type ResourcepolicyGroupPlacementPolicy struct {
@@ -188,6 +193,10 @@ type ComputeResourcePolicySpec struct {
 	/* Immutable. An optional description of this resource. Provide this property when you create the resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
+
+	/* Immutable. Replication consistency group for asynchronous disk replication. */
+	// +optional
+	DiskConsistencyGroupPolicy *ResourcepolicyDiskConsistencyGroupPolicy `json:"diskConsistencyGroupPolicy,omitempty"`
 
 	/* Immutable. Resource policy for instances used for placement configuration. */
 	// +optional

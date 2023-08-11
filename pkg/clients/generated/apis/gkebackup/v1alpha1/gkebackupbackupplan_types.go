@@ -188,6 +188,14 @@ type GKEBackupBackupPlanStatus struct {
 	// +optional
 	ProtectedPodCount *int `json:"protectedPodCount,omitempty"`
 
+	/* The State of the BackupPlan. */
+	// +optional
+	State *string `json:"state,omitempty"`
+
+	/* Detailed description of why BackupPlan is in its current state. */
+	// +optional
+	StateReason *string `json:"stateReason,omitempty"`
+
 	/* Server generated, unique identifier of UUID format. */
 	// +optional
 	Uid *string `json:"uid,omitempty"`

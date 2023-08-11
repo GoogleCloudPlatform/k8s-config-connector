@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -145,8 +145,6 @@ spec:
                 properties:
                   redirectSiteKeyRef:
                     description: |-
-                      Only `external` field is supported to configure the reference.
-
                       A field to supply a reCAPTCHA site key to be used for all the rules
                       using the redirect action with the type of GOOGLE_RECAPTCHA under
                       the security policy. The specified site key needs to be created from

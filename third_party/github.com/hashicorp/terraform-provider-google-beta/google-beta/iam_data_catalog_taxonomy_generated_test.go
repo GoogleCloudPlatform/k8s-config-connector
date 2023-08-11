@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -18,19 +21,21 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccDataCatalogTaxonomyIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataCatalogTaxonomyIamBinding_basicGenerated(context),
@@ -47,13 +52,13 @@ func TestAccDataCatalogTaxonomyIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -67,16 +72,17 @@ func TestAccDataCatalogTaxonomyIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataCatalogTaxonomyIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_data_catalog_taxonomy_iam_policy.foo", "policy_data"),
 			},
 			{
 				Config: testAccDataCatalogTaxonomyIamPolicy_emptyBinding(context),
@@ -86,7 +92,7 @@ func TestAccDataCatalogTaxonomyIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccDataCatalogTaxonomyIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
   display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
@@ -102,7 +108,7 @@ resource "google_data_catalog_taxonomy_iam_member" "foo" {
 }
 
 func testAccDataCatalogTaxonomyIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
   display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
@@ -120,11 +126,18 @@ resource "google_data_catalog_taxonomy_iam_policy" "foo" {
   taxonomy = google_data_catalog_taxonomy.basic_taxonomy.name
   policy_data = data.google_iam_policy.foo.policy_data
 }
+
+data "google_data_catalog_taxonomy_iam_policy" "foo" {
+  taxonomy = google_data_catalog_taxonomy.basic_taxonomy.name
+  depends_on = [
+    google_data_catalog_taxonomy_iam_policy.foo
+  ]
+}
 `, context)
 }
 
 func testAccDataCatalogTaxonomyIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
   display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
@@ -142,7 +155,7 @@ resource "google_data_catalog_taxonomy_iam_policy" "foo" {
 }
 
 func testAccDataCatalogTaxonomyIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
   display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
@@ -158,7 +171,7 @@ resource "google_data_catalog_taxonomy_iam_binding" "foo" {
 }
 
 func testAccDataCatalogTaxonomyIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
   display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"

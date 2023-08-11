@@ -764,10 +764,11 @@ spec:
     external: "projects/${PROJECT_ID?}"
   description: "A sample cloud function with an event trigger from PubSubTopic and a VPCAccessConnector"
   region: "us-west2"
-  runtime: "nodejs8"
+  runtime: "nodejs10"
   availableMemoryMb: 128
-  # Replace ${PROJECT_ID?} with your project ID
-  serviceAccountEmail: "${PROJECT_ID?}@appspot.gserviceaccount.com"
+  serviceAccountRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: "${PROJECT_ID?}@appspot.gserviceaccount.com"
   # Replace ${REPO_URL?} with your cloud source repository url
   # Example: https://source.developers.google.com/projects/config-connector-samples/repos/config-connnector-samples/moveable-aliases/main/paths/cloudfunctionsfunction
   sourceRepository:
@@ -843,7 +844,7 @@ spec:
     external: "projects/${PROJECT_ID?}"
   description: "A sample cloud function with an event trigger from StorageBucket"
   region: "us-west2"
-  runtime: "nodejs8"
+  runtime: "nodejs10"
   sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
   entryPoint: "helloGET"
   eventTrigger:
@@ -895,12 +896,14 @@ spec:
     # Replace ${PROJECT_ID?} with your project ID
     external: "projects/${PROJECT_ID?}"
   region: "us-west2"
-  runtime: "nodejs8"
+  runtime: "nodejs10"
   sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
   entryPoint: "helloGET"
   httpsTrigger:
     securityLevel: "SECURE_OPTIONAL"
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

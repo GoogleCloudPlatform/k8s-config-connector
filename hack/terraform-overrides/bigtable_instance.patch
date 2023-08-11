@@ -1,22 +1,8 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_instance.go
-index d89545571..601dc09df 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_instance.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_instance.go
-@@ -62,6 +62,7 @@ func resourceBigtableInstance() *schema.Resource {
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/resource_bigtable_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/resource_bigtable_instance.go
+index 7aeb23e6a..a1f152fa0 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/resource_bigtable_instance.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/resource_bigtable_instance.go
+@@ -62,6 +62,7 @@ func ResourceBigtableInstance() *schema.Resource {
  						},
  						"zone": {
  							Type:        schema.TypeString,
@@ -24,9 +10,9 @@ index d89545571..601dc09df 100644
  							Computed:    true,
  							Optional:    true,
  							Description: `The zone to create the Cloud Bigtable cluster in. Each cluster must have a different zone in the same region. Zones that support Bigtable instances are noted on the Cloud Bigtable locations page.`,
-@@ -102,10 +103,11 @@ func resourceBigtableInstance() *schema.Resource {
+@@ -139,10 +140,11 @@ func ResourceBigtableInstance() *schema.Resource {
  			},
-
+ 
  			"deletion_protection": {
 -				Type:        schema.TypeBool,
 -				Optional:    true,
@@ -38,12 +24,12 @@ index d89545571..601dc09df 100644
 +				DiffSuppressFunc: bigtableInstanceDeletionProtectionDiffSuppress,
 +				Deprecated:       "This field no longer serves any function and is intended to be dropped in a later version of the resource.",
  			},
-
+ 
  			"labels": {
-@@ -221,6 +223,16 @@ func resourceBigtableInstanceRead(d *schema.ResourceData, meta interface{}) erro
+@@ -261,6 +263,16 @@ func resourceBigtableInstanceRead(d *schema.ResourceData, meta interface{}) erro
  		return fmt.Errorf("Error setting project: %s", err)
  	}
-
+ 
 +	var instanceType string
 +	if instance.InstanceType == bigtable.DEVELOPMENT {
 +		instanceType = "DEVELOPMENT"
@@ -56,28 +42,28 @@ index d89545571..601dc09df 100644
 +
  	clusters, err := c.Clusters(ctx, instance.Name)
  	if err != nil {
- 		return fmt.Errorf("Error retrieving instance clusters. %s", err)
-@@ -246,8 +258,6 @@ func resourceBigtableInstanceRead(d *schema.ResourceData, meta interface{}) erro
+ 		partiallyUnavailableErr, ok := err.(bigtable.ErrPartiallyUnavailable)
+@@ -296,8 +308,6 @@ func resourceBigtableInstanceRead(d *schema.ResourceData, meta interface{}) erro
  	if err := d.Set("labels", instance.Labels); err != nil {
  		return fmt.Errorf("Error setting labels: %s", err)
  	}
 -	// Don't set instance_type: we don't want to detect drift on it because it can
 -	// change under-the-hood.
-
+ 
  	return nil
  }
-@@ -342,9 +352,6 @@ func resourceBigtableInstanceUpdate(d *schema.ResourceData, meta interface{}) er
+@@ -356,9 +366,6 @@ func resourceBigtableInstanceUpdate(d *schema.ResourceData, meta interface{}) er
  }
  
  func resourceBigtableInstanceDestroy(d *schema.ResourceData, meta interface{}) error {
 -	if d.Get("deletion_protection").(bool) {
 -		return fmt.Errorf("cannot destroy instance without setting deletion_protection=false and running `terraform apply`")
 -	}
- 	config := meta.(*Config)
- 	userAgent, err := generateUserAgentString(d, config.UserAgent)
+ 	config := meta.(*transport_tpg.Config)
+ 	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
  	if err != nil {
-@@ -526,3 +545,10 @@ func resourceBigtableInstanceImport(d *schema.ResourceData, meta interface{}) ([
-
+@@ -625,3 +632,10 @@ func resourceBigtableInstanceImport(d *schema.ResourceData, meta interface{}) ([
+ 
  	return []*schema.ResourceData{d}, nil
  }
 +

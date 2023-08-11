@@ -1,9 +1,9 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_job.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_job.go
-index a024b8fa8..cec940a8f 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_job.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_job.go
-@@ -1,13 +1,13 @@
- package google
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataflow/resource_dataflow_job.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataflow/resource_dataflow_job.go
+index 299340845..5581c819d 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataflow/resource_dataflow_job.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataflow/resource_dataflow_job.go
+@@ -3,16 +3,16 @@
+ package dataflow
  
  import (
 -	"context"
@@ -14,11 +14,14 @@ index a024b8fa8..cec940a8f 100644
  	"strings"
  	"time"
  
+ 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+ 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+ 
 -	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/customdiff"
  	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
  	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
  
-@@ -31,6 +31,11 @@ var dataflowTerminalStatesMap = map[string]struct{}{
+@@ -36,6 +36,11 @@ var DataflowTerminalStatesMap = map[string]struct{}{
  	"JOB_STATE_DRAINED":   {},
  }
  
@@ -30,7 +33,7 @@ index a024b8fa8..cec940a8f 100644
  func resourceDataflowJobLabelDiffSuppress(k, old, new string, d *schema.ResourceData) bool {
  	// Example Diff: "labels.goog-dataflow-provided-template-version": "word_count" => ""
  	if strings.HasPrefix(k, resourceDataflowJobGoogleProvidedLabelPrefix) && new == "" {
-@@ -47,6 +52,24 @@ func resourceDataflowJobLabelDiffSuppress(k, old, new string, d *schema.Resource
+@@ -52,6 +57,23 @@ func resourceDataflowJobLabelDiffSuppress(k, old, new string, d *schema.Resource
  	return false
  }
  
@@ -48,14 +51,13 @@ index a024b8fa8..cec940a8f 100644
 +		newMatch := subnetRegionalLinkRegex.FindString(new)
 +		return oldMatch == newMatch
 +	}
-+	return compareSelfLinkOrResourceName(k, old, new, d)
++	return tpgresource.CompareSelfLinkOrResourceName(k, old, new, d)
 +}
-+
 +
  func ResourceDataflowJob() *schema.Resource {
  	return &schema.Resource{
  		Create: resourceDataflowJobCreate,
-@@ -56,12 +79,6 @@ func ResourceDataflowJob() *schema.Resource {
+@@ -61,12 +83,6 @@ func ResourceDataflowJob() *schema.Resource {
  		Timeouts: &schema.ResourceTimeout{
  			Update: schema.DefaultTimeout(10 * time.Minute),
  		},
@@ -68,16 +70,16 @@ index a024b8fa8..cec940a8f 100644
  		Schema: map[string]*schema.Schema{
  			"name": {
  				Type:     schema.TypeString,
-@@ -169,7 +186,7 @@ func ResourceDataflowJob() *schema.Resource {
+@@ -175,7 +191,7 @@ func ResourceDataflowJob() *schema.Resource {
  			"subnetwork": {
  				Type:             schema.TypeString,
  				Optional:         true,
--				DiffSuppressFunc: compareSelfLinkOrResourceName,
+-				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 +				DiffSuppressFunc: resourceDataflowJobSubnetworkDiffSuppress,
  				Description:      `The subnetwork to which VMs will be assigned. Should be of the form "regions/REGION/subnetworks/SUBNETWORK".`,
  			},
  
-@@ -225,30 +242,6 @@ func ResourceDataflowJob() *schema.Resource {
+@@ -231,30 +247,6 @@ func ResourceDataflowJob() *schema.Resource {
  	}
  }
  
@@ -108,11 +110,11 @@ index a024b8fa8..cec940a8f 100644
  // return true if a job is in a terminal state, OR if a job is in a
  // terminating state and skipWait is true
  func shouldStopDataflowJobDeleteQuery(state string, skipWait bool) bool {
-@@ -290,11 +283,18 @@ func resourceDataflowJobCreate(d *schema.ResourceData, meta interface{}) error {
+@@ -296,11 +288,18 @@ func resourceDataflowJobCreate(d *schema.ResourceData, meta interface{}) error {
  		Environment: &env,
  	}
  
-+	id, err := ReplaceVars(d, config, "{{project}}/{{region}}/{{name}}")
++	id, err := tpgresource.ReplaceVars(d, config, "{{project}}/{{region}}/{{name}}")
 +	if err != nil {
 +		return fmt.Errorf("Error constructing id: %s", err)
 +	}
@@ -128,7 +130,7 @@ index a024b8fa8..cec940a8f 100644
  
  	return resourceDataflowJobRead(d, meta)
  }
-@@ -316,10 +316,22 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
+@@ -322,10 +321,22 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
  		return err
  	}
  
@@ -148,13 +150,13 @@ index a024b8fa8..cec940a8f 100644
 +		}
 +		job, err = resourceDataflowJobGetJob(config, project, region, userAgent, id)
 +		if err != nil {
-+			return handleNotFoundError(err, d, fmt.Sprintf("Dataflow job %s", id))
++			return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Dataflow job %s", id))
 +		}
 +	} else if err != nil {
- 		return handleNotFoundError(err, d, fmt.Sprintf("Dataflow job %s", id))
+ 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Dataflow job %s", id))
  	}
  
-@@ -362,17 +374,22 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
+@@ -368,17 +379,22 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
  	if err := d.Set("network", optionsMap["network"]); err != nil {
  		return fmt.Errorf("Error setting network: %s", err)
  	}
@@ -184,7 +186,7 @@ index a024b8fa8..cec940a8f 100644
  	return nil
  }
  
-@@ -383,6 +400,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
+@@ -389,6 +405,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
  		return nil
  	}
  
@@ -192,10 +194,10 @@ index a024b8fa8..cec940a8f 100644
 +		return fmt.Errorf("Batch jobs cannot be updated.")
 +	}
 +
- 	config := meta.(*Config)
- 	userAgent, err := generateUserAgentString(d, config.UserAgent)
+ 	config := meta.(*transport_tpg.Config)
+ 	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
  	if err != nil {
-@@ -425,10 +446,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
+@@ -435,10 +455,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
  	}
  
  	if err := waitForDataflowJobToBeUpdated(d, config, response.Job.Id, userAgent, d.Timeout(schema.TimeoutUpdate)); err != nil {
@@ -208,7 +210,7 @@ index a024b8fa8..cec940a8f 100644
  
  	return resourceDataflowJobRead(d, meta)
  }
-@@ -450,7 +471,12 @@ func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
+@@ -460,7 +480,12 @@ func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
  		return err
  	}
  
@@ -222,7 +224,7 @@ index a024b8fa8..cec940a8f 100644
  
  	requestedState, err := resourceDataflowJobMapRequestedState(d.Get("on_delete").(string))
  	if err != nil {
-@@ -512,7 +538,7 @@ func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
+@@ -522,7 +547,7 @@ func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
  		d.SetId("")
  		return nil
  	}
@@ -231,7 +233,7 @@ index a024b8fa8..cec940a8f 100644
  }
  
  func resourceDataflowJobMapRequestedState(policy string) (string, error) {
-@@ -533,6 +559,34 @@ func resourceDataflowJobCreateJob(config *Config, project, region, userAgent str
+@@ -543,6 +568,34 @@ func resourceDataflowJobCreateJob(config *transport_tpg.Config, project, region,
  	return config.NewDataflowClient(userAgent).Projects.Locations.Templates.Create(project, region, request).Do()
  }
  
@@ -239,7 +241,7 @@ index a024b8fa8..cec940a8f 100644
 +// and the given region. An active job is any job whose state is one of
 +// PENDING, RUNNING, QUEUED, DRAINING, CANCELLING, or STOPPED.
 +// (source: https://cloud.google.com/dataflow/docs/reference/rest/v1b3/projects.jobs#Job.JobState)
-+func resourceDataflowJobGetActiveJobWithName(config *Config, project, region, userAgent, name string) (*dataflow.Job, error) {
++func resourceDataflowJobGetActiveJobWithName(config *transport_tpg.Config, project, region, userAgent, name string) (*dataflow.Job, error) {
 +	pageToken := ""
 +	for ok := true; ok; ok = pageToken != "" {
 +		resp, err := config.NewDataflowClient(userAgent).Projects.Jobs.Aggregated(project).
@@ -263,22 +265,22 @@ index a024b8fa8..cec940a8f 100644
 +	return nil, activeJobNotFoundError
 +}
 +
- func resourceDataflowJobGetJob(config *Config, project, region, userAgent string, id string) (*dataflow.Job, error) {
+ func resourceDataflowJobGetJob(config *transport_tpg.Config, project, region, userAgent string, id string) (*dataflow.Job, error) {
  	if region == "" {
  		return config.NewDataflowClient(userAgent).Projects.Jobs.Get(project, id).View("JOB_VIEW_ALL").Do()
-@@ -557,6 +611,11 @@ func resourceDataflowJobLaunchTemplate(config *Config, project, region, userAgen
- func resourceDataflowJobSetupEnv(d *schema.ResourceData, config *Config) (dataflow.RuntimeEnvironment, error) {
- 	zone, _ := getZone(d, config)
+@@ -567,6 +620,11 @@ func resourceDataflowJobLaunchTemplate(config *transport_tpg.Config, project, re
+ func resourceDataflowJobSetupEnv(d *schema.ResourceData, config *transport_tpg.Config) (dataflow.RuntimeEnvironment, error) {
+ 	zone, _ := tpgresource.GetZone(d, config)
  
 +	subnetwork, err := toSubnetworkSelfLink(d.Get("subnetwork").(string), d, config)
 +	if err != nil {
 +		return dataflow.RuntimeEnvironment{}, err
 +	}
 +
- 	labels := expandStringMap(d, "labels")
+ 	labels := tpgresource.ExpandStringMap(d, "labels")
  
- 	additionalExperiments := convertStringSet(d.Get("additional_experiments").(*schema.Set))
-@@ -565,7 +624,7 @@ func resourceDataflowJobSetupEnv(d *schema.ResourceData, config *Config) (datafl
+ 	additionalExperiments := tpgresource.ConvertStringSet(d.Get("additional_experiments").(*schema.Set))
+@@ -575,7 +633,7 @@ func resourceDataflowJobSetupEnv(d *schema.ResourceData, config *transport_tpg.C
  		MaxWorkers:            int64(d.Get("max_workers").(int)),
  		Network:               d.Get("network").(string),
  		ServiceAccountEmail:   d.Get("service_account_email").(string),
@@ -287,21 +289,21 @@ index a024b8fa8..cec940a8f 100644
  		TempLocation:          d.Get("temp_gcs_location").(string),
  		MachineType:           d.Get("machine_type").(string),
  		KmsKeyName:            d.Get("kms_key_name").(string),
-@@ -656,3 +715,29 @@ func waitForDataflowJobToBeUpdated(d *schema.ResourceData, config *Config, repla
+@@ -666,3 +724,29 @@ func waitForDataflowJobToBeUpdated(d *schema.ResourceData, config *transport_tpg
  		}
  	})
  }
 +
 +// toSubnetworkSelfLink converts the given string to a subnetwork self-link of the format:
-+//   https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetwork_name}
++// https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetwork_name}
 +// The following input formats are supported:
 +// - https://www.googleapis.com/compute/ANY_VERSION/projects/{project}/regions/{region}/subnetworks/{subnetwork_name}
 +// - projects/{project}/regions/{region}/subnetworks/{subnetwork_name}
 +// - regions/{region}/subnetworks/{subnetwork_name}
 +// - {subnetwork_name}
 +// - "" (empty string). toSubnetworkSelfLink will return an empty string in this case.
-+func toSubnetworkSelfLink(subnetwork string, d *schema.ResourceData, config *Config) (string, error) {
-+	fv, err := ParseSubnetworkFieldValue(subnetwork, d, config)
++func toSubnetworkSelfLink(subnetwork string, d *schema.ResourceData, config *transport_tpg.Config) (string, error) {
++	fv, err := tpgresource.ParseSubnetworkFieldValue(subnetwork, d, config)
 +	if err != nil {
 +		return "", err
 +	}
@@ -311,9 +313,9 @@ index a024b8fa8..cec940a8f 100644
 +	// Dataflow only respects the legacy compute base path with domain www.googleapis.com, not
 +	// compute.googleapis.com
 +	legacyComputeBasePath := "https://www.googleapis.com/compute/beta/"
-+	url, err := ReplaceVars(d, config, legacyComputeBasePath+fv.RelativeLink())
++	url, err := tpgresource.ReplaceVars(d, config, legacyComputeBasePath+fv.RelativeLink())
 +	if err != nil {
 +		return "", err
 +	}
-+	return ConvertSelfLinkToV1(url), nil
++	return tpgresource.ConvertSelfLinkToV1(url), nil
 +}

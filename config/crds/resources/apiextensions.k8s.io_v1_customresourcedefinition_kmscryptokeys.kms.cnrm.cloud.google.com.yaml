@@ -99,7 +99,8 @@ spec:
                 description: |-
                   Immutable. The immutable purpose of this CryptoKey. See the
                   [purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-                  for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT_DECRYPT", "ASYMMETRIC_SIGN", "ASYMMETRIC_DECRYPT", "MAC"].
+                  for possible inputs.
+                  Default value is "ENCRYPT_DECRYPT".
                 type: string
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
@@ -114,9 +115,9 @@ spec:
                   letter 's' (seconds). It must be greater than a day (ie, 86400).
                 type: string
               skipInitialVersionCreation:
-                description: "Immutable. If set to true, the request will create a
-                  CryptoKey without any CryptoKeyVersions. \nYou must use the 'google_kms_key_ring_import_job'
-                  resource to import the CryptoKeyVersion."
+                description: |-
+                  Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions.
+                  You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion.
                 type: boolean
               versionTemplate:
                 description: A template describing settings for new crypto key versions.

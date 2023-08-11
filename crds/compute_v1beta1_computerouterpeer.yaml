@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -163,6 +163,10 @@ spec:
                   If set to true, the peer connection can be established with routing information.
                   The default is true.
                 type: boolean
+              enableIpv6:
+                description: Enable IPv6 traffic over BGP Peer. If not specified,
+                  it is disabled by default.
+                type: boolean
               ipAddress:
                 description: |-
                   IP address of the interface inside Google Cloud Platform.
@@ -171,6 +175,13 @@ spec:
                   external:
                     type: string
                 type: object
+              ipv6NexthopAddress:
+                description: |-
+                  IPv6 address of the interface inside Google Cloud Platform.
+                  The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64.
+                  If you do not specify the next hop addresses, Google Cloud automatically
+                  assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range for you.
+                type: string
               peerAsn:
                 description: |-
                   Peer BGP Autonomous System Number (ASN).
@@ -180,6 +191,13 @@ spec:
                 description: |-
                   IP address of the BGP interface outside Google Cloud Platform.
                   Only IPv4 is supported.
+                type: string
+              peerIpv6NexthopAddress:
+                description: |-
+                  IPv6 address of the BGP interface outside Google Cloud Platform.
+                  The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64.
+                  If you do not specify the next hop addresses, Google Cloud automatically
+                  assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range for you.
                 type: string
               region:
                 description: |-

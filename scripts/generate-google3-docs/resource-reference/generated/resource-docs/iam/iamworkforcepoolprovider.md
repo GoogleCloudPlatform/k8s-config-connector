@@ -7,10 +7,6 @@
 
 
 
-Note: Ask your {{gcp_name_short}} account team to request access to workforce identity
-federation for your billing/quota project. The account team notifies you when the project is
-granted access.
-
 <table>
 <thead>
 <tr>
@@ -92,6 +88,9 @@ location: string
 oidc:
   clientId: string
   issuerUri: string
+  webSsoConfig:
+    assertionClaimsBehavior: string
+    responseType: string
 resourceID: string
 saml:
   idpMetadataXml: string
@@ -196,6 +195,36 @@ workforcePoolRef:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Required. The OIDC issuer URI. Must be a valid URI using the 'https' scheme.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>oidc.webSsoConfig</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. Configuration for web single sign-on for the OIDC provider. Here, web sign-in refers to console sign-in and gcloud sign-in through the browser.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>oidc.webSsoConfig.assertionClaimsBehavior</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The behavior for how OIDC Claims are included in the `assertion` object used for attribute mapping and attribute condition. Possible values: ASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED, ONLY_ID_TOKEN_CLAIMS{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>oidc.webSsoConfig.responseType</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The Response Type to request for in the OIDC Authorization Request for web sign-in. Possible values: RESPONSE_TYPE_UNSPECIFIED, ID_TOKEN{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -392,8 +421,11 @@ spec:
   attributeMapping:
     google.subject: "assertion.sub"
   oidc:
-    issuerUri: "https://accounts.google.com"
+    issuerUri: "https://example.com"
     clientId: "client-id"
+    webSsoConfig:
+      responseType: "ID_TOKEN"
+      assertionClaimsBehavior: "ONLY_ID_TOKEN_CLAIMS"
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMWorkforcePool
@@ -466,5 +498,7 @@ spec:
   sessionDuration: "7200s"
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

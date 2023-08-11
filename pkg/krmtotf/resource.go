@@ -135,6 +135,18 @@ func (r *Resource) ConstructServerGeneratedIDInStatusFromResourceID(c client.Cli
 	return resourceID, nil
 }
 
+func (r *Resource) SelfLinkAsID() (string, error) {
+	selfLink, found, err := unstructured.NestedString(r.Status, k8s.SelfLinkFieldName)
+	if err != nil {
+		return "", fmt.Errorf("error getting '%s': %w",
+			k8s.SelfLinkFieldName, err)
+	}
+	if !found {
+		return "", fmt.Errorf("resource %s doesn't have a '%s' field", r.Name, k8s.SelfLinkFieldName)
+	}
+	return selfLink, nil
+}
+
 // GetImportID returns the Terraform import ID for the resource.
 // TODO(kcc-eng): Require ID templates for all resources and remove all implicit defaults.
 func (r *Resource) GetImportID(c client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (string, error) {

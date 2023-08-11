@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccArtifactRegistryRepository_artifactRegistryRepositoryBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,7 +56,7 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryBasicExample(t 
 }
 
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
@@ -63,12 +70,12 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryDockerExample(t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -85,7 +92,7 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryDockerExample(t
 }
 
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryDockerExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
@@ -103,13 +110,13 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryCmekExample(t *
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"kms_key_name":  BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
-		"random_suffix": RandString(t, 10),
+		"kms_key_name":  acctest.BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -126,7 +133,7 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryCmekExample(t *
 }
 
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryCmekExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
@@ -152,12 +159,12 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryVirtualExample(
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -174,7 +181,7 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryVirtualExample(
 }
 
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryVirtualExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo-upstream" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository-upstream%{random_suffix}"
@@ -204,12 +211,12 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryRemoteExample(t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -226,7 +233,7 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryRemoteExample(t
 }
 
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryRemoteExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
@@ -253,9 +260,9 @@ func testAccCheckArtifactRegistryRepositoryDestroyProducer(t *testing.T) func(s 
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ArtifactRegistryBasePath}}projects/{{project}}/locations/{{location}}/repositories/{{repository_id}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ArtifactRegistryBasePath}}projects/{{project}}/locations/{{location}}/repositories/{{repository_id}}")
 			if err != nil {
 				return err
 			}
@@ -266,7 +273,13 @@ func testAccCheckArtifactRegistryRepositoryDestroyProducer(t *testing.T) func(s 
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ArtifactRegistryRepository still exists at %s", url)
 			}

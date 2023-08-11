@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,18 +7,20 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDataSourceGoogleProjectOrganizationPolicy_basic(t *testing.T) {
-	project := GetTestProjectFromEnv()
+	project := envvar.GetTestProjectFromEnv()
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleProjectOrganizationPolicy_basic(project),
-				Check: CheckDataSourceStateMatchesResourceState(
+				Check: acctest.CheckDataSourceStateMatchesResourceState(
 					"data.google_project_organization_policy.data",
 					"google_project_organization_policy.resource"),
 			},

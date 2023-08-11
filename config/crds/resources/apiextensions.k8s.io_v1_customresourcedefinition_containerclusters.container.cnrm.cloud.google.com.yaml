@@ -109,6 +109,16 @@ spec:
                     required:
                     - enabled
                     type: object
+                  gcsFuseCsiDriverConfig:
+                    description: The status of the GCS Fuse CSI driver addon, which
+                      allows the usage of gcs bucket as volumes. Defaults to disabled;
+                      set enabled = true to enable.
+                    properties:
+                      enabled:
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
                   gkeBackupAgentConfig:
                     description: The status of the Backup for GKE Agent addon. It
                       is disabled by default. Set enabled = true to enable.
@@ -999,6 +1009,17 @@ spec:
                           description: Immutable. The number of the accelerator cards
                             exposed to an instance.
                           type: integer
+                        gpuDriverInstallationConfig:
+                          description: Immutable. Configuration for auto installation
+                            of GPU driver.
+                          properties:
+                            gpuDriverVersion:
+                              description: Immutable. Mode for how the GPU driver
+                                is installed.
+                              type: string
+                          required:
+                          - gpuDriverVersion
+                          type: object
                         gpuPartitionSize:
                           description: Immutable. Size of partitions to create on
                             the GPU. Valid values are described in the NVIDIA mig
@@ -1230,6 +1251,34 @@ spec:
                         description: Immutable. Defines whether the instance has Secure
                           Boot enabled.
                         type: boolean
+                    type: object
+                  soleTenantConfig:
+                    description: Immutable. Node affinity options for sole tenant
+                      node pools.
+                    properties:
+                      nodeAffinity:
+                        description: Immutable. .
+                        items:
+                          properties:
+                            key:
+                              description: Immutable. .
+                              type: string
+                            operator:
+                              description: Immutable. .
+                              type: string
+                            values:
+                              description: Immutable. .
+                              items:
+                                type: string
+                              type: array
+                          required:
+                          - key
+                          - operator
+                          - values
+                          type: object
+                        type: array
+                    required:
+                    - nodeAffinity
                     type: object
                   spot:
                     description: Immutable. Whether the nodes are created as spot
@@ -1548,6 +1597,21 @@ spec:
                     type: boolean
                 required:
                 - bigqueryDestination
+                type: object
+              securityPostureConfig:
+                description: Defines the config needed to enable/disable features
+                  for the Security Posture API.
+                properties:
+                  mode:
+                    description: Sets the mode of the Kubernetes security posture
+                      API's off-cluster features. Available options include DISABLED
+                      and BASIC.
+                    type: string
+                  vulnerabilityMode:
+                    description: Sets the mode of the Kubernetes security posture
+                      API's workload vulnerability scanning. Available options include
+                      VULNERABILITY_DISABLED and VULNERABILITY_BASIC.
+                    type: string
                 type: object
               serviceExternalIpsConfig:
                 description: If set, and enabled=true, services with external ips

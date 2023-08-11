@@ -1,21 +1,24 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccBigqueryDatapolicyDataPolicy_bigqueryDatapolicyDataPolicyUpdate(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigqueryDatapolicyDataPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -35,7 +38,7 @@ func TestAccBigqueryDatapolicyDataPolicy_bigqueryDatapolicyDataPolicyUpdate(t *t
 }
 
 func testAccBigqueryDatapolicyDataPolicy_bigqueryDatapolicyDataPolicyUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_datapolicy_data_policy" "data_policy" {
     location         = "us-central1"
     data_policy_id   = "tf_test_data_policy%{random_suffix}"

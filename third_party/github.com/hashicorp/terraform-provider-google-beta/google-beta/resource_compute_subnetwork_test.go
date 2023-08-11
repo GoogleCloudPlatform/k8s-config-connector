@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -7,6 +9,8 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	tpgcompute "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute"
 
 	compute "google.golang.org/api/compute/v0.beta"
 )
@@ -41,7 +45,7 @@ func TestIsShrinkageIpCidr(t *testing.T) {
 	}
 
 	for tn, tc := range cases {
-		if IsShrinkageIpCidr(context.Background(), tc.Old, tc.New, nil) != tc.Shrinkage {
+		if tpgcompute.IsShrinkageIpCidr(context.Background(), tc.Old, tc.New, nil) != tc.Shrinkage {
 			t.Errorf("%s failed: Shrinkage should be %t", tn, tc.Shrinkage)
 		}
 	}
@@ -55,14 +59,14 @@ func TestAccComputeSubnetwork_basic(t *testing.T) {
 	var subnetwork1 compute.Subnetwork
 	var subnetwork2 compute.Subnetwork
 
-	cnName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	subnetwork1Name := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	subnetwork2Name := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	subnetwork3Name := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cnName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	subnetwork1Name := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	subnetwork2Name := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	subnetwork3Name := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSubnetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -93,12 +97,12 @@ func TestAccComputeSubnetwork_update(t *testing.T) {
 
 	var subnetwork compute.Subnetwork
 
-	cnName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	subnetworkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cnName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	subnetworkName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSubnetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -150,12 +154,12 @@ func TestAccComputeSubnetwork_secondaryIpRanges(t *testing.T) {
 
 	var subnetwork compute.Subnetwork
 
-	cnName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	subnetworkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cnName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	subnetworkName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSubnetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -206,12 +210,12 @@ func TestAccComputeSubnetwork_flowLogs(t *testing.T) {
 
 	var subnetwork compute.Subnetwork
 
-	cnName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	subnetworkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cnName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	subnetworkName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSubnetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -283,12 +287,12 @@ func TestAccComputeSubnetwork_flowLogsMigrate(t *testing.T) {
 
 	var subnetwork compute.Subnetwork
 
-	cnName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	subnetworkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cnName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	subnetworkName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSubnetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -334,12 +338,12 @@ func TestAccComputeSubnetwork_flowLogsMigrate(t *testing.T) {
 func TestAccComputeSubnetwork_ipv6(t *testing.T) {
 	t.Parallel()
 
-	cnName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	subnetworkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cnName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	subnetworkName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSubnetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -373,7 +377,7 @@ func testAccCheckComputeSubnetworkExists(t *testing.T, n string, subnetwork *com
 			return fmt.Errorf("No ID is set")
 		}
 
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		region := rs.Primary.Attributes["region"]
 		subnet_name := rs.Primary.Attributes["name"]
 

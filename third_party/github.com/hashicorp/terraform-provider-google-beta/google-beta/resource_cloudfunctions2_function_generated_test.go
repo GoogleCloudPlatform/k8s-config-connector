@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,21 +24,26 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccCloudfunctions2function_cloudfunctions2BasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
+		"project":       envvar.GetTestProjectFromEnv(),
 		"zip_path":      "./test-fixtures/cloudfunctions2/function-source.zip",
 		"location":      "us-central1",
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -52,8 +60,7 @@ func TestAccCloudfunctions2function_cloudfunctions2BasicExample(t *testing.T) {
 }
 
 func testAccCloudfunctions2function_cloudfunctions2BasicExample(context map[string]interface{}) string {
-	return Nprintf(`
-# [START functions_v2_basic]
+	return acctest.Nprintf(`
 locals {
   project = "%{project}" # Google Cloud Platform Project ID
 }
@@ -96,7 +103,6 @@ resource "google_cloudfunctions2_function" "function" {
 output "function_uri" { 
   value = google_cloudfunctions2_function.function.service_config[0].uri
 }
-# [END functions_v2_basic]
 `, context)
 }
 
@@ -104,16 +110,16 @@ func TestAccCloudfunctions2function_cloudfunctions2FullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":             GetTestProjectFromEnv(),
+		"project":             envvar.GetTestProjectFromEnv(),
 		"zip_path":            "./test-fixtures/cloudfunctions2/function-source-pubsub.zip",
 		"primary_resource_id": "terraform-test",
 		"location":            "us-central1",
-		"random_suffix":       RandString(t, 10),
+		"random_suffix":       acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -130,8 +136,7 @@ func TestAccCloudfunctions2function_cloudfunctions2FullExample(t *testing.T) {
 }
 
 func testAccCloudfunctions2function_cloudfunctions2FullExample(context map[string]interface{}) string {
-	return Nprintf(`
-# [START functions_v2_full]
+	return acctest.Nprintf(`
 locals {
   project = "%{project}" # Google Cloud Platform Project ID
 }
@@ -198,7 +203,6 @@ resource "google_cloudfunctions2_function" "function" {
     retry_policy = "RETRY_POLICY_RETRY"
   }
 }
-# [END functions_v2_full]
 `, context)
 }
 
@@ -206,16 +210,16 @@ func TestAccCloudfunctions2function_cloudfunctions2BasicGcsExample(t *testing.T)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":             GetTestProjectFromEnv(),
+		"project":             envvar.GetTestProjectFromEnv(),
 		"zip_path":            "./test-fixtures/cloudfunctions2/function-source-eventarc-gcs.zip",
 		"primary_resource_id": "terraform-test",
-		"policyChanged":       BootstrapPSARole(t, "service-", "gcp-sa-pubsub", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
-		"random_suffix":       RandString(t, 10),
+		"policyChanged":       acctest.BootstrapPSARole(t, "service-", "gcp-sa-pubsub", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
+		"random_suffix":       acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -232,9 +236,7 @@ func TestAccCloudfunctions2function_cloudfunctions2BasicGcsExample(t *testing.T)
 }
 
 func testAccCloudfunctions2function_cloudfunctions2BasicGcsExample(context map[string]interface{}) string {
-	return Nprintf(`
-# [START functions_v2_basic_gcs]
-
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "source-bucket" {
   name     = "tf-test-gcf-source-bucket%{random_suffix}"
   location = "US"
@@ -338,7 +340,6 @@ resource "google_cloudfunctions2_function" "function" {
     }
   }
 }
-# [END functions_v2_basic_gcs]
 `, context)
 }
 
@@ -346,16 +347,16 @@ func TestAccCloudfunctions2function_cloudfunctions2BasicAuditlogsExample(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":             GetTestProjectFromEnv(),
+		"project":             envvar.GetTestProjectFromEnv(),
 		"zip_path":            "./test-fixtures/cloudfunctions2/function-source-eventarc-gcs.zip",
 		"primary_resource_id": "terraform-test",
-		"policyChanged":       BootstrapPSARole(t, "service-", "gcp-sa-pubsub", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
-		"random_suffix":       RandString(t, 10),
+		"policyChanged":       acctest.BootstrapPSARole(t, "service-", "gcp-sa-pubsub", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
+		"random_suffix":       acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -372,8 +373,7 @@ func TestAccCloudfunctions2function_cloudfunctions2BasicAuditlogsExample(t *test
 }
 
 func testAccCloudfunctions2function_cloudfunctions2BasicAuditlogsExample(context map[string]interface{}) string {
-	return Nprintf(`
-# [START functions_v2_basic_auditlogs]
+	return acctest.Nprintf(`
 # This example follows the examples shown in this Google Cloud Community blog post
 # https://medium.com/google-cloud/applying-a-path-pattern-when-filtering-in-eventarc-f06b937b4c34
 # and the docs:
@@ -482,7 +482,6 @@ resource "google_cloudfunctions2_function" "function" {
     }
   }
 }
-# [END functions_v2_basic_auditlogs]
 `, context)
 }
 
@@ -490,16 +489,16 @@ func TestAccCloudfunctions2function_cloudfunctions2SecretEnvExample(t *testing.T
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
+		"project":       envvar.GetTestProjectFromEnv(),
 		"zip_path":      "./test-fixtures/cloudfunctions2/function-source.zip",
 		"location":      "us-central1",
-		"policyChanged": BootstrapPSARole(t, "service-", "gcp-sa-pubsub", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
-		"random_suffix": RandString(t, 10),
+		"policyChanged": acctest.BootstrapPSARole(t, "service-", "gcp-sa-pubsub", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -516,7 +515,7 @@ func TestAccCloudfunctions2function_cloudfunctions2SecretEnvExample(t *testing.T
 }
 
 func testAccCloudfunctions2function_cloudfunctions2SecretEnvExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 locals {
   project = "%{project}" # Google Cloud Platform Project ID
 }
@@ -589,16 +588,16 @@ func TestAccCloudfunctions2function_cloudfunctions2SecretVolumeExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
+		"project":       envvar.GetTestProjectFromEnv(),
 		"zip_path":      "./test-fixtures/cloudfunctions2/function-source.zip",
 		"location":      "us-central1",
-		"policyChanged": BootstrapPSARole(t, "service-", "gcp-sa-pubsub", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
-		"random_suffix": RandString(t, 10),
+		"policyChanged": acctest.BootstrapPSARole(t, "service-", "gcp-sa-pubsub", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -615,7 +614,7 @@ func TestAccCloudfunctions2function_cloudfunctions2SecretVolumeExample(t *testin
 }
 
 func testAccCloudfunctions2function_cloudfunctions2SecretVolumeExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 locals {
   project = "%{project}" # Google Cloud Platform Project ID
 }
@@ -687,15 +686,15 @@ func TestAccCloudfunctions2function_cloudfunctions2PrivateWorkerpoolExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
+		"project":       envvar.GetTestProjectFromEnv(),
 		"zip_path":      "./test-fixtures/cloudfunctions2/function-source.zip",
 		"location":      "us-central1",
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -712,7 +711,7 @@ func TestAccCloudfunctions2function_cloudfunctions2PrivateWorkerpoolExample(t *t
 }
 
 func testAccCloudfunctions2function_cloudfunctions2PrivateWorkerpoolExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 locals {
   project = "%{project}" # Google Cloud Platform Project ID
 }
@@ -775,9 +774,9 @@ func testAccCheckCloudfunctions2functionDestroyProducer(t *testing.T) func(s *te
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{Cloudfunctions2BasePath}}projects/{{project}}/locations/{{location}}/functions/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{Cloudfunctions2BasePath}}projects/{{project}}/locations/{{location}}/functions/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -788,7 +787,13 @@ func testAccCheckCloudfunctions2functionDestroyProducer(t *testing.T) func(s *te
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("Cloudfunctions2function still exists at %s", url)
 			}

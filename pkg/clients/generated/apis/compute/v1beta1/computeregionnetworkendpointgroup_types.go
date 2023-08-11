@@ -36,9 +36,7 @@ import (
 )
 
 type RegionnetworkendpointgroupCloudFunction struct {
-	/* Only `external` field is supported to configure the reference.
-
-	Immutable. A user-defined name of the Cloud Function.
+	/* Immutable. A user-defined name of the Cloud Function.
 	The function name is case-sensitive and must be 1-63 characters long.
 	Example value: "func1". */
 	// +optional
@@ -56,9 +54,7 @@ type RegionnetworkendpointgroupCloudFunction struct {
 }
 
 type RegionnetworkendpointgroupCloudRun struct {
-	/* Only `external` field is supported to configure the reference.
-
-	Immutable. Cloud Run service is the main resource of Cloud Run.
+	/* Immutable. Cloud Run service is the main resource of Cloud Run.
 	The service must be 1-63 characters long, and comply with RFC1035.
 	Example value: "run-service". */
 	// +optional

@@ -1,22 +1,8 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/iam_bigtable_table.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/iam_bigtable_table.go
-index 57e1de13d..f4c0c3fed 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/iam_bigtable_table.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/iam_bigtable_table.go
-@@ -11,7 +11,7 @@ import (
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/iam_bigtable_table.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/iam_bigtable_table.go
+index 7bbaa70eb..6ac97ba40 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/iam_bigtable_table.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/iam_bigtable_table.go
+@@ -13,7 +13,7 @@ import (
  )
  
  var IamBigtableTableSchema = map[string]*schema.Schema{
@@ -25,7 +11,7 @@ index 57e1de13d..f4c0c3fed 100644
  		Type:     schema.TypeString,
  		Required: true,
  		ForceNew: true,
-@@ -49,7 +49,7 @@ func NewBigtableTableUpdater(d *schema.ResourceData, config *Config) (ResourceIa
+@@ -51,7 +51,7 @@ func NewBigtableTableUpdater(d tpgresource.TerraformResourceData, config *transp
  
  	return &BigtableTableIamUpdater{
  		project:  project,
@@ -34,16 +20,16 @@ index 57e1de13d..f4c0c3fed 100644
  		table:    d.Get("table").(string),
  		d:        d,
  		Config:   config,
-@@ -59,7 +59,7 @@ func NewBigtableTableUpdater(d *schema.ResourceData, config *Config) (ResourceIa
- func BigtableTableIdParseFunc(d *schema.ResourceData, config *Config) error {
+@@ -61,7 +61,7 @@ func NewBigtableTableUpdater(d tpgresource.TerraformResourceData, config *transp
+ func BigtableTableIdParseFunc(d *schema.ResourceData, config *transport_tpg.Config) error {
  	values := make(map[string]string)
  
--	m, err := getImportIdQualifiers([]string{"projects/(?P<project>[^/]+)/instances/(?P<instance>[^/]+)/tables/(?P<table>[^/]+)"}, d, config, d.Id())
-+	m, err := getImportIdQualifiers([]string{"projects/(?P<project>[^/]+)/instances/(?P<instance_name>[^/]+)/tables/(?P<table>[^/]+)"}, d, config, d.Id())
+-	m, err := tpgresource.GetImportIdQualifiers([]string{"projects/(?P<project>[^/]+)/instances/(?P<instance>[^/]+)/tables/(?P<table>[^/]+)"}, d, config, d.Id())
++	m, err := tpgresource.GetImportIdQualifiers([]string{"projects/(?P<project>[^/]+)/instances/(?P<instance_name>[^/]+)/tables/(?P<table>[^/]+)"}, d, config, d.Id())
  	if err != nil {
  		return err
  	}
-@@ -74,7 +74,7 @@ func BigtableTableIdParseFunc(d *schema.ResourceData, config *Config) error {
+@@ -76,7 +76,7 @@ func BigtableTableIdParseFunc(d *schema.ResourceData, config *transport_tpg.Conf
  		return fmt.Errorf("Error setting project: %s", err)
  	}
  
@@ -52,7 +38,7 @@ index 57e1de13d..f4c0c3fed 100644
  		return fmt.Errorf("Error setting instance: %s", err)
  	}
  
-@@ -83,7 +83,7 @@ func BigtableTableIdParseFunc(d *schema.ResourceData, config *Config) error {
+@@ -85,7 +85,7 @@ func BigtableTableIdParseFunc(d *schema.ResourceData, config *transport_tpg.Conf
  	}
  
  	// Explicitly set the id so imported resources have the same ID format as non-imported ones.

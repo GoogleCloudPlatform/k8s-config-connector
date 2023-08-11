@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccCloudRunV2Service_cloudrunv2ServiceBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunV2ServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,7 +56,7 @@ func TestAccCloudRunV2Service_cloudrunv2ServiceBasicExample(t *testing.T) {
 }
 
 func testAccCloudRunV2Service_cloudrunv2ServiceBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_run_v2_service" "default" {
   name     = "tf-test-cloudrun-service%{random_suffix}"
   location = "us-central1"
@@ -69,12 +76,12 @@ func TestAccCloudRunV2Service_cloudrunv2ServiceSqlExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"deletion_protection": false,
-		"random_suffix":       RandString(t, 10),
+		"random_suffix":       acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunV2ServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -91,7 +98,7 @@ func TestAccCloudRunV2Service_cloudrunv2ServiceSqlExample(t *testing.T) {
 }
 
 func testAccCloudRunV2Service_cloudrunv2ServiceSqlExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_run_v2_service" "default" {
   name     = "tf-test-cloudrun-service%{random_suffix}"
   location = "us-central1"
@@ -178,12 +185,12 @@ func TestAccCloudRunV2Service_cloudrunv2ServiceVpcaccessExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunV2ServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -200,7 +207,7 @@ func TestAccCloudRunV2Service_cloudrunv2ServiceVpcaccessExample(t *testing.T) {
 }
 
 func testAccCloudRunV2Service_cloudrunv2ServiceVpcaccessExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_run_v2_service" "default" {
   name     = "tf-test-cloudrun-service%{random_suffix}"
   location = "us-central1"
@@ -243,12 +250,12 @@ func TestAccCloudRunV2Service_cloudrunv2ServiceProbesExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunV2ServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -265,7 +272,7 @@ func TestAccCloudRunV2Service_cloudrunv2ServiceProbesExample(t *testing.T) {
 }
 
 func testAccCloudRunV2Service_cloudrunv2ServiceProbesExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_run_v2_service" "default" {
   name     = "tf-test-cloudrun-service%{random_suffix}"
   location = "us-central1"
@@ -297,12 +304,12 @@ func TestAccCloudRunV2Service_cloudrunv2ServiceSecretExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunV2ServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -319,7 +326,7 @@ func TestAccCloudRunV2Service_cloudrunv2ServiceSecretExample(t *testing.T) {
 }
 
 func testAccCloudRunV2Service_cloudrunv2ServiceSecretExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_run_v2_service" "default" {
   name     = "tf-test-cloudrun-service%{random_suffix}"
   location = "us-central1"
@@ -373,6 +380,74 @@ resource "google_secret_manager_secret_iam_member" "secret-access" {
 `, context)
 }
 
+func TestAccCloudRunV2Service_cloudrunv2ServiceMulticontainerExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": acctest.RandString(t, 10),
+	}
+
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckCloudRunV2ServiceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudRunV2Service_cloudrunv2ServiceMulticontainerExample(context),
+			},
+			{
+				ResourceName:            "google_cloud_run_v2_service.default",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"name", "location"},
+			},
+		},
+	})
+}
+
+func testAccCloudRunV2Service_cloudrunv2ServiceMulticontainerExample(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_cloud_run_v2_service" "default" {
+  provider = google-beta
+  name     = "tf-test-cloudrun-service%{random_suffix}"
+  location = "us-central1"
+  launch_stage = "BETA"
+  ingress = "INGRESS_TRAFFIC_ALL"
+  template {
+    containers {
+      name = "hello-1"
+      ports {
+        container_port = 8080
+      }
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
+      depends_on = ["hello-2"]
+      volume_mounts {
+        name = "empty-dir-volume"
+	mount_path = "/mnt"
+      }
+    }
+    containers {
+      name = "hello-2"
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
+    }
+    volumes {
+      name = "empty-dir-volume"
+      empty_dir {
+        medium = "MEMORY"
+        size_limit = "256Mi"
+      }
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      launch_stage,
+    ]
+  }
+}
+`, context)
+}
+
 func testAccCheckCloudRunV2ServiceDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
 		for name, rs := range s.RootModule().Resources {
@@ -383,9 +458,9 @@ func testAccCheckCloudRunV2ServiceDestroyProducer(t *testing.T) func(s *terrafor
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -396,7 +471,13 @@ func testAccCheckCloudRunV2ServiceDestroyProducer(t *testing.T) func(s *terrafor
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("CloudRunV2Service still exists at %s", url)
 			}

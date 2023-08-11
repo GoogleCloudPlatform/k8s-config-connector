@@ -58,6 +58,40 @@ spec:
             type: object
           spec:
             properties:
+              asyncPrimaryDisk:
+                description: Immutable. A nested object resource.
+                properties:
+                  diskRef:
+                    description: Immutable. Primary disk for asynchronous disk replication.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `selfLink` field of a `ComputeDisk`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                required:
+                - diskRef
+                type: object
               description:
                 description: |-
                   Immutable. An optional description of this resource. Provide this property when
@@ -184,10 +218,10 @@ spec:
                         type: object
                     type: object
                   rsaEncryptedKey:
-                    description: "Immutable. Specifies an RFC 4648 base64 encoded,
-                      RSA-wrapped 2048-bit \ncustomer-supplied encryption key to either
-                      encrypt or decrypt \nthis resource. You can provide either the
-                      rawKey or the rsaEncryptedKey."
+                    description: |-
+                      Immutable. Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit
+                      customer-supplied encryption key to either encrypt or decrypt
+                      this resource. You can provide either the rawKey or the rsaEncryptedKey.
                     oneOf:
                     - not:
                         required:
@@ -231,6 +265,29 @@ spec:
                       encryption key that protects this resource.
                     type: string
                 type: object
+              enableConfidentialCompute:
+                description: |-
+                  Immutable. Whether this disk is using confidential compute mode.
+                  Note: Only supported on hyperdisk skus, disk_encryption_key is required when setting to true.
+                type: boolean
+              guestOsFeatures:
+                description: |-
+                  Immutable. A list of features to enable on the guest operating system.
+                  Applicable only for bootable disks.
+                items:
+                  properties:
+                    type:
+                      description: 'Immutable. The type of supported feature. Read
+                        [Enabling guest operating system features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features)
+                        to see a list of available options. Possible values: ["MULTI_IP_SUBNET",
+                        "SECURE_BOOT", "SEV_CAPABLE", "UEFI_COMPATIBLE", "VIRTIO_SCSI_MULTIQUEUE",
+                        "WINDOWS", "GVNIC", "SEV_LIVE_MIGRATABLE", "SEV_SNP_CAPABLE",
+                        "SUSPEND_RESUME_COMPATIBLE", "TDX_CAPABLE"].'
+                      type: string
+                  required:
+                  - type
+                  type: object
+                type: array
               imageRef:
                 description: The image from which to initialize this disk.
                 oneOf:
@@ -266,6 +323,11 @@ spec:
                   the disk interface to use for attaching this disk, which is either
                   SCSI or NVME. The default is SCSI.
                 type: string
+              licenses:
+                description: Immutable. Any applicable license URI.
+                items:
+                  type: string
+                type: array
               location:
                 description: 'Location represents the geographical location of the
                   ComputeDisk. Specify a region name or a zone name. Reference: GCP
@@ -311,8 +373,16 @@ spec:
                     type: string
                 type: object
               provisionedIops:
-                description: Immutable. Indicates how many IOPS must be provisioned
-                  for the disk.
+                description: |-
+                  Indicates how many IOPS must be provisioned for the disk.
+                  Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
+                  allows for an update of IOPS every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it.
+                type: integer
+              provisionedThroughput:
+                description: |-
+                  Indicates how much Throughput must be provisioned for the disk.
+                  Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
+                  allows for an update of Throughput every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it.
                 type: integer
               replicaZones:
                 description: Immutable. URLs of the zones where the disk should be

@@ -1,34 +1,39 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputePerInstanceConfig_statefulBasic(t *testing.T) {
 	// Multiple fine-grained resources
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	suffix := RandString(t, 10)
+	suffix := acctest.RandString(t, 10)
 	igmName := fmt.Sprintf("tf-test-igm-%s", suffix)
 	context := map[string]interface{}{
 		"igm_name":      igmName,
 		"random_suffix": suffix,
-		"config_name":   fmt.Sprintf("instance-%s", RandString(t, 10)),
-		"config_name2":  fmt.Sprintf("instance-%s", RandString(t, 10)),
-		"config_name3":  fmt.Sprintf("instance-%s", RandString(t, 10)),
-		"config_name4":  fmt.Sprintf("instance-%s", RandString(t, 10)),
+		"config_name":   fmt.Sprintf("instance-%s", acctest.RandString(t, 10)),
+		"config_name2":  fmt.Sprintf("instance-%s", acctest.RandString(t, 10)),
+		"config_name3":  fmt.Sprintf("instance-%s", acctest.RandString(t, 10)),
+		"config_name4":  fmt.Sprintf("instance-%s", acctest.RandString(t, 10)),
 	}
 	igmId := fmt.Sprintf("projects/%s/zones/%s/instanceGroupManagers/%s",
-		GetTestProjectFromEnv(), GetTestZoneFromEnv(), igmName)
+		envvar.GetTestProjectFromEnv(), envvar.GetTestZoneFromEnv(), igmName)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Create one endpoint
@@ -92,14 +97,14 @@ func TestAccComputePerInstanceConfig_update(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
-		"igm_name":      fmt.Sprintf("tf-test-igm-%s", RandString(t, 10)),
-		"config_name":   fmt.Sprintf("instance-%s", RandString(t, 10)),
+		"random_suffix": acctest.RandString(t, 10),
+		"igm_name":      fmt.Sprintf("tf-test-igm-%s", acctest.RandString(t, 10)),
+		"config_name":   fmt.Sprintf("instance-%s", acctest.RandString(t, 10)),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Create one config
@@ -129,18 +134,18 @@ func TestAccComputePerInstanceConfig_statefulIps(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
-		"igm_name":      fmt.Sprintf("tf-test-igm-%s", RandString(t, 10)),
-		"config_name":   fmt.Sprintf("instance-%s", RandString(t, 10)),
-		"network":       fmt.Sprintf("tf-test-igm-%s", RandString(t, 10)),
-		"subnetwork":    fmt.Sprintf("tf-test-igm-%s", RandString(t, 10)),
-		"address1":      fmt.Sprintf("tf-test-igm-address%s", RandString(t, 10)),
-		"address2":      fmt.Sprintf("tf-test-igm-address%s", RandString(t, 10)),
+		"random_suffix": acctest.RandString(t, 10),
+		"igm_name":      fmt.Sprintf("tf-test-igm-%s", acctest.RandString(t, 10)),
+		"config_name":   fmt.Sprintf("instance-%s", acctest.RandString(t, 10)),
+		"network":       fmt.Sprintf("tf-test-igm-%s", acctest.RandString(t, 10)),
+		"subnetwork":    fmt.Sprintf("tf-test-igm-%s", acctest.RandString(t, 10)),
+		"address1":      fmt.Sprintf("tf-test-igm-address%s", acctest.RandString(t, 10)),
+		"address2":      fmt.Sprintf("tf-test-igm-address%s", acctest.RandString(t, 10)),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Create one config
@@ -167,7 +172,7 @@ func TestAccComputePerInstanceConfig_statefulIps(t *testing.T) {
 }
 
 func testAccComputePerInstanceConfig_statefulBasic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_per_instance_config" "default" {
 	instance_group_manager = google_compute_instance_group_manager.igm.name
 	name = "%{config_name}"
@@ -182,7 +187,7 @@ resource "google_compute_per_instance_config" "default" {
 }
 
 func testAccComputePerInstanceConfig_update(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_per_instance_config" "default" {
 	instance_group_manager = google_compute_instance_group_manager.igm.name
 	name = "%{config_name}"
@@ -198,7 +203,7 @@ resource "google_compute_per_instance_config" "default" {
 }
 
 func testAccComputePerInstanceConfig_statefulModified(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_per_instance_config" "default" {
 	zone = google_compute_instance_group_manager.igm.zone
 	instance_group_manager = google_compute_instance_group_manager.igm.name
@@ -214,7 +219,7 @@ resource "google_compute_per_instance_config" "default" {
 }
 
 func testAccComputePerInstanceConfig_statefulAdditional(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_per_instance_config" "default" {
 	zone = google_compute_instance_group_manager.igm.zone
 	instance_group_manager = google_compute_instance_group_manager.igm.name
@@ -294,7 +299,7 @@ resource "google_compute_disk" "disk2" {
 }
 
 func testAccComputePerInstanceConfig_igm(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_compute_image" "my_image" {
   family  = "debian-11"
   project = "debian-cloud"
@@ -337,7 +342,7 @@ resource "google_compute_instance_group_manager" "igm" {
 }
 
 func testAccComputePerInstanceConfig_statefulIpsBasic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   name = "%{network}"
 }
@@ -412,7 +417,7 @@ resource "google_compute_disk" "disk1" {
 }
 
 func testAccComputePerInstanceConfig_statefulIpsUpdate(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_network" "default" {
   name = "%{network}"
 }
@@ -502,10 +507,15 @@ func testAccCheckComputePerInstanceConfigDestroyed(t *testing.T, igmId, configNa
 }
 
 func testAccComputePerInstanceConfigListNames(t *testing.T, igmId string) (map[string]struct{}, error) {
-	config := GoogleProviderConfig(t)
+	config := acctest.GoogleProviderConfig(t)
 
 	url := fmt.Sprintf("%s%s/listPerInstanceConfigs", config.ComputeBasePath, igmId)
-	res, err := SendRequest(config, "POST", "", url, config.UserAgent, nil)
+	res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+		Config:    config,
+		Method:    "POST",
+		RawURL:    url,
+		UserAgent: config.UserAgent,
+	})
 	if err != nil {
 		return nil, err
 	}

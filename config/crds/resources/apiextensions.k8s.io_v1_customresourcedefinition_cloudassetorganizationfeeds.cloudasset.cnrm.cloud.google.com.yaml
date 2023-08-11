@@ -59,12 +59,11 @@ spec:
           spec:
             properties:
               assetNames:
-                description: "A list of the full names of the assets to receive updates.
-                  You must specify either or both of \nassetNames and assetTypes.
-                  Only asset updates matching specified assetNames and assetTypes
-                  are\nexported to the feed. For example: //compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1.\nSee
-                  https://cloud.google.com/apis/design/resourceNames#fullResourceName
-                  for more info."
+                description: |-
+                  A list of the full names of the assets to receive updates. You must specify either or both of
+                  assetNames and assetTypes. Only asset updates matching specified assetNames and assetTypes are
+                  exported to the feed. For example: //compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1.
+                  See https://cloud.google.com/apis/design/resourceNames#fullResourceName for more info.
                 items:
                   type: string
                 type: array
@@ -79,9 +78,10 @@ spec:
                   type: string
                 type: array
               billingProject:
-                description: "Immutable. The project whose identity will be used when
-                  sending messages to the\ndestination pubsub topic. It also specifies
-                  the project for API \nenablement check, quota, and billing."
+                description: |-
+                  Immutable. The project whose identity will be used when sending messages to the
+                  destination pubsub topic. It also specifies the project for API
+                  enablement check, quota, and billing.
                 type: string
               condition:
                 description: |-
@@ -101,9 +101,9 @@ spec:
                       Expression Language syntax.
                     type: string
                   location:
-                    description: "String indicating the location of the expression
-                      for error reporting, e.g. a file \nname and a position in the
-                      file."
+                    description: |-
+                      String indicating the location of the expression for error reporting, e.g. a file
+                      name and a position in the file.
                     type: string
                   title:
                     description: |-

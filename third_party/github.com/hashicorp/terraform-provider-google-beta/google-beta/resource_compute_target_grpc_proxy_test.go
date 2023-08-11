@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,20 +7,21 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccComputeTargetGrpcProxy_update(t *testing.T) {
 	t.Parallel()
 
-	proxy := fmt.Sprintf("tf-manual-proxy-%s", RandString(t, 10))
-	urlmap1 := fmt.Sprintf("tf-manual-urlmap1-%s", RandString(t, 10))
-	urlmap2 := fmt.Sprintf("tf-manual-urlmap2-%s", RandString(t, 10))
-	backend := fmt.Sprintf("tf-manual-backend-%s", RandString(t, 10))
-	healthcheck := fmt.Sprintf("tf-manual-healthcheck-%s", RandString(t, 10))
+	proxy := fmt.Sprintf("tf-manual-proxy-%s", acctest.RandString(t, 10))
+	urlmap1 := fmt.Sprintf("tf-manual-urlmap1-%s", acctest.RandString(t, 10))
+	urlmap2 := fmt.Sprintf("tf-manual-urlmap2-%s", acctest.RandString(t, 10))
+	backend := fmt.Sprintf("tf-manual-backend-%s", acctest.RandString(t, 10))
+	healthcheck := fmt.Sprintf("tf-manual-healthcheck-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeTargetGrpcProxyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

@@ -1,23 +1,27 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccIapBrand_iapBrandExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgFromEnv(t),
-		"org_domain":    GetTestOrgDomainFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"org_domain":    envvar.GetTestOrgDomainFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIapBrand_iapBrandExample(context),
@@ -33,7 +37,7 @@ func TestAccIapBrand_iapBrandExample(t *testing.T) {
 }
 
 func testAccIapBrand_iapBrandExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"

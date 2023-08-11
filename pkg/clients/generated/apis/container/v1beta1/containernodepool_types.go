@@ -86,6 +86,11 @@ type NodepoolGcfsConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
+type NodepoolGpuDriverInstallationConfig struct {
+	/* Immutable. Mode for how the GPU driver is installed. */
+	GpuDriverVersion string `json:"gpuDriverVersion"`
+}
+
 type NodepoolGpuSharingConfig struct {
 	/* Immutable. The type of GPU sharing strategy to enable on the GPU node. Possible values are described in the API package (https://pkg.go.dev/google.golang.org/api/container/v1#GPUSharingConfig). */
 	GpuSharingStrategy string `json:"gpuSharingStrategy"`
@@ -97,6 +102,10 @@ type NodepoolGpuSharingConfig struct {
 type NodepoolGuestAccelerator struct {
 	/* Immutable. The number of the accelerator cards exposed to an instance. */
 	Count int `json:"count"`
+
+	/* Immutable. Configuration for auto installation of GPU driver. */
+	// +optional
+	GpuDriverInstallationConfig *NodepoolGpuDriverInstallationConfig `json:"gpuDriverInstallationConfig,omitempty"`
 
 	/* Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA mig user guide (https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning). */
 	// +optional
@@ -172,6 +181,17 @@ type NodepoolNetworkConfig struct {
 	/* Immutable. The ID of the secondary range for pod IPs. If create_pod_range is true, this ID is used for the new range. If create_pod_range is false, uses an existing secondary range with this ID. */
 	// +optional
 	PodRange *string `json:"podRange,omitempty"`
+}
+
+type NodepoolNodeAffinity struct {
+	/* Immutable. . */
+	Key string `json:"key"`
+
+	/* Immutable. . */
+	Operator string `json:"operator"`
+
+	/* Immutable. . */
+	Values []string `json:"values"`
 }
 
 type NodepoolNodeConfig struct {
@@ -283,6 +303,10 @@ type NodepoolNodeConfig struct {
 	// +optional
 	ShieldedInstanceConfig *NodepoolShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
 
+	/* Immutable. Node affinity options for sole tenant node pools. */
+	// +optional
+	SoleTenantConfig *NodepoolSoleTenantConfig `json:"soleTenantConfig,omitempty"`
+
 	/* Immutable. Whether the nodes are created as spot VM instances. */
 	// +optional
 	Spot *bool `json:"spot,omitempty"`
@@ -301,6 +325,10 @@ type NodepoolNodeConfig struct {
 }
 
 type NodepoolPlacementPolicy struct {
+	/* TPU placement topology for pod slice node pool. https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies. */
+	// +optional
+	TpuTopology *string `json:"tpuTopology,omitempty"`
+
 	/* Type defines the type of placement policy. */
 	Type string `json:"type"`
 }
@@ -335,6 +363,11 @@ type NodepoolShieldedInstanceConfig struct {
 	/* Immutable. Defines whether the instance has Secure Boot enabled. */
 	// +optional
 	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
+}
+
+type NodepoolSoleTenantConfig struct {
+	/* Immutable. . */
+	NodeAffinity []NodepoolNodeAffinity `json:"nodeAffinity"`
 }
 
 type NodepoolStandardRolloutPolicy struct {

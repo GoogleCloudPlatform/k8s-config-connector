@@ -1,7 +1,7 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_security_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_security_policy.go
 index 4dcd779a0..ac787ba9c 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_security_policy.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_security_policy.go
 @@ -436,7 +436,7 @@ func resourceComputeSecurityPolicy() *schema.Resource {
  				MaxItems:    1,
  				Elem: &schema.Resource{

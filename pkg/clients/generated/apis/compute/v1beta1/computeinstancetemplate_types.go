@@ -221,6 +221,10 @@ type InstancetemplateNetworkInterface struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
+	/* Immutable. The URL of the network attachment that this interface should connect to in the following format: projects/{projectNumber}/regions/{region_name}/networkAttachments/{network_attachment_name}. */
+	// +optional
+	NetworkAttachment *string `json:"networkAttachment,omitempty"`
+
 	/* Immutable. The private IP address to assign to the instance. If empty, the address will be automatically assigned. */
 	// +optional
 	NetworkIp *string `json:"networkIp,omitempty"`

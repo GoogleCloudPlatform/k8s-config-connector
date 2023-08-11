@@ -16,7 +16,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-system
@@ -25,7 +25,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-controller-manager
@@ -35,7 +35,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-deletiondefender
@@ -45,7 +45,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-resource-stats-recorder
@@ -55,7 +55,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-webhook-manager
@@ -65,7 +65,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-deletiondefender-cnrm-system-role
@@ -86,7 +86,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-webhook-cnrm-system-role
@@ -107,7 +107,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/system: "true"
@@ -117,6 +117,30 @@ metadata:
 rules:
 - apiGroups:
   - accesscontextmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - alloydb.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - apigateway.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -140,6 +164,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - appengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - artifactregistry.cnrm.cloud.google.com
   resources:
   - '*'
@@ -152,7 +188,79 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - beyondcorp.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - bigquery.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - bigqueryanalyticshub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - bigqueryconnection.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - bigquerydatapolicy.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - bigquerydatatransfer.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - bigqueryreservation.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -200,6 +308,30 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - certificatemanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - cloudasset.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudbuild.cnrm.cloud.google.com
   resources:
   - '*'
@@ -224,6 +356,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - cloudfunctions2.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudidentity.cnrm.cloud.google.com
   resources:
   - '*'
@@ -236,7 +380,43 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - cloudids.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - cloudiot.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudscheduler.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - cloudtasks.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -320,6 +500,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - dataform.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - datafusion.cnrm.cloud.google.com
   resources:
   - '*'
@@ -333,6 +525,66 @@ rules:
   - delete
 - apiGroups:
   - dataproc.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - datastore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - datastream.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - deploymentmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - dialogflow.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - dialogflowcx.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -368,6 +620,30 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - documentai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - essentialcontacts.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - eventarc.cnrm.cloud.google.com
   resources:
   - '*'
@@ -392,6 +668,54 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - firebase.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - firebasedatabase.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - firebasehosting.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - firebasestorage.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - firestore.cnrm.cloud.google.com
   resources:
   - '*'
@@ -404,7 +728,31 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - gkebackup.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - gkehub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - healthcare.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -488,6 +836,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - mlengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - monitoring.cnrm.cloud.google.com
   resources:
   - '*'
@@ -501,6 +861,18 @@ rules:
   - delete
 - apiGroups:
   - networkconnectivity.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - networkmanagement.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -536,7 +908,43 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - notebooks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - orgpolicy.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - osconfig.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - oslogin.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -633,6 +1041,18 @@ rules:
   - delete
 - apiGroups:
   - secretmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - securitycenter.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -752,7 +1172,55 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - tpu.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - vertexai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - vpcaccess.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - workflows.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - workstations.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -768,7 +1236,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-deletiondefender-role
@@ -818,7 +1286,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-manager-cluster-role
@@ -876,7 +1344,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-manager-ns-role
@@ -901,7 +1369,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-recorder-role
@@ -931,7 +1399,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/system: "true"
@@ -947,7 +1415,31 @@ rules:
   - list
   - watch
 - apiGroups:
+  - alloydb.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apigateway.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - apigee.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - appengine.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -963,7 +1455,55 @@ rules:
   - list
   - watch
 - apiGroups:
+  - beyondcorp.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - bigquery.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - bigqueryanalyticshub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - bigqueryconnection.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - bigquerydatapolicy.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - bigquerydatatransfer.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - bigqueryreservation.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -995,6 +1535,22 @@ rules:
   - list
   - watch
 - apiGroups:
+  - certificatemanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudasset.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudbuild.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1011,6 +1567,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - cloudfunctions2.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudidentity.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1019,7 +1583,31 @@ rules:
   - list
   - watch
 - apiGroups:
+  - cloudids.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudiot.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudscheduler.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudtasks.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1075,6 +1663,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - dataform.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - datafusion.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1084,6 +1680,46 @@ rules:
   - watch
 - apiGroups:
   - dataproc.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - datastore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - datastream.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - deploymentmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - dialogflow.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - dialogflowcx.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1107,6 +1743,22 @@ rules:
   - list
   - watch
 - apiGroups:
+  - documentai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - essentialcontacts.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - eventarc.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1123,6 +1775,38 @@ rules:
   - list
   - watch
 - apiGroups:
+  - firebase.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - firebasedatabase.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - firebasehosting.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - firebasestorage.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - firestore.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1131,7 +1815,23 @@ rules:
   - list
   - watch
 - apiGroups:
+  - gkebackup.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - gkehub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - healthcare.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1187,6 +1887,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - mlengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - monitoring.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1196,6 +1904,14 @@ rules:
   - watch
 - apiGroups:
   - networkconnectivity.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - networkmanagement.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1219,7 +1935,31 @@ rules:
   - list
   - watch
 - apiGroups:
+  - notebooks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - orgpolicy.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - osconfig.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - oslogin.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1284,6 +2024,14 @@ rules:
   - watch
 - apiGroups:
   - secretmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - securitycenter.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1363,7 +2111,39 @@ rules:
   - list
   - watch
 - apiGroups:
+  - tpu.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - vertexai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - vpcaccess.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - workflows.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - workstations.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1375,7 +2155,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-webhook-role
@@ -1438,7 +2218,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-deletiondefender-role-binding
@@ -1456,7 +2236,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-webhook-role-binding
@@ -1474,7 +2254,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-admin-binding
@@ -1497,7 +2277,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-deletiondefender-binding
@@ -1514,7 +2294,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-manager-binding
@@ -1531,7 +2311,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-manager-watcher-binding
@@ -1548,7 +2328,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-recorder-binding
@@ -1565,7 +2345,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-webhook-binding
@@ -1582,7 +2362,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-deletiondefender
@@ -1599,7 +2379,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
     prometheus.io/port: "8888"
     prometheus.io/scrape: "true"
   labels:
@@ -1621,7 +2401,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
     prometheus.io/port: "48797"
     prometheus.io/scrape: "true"
   labels:
@@ -1642,7 +2422,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/component: cnrm-resource-stats-recorder
     cnrm.cloud.google.com/system: "true"
@@ -1660,7 +2440,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.102.0
+        cnrm.cloud.google.com/version: 1.107.0
       labels:
         cnrm.cloud.google.com/component: cnrm-resource-stats-recorder
         cnrm.cloud.google.com/system: "true"
@@ -1673,8 +2453,8 @@ spec:
         - /configconnector/recorder
         env:
         - name: CONFIG_CONNECTOR_VERSION
-          value: 1.102.0
-        image: gcr.io/cnrm-eap/recorder:fc8237b
+          value: 1.107.0
+        image: gcr.io/cnrm-eap/recorder:ee28c1c
         imagePullPolicy: Always
         name: recorder
         ports:
@@ -1708,7 +2488,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/component: cnrm-webhook-manager
     cnrm.cloud.google.com/system: "true"
@@ -1723,7 +2503,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.102.0
+        cnrm.cloud.google.com/version: 1.107.0
       labels:
         cnrm.cloud.google.com/component: cnrm-webhook-manager
         cnrm.cloud.google.com/system: "true"
@@ -1732,11 +2512,13 @@ spec:
       - command:
         - /configconnector/webhook
         env:
+        - name: GOMEMLIMIT
+          value: 110MiB
         - name: NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: gcr.io/cnrm-eap/webhook:fc8237b
+        image: gcr.io/cnrm-eap/webhook:ee28c1c
         imagePullPolicy: Always
         name: webhook
         ports:
@@ -1766,7 +2548,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/component: cnrm-controller-manager
     cnrm.cloud.google.com/system: "true"
@@ -1781,7 +2563,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.102.0
+        cnrm.cloud.google.com/version: 1.107.0
       labels:
         cnrm.cloud.google.com/component: cnrm-controller-manager
         cnrm.cloud.google.com/system: "true"
@@ -1794,7 +2576,7 @@ spec:
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /var/secrets/google/key.json
-        image: gcr.io/cnrm-eap/controller:fc8237b
+        image: gcr.io/cnrm-eap/controller:ee28c1c
         imagePullPolicy: Always
         name: manager
         ports:
@@ -1831,7 +2613,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/component: cnrm-deletiondefender
     cnrm.cloud.google.com/system: "true"
@@ -1846,7 +2628,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.102.0
+        cnrm.cloud.google.com/version: 1.107.0
       labels:
         cnrm.cloud.google.com/component: cnrm-deletiondefender
         cnrm.cloud.google.com/system: "true"
@@ -1854,7 +2636,7 @@ spec:
       containers:
       - command:
         - /configconnector/deletiondefender
-        image: gcr.io/cnrm-eap/deletiondefender:fc8237b
+        image: gcr.io/cnrm-eap/deletiondefender:ee28c1c
         imagePullPolicy: Always
         name: deletiondefender
         ports:
@@ -1884,8 +2666,8 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   annotations:
-    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":90}}]'
-    cnrm.cloud.google.com/version: 1.102.0
+    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
+    cnrm.cloud.google.com/version: 1.107.0
   labels:
     cnrm.cloud.google.com/system: "true"
   name: cnrm-webhook
@@ -1897,4 +2679,4 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: cnrm-webhook-manager
-  targetCPUUtilizationPercentage: 90
+  targetCPUUtilizationPercentage: 70

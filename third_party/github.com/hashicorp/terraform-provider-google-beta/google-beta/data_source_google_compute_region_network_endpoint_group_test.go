@@ -1,33 +1,37 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDataSourceRegionNetworkEndpointGroup_basic(t *testing.T) {
 	t.Parallel()
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
+		"project":       envvar.GetTestProjectFromEnv(),
 		"region":        "us-central1",
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceRegionNetworkEndpointGroup_basic(context),
-				Check:  CheckDataSourceStateMatchesResourceStateWithIgnores("data.google_compute_region_network_endpoint_group.cloudrun_neg", "google_compute_region_network_endpoint_group.cloudrun_neg", map[string]struct{}{"name": {}, "region": {}}),
+				Check:  acctest.CheckDataSourceStateMatchesResourceStateWithIgnores("data.google_compute_region_network_endpoint_group.cloudrun_neg", "google_compute_region_network_endpoint_group.cloudrun_neg", map[string]struct{}{"name": {}, "region": {}}),
 			},
 		},
 	})
 }
 
 func testAccDataSourceRegionNetworkEndpointGroup_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
   resource "google_compute_region_network_endpoint_group" "cloudrun_neg" {
     name                  = "cloud-run-rneg-%{random_suffix}"
     network_endpoint_type = "SERVERLESS"

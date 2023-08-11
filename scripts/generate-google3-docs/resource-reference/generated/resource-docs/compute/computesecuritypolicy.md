@@ -343,9 +343,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Only `external` field is supported to configure the reference.
-
-A field to supply a reCAPTCHA site key to be used for all the rules
+            <p>{% verbatim %}A field to supply a reCAPTCHA site key to be used for all the rules
 using the redirect action with the type of GOOGLE_RECAPTCHA under
 the security policy. The specified site key needs to be created from
 the reCAPTCHA API. The user is responsible for the validity of the
@@ -1230,5 +1228,7 @@ spec:
     description: Never allow these denylisted IP ranges.
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

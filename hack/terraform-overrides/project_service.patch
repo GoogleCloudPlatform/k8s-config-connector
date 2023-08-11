@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_service.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_service.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project_service.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project_service.go
 index e89a6f4c1..07614a3b9 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_service.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_project_service.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project_service.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_google_project_service.go
 @@ -119,17 +119,22 @@ func resourceGoogleProjectService() *schema.Resource {
  	}
  }
@@ -28,8 +28,8 @@ index e89a6f4c1..07614a3b9 100644
 -	if err := d.Set("project", parts[0]); err != nil {
 -		return nil, fmt.Errorf("Error setting project: %s", err)
 +func resourceGoogleProjectServiceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-+	config := meta.(*Config)
-+	if err := ParseImportId([]string{
++	config := meta.(*transport_tpg.Config)
++	if err := tpgresource.ParseImportId([]string{
 +		"projects/(?P<project>[^/]+)/services/(?P<service>[^/]+)",
 +		"(?P<project>[^/]+)/(?P<service>[^/]+)",
 +	}, d, config); err != nil {
@@ -39,7 +39,7 @@ index e89a6f4c1..07614a3b9 100644
 -		return nil, fmt.Errorf("Error setting service: %s", err)
 +
 +	// Replace import id for the resource id
-+	id, err := ReplaceVars(d, config, "projects/{{project}}/services/{{name}}")
++	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/services/{{name}}")
 +	if err != nil {
 +		return nil, fmt.Errorf("Error constructing id: %s", err)
  	}

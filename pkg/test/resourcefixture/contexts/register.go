@@ -29,7 +29,6 @@ import (
 	dcllivestate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/livestate"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -136,17 +135,6 @@ func (rc ResourceContext) Delete(t *testing.T, u *unstructured.Unstructured, pro
 		return dclDelete(u, config, c, dclConverter, smLoader)
 	}
 	return terraformDelete(u, provider, c, smLoader)
-}
-
-func (rc ResourceContext) DoPreActuationTransformFor(u *unstructured.Unstructured, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, dclConverter *dclconversion.Converter) (*unstructured.Unstructured, error) {
-	resource, err := unstructuredToKRMResource(rc.DCLBased, u, provider, smLoader, dclConverter)
-	if err != nil {
-		return nil, err
-	}
-	if err := resourceoverrides.Handler.PreActuationTransform(resource); err != nil {
-		return nil, fmt.Errorf("could not run pre-acutuation transform on resource %s: %v", u.GetName(), err)
-	}
-	return resource.MarshalAsUnstructured()
 }
 
 func terraformDelete(u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader) error {
@@ -294,6 +282,10 @@ func dclStateToKRM(resource *dcl.Resource, liveState *unstructured.Unstructured,
 func resourceToKRM(resource *krmtotf.Resource, state *terraform.InstanceState) (*unstructured.Unstructured, error) {
 	resource.Spec, resource.Status = krmtotf.ResolveSpecAndStatusWithResourceID(resource, state)
 	resource.Labels = krmtotf.GetLabelsFromState(resource, state)
+	// Apply post-actuation transformation.
+	if err := resourceoverrides.Handler.PostActuationTransform(resource.Original, &resource.Resource, state, nil); err != nil {
+		return nil, fmt.Errorf("error applying post-actuation transformation to resource '%v': %v", resource.GetNamespacedName(), err)
+	}
 	return resource.MarshalAsUnstructured()
 }
 
@@ -302,6 +294,10 @@ func getTerraformResourceAndLiveState(ctx context.Context, u *unstructured.Unstr
 	resource, err := newTerraformResource(u, provider, smLoader)
 	if err != nil {
 		return nil, nil, err
+	}
+	// Apply pre-actuation transformation.
+	if err := resourceoverrides.Handler.PreActuationTransform(&resource.Resource); err != nil {
+		return nil, nil, fmt.Errorf("error applying pre-actuation transformation to resource '%s': %v", u.GetName(), err)
 	}
 	liveState, err := krmtotf.FetchLiveState(ctx, resource, provider, c, smLoader)
 	if err != nil {
@@ -327,27 +323,4 @@ func IsNotFoundError(err error) bool {
 		return false
 	}
 	return strings.Contains(err.Error(), "is not found")
-}
-
-func unstructuredToKRMResource(isDCLBasedResource bool, u *unstructured.Unstructured, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *dclconversion.Converter) (*k8s.Resource, error) {
-	if isDCLBasedResource {
-		return dclUnstructuredToKRMResource(u, converter)
-	}
-	return terraformUnstructuredToKRMResource(u, provider, smLoader)
-}
-
-func dclUnstructuredToKRMResource(u *unstructured.Unstructured, converter *dclconversion.Converter) (*k8s.Resource, error) {
-	resource, err := newDCLResource(u, converter)
-	if err != nil {
-		return nil, err
-	}
-	return &resource.Resource, nil
-}
-
-func terraformUnstructuredToKRMResource(u *unstructured.Unstructured, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader) (*k8s.Resource, error) {
-	resource, err := newTerraformResource(u, provider, smLoader)
-	if err != nil {
-		return nil, err
-	}
-	return &resource.Resource, nil
 }

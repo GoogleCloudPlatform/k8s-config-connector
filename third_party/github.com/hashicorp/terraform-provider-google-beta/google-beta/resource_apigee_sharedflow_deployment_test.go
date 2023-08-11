@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,27 +7,41 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 func TestAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
-		"random_suffix":   RandString(t, 10),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApigeeSharedflowDeploymentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(context),
+				Config: testAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(context, "./test-fixtures/apigee/apigee_sharedflow_bundle.zip"),
+			},
+			{
+				ResourceName:            "google_apigee_sharedflow_deployment.sharedflow_deployment_test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{},
+			},
+			{
+				Config: testAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(context, "./test-fixtures/apigee/apigee_sharedflow_bundle2.zip"),
 			},
 			{
 				ResourceName:            "google_apigee_sharedflow_deployment.sharedflow_deployment_test",
@@ -37,8 +53,10 @@ func TestAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(t *
 	})
 }
 
-func testAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(context map[string]interface{}) string {
-	return Nprintf(`
+func testAccApigeeSharedflowDeployment_apigeeSharedflowDeploymentTestExample(context map[string]interface{}, configBundle string) string {
+	context["config_bundle"] = configBundle
+
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id      = "tf-test%{random_suffix}"
   name            = "tf-test%{random_suffix}"
@@ -105,7 +123,7 @@ resource "google_apigee_environment" "apigee_environment" {
 resource "google_apigee_sharedflow" "test_apigee_sharedflow" {
   name            = "tf-test-apigee-sharedflow"
   org_id          = google_project.project.project_id
-  config_bundle   = "./test-fixtures/apigee/apigee_sharedflow_bundle.zip"
+  config_bundle   = "%{config_bundle}"
   depends_on      = [google_apigee_organization.apigee_org]
 }
 
@@ -128,9 +146,9 @@ func testAccCheckApigeeSharedflowDeploymentDestroyProducer(t *testing.T) func(s 
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ApigeeBasePath}}organizations/{{org_id}}/environments/{{environment}}/sharedflows/{{sharedflow_id}}/revisions/{{revision}}/deployments")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ApigeeBasePath}}organizations/{{org_id}}/environments/{{environment}}/sharedflows/{{sharedflow_id}}/revisions/{{revision}}/deployments")
 			if err != nil {
 				return err
 			}
@@ -140,7 +158,13 @@ func testAccCheckApigeeSharedflowDeploymentDestroyProducer(t *testing.T) func(s 
 			if config.BillingProject != "" {
 				billingProject = config.BillingProject
 			}
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ApigeeSharedFlow still exists at %s", url)
 			}

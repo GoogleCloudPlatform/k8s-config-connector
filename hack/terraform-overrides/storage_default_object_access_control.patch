@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_storage_default_object_access_control.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_storage_default_object_access_control.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/storage/resource_storage_default_object_access_control.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/storage/resource_storage_default_object_access_control.go
 index 73b4d413..9814f4b3 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_storage_default_object_access_control.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_storage_default_object_access_control.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/storage/resource_storage_default_object_access_control.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/storage/resource_storage_default_object_access_control.go
 @@ -96,6 +96,7 @@ func resourceStorageDefaultObjectAccessControl() *schema.Resource {
  			"project_team": {
  				Type:        schema.TypeList,

@@ -402,9 +402,6 @@ spec:
   folderRef:
     # Replace "${FOLDER_ID?}" with the numeric ID of the parent folder
     external: "${FOLDER_ID?}"
-  billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID?}"
 ```
 
 ### Project In Org
@@ -436,10 +433,9 @@ spec:
   organizationRef:
     # Replace "${ORG_ID?}" with the numeric ID of the parent organization
     external: "${ORG_ID?}"
-  billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID?}"
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,21 +24,26 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccApigeeEndpointAttachment_apigeeEndpointAttachmentBasicTestExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
-		"random_suffix":   RandString(t, 10),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApigeeEndpointAttachmentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -52,7 +60,7 @@ func TestAccApigeeEndpointAttachment_apigeeEndpointAttachmentBasicTestExample(t 
 }
 
 func testAccApigeeEndpointAttachment_apigeeEndpointAttachmentBasicTestExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id      = "tf-test%{random_suffix}"
   name            = "tf-test%{random_suffix}"
@@ -226,9 +234,9 @@ func testAccCheckApigeeEndpointAttachmentDestroyProducer(t *testing.T) func(s *t
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ApigeeBasePath}}{{org_id}}/endpointAttachments/{{endpoint_attachment_id}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ApigeeBasePath}}{{org_id}}/endpointAttachments/{{endpoint_attachment_id}}")
 			if err != nil {
 				return err
 			}
@@ -239,7 +247,13 @@ func testAccCheckApigeeEndpointAttachmentDestroyProducer(t *testing.T) func(s *t
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ApigeeEndpointAttachment still exists at %s", url)
 			}

@@ -1,95 +1,38 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
-	"context"
 	"fmt"
-	"log"
-	neturl "net/url"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
-
-func init() {
-	resource.AddTestSweepers("gcp_access_context_manager_policy", &resource.Sweeper{
-		Name: "gcp_access_context_manager_policy",
-		F:    testSweepAccessContextManagerPolicies,
-	})
-}
-
-func testSweepAccessContextManagerPolicies(region string) error {
-	config, err := SharedConfigForRegion(region)
-	if err != nil {
-		log.Fatalf("error getting shared config for region %q: %s", region, err)
-	}
-
-	err = config.LoadAndValidate(context.Background())
-	if err != nil {
-		log.Fatalf("error loading and validating shared config for region %q: %s", region, err)
-	}
-
-	testOrg := GetTestOrgFromEnv(nil)
-	if testOrg == "" {
-		log.Printf("test org not set for test environment, skip sweep")
-		return nil
-	}
-
-	log.Printf("[DEBUG] Listing Access Policies for org %q", testOrg)
-
-	parent := neturl.QueryEscape(fmt.Sprintf("organizations/%s", testOrg))
-	listUrl := fmt.Sprintf("%saccessPolicies?parent=%s", config.AccessContextManagerBasePath, parent)
-
-	resp, err := SendRequest(config, "GET", "", listUrl, config.UserAgent, nil)
-	if err != nil && !IsGoogleApiErrorWithCode(err, 404) {
-		log.Printf("unable to list AccessPolicies for organization %q: %v", testOrg, err)
-		return nil
-	}
-	var policies []interface{}
-	if resp != nil {
-		if v, ok := resp["accessPolicies"]; ok {
-			policies = v.([]interface{})
-		}
-	}
-
-	if len(policies) == 0 {
-		log.Printf("[DEBUG] no access policies found, exiting sweeper")
-		return nil
-	}
-	if len(policies) > 1 {
-		log.Printf("unexpected - more than one access policies found, change the tests")
-		return nil
-	}
-
-	policy := policies[0].(map[string]interface{})
-	log.Printf("[DEBUG] Deleting test Access Policies %q", policy["name"])
-
-	policyUrl := config.AccessContextManagerBasePath + policy["name"].(string)
-	if _, err := SendRequest(config, "DELETE", "", policyUrl, config.UserAgent, nil); err != nil && !IsGoogleApiErrorWithCode(err, 404) {
-		log.Printf("unable to delete access policy %q", policy["name"].(string))
-		return nil
-	}
-
-	return nil
-}
 
 // Since each test here is acting on the same organization and only one AccessPolicy
 // can exist, they need to be run serially
 func TestAccAccessContextManager(t *testing.T) {
 	testCases := map[string]func(t *testing.T){
-		"access_policy":              testAccAccessContextManagerAccessPolicy_basicTest,
-		"access_policy_scoped":       testAccAccessContextManagerAccessPolicy_scopedTest,
-		"service_perimeter":          testAccAccessContextManagerServicePerimeter_basicTest,
-		"service_perimeter_update":   testAccAccessContextManagerServicePerimeter_updateTest,
-		"service_perimeter_resource": testAccAccessContextManagerServicePerimeterResource_basicTest,
-		"access_level":               testAccAccessContextManagerAccessLevel_basicTest,
-		"access_level_full":          testAccAccessContextManagerAccessLevel_fullTest,
-		"access_level_custom":        testAccAccessContextManagerAccessLevel_customTest,
-		"access_levels":              testAccAccessContextManagerAccessLevels_basicTest,
-		"access_level_condition":     testAccAccessContextManagerAccessLevelCondition_basicTest,
-		"service_perimeters":         testAccAccessContextManagerServicePerimeters_basicTest,
-		"gcp_user_access_binding":    testAccAccessContextManagerGcpUserAccessBinding_basicTest,
-		"authorized_orgs_desc":       testAccAccessContextManagerAuthorizedOrgsDesc_basicTest,
+		"access_policy":                    testAccAccessContextManagerAccessPolicy_basicTest,
+		"access_policy_scoped":             testAccAccessContextManagerAccessPolicy_scopedTest,
+		"service_perimeter":                testAccAccessContextManagerServicePerimeter_basicTest,
+		"service_perimeter_update":         testAccAccessContextManagerServicePerimeter_updateTest,
+		"service_perimeter_resource":       testAccAccessContextManagerServicePerimeterResource_basicTest,
+		"access_level":                     testAccAccessContextManagerAccessLevel_basicTest,
+		"access_level_full":                testAccAccessContextManagerAccessLevel_fullTest,
+		"access_level_custom":              testAccAccessContextManagerAccessLevel_customTest,
+		"access_levels":                    testAccAccessContextManagerAccessLevels_basicTest,
+		"access_level_condition":           testAccAccessContextManagerAccessLevelCondition_basicTest,
+		"service_perimeter_egress_policy":  testAccAccessContextManagerServicePerimeterEgressPolicy_basicTest,
+		"service_perimeter_ingress_policy": testAccAccessContextManagerServicePerimeterIngressPolicy_basicTest,
+		"service_perimeters":               testAccAccessContextManagerServicePerimeters_basicTest,
+		"gcp_user_access_binding":          testAccAccessContextManagerGcpUserAccessBinding_basicTest,
+		"authorized_orgs_desc":             testAccAccessContextManagerAuthorizedOrgsDesc_basicTest,
 	}
 
 	for name, tc := range testCases {
@@ -105,11 +48,11 @@ func TestAccAccessContextManager(t *testing.T) {
 }
 
 func testAccAccessContextManagerAccessPolicy_basicTest(t *testing.T) {
-	org := GetTestOrgFromEnv(t)
+	org := envvar.GetTestOrgFromEnv(t)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAccessContextManagerAccessPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -139,14 +82,19 @@ func testAccCheckAccessContextManagerAccessPolicyDestroyProducer(t *testing.T) f
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{AccessContextManagerBasePath}}accessPolicies/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{AccessContextManagerBasePath}}accessPolicies/{{name}}")
 			if err != nil {
 				return err
 			}
 
-			_, err = SendRequest(config, "GET", "", url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("AccessPolicy still exists at %s", url)
 			}
@@ -166,11 +114,11 @@ resource "google_access_context_manager_access_policy" "test-access" {
 }
 
 func testAccAccessContextManagerAccessPolicy_scopedTest(t *testing.T) {
-	org := GetTestOrgFromEnv(t)
+	org := envvar.GetTestOrgFromEnv(t)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAccessContextManagerAccessPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

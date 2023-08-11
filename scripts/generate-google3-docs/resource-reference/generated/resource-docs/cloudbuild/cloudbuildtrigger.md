@@ -169,7 +169,10 @@ build:
       generation: string
       object: string
   step:
-  - args:
+  - allowExitCodes:
+    - integer
+    allowFailure: boolean
+    args:
     - string
     dir: string
     entrypoint: string
@@ -203,6 +206,10 @@ gitFileSource:
     namespace: string
   path: string
   repoType: string
+  repositoryRef:
+    external: string
+    name: string
+    namespace: string
   revision: string
   uri: string
 github:
@@ -258,6 +265,10 @@ sourceToBuild:
     namespace: string
   ref: string
   repoType: string
+  repositoryRef:
+    external: string
+    name: string
+    namespace: string
   uri: string
 substitutions:
   string: string
@@ -295,8 +306,8 @@ webhookConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Configuration for manual approval to start a build invocation of this BuildTrigger. 
-Builds created by this trigger will require approval before they execute. 
+            <p>{% verbatim %}Configuration for manual approval to start a build invocation of this BuildTrigger.
+Builds created by this trigger will require approval before they execute.
 Any user with a Cloud Build Approver role for the project can approve a build.{% endverbatim %}</p>
         </td>
     </tr>
@@ -307,7 +318,7 @@ Any user with a Cloud Build Approver role for the project can approve a build.{%
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Whether or not approval is needed. If this is set on a build, it will become pending when run, 
+            <p>{% verbatim %}Whether or not approval is needed. If this is set on a build, it will become pending when run,
 and will need to be explicitly approved to start.{% endverbatim %}</p>
         </td>
     </tr>
@@ -981,7 +992,7 @@ This field is experimental.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}TTL in queue for this build. If provided and the build is enqueued longer than this value, 
+            <p>{% verbatim %}TTL in queue for this build. If provided and the build is enqueued longer than this value,
 the build will expire and the build status will be EXPIRED.
 The TTL starts ticking from createTime.
 A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
@@ -1055,8 +1066,8 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
             <p>{% verbatim %}Map of environment variable name to its encrypted value.
-Secret environment variables must be unique across all of a build's secrets, 
-and must be used by at least one build step. Values can be at most 64 KB in size. 
+Secret environment variables must be unique across all of a build's secrets,
+and must be used by at least one build step. Values can be at most 64 KB in size.
 There can be at most 100 secret values across all of a build's secrets.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1090,7 +1101,7 @@ One of 'storageSource' or 'repoSource' must be provided.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Regex matching branches to build. Exactly one a of branch name, tag, or commit SHA must be provided.
-The syntax of the regular expressions accepted is the syntax accepted by RE2 and 
+The syntax of the regular expressions accepted is the syntax accepted by RE2 and
 described at https://github.com/google/re2/wiki/Syntax.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1112,7 +1123,7 @@ described at https://github.com/google/re2/wiki/Syntax.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Directory, relative to the source root, in which to run the build.
-This must be a relative path. If a step's dir is specified and is an absolute path, 
+This must be a relative path. If a step's dir is specified and is an absolute path,
 this value is ignored for that step's execution.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1133,7 +1144,7 @@ this value is ignored for that step's execution.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}ID of the project that owns the Cloud Source Repository. 
+            <p>{% verbatim %}ID of the project that owns the Cloud Source Repository.
 If omitted, the project ID requesting the build is assumed.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1196,7 +1207,7 @@ assumed.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Regex matching tags to build. Exactly one a of branch name, tag, or commit SHA must be provided.
-The syntax of the regular expressions accepted is the syntax accepted by RE2 and 
+The syntax of the regular expressions accepted is the syntax accepted by RE2 and
 described at https://github.com/google/re2/wiki/Syntax.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1257,7 +1268,7 @@ described at https://github.com/google/re2/wiki/Syntax.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Google Cloud Storage generation for the object. 
+            <p>{% verbatim %}Google Cloud Storage generation for the object.
 If the generation is omitted, the latest generation will be used.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1290,6 +1301,44 @@ This object must be a gzipped archive file (.tar.gz) containing source to build.
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>build.step[].allowExitCodes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (integer)</code></p>
+            <p>{% verbatim %}Allow this build step to fail without failing the entire build if and
+only if the exit code is one of the specified codes.
+
+If 'allowFailure' is also specified, this field will take precedence.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>build.step[].allowExitCodes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>build.step[].allowFailure</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Allow this build step to fail without failing the entire build.
+If false, the entire build will fail if this step fails. Otherwise, the
+build will succeed, but this step will still have a failure status.
+Error information will be reported in the 'failureDetail' field.
+
+'allowExitCodes' takes precedence over this field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1398,7 +1447,7 @@ run directly. If not, the host will attempt to pull the image first, using
 the builder service account's credentials if necessary.
 
 The Docker daemon's cache will already have the latest versions of all of
-the officially supported build steps (see https://github.com/GoogleCloudPlatform/cloud-builders 
+the officially supported build steps (see https://github.com/GoogleCloudPlatform/cloud-builders
 for images and examples).
 The Docker daemon will also have cached many of the layers for some popular
 images, like "ubuntu", "debian", but they will be refreshed at the time
@@ -1416,7 +1465,7 @@ later build step.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A shell script to be executed in the step. 
+            <p>{% verbatim %}A shell script to be executed in the step.
 When script is provided, the user cannot specify the entrypoint or args.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1616,7 +1665,7 @@ Default time is ten minutes (600s).{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Path, from the source root, to a file whose contents is used for the template. 
+            <p>{% verbatim %}Path, from the source root, to a file whose contents is used for the template.
 Either a filename or build template must be provided. Set this only when using trigger_template or github.
 When using Pub/Sub, Webhook or Manual set the file name using git_file_source instead.{% endverbatim %}</p>
         </td>
@@ -1701,8 +1750,51 @@ projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}.{% endverba
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The type of the repo, since it may not be explicit from the repo field (e.g from a URL). 
+            <p>{% verbatim %}The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
 Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gitFileSource.repositoryRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Only `external` field is supported to configure the reference.
+
+The fully qualified resource name of the Repo API repository. The fully qualified resource name of the Repo API repository.
+If unspecified, the repo from which the trigger invocation originated is assumed to be the repo from which to read the specified path.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gitFileSource.repositoryRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `CloudBuildV2Repository` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gitFileSource.repositoryRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gitFileSource.repositoryRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1712,8 +1804,8 @@ Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possi
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The branch, tag, arbitrary ref, or SHA version of the repo to use when resolving the 
-filename (optional). This field respects the same syntax/resolution as described here: https://git-scm.com/docs/gitrevisions 
+            <p>{% verbatim %}The branch, tag, arbitrary ref, or SHA version of the repo to use when resolving the
+filename (optional). This field respects the same syntax/resolution as described here: https://git-scm.com/docs/gitrevisions
 If unspecified, the revision from which the trigger invocation originated is assumed to be the revision from which to read the specified path.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1724,7 +1816,7 @@ If unspecified, the revision from which the trigger invocation originated is ass
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The URI of the repo (optional). If unspecified, the repo from which the trigger 
+            <p>{% verbatim %}The URI of the repo (optional). If unspecified, the repo from which the trigger
 invocation originated is assumed to be the repo from which to read the specified path.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1973,7 +2065,7 @@ If not specified, "global" is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}PubsubConfig describes the configuration of a trigger that creates 
+            <p>{% verbatim %}PubsubConfig describes the configuration of a trigger that creates
 a build whenever a Pub/Sub message is published.
 
 One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.{% endverbatim %}</p>
@@ -2244,9 +2336,9 @@ projects/{PROJECT_ID}/serviceAccounts/{SERVICE_ACCOUNT_EMAIL}{% endverbatim %}</
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The repo and ref of the repository from which to build. 
-This field is used only for those triggers that do not respond to SCM events. 
-Triggers that respond to such events build source at whatever commit caused the event. 
+            <p>{% verbatim %}The repo and ref of the repository from which to build.
+This field is used only for those triggers that do not respond to SCM events.
+Triggers that respond to such events build source at whatever commit caused the event.
 This field is currently only used by Webhook, Pub/Sub, Manual, and Cron triggers.
 
 One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.{% endverbatim %}</p>
@@ -2318,12 +2410,55 @@ Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possi
     </tr>
     <tr>
         <td>
-            <p><code>sourceToBuild.uri</code></p>
-            <p><i>Required*</i></p>
+            <p><code>sourceToBuild.repositoryRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Only `external` field is supported to configure the reference.
+
+The qualified resource name of the Repo API repository.
+Either uri or repository can be specified and is required.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceToBuild.repositoryRef.external</code></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The URI of the repo (required).{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `CloudBuildV2Repository` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceToBuild.repositoryRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceToBuild.repositoryRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceToBuild.uri</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The URI of the repo.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2476,7 +2611,7 @@ This field is a regular expression.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}WebhookConfig describes the configuration of a trigger that creates 
+            <p>{% verbatim %}WebhookConfig describes the configuration of a trigger that creates
 a build whenever a webhook is sent to a trigger's webhook URL.
 
 One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.{% endverbatim %}</p>
@@ -2841,5 +2976,7 @@ metadata:
   name: cloudbuildtrigger-dep-withtemplatefile
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

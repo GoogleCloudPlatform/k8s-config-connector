@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -18,18 +21,21 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccBigQueryJob_bigqueryJobQueryExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigQueryJob_bigqueryJobQueryExample(context),
@@ -45,7 +51,7 @@ func TestAccBigQueryJob_bigqueryJobQueryExample(t *testing.T) {
 }
 
 func testAccBigQueryJob_bigqueryJobQueryExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_table" "foo" {
   deletion_protection = false
   dataset_id = google_bigquery_dataset.bar.dataset_id
@@ -90,12 +96,12 @@ func TestAccBigQueryJob_bigqueryJobQueryTableReferenceExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigQueryJob_bigqueryJobQueryTableReferenceExample(context),
@@ -111,7 +117,7 @@ func TestAccBigQueryJob_bigqueryJobQueryTableReferenceExample(t *testing.T) {
 }
 
 func testAccBigQueryJob_bigqueryJobQueryTableReferenceExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_table" "foo" {
   deletion_protection = false
   dataset_id = google_bigquery_dataset.bar.dataset_id
@@ -158,12 +164,12 @@ func TestAccBigQueryJob_bigqueryJobLoadExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigQueryJob_bigqueryJobLoadExample(context),
@@ -179,7 +185,7 @@ func TestAccBigQueryJob_bigqueryJobLoadExample(t *testing.T) {
 }
 
 func testAccBigQueryJob_bigqueryJobLoadExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_table" "foo" {
   deletion_protection = false
   dataset_id = google_bigquery_dataset.bar.dataset_id
@@ -225,13 +231,13 @@ func TestAccBigQueryJob_bigqueryJobLoadGeojsonExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigQueryJob_bigqueryJobLoadGeojsonExample(context),
@@ -247,13 +253,13 @@ func TestAccBigQueryJob_bigqueryJobLoadGeojsonExample(t *testing.T) {
 }
 
 func testAccBigQueryJob_bigqueryJobLoadGeojsonExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 locals {
   project = "%{project}" # Google Cloud Platform Project ID
 }
 
 resource "google_storage_bucket" "bucket" {
-  name     = "${local.project}-tf-test-bq-geojson-sample%{random_suffix}"  # Every bucket name must be globally unique
+  name     = "${local.project}-tf-test-bq-geojson%{random_suffix}"  # Every bucket name must be globally unique
   location = "US"
   uniform_bucket_level_access = true
 }
@@ -309,16 +315,99 @@ resource "google_bigquery_job" "job" {
 `, context)
 }
 
+func TestAccBigQueryJob_bigqueryJobLoadParquetExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": acctest.RandString(t, 10),
+	}
+
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccBigQueryJob_bigqueryJobLoadParquetExample(context),
+			},
+			{
+				ResourceName:            "google_bigquery_job.job",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"etag", "status.0.state"},
+			},
+		},
+	})
+}
+
+func testAccBigQueryJob_bigqueryJobLoadParquetExample(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_storage_bucket" "test" {
+  name                        = "tf_test_job_load%{random_suffix}_bucket"
+  location                    = "US"
+  uniform_bucket_level_access = true
+}
+
+resource "google_storage_bucket_object" "test" {
+  name   =  "tf_test_job_load%{random_suffix}_bucket_object"
+  source = "./test-fixtures/bigquerytable/test.parquet.gzip"
+  bucket = google_storage_bucket.test.name
+}
+
+resource "google_bigquery_dataset" "test" {
+  dataset_id                  = "tf_test_job_load%{random_suffix}_dataset"
+  friendly_name               = "test"
+  description                 = "This is a test description"
+  location                    = "US"
+}
+
+resource "google_bigquery_table" "test" {
+  deletion_protection = false
+  table_id            = "tf_test_job_load%{random_suffix}_table"
+  dataset_id          = google_bigquery_dataset.test.dataset_id
+}
+
+resource "google_bigquery_job" "job" {
+  job_id = "tf_test_job_load%{random_suffix}"
+
+  labels = {
+    "my_job" ="load"
+  }
+
+  load {
+    source_uris = [
+      "gs://${google_storage_bucket_object.test.bucket}/${google_storage_bucket_object.test.name}"
+    ]
+
+    destination_table {
+      project_id = google_bigquery_table.test.project
+      dataset_id = google_bigquery_table.test.dataset_id
+      table_id   = google_bigquery_table.test.table_id
+    }
+
+    schema_update_options = ["ALLOW_FIELD_RELAXATION", "ALLOW_FIELD_ADDITION"]
+    write_disposition     = "WRITE_APPEND"
+    source_format         = "PARQUET"
+    autodetect            = true
+
+    parquet_options {
+      enum_as_string        = true
+      enable_list_inference = true
+    }
+  }
+}
+`, context)
+}
+
 func TestAccBigQueryJob_bigqueryJobLoadTableReferenceExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigQueryJob_bigqueryJobLoadTableReferenceExample(context),
@@ -334,7 +423,7 @@ func TestAccBigQueryJob_bigqueryJobLoadTableReferenceExample(t *testing.T) {
 }
 
 func testAccBigQueryJob_bigqueryJobLoadTableReferenceExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_table" "foo" {
   deletion_protection = false
   dataset_id = google_bigquery_dataset.bar.dataset_id
@@ -378,13 +467,13 @@ func TestAccBigQueryJob_bigqueryJobCopyExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigQueryJob_bigqueryJobCopyExample(context),
@@ -400,7 +489,7 @@ func TestAccBigQueryJob_bigqueryJobCopyExample(t *testing.T) {
 }
 
 func testAccBigQueryJob_bigqueryJobCopyExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_table" "source" {
   deletion_protection = false
   count = length(google_bigquery_dataset.source)
@@ -533,13 +622,13 @@ func TestAccBigQueryJob_bigqueryJobCopyTableReferenceExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigQueryJob_bigqueryJobCopyTableReferenceExample(context),
@@ -555,7 +644,7 @@ func TestAccBigQueryJob_bigqueryJobCopyTableReferenceExample(t *testing.T) {
 }
 
 func testAccBigQueryJob_bigqueryJobCopyTableReferenceExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_table" "source" {
   deletion_protection = false
   count = length(google_bigquery_dataset.source)
@@ -682,12 +771,12 @@ func TestAccBigQueryJob_bigqueryJobExtractExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigQueryJob_bigqueryJobExtractExample(context),
@@ -703,7 +792,7 @@ func TestAccBigQueryJob_bigqueryJobExtractExample(t *testing.T) {
 }
 
 func testAccBigQueryJob_bigqueryJobExtractExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_table" "source-one" {
   deletion_protection = false
   dataset_id = google_bigquery_dataset.source-one.dataset_id
@@ -766,12 +855,12 @@ func TestAccBigQueryJob_bigqueryJobExtractTableReferenceExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigQueryJob_bigqueryJobExtractTableReferenceExample(context),
@@ -787,7 +876,7 @@ func TestAccBigQueryJob_bigqueryJobExtractTableReferenceExample(t *testing.T) {
 }
 
 func testAccBigQueryJob_bigqueryJobExtractTableReferenceExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_table" "source-one" {
   deletion_protection = false
   dataset_id = google_bigquery_dataset.source-one.dataset_id

@@ -90,9 +90,38 @@ Note: DataflowFlexTemplateJob resources  cannot be updated.
 ### Spec
 #### Schema
 ```yaml
+additionalExperiments:
+- string
+autoscalingAlgorithm: string
 containerSpecGcsPath: string
+enableStreamingEngine: boolean
+ipConfiguration: string
+kmsKeyNameRef:
+  external: string
+  name: string
+  namespace: string
+launcherMachineType: string
+machineType: string
+maxWorkers: integer
+networkRef:
+  external: string
+  name: string
+  namespace: string
+numWorkers: integer
 parameters: {}
 region: string
+sdkContainerImage: string
+serviceAccountEmailRef:
+  external: string
+  name: string
+  namespace: string
+stagingLocation: string
+subnetworkRef:
+  external: string
+  name: string
+  namespace: string
+tempLocation: string
+transformNameMapping: {}
 ```
 
 <table class="properties responsive">
@@ -104,12 +133,182 @@ region: string
 <tbody>
     <tr>
         <td>
+            <p><code>additionalExperiments</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}List of experiments that should be used by the job. An example value is ["enable_stackdriver_agent_metrics"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>additionalExperiments[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoscalingAlgorithm</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The algorithm to use for autoscaling.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>containerSpecGcsPath</code></p>
             <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>enableStreamingEngine</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Indicates if the job should use the streaming engine feature.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipConfiguration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The configuration for VM IPs. Options are "WORKER_IP_PUBLIC" or "WORKER_IP_PRIVATE".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsKeyNameRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The name for the Cloud KMS key for the job.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsKeyNameRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsKeyNameRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsKeyNameRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>launcherMachineType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The machine type to use for launching the job. The default is n1-standard-1.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>machineType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The machine type to use for the job.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maxWorkers</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>numWorkers</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. The initial number of Google Compute Engine instances for the job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -132,6 +331,126 @@ region: string
             <p>{% verbatim %}Immutable. The region in which the created job should run.{% endverbatim %}</p>
         </td>
     </tr>
+    <tr>
+        <td>
+            <p><code>sdkContainerImage</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Docker registry location of container image to use for the 'worker harness. Default is the container for the version of the SDK. Note this field is only valid for portable pipelines.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serviceAccountEmailRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serviceAccountEmailRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serviceAccountEmailRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serviceAccountEmailRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>stagingLocation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The Cloud Storage path to use for staging files. Must be a valid Cloud Storage URL, beginning with gs://.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>subnetworkRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>subnetworkRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>subnetworkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>subnetworkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tempLocation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with gs://.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>transformNameMapping</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Only applicable when updating a pipeline. Map of transform name prefixes of the job to be replaced with the corresponding name prefixes of the new job.{% endverbatim %}</p>
+        </td>
+    </tr>
 </tbody>
 </table>
 
@@ -149,6 +468,7 @@ conditions:
 jobId: string
 observedGeneration: integer
 state: string
+type: string
 ```
 
 <table class="properties responsive">
@@ -226,6 +546,13 @@ state: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>type</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The type of this job, selected from the JobType enum.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -343,5 +670,7 @@ metadata:
   name: dataflowflextemplatejob-dep1-streaming
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

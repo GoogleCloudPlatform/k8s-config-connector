@@ -1877,6 +1877,101 @@ func TestResolveSpecAndStatusWithResourceID(t *testing.T) {
 	}
 }
 
+func TestResolveSpecAndStatusWithFieldRenaming(t *testing.T) {
+	tests := []struct {
+		name           string
+		rc             *corekccv1alpha1.ResourceConfig
+		tfResource     *tfschema.Resource
+		tfAttributes   map[string]string
+		expectedSpec   map[string]interface{}
+		expectedStatus map[string]interface{}
+	}{
+		{
+			name: "status fields that collide with reserved status fields are renamed",
+			rc: &corekccv1alpha1.ResourceConfig{
+				Name: "test-tf-resource-name",
+			},
+			tfResource: &tfschema.Resource{
+				Schema: map[string]*tfschema.Schema{
+					"generation": { // computed field maps to KRM status field
+						Type:     tfschema.TypeString,
+						Computed: true,
+					},
+				},
+			},
+			tfAttributes: map[string]string{
+				"generation": "testValue1",
+			},
+			expectedStatus: map[string]interface{}{
+				"resourceGeneration": "testValue1",
+			},
+		},
+		{
+			name: "spec fields that collide with reserved status fields are not renamed",
+			rc: &corekccv1alpha1.ResourceConfig{
+				Name: "test-tf-resource-name",
+			},
+			tfResource: &tfschema.Resource{
+				Schema: map[string]*tfschema.Schema{
+					"generation": {
+						Type:     tfschema.TypeString,
+						Optional: true,
+					},
+				},
+			},
+			tfAttributes: map[string]string{
+				"generation": "testValue1",
+			},
+			expectedSpec: map[string]interface{}{
+				"generation": "testValue1",
+			},
+		},
+		{
+			name: "status fields that collide with reserved status fields are not renamed if resource is in the exclude list",
+			rc: &corekccv1alpha1.ResourceConfig{
+				Name: "google_storage_default_object_access_control", // this TF resource is in the exclude list
+			},
+			tfResource: &tfschema.Resource{
+				Schema: map[string]*tfschema.Schema{
+					"generation": {
+						Type:     tfschema.TypeString,
+						Computed: true,
+					},
+				},
+			},
+			tfAttributes: map[string]string{
+				"generation": "testValue1",
+			},
+			expectedStatus: map[string]interface{}{
+				"generation": "testValue1",
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			tc := tc
+			t.Parallel()
+			r := resourceSkeleton()
+			r.TFResource = tc.tfResource
+			if tc.rc != nil {
+				r.ResourceConfig = *tc.rc
+			}
+			state := terraform.InstanceState{
+				Attributes: tc.tfAttributes,
+			}
+			spec, status := ResolveSpecAndStatus(r, &state)
+			t.Logf("spec = %v\nstatus = %v\n", spec, status)
+			if got, want := spec, tc.expectedSpec; !reflect.DeepEqual(got, want) {
+				t.Fatalf("got: %v, want: %v", got, want)
+			}
+			if got, want := status, tc.expectedStatus; !reflect.DeepEqual(got, want) {
+				t.Fatalf("got: %v, want: %v", got, want)
+			}
+		})
+	}
+}
+
 func TestResolveSpecAndStatusWithResourceIDPanic(t *testing.T) {
 	tests := []struct {
 		name         string

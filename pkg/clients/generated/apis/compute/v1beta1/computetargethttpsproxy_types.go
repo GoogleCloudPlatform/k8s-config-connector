@@ -48,6 +48,15 @@ type ComputeTargetHTTPSProxySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Immutable. Specifies how long to keep a connection open, after completing a response,
+	while there is no matching traffic (in seconds). If an HTTP keepalive is
+	not specified, a default value (610 seconds) will be used. For Global
+	external HTTP(S) load balancer, the minimum allowed value is 5 seconds and
+	the maximum allowed value is 1200 seconds. For Global external HTTP(S)
+	load balancer (classic), this option is not available publicly. */
+	// +optional
+	HttpKeepAliveTimeoutSec *int `json:"httpKeepAliveTimeoutSec,omitempty"`
+
 	/* Location represents the geographical location of the ComputeTargetHTTPSProxy. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
@@ -59,8 +68,7 @@ type ComputeTargetHTTPSProxySpec struct {
 	/* Specifies the QUIC override policy for this resource. This determines
 	whether the load balancer will attempt to negotiate QUIC with clients
 	or not. Can specify one of NONE, ENABLE, or DISABLE. If NONE is
-	specified, uses the QUIC policy with no user overrides, which is
-	equivalent to DISABLE. Default value: "NONE" Possible values: ["NONE", "ENABLE", "DISABLE"]. */
+	specified, Google manages whether QUIC is used. Default value: "NONE" Possible values: ["NONE", "ENABLE", "DISABLE"]. */
 	// +optional
 	QuicOverride *string `json:"quicOverride,omitempty"`
 

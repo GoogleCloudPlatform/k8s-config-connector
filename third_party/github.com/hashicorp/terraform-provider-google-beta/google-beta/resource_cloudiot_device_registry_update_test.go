@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,20 +7,21 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccCloudIoTRegistry_update(t *testing.T) {
 	t.Parallel()
 
-	registryName := fmt.Sprintf("psregistry-test-%s", RandString(t, 10))
+	registryName := fmt.Sprintf("psregistry-test-%s", acctest.RandString(t, 10))
 	resourceName := fmt.Sprintf("google_cloudiot_registry.%s", registryName)
-	deviceStatus := fmt.Sprintf("psregistry-test-devicestatus-%s", RandString(t, 10))
-	defaultTelemetry := fmt.Sprintf("psregistry-test-telemetry-%s", RandString(t, 10))
-	additionalTelemetry := fmt.Sprintf("psregistry-additional-test-telemetry-%s", RandString(t, 10))
+	deviceStatus := fmt.Sprintf("psregistry-test-devicestatus-%s", acctest.RandString(t, 10))
+	defaultTelemetry := fmt.Sprintf("psregistry-test-telemetry-%s", acctest.RandString(t, 10))
+	additionalTelemetry := fmt.Sprintf("psregistry-additional-test-telemetry-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudIotDeviceRegistryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

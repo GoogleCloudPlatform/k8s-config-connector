@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -19,27 +22,30 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDataplexLakeIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
-		"project_name":  GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataplexLakeIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_dataplex_lake_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s roles/viewer", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -49,7 +55,7 @@ func TestAccDataplexLakeIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataplex_lake_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s roles/viewer", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -61,14 +67,14 @@ func TestAccDataplexLakeIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
-		"project_name":  GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -76,7 +82,7 @@ func TestAccDataplexLakeIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataplex_lake_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s roles/viewer user:admin@hashicorptest.com", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -88,21 +94,22 @@ func TestAccDataplexLakeIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
-		"project_name":  GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataplexLakeIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_dataplex_lake_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_dataplex_lake_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -111,7 +118,7 @@ func TestAccDataplexLakeIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_dataplex_lake_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/lakes/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-lake%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -120,7 +127,7 @@ func TestAccDataplexLakeIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccDataplexLakeIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataplex_lake" "example" {
   location     = "us-central1"
   name         = "tf-test-lake%{random_suffix}"
@@ -145,7 +152,7 @@ resource "google_dataplex_lake_iam_member" "foo" {
 }
 
 func testAccDataplexLakeIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataplex_lake" "example" {
   location     = "us-central1"
   name         = "tf-test-lake%{random_suffix}"
@@ -172,11 +179,20 @@ resource "google_dataplex_lake_iam_policy" "foo" {
   lake = google_dataplex_lake.example.name
   policy_data = data.google_iam_policy.foo.policy_data
 }
+
+data "google_dataplex_lake_iam_policy" "foo" {
+  project = google_dataplex_lake.example.project
+  location = google_dataplex_lake.example.location
+  lake = google_dataplex_lake.example.name
+  depends_on = [
+    google_dataplex_lake_iam_policy.foo
+  ]
+}
 `, context)
 }
 
 func testAccDataplexLakeIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataplex_lake" "example" {
   location     = "us-central1"
   name         = "tf-test-lake%{random_suffix}"
@@ -203,7 +219,7 @@ resource "google_dataplex_lake_iam_policy" "foo" {
 }
 
 func testAccDataplexLakeIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataplex_lake" "example" {
   location     = "us-central1"
   name         = "tf-test-lake%{random_suffix}"
@@ -228,7 +244,7 @@ resource "google_dataplex_lake_iam_binding" "foo" {
 }
 
 func testAccDataplexLakeIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_dataplex_lake" "example" {
   location     = "us-central1"
   name         = "tf-test-lake%{random_suffix}"

@@ -127,6 +127,11 @@ type AlertpolicyAlertStrategy struct {
 	// +optional
 	AutoClose *string `json:"autoClose,omitempty"`
 
+	/* Control over how the notification channels in 'notification_channels'
+	are notified when this alert fires, on a per-channel basis. */
+	// +optional
+	NotificationChannelStrategy []AlertpolicyNotificationChannelStrategy `json:"notificationChannelStrategy,omitempty"`
+
 	/* Required for alert policies with a LogMatch condition.
 	This limit is not implemented for alert policies that are not log-based. */
 	// +optional
@@ -334,6 +339,15 @@ type AlertpolicyConditionThreshold struct {
 	// +optional
 	Filter *string `json:"filter,omitempty"`
 
+	/* When this field is present, the 'MetricThreshold'
+	condition forecasts whether the time series is
+	predicted to violate the threshold within the
+	'forecastHorizon'. When this field is not set, the
+	'MetricThreshold' tests the current value of the
+	timeseries against the threshold. */
+	// +optional
+	ForecastOptions *AlertpolicyForecastOptions `json:"forecastOptions,omitempty"`
+
 	/* A value against which to compare the time
 	series. */
 	// +optional
@@ -487,6 +501,29 @@ type AlertpolicyDocumentation struct {
 	"text/markdown" is supported. */
 	// +optional
 	MimeType *string `json:"mimeType,omitempty"`
+}
+
+type AlertpolicyForecastOptions struct {
+	/* The length of time into the future to forecast
+	whether a timeseries will violate the threshold.
+	If the predicted value is found to violate the
+	threshold, and the violation is observed in all
+	forecasts made for the Configured 'duration',
+	then the timeseries is considered to be failing. */
+	ForecastHorizon string `json:"forecastHorizon"`
+}
+
+type AlertpolicyNotificationChannelStrategy struct {
+	/* The notification channels that these settings apply to. Each of these
+	correspond to the name field in one of the NotificationChannel objects
+	referenced in the notification_channels field of this AlertPolicy. The format is
+	'projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]'. */
+	// +optional
+	NotificationChannelNames []string `json:"notificationChannelNames,omitempty"`
+
+	/* The frequency at which to send reminder notifications for open incidents. */
+	// +optional
+	RenotifyInterval *string `json:"renotifyInterval,omitempty"`
 }
 
 type AlertpolicyNotificationRateLimit struct {

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package main
 
 import (
@@ -9,7 +11,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5/tf5server"
 	"github.com/hashicorp/terraform-plugin-mux/tf5muxserver"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/fwprovider"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	ver "github.com/hashicorp/terraform-provider-google-beta/version"
 )
 
@@ -30,8 +34,8 @@ func main() {
 
 	// concat with sdkv2 provider
 	providers := []func() tfprotov5.ProviderServer{
-		providerserver.NewProtocol5(google.New(version)), // framework provider
-		google.Provider().GRPCProvider,                   // sdk provider
+		providerserver.NewProtocol5(fwprovider.New(version)), // framework provider
+		provider.Provider().GRPCProvider,                     // sdk provider
 	}
 
 	// use the muxer

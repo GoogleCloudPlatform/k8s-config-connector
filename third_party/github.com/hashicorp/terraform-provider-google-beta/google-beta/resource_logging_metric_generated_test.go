@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,23 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccLoggingMetric_loggingMetricBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingMetricDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -48,7 +56,7 @@ func TestAccLoggingMetric_loggingMetricBasicExample(t *testing.T) {
 }
 
 func testAccLoggingMetric_loggingMetricBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_logging_metric" "logging_metric" {
   name   = "tf-test-my-(custom)/metric%{random_suffix}"
   filter = "resource.type=gae_app AND severity>=ERROR"
@@ -88,12 +96,12 @@ func TestAccLoggingMetric_loggingMetricCounterBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingMetricDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -109,7 +117,7 @@ func TestAccLoggingMetric_loggingMetricCounterBasicExample(t *testing.T) {
 }
 
 func testAccLoggingMetric_loggingMetricCounterBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_logging_metric" "logging_metric" {
   name   = "tf-test-my-(custom)/metric%{random_suffix}"
   filter = "resource.type=gae_app AND severity>=ERROR"
@@ -125,12 +133,12 @@ func TestAccLoggingMetric_loggingMetricCounterLabelsExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingMetricDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -146,7 +154,7 @@ func TestAccLoggingMetric_loggingMetricCounterLabelsExample(t *testing.T) {
 }
 
 func testAccLoggingMetric_loggingMetricCounterLabelsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_logging_metric" "logging_metric" {
   name   = "tf-test-my-(custom)/metric%{random_suffix}"
   filter = "resource.type=gae_app AND severity>=ERROR"
@@ -170,13 +178,13 @@ func TestAccLoggingMetric_loggingMetricLoggingBucketExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingMetricDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -192,7 +200,7 @@ func TestAccLoggingMetric_loggingMetricLoggingBucketExample(t *testing.T) {
 }
 
 func testAccLoggingMetric_loggingMetricLoggingBucketExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_logging_project_bucket_config" "logging_metric" {
     location  = "global"
     project   = "%{project}"
@@ -211,12 +219,12 @@ func TestAccLoggingMetric_loggingMetricDisabledExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingMetricDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -232,7 +240,7 @@ func TestAccLoggingMetric_loggingMetricDisabledExample(t *testing.T) {
 }
 
 func testAccLoggingMetric_loggingMetricDisabledExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_logging_metric" "logging_metric" {
   name   = "tf-test-my-(custom)/metric%{random_suffix}"
   filter = "resource.type=gae_app AND severity>=ERROR"
@@ -255,9 +263,9 @@ func testAccCheckLoggingMetricDestroyProducer(t *testing.T) func(s *terraform.St
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{LoggingBasePath}}projects/{{project}}/metrics/{{%name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{LoggingBasePath}}projects/{{project}}/metrics/{{%name}}")
 			if err != nil {
 				return err
 			}
@@ -268,7 +276,13 @@ func testAccCheckLoggingMetricDestroyProducer(t *testing.T) func(s *terraform.St
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("LoggingMetric still exists at %s", url)
 			}

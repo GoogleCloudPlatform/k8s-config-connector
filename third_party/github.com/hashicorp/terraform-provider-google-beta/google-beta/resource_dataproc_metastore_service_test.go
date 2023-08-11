@@ -1,7 +1,10 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -10,12 +13,12 @@ import (
 func TestAccDataprocMetastoreService_updateAndImport(t *testing.T) {
 	t.Parallel()
 
-	name := "tf-test-metastore-" + RandString(t, 10)
+	name := "tf-test-metastore-" + acctest.RandString(t, 10)
 	tier := [2]string{"DEVELOPER", "ENTERPRISE"}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigqueryReservationReservationDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -57,12 +60,12 @@ func TestAccDataprocMetastoreService_PrivateServiceConnect(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataprocMetastoreServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -79,7 +82,7 @@ func TestAccDataprocMetastoreService_PrivateServiceConnect(t *testing.T) {
 }
 
 func testAccDataprocMetastoreService_PrivateServiceConnect(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 // Use data source instead of creating a subnetwork due to a bug on API side.
 // With the bug, the new created subnetwork cannot be deleted when deleting the dataproc metastore service.
 data "google_compute_subnetwork" "subnet" {

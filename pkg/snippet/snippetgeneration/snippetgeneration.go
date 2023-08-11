@@ -94,6 +94,7 @@ var preferredSampleForResource = map[string]string{
 	"privatecacertificate":              "basic-certificate",
 	"project":                           "project-in-folder",
 	"pubsubsubscription":                "basic-pubsub-subscription",
+	"runjob":                            "basic-job",
 	"recaptchaenterprisekey":            "challenge-based-web-recaptcha-enterprise-key",
 	"resourcemanagerpolicy":             "organization-policy-for-project",
 	"secretmanagersecret":               "automatic-secret-replication",

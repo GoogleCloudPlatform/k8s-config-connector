@@ -17,7 +17,7 @@ kind: Project
 metadata:
   name: logginglogexclusion-dep-proj
 spec:
-  name: Project Log Exclusion Sample
+  name: Config Connector Sample
   organizationRef:
     # Replace "${ORG_ID?}" with the numeric ID for your organization
     external: "${ORG_ID?}"

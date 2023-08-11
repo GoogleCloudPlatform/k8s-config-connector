@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -24,18 +27,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccFirebaserulesRuleset_BasicRuleset(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckFirebaserulesRulesetDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -54,12 +61,12 @@ func TestAccFirebaserulesRuleset_MinimalRuleset(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckFirebaserulesRulesetDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -76,7 +83,7 @@ func TestAccFirebaserulesRuleset_MinimalRuleset(t *testing.T) {
 }
 
 func testAccFirebaserulesRuleset_BasicRuleset(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebaserules_ruleset" "primary" {
   source {
     files {
@@ -96,7 +103,7 @@ resource "google_firebaserules_ruleset" "primary" {
 }
 
 func testAccFirebaserulesRuleset_MinimalRuleset(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebaserules_ruleset" "primary" {
   source {
     files {
@@ -135,7 +142,7 @@ func testAccCheckFirebaserulesRulesetDestroyProducer(t *testing.T) func(s *terra
 				Name:       dcl.StringOrNil(rs.Primary.Attributes["name"]),
 			}
 
-			client := NewDCLFirebaserulesClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLFirebaserulesClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetRuleset(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_firebaserules_ruleset still exists %v", obj)

@@ -337,6 +337,16 @@ func (in *GKEBackupBackupPlanStatus) DeepCopyInto(out *GKEBackupBackupPlanStatus
 		*out = new(int)
 		**out = **in
 	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
+	if in.StateReason != nil {
+		in, out := &in.StateReason, &out.StateReason
+		*out = new(string)
+		**out = **in
+	}
 	if in.Uid != nil {
 		in, out := &in.Uid, &out.Uid
 		*out = new(string)

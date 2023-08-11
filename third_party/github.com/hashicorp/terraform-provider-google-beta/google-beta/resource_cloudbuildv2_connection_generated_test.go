@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -24,21 +27,24 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccCloudbuildv2Connection_GheCompleteConnection(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
-
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudbuildv2ConnectionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,15 +62,14 @@ func TestAccCloudbuildv2Connection_GheConnection(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
-
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudbuildv2ConnectionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -90,15 +95,14 @@ func TestAccCloudbuildv2Connection_GhePrivConnection(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
-
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudbuildv2ConnectionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -116,15 +120,14 @@ func TestAccCloudbuildv2Connection_GhePrivUpdateConnection(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
-
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudbuildv2ConnectionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -150,15 +153,14 @@ func TestAccCloudbuildv2Connection_GithubConnection(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
-
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudbuildv2ConnectionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -180,9 +182,153 @@ func TestAccCloudbuildv2Connection_GithubConnection(t *testing.T) {
 		},
 	})
 }
+func TestAccCloudbuildv2Connection_GitlabConnection(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckCloudbuildv2ConnectionDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudbuildv2Connection_GitlabConnection(context),
+			},
+			{
+				ResourceName:      "google_cloudbuildv2_connection.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+func TestAccCloudbuildv2Connection_GleConnection(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckCloudbuildv2ConnectionDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudbuildv2Connection_GleConnection(context),
+			},
+			{
+				ResourceName:      "google_cloudbuildv2_connection.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccCloudbuildv2Connection_GleConnectionUpdate0(context),
+			},
+			{
+				ResourceName:      "google_cloudbuildv2_connection.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+func TestAccCloudbuildv2Connection_GleOldConnection(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckCloudbuildv2ConnectionDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudbuildv2Connection_GleOldConnection(context),
+			},
+			{
+				ResourceName:      "google_cloudbuildv2_connection.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccCloudbuildv2Connection_GleOldConnectionUpdate0(context),
+			},
+			{
+				ResourceName:      "google_cloudbuildv2_connection.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+func TestAccCloudbuildv2Connection_GlePrivConnection(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckCloudbuildv2ConnectionDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudbuildv2Connection_GlePrivConnection(context),
+			},
+			{
+				ResourceName:      "google_cloudbuildv2_connection.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+func TestAccCloudbuildv2Connection_GlePrivUpdateConnection(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckCloudbuildv2ConnectionDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudbuildv2Connection_GlePrivUpdateConnection(context),
+			},
+			{
+				ResourceName:      "google_cloudbuildv2_connection.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccCloudbuildv2Connection_GlePrivUpdateConnectionUpdate0(context),
+			},
+			{
+				ResourceName:      "google_cloudbuildv2_connection.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
 
 func testAccCloudbuildv2Connection_GheCompleteConnection(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuildv2_connection" "primary" {
   location    = "%{region}"
   name        = "tf-test-connection%{random_suffix}"
@@ -198,14 +344,14 @@ resource "google_cloudbuildv2_connection" "primary" {
   }
 
   project = "%{project_name}"
-  provider    = google-beta
 }
+
 
 `, context)
 }
 
 func testAccCloudbuildv2Connection_GheConnection(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuildv2_connection" "primary" {
   location    = "%{region}"
   name        = "tf-test-connection%{random_suffix}"
@@ -216,14 +362,14 @@ resource "google_cloudbuildv2_connection" "primary" {
   }
 
   project = "%{project_name}"
-  provider    = google-beta
 }
+
 
 `, context)
 }
 
 func testAccCloudbuildv2Connection_GheConnectionUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuildv2_connection" "primary" {
   location    = "%{region}"
   name        = "tf-test-connection%{random_suffix}"
@@ -239,14 +385,14 @@ resource "google_cloudbuildv2_connection" "primary" {
   }
 
   project = "%{project_name}"
-  provider    = google-beta
 }
+
 
 `, context)
 }
 
 func testAccCloudbuildv2Connection_GhePrivConnection(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuildv2_connection" "primary" {
   location    = "%{region}"
   name        = "tf-test-connection%{random_suffix}"
@@ -263,14 +409,14 @@ resource "google_cloudbuildv2_connection" "primary" {
   }
 
   project = "%{project_name}"
-  provider    = google-beta
 }
+
 
 `, context)
 }
 
 func testAccCloudbuildv2Connection_GhePrivUpdateConnection(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuildv2_connection" "primary" {
   location    = "%{region}"
   name        = "tf-test-connection%{random_suffix}"
@@ -281,14 +427,14 @@ resource "google_cloudbuildv2_connection" "primary" {
   }
 
   project = "%{project_name}"
-  provider    = google-beta
 }
+
 
 `, context)
 }
 
 func testAccCloudbuildv2Connection_GhePrivUpdateConnectionUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuildv2_connection" "primary" {
   location    = "%{region}"
   name        = "tf-test-connection%{random_suffix}"
@@ -305,14 +451,14 @@ resource "google_cloudbuildv2_connection" "primary" {
   }
 
   project = "%{project_name}"
-  provider    = google-beta
 }
+
 
 `, context)
 }
 
 func testAccCloudbuildv2Connection_GithubConnection(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuildv2_connection" "primary" {
   location = "%{region}"
   name     = "tf-test-connection%{random_suffix}"
@@ -332,14 +478,14 @@ resource "google_cloudbuildv2_connection" "primary" {
   }
 
   project = "%{project_name}"
-  provider = google-beta
 }
+
 
 `, context)
 }
 
 func testAccCloudbuildv2Connection_GithubConnectionUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuildv2_connection" "primary" {
   location = "%{region}"
   name     = "tf-test-connection%{random_suffix}"
@@ -361,8 +507,235 @@ resource "google_cloudbuildv2_connection" "primary" {
   }
 
   project = "%{project_name}"
-  provider = google-beta
 }
+
+
+`, context)
+}
+
+func testAccCloudbuildv2Connection_GitlabConnection(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_cloudbuildv2_connection" "primary" {
+  location    = "us-west1"
+  name        = "tf-test-connection%{random_suffix}"
+  annotations = {}
+
+  gitlab_config {
+    authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gitlab-api-pat/versions/latest"
+    }
+
+    read_authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gitlab-read-pat/versions/latest"
+    }
+
+    webhook_secret_secret_version = "projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+  }
+
+  project = "%{project_name}"
+}
+
+
+`, context)
+}
+
+func testAccCloudbuildv2Connection_GleConnection(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_cloudbuildv2_connection" "primary" {
+  location    = "us-west1"
+  name        = "tf-test-connection%{random_suffix}"
+  annotations = {}
+
+  gitlab_config {
+    authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-api-token/versions/latest"
+    }
+
+    read_authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-read-token/versions/latest"
+    }
+
+    webhook_secret_secret_version = "projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+    host_uri                      = "https://gle-us-central1.gcb-test.com"
+  }
+
+  project = "%{project_name}"
+}
+
+
+`, context)
+}
+
+func testAccCloudbuildv2Connection_GleConnectionUpdate0(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_cloudbuildv2_connection" "primary" {
+  location    = "us-west1"
+  name        = "tf-test-connection%{random_suffix}"
+  annotations = {}
+
+  gitlab_config {
+    authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-old-api-token/versions/2"
+    }
+
+    read_authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-old-read-token/versions/3"
+    }
+
+    webhook_secret_secret_version = "projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+    host_uri                      = "https://gle-old.gcb-test.com"
+  }
+
+  project = "%{project_name}"
+}
+
+
+`, context)
+}
+
+func testAccCloudbuildv2Connection_GleOldConnection(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_cloudbuildv2_connection" "primary" {
+  location    = "us-west1"
+  name        = "tf-test-connection%{random_suffix}"
+  annotations = {}
+
+  gitlab_config {
+    authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-old-api-token/versions/2"
+    }
+
+    read_authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-old-read-token/versions/3"
+    }
+
+    webhook_secret_secret_version = "projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+    host_uri                      = "https://gle-old.gcb-test.com"
+  }
+
+  project = "%{project_name}"
+}
+
+
+`, context)
+}
+
+func testAccCloudbuildv2Connection_GleOldConnectionUpdate0(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_cloudbuildv2_connection" "primary" {
+  location    = "us-west1"
+  name        = "tf-test-connection%{random_suffix}"
+  annotations = {}
+
+  gitlab_config {
+    authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-api-token/versions/latest"
+    }
+
+    read_authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-read-token/versions/latest"
+    }
+
+    webhook_secret_secret_version = "projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+    host_uri                      = "https://gle-us-central1.gcb-test.com"
+  }
+
+  project = "%{project_name}"
+}
+
+
+`, context)
+}
+
+func testAccCloudbuildv2Connection_GlePrivConnection(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_cloudbuildv2_connection" "primary" {
+  location    = "us-west1"
+  name        = "tf-test-connection%{random_suffix}"
+  annotations = {}
+
+  gitlab_config {
+    authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-api-token/versions/latest"
+    }
+
+    read_authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-read-token/versions/latest"
+    }
+
+    webhook_secret_secret_version = "projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+    host_uri                      = "https://gle-test.proctor-staging-test.com"
+
+    service_directory_config {
+      service = "projects/proctor-gitlab-enterprise/locations/us-west1/namespaces/gle-uw-1/services/private-smoketest"
+    }
+
+    ssl_ca = "-----BEGIN CERTIFICATE-----\nMIIDajCCAlKgAwIBAgIUedXFQAw0eUDTe6gmPKVyRvBlDi8wDQYJKoZIhvcNAQEL\nBQAwVjELMAkGA1UEBhMCVVMxGzAZBgNVBAoMEkdvb2dsZSBDbG91ZCBCdWlsZDEq\nMCgGA1UEAwwhZ2xlLXRlc3QucHJvY3Rvci1zdGFnaW5nLXRlc3QuY29tMB4XDTIy\nMDcyNTE3Mzg0MFoXDTIzMDcyNTE3Mzg0MFowVjELMAkGA1UEBhMCVVMxGzAZBgNV\nBAoMEkdvb2dsZSBDbG91ZCBCdWlsZDEqMCgGA1UEAwwhZ2xlLXRlc3QucHJvY3Rv\nci1zdGFnaW5nLXRlc3QuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC\nAQEAr7H0J4nZBL0ed3duVDbOdlnqJuLHZVBWIOp0DBVWPzdx+4eDCi86czxzXmVG\nuZXSpvg3az4QHGWs2HwlBCDk6tp2QT6F1gR6TE8S2yp+04BDhtg1DUopWY+f+Xi7\ni1tXQG7OTDByez3V6MR0t0bVv/LOJlvOngWbJ32qZqfbj5W8MACR/3u7KBjGs/bm\nrbDMga3YOOIa+DVLdLCwzc7kFlM9W7sezkUM/FhhellaxLu4i5O86sywJYMEo7VG\nj3FUS3XiDyKW68xOpE4svW7LiZEAnnLSsPdELO2bzhR/md84Jjvm99i6yP0StrMB\n+X2EwPYmTLMktdJyMUn/vhFYzQIDAQABozAwLjAsBgNVHREEJTAjgiFnbGUtdGVz\ndC5wcm9jdG9yLXN0YWdpbmctdGVzdC5jb20wDQYJKoZIhvcNAQELBQADggEBAJ+6\nH7WI9+hqrT4zpyc/CpH6VuviYezo1qd4/6M496dKlrHd11+xAXkBRZ4FFyoDFMgz\nO7YihNTBuONwiv21YN3OV9xoTExGx/IIkHNaueL2ZPkbVcJWQEWtEITp9Mo0qDIj\nkKjEQ5A+I4T4CiQ/OAhqtN8gR8ZUKGRJw+s2sE+yCIvRfoeJ4YU7NfUL1vSXxKfy\nHz3awR7t5qnCsvcShZtmiZ4xsc6o/tKqL5nAwNk1M6rPMY/+/PY70juLf1GNNDoZ\nA2Co+g6uI/FwAFAO5ZYKRLlstgNcPXerNdxXhpRZKMxGj8WfQ3z0Eu4cGtTUmDz5\npTam4bqToj22/MN2IhA=\n-----END CERTIFICATE-----\n"
+  }
+
+  project = "%{project_name}"
+}
+
+
+`, context)
+}
+
+func testAccCloudbuildv2Connection_GlePrivUpdateConnection(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_cloudbuildv2_connection" "primary" {
+  location    = "us-west1"
+  name        = "tf-test-connection%{random_suffix}"
+  annotations = {}
+
+  gitlab_config {
+    authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-api-token/versions/latest"
+    }
+
+    read_authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-read-token/versions/latest"
+    }
+
+    webhook_secret_secret_version = "projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+    host_uri                      = "https://gle-us-central1.gcb-test.com"
+  }
+
+  project = "%{project_name}"
+}
+
+
+`, context)
+}
+
+func testAccCloudbuildv2Connection_GlePrivUpdateConnectionUpdate0(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_cloudbuildv2_connection" "primary" {
+  location    = "us-west1"
+  name        = "tf-test-connection%{random_suffix}"
+  annotations = {}
+
+  gitlab_config {
+    authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-api-token/versions/latest"
+    }
+
+    read_authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-read-token/versions/latest"
+    }
+
+    webhook_secret_secret_version = "projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+    host_uri                      = "https://gle-test.proctor-staging-test.com"
+
+    service_directory_config {
+      service = "projects/proctor-gitlab-enterprise/locations/us-west1/namespaces/gle-uw-1/services/private-smoketest"
+    }
+
+    ssl_ca = "-----BEGIN CERTIFICATE-----\nMIIDajCCAlKgAwIBAgIUedXFQAw0eUDTe6gmPKVyRvBlDi8wDQYJKoZIhvcNAQEL\nBQAwVjELMAkGA1UEBhMCVVMxGzAZBgNVBAoMEkdvb2dsZSBDbG91ZCBCdWlsZDEq\nMCgGA1UEAwwhZ2xlLXRlc3QucHJvY3Rvci1zdGFnaW5nLXRlc3QuY29tMB4XDTIy\nMDcyNTE3Mzg0MFoXDTIzMDcyNTE3Mzg0MFowVjELMAkGA1UEBhMCVVMxGzAZBgNV\nBAoMEkdvb2dsZSBDbG91ZCBCdWlsZDEqMCgGA1UEAwwhZ2xlLXRlc3QucHJvY3Rv\nci1zdGFnaW5nLXRlc3QuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC\nAQEAr7H0J4nZBL0ed3duVDbOdlnqJuLHZVBWIOp0DBVWPzdx+4eDCi86czxzXmVG\nuZXSpvg3az4QHGWs2HwlBCDk6tp2QT6F1gR6TE8S2yp+04BDhtg1DUopWY+f+Xi7\ni1tXQG7OTDByez3V6MR0t0bVv/LOJlvOngWbJ32qZqfbj5W8MACR/3u7KBjGs/bm\nrbDMga3YOOIa+DVLdLCwzc7kFlM9W7sezkUM/FhhellaxLu4i5O86sywJYMEo7VG\nj3FUS3XiDyKW68xOpE4svW7LiZEAnnLSsPdELO2bzhR/md84Jjvm99i6yP0StrMB\n+X2EwPYmTLMktdJyMUn/vhFYzQIDAQABozAwLjAsBgNVHREEJTAjgiFnbGUtdGVz\ndC5wcm9jdG9yLXN0YWdpbmctdGVzdC5jb20wDQYJKoZIhvcNAQELBQADggEBAJ+6\nH7WI9+hqrT4zpyc/CpH6VuviYezo1qd4/6M496dKlrHd11+xAXkBRZ4FFyoDFMgz\nO7YihNTBuONwiv21YN3OV9xoTExGx/IIkHNaueL2ZPkbVcJWQEWtEITp9Mo0qDIj\nkKjEQ5A+I4T4CiQ/OAhqtN8gR8ZUKGRJw+s2sE+yCIvRfoeJ4YU7NfUL1vSXxKfy\nHz3awR7t5qnCsvcShZtmiZ4xsc6o/tKqL5nAwNk1M6rPMY/+/PY70juLf1GNNDoZ\nA2Co+g6uI/FwAFAO5ZYKRLlstgNcPXerNdxXhpRZKMxGj8WfQ3z0Eu4cGtTUmDz5\npTam4bqToj22/MN2IhA=\n-----END CERTIFICATE-----\n"
+  }
+
+  project = "%{project_name}"
+}
+
 
 `, context)
 }
@@ -395,7 +768,7 @@ func testAccCheckCloudbuildv2ConnectionDestroyProducer(t *testing.T) func(s *ter
 				UpdateTime:  dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLCloudbuildv2Client(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLCloudbuildv2Client(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetConnection(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_cloudbuildv2_connection still exists %v", obj)

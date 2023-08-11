@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -19,27 +22,30 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccCloudRunServiceIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
-		"project":       GetTestProjectFromEnv(),
+		"project":       envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudRunServiceIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_cloud_run_service_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/services/%s roles/viewer", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-srv%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/services/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-srv%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -49,7 +55,7 @@ func TestAccCloudRunServiceIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_cloud_run_service_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/services/%s roles/viewer", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-srv%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/services/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-srv%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -61,14 +67,14 @@ func TestAccCloudRunServiceIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
-		"project":       GetTestProjectFromEnv(),
+		"project":       envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -76,7 +82,7 @@ func TestAccCloudRunServiceIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_cloud_run_service_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/services/%s roles/viewer user:admin@hashicorptest.com", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-srv%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/services/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-srv%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -88,21 +94,22 @@ func TestAccCloudRunServiceIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
-		"project":       GetTestProjectFromEnv(),
+		"project":       envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudRunServiceIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_cloud_run_service_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_cloud_run_service_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/services/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-srv%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/services/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-srv%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -111,7 +118,7 @@ func TestAccCloudRunServiceIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_cloud_run_service_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/services/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-srv%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/services/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-cloudrun-srv%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -120,7 +127,7 @@ func TestAccCloudRunServiceIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccCloudRunServiceIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_run_service" "default" {
   name     = "tf-test-cloudrun-srv%{random_suffix}"
   location = "us-central1"
@@ -150,7 +157,7 @@ resource "google_cloud_run_service_iam_member" "foo" {
 }
 
 func testAccCloudRunServiceIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_run_service" "default" {
   name     = "tf-test-cloudrun-srv%{random_suffix}"
   location = "us-central1"
@@ -182,11 +189,20 @@ resource "google_cloud_run_service_iam_policy" "foo" {
   service = google_cloud_run_service.default.name
   policy_data = data.google_iam_policy.foo.policy_data
 }
+
+data "google_cloud_run_service_iam_policy" "foo" {
+  location = google_cloud_run_service.default.location
+  project = google_cloud_run_service.default.project
+  service = google_cloud_run_service.default.name
+  depends_on = [
+    google_cloud_run_service_iam_policy.foo
+  ]
+}
 `, context)
 }
 
 func testAccCloudRunServiceIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_run_service" "default" {
   name     = "tf-test-cloudrun-srv%{random_suffix}"
   location = "us-central1"
@@ -218,7 +234,7 @@ resource "google_cloud_run_service_iam_policy" "foo" {
 }
 
 func testAccCloudRunServiceIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_run_service" "default" {
   name     = "tf-test-cloudrun-srv%{random_suffix}"
   location = "us-central1"
@@ -248,7 +264,7 @@ resource "google_cloud_run_service_iam_binding" "foo" {
 }
 
 func testAccCloudRunServiceIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_run_service" "default" {
   name     = "tf-test-cloudrun-srv%{random_suffix}"
   location = "us-central1"

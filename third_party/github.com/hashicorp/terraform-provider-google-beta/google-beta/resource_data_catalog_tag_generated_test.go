@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,6 +24,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccDataCatalogTag_dataCatalogEntryTagBasicExample(t *testing.T) {
@@ -28,12 +35,12 @@ func TestAccDataCatalogTag_dataCatalogEntryTagBasicExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"force_delete":  true,
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogTagDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -50,7 +57,7 @@ func TestAccDataCatalogTag_dataCatalogEntryTagBasicExample(t *testing.T) {
 }
 
 func testAccDataCatalogTag_dataCatalogEntryTagBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_entry" "entry" {
   entry_group = google_data_catalog_entry_group.entry_group.id
   entry_id = "tf_test_my_entry%{random_suffix}"
@@ -123,12 +130,12 @@ func TestAccDataCatalogTag_dataCatalogEntryGroupTagExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"force_delete":  true,
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogTagDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -145,7 +152,7 @@ func TestAccDataCatalogTag_dataCatalogEntryGroupTagExample(t *testing.T) {
 }
 
 func testAccDataCatalogTag_dataCatalogEntryGroupTagExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_entry" "first_entry" {
   entry_group = google_data_catalog_entry_group.entry_group.id
   entry_id = "tf_test_first_entry%{random_suffix}"
@@ -222,17 +229,17 @@ resource "google_data_catalog_tag" "entry_group_tag" {
 }
 
 func TestAccDataCatalogTag_dataCatalogEntryTagFullExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
 		"force_delete":  true,
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogTagDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -249,7 +256,7 @@ func TestAccDataCatalogTag_dataCatalogEntryTagFullExample(t *testing.T) {
 }
 
 func testAccDataCatalogTag_dataCatalogEntryTagFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_entry" "entry" {
   entry_group = google_data_catalog_entry_group.entry_group.id
   entry_id = "tf_test_my_entry%{random_suffix}"
@@ -390,12 +397,12 @@ func TestAccDataCatalogTag_dataCatalogEntryTagFalseExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"force_delete":  true,
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckDataCatalogTagDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -412,7 +419,7 @@ func TestAccDataCatalogTag_dataCatalogEntryTagFalseExample(t *testing.T) {
 }
 
 func testAccDataCatalogTag_dataCatalogEntryTagFalseExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_data_catalog_entry" "entry" {
   entry_group = google_data_catalog_entry_group.entry_group.id
   entry_id = "tf_test_my_entry%{random_suffix}"
@@ -490,9 +497,9 @@ func testAccCheckDataCatalogTagDestroyProducer(t *testing.T) func(s *terraform.S
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{DataCatalogBasePath}}{{parent}}/tags")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{DataCatalogBasePath}}{{parent}}/tags")
 			if err != nil {
 				return err
 			}
@@ -503,7 +510,13 @@ func testAccCheckDataCatalogTagDestroyProducer(t *testing.T) func(s *terraform.S
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("DataCatalogTag still exists at %s", url)
 			}

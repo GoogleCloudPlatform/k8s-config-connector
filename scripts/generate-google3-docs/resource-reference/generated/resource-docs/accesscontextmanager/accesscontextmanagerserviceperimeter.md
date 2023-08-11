@@ -389,9 +389,9 @@ perimeter. For Service Perimeter Bridge, must be empty.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}List of EgressPolicies to apply to the perimeter. A perimeter may 
+            <p>{% verbatim %}List of EgressPolicies to apply to the perimeter. A perimeter may
 have multiple EgressPolicies, each of which is evaluated separately.
-Access is granted if any EgressPolicy grants it. Must be empty for 
+Access is granted if any EgressPolicy grants it. Must be empty for
 a perimeter bridge.{% endverbatim %}</p>
         </td>
     </tr>
@@ -494,8 +494,8 @@ address should represent individual user or service account only.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies the type of identities that are allowed access to outside the 
-perimeter. If left unspecified, then members of 'identities' field will 
+            <p>{% verbatim %}Specifies the type of identities that are allowed access to outside the
+perimeter. If left unspecified, then members of 'identities' field will
 be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"].{% endverbatim %}</p>
         </td>
     </tr>
@@ -506,7 +506,7 @@ be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY"
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Defines the conditions on the 'ApiOperation' and destination resources that 
+            <p>{% verbatim %}Defines the conditions on the 'ApiOperation' and destination resources that
 cause this 'EgressPolicy' to apply.{% endverbatim %}</p>
         </td>
     </tr>
@@ -539,7 +539,7 @@ s3://bucket/path). Currently '*' is not allowed.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A list of 'ApiOperations' that this egress rule applies to. A request matches 
+            <p>{% verbatim %}A list of 'ApiOperations' that this egress rule applies to. A request matches
 if it contains an operation/service in this list.{% endverbatim %}</p>
         </td>
     </tr>
@@ -560,9 +560,9 @@ if it contains an operation/service in this list.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}API methods or permissions to allow. Method or permission must belong 
-to the service specified by 'serviceName' field. A single MethodSelector 
-entry with '*' specified for the 'method' field will allow all methods 
+            <p>{% verbatim %}API methods or permissions to allow. Method or permission must belong
+to the service specified by 'serviceName' field. A single MethodSelector
+entry with '*' specified for the 'method' field will allow all methods
 AND permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
         </td>
     </tr>
@@ -583,8 +583,8 @@ AND permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value for 'method' should be a valid method name for the corresponding 
-'serviceName' in 'ApiOperation'. If '*' used as value for method, 
+            <p>{% verbatim %}Value for 'method' should be a valid method name for the corresponding
+'serviceName' in 'ApiOperation'. If '*' used as value for method,
 then ALL methods and permissions are allowed.{% endverbatim %}</p>
         </td>
     </tr>
@@ -595,7 +595,7 @@ then ALL methods and permissions are allowed.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value for permission should be a valid Cloud IAM permission for the 
+            <p>{% verbatim %}Value for permission should be a valid Cloud IAM permission for the
 corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
         </td>
     </tr>
@@ -606,8 +606,8 @@ corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the API whose methods or permissions the 'IngressPolicy' or 
-'EgressPolicy' want to allow. A single 'ApiOperation' with serviceName 
+            <p>{% verbatim %}The name of the API whose methods or permissions the 'IngressPolicy' or
+'EgressPolicy' want to allow. A single 'ApiOperation' with serviceName
 field set to '*' will allow all methods AND permissions for all services.{% endverbatim %}</p>
         </td>
     </tr>
@@ -786,8 +786,8 @@ address should represent individual user or service account only.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies the type of identities that are allowed access from outside the 
-perimeter. If left unspecified, then members of 'identities' field will be 
+            <p>{% verbatim %}Specifies the type of identities that are allowed access from outside the
+perimeter. If left unspecified, then members of 'identities' field will be
 allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"].{% endverbatim %}</p>
         </td>
     </tr>
@@ -919,7 +919,7 @@ this 'IngressPolicy' to apply.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A list of 'ApiOperations' the sources specified in corresponding 'IngressFrom' 
+            <p>{% verbatim %}A list of 'ApiOperations' the sources specified in corresponding 'IngressFrom'
 are allowed to perform in this 'ServicePerimeter'.{% endverbatim %}</p>
         </td>
     </tr>
@@ -940,9 +940,9 @@ are allowed to perform in this 'ServicePerimeter'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}API methods or permissions to allow. Method or permission must belong to 
-the service specified by serviceName field. A single 'MethodSelector' entry 
-with '*' specified for the method field will allow all methods AND 
+            <p>{% verbatim %}API methods or permissions to allow. Method or permission must belong to
+the service specified by serviceName field. A single 'MethodSelector' entry
+with '*' specified for the method field will allow all methods AND
 permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
         </td>
     </tr>
@@ -963,8 +963,8 @@ permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value for method should be a valid method name for the corresponding 
-serviceName in 'ApiOperation'. If '*' used as value for 'method', then 
+            <p>{% verbatim %}Value for method should be a valid method name for the corresponding
+serviceName in 'ApiOperation'. If '*' used as value for 'method', then
 ALL methods and permissions are allowed.{% endverbatim %}</p>
         </td>
     </tr>
@@ -975,7 +975,7 @@ ALL methods and permissions are allowed.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value for permission should be a valid Cloud IAM permission for the 
+            <p>{% verbatim %}Value for permission should be a valid Cloud IAM permission for the
 corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
         </td>
     </tr>
@@ -986,8 +986,8 @@ corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the API whose methods or permissions the 'IngressPolicy' or 
-'EgressPolicy' want to allow. A single 'ApiOperation' with 'serviceName' 
+            <p>{% verbatim %}The name of the API whose methods or permissions the 'IngressPolicy' or
+'EgressPolicy' want to allow. A single 'ApiOperation' with 'serviceName'
 field set to '*' will allow all methods AND permissions for all services.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1258,9 +1258,9 @@ perimeter. For Service Perimeter Bridge, must be empty.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}List of EgressPolicies to apply to the perimeter. A perimeter may 
+            <p>{% verbatim %}List of EgressPolicies to apply to the perimeter. A perimeter may
 have multiple EgressPolicies, each of which is evaluated separately.
-Access is granted if any EgressPolicy grants it. Must be empty for 
+Access is granted if any EgressPolicy grants it. Must be empty for
 a perimeter bridge.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1363,8 +1363,8 @@ address should represent individual user or service account only.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies the type of identities that are allowed access to outside the 
-perimeter. If left unspecified, then members of 'identities' field will 
+            <p>{% verbatim %}Specifies the type of identities that are allowed access to outside the
+perimeter. If left unspecified, then members of 'identities' field will
 be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"].{% endverbatim %}</p>
         </td>
     </tr>
@@ -1375,7 +1375,7 @@ be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY"
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Defines the conditions on the 'ApiOperation' and destination resources that 
+            <p>{% verbatim %}Defines the conditions on the 'ApiOperation' and destination resources that
 cause this 'EgressPolicy' to apply.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1408,7 +1408,7 @@ s3://bucket/path). Currently '*' is not allowed.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A list of 'ApiOperations' that this egress rule applies to. A request matches 
+            <p>{% verbatim %}A list of 'ApiOperations' that this egress rule applies to. A request matches
 if it contains an operation/service in this list.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1429,9 +1429,9 @@ if it contains an operation/service in this list.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}API methods or permissions to allow. Method or permission must belong 
-to the service specified by 'serviceName' field. A single MethodSelector 
-entry with '*' specified for the 'method' field will allow all methods 
+            <p>{% verbatim %}API methods or permissions to allow. Method or permission must belong
+to the service specified by 'serviceName' field. A single MethodSelector
+entry with '*' specified for the 'method' field will allow all methods
 AND permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1452,8 +1452,8 @@ AND permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value for 'method' should be a valid method name for the corresponding 
-'serviceName' in 'ApiOperation'. If '*' used as value for method, 
+            <p>{% verbatim %}Value for 'method' should be a valid method name for the corresponding
+'serviceName' in 'ApiOperation'. If '*' used as value for method,
 then ALL methods and permissions are allowed.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1464,7 +1464,7 @@ then ALL methods and permissions are allowed.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value for permission should be a valid Cloud IAM permission for the 
+            <p>{% verbatim %}Value for permission should be a valid Cloud IAM permission for the
 corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1475,8 +1475,8 @@ corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the API whose methods or permissions the 'IngressPolicy' or 
-'EgressPolicy' want to allow. A single 'ApiOperation' with serviceName 
+            <p>{% verbatim %}The name of the API whose methods or permissions the 'IngressPolicy' or
+'EgressPolicy' want to allow. A single 'ApiOperation' with serviceName
 field set to '*' will allow all methods AND permissions for all services.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1655,8 +1655,8 @@ address should represent individual user or service account only.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies the type of identities that are allowed access from outside the 
-perimeter. If left unspecified, then members of 'identities' field will be 
+            <p>{% verbatim %}Specifies the type of identities that are allowed access from outside the
+perimeter. If left unspecified, then members of 'identities' field will be
 allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"].{% endverbatim %}</p>
         </td>
     </tr>
@@ -1788,7 +1788,7 @@ this 'IngressPolicy' to apply.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A list of 'ApiOperations' the sources specified in corresponding 'IngressFrom' 
+            <p>{% verbatim %}A list of 'ApiOperations' the sources specified in corresponding 'IngressFrom'
 are allowed to perform in this 'ServicePerimeter'.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1809,9 +1809,9 @@ are allowed to perform in this 'ServicePerimeter'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}API methods or permissions to allow. Method or permission must belong to 
-the service specified by serviceName field. A single 'MethodSelector' entry 
-with '*' specified for the method field will allow all methods AND 
+            <p>{% verbatim %}API methods or permissions to allow. Method or permission must belong to
+the service specified by serviceName field. A single 'MethodSelector' entry
+with '*' specified for the method field will allow all methods AND
 permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1832,8 +1832,8 @@ permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value for method should be a valid method name for the corresponding 
-serviceName in 'ApiOperation'. If '*' used as value for 'method', then 
+            <p>{% verbatim %}Value for method should be a valid method name for the corresponding
+serviceName in 'ApiOperation'. If '*' used as value for 'method', then
 ALL methods and permissions are allowed.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1844,7 +1844,7 @@ ALL methods and permissions are allowed.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value for permission should be a valid Cloud IAM permission for the 
+            <p>{% verbatim %}Value for permission should be a valid Cloud IAM permission for the
 corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1855,8 +1855,8 @@ corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the API whose methods or permissions the 'IngressPolicy' or 
-'EgressPolicy' want to allow. A single 'ApiOperation' with 'serviceName' 
+            <p>{% verbatim %}The name of the API whose methods or permissions the 'IngressPolicy' or
+'EgressPolicy' want to allow. A single 'ApiOperation' with 'serviceName'
 field set to '*' will allow all methods AND permissions for all services.{% endverbatim %}</p>
         </td>
     </tr>
@@ -2326,5 +2326,7 @@ metadata:
   name: serviceperimeteringressdep
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -6,17 +8,19 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 )
 
 func TestAccDataSourceComputeImage(t *testing.T) {
 	t.Parallel()
 
-	family := fmt.Sprintf("tf-test-%d", RandInt(t))
-	name := fmt.Sprintf("tf-test-%d", RandInt(t))
+	family := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	name := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeImageDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -43,12 +47,12 @@ func TestAccDataSourceComputeImage(t *testing.T) {
 func TestAccDataSourceComputeImageFilter(t *testing.T) {
 	t.Parallel()
 
-	family := fmt.Sprintf("tf-test-%d", RandInt(t))
-	name := fmt.Sprintf("tf-test-%d", RandInt(t))
+	family := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	name := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeImageDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -64,6 +68,19 @@ func TestAccDataSourceComputeImageFilter(t *testing.T) {
 						"name", name),
 					resource.TestCheckResourceAttr("data.google_compute_image.from_filter",
 						"family", family),
+					resource.TestCheckResourceAttrSet("data.google_compute_image.from_filter",
+						"self_link"),
+				),
+			},
+			{
+				Config: testAccDataSourceCustomImageFilterWithMostRecent(family, name),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("data.google_compute_image.from_filter",
+						"name", name+"-latest"),
+					resource.TestCheckResourceAttr("data.google_compute_image.from_filter",
+						"family", family),
+					resource.TestCheckResourceAttr("data.google_compute_image.from_filter",
+						"most_recent", "true"),
 					resource.TestCheckResourceAttrSet("data.google_compute_image.from_filter",
 						"self_link"),
 				),
@@ -98,7 +115,7 @@ func testAccDataSourceCheckPublicImage() resource.TestCheckFunc {
 
 		selfLink := "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20220719"
 
-		if !compareSelfLinkOrResourceName("", ds_attr["self_link"], selfLink, nil) && ds_attr["self_link"] != selfLink {
+		if !tpgresource.CompareSelfLinkOrResourceName("", ds_attr["self_link"], selfLink, nil) && ds_attr["self_link"] != selfLink {
 			return fmt.Errorf("self link does not match: %s vs %s", ds_attr["self_link"], selfLink)
 		}
 
@@ -160,4 +177,39 @@ data "google_compute_image" "from_filter" {
 }
 
 `, family, name, name, name, name)
+}
+
+func testAccDataSourceCustomImageFilterWithMostRecent(family, name string) string {
+	return fmt.Sprintf(`
+resource "google_compute_image" "image-first" {
+  family      = "%s"
+  name        = "%s-first"
+  source_disk = google_compute_disk.disk.self_link
+  labels = {
+	test = "%s"
+  }
+}
+
+resource "google_compute_image" "image-latest" {
+  depends_on  = [ google_compute_image.image-first ]
+  family      = "%s"
+  name        = "%s-latest"
+  source_disk = google_compute_disk.disk.self_link
+  labels = {
+	test = "%s"
+  }
+}
+
+resource "google_compute_disk" "disk" {
+  name = "%s-disk"
+  zone = "us-central1-b"
+}
+
+data "google_compute_image" "from_filter" {
+  project     = google_compute_image.image-latest.project
+  filter      = "labels.test = %s"
+  most_recent = true
+}
+
+`, family, name, name, family, name, name, name, name)
 }

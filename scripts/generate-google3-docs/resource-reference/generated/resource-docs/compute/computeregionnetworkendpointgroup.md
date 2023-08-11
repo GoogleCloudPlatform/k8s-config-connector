@@ -133,9 +133,7 @@ Only one of cloud_run, app_engine, cloud_function or serverless_deployment may b
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Only `external` field is supported to configure the reference.
-
-Immutable. A user-defined name of the Cloud Function.
+            <p>{% verbatim %}Immutable. A user-defined name of the Cloud Function.
 The function name is case-sensitive and must be 1-63 characters long.
 Example value: "func1".{% endverbatim %}</p>
         </td>
@@ -204,9 +202,7 @@ Only one of cloud_run, app_engine, cloud_function or serverless_deployment may b
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Only `external` field is supported to configure the reference.
-
-Immutable. Cloud Run service is the main resource of Cloud Run.
+            <p>{% verbatim %}Immutable. Cloud Run service is the main resource of Cloud Run.
 The service must be 1-63 characters long, and comply with RFC1035.
 Example value: "run-service".{% endverbatim %}</p>
         </td>
@@ -536,7 +532,7 @@ spec:
     # Replace ${PROJECT_ID?} with your project ID
     external: "projects/${PROJECT_ID?}"
   region: us-west1
-  runtime: "nodejs8"
+  runtime: "nodejs10"
   sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
   entryPoint: "helloGET"
   httpsTrigger:
@@ -719,5 +715,7 @@ spec:
     name: computeregionnetworkendpointgroup-dep-psc
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

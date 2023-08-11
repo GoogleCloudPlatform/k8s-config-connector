@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export GOFLAGS=-mod=vendor
-
 PROJECT_ID := $(shell gcloud config get-value project)
 SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
 BUILDER_IMG ?= gcr.io/${PROJECT_ID}/builder:${SHORT_SHA}
@@ -37,8 +35,7 @@ all: test manager operator config-connector
 # Run tests
 .PHONY: test
 test: generate fmt vet manifests
-	make -C operator test
-	go test -v ./pkg/... ./cmd/... ./config/tests/... ./scripts/generate-go-crd-clients/... -coverprofile cover.out -count=1
+	./scripts/unit-test.sh
 
 # Build config-connector binary
 .PHONY: config-connector
@@ -75,7 +72,7 @@ manifests: generate
 .PHONY: fmt
 fmt:
 	make -C operator fmt
-	goimports -w pkg cmd scripts config/tests
+	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg cmd scripts config/tests
 	# 04bfe4ee9ca5764577b029acc6a1957fd1997153 includes fix to not log "Skipped" for each skipped file
 	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache \
 	-ignore "vendor/**" -ignore "third_party/**" \
@@ -105,7 +102,9 @@ vet:
 generate:
 	# Don't run go generate on `pkg/clients/generated` in the normal development flow due to high latency.
 	# This path will be covered by `generate-go-client` target specifically.
+	go mod vendor -o temp-vendor # So we can load DCL resources
 	go generate $$(go list ./pkg/... ./cmd/... ./scripts/resource-autogen/... | grep -v ./pkg/clients/generated)
+	rm -rf temp-vendor
 	make fmt
 
 # Build the docker images
@@ -179,3 +178,17 @@ install: manifests
 .PHONY: deploy-controller
 deploy-controller: docker-build docker-push
 	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+
+
+# Generate strong-typed definitions for existing CRDs
+.PHONY: client-types
+client-types:
+	go run ./scripts/generate-go-crd-clients
+	make fmt
+
+# Generate CRD go clients
+.PHONY: generate-go-client
+generate-go-client: client-types
+	go generate ./pkg/clients/generated/...
+	./scripts/generate-go-crd-clients/generate-clients.sh
+

@@ -17,7 +17,7 @@ kind: IAPIdentityAwareProxyClient
 metadata:
   name: iapidentityawareproxyclient-${uniqueId}
   annotations:
-    cnrm.cloud.google.com/project-id: iapclient-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
 spec:
   displayName: "Test Client"
   brandRef:

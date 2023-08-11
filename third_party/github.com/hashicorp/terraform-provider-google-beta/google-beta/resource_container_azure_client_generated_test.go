@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -24,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccContainerAzureClient_BasicHandWritten(t *testing.T) {
@@ -32,12 +39,12 @@ func TestAccContainerAzureClient_BasicHandWritten(t *testing.T) {
 	context := map[string]interface{}{
 		"azure_app":     "00000000-0000-0000-0000-17aad2f0f61f",
 		"azure_tenant":  "00000000-0000-0000-0000-17aad2f0f61f",
-		"project_name":  GetTestProjectFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckContainerAzureClientDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -54,7 +61,7 @@ func TestAccContainerAzureClient_BasicHandWritten(t *testing.T) {
 }
 
 func testAccContainerAzureClient_BasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_container_azure_client" "primary" {
   application_id = "%{azure_app}"
   location       = "us-west1"
@@ -94,7 +101,7 @@ func testAccCheckContainerAzureClientDestroyProducer(t *testing.T) func(s *terra
 				Uid:           dcl.StringOrNil(rs.Primary.Attributes["uid"]),
 			}
 
-			client := NewDCLContainerAzureClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLContainerAzureClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetClient(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_container_azure_client still exists %v", obj)

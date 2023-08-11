@@ -59,7 +59,7 @@ func testResource(t *testing.T, testResourceFile, expectedPath, expectedErrMsg s
 	ctx := context.TODO()
 
 	smLoader := testservicemappingloader.New(t)
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.NewConfig())
+	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	var u unstructured.Unstructured
 	testyaml.UnmarshalFile(t, fmt.Sprintf("testdata/%v", testResourceFile), &u)
 	path, err := filename.Get(ctx, &u, smLoader, tfProvider)

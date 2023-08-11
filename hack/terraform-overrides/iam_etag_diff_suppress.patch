@@ -1,8 +1,8 @@
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/iam.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/iam.go
-index d2ee47880..b48113048 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/iam.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/iam.go
-@@ -422,10 +422,13 @@ func jsonPolicyDiffSuppress(k, old, new string, d *schema.ResourceData) bool {
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgiamresource/iam.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgiamresource/iam.go
+index 363fa8917..d125ac642 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgiamresource/iam.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgiamresource/iam.go
+@@ -425,10 +425,13 @@ func jsonPolicyDiffSuppress(k, old, new string, d *schema.ResourceData) bool {
  }
  
  func compareIamPolicies(a, b *cloudresourcemanager.Policy) bool {

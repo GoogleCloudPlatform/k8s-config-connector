@@ -1,23 +1,27 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDialogflowAgent_update(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
-		"random_suffix":   RandString(t, 10),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDialogflowAgent_full1(context),
@@ -42,7 +46,7 @@ func TestAccDialogflowAgent_update(t *testing.T) {
 }
 
 func testAccDialogflowAgent_full1(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 	resource "google_project" "agent_project" {
 		name = "tf-test-dialogflow-%{random_suffix}"
 		project_id = "tf-test-dialogflow-%{random_suffix}"
@@ -85,7 +89,7 @@ func testAccDialogflowAgent_full1(context map[string]interface{}) string {
 }
 
 func testAccDialogflowAgent_full2(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 	resource "google_project" "agent_project" {
 		name = "tf-test-dialogflow-%{random_suffix}"
 		project_id = "tf-test-dialogflow-%{random_suffix}"

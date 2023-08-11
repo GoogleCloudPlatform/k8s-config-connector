@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccNotebooksRuntime_notebookRuntimeBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksRuntimeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,7 +56,7 @@ func TestAccNotebooksRuntime_notebookRuntimeBasicExample(t *testing.T) {
 }
 
 func testAccNotebooksRuntime_notebookRuntimeBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_runtime" "runtime" {
   name = "tf-test-notebooks-runtime%{random_suffix}"
   location = "us-central1"
@@ -76,12 +83,12 @@ func TestAccNotebooksRuntime_notebookRuntimeBasicGpuExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksRuntimeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -98,7 +105,7 @@ func TestAccNotebooksRuntime_notebookRuntimeBasicGpuExample(t *testing.T) {
 }
 
 func testAccNotebooksRuntime_notebookRuntimeBasicGpuExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_runtime" "runtime_gpu" {
   name = "tf-test-notebooks-runtime-gpu%{random_suffix}"
   location = "us-central1"
@@ -132,12 +139,12 @@ func TestAccNotebooksRuntime_notebookRuntimeBasicContainerExample(t *testing.T) 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksRuntimeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -154,7 +161,7 @@ func TestAccNotebooksRuntime_notebookRuntimeBasicContainerExample(t *testing.T) 
 }
 
 func testAccNotebooksRuntime_notebookRuntimeBasicContainerExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_runtime" "runtime_container" {
   name = "tf-test-notebooks-runtime-container%{random_suffix}"
   location = "us-central1"
@@ -189,12 +196,12 @@ func TestAccNotebooksRuntime_notebookRuntimeKernelsExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksRuntimeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -211,7 +218,7 @@ func TestAccNotebooksRuntime_notebookRuntimeKernelsExample(t *testing.T) {
 }
 
 func testAccNotebooksRuntime_notebookRuntimeKernelsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_runtime" "runtime_container" {
   name = "tf-test-notebooks-runtime-kernel%{random_suffix}"
   location = "us-central1"
@@ -244,12 +251,12 @@ func TestAccNotebooksRuntime_notebookRuntimeScriptExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNotebooksRuntimeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -266,7 +273,7 @@ func TestAccNotebooksRuntime_notebookRuntimeScriptExample(t *testing.T) {
 }
 
 func testAccNotebooksRuntime_notebookRuntimeScriptExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_notebooks_runtime" "runtime_container" {
   name = "tf-test-notebooks-runtime-script%{random_suffix}"
   location = "us-central1"
@@ -302,9 +309,9 @@ func testAccCheckNotebooksRuntimeDestroyProducer(t *testing.T) func(s *terraform
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/runtimes/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{NotebooksBasePath}}projects/{{project}}/locations/{{location}}/runtimes/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -315,7 +322,13 @@ func testAccCheckNotebooksRuntimeDestroyProducer(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("NotebooksRuntime still exists at %s", url)
 			}

@@ -25,7 +25,8 @@ spec:
   runtime: "nodejs10"
   description: "An updated sample cloud function with an event trigger"
   availableMemoryMb: 256
-  serviceAccountEmail: "${projectId}@appspot.gserviceaccount.com"
+  serviceAccountRef:
+    external: "${projectId}@appspot.gserviceaccount.com"
   sourceRepository:
     url: "https://source.developers.google.com/projects/${CLOUD_FUNCTIONS_TEST_PROJECT}/repos/kcc-cloud-functions/moveable-aliases/main"
   timeout: "120s"

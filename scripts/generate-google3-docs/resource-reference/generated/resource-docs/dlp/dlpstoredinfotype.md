@@ -699,7 +699,7 @@ kind: BigQueryDataset
 metadata:
   name: dlpstoredinfotypedepbigqueryfieldstoredinfotype
 spec:
-  location: US
+  location: us-west1
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
@@ -874,5 +874,7 @@ spec:
       - "nay"
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

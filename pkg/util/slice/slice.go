@@ -77,3 +77,14 @@ func IsListOfStringInterfaceMaps(list []interface{}) bool {
 	}
 	return true
 }
+
+func Reverse(slice []string) {
+	length := len(slice)
+	midIndex := length / 2
+
+	for i := 0; i < midIndex; i++ {
+		j := length - i - 1
+
+		slice[i], slice[j] = slice[j], slice[i]
+	}
+}

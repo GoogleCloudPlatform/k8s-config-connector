@@ -196,6 +196,11 @@ func (in *VPCAccessConnectorStatus) DeepCopyInto(out *VPCAccessConnectorStatus) 
 		*out = new(int)
 		**out = **in
 	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	if in.State != nil {
 		in, out := &in.State, &out.State
 		*out = new(string)

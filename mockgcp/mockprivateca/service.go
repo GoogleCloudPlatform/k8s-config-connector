@@ -17,6 +17,7 @@ package mockprivateca
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/security/privateca/v1"
@@ -26,8 +27,6 @@ import (
 	"google.golang.org/grpc"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-const ExpectedHost = "privateca.googleapis.com"
 
 // MockService represents a mocked privateca service.
 type MockService struct {
@@ -41,22 +40,26 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(kube client.Client, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:       kube,
+		kube:       env.GetKubeClient(),
 		storage:    storage,
-		projects:   projects.NewProjectStore(),
+		projects:   env.GetProjects(),
 		operations: operations.NewOperationsService(storage),
 	}
 	s.v1 = &PrivateCAV1{MockService: s}
 	return s
 }
 
+func (s *MockService) ExpectedHost() string {
+	return "privateca.googleapis.com"
+}
+
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterCertificateAuthorityServiceServer(grpcServer, s.v1)
 }
 
-func (s *MockService) NewMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
+func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
 	mux := runtime.NewServeMux()
 
 	if err := pb_http.RegisterCertificateAuthorityServiceHandler(ctx, mux, conn); err != nil {

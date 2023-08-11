@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccAlloydbCluster_alloydbClusterBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAlloydbClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,11 +56,11 @@ func TestAccAlloydbCluster_alloydbClusterBasicExample(t *testing.T) {
 }
 
 func testAccAlloydbCluster_alloydbClusterBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_alloydb_cluster" "default" {
   cluster_id = "tf-test-alloydb-cluster%{random_suffix}"
   location   = "us-central1"
-  network    = "projects/${data.google_project.project.number}/global/networks/${google_compute_network.default.name}"
+  network    = google_compute_network.default.id
 }
 
 data "google_project" "project" {}
@@ -68,12 +75,12 @@ func TestAccAlloydbCluster_alloydbClusterFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAlloydbClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -90,11 +97,11 @@ func TestAccAlloydbCluster_alloydbClusterFullExample(t *testing.T) {
 }
 
 func testAccAlloydbCluster_alloydbClusterFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_alloydb_cluster" "full" {
   cluster_id   = "tf-test-alloydb-cluster-full%{random_suffix}"
   location     = "us-central1"
-  network      = "projects/${data.google_project.project.number}/global/networks/${google_compute_network.default.name}"
+  network      = google_compute_network.default.id
 
   initial_user {
     user     = "tf-test-alloydb-cluster-full%{random_suffix}"
@@ -149,9 +156,9 @@ func testAccCheckAlloydbClusterDestroyProducer(t *testing.T) func(s *terraform.S
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{AlloydbBasePath}}projects/{{project}}/locations/{{location}}/clusters/{{cluster_id}}")
 			if err != nil {
 				return err
 			}
@@ -162,7 +169,13 @@ func testAccCheckAlloydbClusterDestroyProducer(t *testing.T) func(s *terraform.S
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("AlloydbCluster still exists at %s", url)
 			}

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -8,18 +10,21 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeBackendBucketSignedUrlKey_basic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeBackendBucketSignedUrlKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -31,7 +36,7 @@ func TestAccComputeBackendBucketSignedUrlKey_basic(t *testing.T) {
 }
 
 func testAccComputeBackendBucketSignedUrlKey_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_backend_bucket_signed_url_key" "backend_key" {
   name           = "test-key-%{random_suffix}"
   key_value      = "iAmAFakeKeyRandomBytes=="
@@ -55,7 +60,7 @@ resource "google_storage_bucket" "bucket" {
 func testAccCheckComputeBackendBucketSignedUrlKeyDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
 		exists, err := checkComputeBackendBucketSignedUrlKeyExists(t, s)
-		if err != nil && !IsGoogleApiErrorWithCode(err, 404) {
+		if err != nil && !transport_tpg.IsGoogleApiErrorWithCode(err, 404) {
 			return err
 		}
 		if exists {
@@ -87,15 +92,20 @@ func checkComputeBackendBucketSignedUrlKeyExists(t *testing.T, s *terraform.Stat
 			continue
 		}
 
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		keyName := rs.Primary.Attributes["name"]
 
-		url, err := replaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{backend_bucket}}")
+		url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/global/backendBuckets/{{backend_bucket}}")
 		if err != nil {
 			return false, err
 		}
 
-		res, err := SendRequest(config, "GET", "", url, config.UserAgent, nil)
+		res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+			Config:    config,
+			Method:    "GET",
+			RawURL:    url,
+			UserAgent: config.UserAgent,
+		})
 		if err != nil {
 			return false, err
 		}

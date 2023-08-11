@@ -68,9 +68,6 @@ const (
 	ImmediateReconcileRequestsBufferSize = 10000
 	MaxNumResourceWatcherRoutines        = 10000
 
-	ReadinessServerPort = 23232
-	ReadinessServerPath = "/ready"
-
 	ControllerManagedFieldManager = "cnrm-controller-manager"
 	UnmanagedDetectorFieldManager = "cnrm-unmanaged-detector"
 	SupportsSSAManager            = "supports-ssa"
@@ -89,6 +86,9 @@ const (
 
 	ResourceIDFieldName = "resourceID"
 	ResourceIDFieldPath = "spec." + ResourceIDFieldName
+
+	// selfLink may not present in every KRM resource status.
+	SelfLinkFieldName = "selfLink"
 
 	StabilityLevelStable = "stable"
 	StabilityLevelAlpha  = "alpha"

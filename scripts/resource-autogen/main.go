@@ -21,6 +21,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -31,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/resource-autogen/allowlist"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/resource-autogen/sampleconversion"
 	autogenloader "github.com/GoogleCloudPlatform/k8s-config-connector/scripts/resource-autogen/servicemapping/servicemappingloader"
 
 	"github.com/hashicorp/go-multierror"
@@ -43,6 +45,17 @@ import (
 var (
 	randomSuffixKeyword = "%{random_suffix}"
 	uniqueIDHolder      = "${uniqueId}"
+	// tfReservedFields are reserved field names for TF related metadata.
+	// related to TF GCP types.
+	tfReservedFields = []string{
+		"provider",
+		"lifecycle",
+		"depends_on",
+	}
+	// tfOnlyTypes are non GCP TF types.
+	tfOnlyTypes = map[string]bool{
+		"time_sleep": true,
+	}
 	// nonIDKRMFieldsRequiringUniqueValuesMap is the map of KRM kinds and the
 	// map of their non-ID string fields that require unique values.
 	nonIDKRMFieldsRequiringUniqueValuesMap = map[string]map[string]bool{
@@ -280,10 +293,14 @@ func tfSampleToKRMTestData(testKind string, tf map[string]interface{}, tfToGVK m
 	}
 
 	create = make(map[string]interface{})
-	dependencies = make([]map[string]interface{}, 0)
+	dependencyMap := make(map[string]map[string]interface{})
+	dependencyGraph := sampleconversion.NewDependencyGraph()
 	for tfType, resource := range resources {
 		gvk, ok := tfToGVK[tfType]
 		if !ok {
+			if _, ok := tfOnlyTypes[tfType]; ok {
+				continue
+			}
 			return nil, nil, fmt.Errorf("TF type %v doesn't exist in the service mappings", tfType)
 		}
 		// No need to parse the config for organizational resources that
@@ -301,7 +318,7 @@ func tfSampleToKRMTestData(testKind string, tf map[string]interface{}, tfToGVK m
 			return nil, nil, err
 		}
 
-		krmConfig, err := tfConfigToKRMConfig(resource, gvk, *rc, tfToGVK)
+		krmConfig, err := tfConfigToKRMConfig(resource, tfType, dependencyGraph, *rc, tfToGVK)
 		if err != nil {
 			return nil, nil, fmt.Errorf("error converting TF config to KRM for resource\n%+v\n:\n%w", resource, err)
 		}
@@ -311,57 +328,91 @@ func tfSampleToKRMTestData(testKind string, tf map[string]interface{}, tfToGVK m
 			}
 			create = krmConfig
 		} else {
-			dependencies = append(dependencies, krmConfig)
+			dependencyMap[tfType] = krmConfig
 		}
 	}
 
+	sortedRefDependencyTypes := dependencyGraph.TopologicalSort()
+	dependencies = make([]map[string]interface{}, 0)
+	for _, tfType := range sortedRefDependencyTypes {
+		gvk, ok := tfToGVK[tfType]
+		if !ok {
+			return nil, nil, fmt.Errorf("TF type %v doesn't exist in the service mappings", tfType)
+		}
+		// The "create" struct is covered in the dependencyGraph when there is
+		// any dependency, but it shouldn't be added to "dependencies" struct
+		// list.
+		if gvk.Kind == testKind {
+			continue
+		}
+		dependency, ok := dependencyMap[tfType]
+		if !ok {
+			return nil, nil, fmt.Errorf("TF type %v doesn't exist in the dependencyMap", tfType)
+		}
+		dependencies = append(dependencies, dependency)
+		delete(dependencyMap, tfType)
+	}
+	// dependencyGraph only covers TF types that are involved in references. We
+	// still need to go through other configs whose TF types are not involved in
+	// any reference.
+	sortedNonRefDependencyTypes := make([]string, 0)
+	for tfType, _ := range dependencyMap {
+		sortedNonRefDependencyTypes = append(sortedNonRefDependencyTypes, tfType)
+	}
+	sort.Strings(sortedNonRefDependencyTypes)
+	for _, tfType := range sortedNonRefDependencyTypes {
+		dependency, ok := dependencyMap[tfType]
+		if !ok {
+			return nil, nil, fmt.Errorf("TF type %v doesn't exist in the dependencyMap", tfType)
+		}
+		dependencies = append(dependencies, dependency)
+	}
 	return create, dependencies, nil
 }
 
-func tfConfigToKRMConfig(tfConfig interface{}, gvk schema.GroupVersionKind, rc v1alpha1.ResourceConfig, tfToGVK map[string]schema.GroupVersionKind) (spec map[string]interface{}, err error) {
+func tfConfigToKRMConfig(tfConfig interface{}, tfType string, dependencyGraph *sampleconversion.DependencyGraph, rc v1alpha1.ResourceConfig, tfToGVK map[string]schema.GroupVersionKind) (spec map[string]interface{}, err error) {
 	klog.V(2).Infof("tfConfig: %+v\n", tfConfig)
-	name, specs, containerAnnotation, _, err := cleanupTFFields(tfConfig, tfToGVK, rc)
+
+	name, specs, containerAnnotation, err := cleanupTFFields(tfConfig, tfType, dependencyGraph, rc, tfToGVK)
 	if err != nil {
 		return nil, fmt.Errorf("error cleanning up the TF config: %w", err)
 	}
-	// TODO(b/265367038): Handle the samples with multiple resources of the same type.
+	// TODO(b/265367038): Handle the samples with multiple resources of the same type.\
+	gvk, ok := tfToGVK[tfType]
+	if !ok {
+		return nil, fmt.Errorf("TF type %v doesn't exist in the service mappings", tfType)
+	}
 	return handleKRMFields(specs[name], containerAnnotation, gvk, rc)
 }
 
-func cleanupTFFields(configRaw interface{}, tfToGVK map[string]schema.GroupVersionKind, rc v1alpha1.ResourceConfig) (name string, specs map[string]map[string]interface{}, containerAnnotation map[string]string, referenceMap map[string]string, err error) {
+func cleanupTFFields(configRaw interface{}, tfType string, dependencyGraph *sampleconversion.DependencyGraph, rc v1alpha1.ResourceConfig, tfToGVK map[string]schema.GroupVersionKind) (name string, specs map[string]map[string]interface{}, containerAnnotation map[string]string, err error) {
 	config, ok := configRaw.(map[string]interface{})
 	if !ok {
-		return "", nil, nil, nil, fmt.Errorf("TF config should be in the format of 'map[string]interface{}' but not %T", configRaw)
+		return "", nil, nil, fmt.Errorf("TF config should be in the format of 'map[string]interface{}' but not %T", configRaw)
 	}
 	if len(config) != 1 {
-		return "", nil, nil, nil, fmt.Errorf("there should be only 1 element, but got %v", len(config))
+		return "", nil, nil, fmt.Errorf("there should be only 1 element, but got %v", len(config))
 	}
 
 	name = reflect.ValueOf(config).MapKeys()[0].String()
 	specRaw := config[name]
 	specArray, ok := specRaw.([]interface{})
 	if !ok {
-		return "", nil, nil, nil, fmt.Errorf("value of '%s' should be in the format of '[]interface{}' but not %T", name, specRaw)
+		return "", nil, nil, fmt.Errorf("value of '%s' should be in the format of '[]interface{}' but not %T", name, specRaw)
 	}
 	if len(specArray) != 1 {
-		return "", nil, nil, nil, fmt.Errorf("there should be only 1 element, but got %v", len(specArray))
+		return "", nil, nil, fmt.Errorf("there should be only 1 element, but got %v", len(specArray))
 	}
 	spec, ok := specArray[0].(map[string]interface{})
 	if !ok {
-		return "", nil, nil, nil, fmt.Errorf("configuration value should be in the format of 'map[string]interface{}' but not %T", specArray[0])
+		return "", nil, nil, fmt.Errorf("configuration value should be in the format of 'map[string]interface{}' but not %T", specArray[0])
 	}
 
-	provider, ok := spec["provider"]
-	if ok {
-		if provider != "${google-beta}" {
-			return "", nil, nil, nil, fmt.Errorf("illegal provider value: %s", provider)
+	for _, field := range tfReservedFields {
+		_, ok := spec[field]
+		if ok {
+			delete(spec, field)
 		}
-		delete(spec, "provider")
-	}
-
-	_, ok = spec["lifecycle"]
-	if ok {
-		delete(spec, "lifecycle")
 	}
 
 	additionalRequiredFields, ok := additionalRequiredFieldsMap[rc.Kind]
@@ -373,32 +424,33 @@ func cleanupTFFields(configRaw interface{}, tfToGVK map[string]schema.GroupVersi
 		}
 	}
 
-	krmSpec, containerAnnotation, err := krmifySpec(spec, tfToGVK, rc)
+	krmSpec, containerAnnotation, err := krmifySpec(spec, tfType, dependencyGraph, rc, tfToGVK)
 	if err != nil {
-		return "", nil, nil, nil, fmt.Errorf("error krmifying the spec %+v: %w", spec, err)
+		return "", nil, nil, fmt.Errorf("error krmifying the spec %+v: %w", spec, err)
 	}
 	specs = make(map[string]map[string]interface{})
 	specs[name] = krmSpec
-	return name, specs, containerAnnotation, nil, nil
+	return name, specs, containerAnnotation, nil
 }
 
-func krmifySpec(tfSpec map[string]interface{}, tfToGVK map[string]schema.GroupVersionKind, rc v1alpha1.ResourceConfig) (krmSpec map[string]interface{}, containerAnnotation map[string]string, err error) {
+func krmifySpec(tfSpec map[string]interface{}, tfType string, dependencyGraph *sampleconversion.DependencyGraph, rc v1alpha1.ResourceConfig, tfToGVK map[string]schema.GroupVersionKind) (krmSpec map[string]interface{}, containerAnnotation map[string]string, err error) {
 	krmSpec = make(map[string]interface{})
 	containerAnnotation = make(map[string]string)
 	refConfigMap := getReferenceConfigMap(rc)
 	containerMap := getContainerMap(rc)
 	for tfFieldName, value := range tfSpec {
 		krmFieldName := text.SnakeCaseToLowerCamelCase(tfFieldName)
-		tfRefVal, valueTemplate, containsTFRef, err := getTFReferenceValue(value)
+		tfRefVal, valueTemplate, containsTFRef, err := sampleconversion.GetTFReferenceValue(value)
 		if err != nil {
 			return nil, nil, fmt.Errorf("error getting TF reference value for field %v: %w", tfFieldName, err)
 		}
 		if containsTFRef {
+			dependencyGraph.AddDependencyWithTFRefVal(tfRefVal, tfType)
 			// The use case that the field has a reference in the Tf sample, but
 			// is not a reference field in the KRM resource can't be handled.
 			refConfig, ok := refConfigMap[tfFieldName]
 			if !ok {
-				krmRefVal, err := constructKRMExternalRefValFromTFRefVal(tfRefVal, valueTemplate, tfToGVK)
+				krmRefVal, err := sampleconversion.ConstructKRMExternalRefValFromTFRefVal(tfRefVal, valueTemplate, tfToGVK)
 				if err != nil {
 					return nil, nil, fmt.Errorf("cannot construct KRM value for a TF reference field %v: %w", krmFieldName, err)
 				}
@@ -411,12 +463,12 @@ func krmifySpec(tfSpec map[string]interface{}, tfToGVK map[string]schema.GroupVe
 			// as a reference, use the default one instead.
 			defaultVal, ok := defaultOrganizationalResourcesMap[refConfig.GVK.Kind]
 			if ok {
-				krmRefVal := constructKRMExternalReferenceObject(defaultVal)
+				krmRefVal := sampleconversion.ConstructKRMExternalReferenceObject(defaultVal)
 				krmSpec[krmFieldName] = krmRefVal
 				continue
 			}
 
-			krmRefVal, err := constructKRMNameReferenceObject(tfRefVal, tfToGVK)
+			krmRefVal, err := sampleconversion.ConstructKRMNameReferenceObject(tfRefVal, tfToGVK)
 			if err != nil {
 				return nil, nil, fmt.Errorf("error constructing KRM reference value for field %v: %w", krmFieldName, err)
 			}
@@ -445,7 +497,7 @@ func krmifySpec(tfSpec map[string]interface{}, tfToGVK map[string]schema.GroupVe
 				continue
 			}
 			krmFieldName = refConfig.Key
-			krmRefVal := constructKRMExternalReferenceObject(testProjectNameWithNumber)
+			krmRefVal := sampleconversion.ConstructKRMExternalReferenceObject(testProjectNameWithNumber)
 			krmSpec[krmFieldName] = krmRefVal
 			continue
 		}
@@ -471,7 +523,7 @@ func krmifySpec(tfSpec map[string]interface{}, tfToGVK map[string]schema.GroupVe
 				continue
 			}
 			krmFieldName = refConfig.Key
-			krmRefVal := constructKRMExternalReferenceObject(testOrgName)
+			krmRefVal := sampleconversion.ConstructKRMExternalReferenceObject(testOrgName)
 			krmSpec[krmFieldName] = krmRefVal
 			continue
 		}
@@ -700,42 +752,6 @@ func getTestDataFolderPath(autoGenType *allowlist.AutoGenType) string {
 	return filepath.Join(repo.GetBasicIntegrationTestDataPath(), serviceFolderName, autoGenType.Version, kindFolderName)
 }
 
-func getTFReferenceValue(value interface{}) (tfRefValue, valueTemplate string, containsTFReference bool, err error) {
-	str, ok := value.(string)
-	if !ok {
-		return "", "", false, nil
-	}
-	tfRefValueRegex := regexp.MustCompile(`\${(google_[a-z_]+[a-z]\.[a-z](?:[a-z_-]*[a-z])*\.[a-z](?:[a-z_]*[a-z])*)}`)
-	matchResult := tfRefValueRegex.FindStringSubmatch(str)
-	if len(matchResult) == 0 {
-		return "", "", false, nil
-	}
-
-	// If the value itself is a TF reference.
-	if matchResult[0] == str {
-		return matchResult[1], "", true, nil
-	}
-
-	if len(matchResult) > 2 {
-		return "", "", false, fmt.Errorf("cannot handle more than one TF references: %v", str)
-	}
-
-	valueTemplate = strings.ReplaceAll(str, matchResult[0], "{{value}}")
-	return matchResult[1], valueTemplate, true, nil
-}
-
-func constructKRMNameReferenceObject(value string, tfToGVK map[string]schema.GroupVersionKind) (map[string]interface{}, error) {
-	tfType := strings.Split(value, ".")[0]
-	gvk, ok := tfToGVK[tfType]
-	if !ok {
-		return nil, fmt.Errorf("unsupported reference TF type: %v", tfType)
-	}
-	nameVal := fmt.Sprintf("%s-${uniqueId}", strings.ToLower(gvk.Kind))
-	refVal := make(map[string]interface{})
-	refVal["name"] = nameVal
-	return refVal, nil
-}
-
 func getReferenceConfigMap(rc v1alpha1.ResourceConfig) map[string]v1alpha1.ReferenceConfig {
 	refConfigMap := make(map[string]v1alpha1.ReferenceConfig)
 	for _, refConfig := range rc.ResourceReferences {
@@ -776,28 +792,6 @@ func isProjectNameWithNumber(value interface{}) bool {
 		return true
 	}
 	return false
-}
-
-func constructKRMExternalReferenceObject(value string) map[string]interface{} {
-	refVal := make(map[string]interface{})
-	refVal["external"] = value
-	return refVal
-}
-
-func constructKRMExternalRefValFromTFRefVal(tfRefVal, valueTemplate string, tfToGVK map[string]schema.GroupVersionKind) (string, error) {
-	parts := strings.Split(tfRefVal, ".")
-	tfType := parts[0]
-	field := parts[2]
-
-	if field != "name" {
-		return "", fmt.Errorf("unsupported referenced field: %v", field)
-	}
-	gvk, ok := tfToGVK[tfType]
-	if !ok {
-		return "", fmt.Errorf("unsupported reference type: %v", tfType)
-	}
-	nameVal := fmt.Sprintf("%s-${uniqueId}", strings.ToLower(gvk.Kind))
-	return strings.ReplaceAll(valueTemplate, "{{value}}", nameVal), nil
 }
 
 func isProjectContainer(container v1alpha1.Container) bool {

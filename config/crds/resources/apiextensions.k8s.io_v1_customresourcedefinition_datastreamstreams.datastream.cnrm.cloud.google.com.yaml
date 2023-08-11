@@ -539,6 +539,11 @@ spec:
                         required:
                         - mysqlDatabases
                         type: object
+                      maxConcurrentBackfillTasks:
+                        description: |-
+                          Maximum number of concurrent backfill tasks. The number should be non negative.
+                          If not set (or set to 0), the system's default value will be used.
+                        type: integer
                       maxConcurrentCdcTasks:
                         description: |-
                           Maximum number of concurrent CDC tasks. The number should be non negative.

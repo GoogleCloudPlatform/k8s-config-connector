@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -24,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccContainerAwsNodePool_BasicHandWritten(t *testing.T) {
@@ -38,14 +45,14 @@ func TestAccContainerAwsNodePool_BasicHandWritten(t *testing.T) {
 		"aws_vol_key":    "00000000-0000-0000-0000-17aad2f0f61f",
 		"aws_vpc":        "vpc-0b3f63cb91b247628",
 		"byo_prefix":     "mmv2",
-		"project_name":   GetTestProjectFromEnv(),
-		"project_number": GetTestProjectNumberFromEnv(),
-		"service_acct":   GetTestServiceAccountFromEnv(t),
+		"project_name":   envvar.GetTestProjectFromEnv(),
+		"project_number": envvar.GetTestProjectNumberFromEnv(),
+		"service_acct":   envvar.GetTestServiceAccountFromEnv(t),
 		"random_suffix":  RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckContainerAwsNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -82,14 +89,14 @@ func TestAccContainerAwsNodePool_BetaBasicHandWritten(t *testing.T) {
 		"aws_vol_key":    "00000000-0000-0000-0000-17aad2f0f61f",
 		"aws_vpc":        "vpc-0b3f63cb91b247628",
 		"byo_prefix":     "mmv2",
-		"project_name":   GetTestProjectFromEnv(),
-		"project_number": GetTestProjectNumberFromEnv(),
-		"service_acct":   GetTestServiceAccountFromEnv(t),
+		"project_name":   envvar.GetTestProjectFromEnv(),
+		"project_number": envvar.GetTestProjectNumberFromEnv(),
+		"service_acct":   envvar.GetTestServiceAccountFromEnv(t),
 		"random_suffix":  RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
+		PreCheck: func() { acctest.AccTestPreCheck(t) },
 
 		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckContainerAwsNodePoolDestroyProducer(t),
@@ -117,7 +124,7 @@ func TestAccContainerAwsNodePool_BetaBasicHandWritten(t *testing.T) {
 }
 
 func testAccContainerAwsNodePool_BasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_aws_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
@@ -274,7 +281,7 @@ resource "google_container_aws_node_pool" "primary" {
 }
 
 func testAccContainerAwsNodePool_BasicHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_aws_versions" "versions" {
   project = "%{project_name}"
   location = "us-west1"
@@ -430,7 +437,7 @@ resource "google_container_aws_node_pool" "primary" {
 }
 
 func testAccContainerAwsNodePool_BetaBasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_aws_versions" "versions" {
   provider = google-beta
   project = "%{project_name}"
@@ -596,7 +603,7 @@ resource "google_container_aws_node_pool" "primary" {
 }
 
 func testAccContainerAwsNodePool_BetaBasicHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_container_aws_versions" "versions" {
   provider = google-beta
   project = "%{project_name}"
@@ -792,7 +799,7 @@ func testAccCheckContainerAwsNodePoolDestroyProducer(t *testing.T) func(s *terra
 				UpdateTime:  dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLContainerAwsClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLContainerAwsClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetNodePool(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_container_aws_node_pool still exists %v", obj)

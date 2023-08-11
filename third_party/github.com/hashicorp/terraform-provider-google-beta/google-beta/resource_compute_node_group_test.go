@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -9,18 +11,19 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccComputeNodeGroup_updateNodeTemplate(t *testing.T) {
 	t.Parallel()
 
-	groupName := fmt.Sprintf("group--%d", RandInt(t))
-	tmplPrefix := fmt.Sprintf("tmpl--%d", RandInt(t))
+	groupName := fmt.Sprintf("group--%d", acctest.RandInt(t))
+	tmplPrefix := fmt.Sprintf("tmpl--%d", acctest.RandInt(t))
 
 	var timeCreated time.Time
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeNodeGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

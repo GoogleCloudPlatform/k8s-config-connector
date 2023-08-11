@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -19,27 +22,30 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccCloudFunctionsCloudFunctionIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 		"zip_path":      createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudFunctionsCloudFunctionIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_cloudfunctions_function_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/functions/%s roles/viewer", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-function%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/functions/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-function%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -49,7 +55,7 @@ func TestAccCloudFunctionsCloudFunctionIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_cloudfunctions_function_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/functions/%s roles/viewer", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-function%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/functions/%s roles/viewer", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-function%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -61,14 +67,14 @@ func TestAccCloudFunctionsCloudFunctionIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 		"zip_path":      createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -76,7 +82,7 @@ func TestAccCloudFunctionsCloudFunctionIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_cloudfunctions_function_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/functions/%s roles/viewer user:admin@hashicorptest.com", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-function%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/functions/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-function%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -88,21 +94,22 @@ func TestAccCloudFunctionsCloudFunctionIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 		"zip_path":      createZIPArchiveForCloudFunctionSource(t, testHTTPTriggerPath),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudFunctionsCloudFunctionIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_cloudfunctions_function_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_cloudfunctions_function_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/functions/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-function%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/functions/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-function%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -111,7 +118,7 @@ func TestAccCloudFunctionsCloudFunctionIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_cloudfunctions_function_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/functions/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-function%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/functions/%s", envvar.GetTestProjectFromEnv(), envvar.GetTestRegionFromEnv(), fmt.Sprintf("tf-test-my-function%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -120,7 +127,7 @@ func TestAccCloudFunctionsCloudFunctionIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccCloudFunctionsCloudFunctionIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "bucket" {
   name     = "tf-test-cloudfunctions-function-example-bucket%{random_suffix}"
   location = "US"
@@ -156,7 +163,7 @@ resource "google_cloudfunctions_function_iam_member" "foo" {
 }
 
 func testAccCloudFunctionsCloudFunctionIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "bucket" {
   name     = "tf-test-cloudfunctions-function-example-bucket%{random_suffix}"
   location = "US"
@@ -194,11 +201,20 @@ resource "google_cloudfunctions_function_iam_policy" "foo" {
   cloud_function = google_cloudfunctions_function.function.name
   policy_data = data.google_iam_policy.foo.policy_data
 }
+
+data "google_cloudfunctions_function_iam_policy" "foo" {
+  project = google_cloudfunctions_function.function.project
+  region = google_cloudfunctions_function.function.region
+  cloud_function = google_cloudfunctions_function.function.name
+  depends_on = [
+    google_cloudfunctions_function_iam_policy.foo
+  ]
+}
 `, context)
 }
 
 func testAccCloudFunctionsCloudFunctionIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "bucket" {
   name     = "tf-test-cloudfunctions-function-example-bucket%{random_suffix}"
   location = "US"
@@ -236,7 +252,7 @@ resource "google_cloudfunctions_function_iam_policy" "foo" {
 }
 
 func testAccCloudFunctionsCloudFunctionIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "bucket" {
   name     = "tf-test-cloudfunctions-function-example-bucket%{random_suffix}"
   location = "US"
@@ -272,7 +288,7 @@ resource "google_cloudfunctions_function_iam_binding" "foo" {
 }
 
 func testAccCloudFunctionsCloudFunctionIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "bucket" {
   name     = "tf-test-cloudfunctions-function-example-bucket%{random_suffix}"
   location = "US"

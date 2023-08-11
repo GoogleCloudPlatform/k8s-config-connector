@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccOSConfigPatchDeployment_osConfigPatchDeploymentBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckOSConfigPatchDeploymentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,7 +56,7 @@ func TestAccOSConfigPatchDeployment_osConfigPatchDeploymentBasicExample(t *testi
 }
 
 func testAccOSConfigPatchDeployment_osConfigPatchDeploymentBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_os_config_patch_deployment" "patch" {
   patch_deployment_id = "tf-test-patch-deploy%{random_suffix}"
 
@@ -68,12 +75,12 @@ func TestAccOSConfigPatchDeployment_osConfigPatchDeploymentDailyExample(t *testi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckOSConfigPatchDeploymentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -90,7 +97,7 @@ func TestAccOSConfigPatchDeployment_osConfigPatchDeploymentDailyExample(t *testi
 }
 
 func testAccOSConfigPatchDeployment_osConfigPatchDeploymentDailyExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_os_config_patch_deployment" "patch" {
   patch_deployment_id = "tf-test-patch-deploy%{random_suffix}"
 
@@ -118,12 +125,12 @@ func TestAccOSConfigPatchDeployment_osConfigPatchDeploymentDailyMidnightExample(
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckOSConfigPatchDeploymentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -140,7 +147,7 @@ func TestAccOSConfigPatchDeployment_osConfigPatchDeploymentDailyMidnightExample(
 }
 
 func testAccOSConfigPatchDeployment_osConfigPatchDeploymentDailyMidnightExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_os_config_patch_deployment" "patch" {
   patch_deployment_id = "tf-test-patch-deploy%{random_suffix}"
 
@@ -168,12 +175,12 @@ func TestAccOSConfigPatchDeployment_osConfigPatchDeploymentInstanceExample(t *te
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckOSConfigPatchDeploymentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -190,7 +197,7 @@ func TestAccOSConfigPatchDeployment_osConfigPatchDeploymentInstanceExample(t *te
 }
 
 func testAccOSConfigPatchDeployment_osConfigPatchDeploymentInstanceExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_compute_image" "my_image" {
   family  = "debian-11"
   project = "debian-cloud"
@@ -257,12 +264,12 @@ func TestAccOSConfigPatchDeployment_osConfigPatchDeploymentFullExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckOSConfigPatchDeploymentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -279,7 +286,7 @@ func TestAccOSConfigPatchDeployment_osConfigPatchDeploymentFullExample(t *testin
 }
 
 func testAccOSConfigPatchDeployment_osConfigPatchDeploymentFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_os_config_patch_deployment" "patch" {
   patch_deployment_id = "tf-test-patch-deploy%{random_suffix}"
 
@@ -399,9 +406,9 @@ func testAccCheckOSConfigPatchDeploymentDestroyProducer(t *testing.T) func(s *te
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{OSConfigBasePath}}{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{OSConfigBasePath}}{{name}}")
 			if err != nil {
 				return err
 			}
@@ -412,7 +419,13 @@ func testAccCheckOSConfigPatchDeploymentDestroyProducer(t *testing.T) func(s *te
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("OSConfigPatchDeployment still exists at %s", url)
 			}

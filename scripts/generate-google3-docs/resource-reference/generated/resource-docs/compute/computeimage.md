@@ -131,6 +131,8 @@ sourceSnapshotRef:
   external: string
   name: string
   namespace: string
+storageLocations:
+- string
 ```
 
 <table class="properties responsive">
@@ -245,7 +247,7 @@ Applicable only for bootable images.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The type of supported feature. Read [Enabling guest operating system features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features) to see a list of available options. Possible values: ["MULTI_IP_SUBNET", "SECURE_BOOT", "SEV_CAPABLE", "UEFI_COMPATIBLE", "VIRTIO_SCSI_MULTIQUEUE", "WINDOWS", "GVNIC", "SEV_LIVE_MIGRATABLE"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The type of supported feature. Read [Enabling guest operating system features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features) to see a list of available options. Possible values: ["MULTI_IP_SUBNET", "SECURE_BOOT", "SEV_CAPABLE", "UEFI_COMPATIBLE", "VIRTIO_SCSI_MULTIQUEUE", "WINDOWS", "GVNIC", "SEV_LIVE_MIGRATABLE", "SEV_SNP_CAPABLE", "SUSPEND_RESUME_COMPATIBLE", "TDX_CAPABLE"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -501,6 +503,28 @@ but not both.{% endverbatim %}</p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
+    <tr>
+        <td>
+            <p><code>storageLocations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Immutable. Cloud Storage bucket storage location of the image
+(regional or multi-regional).
+Reference link: https://cloud.google.com/compute/docs/reference/rest/v1/images.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>storageLocations[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
 </tbody>
 </table>
 
@@ -687,5 +711,7 @@ spec:
     sha1: 819b7e9c17423f4539f09687eaa13687afa2fe32
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

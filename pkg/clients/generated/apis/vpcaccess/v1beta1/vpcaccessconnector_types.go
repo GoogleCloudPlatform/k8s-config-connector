@@ -36,24 +36,25 @@ import (
 )
 
 type ConnectorSubnet struct {
-	/* Immutable. */
+	/* Immutable. Subnet name (relative, not fully qualified). E.g. if the full subnet selfLink is
+	https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName} the correct input for this field would be {subnetName}" */
 	// +optional
 	NameRef *v1alpha1.ResourceRef `json:"nameRef,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. Project in which the subnet exists. If not set, this project is assumed to be the project for which the connector create request was issued. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type VPCAccessConnectorSpec struct {
-	/* Immutable. The range of internal addresses that follows RFC 4632 notation. Example: `10.132.0.0/28`. */
+	/* Immutable. The range of internal addresses that follows RFC 4632 notation. Example: '10.132.0.0/28'. */
 	// +optional
 	IpCidrRange *string `json:"ipCidrRange,omitempty"`
 
-	/* Immutable. The location for the resource */
+	/* Location represents the geographical location of the VPCAccessConnector. Specify a region name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
 
-	/* Immutable. Machine type of VM Instance underlying connector. Default is e2-micro */
+	/* Immutable. Machine type of VM Instance underlying connector. Default is e2-micro. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
@@ -61,7 +62,7 @@ type VPCAccessConnectorSpec struct {
 	// +optional
 	MaxInstances *int `json:"maxInstances,omitempty"`
 
-	/* Immutable. Maximum throughput of the connector in Mbps. Default is 200, max is 1000. */
+	/* Immutable. Maximum throughput of the connector in Mbps, must be greater than 'min_throughput'. Default is 300. */
 	// +optional
 	MaxThroughput *int `json:"maxThroughput,omitempty"`
 
@@ -73,18 +74,18 @@ type VPCAccessConnectorSpec struct {
 	// +optional
 	MinThroughput *int `json:"minThroughput,omitempty"`
 
-	/* Immutable. */
+	/* Immutable. Name or self_link of the VPC network. Required if 'ip_cidr_range' is set. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
-	/* Immutable. The Project that this resource belongs to. */
+	/* Immutable. The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. The subnet in which to house the VPC Access Connector. */
+	/* Immutable. The subnet in which to house the connector. */
 	// +optional
 	Subnet *ConnectorSubnet `json:"subnet,omitempty"`
 }
@@ -93,7 +94,7 @@ type VPCAccessConnectorStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VPCAccessConnector's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. List of projects using the connector. */
+	/* List of projects using the connector. */
 	// +optional
 	ConnectedProjects []string `json:"connectedProjects,omitempty"`
 
@@ -101,7 +102,11 @@ type VPCAccessConnectorStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* Output only. State of the VPC access connector. Possible values: STATE_UNSPECIFIED, READY, CREATING, DELETING, ERROR, UPDATING */
+	/* The fully qualified name of this VPC connector. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	/* State of the VPC access connector. */
 	// +optional
 	State *string `json:"state,omitempty"`
 }

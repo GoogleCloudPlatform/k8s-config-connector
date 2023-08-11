@@ -18,7 +18,7 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: webhook
   annotations:
-    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":90}}]'
+    autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
 spec:
   maxReplicas: 20
   minReplicas: 2
@@ -26,4 +26,4 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: webhook-manager
-  targetCPUUtilizationPercentage: 90
+  targetCPUUtilizationPercentage: 70

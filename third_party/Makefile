@@ -23,41 +23,66 @@ all: clone-terraform-google-provider-beta apply-patches
 clone-terraform-google-provider-beta:
 	rm -rf github.com/hashicorp/terraform-provider-google-beta
 	mkdir -p github.com/hashicorp
-	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta
-	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.62.0
+	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta --branch v4.75.1 --depth 1
 	rm -rf github.com/hashicorp/terraform-provider-google-beta/.git
 
 .PHONY: apply-patches
 apply-patches:
-	# The TF provider added a change that waits for GKE clusters to be ready
+	# Fix to the google_container_cluster resource:
+	# (1)The TF provider added a change that waits for GKE clusters to be ready
 	# before the import completes. As we use import before the resource actually
 	# exists, this breaks our normal flow.
+	# (2)Add support for importing ContainerCluster from CAI resource name which uses the legacy 'zones/{zone}' instead
+	# of 'locations/{location}'
+	# (3)Fix faulty return value on `expandIPAllocationPolicy`
+	# TODO(b/208277276): Upstream change to TF
+	# (4)Preserve basic authentication configuration option that has been removed in tf4.x upgrade.
+	# See b/206133327 for context.
+	# (5)tpu_config field is causing constant diff during ContainerCluster resource reconciliation.
+	# Ignore the field for now to fix build break and unblock KCC releases.
+	# See b/239812293 for context
+	# (6)The default value of `cluster_autoscaling.auto_provisioning_defaults.disk_type`
+	# causes an unexpected diff because when the cluster enables autopilot, the
+	# computed result of `cluster_autoscaling.auto_provisioning_defaults` has
+	# `disk_type` field unset.
+	# TODO(b/258864199): Remove this patch if disk_type field no longer causes unexpected diffs.
 	git apply ../hack/terraform-overrides/container_cluster.patch
+	# Fix to the google_container_node_pool resource:
+	# (1)Add support for importing ContainerNodePool from CAI resource name which uses the legacy 'zones/{zone}' instead
+	# of 'locations/{location}'
+	# (2)Do not require a GET to wait for the node pool to be ready during import.
+	# (3)Add a way to disable autoscaling by setting min_node_count and max_node_count to 0
+	# This change will not be upstreamed to TF (they already allow users to
+	# disable autoscaling by unsetting the field) and was implemented because
+	# Kubernetes does not allow objects to be set from non-null to null.
+	git apply ../hack/terraform-overrides/container_nodepool.patch
 	# Terraform client uses a list with MaxItems==1 for nested fields and lists with size limits
 	# We assume that a list with MaxItems 1 is a field. The following patches enforce this behaviour on the client's behalf.
 	git apply ../hack/terraform-overrides/compute_resource_policy.patch
-	# When you call GET on a project that hasn't been created yet, the
+	# Fix to the google_project resource:
+	# (1) When you call GET on a project that hasn't been created yet, the
 	# underlying API always returns 403, which the provider treats as a real
 	# error. Instead, treat this the same as 404 NotFound for projects.
+	# (2) add support for importing Projects by their ProjectNumber. Asset
+	# inventory uses the project number ID format to refer to projects so this
+	# is needed to for support for going from asset to KCC resource
 	git apply ../hack/terraform-overrides/project.patch
-	# Folders should be treated as gone if the state is DELETE_REQUESTED.
+	# Fix to the google_folder resource:
+	# (1) Folders should be treated as gone if the state is DELETE_REQUESTED.
 	# This is consistent with how projects are treated in the provider.
-	git apply ../hack/terraform-overrides/folder.patch
-	# Set the 'name' field during the TF import. This is required by the
+	# (2) Set the 'name' field during the TF import. This is required by the
 	# config-connector CLI, specifically to retain the folder ID when
 	# converting the folder's TF state to a KCC resource skeleton.
-	git apply ../hack/terraform-overrides/folder-import.patch
-	# Replace 'parent' field with 'parent_org_id' and 'parent_folder_id' so
+	# (3) Replace 'parent' field with 'parent_org_id' and 'parent_folder_id' so
 	# that we can convert these fields to resource references. This is
 	# necessary since KCC can't map a TF field to the appropriate KRM field
 	# when there are multiple possible KRM fields a TF field can be mapped
 	# back to.
-	git apply ../hack/terraform-overrides/folder_parent.patch
-	# On create, check to see if a folder with the given display_name in
+	# (4) On create, check to see if a folder with the given display_name in
 	# the given parent exists before trying to create a new folder. If one
 	# exists, read that one instead. This allows users to acquire folders
 	# by specifying the folder's display_name and parent in KCC.
-	git apply ../hack/terraform-overrides/folder_acquire_by_display_name.patch
+	git apply ../hack/terraform-overrides/folder.patch
 	# Our logic requires a 'project' field on ServiceNetworkingConnection.
 	# ServiceNetworkingConnection doesn't have one, so we add it.
 	git apply ../hack/terraform-overrides/service_networking_connection_project.patch
@@ -87,14 +112,6 @@ apply-patches:
 	git apply ../hack/terraform-overrides/storage_bucket_access_control.patch
 	# Suppress a diff between topic ID vs topic relative resource name
 	git apply ../hack/terraform-overrides/source_repo_repository.patch
-	# Add support for importing ContainerCluster from CAI resource name which uses the legacy 'zones/{zone}' instead
-	# of 'locations/{location}'
-	git apply ../hack/terraform-overrides/container_cluster_asset_inventory_import.patch
-	# Add support for importing ContainerNodePool from CAI resource name which uses the legacy 'zones/{zone}' instead
-	# of 'locations/{location}'
-	git apply ../hack/terraform-overrides/container_nodepool_asset_inventory_import.patch
-	# Do not require a GET to wait for the node pool to be ready during import.
-	git apply ../hack/terraform-overrides/container_nodepool_import.patch
 	# 1) Add support to google_project_service's import for one platform resource
 	# name
 	# 2) make Read return nil when resource/service is not enabled
@@ -105,10 +122,6 @@ apply-patches:
 	git apply ../hack/terraform-overrides/bigquery_job_create_disposition_defaults.patch
 	# Treat backends as computed so they are merged by the diff.
 	git apply ../hack/terraform-overrides/backend_service_computed_backend.patch
-	# add support for importing Projects by their ProjectNumber. Asset
-	# inventory uses the project number ID format to refer to projects so this
-	# is needed to for support for going from asset to KCC resource
-	git apply ../hack/terraform-overrides/project-import-by-number.patch
 	# Fixes to google_bigtable_instance:
 	# 1) Set "instance_type" as part of the TF read, otherwise a diff would
 	# be generated on every reconcile, causing an update to be triggered
@@ -202,11 +215,6 @@ apply-patches:
 	# which strips the text of the description. In addition updating the description
 	# to describe KCC behavior.
 	git apply ../hack/terraform-overrides/compute_disk_description.patch
-	# Add a way to disable autoscaling by setting min_node_count and max_node_count to 0
-	# This change will not be upstreamed to TF (they already allow users to
-	# disable autoscaling by unsetting the field) and was implemented because
-	# Kubernetes does not allow objects to be set from non-null to null.
-	git apply ../hack/terraform-overrides/container_nodepool_autoscaling.patch
 	# Make iap subfield optional so ComputeBackendService can be acquired with IAP enabled
 	# (b/180415885)
 	git apply ../hack/terraform-overrides/compute_backend_service.patch
@@ -226,12 +234,6 @@ apply-patches:
 	# always return a 404, and will continue to be retried until the
 	# timeout.
 	git apply ../hack/terraform-overrides/storage_bucket_read.patch
-	# Fix faulty return value on `expandIPAllocationPolicy`
-	# TODO(b/208277276): Upstream change to TF
-	git apply ../hack/terraform-overrides/container_cluster_networking_mode.patch
-	# Preserve basic authentication configuration option that has been removed in tf4.x upgrade.
-	# See b/206133327 for context.
-	git apply ../hack/terraform-overrides/container_cluster_basic_authentication_tf4.x_upgrade.patch
 	# Preserve the node_medadata configuration option that has been removed in tf4.x upgrade.
 	# See b/206133327 for context.
 	git apply ../hack/terraform-overrides/container_cluster_node_metadata_tf4.x_upgrade.patch
@@ -254,10 +256,6 @@ apply-patches:
 	# Change field "layer_7_ddos_defense_config" to "layer7_ddos_defense_config"
 	# See b/220930832 for context
 	git apply ../hack/terraform-overrides/compute_security_policy_fieldname.patch
-	# tpu_config field is causing constant diff during ContainerCluster resource reconciliation.
-	# Ignore the field for now to fix build break and unblock KCC releases.
-	# See b/239812293 for context
-	git apply ../hack/terraform-overrides/container_cluster_ignore_tpuconfig.patch
 	# Change ip_version field description for compute_global_address to include `This field
 	# can only be specified for a global address.`
 	# See b/238334650 for context
@@ -271,9 +269,10 @@ apply-patches:
 	# status.destroyTime when the resource is DESTROYED.
 	# TODO(b/254533796): Re-evaluate if this patch is worth keeping.
 	git apply ../hack/terraform-overrides/secret_manager_secret_version_destroyed.patch
-	# The default value of `cluster_autoscaling.auto_provisioning_defaults.disk_type`
-	# causes an unexpected diff because when the cluster enables autopilot, the
-	# computed result of `cluster_autoscaling.auto_provisioning_defaults` has
-	# `disk_type` field unset.
-	# TODO(b/258864199): Remove this patch if disk_type field no longer causes unexpected diffs.
-	git apply ../hack/terraform-overrides/container_cluster_autopilot_disk_type.patch
+	# Avoid breaking change from TF with MaxItem = 1, which will update type from array to object in CRD
+	# See b/283317413 for context
+	git apply ../hack/terraform-overrides/compute_forwarding_rule.patch
+	# Fix the incorrect `Computed: true` schema for the immutable, unreadable,
+	# and non-computed `params` field in the
+	# `google_compute_instance_from_template` resource.
+	git apply ../hack/terraform-overrides/compute_instance_from_template_params_field.patch

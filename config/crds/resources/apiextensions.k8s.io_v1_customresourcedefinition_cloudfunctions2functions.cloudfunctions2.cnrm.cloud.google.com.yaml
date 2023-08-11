@@ -109,13 +109,14 @@ spec:
                               which to run the build.
                             type: string
                           invertRegex:
-                            description: "Only trigger a build if the revision regex
-                              does \nNOT match the revision regex."
+                            description: |-
+                              Only trigger a build if the revision regex does
+                              NOT match the revision regex.
                             type: boolean
                           projectId:
-                            description: "Immutable. ID of the project that owns the
-                              Cloud Source Repository. If omitted, the \nproject ID
-                              requesting the build is assumed."
+                            description: |-
+                              Immutable. ID of the project that owns the Cloud Source Repository. If omitted, the
+                              project ID requesting the build is assumed.
                             type: string
                           repoName:
                             description: Name of the Cloud Source Repository.
@@ -133,9 +134,9 @@ spec:
                               source.
                             type: string
                           generation:
-                            description: "Google Cloud Storage generation for the
-                              object. If the generation \nis omitted, the latest generation
-                              will be used."
+                            description: |-
+                              Google Cloud Storage generation for the object. If the generation
+                              is omitted, the latest generation will be used.
                             type: integer
                           object:
                             description: Google Cloud Storage object containing the
@@ -447,6 +448,9 @@ spec:
                 type: string
               updateTime:
                 description: The last update timestamp of a Cloud Function.
+                type: string
+              url:
+                description: Output only. The deployed url for the function.
                 type: string
             type: object
         required:

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,21 +24,26 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccApigeeOrganization_apigeeOrganizationCloudBasicTestExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
-		"random_suffix":   RandString(t, 10),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApigeeOrganizationDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -52,7 +60,7 @@ func TestAccApigeeOrganization_apigeeOrganizationCloudBasicTestExample(t *testin
 }
 
 func testAccApigeeOrganization_apigeeOrganizationCloudBasicTestExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id      = "tf-test%{random_suffix}"
   name            = "tf-test%{random_suffix}"
@@ -109,19 +117,73 @@ resource "google_apigee_organization" "org" {
 `, context)
 }
 
-func TestAccApigeeOrganization_apigeeOrganizationCloudFullTestExample(t *testing.T) {
-	SkipIfVcr(t)
+func TestAccApigeeOrganization_apigeeOrganizationCloudBasicDisableVpcPeeringTestExample(t *testing.T) {
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
-		"random_suffix":   RandString(t, 10),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckApigeeOrganizationDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccApigeeOrganization_apigeeOrganizationCloudBasicDisableVpcPeeringTestExample(context),
+			},
+			{
+				ResourceName:            "google_apigee_organization.org",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"project_id", "retention"},
+			},
+		},
+	})
+}
+
+func testAccApigeeOrganization_apigeeOrganizationCloudBasicDisableVpcPeeringTestExample(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_project" "project" {
+  project_id      = "tf-test%{random_suffix}"
+  name            = "tf-test%{random_suffix}"
+  org_id          = "%{org_id}"
+  billing_account = "%{billing_account}"
+}
+
+resource "google_project_service" "apigee" {
+  project = google_project.project.project_id
+  service = "apigee.googleapis.com"
+}
+
+resource "google_apigee_organization" "org" {
+  description         = "Terraform-provisioned basic Apigee Org without VPC Peering."
+  analytics_region    = "us-central1"
+  project_id          = google_project.project.project_id
+  disable_vpc_peering = true
+  depends_on          = [
+    google_project_service.apigee,
+  ]
+}
+`, context)
+}
+
+func TestAccApigeeOrganization_apigeeOrganizationCloudFullTestExample(t *testing.T) {
+	acctest.SkipIfVcr(t)
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
+	}
+
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckApigeeOrganizationDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -138,7 +200,7 @@ func TestAccApigeeOrganization_apigeeOrganizationCloudFullTestExample(t *testing
 }
 
 func testAccApigeeOrganization_apigeeOrganizationCloudFullTestExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   provider = google-beta
 
@@ -267,19 +329,141 @@ resource "google_apigee_organization" "org" {
 `, context)
 }
 
-func TestAccApigeeOrganization_apigeeOrganizationRetentionTestExample(t *testing.T) {
-	SkipIfVcr(t)
+func TestAccApigeeOrganization_apigeeOrganizationCloudFullDisableVpcPeeringTestExample(t *testing.T) {
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
-		"random_suffix":   RandString(t, 10),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckApigeeOrganizationDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccApigeeOrganization_apigeeOrganizationCloudFullDisableVpcPeeringTestExample(context),
+			},
+			{
+				ResourceName:            "google_apigee_organization.org",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"project_id", "retention"},
+			},
+		},
+	})
+}
+
+func testAccApigeeOrganization_apigeeOrganizationCloudFullDisableVpcPeeringTestExample(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_project" "project" {
+  provider = google-beta
+
+  project_id      = "tf-test%{random_suffix}"
+  name            = "tf-test%{random_suffix}"
+  org_id          = "%{org_id}"
+  billing_account = "%{billing_account}"
+}
+
+resource "google_project_service" "apigee" {
+  provider = google-beta
+
+  project = google_project.project.project_id
+  service = "apigee.googleapis.com"
+}
+
+resource "google_project_service" "compute" {
+  provider = google-beta
+
+  project = google_project.project.project_id
+  service = "compute.googleapis.com"
+}
+
+resource "google_project_service" "kms" {
+  provider = google-beta
+
+  project = google_project.project.project_id
+  service = "cloudkms.googleapis.com"
+}
+
+resource "google_kms_key_ring" "apigee_keyring" {
+  provider = google-beta
+
+  name       = "apigee-keyring"
+  location   = "us-central1"
+  project    = google_project.project.project_id
+  depends_on = [google_project_service.kms]
+}
+
+resource "google_kms_crypto_key" "apigee_key" {
+  provider = google-beta
+
+  name            = "apigee-key"
+  key_ring        = google_kms_key_ring.apigee_keyring.id
+}
+
+resource "google_project_service_identity" "apigee_sa" {
+  provider = google-beta
+
+  project = google_project.project.project_id
+  service = google_project_service.apigee.service
+}
+
+resource "google_kms_crypto_key_iam_binding" "apigee_sa_keyuser" {
+  provider = google-beta
+
+  crypto_key_id = google_kms_crypto_key.apigee_key.id
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+  members = [
+    "serviceAccount:${google_project_service_identity.apigee_sa.email}",
+  ]
+}
+
+resource "google_apigee_organization" "org" {
+  provider = google-beta
+
+  display_name                         = "apigee-org"
+  description                          = "Terraform-provisioned Apigee Org without VPC Peering."
+  analytics_region                     = "us-central1"
+  project_id                           = google_project.project.project_id
+  disable_vpc_peering                  = true
+  billing_type                         = "EVALUATION"
+  runtime_database_encryption_key_name = google_kms_crypto_key.apigee_key.id
+  properties {
+    property {
+      name = "features.mart.connect.enabled"
+      value = "true"
+    }
+    property {
+      name = "features.hybrid.enabled"
+      value = "true"
+    }
+  }
+
+  depends_on = [
+    google_kms_crypto_key_iam_binding.apigee_sa_keyuser,
+  ]
+}
+`, context)
+}
+
+func TestAccApigeeOrganization_apigeeOrganizationRetentionTestExample(t *testing.T) {
+	acctest.SkipIfVcr(t)
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
+		"random_suffix":   acctest.RandString(t, 10),
+	}
+
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckApigeeOrganizationDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -296,7 +480,7 @@ func TestAccApigeeOrganization_apigeeOrganizationRetentionTestExample(t *testing
 }
 
 func testAccApigeeOrganization_apigeeOrganizationRetentionTestExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   provider = google-beta
 
@@ -425,9 +609,9 @@ func testAccCheckApigeeOrganizationDestroyProducer(t *testing.T) func(s *terrafo
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ApigeeBasePath}}organizations/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ApigeeBasePath}}organizations/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -438,7 +622,13 @@ func testAccCheckApigeeOrganizationDestroyProducer(t *testing.T) func(s *terrafo
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ApigeeOrganization still exists at %s", url)
 			}

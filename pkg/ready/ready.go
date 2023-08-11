@@ -18,8 +18,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
+)
+
+const (
+	ReadinessServerPort = 23232
+	ReadinessServerPath = "/ready"
 )
 
 var ready = false
@@ -34,12 +38,12 @@ func SetContainerAsReady() {
 	}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc(k8s.ReadinessServerPath, func(res http.ResponseWriter, _ *http.Request) {
+	mux.HandleFunc(ReadinessServerPath, func(res http.ResponseWriter, _ *http.Request) {
 		res.WriteHeader(http.StatusOK)
 	})
 
 	go func() {
-		port := fmt.Sprintf(":%v", k8s.ReadinessServerPort)
+		port := fmt.Sprintf(":%v", ReadinessServerPort)
 		logging.Fatal(http.ListenAndServe(port, mux), "error while running HTTP server to indicate readiness")
 	}()
 

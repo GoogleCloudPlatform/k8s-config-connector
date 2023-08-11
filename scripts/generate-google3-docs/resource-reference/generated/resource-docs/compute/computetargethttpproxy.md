@@ -81,6 +81,7 @@
 #### Schema
 ```yaml
 description: string
+httpKeepAliveTimeoutSec: integer
 location: string
 proxyBind: boolean
 resourceID: string
@@ -105,6 +106,21 @@ urlMapRef:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. An optional description of this resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>httpKeepAliveTimeoutSec</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Specifies how long to keep a connection open, after completing a response,
+while there is no matching traffic (in seconds). If an HTTP keepalive is
+not specified, a default value (610 seconds) will be used. For Global
+external HTTP(S) load balancer, the minimum allowed value is 5 seconds and
+the maximum allowed value is 1200 seconds. For Global external HTTP(S)
+load balancer (classic), this option is not available publicly.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -345,5 +361,7 @@ spec:
   location: global
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

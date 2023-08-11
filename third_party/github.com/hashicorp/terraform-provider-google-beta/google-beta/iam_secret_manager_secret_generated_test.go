@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -19,26 +22,29 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccSecretManagerSecretIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/secretmanager.secretAccessor",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSecretManagerSecretIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_secret_manager_secret_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/secrets/%s roles/secretmanager.secretAccessor", GetTestProjectFromEnv(), fmt.Sprintf("secret%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/secrets/%s roles/secretmanager.secretAccessor", envvar.GetTestProjectFromEnv(), fmt.Sprintf("secret%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -48,7 +54,7 @@ func TestAccSecretManagerSecretIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_secret_manager_secret_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/secrets/%s roles/secretmanager.secretAccessor", GetTestProjectFromEnv(), fmt.Sprintf("secret%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/secrets/%s roles/secretmanager.secretAccessor", envvar.GetTestProjectFromEnv(), fmt.Sprintf("secret%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -60,13 +66,13 @@ func TestAccSecretManagerSecretIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/secretmanager.secretAccessor",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -74,7 +80,7 @@ func TestAccSecretManagerSecretIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_secret_manager_secret_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/secrets/%s roles/secretmanager.secretAccessor user:admin@hashicorptest.com", GetTestProjectFromEnv(), fmt.Sprintf("secret%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/secrets/%s roles/secretmanager.secretAccessor user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), fmt.Sprintf("secret%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -86,20 +92,21 @@ func TestAccSecretManagerSecretIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/secretmanager.secretAccessor",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSecretManagerSecretIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_secret_manager_secret_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_secret_manager_secret_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/secrets/%s", GetTestProjectFromEnv(), fmt.Sprintf("secret%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/secrets/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("secret%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -108,7 +115,7 @@ func TestAccSecretManagerSecretIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_secret_manager_secret_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/secrets/%s", GetTestProjectFromEnv(), fmt.Sprintf("secret%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/secrets/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("secret%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -117,7 +124,7 @@ func TestAccSecretManagerSecretIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccSecretManagerSecretIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_secret_manager_secret" "secret-basic" {
   secret_id = "secret%{random_suffix}"
   
@@ -147,7 +154,7 @@ resource "google_secret_manager_secret_iam_member" "foo" {
 }
 
 func testAccSecretManagerSecretIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_secret_manager_secret" "secret-basic" {
   secret_id = "secret%{random_suffix}"
   
@@ -179,11 +186,19 @@ resource "google_secret_manager_secret_iam_policy" "foo" {
   secret_id = google_secret_manager_secret.secret-basic.secret_id
   policy_data = data.google_iam_policy.foo.policy_data
 }
+
+data "google_secret_manager_secret_iam_policy" "foo" {
+  project = google_secret_manager_secret.secret-basic.project
+  secret_id = google_secret_manager_secret.secret-basic.secret_id
+  depends_on = [
+    google_secret_manager_secret_iam_policy.foo
+  ]
+}
 `, context)
 }
 
 func testAccSecretManagerSecretIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_secret_manager_secret" "secret-basic" {
   secret_id = "secret%{random_suffix}"
   
@@ -215,7 +230,7 @@ resource "google_secret_manager_secret_iam_policy" "foo" {
 }
 
 func testAccSecretManagerSecretIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_secret_manager_secret" "secret-basic" {
   secret_id = "secret%{random_suffix}"
   
@@ -245,7 +260,7 @@ resource "google_secret_manager_secret_iam_binding" "foo" {
 }
 
 func testAccSecretManagerSecretIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_secret_manager_secret" "secret-basic" {
   secret_id = "secret%{random_suffix}"
   

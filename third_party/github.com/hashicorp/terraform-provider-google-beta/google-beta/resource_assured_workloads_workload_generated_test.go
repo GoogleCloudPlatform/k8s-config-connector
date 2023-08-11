@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -24,20 +27,24 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccAssuredWorkloadsWorkload_BasicHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
-		"region":        GetTestRegionFromEnv(),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAssuredWorkloadsWorkloadDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -66,14 +73,14 @@ func TestAccAssuredWorkloadsWorkload_FullHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
-		"region":        GetTestRegionFromEnv(),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAssuredWorkloadsWorkloadDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -91,7 +98,7 @@ func TestAccAssuredWorkloadsWorkload_FullHandWritten(t *testing.T) {
 }
 
 func testAccAssuredWorkloadsWorkload_BasicHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_assured_workloads_workload" "primary" {
   display_name = "tf-test-name%{random_suffix}"
   labels = {
@@ -112,7 +119,7 @@ resource "google_folder" "folder1" {
 }
 
 func testAccAssuredWorkloadsWorkload_BasicHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_assured_workloads_workload" "primary" {
   display_name = "tf-test-name%{random_suffix}"
   labels = {
@@ -133,7 +140,7 @@ resource "google_folder" "folder1" {
 }
 
 func testAccAssuredWorkloadsWorkload_FullHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_assured_workloads_workload" "primary" {
   display_name = "tf-test-name%{random_suffix}"
   billing_account = "billingAccounts/%{billing_acct}"
@@ -183,7 +190,7 @@ func testAccCheckAssuredWorkloadsWorkloadDestroyProducer(t *testing.T) func(s *t
 				Name:                       dcl.StringOrNil(rs.Primary.Attributes["name"]),
 			}
 
-			client := NewDCLAssuredWorkloadsClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLAssuredWorkloadsClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetWorkload(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_assured_workloads_workload still exists %v", obj)

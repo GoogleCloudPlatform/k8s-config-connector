@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,20 +24,25 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccCloudAssetFolderFeed_cloudAssetFolderFeedExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
-		"org_id":        GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudAssetFolderFeedDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -51,7 +59,7 @@ func TestAccCloudAssetFolderFeed_cloudAssetFolderFeedExample(t *testing.T) {
 }
 
 func testAccCloudAssetFolderFeed_cloudAssetFolderFeedExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 # Create a feed that sends notifications about network resource updates under a
 # particular folder.
 resource "google_cloud_asset_folder_feed" "folder_feed" {
@@ -111,9 +119,9 @@ func testAccCheckCloudAssetFolderFeedDestroyProducer(t *testing.T) func(s *terra
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{CloudAssetBasePath}}{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CloudAssetBasePath}}{{name}}")
 			if err != nil {
 				return err
 			}
@@ -124,7 +132,13 @@ func testAccCheckCloudAssetFolderFeedDestroyProducer(t *testing.T) func(s *terra
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("CloudAssetFolderFeed still exists at %s", url)
 			}

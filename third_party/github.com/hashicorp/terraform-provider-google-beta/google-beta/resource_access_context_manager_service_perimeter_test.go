@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -6,16 +8,21 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 // Since each test here is acting on the same organization and only one AccessPolicy
 // can exist, they need to be run serially. See AccessPolicy for the test runner.
 func testAccAccessContextManagerServicePerimeter_basicTest(t *testing.T) {
-	org := GetTestOrgFromEnv(t)
+	org := envvar.GetTestOrgFromEnv(t)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAccessContextManagerServicePerimeterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -31,11 +38,11 @@ func testAccAccessContextManagerServicePerimeter_basicTest(t *testing.T) {
 }
 
 func testAccAccessContextManagerServicePerimeter_updateTest(t *testing.T) {
-	org := GetTestOrgFromEnv(t)
+	org := envvar.GetTestOrgFromEnv(t)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckAccessContextManagerServicePerimeterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -89,14 +96,19 @@ func testAccCheckAccessContextManagerServicePerimeterDestroyProducer(t *testing.
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{AccessContextManagerBasePath}}{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{AccessContextManagerBasePath}}{{name}}")
 			if err != nil {
 				return err
 			}
 
-			_, err = SendRequest(config, "GET", "", url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ServicePerimeter still exists at %s", url)
 			}

@@ -45,15 +45,19 @@ type ConfigValidate func(r *unstructured.Unstructured) error
 // A typical example of a transformation is to map our internal terraform types to real types.
 type PreTerraformExport func(ctx context.Context, op *operations.TerraformExport) error
 
+// PostUpdateStatusTransform transforms the resource object after its status is being updated.
+type PostUpdateStatusTransform func(r *k8s.Resource) error
+
 // ResourceOverride holds all pieces of changes needed, i.e. decoration, transformation and validation to author
 // a resource-specific behavior override.
 // Since one particular resource kind could have multiple overrides, each ResourceOverride should be logically orthogonal to each other and neutral to order of execution.
 type ResourceOverride struct {
-	CRDDecorate            CRDDecorate
-	ConfigValidate         ConfigValidate
-	PreActuationTransform  PreActuationTransform
-	PostActuationTransform PostActuationTransform
-	PreTerraformExport     PreTerraformExport
+	CRDDecorate               CRDDecorate
+	ConfigValidate            ConfigValidate
+	PreActuationTransform     PreActuationTransform
+	PostActuationTransform    PostActuationTransform
+	PreTerraformExport        PreTerraformExport
+	PostUpdateStatusTransform PostUpdateStatusTransform
 }
 
 type ResourceOverrides struct {
@@ -151,6 +155,21 @@ func (h *ResourceOverridesHandler) PreTerraformExport(ctx context.Context, gvk s
 	return nil
 }
 
+func (h *ResourceOverridesHandler) PostUpdateStatusTransform(r *k8s.Resource) error {
+	ro, found := h.registration(r.Kind)
+	if !found {
+		return nil
+	}
+	for _, o := range ro.Overrides {
+		if o.PostUpdateStatusTransform != nil {
+			if err := o.PostUpdateStatusTransform(r); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
 func (h *ResourceOverridesHandler) HasOverrides(kind string) bool {
 	_, found := h.registration(kind)
 	return found
@@ -189,6 +208,8 @@ func init() {
 	Handler.Register(GetComputeInstanceResourceOverrides())
 	Handler.Register(GetDNSRecordSetOverrides())
 	Handler.Register(GetComputeBackendServiceResourceOverrides())
+	Handler.Register(GetVPCAccessConnectorResourceOverrides())
+	Handler.Register(GetRedisInstanceResourceOverrides())
 
 	// IAM
 	Handler.Register(GetIAMCustomRoleResourceOverrides())

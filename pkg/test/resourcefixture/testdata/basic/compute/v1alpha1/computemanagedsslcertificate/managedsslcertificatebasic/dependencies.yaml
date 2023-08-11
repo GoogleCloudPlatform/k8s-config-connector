@@ -13,25 +13,16 @@
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeHTTPHealthCheck
+kind: ComputeBackendService
 metadata:
-  name: computehttphealthcheck-${uniqueId}
+  name: computebackendservice-${uniqueId}
 spec:
-  checkIntervalSec: 1
-  requestPath: /
-  resourceID: computehttphealthcheck${uniqueId}
-  timeoutSec: 1
----
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeTargetHTTPSProxy
-metadata:
-  name: computetargethttpsproxy-${uniqueId}
-spec:
-  resourceID: computetargethttpsproxy${uniqueId}
-  sslCertificates:
-  - ${google_compute_managed_ssl_certificate.default.id}
-  urlMapRef:
-    name: computeurlmap-${uniqueId}
+  healthChecks:
+  - ${google_compute_http_health_check.default.id}
+  portName: http
+  protocol: HTTP
+  resourceID: computebackendservice${uniqueId}
+  timeoutSec: 10
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeURLMap
@@ -55,16 +46,15 @@ spec:
   resourceID: computeurlmap${uniqueId}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeBackendService
+kind: ComputeTargetHTTPSProxy
 metadata:
-  name: computebackendservice-${uniqueId}
+  name: computetargethttpsproxy-${uniqueId}
 spec:
-  healthChecks:
-  - ${google_compute_http_health_check.default.id}
-  portName: http
-  protocol: HTTP
-  resourceID: computebackendservice${uniqueId}
-  timeoutSec: 10
+  resourceID: computetargethttpsproxy${uniqueId}
+  sslCertificates:
+  - ${google_compute_managed_ssl_certificate.default.id}
+  urlMapRef:
+    name: computeurlmap-${uniqueId}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
@@ -75,3 +65,13 @@ spec:
     name: computetargethttpsproxy-${uniqueId}
   portRange: 443
   resourceID: computeforwardingrule${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHTTPHealthCheck
+metadata:
+  name: computehttphealthcheck-${uniqueId}
+spec:
+  checkIntervalSec: 1
+  requestPath: /
+  resourceID: computehttphealthcheck${uniqueId}
+  timeoutSec: 1

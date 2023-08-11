@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -6,43 +8,11 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 
 	sqladmin "google.golang.org/api/sqladmin/v1beta4"
 )
-
-func TestCaseDiffDashSuppress(t *testing.T) {
-	cases := map[string]struct {
-		Old, New           string
-		ExpectDiffSuppress bool
-	}{
-		"PD_HDD": {
-			Old:                "PD_HDD",
-			New:                "pd-hdd",
-			ExpectDiffSuppress: true,
-		},
-		"PD_SSD": {
-			Old:                "PD_SSD",
-			New:                "pd-ssd",
-			ExpectDiffSuppress: true,
-		},
-		"pd-hdd": {
-			Old:                "pd-hdd",
-			New:                "PD_HDD",
-			ExpectDiffSuppress: false,
-		},
-		"pd-ssd": {
-			Old:                "pd-ssd",
-			New:                "PD_SSD",
-			ExpectDiffSuppress: false,
-		},
-	}
-
-	for tn, tc := range cases {
-		if caseDiffDashSuppress(tn, tc.Old, tc.New, nil) != tc.ExpectDiffSuppress {
-			t.Errorf("bad: %s, %q => %q expect DiffSuppress to return %t", tn, tc.Old, tc.New, tc.ExpectDiffSuppress)
-		}
-	}
-}
 
 func TestAccSqlDatabase_basic(t *testing.T) {
 	t.Parallel()
@@ -50,12 +20,12 @@ func TestAccSqlDatabase_basic(t *testing.T) {
 	var database sqladmin.Database
 
 	resourceName := "google_sql_database.database"
-	instanceName := fmt.Sprintf("tf-test-%d", RandInt(t))
-	dbName := fmt.Sprintf("tf-test-%d", RandInt(t))
+	instanceName := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	dbName := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccSqlDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -85,14 +55,14 @@ func TestAccSqlDatabase_basic(t *testing.T) {
 			},
 			{
 				ResourceName:            resourceName,
-				ImportStateId:           fmt.Sprintf("%s/%s/%s", GetTestProjectFromEnv(), instanceName, dbName),
+				ImportStateId:           fmt.Sprintf("%s/%s/%s", envvar.GetTestProjectFromEnv(), instanceName, dbName),
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateVerifyIgnore: []string{"deletion_protection"},
 			},
 			{
 				ResourceName:            resourceName,
-				ImportStateId:           fmt.Sprintf("projects/%s/instances/%s/databases/%s", GetTestProjectFromEnv(), instanceName, dbName),
+				ImportStateId:           fmt.Sprintf("projects/%s/instances/%s/databases/%s", envvar.GetTestProjectFromEnv(), instanceName, dbName),
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateVerifyIgnore: []string{"deletion_protection"},
@@ -106,12 +76,12 @@ func TestAccSqlDatabase_update(t *testing.T) {
 
 	var database sqladmin.Database
 
-	instance_name := fmt.Sprintf("tf-test-%d", RandInt(t))
-	database_name := fmt.Sprintf("tf-test-%d", RandInt(t))
+	instance_name := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	database_name := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccSqlDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -172,7 +142,7 @@ func testAccCheckGoogleSqlDatabaseEquals(n string, database *sqladmin.Database) 
 
 func testAccCheckGoogleSqlDatabaseExists(t *testing.T, n string, database *sqladmin.Database) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
 			return fmt.Errorf("Resource not found: %s", n)
@@ -196,7 +166,7 @@ func testAccCheckGoogleSqlDatabaseExists(t *testing.T, n string, database *sqlad
 func testAccSqlDatabaseDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
 		for _, rs := range s.RootModule().Resources {
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 			if rs.Type != "google_sql_database" {
 				continue
 			}

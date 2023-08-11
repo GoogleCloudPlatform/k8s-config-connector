@@ -1,78 +1,27 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
-
-func TestDomainMappingLabelDiffSuppress(t *testing.T) {
-	cases := map[string]struct {
-		K, Old, New        string
-		ExpectDiffSuppress bool
-	}{
-		"missing run.googleapis.com/overrideAt": {
-			K:                  "metadata.0.labels.run.googleapis.com/overrideAt",
-			Old:                "2021-04-20T22:38:23.584Z",
-			New:                "",
-			ExpectDiffSuppress: true,
-		},
-		"explicit run.googleapis.com/overrideAt": {
-			K:                  "metadata.0.labels.run.googleapis.com/overrideAt",
-			Old:                "2021-04-20T22:38:23.584Z",
-			New:                "2022-04-20T22:38:23.584Z",
-			ExpectDiffSuppress: false,
-		},
-		"missing cloud.googleapis.com/location": {
-			K:                  "metadata.0.labels.cloud.googleapis.com/location",
-			Old:                "us-central1",
-			New:                "",
-			ExpectDiffSuppress: true,
-		},
-		"explicit cloud.googleapis.com/location": {
-			K:                  "metadata.0.labels.cloud.googleapis.com/location",
-			Old:                "us-central1",
-			New:                "us-central2",
-			ExpectDiffSuppress: false,
-		},
-		"labels.%": {
-			K:                  "metadata.0.labels.%",
-			Old:                "3",
-			New:                "1",
-			ExpectDiffSuppress: true,
-		},
-		"deleted custom key": {
-			K:                  "metadata.0.labels.my-label",
-			Old:                "my-value",
-			New:                "",
-			ExpectDiffSuppress: false,
-		},
-		"added custom key": {
-			K:                  "metadata.0.labels.my-label",
-			Old:                "",
-			New:                "my-value",
-			ExpectDiffSuppress: false,
-		},
-	}
-	for tn, tc := range cases {
-		if DomainMappingLabelDiffSuppress(tc.K, tc.Old, tc.New, nil) != tc.ExpectDiffSuppress {
-			t.Errorf("bad: %s, %q: %q => %q expect DiffSuppress to return %t", tn, tc.K, tc.Old, tc.New, tc.ExpectDiffSuppress)
-		}
-	}
-}
 
 // Destroy and recreate the mapping, testing that Terraform doesn't return a 409
 func TestAccCloudRunDomainMapping_foregroundDeletion(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"namespace":     GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"namespace":     envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudRunDomainMappingDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -98,7 +47,7 @@ func TestAccCloudRunDomainMapping_foregroundDeletion(t *testing.T) {
 }
 
 func testAccCloudRunDomainMapping_cloudRunDomainMappingUpdated1(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_run_service" "default" {
     name     = "tf-test-cloudrun-srv%{random_suffix}"
     location = "us-central1"
@@ -132,7 +81,7 @@ resource "google_cloud_run_domain_mapping" "default" {
 }
 
 func testAccCloudRunDomainMapping_cloudRunDomainMappingUpdated2(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloud_run_service" "default" {
   name     = "tf-test-cloudrun-srv%{random_suffix}"
   location = "us-central1"

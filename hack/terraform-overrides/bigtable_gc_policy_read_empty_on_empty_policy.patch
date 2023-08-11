@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/resource_bigtable_gc_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/resource_bigtable_gc_policy.go
 index cf23d4939..70b55640e 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/resource_bigtable_gc_policy.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigtable/resource_bigtable_gc_policy.go
 @@ -269,6 +269,8 @@ func resourceBigtableGCPolicyRead(d *schema.ResourceData, meta interface{}) erro
  
  		// No GC Policy.

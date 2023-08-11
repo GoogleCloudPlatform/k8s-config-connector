@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,19 +24,23 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeRegionSslCertificate_regionSslCertificateBasicExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionSslCertificateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -50,7 +57,7 @@ func TestAccComputeRegionSslCertificate_regionSslCertificateBasicExample(t *test
 }
 
 func testAccComputeRegionSslCertificate_regionSslCertificateBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_ssl_certificate" "default" {
   region      = "us-central1"
   name_prefix = "my-certificate-"
@@ -66,16 +73,16 @@ resource "google_compute_region_ssl_certificate" "default" {
 }
 
 func TestAccComputeRegionSslCertificate_regionSslCertificateRandomProviderExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -96,7 +103,7 @@ func TestAccComputeRegionSslCertificate_regionSslCertificateRandomProviderExampl
 }
 
 func testAccComputeRegionSslCertificate_regionSslCertificateRandomProviderExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 # You may also want to control name generation explicitly:
 resource "google_compute_region_ssl_certificate" "default" {
   region   = "us-central1"
@@ -126,16 +133,16 @@ resource "random_id" "certificate" {
 }
 
 func TestAccComputeRegionSslCertificate_regionSslCertificateTargetHttpsProxiesExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionSslCertificateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -152,7 +159,7 @@ func TestAccComputeRegionSslCertificate_regionSslCertificateTargetHttpsProxiesEx
 }
 
 func testAccComputeRegionSslCertificate_regionSslCertificateTargetHttpsProxiesExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 // Using with Region Target HTTPS Proxies
 //
 // SSL certificates cannot be updated after creation. In order to apply
@@ -234,9 +241,9 @@ func testAccCheckComputeRegionSslCertificateDestroyProducer(t *testing.T) func(s
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/sslCertificates/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/sslCertificates/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -247,7 +254,13 @@ func testAccCheckComputeRegionSslCertificateDestroyProducer(t *testing.T) func(s
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeRegionSslCertificate still exists at %s", url)
 			}

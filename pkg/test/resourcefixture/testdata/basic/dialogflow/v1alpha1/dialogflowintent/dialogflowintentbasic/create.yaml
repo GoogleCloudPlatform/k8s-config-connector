@@ -17,8 +17,6 @@ kind: DialogflowIntent
 metadata:
   name: dialogflowintent-${uniqueId}
 spec:
-  dependsOn:
-  - ${google_dialogflow_agent.basic_agent}
   displayName: basic-intent
   projectRef:
     external: ${projectId}

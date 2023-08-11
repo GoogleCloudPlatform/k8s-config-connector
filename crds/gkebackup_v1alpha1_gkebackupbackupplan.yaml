@@ -1,0 +1,302 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.107.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: gkebackupbackupplans.gkebackup.cnrm.cloud.google.com
+spec:
+  group: gkebackup.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: GKEBackupBackupPlan
+    plural: gkebackupbackupplans
+    shortNames:
+    - gcpgkebackupbackupplan
+    - gcpgkebackupbackupplans
+    singular: gkebackupbackupplan
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              backupConfig:
+                description: Defines the configuration of Backups created via this
+                  BackupPlan.
+                properties:
+                  allNamespaces:
+                    description: If True, include all namespaced resources.
+                    type: boolean
+                  encryptionKey:
+                    description: |-
+                      This defines a customer managed encryption key that will be used to encrypt the "config"
+                      portion (the Kubernetes resources) of Backups created via this plan.
+                    properties:
+                      gcpKmsEncryptionKey:
+                        description: 'Google Cloud KMS encryption key. Format: projects/*/locations/*/keyRings/*/cryptoKeys/*.'
+                        type: string
+                    required:
+                    - gcpKmsEncryptionKey
+                    type: object
+                  includeSecrets:
+                    description: |-
+                      This flag specifies whether Kubernetes Secret resources should be included
+                      when they fall into the scope of Backups.
+                    type: boolean
+                  includeVolumeData:
+                    description: |-
+                      This flag specifies whether volume data should be backed up when PVCs are
+                      included in the scope of a Backup.
+                    type: boolean
+                  selectedApplications:
+                    description: A list of namespaced Kubernetes Resources.
+                    properties:
+                      namespacedNames:
+                        description: A list of namespaced Kubernetes resources.
+                        items:
+                          properties:
+                            name:
+                              description: The name of a Kubernetes Resource.
+                              type: string
+                            namespace:
+                              description: The namespace of a Kubernetes Resource.
+                              type: string
+                          required:
+                          - name
+                          - namespace
+                          type: object
+                        type: array
+                    required:
+                    - namespacedNames
+                    type: object
+                  selectedNamespaces:
+                    description: If set, include just the resources in the listed
+                      namespaces.
+                    properties:
+                      namespaces:
+                        description: A list of Kubernetes Namespaces.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - namespaces
+                    type: object
+                type: object
+              backupSchedule:
+                description: Defines a schedule for automatic Backup creation via
+                  this BackupPlan.
+                properties:
+                  cronSchedule:
+                    description: |-
+                      A standard cron string that defines a repeating schedule for
+                      creating Backups via this BackupPlan.
+                      If this is defined, then backupRetainDays must also be defined.
+                    type: string
+                  paused:
+                    description: This flag denotes whether automatic Backup creation
+                      is paused for this BackupPlan.
+                    type: boolean
+                type: object
+              cluster:
+                description: Immutable. The source cluster from which Backups will
+                  be created via this BackupPlan.
+                type: string
+              deactivated:
+                description: |-
+                  This flag indicates whether this BackupPlan has been deactivated.
+                  Setting this field to True locks the BackupPlan such that no further updates will be allowed
+                  (except deletes), including the deactivated field itself. It also prevents any new Backups
+                  from being created via this BackupPlan (including scheduled Backups).
+                type: boolean
+              description:
+                description: User specified descriptive string for this BackupPlan.
+                type: string
+              location:
+                description: Immutable. The region of the Backup Plan.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+              retentionPolicy:
+                description: RetentionPolicy governs lifecycle of Backups created
+                  under this plan.
+                properties:
+                  backupDeleteLockDays:
+                    description: |-
+                      Minimum age for a Backup created via this BackupPlan (in days).
+                      Must be an integer value between 0-90 (inclusive).
+                      A Backup created under this BackupPlan will not be deletable
+                      until it reaches Backup's (create time + backup_delete_lock_days).
+                      Updating this field of a BackupPlan does not affect existing Backups.
+                      Backups created after a successful update will inherit this new value.
+                    type: integer
+                  backupRetainDays:
+                    description: |-
+                      The default maximum age of a Backup created via this BackupPlan.
+                      This field MUST be an integer value >= 0 and <= 365. If specified,
+                      a Backup created under this BackupPlan will be automatically deleted
+                      after its age reaches (createTime + backupRetainDays).
+                      If not specified, Backups created under this BackupPlan will NOT be
+                      subject to automatic deletion. Updating this field does NOT affect
+                      existing Backups under it. Backups created AFTER a successful update
+                      will automatically pick up the new value.
+                      NOTE: backupRetainDays must be >= backupDeleteLockDays.
+                      If cronSchedule is defined, then this must be <= 360 * the creation interval.].
+                    type: integer
+                  locked:
+                    description: |-
+                      This flag denotes whether the retention policy of this BackupPlan is locked.
+                      If set to True, no further update is allowed on this policy, including
+                      the locked field itself.
+                    type: boolean
+                type: object
+            required:
+            - cluster
+            - location
+            - projectRef
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              etag:
+                description: |-
+                  etag is used for optimistic concurrency control as a way to help prevent simultaneous
+                  updates of a backup plan from overwriting each other. It is strongly suggested that
+                  systems make use of the 'etag' in the read-modify-write cycle to perform BackupPlan updates
+                  in order to avoid race conditions: An etag is returned in the response to backupPlans.get,
+                  and systems are expected to put that etag in the request to backupPlans.patch or
+                  backupPlans.delete to ensure that their change will be applied to the same version of the resource.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+              protectedPodCount:
+                description: The number of Kubernetes Pods backed up in the last successful
+                  Backup created via this BackupPlan.
+                type: integer
+              uid:
+                description: Server generated, unique identifier of UUID format.
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

@@ -85,6 +85,7 @@ certificateMapRef:
   name: string
   namespace: string
 description: string
+httpKeepAliveTimeoutSec: integer
 location: string
 proxyBind: boolean
 quicOverride: string
@@ -166,6 +167,21 @@ can only be set for global target proxies.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>httpKeepAliveTimeoutSec</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Specifies how long to keep a connection open, after completing a response,
+while there is no matching traffic (in seconds). If an HTTP keepalive is
+not specified, a default value (610 seconds) will be used. For Global
+external HTTP(S) load balancer, the minimum allowed value is 5 seconds and
+the maximum allowed value is 1200 seconds. For Global external HTTP(S)
+load balancer (classic), this option is not available publicly.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>location</code></p>
             <p><i>Required</i></p>
         </td>
@@ -195,8 +211,7 @@ this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.{% endv
             <p>{% verbatim %}Specifies the QUIC override policy for this resource. This determines
 whether the load balancer will attempt to negotiate QUIC with clients
 or not. Can specify one of NONE, ENABLE, or DISABLE. If NONE is
-specified, uses the QUIC policy with no user overrides, which is
-equivalent to DISABLE. Default value: "NONE" Possible values: ["NONE", "ENABLE", "DISABLE"].{% endverbatim %}</p>
+specified, Google manages whether QUIC is used. Default value: "NONE" Possible values: ["NONE", "ENABLE", "DISABLE"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -592,5 +607,7 @@ stringData:
     -----END RSA PRIVATE KEY-----
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

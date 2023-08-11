@@ -186,6 +186,7 @@ conditions:
   reason: string
   status: string
   type: string
+labelFingerprint: string
 observedGeneration: integer
 selfLink: string
 ```
@@ -247,6 +248,14 @@ selfLink: string
         </td>
     </tr>
     <tr>
+        <td><code>labelFingerprint</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The fingerprint used for optimistic locking of this resource.  Used
+internally during updates.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -295,5 +304,7 @@ spec:
       ipAddress: "8.8.8.8"
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

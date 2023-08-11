@@ -27,7 +27,7 @@ import (
 )
 
 const (
-	inputDir                 = "vendor"
+	inputDir                 = "temp-vendor"
 	thirdPartyNoticeDir      = "THIRD_PARTY_NOTICES"
 	mirroredLibrarySourceDir = "MIRRORED_LIBRARY_SOURCE"
 	dirMode                  = 0700
@@ -53,7 +53,7 @@ func main() {
 	}
 
 	for _, file := range files {
-		licensePath := strings.TrimLeft(file, "vendor/")
+		licensePath := strings.TrimLeft(file, "temp-vendor/")
 		repo, licenseFilename := splitLicensePath(licensePath)
 		licenseURL := repoToLicenseURL(repo, licenseFilename)
 		fmt.Println(licenseURL)
@@ -87,7 +87,7 @@ func main() {
 			// need to remove the actual dir so 'cp' works
 			os.Remove(outputSourceDir)
 
-			sourceDir := "vendor/" + repo
+			sourceDir := "temp-vendor/" + repo
 			cmd := exec.Command("cp", "-r", sourceDir, outputSourceDir)
 			if output, err := cmd.CombinedOutput(); err != nil {
 				fmt.Printf("error copying source code for '%v': %v", sourceDir, string(output))
@@ -205,6 +205,9 @@ var manualLicenseURLMapping = map[string]string{
 	"google.golang.org/api/internal/third_party/uritemplates": "https://github.com/googleapis/google-api-go-client/blob/master/internal/third_party/uritemplates/LICENSE",
 	"google.golang.org/appengine":                             "https://github.com/golang/appengine/blob/master/LICENSE",
 	"google.golang.org/genproto":                              "https://github.com/google/go-genproto/blob/master/LICENSE",
+	"google.golang.org/genproto/googleapis/api":               "https://github.com/google/go-genproto/blob/master/LICENSE",
+	"google.golang.org/genproto/googleapis/api/serviceusage":  "https://github.com/google/go-genproto/blob/master/LICENSE",
+	"google.golang.org/genproto/googleapis/rpc":               "https://github.com/google/go-genproto/blob/master/LICENSE",
 	"google.golang.org/grpc":                                  "https://github.com/grpc/grpc-go/blob/master/LICENSE",
 	"google.golang.org/protobuf":                              "https://github.com/protocolbuffers/protobuf-go/blob/master/LICENSE",
 	"gopkg.in/fsnotify.v1":                                    "https://github.com/fsnotify/fsnotify/blob/master/LICENSE",

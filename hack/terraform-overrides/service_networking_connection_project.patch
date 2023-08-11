@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_service_networking_connection.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_service_networking_connection.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/servicenetworking/resource_service_networking_connection.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/servicenetworking/resource_service_networking_connection.go
 index 122050e44..6ef37671e 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_service_networking_connection.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_service_networking_connection.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/servicenetworking/resource_service_networking_connection.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/servicenetworking/resource_service_networking_connection.go
 @@ -60,6 +60,12 @@ func resourceServiceNetworkingConnection() *schema.Resource {
  				Type:     schema.TypeString,
  				Computed: true,

@@ -1,7 +1,10 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -15,11 +18,11 @@ func TestAccComputeHttpHealthCheck_update(t *testing.T) {
 
 	var healthCheck compute.HttpHealthCheck
 
-	hhckName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	hhckName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeHttpHealthCheckDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -59,7 +62,7 @@ func testAccCheckComputeHttpHealthCheckExists(t *testing.T, n string, healthChec
 			return fmt.Errorf("No name is set")
 		}
 
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		found, err := config.NewComputeClient(config.UserAgent).HttpHealthChecks.Get(
 			config.Project, rs.Primary.Attributes["name"]).Do()

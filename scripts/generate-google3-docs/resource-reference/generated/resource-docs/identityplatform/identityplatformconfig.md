@@ -1573,7 +1573,7 @@ metadata:
   name: identityplatformconfig-dep
 spec:
   region: "us-west2"
-  runtime: "nodejs8"
+  runtime: "nodejs10"
   availableMemoryMb: 128
   sourceArchiveUrl: "gs://aaa-dont-delete-dcl-cloud-functions-testing/http_trigger.zip"
   timeout: "60s"
@@ -1597,5 +1597,7 @@ spec:
     external: "${ORG_ID?}"
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

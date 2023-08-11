@@ -20,9 +20,9 @@ metadata:
   name: gkehubfeature-dep-mcsdfeature
 spec:
   name: Config Connector Sample
-  organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "${ORG_ID?}"
+  folderRef:
+    # Replace "${FOLDER_ID?}" with the numeric ID for your folder
+    external: "${FOLDER_ID?}"
   billingAccountRef:
     # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
     external: "${BILLING_ACCOUNT_ID?}"

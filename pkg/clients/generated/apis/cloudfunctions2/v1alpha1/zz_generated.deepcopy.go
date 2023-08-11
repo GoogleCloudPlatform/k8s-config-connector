@@ -160,6 +160,11 @@ func (in *CloudFunctions2FunctionStatus) DeepCopyInto(out *CloudFunctions2Functi
 		*out = new(string)
 		**out = **in
 	}
+	if in.Url != nil {
+		in, out := &in.Url, &out.Url
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

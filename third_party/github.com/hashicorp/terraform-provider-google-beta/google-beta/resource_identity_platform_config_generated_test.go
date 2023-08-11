@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -18,21 +21,24 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccIdentityPlatformConfig_identityPlatformConfigBasicExample(t *testing.T) {
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgFromEnv(t),
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIdentityPlatformConfig_identityPlatformConfigBasicExample(context),
@@ -47,10 +53,10 @@ func TestAccIdentityPlatformConfig_identityPlatformConfigBasicExample(t *testing
 }
 
 func testAccIdentityPlatformConfig_identityPlatformConfigBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "default" {
-  project_id = "tf-test%{random_suffix}"
-  name       = "tf-test%{random_suffix}"
+  project_id = "tf-test-my-project%{random_suffix}"
+  name       = "tf-test-my-project%{random_suffix}"
   org_id     = "%{org_id}"
   billing_account =  "%{billing_acct}"
   labels = {

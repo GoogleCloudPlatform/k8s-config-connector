@@ -23,6 +23,12 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
+var renameStatusFieldsWithReservedNamesExcludeList = map[string]bool{
+	// This resource was already released with no 'resource' prefix prepended to `.status.conditions` field in CRD.
+	// Added to the list to avoid breaking change.
+	"google_storage_default_object_access_control": true,
+}
+
 func RenameStatusFieldsWithReservedNames(status *apiextensions.JSONSchemaProps) (*apiextensions.JSONSchemaProps, error) {
 	statusCopy := status.DeepCopy()
 	for field := range ReservedStatusFieldNames() {
@@ -51,6 +57,13 @@ func RenameStatusFieldsWithReservedNames(status *apiextensions.JSONSchemaProps) 
 	return statusCopy, nil
 }
 
+func RenameStatusFieldsWithReservedNamesIfResourceNotExcluded(tfResourceName string, status *apiextensions.JSONSchemaProps) (*apiextensions.JSONSchemaProps, error) {
+	if shouldSkip(tfResourceName) {
+		return status, nil
+	}
+	return RenameStatusFieldsWithReservedNames(status)
+}
+
 func ReservedStatusFieldNames() map[string]bool {
 	reservedFieldNames := make(map[string]bool)
 
@@ -69,4 +82,19 @@ func ReservedStatusFieldNames() map[string]bool {
 
 func RenameStatusFieldWithReservedName(field string) string {
 	return "resource" + text.UppercaseInitial(field)
+}
+
+func RenameStatusFieldWithReservedNameIfResourceNotExcluded(tfResourceName, field string) string {
+	if shouldSkip(tfResourceName) {
+		return field
+	}
+	return RenameStatusFieldWithReservedName(field)
+}
+
+// shouldSkip returns true if the tfResourceName is included in renameStatusFieldsWithReservedNamesExcludeList.
+func shouldSkip(tfResourceName string) bool {
+	if _, found := renameStatusFieldsWithReservedNamesExcludeList[tfResourceName]; found {
+		return true
+	}
+	return false
 }

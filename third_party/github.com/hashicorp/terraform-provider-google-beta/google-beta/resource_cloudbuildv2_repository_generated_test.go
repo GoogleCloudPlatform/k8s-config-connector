@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -24,21 +27,24 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccCloudbuildv2Repository_GheRepository(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
-
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudbuildv2RepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,15 +62,14 @@ func TestAccCloudbuildv2Repository_GithubRepository(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
-
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckCloudbuildv2RepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -78,9 +83,57 @@ func TestAccCloudbuildv2Repository_GithubRepository(t *testing.T) {
 		},
 	})
 }
+func TestAccCloudbuildv2Repository_GitlabRepository(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckCloudbuildv2RepositoryDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudbuildv2Repository_GitlabRepository(context),
+			},
+			{
+				ResourceName:      "google_cloudbuildv2_repository.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+func TestAccCloudbuildv2Repository_GleRepository(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckCloudbuildv2RepositoryDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudbuildv2Repository_GleRepository(context),
+			},
+			{
+				ResourceName:      "google_cloudbuildv2_repository.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
 
 func testAccCloudbuildv2Repository_GheRepository(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuildv2_repository" "primary" {
   name              = "tf-test-repository%{random_suffix}"
   parent_connection = google_cloudbuildv2_connection.ghe_complete.name
@@ -92,8 +145,8 @@ resource "google_cloudbuildv2_repository" "primary" {
 
   location = "%{region}"
   project  = "%{project_name}"
-  provider          = google-beta
 }
+
 resource "google_cloudbuildv2_connection" "ghe_complete" {
   location    = "%{region}"
   name        = "tf-test-connection%{random_suffix}"
@@ -109,14 +162,14 @@ resource "google_cloudbuildv2_connection" "ghe_complete" {
   }
 
   project = "%{project_name}"
-  provider    = google-beta
 }
+
 
 `, context)
 }
 
 func testAccCloudbuildv2Repository_GithubRepository(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuildv2_repository" "primary" {
   name              = "tf-test-repository%{random_suffix}"
   parent_connection = google_cloudbuildv2_connection.github_update.name
@@ -124,8 +177,8 @@ resource "google_cloudbuildv2_repository" "primary" {
   annotations       = {}
   location          = "%{region}"
   project           = "%{project_name}"
-  provider          = google-beta
 }
+
 resource "google_cloudbuildv2_connection" "github_update" {
   location = "%{region}"
   name     = "tf-test-connection%{random_suffix}"
@@ -147,8 +200,87 @@ resource "google_cloudbuildv2_connection" "github_update" {
   }
 
   project = "%{project_name}"
-  provider = google-beta
 }
+
+
+`, context)
+}
+
+func testAccCloudbuildv2Repository_GitlabRepository(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_cloudbuildv2_repository" "primary" {
+  name              = "tf-test-repository%{random_suffix}"
+  parent_connection = google_cloudbuildv2_connection.gitlab.name
+  remote_uri        = "https://gitlab.com/proctor-eng-team/terraform-testing.git"
+
+  annotations = {
+    some-key = "some-value"
+  }
+
+  location = "us-west1"
+  project  = "%{project_name}"
+}
+
+resource "google_cloudbuildv2_connection" "gitlab" {
+  location    = "us-west1"
+  name        = "tf-test-connection%{random_suffix}"
+  annotations = {}
+
+  gitlab_config {
+    authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gitlab-api-pat/versions/latest"
+    }
+
+    read_authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gitlab-read-pat/versions/latest"
+    }
+
+    webhook_secret_secret_version = "projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+  }
+
+  project = "%{project_name}"
+}
+
+
+`, context)
+}
+
+func testAccCloudbuildv2Repository_GleRepository(context map[string]interface{}) string {
+	return acctest.Nprintf(`
+resource "google_cloudbuildv2_repository" "primary" {
+  name              = "tf-test-repository%{random_suffix}"
+  parent_connection = google_cloudbuildv2_connection.gle.name
+  remote_uri        = "https://gle-us-central1.gcb-test.com/proctor-test/smoketest.git"
+
+  annotations = {
+    some-key = "some-value"
+  }
+
+  location = "us-west1"
+  project  = "%{project_name}"
+}
+
+resource "google_cloudbuildv2_connection" "gle" {
+  location    = "us-west1"
+  name        = "tf-test-connection%{random_suffix}"
+  annotations = {}
+
+  gitlab_config {
+    authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-api-token/versions/latest"
+    }
+
+    read_authorizer_credential {
+      user_token_secret_version = "projects/407304063574/secrets/gle-read-token/versions/latest"
+    }
+
+    webhook_secret_secret_version = "projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+    host_uri                      = "https://gle-us-central1.gcb-test.com"
+  }
+
+  project = "%{project_name}"
+}
+
 
 `, context)
 }
@@ -181,7 +313,7 @@ func testAccCheckCloudbuildv2RepositoryDestroyProducer(t *testing.T) func(s *ter
 				UpdateTime: dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLCloudbuildv2Client(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLCloudbuildv2Client(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetRepository(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_cloudbuildv2_repository still exists %v", obj)

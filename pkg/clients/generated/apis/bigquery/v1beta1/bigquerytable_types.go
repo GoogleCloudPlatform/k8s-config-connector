@@ -104,9 +104,25 @@ type TableExternalDataConfiguration struct {
 	// +optional
 	IgnoreUnknownValues *bool `json:"ignoreUnknownValues,omitempty"`
 
+	/* Additional properties to set if sourceFormat is set to JSON.". */
+	// +optional
+	JsonOptions *TableJsonOptions `json:"jsonOptions,omitempty"`
+
 	/* The maximum number of bad records that BigQuery can ignore when reading data. */
 	// +optional
 	MaxBadRecords *int `json:"maxBadRecords,omitempty"`
+
+	/* Metadata Cache Mode for the table. Set this to enable caching of metadata from external data source. */
+	// +optional
+	MetadataCacheMode *string `json:"metadataCacheMode,omitempty"`
+
+	/* Object Metadata is used to create Object Tables. Object Tables contain a listing of objects (with their metadata) found at the sourceUris. If ObjectMetadata is set, sourceFormat should be omitted. */
+	// +optional
+	ObjectMetadata *string `json:"objectMetadata,omitempty"`
+
+	/* Additional properties to set if sourceFormat is set to PARQUET.". */
+	// +optional
+	ParquetOptions *TableParquetOptions `json:"parquetOptions,omitempty"`
 
 	/* When creating an external table, the user can provide a reference file with the table schema. This is enabled for the following formats: AVRO, PARQUET, ORC. */
 	// +optional
@@ -116,8 +132,9 @@ type TableExternalDataConfiguration struct {
 	// +optional
 	Schema *string `json:"schema,omitempty"`
 
-	/* The data format. Supported values are: "CSV", "GOOGLE_SHEETS", "NEWLINE_DELIMITED_JSON", "AVRO", "PARQUET", "ORC" and "DATASTORE_BACKUP". To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly". */
-	SourceFormat string `json:"sourceFormat"`
+	/* Please see sourceFormat under ExternalDataConfiguration in Bigquery's public API documentation (https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration) for supported formats. To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly". */
+	// +optional
+	SourceFormat *string `json:"sourceFormat,omitempty"`
 
 	/* A list of the fully-qualified URIs that point to your data in Google Cloud. */
 	SourceUris []string `json:"sourceUris"`
@@ -147,6 +164,12 @@ type TableHivePartitioningOptions struct {
 	SourceUriPrefix *string `json:"sourceUriPrefix,omitempty"`
 }
 
+type TableJsonOptions struct {
+	/* The character encoding of the data. The supported values are UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE. The default value is UTF-8. */
+	// +optional
+	Encoding *string `json:"encoding,omitempty"`
+}
+
 type TableMaterializedView struct {
 	/* Specifies if BigQuery should automatically refresh materialized view when the base table is updated. The default is true. */
 	// +optional
@@ -158,6 +181,16 @@ type TableMaterializedView struct {
 	/* Specifies maximum frequency at which this materialized view will be refreshed. The default is 1800000. */
 	// +optional
 	RefreshIntervalMs *int `json:"refreshIntervalMs,omitempty"`
+}
+
+type TableParquetOptions struct {
+	/* Indicates whether to use schema inference specifically for Parquet LIST logical type. */
+	// +optional
+	EnableListInference *bool `json:"enableListInference,omitempty"`
+
+	/* Indicates whether to infer Parquet ENUM logical type as STRING instead of BYTES by default. */
+	// +optional
+	EnumAsString *bool `json:"enumAsString,omitempty"`
 }
 
 type TableRange struct {

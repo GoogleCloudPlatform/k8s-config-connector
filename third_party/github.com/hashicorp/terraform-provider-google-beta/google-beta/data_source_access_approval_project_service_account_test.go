@@ -1,23 +1,27 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDataSourceAccessApprovalProjectServiceAccount_basic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id": GetTestProjectFromEnv(),
+		"project_id": envvar.GetTestProjectFromEnv(),
 	}
 
 	resourceName := "data.google_access_approval_project_service_account.aa_account"
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceAccessApprovalProjectServiceAccount_basic(context),
@@ -30,7 +34,7 @@ func TestAccDataSourceAccessApprovalProjectServiceAccount_basic(t *testing.T) {
 }
 
 func testAccDataSourceAccessApprovalProjectServiceAccount_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_access_approval_project_service_account" "aa_account" {
   project_id = "%{project_id}"
 }

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -7,21 +9,26 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccFirebaseWebApp_firebaseWebAppFull(t *testing.T) {
 	// TODO: https://github.com/hashicorp/terraform-provider-google/issues/14158
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgFromEnv(t),
-		"random_suffix": RandString(t, 10),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"random_suffix": acctest.RandString(t, 10),
 		"display_name":  "tf-test Display Name N",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck: func() { AccTestPreCheck(t) },
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck: func() { acctest.AccTestPreCheck(t) },
 		Steps: []resource.TestStep{
 			{
 				ExternalProviders: map[string]resource.ExternalProvider{
@@ -47,11 +54,11 @@ func TestAccFirebaseWebApp_firebaseWebAppFull(t *testing.T) {
 				),
 			},
 			{
-				ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 				Config:                   testAccFirebaseWebApp_firebaseWebAppFull(context, ""),
 			},
 			{
-				ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 				Config:                   testAccFirebaseWebApp_firebaseWebAppFull(context, "2"),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet("data.google_firebase_web_app_config.default", "api_key"),
@@ -65,7 +72,7 @@ func TestAccFirebaseWebApp_firebaseWebAppFull(t *testing.T) {
 
 func testAccFirebaseWebApp_firebaseWebAppFull(context map[string]interface{}, update string) string {
 	context["display_name"] = context["display_name"].(string) + update
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "default" {
 	provider = google-beta
 
@@ -101,14 +108,14 @@ func TestAccFirebaseWebApp_firebaseWebAppSkipDelete(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 		"display_name":  "tf-test Display Name N",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckFirebaseWebAppNotDestroyedProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -125,7 +132,7 @@ func TestAccFirebaseWebApp_firebaseWebAppSkipDelete(t *testing.T) {
 }
 
 func testAccFirebaseWebApp_firebaseWebAppSkipDelete(context map[string]interface{}, update string) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_web_app" "skip_delete" {
 	provider = google-beta
 	project = "%{project_id}"
@@ -144,9 +151,9 @@ func testAccCheckFirebaseWebAppNotDestroyedProducer(t *testing.T) func(s *terraf
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{FirebaseBasePath}}{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{FirebaseBasePath}}{{name}}")
 			if err != nil {
 				return err
 			}
@@ -157,7 +164,13 @@ func testAccCheckFirebaseWebAppNotDestroyedProducer(t *testing.T) func(s *terraf
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err != nil {
 				return fmt.Errorf("FirebaseWebApp doesn't exists at %s", url)
 			}

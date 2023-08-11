@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -20,15 +23,18 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccIapTunnelIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/iap.tunnelResourceAccessor",
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -37,9 +43,9 @@ func TestAccIapTunnelIamBindingGenerated(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -72,9 +78,9 @@ func TestAccIapTunnelIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/iap.tunnelResourceAccessor",
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -83,9 +89,9 @@ func TestAccIapTunnelIamMemberGenerated(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -109,9 +115,9 @@ func TestAccIapTunnelIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/iap.tunnelResourceAccessor",
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -120,9 +126,9 @@ func TestAccIapTunnelIamPolicyGenerated(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -130,6 +136,7 @@ func TestAccIapTunnelIamPolicyGenerated(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIapTunnelIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_iap_tunnel_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_iap_tunnel_iam_policy.foo",
@@ -154,9 +161,9 @@ func TestAccIapTunnelIamBindingGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/iap.tunnelResourceAccessor",
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -165,9 +172,9 @@ func TestAccIapTunnelIamBindingGenerated_withCondition(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -188,13 +195,13 @@ func TestAccIapTunnelIamBindingGenerated_withCondition(t *testing.T) {
 
 func TestAccIapTunnelIamBindingGenerated_withAndWithoutCondition(t *testing.T) {
 	// Multiple fine-grained resources
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/iap.tunnelResourceAccessor",
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -203,9 +210,9 @@ func TestAccIapTunnelIamBindingGenerated_withAndWithoutCondition(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -240,9 +247,9 @@ func TestAccIapTunnelIamMemberGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/iap.tunnelResourceAccessor",
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -251,9 +258,9 @@ func TestAccIapTunnelIamMemberGenerated_withCondition(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -274,13 +281,13 @@ func TestAccIapTunnelIamMemberGenerated_withCondition(t *testing.T) {
 
 func TestAccIapTunnelIamMemberGenerated_withAndWithoutCondition(t *testing.T) {
 	// Multiple fine-grained resources
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/iap.tunnelResourceAccessor",
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -289,9 +296,9 @@ func TestAccIapTunnelIamMemberGenerated_withAndWithoutCondition(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -326,9 +333,9 @@ func TestAccIapTunnelIamPolicyGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/iap.tunnelResourceAccessor",
-		"org_id":        GetTestOrgFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -338,12 +345,12 @@ func TestAccIapTunnelIamPolicyGenerated_withCondition(t *testing.T) {
 	}
 
 	// Test should have 2 bindings: one with a description and one without. Any < chars are converted to a unicode character by the API.
-	expectedPolicyData := Nprintf(`{"bindings":[{"condition":{"description":"%{condition_desc}","expression":"%{condition_expr}","title":"%{condition_title}"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"},{"condition":{"expression":"%{condition_expr}","title":"%{condition_title}-no-description"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"}]}`, context)
+	expectedPolicyData := acctest.Nprintf(`{"bindings":[{"condition":{"description":"%{condition_desc}","expression":"%{condition_expr}","title":"%{condition_title}"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"},{"condition":{"expression":"%{condition_expr}","title":"%{condition_title}-no-description"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"}]}`, context)
 	expectedPolicyData = strings.Replace(expectedPolicyData, "<", "\\u003c", -1)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -369,7 +376,7 @@ func TestAccIapTunnelIamPolicyGenerated_withCondition(t *testing.T) {
 }
 
 func testAccIapTunnelIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"
@@ -399,7 +406,7 @@ resource "google_iap_tunnel_iam_member" "foo" {
 }
 
 func testAccIapTunnelIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"
@@ -431,11 +438,18 @@ resource "google_iap_tunnel_iam_policy" "foo" {
   project = google_project_service.project_service.project
   policy_data = data.google_iam_policy.foo.policy_data
 }
+
+data "google_iap_tunnel_iam_policy" "foo" {
+  project = google_project_service.project_service.project
+  depends_on = [
+    google_iap_tunnel_iam_policy.foo
+  ]
+}
 `, context)
 }
 
 func testAccIapTunnelIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"
@@ -467,7 +481,7 @@ resource "google_iap_tunnel_iam_policy" "foo" {
 }
 
 func testAccIapTunnelIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"
@@ -497,7 +511,7 @@ resource "google_iap_tunnel_iam_binding" "foo" {
 }
 
 func testAccIapTunnelIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"
@@ -527,7 +541,7 @@ resource "google_iap_tunnel_iam_binding" "foo" {
 }
 
 func testAccIapTunnelIamBinding_withConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"
@@ -562,7 +576,7 @@ resource "google_iap_tunnel_iam_binding" "foo" {
 }
 
 func testAccIapTunnelIamBinding_withAndWithoutConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"
@@ -615,7 +629,7 @@ resource "google_iap_tunnel_iam_binding" "foo3" {
 }
 
 func testAccIapTunnelIamMember_withConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"
@@ -650,7 +664,7 @@ resource "google_iap_tunnel_iam_member" "foo" {
 }
 
 func testAccIapTunnelIamMember_withAndWithoutConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"
@@ -703,7 +717,7 @@ resource "google_iap_tunnel_iam_member" "foo3" {
 }
 
 func testAccIapTunnelIamPolicy_withConditionGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"

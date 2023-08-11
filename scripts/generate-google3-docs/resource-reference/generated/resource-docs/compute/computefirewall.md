@@ -287,9 +287,7 @@ must be expressed in CIDR format. IPv4 or IPv6 ranges are supported.{% endverbat
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Direction of traffic to which this firewall applies; default is
-INGRESS. Note: For INGRESS traffic, it is NOT supported to specify
-destinationRanges; For EGRESS traffic, it is NOT supported to specify
-'source_ranges' OR 'source_tags'. For INGRESS traffic, one of 'source_ranges',
+INGRESS. Note: For INGRESS traffic, one of 'source_ranges',
 'source_tags' or 'source_service_accounts' is required. Possible values: ["INGRESS", "EGRESS"].{% endverbatim %}</p>
         </td>
     </tr>
@@ -781,5 +779,7 @@ spec:
   autoCreateSubnetworks: false
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

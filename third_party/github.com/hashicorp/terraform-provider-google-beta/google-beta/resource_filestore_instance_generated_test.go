@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccFilestoreInstance_filestoreInstanceBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckFilestoreInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,14 +56,14 @@ func TestAccFilestoreInstance_filestoreInstanceBasicExample(t *testing.T) {
 }
 
 func testAccFilestoreInstance_filestoreInstanceBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_filestore_instance" "instance" {
-  name = "tf-test-test-instance%{random_suffix}"
+  name     = "tf-test-test-instance%{random_suffix}"
   location = "us-central1-b"
-  tier = "PREMIUM"
+  tier     = "BASIC_HDD"
 
   file_shares {
-    capacity_gb = 2660
+    capacity_gb = 1024
     name        = "share1"
   }
 
@@ -72,12 +79,12 @@ func TestAccFilestoreInstance_filestoreInstanceFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckFilestoreInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -94,34 +101,34 @@ func TestAccFilestoreInstance_filestoreInstanceFullExample(t *testing.T) {
 }
 
 func testAccFilestoreInstance_filestoreInstanceFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_filestore_instance" "instance" {
-  name = "tf-test-test-instance%{random_suffix}"
+  name     = "tf-test-test-instance%{random_suffix}"
   location = "us-central1-b"
-  tier = "BASIC_SSD"
+  tier     = "BASIC_SSD"
 
   file_shares {
-    capacity_gb = 2660
+    capacity_gb = 2560
     name        = "share1"
 
     nfs_export_options {
-      ip_ranges = ["10.0.0.0/24"]
+      ip_ranges   = ["10.0.0.0/24"]
       access_mode = "READ_WRITE"
       squash_mode = "NO_ROOT_SQUASH"
-   }
+    }
 
-   nfs_export_options {
-      ip_ranges = ["10.10.0.0/24"]
+    nfs_export_options {
+      ip_ranges   = ["10.10.0.0/24"]
       access_mode = "READ_ONLY"
       squash_mode = "ROOT_SQUASH"
-      anon_uid = 123
-      anon_gid = 456
-   }
+      anon_uid    = 123
+      anon_gid    = 456
+    }
   }
 
   networks {
-    network = "default"
-    modes   = ["MODE_IPV4"]
+    network      = "default"
+    modes        = ["MODE_IPV4"]
     connect_mode = "DIRECT_PEERING"
   }
 }
@@ -138,9 +145,9 @@ func testAccCheckFilestoreInstanceDestroyProducer(t *testing.T) func(s *terrafor
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{FilestoreBasePath}}projects/{{project}}/locations/{{location}}/instances/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{FilestoreBasePath}}projects/{{project}}/locations/{{location}}/instances/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -151,7 +158,14 @@ func testAccCheckFilestoreInstanceDestroyProducer(t *testing.T) func(s *terrafor
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, IsNotFilestoreQuotaError)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:               config,
+				Method:               "GET",
+				Project:              billingProject,
+				RawURL:               url,
+				UserAgent:            config.UserAgent,
+				ErrorAbortPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.Is429QuotaError},
+			})
 			if err == nil {
 				return fmt.Errorf("FilestoreInstance still exists at %s", url)
 			}

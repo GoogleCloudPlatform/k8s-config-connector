@@ -194,8 +194,11 @@ func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client
 			Type:    Validating,
 			Handler: &abandonOnCRDUninstallWebhook{},
 			ObjectSelector: &metav1.LabelSelector{
+				// The MatchLabels will not match anything with the value "no-op"
+				// specified. We want the webhook to intercept nothing before we
+				// work on cleaning up the webhook from existing clusters.
 				MatchLabels: map[string]string{
-					crdgeneration.ManagedByKCCLabel: "true",
+					crdgeneration.ManagedByKCCLabel: "no-op",
 				},
 			},
 			FailurePolicy: admissionregistration.Fail,

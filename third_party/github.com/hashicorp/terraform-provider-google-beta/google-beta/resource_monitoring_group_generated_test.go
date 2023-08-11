@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccMonitoringGroup_monitoringGroupBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckMonitoringGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -48,7 +55,7 @@ func TestAccMonitoringGroup_monitoringGroupBasicExample(t *testing.T) {
 }
 
 func testAccMonitoringGroup_monitoringGroupBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_monitoring_group" "basic" {
   display_name = "tf-test MonitoringGroup%{random_suffix}"
 
@@ -61,12 +68,12 @@ func TestAccMonitoringGroup_monitoringGroupSubgroupExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckMonitoringGroupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -82,7 +89,7 @@ func TestAccMonitoringGroup_monitoringGroupSubgroupExample(t *testing.T) {
 }
 
 func testAccMonitoringGroup_monitoringGroupSubgroupExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_monitoring_group" "parent" {
   display_name = "tf-test MonitoringParentGroup%{random_suffix}"
   filter       = "resource.metadata.region=\"europe-west2\""
@@ -106,9 +113,9 @@ func testAccCheckMonitoringGroupDestroyProducer(t *testing.T) func(s *terraform.
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{MonitoringBasePath}}v3/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{MonitoringBasePath}}v3/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -119,7 +126,14 @@ func testAccCheckMonitoringGroupDestroyProducer(t *testing.T) func(s *terraform.
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, IsMonitoringConcurrentEditError)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:               config,
+				Method:               "GET",
+				Project:              billingProject,
+				RawURL:               url,
+				UserAgent:            config.UserAgent,
+				ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.IsMonitoringConcurrentEditError},
+			})
 			if err == nil {
 				return fmt.Errorf("MonitoringGroup still exists at %s", url)
 			}

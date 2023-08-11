@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl"
 	dclclientconfig "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
@@ -178,6 +179,14 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 			return reconcile.Result{}, nil
 		}
 		return reconcile.Result{}, err
+	}
+	skip, err := resourceactuation.ShouldSkip(u)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	if skip {
+		r.logger.Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", req.NamespacedName)
+		return reconcile.Result{}, nil
 	}
 	u, err = k8s.TriggerManagedFieldsMetadata(ctx, r.Client, u)
 	if err != nil {

@@ -166,8 +166,9 @@ spec:
                   type: object
                 type: array
               name:
-                description: "The unique identifier of the entity type. \nFormat:
-                  projects/<Project ID>/agent/entityTypes/<Entity type ID>."
+                description: |-
+                  The unique identifier of the entity type.
+                  Format: projects/<Project ID>/agent/entityTypes/<Entity type ID>.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

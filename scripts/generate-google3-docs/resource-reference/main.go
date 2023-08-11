@@ -22,7 +22,10 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"text/template"
+
+	// We use test/template for generating html docs not yaml
+	// as such its not a yaml injection vulnerability.
+	"text/template" // NOLINT
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
@@ -189,6 +192,7 @@ func templateForGVK(gvk schema.GroupVersionKind) (*template.Template, error) {
 		filepath.Join(templatesPath, "shared/bigquerydatasetiamnote.tmpl"),
 		filepath.Join(templatesPath, "shared/iamsupport.tmpl"),
 		filepath.Join(templatesPath, "shared/resource.tmpl"),
+		filepath.Join(templatesPath, "shared/endnote.tmpl"),
 	}
 	template, err := template.New(templateFileName).Funcs(sprig.TxtFuncMap()).ParseFiles(templateFiles...)
 	if err != nil {

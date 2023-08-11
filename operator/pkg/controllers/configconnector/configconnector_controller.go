@@ -20,6 +20,7 @@ import (
 	"strings"
 	"time"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
@@ -37,14 +38,18 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/wait"
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+	"sigs.k8s.io/controller-runtime/pkg/source"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
@@ -57,12 +62,15 @@ const controllerName = "configconnector-controller"
 // ConfigConnectorReconciler watches 'ConfigConnector' kind and is responsible for managing the lifecycle of KCC resource CRDs and other shared components like webhook, deletion defender, recorder.
 // If it’s configured to run KCC in cluster mode, ConfigConnectorReconciler also deploys the global controller manager workload;
 // If it's configured to run KCC in namespaced mode, ConfigConnectorReconciler ensures the global controller manager workload not existing.
+// ConfigConnectorReconciler also watches "ControllerResource" kind and apply customizations
+// specified in "ControllerResource" CRs to KCC components.
 type ConfigConnectorReconciler struct {
-	reconciler *declarative.Reconciler
-	client     client.Client
-	recorder   record.EventRecorder
-	labelMaker declarative.LabelMaker
-	log        logr.Logger
+	reconciler           *declarative.Reconciler
+	client               client.Client
+	recorder             record.EventRecorder
+	labelMaker           declarative.LabelMaker
+	log                  logr.Logger
+	customizationWatcher *controllers.CustomizationWatcher
 }
 
 func Add(mgr ctrl.Manager, repoPath string) error {
@@ -77,6 +85,7 @@ func Add(mgr ctrl.Manager, repoPath string) error {
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: 1}).
+		Watches(&source.Channel{Source: r.customizationWatcher.Events()}, &handler.EnqueueRequestForObject{}).
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {
@@ -102,6 +111,13 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*ConfigConnectorReconcile
 		log:        ctrl.Log.WithName(controllerName),
 	}
 
+	r.customizationWatcher = controllers.NewWithDynamicClient(
+		dynamic.NewForConfigOrDie(mgr.GetConfig()),
+		controllers.CustomizationWatcherOptions{
+			TriggerGVRs: controllers.CustomizationCRsToWatch,
+			Log:         r.log,
+		})
+
 	err := r.reconciler.Init(mgr, &corev1beta1.ConfigConnector{},
 		declarative.WithLabels(r.labelMaker),
 		declarative.WithPreserveNamespace(),
@@ -110,6 +126,7 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*ConfigConnectorReconcile
 		declarative.WithObjectTransform(r.transformForClusterMode()),
 		declarative.WithObjectTransform(r.handleConfigConnectorLifecycle()),
 		declarative.WithObjectTransform(r.installV1Beta1CRDsOnly()),
+		declarative.WithObjectTransform(r.applyCustomizations()),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}),
@@ -133,6 +150,14 @@ func (r *ConfigConnectorReconciler) Reconcile(ctx context.Context, req reconcile
 		}
 		return reconcile.Result{}, reconciliationErr
 	}
+	// Setup watch for customization CRDs if not already done so in the previous reconciliations.
+	// When there is a change detected on a customization CR, raises an event on ConfigConnector CR.
+	if err := r.customizationWatcher.EnsureWatchStarted(ctx, req.NamespacedName); err != nil {
+		r.log.Error(err, "ensure watch start for customization CRDs failed")
+		// Don't fail entire reconciliation if we cannot start watch for customization CRDs.
+		// return reconcile.Result{}, err
+	}
+
 	r.log.Info("successfully finished reconcile", "ConfigConnector", req.Name)
 	return reconcile.Result{RequeueAfter: corekcck8s.MeanReconcileReenqueuePeriod}, r.handleReconcileSucceeded(ctx, req.NamespacedName)
 }
@@ -555,6 +580,93 @@ func (r *ConfigConnectorReconciler) selectCRDsByVersion(m *manifest.Objects, ver
 		}
 	}
 	m.Items = transformed
+	return nil
+}
+
+// applyCustomizations fetches and applies all cluster-scoped customization CRDs.
+func (r *ConfigConnectorReconciler) applyCustomizations() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		crs, err := controllers.ListControllerResources(ctx, r.client)
+		if err != nil {
+			return err
+		}
+		for _, cr := range crs {
+			r.log.Info("applying cluster-scoped controller resource customization", "name", cr.Name)
+			if err := r.applyControllerResourceCustomization(ctx, cr, m); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+}
+
+// applyControllerResourceCustomization applies customizations specified in ControllerResource CR.
+func (r *ConfigConnectorReconciler) applyControllerResourceCustomization(ctx context.Context, cr customizev1alpha1.ControllerResource, m *manifest.Objects) error {
+	controllerGVK := schema.GroupVersionKind{
+		Group:   appsv1.SchemeGroupVersion.Group,
+		Version: appsv1.SchemeGroupVersion.Version,
+	}
+	switch cr.Name {
+	case "cnrm-controller-manager", "cnrm-deletiondefender":
+		controllerGVK.Kind = "StatefulSet"
+	case "cnrm-webhook-manager", "cnrm-resource-stats-recorder":
+		controllerGVK.Kind = "Deployment"
+	default:
+		msg := fmt.Sprintf("resource customization for controller %s is not supported", cr.Name)
+		r.log.Info(msg)
+		return r.handleApplyCustomizationFailed(ctx, cr.Name, msg)
+	}
+	if err := controllers.ApplyContainerResourceCustomization(false, m, cr.Name, controllerGVK, cr.Spec.Containers, cr.Spec.Replicas); err != nil {
+		r.log.Error(err, "failed to apply customization", "Name", cr.Name)
+		return r.handleApplyCustomizationFailed(ctx, cr.Name, fmt.Sprintf("failed to apply customization %s: %v", cr.Name, err))
+	}
+	return r.handleApplyCustomizationSucceeded(ctx, cr.Name)
+}
+
+func (r *ConfigConnectorReconciler) handleApplyCustomizationFailed(ctx context.Context, name string, msg string) error {
+	cr, err := controllers.GetControllerResource(ctx, r.client, name)
+	if err != nil {
+		if apierrors.IsNotFound(err) {
+			r.log.Info("ControllerResource object not found; skipping the handling of failed customization apply", "name", name)
+			return nil
+		}
+		// Don't fail entire reconciliation if we cannot get ControllerResource object.
+		// return fmt.Errorf("error getting ControllerResource object %v: %v", name, err)
+		r.log.Error(err, "error getting ControllerResource object %v", "Name", name)
+		return nil
+	}
+	cr.Status.CommonStatus = v1alpha1.CommonStatus{
+		Healthy: false,
+		Errors:  []string{msg},
+	}
+	return r.updateControllerResourceStatus(ctx, cr)
+}
+
+func (r *ConfigConnectorReconciler) handleApplyCustomizationSucceeded(ctx context.Context, name string) error {
+	cr, err := controllers.GetControllerResource(ctx, r.client, name)
+	if err != nil {
+		if apierrors.IsNotFound(err) {
+			r.log.Info("ControllerResource object not found; skipping the handling of succeeded customization apply", "name", name)
+			return nil
+		}
+		// Don't fail entire reconciliation if we cannot get ControllerResource object.
+		// return fmt.Errorf("error getting ControllerResource object %v: %v", name, err)
+		r.log.Error(err, "error getting ControllerResource object", "Name", name)
+		return nil
+	}
+	cr.SetCommonStatus(v1alpha1.CommonStatus{
+		Healthy: true,
+		Errors:  []string{},
+	})
+	return r.updateControllerResourceStatus(ctx, cr)
+}
+
+func (r *ConfigConnectorReconciler) updateControllerResourceStatus(ctx context.Context, cr *customizev1alpha1.ControllerResource) error {
+	if err := r.client.Status().Update(ctx, cr); err != nil {
+		r.log.Error(err, "error updating ControllerResource status", "Name", cr.Name)
+		// Don't fail entire reconciliation if we cannot update ControllerResource status.
+		// return fmt.Errorf("failed to update ControllerResource %v: %v", cr.Name, err)
+	}
 	return nil
 }
 

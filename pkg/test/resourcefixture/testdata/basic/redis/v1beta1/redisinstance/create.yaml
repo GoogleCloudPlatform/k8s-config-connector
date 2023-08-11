@@ -23,3 +23,7 @@ spec:
   region: us-central1
   tier: BASIC
   memorySizeGb: 16
+  maintenanceSchedule:
+  - endTime: 2023-08-01T16:29:22.045123456Z
+    scheduleDeadlineTime: 2023-08-01T17:29:22.045123456Z
+    startTime: 2023-08-01T15:29:22.045123456Z

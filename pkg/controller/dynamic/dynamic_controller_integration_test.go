@@ -21,6 +21,9 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"net/http"
+	"os"
+	"path/filepath"
 	"reflect"
 	"regexp"
 	"strings"
@@ -29,11 +32,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	dclextension "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -46,11 +51,18 @@ import (
 
 	"github.com/cenkalti/backoff"
 	"github.com/ghodss/yaml"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
+
+type httpRoundTripperKeyType int
+
+// httpRoundTripperKey is the key value for http.RoundTripper in a context.Context
+var httpRoundTripperKey httpRoundTripperKeyType
 
 func init() {
 	// run-tests and skip-tests allows you to limit the tests that are run by
@@ -65,6 +77,23 @@ func init() {
 	// To use this flag, you MUST use an equals sign as follows: go test -tags=integration -cleanup-resources=false
 	flag.BoolVar(&cleanupResources, "cleanup-resources", true, "when enabled, "+
 		"cloud resources created by tests will be cleaned up at the end of a test")
+
+	// Allow for capture of http requests during a test.
+	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+		ret := inner
+		if t := ctx.Value(httpRoundTripperKey); t != nil {
+			ret = &http.Client{Transport: t.(http.RoundTripper)}
+		}
+		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
+			log := log.FromContext(ctx)
+			log.Info("env var ARTIFACTS is not set; will not record http log")
+		} else {
+			outputDir := filepath.Join(artifacts, "http-logs")
+			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+			ret = &http.Client{Transport: t}
+		}
+		return ret
+	}
 }
 
 var (
@@ -187,6 +216,7 @@ func testCreate(t *testing.T, testContext testrunner.TestContext, systemContext 
 	if err := kubeClient.Create(context.TODO(), initialUnstruct); err != nil {
 		t.Fatalf("error creating %v resource %v: %v", initialUnstruct.GetKind(), initialUnstruct.GetName(), err)
 	}
+	t.Logf("resource created with %v\r", initialUnstruct)
 	systemContext.Reconciler.Reconcile(initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct), nil)
 	validateCreate(t, testContext, systemContext, resourceContext, initialUnstruct.GetGeneration())
 }
@@ -209,6 +239,7 @@ func validateCreate(t *testing.T, testContext testrunner.TestContext, systemCont
 	if err != nil {
 		t.Fatalf("unexpected error when GETting '%v': %v", initialUnstruct.GetName(), err)
 	}
+	t.Logf("created resource is %v\r", gcpUnstruct)
 	if resourceContext.SupportsLabels(systemContext.SMLoader) {
 		testcontroller.AssertLabelsMatchAndHaveManagedLabel(t, gcpUnstruct.GetLabels(), reconciledUnstruct.GetLabels())
 	}
@@ -219,8 +250,8 @@ func validateCreate(t *testing.T, testContext testrunner.TestContext, systemCont
 
 	// Check that condition is ready and "UpToDate" event was recorded
 	// TODO: (eventually) check default fields are propagated correctly
-	cond := dynamic.GetConditions(t, reconciledUnstruct)
-	testcontroller.AssertReadyCondition(t, cond)
+	conditions := dynamic.GetConditions(t, reconciledUnstruct)
+	testcontroller.AssertReadyCondition(t, conditions)
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
 
 	verifyResourceIDIfSupported(t, systemContext, resourceContext, reconciledUnstruct, initialUnstruct)
@@ -311,6 +342,7 @@ func testUpdate(t *testing.T, testContext testrunner.TestContext, systemContext 
 		t.Fatalf("error setting status on updateUnstruct: %v", err)
 	}
 	patch := client.MergeFrom(testContext.CreateUnstruct)
+	t.Logf("patching %v with %v\r", updateUnstruct, patch)
 	if err := kubeClient.Patch(context.TODO(), updateUnstruct, patch); err != nil {
 		t.Fatalf("unexpected error when updating '%v': %v", initialUnstruct.GetName(), err)
 	}
@@ -348,29 +380,7 @@ func testUpdate(t *testing.T, testContext testrunner.TestContext, systemContext 
 		if gcpUnstruct.Object["spec"] == nil {
 			t.Fatalf("GCP resource has a nil spec even though it was created using a resource with a non-nil spec")
 		}
-
-		// Do pre-actuation transform for the initialUnstruct and
-		// reconciledUnstruct before asserting diff result of them is contained
-		// in the retrieved gcpUnstruct.
-		//
-		// initialUnstruct and reconciledUnstruct contain user-facing resource
-		// configs that match the CRD after CRDDecorate() in resource overrides
-		// is applied.
-		// However, gcpUnstruct is the live state of the resource and only
-		// contains fields in the CRD before CRDDecorate() is applied.
-		// PreActuationTransform() turns the user-facing resource configs into
-		// "vanilla" configs which only contain the fields in the CRD before
-		// CRDDecorate() is applied and makes it comparable with the retrieved
-		// live state of the resource.
-		transformedInitialUnstruct, err := resourceContext.DoPreActuationTransformFor(initialUnstruct, systemContext.TFProvider, systemContext.SMLoader, systemContext.DCLConverter)
-		if err != nil {
-			t.Fatalf("could not do pre-actuation transfrom for initialUnstruct: %v", err)
-		}
-		transformedReconciledUnstruct, err := resourceContext.DoPreActuationTransformFor(reconciledUnstruct, systemContext.TFProvider, systemContext.SMLoader, systemContext.DCLConverter)
-		if err != nil {
-			t.Fatalf("could not do pre-actuation transfrom for reconciledUnstruct: %v", err)
-		}
-		changedFields := getChangedFields(transformedInitialUnstruct.Object, transformedReconciledUnstruct.Object, "spec")
+		changedFields := getChangedFields(initialUnstruct.Object, reconciledUnstruct.Object, "spec")
 		assertObjectContains(t, gcpUnstruct.Object["spec"].(map[string]interface{}), changedFields)
 	}
 
@@ -379,8 +389,8 @@ func testUpdate(t *testing.T, testContext testrunner.TestContext, systemContext 
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
 
 	// Check if condition is ready and update event was recorded
-	cond := dynamic.GetConditions(t, reconciledUnstruct)
-	testcontroller.AssertReadyCondition(t, cond)
+	conditions := dynamic.GetConditions(t, reconciledUnstruct)
+	testcontroller.AssertReadyCondition(t, conditions)
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
 
 	// Check observedGeneration matches with the pre-reconcile generation
@@ -399,7 +409,10 @@ func testDriftCorrection(t *testing.T, testContext testrunner.TestContext, syste
 	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, testUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-
+	// For test cases with `cnrm.cloud.google.com/reconcile-interval-in-seconds` annotation set to 0, we should skip drift correction test.
+	if skip, _ := resourceactuation.ShouldSkip(testUnstruct); skip {
+		return
+	}
 	// Delete all events for the resource so that we can check later at the end
 	// of this test that the right events are recorded.
 	testcontroller.DeleteAllEventsForUnstruct(t, kubeClient, testUnstruct)
@@ -412,7 +425,9 @@ func testDriftCorrection(t *testing.T, testContext testrunner.TestContext, syste
 	time.Sleep(time.Second * 10)
 
 	// get the current state
+	t.Logf("reconcile with %v\r", testUnstruct)
 	systemContext.Reconciler.Reconcile(testUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testUnstruct), nil)
+	t.Logf("reconciled with %v\r", testUnstruct)
 	validateCreate(t, testContext, systemContext, resourceContext, testUnstruct.GetGeneration())
 }
 
@@ -623,8 +638,8 @@ func testReconcileAcquire(t *testing.T, testContext testrunner.TestContext, syst
 	}
 
 	// Check that condition is ready and "UpToDate" event was recorded
-	cond := dynamic.GetConditions(t, reconciledUnstruct)
-	testcontroller.AssertReadyCondition(t, cond)
+	conditions := dynamic.GetConditions(t, reconciledUnstruct)
+	testcontroller.AssertReadyCondition(t, conditions)
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
 
 	// Check observedGeneration matches with the pre-reconcile generation

@@ -169,6 +169,7 @@ networkInterface:
     publicPtrDomainName: string
   ipv6AccessType: string
   name: string
+  networkAttachment: string
   networkIp: string
   networkRef:
     external: string
@@ -1209,6 +1210,16 @@ local SSD.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>networkInterface[].networkAttachment</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The URL of the network attachment that this interface should connect to in the following format: projects/{projectNumber}/regions/{region_name}/networkAttachments/{network_attachment_name}.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>networkInterface[].networkIp</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2008,5 +2019,7 @@ spec:
   displayName: a sample Service Account
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

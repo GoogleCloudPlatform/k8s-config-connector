@@ -98,6 +98,7 @@
 ### Spec
 #### Schema
 ```yaml
+changeStreamRetention: string
 columnFamily:
 - family: string
 deletionProtection: string
@@ -117,6 +118,16 @@ splitKeys:
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>changeStreamRetention</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days.{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>columnFamily</code></p>
@@ -358,5 +369,7 @@ spec:
     numNodes: 3
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

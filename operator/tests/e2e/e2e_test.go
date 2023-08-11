@@ -66,10 +66,11 @@ const (
 	OPERATOR_RELEASE_TARBALL = "release-bundle.tar.gz"
 	KCC_RELEASE_BUCKET       = "cnrm"
 	KCC_RELEASE_TARBALL      = "release-bundle.tar.gz"
-	// Use ConfigConnector 1.50.0 as the base version for upgrade test because
-	// previous versions cannot be installed due to the removal of
-	// apiextensions.k8s.io/v1beta1 for CustomResourceDefinition on K8s 1.22.
-	BASE_VERSION_SHA = "8891a08"
+	// Use ConfigConnector operator 1.95.0 as the base version for upgrade test
+	// because previous versions cannot be installed onto K8s 1.26+ (default GKE
+	// cluster version as of 6/27/2023) due to the removal of
+	// autoscaling/v2beta2.
+	BASE_VERSION_SHA = "4119846"
 )
 
 var (

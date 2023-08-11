@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeSubnetwork_subnetworkBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSubnetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,7 +56,7 @@ func TestAccComputeSubnetwork_subnetworkBasicExample(t *testing.T) {
 }
 
 func testAccComputeSubnetwork_subnetworkBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_subnetwork" "network-with-private-secondary-ip-ranges" {
   name          = "tf-test-test-subnetwork%{random_suffix}"
   ip_cidr_range = "10.2.0.0/16"
@@ -72,12 +79,12 @@ func TestAccComputeSubnetwork_subnetworkLoggingConfigExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSubnetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -94,7 +101,7 @@ func TestAccComputeSubnetwork_subnetworkLoggingConfigExample(t *testing.T) {
 }
 
 func testAccComputeSubnetwork_subnetworkLoggingConfigExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_subnetwork" "subnet-with-logging" {
   name          = "tf-test-log-test-subnetwork%{random_suffix}"
   ip_cidr_range = "10.2.0.0/16"
@@ -119,12 +126,12 @@ func TestAccComputeSubnetwork_subnetworkInternalL7lbExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeSubnetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -141,7 +148,7 @@ func TestAccComputeSubnetwork_subnetworkInternalL7lbExample(t *testing.T) {
 }
 
 func testAccComputeSubnetwork_subnetworkInternalL7lbExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_subnetwork" "network-for-l7lb" {
   provider = google-beta
 
@@ -166,12 +173,12 @@ func TestAccComputeSubnetwork_subnetworkIpv6Example(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSubnetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -188,7 +195,7 @@ func TestAccComputeSubnetwork_subnetworkIpv6Example(t *testing.T) {
 }
 
 func testAccComputeSubnetwork_subnetworkIpv6Example(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_subnetwork" "subnetwork-ipv6" {
   name          = "tf-test-ipv6-test-subnetwork%{random_suffix}"
   
@@ -212,12 +219,12 @@ func TestAccComputeSubnetwork_subnetworkInternalIpv6Example(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSubnetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -234,7 +241,7 @@ func TestAccComputeSubnetwork_subnetworkInternalIpv6Example(t *testing.T) {
 }
 
 func testAccComputeSubnetwork_subnetworkInternalIpv6Example(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_subnetwork" "subnetwork-internal-ipv6" {
   name          = "tf-test-internal-ipv6-test-subnetwork%{random_suffix}"
   
@@ -265,9 +272,9 @@ func testAccCheckComputeSubnetworkDestroyProducer(t *testing.T) func(s *terrafor
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -278,7 +285,13 @@ func testAccCheckComputeSubnetworkDestroyProducer(t *testing.T) func(s *terrafor
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeSubnetwork still exists at %s", url)
 			}

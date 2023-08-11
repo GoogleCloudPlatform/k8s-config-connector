@@ -1,17 +1,21 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDataSourceGoogleFirebaseAppleApp(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":   GetTestProjectFromEnv(),
-		"bundle_id":    "apple.app." + RandString(t, 5),
+		"project_id":   envvar.GetTestProjectFromEnv(),
+		"bundle_id":    "apple.app." + acctest.RandString(t, 5),
 		"display_name": "tf-test Display Name AppleApp DataSource",
 		"app_store_id": 12345,
 		"team_id":      1234567890,
@@ -19,14 +23,14 @@ func TestAccDataSourceGoogleFirebaseAppleApp(t *testing.T) {
 
 	resourceName := "data.google_firebase_apple_app.my_app"
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleFirebaseAppleApp(context),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceStateWithIgnores(
+					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						resourceName,
 						"google_firebase_apple_app.my_app",
 						map[string]struct{}{
@@ -40,7 +44,7 @@ func TestAccDataSourceGoogleFirebaseAppleApp(t *testing.T) {
 }
 
 func testAccDataSourceGoogleFirebaseAppleApp(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_apple_app" "my_app" {
   project = "%{project_id}"
   bundle_id = "%{bundle_id}"

@@ -667,3 +667,26 @@ func FavorReferenceArrayFieldOverNonReferenceArrayField(r *k8s.Resource, nonRefe
 	unstructured.RemoveNestedField(r.Spec, nonReferenceFieldPath...)
 	return nil
 }
+
+// RemovePrefixFromStringFieldInSpec removes the prefix from the field specified by
+// the input path in the resource spec.
+// The function returns error if the specified field is not a string.
+// The function is no-op if the field is not found in resource spec.
+// The function is no-op if the input prefix does not match the prefix of the specified field.
+func RemovePrefixFromStringFieldInSpec(r *k8s.Resource, prefix string, path ...string) error {
+	vo, found, err := unstructured.NestedString(r.Spec, path...)
+	if err != nil {
+		return err
+	}
+	if !found {
+		return nil
+	}
+	if !strings.HasPrefix(vo, prefix) {
+		return nil
+	}
+	v := strings.TrimPrefix(vo, prefix)
+	if err := unstructured.SetNestedField(r.Spec, v, path...); err != nil {
+		return err
+	}
+	return nil
+}

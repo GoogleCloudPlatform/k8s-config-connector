@@ -40,6 +40,12 @@ type InstanceActiveDirectoryConfig struct {
 	Domain string `json:"domain"`
 }
 
+type InstanceAdvancedMachineFeatures struct {
+	/* The number of threads per physical core. Can be 1 or 2. */
+	// +optional
+	ThreadsPerCore *int `json:"threadsPerCore,omitempty"`
+}
+
 type InstanceAuthorizedNetworks struct {
 	// +optional
 	ExpirationTime *string `json:"expirationTime,omitempty"`
@@ -86,6 +92,12 @@ type InstanceBackupRetentionSettings struct {
 	/* The unit that 'retainedBackups' represents. Defaults to COUNT. */
 	// +optional
 	RetentionUnit *string `json:"retentionUnit,omitempty"`
+}
+
+type InstanceDataCacheConfig struct {
+	/* Whether data cache is enabled for the instance. */
+	// +optional
+	DataCacheEnabled *bool `json:"dataCacheEnabled,omitempty"`
 }
 
 type InstanceDatabaseFlags struct {
@@ -279,6 +291,9 @@ type InstanceSettings struct {
 	// +optional
 	ActiveDirectoryConfig *InstanceActiveDirectoryConfig `json:"activeDirectoryConfig,omitempty"`
 
+	// +optional
+	AdvancedMachineFeatures *InstanceAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
+
 	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
 	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
@@ -309,6 +324,10 @@ type InstanceSettings struct {
 	// +optional
 	CrashSafeReplication *bool `json:"crashSafeReplication,omitempty"`
 
+	/* Data cache configurations. */
+	// +optional
+	DataCacheConfig *InstanceDataCacheConfig `json:"dataCacheConfig,omitempty"`
+
 	// +optional
 	DatabaseFlags []InstanceDatabaseFlags `json:"databaseFlags,omitempty"`
 
@@ -334,6 +353,10 @@ type InstanceSettings struct {
 	/* Immutable. The type of data disk: PD_SSD or PD_HDD. Defaults to PD_SSD. */
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
+
+	/* The edition of the instance, can be ENTERPRISE or ENTERPRISE_PLUS. */
+	// +optional
+	Edition *string `json:"edition,omitempty"`
 
 	/* Configuration of Query Insights. */
 	// +optional
@@ -393,7 +416,7 @@ type InstanceValueFrom struct {
 }
 
 type SQLInstanceSpec struct {
-	/* The MySQL, PostgreSQL or SQL Server (beta) version to use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date reference of supported versions. */
+	/* The MySQL, PostgreSQL or SQL Server (beta) version to use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14, POSTGRES_15, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date reference of supported versions. */
 	// +optional
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 

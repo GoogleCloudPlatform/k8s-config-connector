@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sql_database_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sql_database_instance.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sql/resource_sql_database_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sql/resource_sql_database_instance.go
 index 6d4fe27b6..878a96bf3 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sql_database_instance.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sql_database_instance.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sql/resource_sql_database_instance.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sql/resource_sql_database_instance.go
 @@ -540,6 +539,7 @@ settings.backup_configuration.binary_log_enabled are both set to true.`,
  			"server_ca_cert": {
  				Type:     schema.TypeList,

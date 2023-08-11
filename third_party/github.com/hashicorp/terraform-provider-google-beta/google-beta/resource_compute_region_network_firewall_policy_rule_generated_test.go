@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -24,21 +27,25 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeRegionNetworkFirewallPolicyRule_RegionalHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        GetTestOrgFromEnv(t),
-		"project_name":  GetTestProjectFromEnv(),
-		"region":        GetTestRegionFromEnv(),
-		"service_acct":  GetTestServiceAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
+		"project_name":  envvar.GetTestProjectFromEnv(),
+		"region":        envvar.GetTestRegionFromEnv(),
+		"service_acct":  envvar.GetTestServiceAccountFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionNetworkFirewallPolicyRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -63,7 +70,17 @@ func TestAccComputeRegionNetworkFirewallPolicyRule_RegionalHandWritten(t *testin
 }
 
 func testAccComputeRegionNetworkFirewallPolicyRule_RegionalHandWritten(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
+resource "google_network_security_address_group" "basic_regional_networksecurity_address_group" {
+  name        = "tf-test-policy%{random_suffix}"
+  parent      = "projects/%{project_name}"
+  description = "Sample regional networksecurity_address_group"
+  location    = "%{region}"
+  items       = ["208.80.154.224/32"]
+  type        = "IPV4"
+  capacity    = 100
+}
+
 resource "google_compute_region_network_firewall_policy" "basic_regional_network_firewall_policy" {
   name        = "tf-test-policy%{random_suffix}"
   description = "Sample regional network firewall policy"
@@ -85,6 +102,9 @@ resource "google_compute_region_network_firewall_policy_rule" "primary" {
 
   match {
     src_ip_ranges = ["10.100.0.1/32"]
+    src_fqdns = ["example.com"]
+    src_region_codes = ["US"]
+    src_threat_intelligences = ["iplist-known-malicious-ips"]
 
     layer4_configs {
       ip_protocol = "all"
@@ -93,6 +113,8 @@ resource "google_compute_region_network_firewall_policy_rule" "primary" {
     src_secure_tags {
       name = "tagValues/${google_tags_tag_value.basic_value.name}"
     }
+    
+    src_address_groups = [google_network_security_address_group.basic_regional_networksecurity_address_group.id]
   }
 }
 
@@ -121,7 +143,17 @@ resource "google_tags_tag_value" "basic_value" {
 }
 
 func testAccComputeRegionNetworkFirewallPolicyRule_RegionalHandWrittenUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
+resource "google_network_security_address_group" "basic_regional_networksecurity_address_group" {
+  name        = "tf-test-policy%{random_suffix}"
+  parent      = "projects/%{project_name}"
+  description = "Sample regional networksecurity_address_group. Update"
+  location    = "%{region}"
+  items       = ["208.80.154.224/32"]
+  type        = "IPV4"
+  capacity    = 100
+}
+
 resource "google_compute_region_network_firewall_policy" "basic_regional_network_firewall_policy" {
   name        = "tf-test-policy%{random_suffix}"
   description = "Sample regional network firewall policy"
@@ -142,11 +174,16 @@ resource "google_compute_region_network_firewall_policy_rule" "primary" {
 
   match {
     dest_ip_ranges = ["0.0.0.0/0"]
+    dest_fqdns = ["example.com"]
+    dest_region_codes = ["US"]
+    dest_threat_intelligences = ["iplist-known-malicious-ips"]
 
     layer4_configs {
       ip_protocol = "tcp"
       ports       = ["123"]
     }
+    
+    dest_address_groups = [google_network_security_address_group.basic_regional_networksecurity_address_group.id]
   }
 
   target_secure_tags {
@@ -208,7 +245,7 @@ func testAccCheckComputeRegionNetworkFirewallPolicyRuleDestroyProducer(t *testin
 				Kind:           dcl.StringOrNil(rs.Primary.Attributes["kind"]),
 			}
 
-			client := NewDCLComputeClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLComputeClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetNetworkFirewallPolicyRule(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_compute_region_network_firewall_policy_rule still exists %v", obj)

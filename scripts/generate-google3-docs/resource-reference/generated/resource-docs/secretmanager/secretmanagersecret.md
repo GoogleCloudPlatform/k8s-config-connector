@@ -167,7 +167,7 @@ after the Secret has been created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The Secret will be replicated to the regions specified by the user.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -526,5 +526,7 @@ spec:
       - location: us-east1
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

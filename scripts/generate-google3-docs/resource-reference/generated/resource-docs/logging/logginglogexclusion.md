@@ -446,8 +446,8 @@ metadata:
   name: logginglogexclusion-sample-billing
 spec:
   billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "billingAccounts/${BILLING_ACCOUNT_ID?}"
+    # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
+    external: "billingAccounts/${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
   description: "A billing log exclusion"
   filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
 ```
@@ -548,7 +548,7 @@ kind: Project
 metadata:
   name: logginglogexclusion-dep-proj
 spec:
-  name: Project Log Exclusion Sample
+  name: Config Connector Sample
   organizationRef:
     # Replace "${ORG_ID?}" with the numeric ID for your organization
     external: "${ORG_ID?}"
@@ -557,5 +557,7 @@ spec:
     external: "${BILLING_ACCOUNT_ID?}"
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

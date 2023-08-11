@@ -16,31 +16,37 @@ package create
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
 	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
+	"golang.org/x/oauth2/google"
 
-	tfgooglebeta "github.com/hashicorp/terraform-provider-google-beta/google-beta"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 )
@@ -74,6 +80,8 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	t.Cleanup(func() {
 		cancel()
 	})
+
+	log := log.FromContext(ctx)
 
 	h := &Harness{
 		T:   t,
@@ -137,19 +145,29 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		h.client = client
 	}
 
+	logging.SetupLogger()
+
 	if loadCRDs {
 		crds, err := crdloader.LoadCRDs()
 		if err != nil {
 			h.Fatalf("error loading crds: %v", err)
 		}
-		for _, crd := range crds {
-			t.Logf("loading crd %v", crd.GetName())
-			if err := h.client.Create(ctx, &crd); err != nil {
-				h.Fatalf("error creating crd %v: %v", crd.GroupVersionKind(), err)
+		{
+			var wg sync.WaitGroup
+			for i := range crds {
+				crd := &crds[i]
+				wg.Add(1)
+				t.Logf("loading crd %v", crd.GetName())
+				go func() {
+					defer wg.Done()
+					if err := h.client.Create(ctx, crd.DeepCopy()); err != nil {
+						h.Fatalf("error creating crd %v: %v", crd.GroupVersionKind(), err)
+					}
+					h.waitForCRDReady(crd)
+				}()
 			}
+			wg.Wait()
 		}
-		t.Logf("HACK: waiting 20 seconds to allow CRDs to be ready")
-		time.Sleep(20 * time.Second)
 	}
 
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
@@ -164,17 +182,34 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		kccConfig.HTTPClient = &http.Client{Transport: roundTripper}
 
 		kccConfig.AccessToken = "dummytoken"
+	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
+		t.Logf("targeting real GCP")
 	} else {
 		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
 	}
 
-	tfgooglebeta.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+	// Log DCL requests
+	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
+		outputDir := filepath.Join(artifacts, "http-logs")
+		if kccConfig.HTTPClient == nil {
+			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
+			if err != nil {
+				t.Fatalf("error creating the http client to be used by DCL: %v", err)
+			}
+			kccConfig.HTTPClient = httpClient
+		}
+		t := test.NewHTTPRecorder(kccConfig.HTTPClient.Transport, outputDir)
+		kccConfig.HTTPClient = &http.Client{Transport: t}
+	}
+
+	// Log TF requests
+	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
 		if t := ctx.Value(httpRoundTripperKey); t != nil {
 			ret = &http.Client{Transport: t.(http.RoundTripper)}
 		}
 		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
-			log.Printf("env var ARTIFACTS is not set; will not record http log")
+			log.Info("env var ARTIFACTS is not set; will not record http log")
 		} else {
 			outputDir := filepath.Join(artifacts, "http-logs")
 			t := test.NewHTTPRecorder(ret.Transport, outputDir)
@@ -183,13 +218,14 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		return ret
 	}
 
-	tfgooglebeta.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+	// Log TF oauth requests
+	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
 		if t := ctx.Value(httpRoundTripperKey); t != nil {
 			ret = &http.Client{Transport: t.(http.RoundTripper)}
 		}
 		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
-			log.Printf("env var ARTIFACTS is not set; will not record http log")
+			log.Info("env var ARTIFACTS is not set; will not record http log")
 		} else {
 			outputDir := filepath.Join(artifacts, "http-logs")
 			t := test.NewHTTPRecorder(ret.Transport, outputDir)
@@ -197,8 +233,6 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		}
 		return ret
 	}
-
-	logging.SetupLogger()
 
 	mgr, err := kccmanager.New(h.Ctx, h.restConfig, kccConfig)
 	if err != nil {
@@ -244,11 +278,63 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 		for _, resource := range resources {
 			gvk := resource.GroupVersionKind()
 			switch gvk.GroupKind() {
+			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccount"}:
+				// ok
+
+			case schema.GroupKind{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesMesh"}:
+				// ok
+
 			case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
 				// ok
+
+			case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
+				// ok
+			case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecretVersion"}:
+				// ok
+
+			case schema.GroupKind{Group: "", Kind: "Secret"}:
+				// ok
+
+			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
+			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "ServiceIdentity"}:
+				// ok
+
 			default:
 				t.Skipf("gk %v not suppported by mock gcp; skipping", gvk.GroupKind())
 			}
 		}
+	}
+}
+
+func (t *Harness) waitForCRDReady(obj client.Object) {
+	logger := log.FromContext(t.Ctx)
+
+	apiVersion, kind := obj.GetObjectKind().GroupVersionKind().ToAPIVersionAndKind()
+	name := obj.GetName()
+	namespace := obj.GetNamespace()
+
+	id := types.NamespacedName{Name: name, Namespace: namespace}
+	if err := wait.PollImmediate(2*time.Second, 1*time.Minute, func() (bool, error) {
+		u := &unstructured.Unstructured{}
+		u.SetAPIVersion(apiVersion)
+		u.SetKind(kind)
+		logger.Info("Testing to see if resource is ready", "kind", kind, "id", id)
+		if err := t.GetClient().Get(t.Ctx, id, u); err != nil {
+			logger.Info("Error getting resource", "kind", kind, "id", id, "error", err)
+			return false, err
+		}
+		conditions := dynamic.GetConditions(t.T, u)
+		for _, condition := range conditions {
+			if condition.Type == "Established" && condition.Status == "True" {
+				logger.Info("crd is ready", "kind", kind, "id", id)
+				return true, nil
+			}
+		}
+		// This resource is not completely ready. Let's keep polling.
+		logger.Info("CRD is not ready", "kind", kind, "id", id, "conditions", conditions)
+		return false, nil
+	}); err != nil {
+		t.Errorf("error while polling for ready on %v %v: %v", kind, id, err)
+		return
 	}
 }

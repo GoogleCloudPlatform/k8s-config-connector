@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,18 +7,19 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccBigtableAppProfile_update(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableAppProfileDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -43,14 +46,14 @@ func TestAccBigtableAppProfile_update(t *testing.T) {
 
 func TestAccBigtableAppProfile_ignoreWarnings(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableAppProfileDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -68,14 +71,14 @@ func TestAccBigtableAppProfile_ignoreWarnings(t *testing.T) {
 
 func TestAccBigtableAppProfile_multiClusterIds(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableAppProfileDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -102,14 +105,14 @@ func TestAccBigtableAppProfile_multiClusterIds(t *testing.T) {
 
 func TestAccBigtableAppProfile_updateSingleToMulti(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckBigtableAppProfileDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

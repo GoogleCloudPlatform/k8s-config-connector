@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,19 +24,24 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccFirebaseStorageBucket_firebasestorageBucketBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckFirebaseStorageBucketDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -50,7 +58,7 @@ func TestAccFirebaseStorageBucket_firebasestorageBucketBasicExample(t *testing.T
 }
 
 func testAccFirebaseStorageBucket_firebasestorageBucketBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_storage_bucket" "default" {
   provider                    = google-beta
   name                        = "tf_test_test_bucket%{random_suffix}"
@@ -76,9 +84,9 @@ func testAccCheckFirebaseStorageBucketDestroyProducer(t *testing.T) func(s *terr
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{FirebaseStorageBasePath}}projects/{{project}}/buckets/{{bucket_id}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{FirebaseStorageBasePath}}projects/{{project}}/buckets/{{bucket_id}}")
 			if err != nil {
 				return err
 			}
@@ -89,7 +97,13 @@ func testAccCheckFirebaseStorageBucketDestroyProducer(t *testing.T) func(s *terr
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("FirebaseStorageBucket still exists at %s", url)
 			}

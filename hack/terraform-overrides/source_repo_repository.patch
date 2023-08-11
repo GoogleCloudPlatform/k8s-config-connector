@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sourcerepo_repository.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_source_repo_repository.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sourcerepo/resource_sourcerepo_repository.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sourcerepo/resource_source_repo_repository.go
 index 96b6357d..1d83837a 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sourcerepo_repository.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sourcerepo_repository.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sourcerepo/resource_sourcerepo_repository.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sourcerepo/resource_sourcerepo_repository.go
 @@ -59,8 +59,9 @@ Keyed by the topic names.`,
  				Elem: &schema.Resource{
  					Schema: map[string]*schema.Schema{
@@ -24,7 +24,7 @@ index 96b6357d..1d83837a 100644
 -							Required: true,
 +							Type:             schema.TypeString,
 +							Required:         true,
-+							DiffSuppressFunc: compareSelfLinkOrResourceName,
++							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
  						},
  						"message_format": {
  							Type:         schema.TypeString,

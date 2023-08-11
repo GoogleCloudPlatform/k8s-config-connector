@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -6,32 +8,37 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+
 	dcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	eventarc "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/eventarc/beta"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccEventarcTrigger_channel(t *testing.T) {
 	t.Parallel()
 
-	region := GetTestRegionFromEnv()
-	key1 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-trigger-key1")
-	key2 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-trigger-key2")
+	region := envvar.GetTestRegionFromEnv()
+	key1 := acctest.BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-trigger-key1")
+	key2 := acctest.BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-trigger-key2")
 
 	context := map[string]interface{}{
 		"region":          region,
-		"project_name":    GetTestProjectFromEnv(),
-		"service_account": GetTestServiceAccountFromEnv(t),
-		"key_ring":        GetResourceNameFromSelfLink(key1.KeyRing.Name),
-		"key1":            GetResourceNameFromSelfLink(key1.CryptoKey.Name),
-		"key2":            GetResourceNameFromSelfLink(key2.CryptoKey.Name),
-		"random_suffix":   RandString(t, 10),
+		"project_name":    envvar.GetTestProjectFromEnv(),
+		"service_account": envvar.GetTestServiceAccountFromEnv(t),
+		"key_ring":        tpgresource.GetResourceNameFromSelfLink(key1.KeyRing.Name),
+		"key1":            tpgresource.GetResourceNameFromSelfLink(key1.CryptoKey.Name),
+		"key2":            tpgresource.GetResourceNameFromSelfLink(key2.CryptoKey.Name),
+		"random_suffix":   acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckEventarcChannelTriggerDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -47,7 +54,7 @@ func TestAccEventarcTrigger_channel(t *testing.T) {
 }
 
 func testAccEventarcTrigger_createTriggerWithChannelName(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_project" "test_project" {
 	project_id  = "%{project_name}"
 }
@@ -137,7 +144,7 @@ func testAccCheckEventarcChannelTriggerDestroyProducer(t *testing.T) func(s *ter
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {
@@ -156,7 +163,7 @@ func testAccCheckEventarcChannelTriggerDestroyProducer(t *testing.T) func(s *ter
 				Channel:        dcl.StringOrNil(rs.Primary.Attributes["channel"]),
 			}
 
-			client := NewDCLEventarcClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLEventarcClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetTrigger(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_eventarc_trigger still exists %v", obj)

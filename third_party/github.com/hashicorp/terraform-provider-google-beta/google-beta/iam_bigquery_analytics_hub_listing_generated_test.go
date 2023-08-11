@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -19,26 +22,29 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccBigqueryAnalyticsHubListingIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigqueryAnalyticsHubListingIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_bigquery_analytics_hub_listing_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s roles/viewer", GetTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s roles/viewer", envvar.GetTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -48,7 +54,7 @@ func TestAccBigqueryAnalyticsHubListingIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_bigquery_analytics_hub_listing_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s roles/viewer", GetTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s roles/viewer", envvar.GetTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -60,13 +66,13 @@ func TestAccBigqueryAnalyticsHubListingIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -74,7 +80,7 @@ func TestAccBigqueryAnalyticsHubListingIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_bigquery_analytics_hub_listing_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s roles/viewer user:admin@hashicorptest.com", GetTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -86,20 +92,21 @@ func TestAccBigqueryAnalyticsHubListingIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigqueryAnalyticsHubListingIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_bigquery_analytics_hub_listing_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_bigquery_analytics_hub_listing_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s", GetTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s", envvar.GetTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -108,7 +115,7 @@ func TestAccBigqueryAnalyticsHubListingIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_bigquery_analytics_hub_listing_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s", GetTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s", envvar.GetTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -117,7 +124,7 @@ func TestAccBigqueryAnalyticsHubListingIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccBigqueryAnalyticsHubListingIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "listing" {
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
@@ -156,7 +163,7 @@ resource "google_bigquery_analytics_hub_listing_iam_member" "foo" {
 }
 
 func testAccBigqueryAnalyticsHubListingIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "listing" {
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
@@ -197,11 +204,21 @@ resource "google_bigquery_analytics_hub_listing_iam_policy" "foo" {
   listing_id = google_bigquery_analytics_hub_listing.listing.listing_id
   policy_data = data.google_iam_policy.foo.policy_data
 }
+
+data "google_bigquery_analytics_hub_listing_iam_policy" "foo" {
+  project = google_bigquery_analytics_hub_listing.listing.project
+  location = google_bigquery_analytics_hub_listing.listing.location
+  data_exchange_id = google_bigquery_analytics_hub_listing.listing.data_exchange_id
+  listing_id = google_bigquery_analytics_hub_listing.listing.listing_id
+  depends_on = [
+    google_bigquery_analytics_hub_listing_iam_policy.foo
+  ]
+}
 `, context)
 }
 
 func testAccBigqueryAnalyticsHubListingIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "listing" {
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
@@ -242,7 +259,7 @@ resource "google_bigquery_analytics_hub_listing_iam_policy" "foo" {
 }
 
 func testAccBigqueryAnalyticsHubListingIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "listing" {
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
@@ -281,7 +298,7 @@ resource "google_bigquery_analytics_hub_listing_iam_binding" "foo" {
 }
 
 func testAccBigqueryAnalyticsHubListingIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "listing" {
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"

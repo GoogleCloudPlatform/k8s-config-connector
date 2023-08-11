@@ -32,6 +32,7 @@ bootDisk:
   diskEncryptionKeySha256: string
   initializeParams:
     labels: {}
+    resourceManagerTags: {}
     size: integer
     sourceImageRef:
       external: string
@@ -106,6 +107,8 @@ networkInterface:
     namespace: string
 networkPerformanceConfig:
   totalEgressBandwidthTier: string
+params:
+  resourceManagerTags: {}
 reservationAffinity:
   specificReservation:
     key: string

@@ -37,4 +37,4 @@ spec:
       - IT
       - US
   resourceID: accesscontextmanageraccesslevel${uniqueId}
-  title: tf_test_chromeos_no_lock${uniqueId}
+  title: chromeos_no_lock

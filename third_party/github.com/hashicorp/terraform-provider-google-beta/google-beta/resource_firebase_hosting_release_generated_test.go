@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -18,19 +21,22 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccFirebaseHostingRelease_firebasehostingReleaseInSiteExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseHostingRelease_firebasehostingReleaseInSiteExample(context),
@@ -46,7 +52,7 @@ func TestAccFirebaseHostingRelease_firebasehostingReleaseInSiteExample(t *testin
 }
 
 func testAccFirebaseHostingRelease_firebasehostingReleaseInSiteExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"
@@ -78,13 +84,13 @@ func TestAccFirebaseHostingRelease_firebasehostingReleaseInChannelExample(t *tes
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseHostingRelease_firebasehostingReleaseInChannelExample(context),
@@ -100,7 +106,7 @@ func TestAccFirebaseHostingRelease_firebasehostingReleaseInChannelExample(t *tes
 }
 
 func testAccFirebaseHostingRelease_firebasehostingReleaseInChannelExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"
@@ -139,13 +145,13 @@ func TestAccFirebaseHostingRelease_firebasehostingReleaseDisableExample(t *testi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseHostingRelease_firebasehostingReleaseDisableExample(context),
@@ -161,7 +167,7 @@ func TestAccFirebaseHostingRelease_firebasehostingReleaseDisableExample(t *testi
 }
 
 func testAccFirebaseHostingRelease_firebasehostingReleaseDisableExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_hosting_site" "default" {
   provider = google-beta
   project  = "%{project_id}"

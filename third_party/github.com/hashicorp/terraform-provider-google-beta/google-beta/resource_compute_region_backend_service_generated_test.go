@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccComputeRegionBackendService_regionBackendServiceBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,7 +56,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceBasicExample(t *test
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   name                            = "tf-test-region-service%{random_suffix}"
   region                          = "us-central1"
@@ -74,12 +81,12 @@ func TestAccComputeRegionBackendService_regionBackendServiceCacheExample(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -96,7 +103,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceCacheExample(t *test
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceCacheExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   provider = google-beta
 
@@ -135,12 +142,12 @@ func TestAccComputeRegionBackendService_regionBackendServiceIlbRoundRobinExample
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -157,7 +164,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceIlbRoundRobinExample
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceIlbRoundRobinExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   region = "us-central1"
   name = "tf-test-region-service%{random_suffix}"
@@ -180,12 +187,12 @@ func TestAccComputeRegionBackendService_regionBackendServiceExternalExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -202,7 +209,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceExternalExample(t *t
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceExternalExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   provider              = google-beta
   region                = "us-central1"
@@ -228,12 +235,12 @@ func TestAccComputeRegionBackendService_regionBackendServiceExternalWeightedExam
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -250,7 +257,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceExternalWeightedExam
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceExternalWeightedExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   region                = "us-central1"
   name                  = "tf-test-region-service%{random_suffix}"
@@ -275,12 +282,12 @@ func TestAccComputeRegionBackendService_regionBackendServiceIlbRingHashExample(t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -297,7 +304,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceIlbRingHashExample(t
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceIlbRingHashExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   region = "us-central1"
   name = "tf-test-region-service%{random_suffix}"
@@ -336,12 +343,12 @@ func TestAccComputeRegionBackendService_regionBackendServiceBalancingModeExample
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -358,7 +365,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceBalancingModeExample
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceBalancingModeExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   load_balancing_scheme = "INTERNAL_MANAGED"
 
@@ -437,12 +444,12 @@ func TestAccComputeRegionBackendService_regionBackendServiceConnectionTrackingEx
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderBetaFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -459,7 +466,7 @@ func TestAccComputeRegionBackendService_regionBackendServiceConnectionTrackingEx
 }
 
 func testAccComputeRegionBackendService_regionBackendServiceConnectionTrackingExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_compute_region_backend_service" "default" {
   provider                        = google-beta
   name                            = "tf-test-region-service%{random_suffix}"
@@ -498,9 +505,9 @@ func testAccCheckComputeRegionBackendServiceDestroyProducer(t *testing.T) func(s
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/backendServices/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/backendServices/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -511,7 +518,13 @@ func testAccCheckComputeRegionBackendServiceDestroyProducer(t *testing.T) func(s
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("ComputeRegionBackendService still exists at %s", url)
 			}

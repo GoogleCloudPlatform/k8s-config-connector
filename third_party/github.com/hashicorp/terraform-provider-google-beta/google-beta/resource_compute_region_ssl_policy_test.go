@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -6,6 +8,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 
 	compute "google.golang.org/api/compute/v0.beta"
 )
@@ -14,11 +17,11 @@ func TestAccComputeRegionSslPolicy_update(t *testing.T) {
 	t.Parallel()
 
 	var sslPolicy compute.SslPolicy
-	sslPolicyName := fmt.Sprintf("test-ssl-policy-%s", RandString(t, 10))
+	sslPolicyName := fmt.Sprintf("test-ssl-policy-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSslPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -61,11 +64,11 @@ func TestAccComputeRegionSslPolicy_update_to_custom(t *testing.T) {
 	t.Parallel()
 
 	var sslPolicy compute.SslPolicy
-	sslPolicyName := fmt.Sprintf("test-ssl-policy-%s", RandString(t, 10))
+	sslPolicyName := fmt.Sprintf("test-ssl-policy-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSslPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -108,11 +111,11 @@ func TestAccComputeRegionSslPolicy_update_from_custom(t *testing.T) {
 	t.Parallel()
 
 	var sslPolicy compute.SslPolicy
-	sslPolicyName := fmt.Sprintf("test-ssl-policy-%s", RandString(t, 10))
+	sslPolicyName := fmt.Sprintf("test-ssl-policy-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeSslPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -162,9 +165,9 @@ func testAccCheckComputeRegionSslPolicyExists(t *testing.T, n string, sslPolicy 
 			return fmt.Errorf("No ID is set")
 		}
 
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
-		project, err := GetTestProject(rs.Primary, config)
+		project, err := acctest.GetTestProject(rs.Primary, config)
 		if err != nil {
 			return err
 		}

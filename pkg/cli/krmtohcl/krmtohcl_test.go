@@ -41,7 +41,7 @@ var update = flag.Bool("update", false, "update .golden files")
 // 'golden files'. The HCL output is not deterministic so running an update will almost modify all the HCL files.
 func TestUnstructuredToHCL(t *testing.T) {
 	smLoader := testservicemappingloader.New(t)
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	testDir := "testdata"
 
 	testCases := FindTestCases(t, testDir, ".golden.tf")

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: DCL     ***
@@ -24,19 +27,23 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"strings"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccApikeysKey_AndroidKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApikeysKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -63,13 +70,13 @@ func TestAccApikeysKey_BasicKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApikeysKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -96,13 +103,13 @@ func TestAccApikeysKey_IosKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApikeysKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -129,13 +136,13 @@ func TestAccApikeysKey_MinimalKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApikeysKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -154,13 +161,13 @@ func TestAccApikeysKey_ServerKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"billing_acct":  GetTestBillingAccountFromEnv(t),
-		"org_id":        GetTestOrgFromEnv(t),
+		"billing_acct":  envvar.GetTestBillingAccountFromEnv(t),
+		"org_id":        envvar.GetTestOrgFromEnv(t),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
 		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckApikeysKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
@@ -185,7 +192,7 @@ func TestAccApikeysKey_ServerKey(t *testing.T) {
 }
 
 func testAccApikeysKey_AndroidKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -217,7 +224,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_AndroidKeyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -249,7 +256,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_BasicKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -278,7 +285,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_BasicKeyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key-update"
@@ -307,7 +314,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_IosKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -336,7 +343,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_IosKeyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -365,7 +372,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_MinimalKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -383,7 +390,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_ServerKey(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -412,7 +419,7 @@ resource "google_project" "basic" {
 }
 
 func testAccApikeysKey_ServerKeyUpdate0(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_apikeys_key" "primary" {
   name         = "tf-test-key%{random_suffix}"
   display_name = "sample-key"
@@ -465,7 +472,7 @@ func testAccCheckApikeysKeyDestroyProducer(t *testing.T) func(s *terraform.State
 				Uid:         dcl.StringOrNil(rs.Primary.Attributes["uid"]),
 			}
 
-			client := NewDCLApikeysClient(config, config.UserAgent, billingProject, 0)
+			client := transport_tpg.NewDCLApikeysClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetKey(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_apikeys_key still exists %v", obj)

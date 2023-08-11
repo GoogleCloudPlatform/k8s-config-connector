@@ -62,6 +62,17 @@ spec:
                 description: Immutable. An optional description of this resource.
                   Provide this property when you create the resource.
                 type: string
+              diskConsistencyGroupPolicy:
+                description: Immutable. Replication consistency group for asynchronous
+                  disk replication.
+                properties:
+                  enabled:
+                    description: Immutable. Enable disk consistency on the resource
+                      policy.
+                    type: boolean
+                required:
+                - enabled
+                type: object
               groupPlacementPolicy:
                 description: Immutable. Resource policy for instances used for placement
                   configuration.
@@ -164,7 +175,10 @@ spec:
                           day at the specified time.
                         properties:
                           daysInCycle:
-                            description: Immutable. The number of days between snapshots.
+                            description: Immutable. Defines a schedule with units
+                              measured in days. The value determines how many days
+                              pass between the start of each cycle. Days in cycle
+                              for snapshot schedule policy must be 1.
                             type: integer
                           startTime:
                             description: |-
@@ -228,9 +242,10 @@ spec:
                       created, such as labels.
                     properties:
                       chainName:
-                        description: "Immutable. Creates the new snapshot in the snapshot
-                          chain labeled with the \nspecified name. The chain name
-                          must be 1-63 characters long and comply \nwith RFC1035."
+                        description: |-
+                          Immutable. Creates the new snapshot in the snapshot chain labeled with the
+                          specified name. The chain name must be 1-63 characters long and comply
+                          with RFC1035.
                         type: string
                       guestFlush:
                         description: Immutable. Whether to perform a 'guest aware'

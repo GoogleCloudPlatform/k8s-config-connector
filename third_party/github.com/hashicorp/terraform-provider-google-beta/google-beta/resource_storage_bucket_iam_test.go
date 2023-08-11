@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,18 +7,20 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccStorageBucketIamPolicy(t *testing.T) {
 	t.Parallel()
 
-	serviceAcct := GetTestServiceAccountFromEnv(t)
-	bucket := fmt.Sprintf("tf-test-%d", RandInt(t))
-	account := fmt.Sprintf("tf-test-%d", RandInt(t))
+	serviceAcct := envvar.GetTestServiceAccountFromEnv(t)
+	bucket := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
+	account := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test IAM Policy creation

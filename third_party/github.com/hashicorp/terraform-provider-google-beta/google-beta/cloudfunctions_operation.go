@@ -1,30 +1,23 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
-	"fmt"
 	"time"
 
+	tpgcloudfunctions "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/cloudfunctions"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"google.golang.org/api/cloudfunctions/v1"
 )
 
-type CloudFunctionsOperationWaiter struct {
-	Service *cloudfunctions.Service
-	CommonOperationWaiter
+// Deprecated: For backward compatibility cloudFunctionsOperationWait is still working,
+// but all new code should use CloudFunctionsOperationWait in the tpgcloudfunctions package instead.
+func cloudFunctionsOperationWait(config *transport_tpg.Config, op *cloudfunctions.Operation, activity, userAgent string, timeout time.Duration) error {
+	return tpgcloudfunctions.CloudFunctionsOperationWait(config, op, activity, userAgent, timeout)
 }
 
-func (w *CloudFunctionsOperationWaiter) QueryOp() (interface{}, error) {
-	if w == nil {
-		return nil, fmt.Errorf("Cannot query operation, it's unset or nil.")
-	}
-	return w.Service.Operations.Get(w.Op.Name).Do()
-}
-
-func cloudFunctionsOperationWait(config *Config, op *cloudfunctions.Operation, activity, userAgent string, timeout time.Duration) error {
-	w := &CloudFunctionsOperationWaiter{
-		Service: config.NewCloudFunctionsClient(userAgent),
-	}
-	if err := w.SetOp(op); err != nil {
-		return err
-	}
-	return OperationWait(w, activity, timeout, config.PollInterval)
+// Deprecated: For backward compatibility IsCloudFunctionsSourceCodeError is still working,
+// but all new code should use IsCloudFunctionsSourceCodeError in the tpgcloudfunctions package instead.
+func IsCloudFunctionsSourceCodeError(err error) (bool, string) {
+	return tpgcloudfunctions.IsCloudFunctionsSourceCodeError(err)
 }

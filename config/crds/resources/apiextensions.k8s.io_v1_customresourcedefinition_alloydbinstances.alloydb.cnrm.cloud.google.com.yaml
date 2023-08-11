@@ -65,10 +65,13 @@ spec:
                   of arbitrary data. This is distinct from labels.
                 type: object
               availabilityType:
-                description: 'Availability type of an Instance. Defaults to REGIONAL
-                  for both primary and read instances. Note that primary and read
-                  instances can have different availability types. Possible values:
-                  ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].'
+                description: |-
+                  'Availability type of an Instance. Defaults to REGIONAL for both primary and read instances.
+                  Note that primary and read instances can have different availability types.
+                  Only READ_POOL instance supports ZONAL type. Users can't specify the zone for READ_POOL instance.
+                  Zone is automatically chosen from the list of zones in the region specified.
+                  Read pool of size 1 can only have zonal availability. Read pools with node count of 2 or more
+                  can have regional availability (nodes are present in 2 or more zones in a region).' Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].
                 type: string
               cluster:
                 description: |-
@@ -96,8 +99,10 @@ spec:
                   instance, instance is created in a random zone with available capacity.
                 type: string
               instanceType:
-                description: 'Immutable. The type of the instance. Possible values:
-                  ["PRIMARY", "READ_POOL"].'
+                description: 'Immutable. The type of the instance. If the instance
+                  type is READ_POOL, provide the associated PRIMARY instance in the
+                  ''depends_on'' meta-data attribute. Possible values: ["PRIMARY",
+                  "READ_POOL"].'
                 type: string
               machineConfig:
                 description: Configurations for the machines that host the underlying

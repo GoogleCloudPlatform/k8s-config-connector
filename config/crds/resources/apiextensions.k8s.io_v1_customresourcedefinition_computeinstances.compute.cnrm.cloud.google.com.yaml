@@ -268,10 +268,20 @@ spec:
                           to the disk.
                         type: object
                         x-kubernetes-preserve-unknown-fields: true
+                      resourceManagerTags:
+                        description: Immutable. A map of resource manager tags. Resource
+                          manager tag keys and values have the same definition as
+                          resource manager tags. Keys must be in the format tagKeys/{tag_key_id},
+                          and values are in the format tagValues/456. The field is
+                          ignored (both PUT & PATCH) when empty.
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
                       size:
                         description: Immutable. The size of the image in gigabytes.
                         type: integer
                       sourceImageRef:
+                        description: Immutable. The image from which to initialize
+                          this disk.
                         oneOf:
                         - not:
                             required:
@@ -335,6 +345,7 @@ spec:
                       or "READ_WRITE".
                     type: string
                   sourceDiskRef:
+                    description: Immutable. The source disk used to create this disk.
                     oneOf:
                     - not:
                         required:
@@ -693,6 +704,19 @@ spec:
                 required:
                 - totalEgressBandwidthTier
                 type: object
+              params:
+                description: Immutable. Stores additional params passed with the request,
+                  but not persisted as part of resource payload.
+                properties:
+                  resourceManagerTags:
+                    description: Immutable. A map of resource manager tags. Resource
+                      manager tag keys and values have the same definition as resource
+                      manager tags. Keys must be in the format tagKeys/{tag_key_id},
+                      and values are in the format tagValues/456. The field is ignored
+                      (both PUT & PATCH) when empty.
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                type: object
               reservationAffinity:
                 description: Immutable. Specifies the reservations that this instance
                   can consume from.
@@ -925,7 +949,11 @@ spec:
                 description: The CPU platform used by this instance.
                 type: string
               currentStatus:
-                description: Current status of the instance.
+                description: "\n\t\t\t\t\tCurrent status of the instance.\n\t\t\t\t\tThis
+                  could be one of the following values: PROVISIONING, STAGING, RUNNING,
+                  STOPPING, SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED.\n\t\t\t\t\tFor
+                  more information about the status of the instance, see [Instance
+                  life cycle](https://cloud.google.com/compute/docs/instances/instance-life-cycle)."
                 type: string
               instanceId:
                 description: The server-assigned unique identifier of this instance.

@@ -1,103 +1,27 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
-	"fmt"
-
-	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"google.golang.org/api/cloudresourcemanager/v1"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgiamresource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
-var IamProjectSchema = map[string]*schema.Schema{
-	"project": {
-		Type:             schema.TypeString,
-		Required:         true,
-		ForceNew:         true,
-		DiffSuppressFunc: compareProjectName,
-	},
+var IamProjectSchema = resourcemanager.IamProjectSchema
+
+func NewProjectIamUpdater(d tpgresource.TerraformResourceData, config *transport_tpg.Config) (tpgiamresource.ResourceIamUpdater, error) {
+	return resourcemanager.NewProjectIamUpdater(d, config)
 }
 
-type ProjectIamUpdater struct {
-	resourceId string
-	d          TerraformResourceData
-	Config     *Config
-}
-
-func NewProjectIamUpdater(d TerraformResourceData, config *Config) (ResourceIamUpdater, error) {
-	return &ProjectIamUpdater{
-		resourceId: d.Get("project").(string),
-		d:          d,
-		Config:     config,
-	}, nil
-}
-
-func ProjectIdParseFunc(d *schema.ResourceData, _ *Config) error {
-	if err := d.Set("project", d.Id()); err != nil {
-		return fmt.Errorf("Error setting project: %s", err)
-	}
-	return nil
-}
-
-func (u *ProjectIamUpdater) GetResourceIamPolicy() (*cloudresourcemanager.Policy, error) {
-	projectId := GetResourceNameFromSelfLink(u.resourceId)
-
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
-	if err != nil {
-		return nil, err
-	}
-
-	p, err := u.Config.NewResourceManagerClient(userAgent).Projects.GetIamPolicy(projectId,
-		&cloudresourcemanager.GetIamPolicyRequest{
-			Options: &cloudresourcemanager.GetPolicyOptions{
-				RequestedPolicyVersion: IamPolicyVersion,
-			},
-		}).Do()
-
-	if err != nil {
-		return nil, errwrap.Wrapf(fmt.Sprintf("Error retrieving IAM policy for %s: {{err}}", u.DescribeResource()), err)
-	}
-
-	return p, nil
-}
-
-func (u *ProjectIamUpdater) SetResourceIamPolicy(policy *cloudresourcemanager.Policy) error {
-	projectId := GetResourceNameFromSelfLink(u.resourceId)
-
-	userAgent, err := generateUserAgentString(u.d, u.Config.UserAgent)
-	if err != nil {
-		return err
-	}
-
-	_, err = u.Config.NewResourceManagerClient(userAgent).Projects.SetIamPolicy(projectId,
-		&cloudresourcemanager.SetIamPolicyRequest{
-			Policy:     policy,
-			UpdateMask: "bindings,etag,auditConfigs",
-		}).Do()
-
-	if err != nil {
-		return errwrap.Wrapf(fmt.Sprintf("Error setting IAM policy for %s: {{err}}", u.DescribeResource()), err)
-	}
-
-	return nil
-}
-
-func (u *ProjectIamUpdater) GetResourceId() string {
-	return u.resourceId
-}
-
-func (u *ProjectIamUpdater) GetMutexKey() string {
-	return getProjectIamPolicyMutexKey(u.resourceId)
-}
-
-func (u *ProjectIamUpdater) DescribeResource() string {
-	return fmt.Sprintf("project %q", u.resourceId)
+func ProjectIdParseFunc(d *schema.ResourceData, _ *transport_tpg.Config) error {
+	return resourcemanager.ProjectIdParseFunc(d, nil)
 }
 
 func compareProjectName(_, old, new string, _ *schema.ResourceData) bool {
 	// We can either get "projects/project-id" or "project-id", so strip any prefixes
-	return GetResourceNameFromSelfLink(old) == GetResourceNameFromSelfLink(new)
-}
-
-func getProjectIamPolicyMutexKey(pid string) string {
-	return fmt.Sprintf("iam-project-%s", pid)
+	return resourcemanager.CompareProjectName("", old, new, nil)
 }

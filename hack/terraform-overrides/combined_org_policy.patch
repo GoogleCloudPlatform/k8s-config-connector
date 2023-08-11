@@ -1,50 +1,37 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-index 04b78afc1..4711ad825 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-@@ -1689,6 +1689,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
- 			"google_sql_user":                              ResourceSqlUser(),
- 			"google_organization_iam_custom_role":          ResourceGoogleOrganizationIamCustomRole(),
- 			"google_organization_policy":                   ResourceGoogleOrganizationPolicy(),
-+			"google_org_policy":                            ResourceOrgPolicy(),
- 			"google_project":                               ResourceGoogleProject(),
- 			"google_project_default_service_accounts":      ResourceGoogleProjectDefaultServiceAccounts(),
- 			"google_project_service":                       ResourceGoogleProjectService(),
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_org_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_org_policy.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider/provider.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider/provider.go
+index 6da49da09..d3f635318 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider/provider.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider/provider.go
+@@ -1719,6 +1719,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
+ 			"google_sql_user":                               sql.ResourceSqlUser(),
+ 			"google_organization_iam_custom_role":           resourcemanager.ResourceGoogleOrganizationIamCustomRole(),
+ 			"google_organization_policy":                    resourcemanager.ResourceGoogleOrganizationPolicy(),
++			"google_org_policy":                             resourcemanager.ResourceOrgPolicy(),
+ 			"google_project":                                resourcemanager.ResourceGoogleProject(),
+ 			"google_project_default_service_accounts":       resourcemanager.ResourceGoogleProjectDefaultServiceAccounts(),
+ 			"google_project_service":                        resourcemanager.ResourceGoogleProjectService(),
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_org_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_org_policy.go
 new file mode 100644
 index 000000000..c2c58161a
 --- /dev/null
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_org_policy.go
-@@ -0,0 +1,56 @@
-+package google
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/resourcemanager/resource_org_policy.go
+@@ -0,0 +1,57 @@
++package resourcemanager
 +
 +import (
 +	"fmt"
 +	"strings"
 +
 +	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
++	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 +)
 +
 +func ResourceOrgPolicy() *schema.Resource {
-+	return combinedResource(
++	return tpgresource.CombinedResource(
 +		map[string]*schema.Resource{
-+			projectType: ResourceGoogleProjectOrganizationPolicy(),
-+			folderType:  ResourceGoogleFolderOrganizationPolicy(),
-+			orgType:     ResourceGoogleOrganizationPolicy(),
++			tpgresource.ProjectType: ResourceGoogleProjectOrganizationPolicy(),
++			tpgresource.FolderType:  ResourceGoogleFolderOrganizationPolicy(),
++			tpgresource.OrgType:     ResourceGoogleOrganizationPolicy(),
 +		}, func(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 +			// FROM: {{project?}}#{{folder?}}#{{org_id?}}#{{constraint}}
 +			// TO:
@@ -58,21 +45,21 @@ index 000000000..c2c58161a
 +			}
 +			constraint := partitions[3]
 +			for parentType, parentVal := range map[string]string{
-+				projectType: partitions[0],
-+				folderType:  partitions[1],
-+				orgType:     partitions[2],
++				tpgresource.ProjectType: partitions[0],
++				tpgresource.FolderType:  partitions[1],
++				tpgresource.OrgType:     partitions[2],
 +			} {
 +				if parentVal == "" {
 +					continue
 +				}
-+				if err := d.Set(fieldForParentType(parentType), parentVal); err != nil {
++				if err := d.Set(tpgresource.FieldForParentType(parentType), parentVal); err != nil {
 +					return nil, fmt.Errorf("error setting parent ID: %w", err)
 +				}
 +				var id string
 +				switch parentType {
-+				case projectType:
++				case tpgresource.ProjectType:
 +					id = fmt.Sprintf("projects/%v:%v", parentVal, constraint)
-+				case folderType, orgType:
++				case tpgresource.FolderType, tpgresource.OrgType:
 +					id = fmt.Sprintf("%v/%v", parentVal, constraint)
 +				default:
 +					return nil, fmt.Errorf("unknown policy type in import ID")

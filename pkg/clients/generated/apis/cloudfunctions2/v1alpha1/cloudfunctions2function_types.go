@@ -344,6 +344,10 @@ type CloudFunctions2FunctionStatus struct {
 	/* The last update timestamp of a Cloud Function. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	/* Output only. The deployed url for the function. */
+	// +optional
+	Url *string `json:"url,omitempty"`
 }
 
 // +genclient

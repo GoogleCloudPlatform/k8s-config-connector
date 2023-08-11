@@ -22,9 +22,9 @@ import (
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	"github.com/ghodss/yaml"
-	v1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 )
 
 func UnmarshalFileToCRD(t *testing.T, fileName string) *apiextensions.CustomResourceDefinition {
@@ -55,22 +55,19 @@ func UnmarshalToCRD(fileName string) *apiextensions.CustomResourceDefinition {
 }
 
 func GetConditions(t *testing.T, kccResource *unstructured.Unstructured) []condition.Condition {
-	status := kccResource.Object["status"].(map[string]interface{})
-	conditionsList := status["conditions"].([]interface{})
-	if len(conditionsList) < 1 {
-		t.Error("error getting instance conditions")
+	// Simple types with the fields we care about, so that we can use the libraries
+	type withConditions struct {
+		Conditions []condition.Condition `json:"conditions"`
 	}
-	readyCondition := conditionsList[0].(map[string]interface{})
-	// Temp fix: IAMPolicy drops reason, Bigtable drops message + reason
-	message, _ := readyCondition["message"].(string)
-	reason, _ := readyCondition["reason"].(string)
-	return []condition.Condition{
-		{
-			LastTransitionTime: readyCondition["lastTransitionTime"].(string),
-			Message:            message,
-			Reason:             reason,
-			Status:             v1.ConditionStatus(readyCondition["status"].(string)),
-			Type:               readyCondition["type"].(string),
-		},
+	type withStatusConditions struct {
+		Status withConditions `json:"status"`
 	}
+	var obj withStatusConditions
+
+	// Convert into the above simplifed types
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(kccResource.UnstructuredContent(), &obj); err != nil {
+		t.Errorf("error converting to object with status.conditions: %v", err)
+	}
+
+	return obj.Status.Conditions
 }

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,19 +24,24 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccMonitoringUptimeCheckConfig_uptimeCheckConfigHttpExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckMonitoringUptimeCheckConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,7 +57,7 @@ func TestAccMonitoringUptimeCheckConfig_uptimeCheckConfigHttpExample(t *testing.
 }
 
 func testAccMonitoringUptimeCheckConfig_uptimeCheckConfigHttpExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_monitoring_uptime_check_config" "http" {
   display_name = "tf-test-http-uptime-check%{random_suffix}"
   timeout      = "60s"
@@ -88,13 +96,13 @@ func TestAccMonitoringUptimeCheckConfig_uptimeCheckConfigStatusCodeExample(t *te
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckMonitoringUptimeCheckConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -110,7 +118,7 @@ func TestAccMonitoringUptimeCheckConfig_uptimeCheckConfigStatusCodeExample(t *te
 }
 
 func testAccMonitoringUptimeCheckConfig_uptimeCheckConfigStatusCodeExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_monitoring_uptime_check_config" "status_code" {
   display_name = "tf-test-http-uptime-check%{random_suffix}"
   timeout      = "60s"
@@ -159,13 +167,13 @@ func TestAccMonitoringUptimeCheckConfig_uptimeCheckConfigHttpsExample(t *testing
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project_id":    envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckMonitoringUptimeCheckConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -181,7 +189,7 @@ func TestAccMonitoringUptimeCheckConfig_uptimeCheckConfigHttpsExample(t *testing
 }
 
 func testAccMonitoringUptimeCheckConfig_uptimeCheckConfigHttpsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_monitoring_uptime_check_config" "https" {
   display_name = "tf-test-https-uptime-check%{random_suffix}"
   timeout = "60s"
@@ -217,12 +225,12 @@ func TestAccMonitoringUptimeCheckConfig_uptimeCheckTcpExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckMonitoringUptimeCheckConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -238,7 +246,7 @@ func TestAccMonitoringUptimeCheckConfig_uptimeCheckTcpExample(t *testing.T) {
 }
 
 func testAccMonitoringUptimeCheckConfig_uptimeCheckTcpExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_monitoring_uptime_check_config" "tcp_group" {
   display_name = "tf-test-tcp-uptime-check%{random_suffix}"
   timeout      = "60s"
@@ -270,9 +278,9 @@ func testAccCheckMonitoringUptimeCheckConfigDestroyProducer(t *testing.T) func(s
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{MonitoringBasePath}}v3/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{MonitoringBasePath}}v3/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -283,7 +291,14 @@ func testAccCheckMonitoringUptimeCheckConfigDestroyProducer(t *testing.T) func(s
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, IsMonitoringConcurrentEditError)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:               config,
+				Method:               "GET",
+				Project:              billingProject,
+				RawURL:               url,
+				UserAgent:            config.UserAgent,
+				ErrorRetryPredicates: []transport_tpg.RetryErrorPredicateFunc{transport_tpg.IsMonitoringConcurrentEditError},
+			})
 			if err == nil {
 				return fmt.Errorf("MonitoringUptimeCheckConfig still exists at %s", url)
 			}

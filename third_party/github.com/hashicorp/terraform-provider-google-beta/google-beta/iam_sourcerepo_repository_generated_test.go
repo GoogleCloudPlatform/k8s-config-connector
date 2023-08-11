@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -19,26 +22,29 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccSourceRepoRepositoryIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSourceRepoRepositoryIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_sourcerepo_repository_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/repos/%s roles/viewer", GetTestProjectFromEnv(), fmt.Sprintf("my/repository%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/repos/%s roles/viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("my/repository%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -48,7 +54,7 @@ func TestAccSourceRepoRepositoryIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_sourcerepo_repository_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/repos/%s roles/viewer", GetTestProjectFromEnv(), fmt.Sprintf("my/repository%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/repos/%s roles/viewer", envvar.GetTestProjectFromEnv(), fmt.Sprintf("my/repository%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -60,13 +66,13 @@ func TestAccSourceRepoRepositoryIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -74,7 +80,7 @@ func TestAccSourceRepoRepositoryIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_sourcerepo_repository_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/repos/%s roles/viewer user:admin@hashicorptest.com", GetTestProjectFromEnv(), fmt.Sprintf("my/repository%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/repos/%s roles/viewer user:admin@hashicorptest.com", envvar.GetTestProjectFromEnv(), fmt.Sprintf("my/repository%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -86,20 +92,21 @@ func TestAccSourceRepoRepositoryIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSourceRepoRepositoryIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_sourcerepo_repository_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_sourcerepo_repository_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/repos/%s", GetTestProjectFromEnv(), fmt.Sprintf("my/repository%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/repos/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("my/repository%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -108,7 +115,7 @@ func TestAccSourceRepoRepositoryIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_sourcerepo_repository_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("projects/%s/repos/%s", GetTestProjectFromEnv(), fmt.Sprintf("my/repository%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("projects/%s/repos/%s", envvar.GetTestProjectFromEnv(), fmt.Sprintf("my/repository%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -117,7 +124,7 @@ func TestAccSourceRepoRepositoryIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccSourceRepoRepositoryIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_sourcerepo_repository" "my-repo" {
   name = "my/repository%{random_suffix}"
 }
@@ -132,7 +139,7 @@ resource "google_sourcerepo_repository_iam_member" "foo" {
 }
 
 func testAccSourceRepoRepositoryIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_sourcerepo_repository" "my-repo" {
   name = "my/repository%{random_suffix}"
 }
@@ -149,11 +156,19 @@ resource "google_sourcerepo_repository_iam_policy" "foo" {
   repository = google_sourcerepo_repository.my-repo.name
   policy_data = data.google_iam_policy.foo.policy_data
 }
+
+data "google_sourcerepo_repository_iam_policy" "foo" {
+  project = google_sourcerepo_repository.my-repo.project
+  repository = google_sourcerepo_repository.my-repo.name
+  depends_on = [
+    google_sourcerepo_repository_iam_policy.foo
+  ]
+}
 `, context)
 }
 
 func testAccSourceRepoRepositoryIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_sourcerepo_repository" "my-repo" {
   name = "my/repository%{random_suffix}"
 }
@@ -170,7 +185,7 @@ resource "google_sourcerepo_repository_iam_policy" "foo" {
 }
 
 func testAccSourceRepoRepositoryIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_sourcerepo_repository" "my-repo" {
   name = "my/repository%{random_suffix}"
 }
@@ -185,7 +200,7 @@ resource "google_sourcerepo_repository_iam_binding" "foo" {
 }
 
 func testAccSourceRepoRepositoryIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_sourcerepo_repository" "my-repo" {
   name = "my/repository%{random_suffix}"
 }

@@ -19,7 +19,7 @@ set -o nounset
 set -o pipefail
 
 
-source $(dirname "${BASH_SOURCE}")/../shared-vars.sh
+source $(dirname "${BASH_SOURCE}")/../shared-vars-public.sh
 cd "${REPO_ROOT}/pkg/clients/generated/"
 
 # Extract API & version names

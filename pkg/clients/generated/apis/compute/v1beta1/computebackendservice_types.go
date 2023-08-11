@@ -155,6 +155,11 @@ type BackendserviceBaseEjectionTime struct {
 	Seconds int `json:"seconds"`
 }
 
+type BackendserviceBypassCacheOnRequestHeaders struct {
+	/* The header field name to match on when bypassing cache. Values are case-insensitive. */
+	HeaderName string `json:"headerName"`
+}
+
 type BackendserviceCacheKeyPolicy struct {
 	/* If true requests to different hosts will be cached separately. */
 	// +optional
@@ -203,6 +208,11 @@ type BackendserviceCacheKeyPolicy struct {
 }
 
 type BackendserviceCdnPolicy struct {
+	/* Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified.
+	The cache is bypassed for all cdnPolicy.cacheMode settings. */
+	// +optional
+	BypassCacheOnRequestHeaders []BackendserviceBypassCacheOnRequestHeaders `json:"bypassCacheOnRequestHeaders,omitempty"`
+
 	/* The CacheKeyPolicy for this CdnPolicy. */
 	// +optional
 	CacheKeyPolicy *BackendserviceCacheKeyPolicy `json:"cacheKeyPolicy,omitempty"`
@@ -444,9 +454,7 @@ type BackendserviceIap struct {
 	// +optional
 	Oauth2ClientId *string `json:"oauth2ClientId,omitempty"`
 
-	/* Only `external` field is supported to configure the reference.
-
-	OAuth2 Client ID for IAP. */
+	/* OAuth2 Client ID for IAP. */
 	// +optional
 	Oauth2ClientIdRef *v1alpha1.ResourceRef `json:"oauth2ClientIdRef,omitempty"`
 
@@ -632,8 +640,7 @@ type BackendserviceSecuritySettings struct {
 	/* ClientTlsPolicy is a resource that specifies how a client should
 	authenticate connections to backends of a service. This resource itself
 	does not affect configuration unless it is attached to a backend
-	service resource. *ConfigConnector only supports `external`
-	references for this field.* */
+	service resource. */
 	ClientTLSPolicyRef v1alpha1.ResourceRef `json:"clientTLSPolicyRef"`
 
 	/* A list of alternate names to verify the subject identity in the certificate.

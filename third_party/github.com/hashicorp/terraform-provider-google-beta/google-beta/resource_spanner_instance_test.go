@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,56 +7,20 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
-
-// Unit Tests
-
-func TestSpannerInstanceId_instanceUri(t *testing.T) {
-	id := spannerInstanceId{
-		Project:  "project123",
-		Instance: "instance456",
-	}
-	actual := id.instanceUri()
-	expected := "projects/project123/instances/instance456"
-	expectEquals(t, expected, actual)
-}
-
-func TestSpannerInstanceId_instanceConfigUri(t *testing.T) {
-	id := spannerInstanceId{
-		Project:  "project123",
-		Instance: "instance456",
-	}
-	actual := id.instanceConfigUri("conf987")
-	expected := "projects/project123/instanceConfigs/conf987"
-	expectEquals(t, expected, actual)
-}
-
-func TestSpannerInstanceId_parentProjectUri(t *testing.T) {
-	id := spannerInstanceId{
-		Project:  "project123",
-		Instance: "instance456",
-	}
-	actual := id.parentProjectUri()
-	expected := "projects/project123"
-	expectEquals(t, expected, actual)
-}
-
-func expectEquals(t *testing.T, expected, actual string) {
-	if actual != expected {
-		t.Fatalf("Expected %s, but got %s", expected, actual)
-	}
-}
 
 // Acceptance Tests
 
 func TestAccSpannerInstance_basic(t *testing.T) {
 	t.Parallel()
 
-	idName := fmt.Sprintf("spanner-test-%s", RandString(t, 10))
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	idName := fmt.Sprintf("spanner-test-%s", acctest.RandString(t, 10))
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -75,10 +41,10 @@ func TestAccSpannerInstance_basic(t *testing.T) {
 func TestAccSpannerInstance_noNodeCountSpecified(t *testing.T) {
 	t.Parallel()
 
-	idName := fmt.Sprintf("spanner-test-%s", RandString(t, 10))
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	idName := fmt.Sprintf("spanner-test-%s", acctest.RandString(t, 10))
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -91,13 +57,13 @@ func TestAccSpannerInstance_noNodeCountSpecified(t *testing.T) {
 
 func TestAccSpannerInstance_basicWithAutogenName(t *testing.T) {
 	// Randomness
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	displayName := fmt.Sprintf("spanner-test-%s-dname", RandString(t, 10))
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	displayName := fmt.Sprintf("spanner-test-%s-dname", acctest.RandString(t, 10))
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -117,14 +83,14 @@ func TestAccSpannerInstance_basicWithAutogenName(t *testing.T) {
 
 func TestAccSpannerInstance_update(t *testing.T) {
 	// Randomness
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	dName1 := fmt.Sprintf("spanner-dname1-%s", RandString(t, 10))
-	dName2 := fmt.Sprintf("spanner-dname2-%s", RandString(t, 10))
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	dName1 := fmt.Sprintf("spanner-dname1-%s", acctest.RandString(t, 10))
+	dName2 := fmt.Sprintf("spanner-dname2-%s", acctest.RandString(t, 10))
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -149,13 +115,13 @@ func TestAccSpannerInstance_update(t *testing.T) {
 
 func TestAccSpannerInstance_virtualUpdate(t *testing.T) {
 	// Randomness
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	dName := fmt.Sprintf("spanner-dname1-%s", RandString(t, 10))
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	dName := fmt.Sprintf("spanner-dname1-%s", acctest.RandString(t, 10))
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckSpannerInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

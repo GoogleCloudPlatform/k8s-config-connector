@@ -112,6 +112,8 @@ backend:
   maxRatePerInstance: float
   maxUtilization: float
 cdnPolicy:
+  bypassCacheOnRequestHeaders:
+  - headerName: string
   cacheKeyPolicy:
     includeHost: boolean
     includeHttpHeaders:
@@ -555,6 +557,37 @@ CPU utilization target for the group. Valid range is [0.0, 1.0].{% endverbatim %
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Cloud CDN configuration for this BackendService.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.bypassCacheOnRequestHeaders</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified.
+The cache is bypassed for all cdnPolicy.cacheMode settings.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.bypassCacheOnRequestHeaders[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.bypassCacheOnRequestHeaders[].headerName</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The header field name to match on when bypassing cache. Values are case-insensitive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1407,9 +1440,7 @@ specified, and a health check is required.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Only `external` field is supported to configure the reference.
-
-OAuth2 Client ID for IAP.{% endverbatim %}</p>
+            <p>{% verbatim %}OAuth2 Client ID for IAP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2088,8 +2119,7 @@ load_balancing_scheme set to INTERNAL_SELF_MANAGED.{% endverbatim %}</p>
             <p>{% verbatim %}ClientTlsPolicy is a resource that specifies how a client should
 authenticate connections to backends of a service. This resource itself
 does not affect configuration unless it is attached to a backend
-service resource. *ConfigConnector only supports `external`
-references for this field.*{% endverbatim %}</p>
+service resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2636,5 +2666,7 @@ spec:
     name: computebackendservice-dep-oauth2clientid
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

@@ -127,18 +127,37 @@ type ComputeRouterPeerSpec struct {
 	// +optional
 	Enable *bool `json:"enable,omitempty"`
 
+	/* Enable IPv6 traffic over BGP Peer. If not specified, it is disabled by default. */
+	// +optional
+	EnableIpv6 *bool `json:"enableIpv6,omitempty"`
+
 	/* IP address of the interface inside Google Cloud Platform.
 	Only IPv4 is supported. */
 	// +optional
 	IpAddress *RouterpeerIpAddress `json:"ipAddress,omitempty"`
+
+	/* IPv6 address of the interface inside Google Cloud Platform.
+	The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64.
+	If you do not specify the next hop addresses, Google Cloud automatically
+	assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range for you. */
+	// +optional
+	Ipv6NexthopAddress *string `json:"ipv6NexthopAddress,omitempty"`
 
 	/* Peer BGP Autonomous System Number (ASN).
 	Each BGP interface may use a different value. */
 	PeerAsn int `json:"peerAsn"`
 
 	/* IP address of the BGP interface outside Google Cloud Platform.
-	Only IPv4 is supported. */
-	PeerIpAddress string `json:"peerIpAddress"`
+	Only IPv4 is supported. Required if 'ip_address' is set. */
+	// +optional
+	PeerIpAddress *string `json:"peerIpAddress,omitempty"`
+
+	/* IPv6 address of the BGP interface outside Google Cloud Platform.
+	The address must be in the range 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64.
+	If you do not specify the next hop addresses, Google Cloud automatically
+	assigns unused addresses from the 2600:2d00:0:2::/64 or 2600:2d00:0:3::/64 range for you. */
+	// +optional
+	PeerIpv6NexthopAddress *string `json:"peerIpv6NexthopAddress,omitempty"`
 
 	/* Immutable. Region where the router and BgpPeer reside.
 	If it is not provided, the provider region is used. */

@@ -247,6 +247,20 @@ spec:
               cdnPolicy:
                 description: Cloud CDN configuration for this BackendService.
                 properties:
+                  bypassCacheOnRequestHeaders:
+                    description: |-
+                      Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified.
+                      The cache is bypassed for all cdnPolicy.cacheMode settings.
+                    items:
+                      properties:
+                        headerName:
+                          description: The header field name to match on when bypassing
+                            cache. Values are case-insensitive.
+                          type: string
+                      required:
+                      - headerName
+                      type: object
+                    type: array
                   cacheKeyPolicy:
                     description: The CacheKeyPolicy for this CdnPolicy.
                     properties:
@@ -691,10 +705,7 @@ spec:
                       instead.
                     type: string
                   oauth2ClientIdRef:
-                    description: |-
-                      Only `external` field is supported to configure the reference.
-
-                      OAuth2 Client ID for IAP.
+                    description: OAuth2 Client ID for IAP.
                     oneOf:
                     - not:
                         required:
@@ -1129,8 +1140,7 @@ spec:
                       ClientTlsPolicy is a resource that specifies how a client should
                       authenticate connections to backends of a service. This resource itself
                       does not affect configuration unless it is attached to a backend
-                      service resource. *ConfigConnector only supports `external`
-                      references for this field.*
+                      service resource.
                     oneOf:
                     - not:
                         required:

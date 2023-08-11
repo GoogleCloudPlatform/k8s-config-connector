@@ -627,6 +627,10 @@ Custom Resource Definitions in the GitHub repository. For example, this
 </tr>
 <tr>
   <td><a href="/run/docs/">{{cloud_run_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/run/runjob.md">RunJob</a></td>
+</tr>
+<tr>
+  <td><a href="/run/docs/">{{cloud_run_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/run/runservice.md">RunService</a></td>
 </tr>
 <tr>

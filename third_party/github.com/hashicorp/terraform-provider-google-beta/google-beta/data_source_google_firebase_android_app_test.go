@@ -1,30 +1,34 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDataSourceGoogleFirebaseAndroidApp(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":   GetTestProjectFromEnv(),
-		"package_name": "android.package.app" + RandString(t, 4),
+		"project_id":   envvar.GetTestProjectFromEnv(),
+		"package_name": "android.package.app" + acctest.RandString(t, 4),
 		"display_name": "tf-test Display Name AndroidApp DataSource",
 	}
 
 	resourceName := "data.google_firebase_android_app.my_app"
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleFirebaseAndroidApp(context),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceStateWithIgnores(
+					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						resourceName,
 						"google_firebase_android_app.my_app",
 						map[string]struct{}{
@@ -38,7 +42,7 @@ func TestAccDataSourceGoogleFirebaseAndroidApp(t *testing.T) {
 }
 
 func testAccDataSourceGoogleFirebaseAndroidApp(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_firebase_android_app" "my_app" {
   project = "%{project_id}"
   package_name = "%{package_name}"

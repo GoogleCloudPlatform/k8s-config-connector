@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,18 +24,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccTPUNode_tpuNodeBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckTPUNodeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,7 +56,7 @@ func TestAccTPUNode_tpuNodeBasicExample(t *testing.T) {
 }
 
 func testAccTPUNode_tpuNodeBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 
 data "google_tpu_tensorflow_versions" "available" {
 }
@@ -69,12 +76,12 @@ func TestAccTPUNode_tpuNodeFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckTPUNodeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -91,7 +98,7 @@ func TestAccTPUNode_tpuNodeFullExample(t *testing.T) {
 }
 
 func testAccTPUNode_tpuNodeFullExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 data "google_tpu_tensorflow_versions" "available" {
 }
 
@@ -122,7 +129,7 @@ data "google_compute_network" "network" {
 }
 
 resource "google_compute_global_address" "service_range" {
-  name          = "tf-test%{random_suffix}"
+  name          = "tf-test-my-global-address%{random_suffix}"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   prefix_length = 16
@@ -147,9 +154,9 @@ func testAccCheckTPUNodeDestroyProducer(t *testing.T) func(s *terraform.State) e
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{TPUBasePath}}projects/{{project}}/locations/{{zone}}/nodes/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{TPUBasePath}}projects/{{project}}/locations/{{zone}}/nodes/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -160,7 +167,13 @@ func testAccCheckTPUNodeDestroyProducer(t *testing.T) func(s *terraform.State) e
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("TPUNode still exists at %s", url)
 			}

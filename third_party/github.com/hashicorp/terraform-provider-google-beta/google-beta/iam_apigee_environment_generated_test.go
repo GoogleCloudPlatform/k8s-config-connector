@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -19,21 +22,24 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccApigeeEnvironmentIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   RandString(t, 10),
+		"random_suffix":   acctest.RandString(t, 10),
 		"role":            "roles/viewer",
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApigeeEnvironmentIamBinding_basicGenerated(context),
@@ -62,15 +68,15 @@ func TestAccApigeeEnvironmentIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   RandString(t, 10),
+		"random_suffix":   acctest.RandString(t, 10),
 		"role":            "roles/viewer",
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -90,18 +96,19 @@ func TestAccApigeeEnvironmentIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   RandString(t, 10),
+		"random_suffix":   acctest.RandString(t, 10),
 		"role":            "roles/viewer",
-		"org_id":          GetTestOrgFromEnv(t),
-		"billing_account": GetTestBillingAccountFromEnv(t),
+		"org_id":          envvar.GetTestOrgFromEnv(t),
+		"billing_account": envvar.GetTestBillingAccountFromEnv(t),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApigeeEnvironmentIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_apigee_environment_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_apigee_environment_iam_policy.foo",
@@ -123,7 +130,7 @@ func TestAccApigeeEnvironmentIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccApigeeEnvironmentIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id      = "tf-test%{random_suffix}"
   name            = "tf-test%{random_suffix}"
@@ -197,7 +204,7 @@ resource "google_apigee_environment_iam_member" "foo" {
 }
 
 func testAccApigeeEnvironmentIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id      = "tf-test%{random_suffix}"
   name            = "tf-test%{random_suffix}"
@@ -273,11 +280,19 @@ resource "google_apigee_environment_iam_policy" "foo" {
   env_id = google_apigee_environment.apigee_environment.name
   policy_data = data.google_iam_policy.foo.policy_data
 }
+
+data "google_apigee_environment_iam_policy" "foo" {
+  org_id = google_apigee_environment.apigee_environment.org_id
+  env_id = google_apigee_environment.apigee_environment.name
+  depends_on = [
+    google_apigee_environment_iam_policy.foo
+  ]
+}
 `, context)
 }
 
 func testAccApigeeEnvironmentIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id      = "tf-test%{random_suffix}"
   name            = "tf-test%{random_suffix}"
@@ -353,7 +368,7 @@ resource "google_apigee_environment_iam_policy" "foo" {
 }
 
 func testAccApigeeEnvironmentIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id      = "tf-test%{random_suffix}"
   name            = "tf-test%{random_suffix}"
@@ -427,7 +442,7 @@ resource "google_apigee_environment_iam_binding" "foo" {
 }
 
 func testAccApigeeEnvironmentIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project" "project" {
   project_id      = "tf-test%{random_suffix}"
   name            = "tf-test%{random_suffix}"

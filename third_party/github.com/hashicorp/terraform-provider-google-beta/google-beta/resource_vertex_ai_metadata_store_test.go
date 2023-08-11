@@ -1,23 +1,28 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccVertexAIMetadataStore_vertexAiMetadataStoreExample(t *testing.T) {
 	t.Parallel()
 
-	kms := BootstrapKMSKeyInLocation(t, "us-central1")
-	name := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	kms := acctest.BootstrapKMSKeyInLocation(t, "us-central1")
+	name := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckVertexAIMetadataStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,9 +61,9 @@ func testAccCheckVertexAIMetadataStoreDestroyProducer(t *testing.T) func(s *terr
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{VertexAIBasePath}}{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{VertexAIBasePath}}{{name}}")
 			if err != nil {
 				return err
 			}
@@ -69,7 +74,13 @@ func testAccCheckVertexAIMetadataStoreDestroyProducer(t *testing.T) func(s *terr
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("VertexAIMetadataStore still exists at %s", url)
 			}

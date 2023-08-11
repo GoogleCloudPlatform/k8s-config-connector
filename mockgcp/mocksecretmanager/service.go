@@ -17,6 +17,7 @@ package mocksecretmanager
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	secretmanager_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/secretmanager/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -26,32 +27,37 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const ExpectedHost = "secretmanager.googleapis.com"
-
 // MockService represents a mocked secret manager service.
 type MockService struct {
 	kube    client.Client
 	storage storage.Storage
 
 	projects *projects.ProjectStore
+
+	v1 *SecretsV1
 }
 
-// NewMockService creates a mockSecretManager
-func NewMockService(kube client.Client, storage storage.Storage) *MockService {
+// New creates a mockSecretManager
+func New(mockenv *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:     kube,
+		kube:     mockenv.GetKubeClient(),
 		storage:  storage,
-		projects: projects.NewProjectStore(),
+		projects: mockenv.GetProjects(),
 	}
+	s.v1 = &SecretsV1{MockService: s}
 	return s
 }
 
+func (s *MockService) ExpectedHost() string {
+	return "secretmanager.googleapis.com"
+}
+
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	secretmanager.RegisterSecretManagerServiceServer(grpcServer, s)
+	secretmanager.RegisterSecretManagerServiceServer(grpcServer, s.v1)
 	// longrunning.RegisterOperationsServer(grpcServer, s)
 }
 
-func (s *MockService) NewMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
+func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
 	mux := runtime.NewServeMux()
 	if err := secretmanager_http.RegisterSecretManagerServiceHandler(ctx, mux, conn); err != nil {
 		return nil, err

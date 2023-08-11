@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigquery_table.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigquery_table.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigquery/resource_bigquery_table.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigquery/resource_bigquery_table.go
 index 8b4abf6e8..51e2dd736 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigquery_table.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigquery_table.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigquery/resource_bigquery_table.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigquery/resource_bigquery_table.go
 @@ -861,7 +861,7 @@ func resourceBigQueryTable() *schema.Resource {
  			"deletion_protection": {
  				Type:        schema.TypeBool,

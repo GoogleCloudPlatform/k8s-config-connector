@@ -45,20 +45,52 @@ type FirewallpolicyruleLayer4Configs struct {
 }
 
 type FirewallpolicyruleMatch struct {
+	/* Address groups which should be matched against the traffic destination. Maximum number of destination address groups is 10. Destination address groups is only supported in Egress rules. */
+	// +optional
+	DestAddressGroups []string `json:"destAddressGroups,omitempty"`
+
+	/* Domain names that will be used to match against the resolved domain name of destination of traffic. Can only be specified if DIRECTION is egress. */
+	// +optional
+	DestFqdns []string `json:"destFqdns,omitempty"`
+
 	/* CIDR IP address range. Maximum number of destination CIDR IP ranges allowed is 256. */
 	// +optional
 	DestIPRanges []string `json:"destIPRanges,omitempty"`
 
+	/* The Unicode country codes whose IP addresses will be used to match against the source of traffic. Can only be specified if DIRECTION is egress. */
+	// +optional
+	DestRegionCodes []string `json:"destRegionCodes,omitempty"`
+
+	/* Name of the Google Cloud Threat Intelligence list. */
+	// +optional
+	DestThreatIntelligences []string `json:"destThreatIntelligences,omitempty"`
+
 	/* Pairs of IP protocols and ports that the rule should match. */
 	Layer4Configs []FirewallpolicyruleLayer4Configs `json:"layer4Configs"`
+
+	/* Address groups which should be matched against the traffic source. Maximum number of source address groups is 10. Source address groups is only supported in Ingress rules. */
+	// +optional
+	SrcAddressGroups []string `json:"srcAddressGroups,omitempty"`
+
+	/* Domain names that will be used to match against the resolved domain name of source of traffic. Can only be specified if DIRECTION is ingress. */
+	// +optional
+	SrcFqdns []string `json:"srcFqdns,omitempty"`
 
 	/* CIDR IP address range. Maximum number of source CIDR IP ranges allowed is 256. */
 	// +optional
 	SrcIPRanges []string `json:"srcIPRanges,omitempty"`
+
+	/* The Unicode country codes whose IP addresses will be used to match against the source of traffic. Can only be specified if DIRECTION is ingress. */
+	// +optional
+	SrcRegionCodes []string `json:"srcRegionCodes,omitempty"`
+
+	/* Name of the Google Cloud Threat Intelligence list. */
+	// +optional
+	SrcThreatIntelligences []string `json:"srcThreatIntelligences,omitempty"`
 }
 
 type ComputeFirewallPolicyRuleSpec struct {
-	/* The Action to perform when the client connection triggers the rule. Can currently be either "allow" or "deny()" where valid values for status are 403, 404, and 502. */
+	/* The Action to perform when the client connection triggers the rule. Valid actions are "allow", "deny" and "goto_next". */
 	Action string `json:"action"`
 
 	/* An optional description for this resource. */

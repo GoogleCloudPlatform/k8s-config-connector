@@ -1,112 +1,54 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
-	"errors"
 	"fmt"
-	"io/ioutil"
 	"regexp"
 	"testing"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func TestProvider(t *testing.T) {
-	if err := Provider().InternalValidate(); err != nil {
+	if err := provider.Provider().InternalValidate(); err != nil {
 		t.Fatalf("err: %s", err)
 	}
 }
 
 func TestProvider_impl(t *testing.T) {
-	var _ *schema.Provider = Provider()
+	var _ *schema.Provider = provider.Provider()
 }
 
 func TestProvider_noDuplicatesInResourceMap(t *testing.T) {
-	_, err := ResourceMapWithErrors()
+	_, err := provider.ResourceMapWithErrors()
 	if err != nil {
 		t.Error(err)
 	}
 }
 
-func TestProvider_validateCredentials(t *testing.T) {
-	cases := map[string]struct {
-		ConfigValue      func(t *testing.T) interface{}
-		ValueNotProvided bool
-		ExpectedWarnings []string
-		ExpectedErrors   []error
-	}{
-		"configuring credentials as a path to a credentials JSON file is valid": {
-			ConfigValue: func(t *testing.T) interface{} {
-				return testFakeCredentialsPath // Path to a test fixture
-			},
-		},
-		"configuring credentials as a path to a non-existant file is NOT valid": {
-			ConfigValue: func(t *testing.T) interface{} {
-				return "./this/path/doesnt/exist.json" // Doesn't exist
-			},
-			ExpectedErrors: []error{
-				// As the file doesn't exist, so the function attempts to parse it as a JSON
-				errors.New("JSON credentials are not valid: invalid character '.' looking for beginning of value"),
-			},
-		},
-		"configuring credentials as a credentials JSON string is valid": {
-			ConfigValue: func(t *testing.T) interface{} {
-				contents, err := ioutil.ReadFile(testFakeCredentialsPath)
-				if err != nil {
-					t.Fatalf("Unexpected error: %s", err)
-				}
-				return string(contents)
-			},
-		},
-		"configuring credentials as an empty string is valid": {
-			ConfigValue: func(t *testing.T) interface{} {
-				return ""
-			},
-		},
-		"leaving credentials unconfigured is valid": {
-			ValueNotProvided: true,
-		},
-	}
-
-	for tn, tc := range cases {
-		t.Run(tn, func(t *testing.T) {
-			// Arrange
-			var configValue interface{}
-			if !tc.ValueNotProvided {
-				configValue = tc.ConfigValue(t)
-			}
-
-			// Act
-			// Note: second argument is currently unused by the function but is necessary to fulfill the SchemaValidateFunc type's function signature
-			ws, es := validateCredentials(configValue, "")
-
-			// Assert
-			if len(ws) != len(tc.ExpectedWarnings) {
-				t.Errorf("Expected %d warnings, got %d: %v", len(tc.ExpectedWarnings), len(ws), ws)
-			}
-			if len(es) != len(tc.ExpectedErrors) {
-				t.Errorf("Expected %d errors, got %d: %v", len(tc.ExpectedErrors), len(es), es)
-			}
-
-			if len(tc.ExpectedErrors) > 0 {
-				if es[0].Error() != tc.ExpectedErrors[0].Error() {
-					t.Errorf("Expected first error to be \"%s\", got \"%s\"", tc.ExpectedErrors[0], es[0])
-				}
-			}
-		})
+func TestProvider_noDuplicatesInDatasourceMap(t *testing.T) {
+	_, err := provider.DatasourceMapWithErrors()
+	if err != nil {
+		t.Error(err)
 	}
 }
 
 func TestAccProviderBasePath_setBasePath(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccProviderBasePath_setBasePath("https://www.googleapis.com/compute/beta/", RandString(t, 10)),
+				Config: testAccProviderBasePath_setBasePath("https://www.googleapis.com/compute/beta/", acctest.RandString(t, 10)),
 			},
 			{
 				ResourceName:      "google_compute_address.default",
@@ -120,13 +62,13 @@ func TestAccProviderBasePath_setBasePath(t *testing.T) {
 func TestAccProviderBasePath_setInvalidBasePath(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config:      testAccProviderBasePath_setBasePath("https://www.example.com/compute/beta/", RandString(t, 10)),
+				Config:      testAccProviderBasePath_setBasePath("https://www.example.com/compute/beta/", acctest.RandString(t, 10)),
 				ExpectError: regexp.MustCompile("got HTTP response code 404 with body"),
 			},
 		},
@@ -137,13 +79,13 @@ func TestAccProviderMeta_setModuleName(t *testing.T) {
 	t.Parallel()
 
 	moduleName := "my-module"
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccProviderMeta_setModuleName(moduleName, RandString(t, 10)),
+				Config: testAccProviderMeta_setModuleName(moduleName, acctest.RandString(t, 10)),
 			},
 			{
 				ResourceName:      "google_compute_address.default",
@@ -156,23 +98,23 @@ func TestAccProviderMeta_setModuleName(t *testing.T) {
 
 func TestAccProviderUserProjectOverride(t *testing.T) {
 	// Parallel fine-grained resource creation
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	org := GetTestOrgFromEnv(t)
-	billing := GetTestBillingAccountFromEnv(t)
-	pid := "tf-test-" + RandString(t, 10)
-	topicName := "tf-test-topic-" + RandString(t, 10)
+	org := envvar.GetTestOrgFromEnv(t)
+	billing := envvar.GetTestBillingAccountFromEnv(t)
+	pid := "tf-test-" + acctest.RandString(t, 10)
+	topicName := "tf-test-topic-" + acctest.RandString(t, 10)
 
-	config := BootstrapConfig(t)
-	accessToken, err := setupProjectsAndGetAccessToken(org, billing, pid, "pubsub", config)
+	config := acctest.BootstrapConfig(t)
+	accessToken, err := acctest.SetupProjectsAndGetAccessToken(org, billing, pid, "pubsub", config)
 	if err != nil {
 		t.Error(err)
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		// No TestDestroy since that's not really the point of this test
 		Steps: []resource.TestStep{
 			{
@@ -198,22 +140,22 @@ func TestAccProviderUserProjectOverride(t *testing.T) {
 // a reference to a different resource instead of a project field.
 func TestAccProviderIndirectUserProjectOverride(t *testing.T) {
 	// Parallel fine-grained resource creation
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	org := GetTestOrgFromEnv(t)
-	billing := GetTestBillingAccountFromEnv(t)
-	pid := "tf-test-" + RandString(t, 10)
+	org := envvar.GetTestOrgFromEnv(t)
+	billing := envvar.GetTestBillingAccountFromEnv(t)
+	pid := "tf-test-" + acctest.RandString(t, 10)
 
-	config := BootstrapConfig(t)
+	config := acctest.BootstrapConfig(t)
 	accessToken, err := setupProjectsAndGetAccessToken(org, billing, pid, "cloudkms", config)
 	if err != nil {
 		t.Error(err)
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		// No TestDestroy since that's not really the point of this test
 		Steps: []resource.TestStep{
 			{

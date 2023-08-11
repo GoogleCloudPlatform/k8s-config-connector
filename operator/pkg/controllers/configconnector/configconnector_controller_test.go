@@ -20,8 +20,11 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/controller"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
@@ -33,7 +36,10 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/dynamic"
+	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
 
@@ -909,4 +915,244 @@ func TestSelectingCRDsByVersion(t *testing.T) {
 			}
 		})
 	}
+}
+
+// TestConfigConnectorContextControllerWatchMultipleCustomizationCR verifies the correct behavior of
+// the customization watcher of configConnectorContext operator.
+func TestConfigConnectorControllerWatchCustomizationCR(t *testing.T) {
+	var (
+		CC = &corev1beta1.ConfigConnector{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: k8s.ConfigConnectorAllowedName,
+			},
+		}
+		CR = &customizev1alpha1.ControllerResource{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: "cnrm-webhook-manager",
+			},
+			Spec: customizev1alpha1.ControllerResourceSpec{
+				Containers: []customizev1alpha1.ContainerResourceSpec{
+					{
+						Name:      "webhook",
+						Resources: v1.ResourceRequirements{},
+					},
+				},
+			},
+		}
+	)
+
+	// test setup
+	ctx, cancel := context.WithCancel(context.Background())
+	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+	defer func() {
+		cancel()
+		stop()
+	}()
+	r := newConfigConnectorReconcilerWithCustomizationWatcher(mgr)
+	if err := r.customizationWatcher.EnsureWatchStarted(ctx, types.NamespacedName{Namespace: CC.Namespace, Name: CC.Name}); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	c := mgr.GetClient()
+
+	// after a ControllerResource object is created,
+	// check that a watch event is raised with the correct name and namespace.
+	if err := c.Create(ctx, CR); err != nil {
+		t.Fatalf("error creating %v %v/%v: %v", CR.Kind, CR.Namespace, CR.Name, err)
+	}
+	select { // expect watch event raised on "/configconnector.core.cnrm.cloud.google.com"
+	case e := <-r.customizationWatcher.Events():
+		if e.Object.GetNamespace() != "" {
+			t.Fatalf("unexpected namespace for watch event object, want \"\" (global), got %v", e.Object.GetNamespace())
+		}
+		if e.Object.GetName() != k8s.ConfigConnectorAllowedName {
+			t.Fatalf("unexpected name for watch event object, want %v, got %v", k8s.ConfigConnectorAllowedName, e.Object.GetName())
+		}
+	case <-time.After(3 * time.Second):
+		t.Fatalf("expect watch event, got no event")
+	}
+	select { // expect no more watch event
+	case e := <-r.customizationWatcher.Events():
+		t.Fatalf("unexpected watch event object: %v", e.Object)
+	default:
+	}
+
+	// after delete a ControllerResource, check that a watch event is raised with the correct name and namespace.
+	if err := c.Delete(ctx, CR); err != nil {
+		t.Fatalf("error deleting %v %v/%v: %v", CR.Kind, CR.Namespace, CR.Name, err)
+	}
+	select { // expect watch event raised on "/configconnector.core.cnrm.cloud.google.com"
+	case e := <-r.customizationWatcher.Events():
+		if e.Object.GetNamespace() != "" {
+			t.Fatalf("unexpected namespace for watch event object, want \"\" (global), got %v", e.Object.GetNamespace())
+		}
+		if e.Object.GetName() != k8s.ConfigConnectorAllowedName {
+			t.Fatalf("unexpected name for watch event object, want %v, got %v", k8s.ConfigConnectorAllowedName, e.Object.GetName())
+		}
+	case <-time.After(3 * time.Second):
+		t.Fatalf("expect watch event, got no event")
+	}
+}
+
+func TestApplyCustomizations(t *testing.T) {
+	tests := []struct {
+		name                          string
+		manifests                     []string
+		clusterScopedCustomizationCR  *customizev1alpha1.ControllerResource
+		namespacedCustomizationCR     *customizev1alpha1.NamespacedControllerResource
+		expectedManifests             []string
+		expectedCustomizationCRStatus customizev1alpha1.ControllerResourceStatus
+		skipCheckingCRStatus          bool
+	}{
+		{
+			name:                         "customize the resources for cnrm-controller-manager",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerResources,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedControllerManager,
+			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: true,
+				},
+			},
+		},
+		{
+			name:                         "customize the resources and replica for cnrm-webhook-manager",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerResourcesAndReplicas,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManager,
+			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: true,
+				},
+			},
+		},
+		{
+			name:                         "customize for a non-existing controller fails",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingController,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: false,
+					Errors:  []string{testcontroller.ErrNonExistingController},
+				},
+			},
+		},
+		{
+			name:                         "customize for a non-existing container in a valid controller fails",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingContainer,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: false,
+					Errors:  []string{testcontroller.ErrNonExistingContainer},
+				},
+			},
+		},
+		{
+			name:                         "customize the replicas for cnrm-controller-manager has no effect",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerReplicas,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: true,
+				},
+			},
+		},
+		{
+			name:                         "customize the replicas for cnrm-webhook-manager to a value large than the maxReplicas of HPA",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerWithLargeReplicas,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManagerWithLargeReplicas,
+			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: true,
+				},
+			},
+		},
+		{
+			name:                      "namespaced customization CR has no effect",
+			manifests:                 testcontroller.ClusterModeComponents,
+			namespacedCustomizationCR: testcontroller.NamespacedControllerResourceCRForControllerManagerResources,
+			expectedManifests:         testcontroller.ClusterModeComponents, // same as the input manifests
+			skipCheckingCRStatus:      true,
+		},
+	}
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			// test setup
+			ctx := context.TODO()
+			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+			defer stop()
+			c := mgr.GetClient()
+			if tc.clusterScopedCustomizationCR != nil {
+				cr := tc.clusterScopedCustomizationCR
+				if err := c.Create(ctx, cr); err != nil {
+					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
+				}
+			}
+			if tc.namespacedCustomizationCR != nil {
+				cr := tc.namespacedCustomizationCR
+				testcontroller.EnsureNamespaceExists(c, cr.Namespace)
+				if err := c.Create(ctx, cr); err != nil {
+					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
+				}
+			}
+			manifests := testcontroller.ParseObjects(t, ctx, tc.manifests)
+			r := newConfigConnectorReconciler(c)
+
+			// run the test function
+			fn := r.applyCustomizations()
+			if err := fn(ctx, nil, manifests); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			// check the resulting manifests
+			gotJson, err := manifests.JSONManifest()
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			expectedManifests := testcontroller.ParseObjects(t, ctx, tc.expectedManifests)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			expectedJson, err := expectedManifests.JSONManifest()
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if !reflect.DeepEqual(gotJson, expectedJson) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotJson, expectedJson))
+			}
+
+			// check the status of cluster-scoped customization CR
+			if tc.skipCheckingCRStatus {
+				return
+			}
+			updatedCR := &customizev1alpha1.ControllerResource{}
+			if err := c.Get(ctx, types.NamespacedName{Namespace: tc.clusterScopedCustomizationCR.Namespace, Name: tc.clusterScopedCustomizationCR.Name}, updatedCR); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			gotStatus := updatedCR.Status
+			if !reflect.DeepEqual(gotStatus, tc.expectedCustomizationCRStatus) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, tc.expectedCustomizationCRStatus))
+			}
+		})
+	}
+}
+
+func newConfigConnectorReconcilerWithCustomizationWatcher(m ctrl.Manager) *ConfigConnectorReconciler {
+	r := &ConfigConnectorReconciler{
+		client: m.GetClient(),
+		log:    logr.Discard(),
+	}
+	r.customizationWatcher = controllers.NewWithDynamicClient(
+		dynamic.NewForConfigOrDie(m.GetConfig()),
+		controllers.CustomizationWatcherOptions{
+			TriggerGVRs: controllers.CustomizationCRsToWatch,
+			Log:         logr.Discard(),
+		})
+	return r
 }

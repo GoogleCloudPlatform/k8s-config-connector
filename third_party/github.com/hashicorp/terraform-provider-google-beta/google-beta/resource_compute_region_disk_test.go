@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,21 +7,26 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
 func TestAccComputeRegionDisk_basic(t *testing.T) {
 	t.Parallel()
 
-	diskName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	diskName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
 	var disk compute.Disk
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -53,13 +60,13 @@ func TestAccComputeRegionDisk_basic(t *testing.T) {
 func TestAccComputeRegionDisk_basicUpdate(t *testing.T) {
 	t.Parallel()
 
-	diskName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	diskName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
 	var disk compute.Disk
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -97,12 +104,12 @@ func TestAccComputeRegionDisk_basicUpdate(t *testing.T) {
 func TestAccComputeRegionDisk_encryption(t *testing.T) {
 	t.Parallel()
 
-	diskName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	diskName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 	var disk compute.Disk
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -121,15 +128,15 @@ func TestAccComputeRegionDisk_encryption(t *testing.T) {
 func TestAccComputeRegionDisk_deleteDetach(t *testing.T) {
 	t.Parallel()
 
-	diskName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	regionDiskName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	regionDiskName2 := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	diskName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	regionDiskName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	regionDiskName2 := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 	var disk compute.Disk
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -177,13 +184,13 @@ func TestAccComputeRegionDisk_deleteDetach(t *testing.T) {
 func TestAccComputeRegionDisk_cloneDisk(t *testing.T) {
 	t.Parallel()
 
-	diskName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	diskName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
 	var disk compute.Disk
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -202,9 +209,45 @@ func TestAccComputeRegionDisk_cloneDisk(t *testing.T) {
 	})
 }
 
+func TestAccComputeRegionDisk_featuresUpdated(t *testing.T) {
+	t.Parallel()
+
+	diskName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+
+	var disk compute.Disk
+
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckComputeRegionDiskDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeRegionDisk_features(diskName),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckComputeRegionDiskExists(
+						t, "google_compute_region_disk.regiondisk", &disk),
+				),
+			},
+			{
+				ResourceName:      "google_compute_region_disk.regiondisk",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeRegionDisk_featuresUpdated(diskName),
+			},
+			{
+				ResourceName:      "google_compute_region_disk.regiondisk",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func testAccCheckComputeRegionDiskExists(t *testing.T, n string, disk *compute.Disk) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		p := GetTestProjectFromEnv()
+		p := envvar.GetTestProjectFromEnv()
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
 			return fmt.Errorf("Not found: %s", n)
@@ -214,7 +257,7 @@ func testAccCheckComputeRegionDiskExists(t *testing.T, n string, disk *compute.D
 			return fmt.Errorf("No ID is set")
 		}
 
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		found, err := config.NewComputeClient(config.UserAgent).RegionDisks.Get(
 			p, rs.Primary.Attributes["region"], rs.Primary.Attributes["name"]).Do()
@@ -294,7 +337,7 @@ func testAccCheckComputeRegionDiskInstances(n string, disk *compute.Disk) resour
 		}
 
 		for pos, user := range disk.Users {
-			if ConvertSelfLinkToV1(rs.Primary.Attributes["users."+strconv.Itoa(pos)]) != ConvertSelfLinkToV1(user) {
+			if tpgresource.ConvertSelfLinkToV1(rs.Primary.Attributes["users."+strconv.Itoa(pos)]) != tpgresource.ConvertSelfLinkToV1(user) {
 				return fmt.Errorf("RegionDisk %s has mismatched users.\nTF State: %+v.\nGCP State: %+v",
 					n, rs.Primary.Attributes["users"], disk.Users)
 			}
@@ -474,4 +517,42 @@ func testAccComputeRegionDisk_diskClone(diskName, refSelector string) string {
 		replica_zones = ["us-central1-a", "us-central1-f"]
 	  }
 	`, diskName, diskName, diskName, diskName+"-clone", refSelector)
+}
+
+func testAccComputeRegionDisk_features(diskName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_region_disk" "regiondisk" {
+  name   = "%s"
+  type   = "pd-ssd"
+  size   = 50
+  region = "us-central1"
+
+  guest_os_features {
+    type = "SECURE_BOOT"
+  }
+
+  replica_zones = ["us-central1-a", "us-central1-f"]
+}
+`, diskName)
+}
+
+func testAccComputeRegionDisk_featuresUpdated(diskName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_region_disk" "regiondisk" {
+  name   = "%s"
+  type   = "pd-ssd"
+  size   = 50
+  region = "us-central1"
+
+  guest_os_features {
+    type = "SECURE_BOOT"
+  }
+
+  guest_os_features {
+    type = "MULTI_IP_SUBNET"
+  }
+
+  replica_zones = ["us-central1-a", "us-central1-f"]
+}
+`, diskName)
 }

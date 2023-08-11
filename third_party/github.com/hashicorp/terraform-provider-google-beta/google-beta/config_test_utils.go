@@ -1,22 +1,24 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"net/http/httptest"
 	"strings"
 )
 
 const testFakeCredentialsPath = "./test-fixtures/fake_account.json"
-const testOauthScope = "https://www.googleapis.com/auth/compute"
 
 // NewTestConfig create a config using the http test server.
-func NewTestConfig(server *httptest.Server) *Config {
-	cfg := &Config{}
+func NewTestConfig(server *httptest.Server) *transport_tpg.Config {
+	cfg := &transport_tpg.Config{}
 	cfg.Client = server.Client()
 	configureTestBasePaths(cfg, server.URL)
 	return cfg
 }
 
-func configureTestBasePaths(c *Config, url string) {
+func configureTestBasePaths(c *transport_tpg.Config, url string) {
 	if !strings.HasSuffix(url, "/") {
 		url = url + "/"
 	}
@@ -55,6 +57,7 @@ func configureTestBasePaths(c *Config, url string) {
 	c.ComputeBasePath = url
 	c.ContainerAnalysisBasePath = url
 	c.ContainerAttachedBasePath = url
+	c.DatabaseMigrationServiceBasePath = url
 	c.DataCatalogBasePath = url
 	c.DataformBasePath = url
 	c.DataFusionBasePath = url
@@ -73,12 +76,15 @@ func configureTestBasePaths(c *Config, url string) {
 	c.FilestoreBasePath = url
 	c.FirebaseBasePath = url
 	c.FirebaseDatabaseBasePath = url
+	c.FirebaseExtensionsBasePath = url
 	c.FirebaseHostingBasePath = url
 	c.FirebaseStorageBasePath = url
 	c.FirestoreBasePath = url
 	c.GameServicesBasePath = url
 	c.GKEBackupBasePath = url
 	c.GKEHubBasePath = url
+	c.GKEHub2BasePath = url
+	c.GkeonpremBasePath = url
 	c.HealthcareBasePath = url
 	c.IAM2BasePath = url
 	c.IAMBetaBasePath = url
@@ -87,6 +93,7 @@ func configureTestBasePaths(c *Config, url string) {
 	c.IdentityPlatformBasePath = url
 	c.KMSBasePath = url
 	c.LoggingBasePath = url
+	c.LookerBasePath = url
 	c.MemcacheBasePath = url
 	c.MLEngineBasePath = url
 	c.MonitoringBasePath = url
@@ -98,6 +105,7 @@ func configureTestBasePaths(c *Config, url string) {
 	c.OSConfigBasePath = url
 	c.OSLoginBasePath = url
 	c.PrivatecaBasePath = url
+	c.PublicCABasePath = url
 	c.PubsubBasePath = url
 	c.PubsubLiteBasePath = url
 	c.RedisBasePath = url
@@ -117,6 +125,7 @@ func configureTestBasePaths(c *Config, url string) {
 	c.TagsBasePath = url
 	c.TPUBasePath = url
 	c.VertexAIBasePath = url
+	c.VmwareengineBasePath = url
 	c.VPCAccessBasePath = url
 	c.WorkflowsBasePath = url
 	c.WorkstationsBasePath = url

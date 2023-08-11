@@ -1,0 +1,72 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: vpcaccess.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: VPCAccess
+  version: v1beta1
+  serviceHostName: "vpcaccess.googleapis.com"
+  resources:
+    - name: google_vpc_access_connector
+      kind: VPCAccessConnector
+      idTemplate: "projects/{{project}}/locations/{{location}}/connectors/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      locationality: regional
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            Immutable. The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: network
+          key: networkRef
+          description: |-
+            Immutable. Name or self_link of the VPC network. Required if 'ip_cidr_range' is set.
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: subnet.name
+          key: nameRef
+          description: |-
+            Immutable. Subnet name (relative, not fully qualified). E.g. if the full subnet selfLink is
+            https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName} the correct input for this field would be {subnetName}"
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+        - tfField: subnet.project_id
+          key: projectRef
+          description: |-
+            Immutable. Project in which the subnet exists. If not set, this project is assumed to be the project for which the connector create request was issued.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+      hierarchicalReferences:
+        - type: project
+          key: projectRef

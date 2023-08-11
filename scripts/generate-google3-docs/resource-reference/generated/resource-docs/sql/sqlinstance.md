@@ -126,6 +126,8 @@ settings:
   activationPolicy: string
   activeDirectoryConfig:
     domain: string
+  advancedMachineFeatures:
+    threadsPerCore: integer
   authorizedGaeApplications:
   - string
   availabilityType: string
@@ -142,6 +144,8 @@ settings:
   collation: string
   connectorEnforcement: string
   crashSafeReplication: boolean
+  dataCacheConfig:
+    dataCacheEnabled: boolean
   databaseFlags:
   - name: string
     value: string
@@ -154,6 +158,7 @@ settings:
   diskAutoresizeLimit: integer
   diskSize: integer
   diskType: string
+  edition: string
   insightsConfig:
     queryInsightsEnabled: boolean
     queryPlansPerMinute: integer
@@ -215,7 +220,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MySQL, PostgreSQL or SQL Server (beta) version to use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date reference of supported versions.{% endverbatim %}</p>
+            <p>{% verbatim %}The MySQL, PostgreSQL or SQL Server (beta) version to use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14, POSTGRES_15, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date reference of supported versions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -610,6 +615,26 @@ settings:
     </tr>
     <tr>
         <td>
+            <p><code>settings.advancedMachineFeatures</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.advancedMachineFeatures.threadsPerCore</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}The number of threads per physical core. Can be 1 or 2.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>settings.authorizedGaeApplications</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -777,6 +802,26 @@ Specifying this field has no-ops; it's recommended to remove this field from you
     </tr>
     <tr>
         <td>
+            <p><code>settings.dataCacheConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Data cache configurations.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.dataCacheConfig.dataCacheEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether data cache is enabled for the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>settings.databaseFlags</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -903,6 +948,16 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The type of data disk: PD_SSD or PD_HDD. Defaults to PD_SSD.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.edition</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The edition of the instance, can be ENTERPRISE or ENTERPRISE_PLUS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1857,5 +1912,7 @@ metadata:
   name: ${PROJECT_ID?}-sqlinstance-dep-sqlserver
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

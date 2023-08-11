@@ -1,7 +1,10 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
 	"fmt"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -10,11 +13,11 @@ import (
 func TestAccNetworkSecurityUrlLists_update(t *testing.T) {
 	t.Parallel()
 
-	urlListsName := fmt.Sprintf("tf-test-url-lists-%s", RandString(t, 10))
+	urlListsName := fmt.Sprintf("tf-test-url-lists-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckNetworkSecurityUrlListsDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

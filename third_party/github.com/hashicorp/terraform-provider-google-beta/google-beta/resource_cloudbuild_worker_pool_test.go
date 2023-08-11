@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -7,19 +9,23 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccCloudbuildWorkerPool_basic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
-		"project":       GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             funcAccTestCloudbuildWorkerPoolCheckDestroy(t),
 		Steps: []resource.TestStep{
 			{
@@ -51,7 +57,7 @@ func TestAccCloudbuildWorkerPool_basic(t *testing.T) {
 }
 
 func testAccCloudbuildWorkerPool_basic(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuild_worker_pool" "pool" {
 	name = "pool%{random_suffix}"
 	location = "europe-west1"
@@ -65,7 +71,7 @@ resource "google_cloudbuild_worker_pool" "pool" {
 }
 
 func testAccCloudbuildWorkerPool_updated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuild_worker_pool" "pool" {
 	name = "pool%{random_suffix}"
 	location = "europe-west1"
@@ -79,7 +85,7 @@ resource "google_cloudbuild_worker_pool" "pool" {
 }
 
 func testAccCloudbuildWorkerPool_noWorkerConfig(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_cloudbuild_worker_pool" "pool" {
 	name = "pool%{random_suffix}"
 	location = "europe-west1"
@@ -91,13 +97,13 @@ func TestAccCloudbuildWorkerPool_withNetwork(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": RandString(t, 10),
-		"project":       GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             funcAccTestCloudbuildWorkerPoolCheckDestroy(t),
 		Steps: []resource.TestStep{
 			{
@@ -113,7 +119,7 @@ func TestAccCloudbuildWorkerPool_withNetwork(t *testing.T) {
 }
 
 func testAccCloudbuildWorkerPool_withNetwork(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_project_service" "servicenetworking" {
   service = "servicenetworking.googleapis.com"
   disable_on_destroy = false
@@ -167,9 +173,9 @@ func funcAccTestCloudbuildWorkerPoolCheckDestroy(t *testing.T) func(s *terraform
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{CloudBuildBasePath}}projects/{{project}}/locations/{{location}}/workerPools/{{name}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{CloudBuildBasePath}}projects/{{project}}/locations/{{location}}/workerPools/{{name}}")
 			if err != nil {
 				return err
 			}
@@ -180,7 +186,13 @@ func funcAccTestCloudbuildWorkerPoolCheckDestroy(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("CloudbuildWorkerPool still exists at %s", url)
 			}

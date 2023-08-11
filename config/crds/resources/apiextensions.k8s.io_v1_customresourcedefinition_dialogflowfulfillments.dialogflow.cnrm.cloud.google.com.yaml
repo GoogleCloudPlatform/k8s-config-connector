@@ -169,9 +169,9 @@ spec:
                   type: object
                 type: array
               name:
-                description: "The unique identifier of the fulfillment. \nFormat:
-                  projects/<Project ID>/agent/fulfillment - projects/<Project ID>/locations/<Location
-                  ID>/agent/fulfillment."
+                description: |-
+                  The unique identifier of the fulfillment.
+                  Format: projects/<Project ID>/agent/fulfillment - projects/<Project ID>/locations/<Location ID>/agent/fulfillment.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

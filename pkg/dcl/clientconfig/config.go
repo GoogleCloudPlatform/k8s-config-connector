@@ -18,11 +18,14 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/logger"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	"golang.org/x/oauth2/google"
@@ -95,6 +98,20 @@ func NewForIntegrationTest() *dcl.Config {
 	ctx := context.TODO()
 	opt := Options{
 		UserAgent: "kcc/dev",
+	}
+
+	// Log DCL requests
+	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
+		outputDir := filepath.Join(artifacts, "http-logs")
+		if opt.HTTPClient == nil {
+			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
+			if err != nil {
+				klog.Fatalf("error creating the http client to be used by DCL: %v", err)
+			}
+			opt.HTTPClient = httpClient
+		}
+		t := test.NewHTTPRecorder(opt.HTTPClient.Transport, outputDir)
+		opt.HTTPClient = &http.Client{Transport: t}
 	}
 
 	config, err := New(ctx, opt)

@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -7,20 +9,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccComputeRouterNat_basic(t *testing.T) {
 	t.Parallel()
 
-	project := GetTestProjectFromEnv()
-	region := GetTestRegionFromEnv()
+	project := envvar.GetTestProjectFromEnv()
+	region := envvar.GetTestRegionFromEnv()
 
-	testId := RandString(t, 10)
+	testId := acctest.RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -62,12 +66,12 @@ func TestAccComputeRouterNat_basic(t *testing.T) {
 func TestAccComputeRouterNat_update(t *testing.T) {
 	t.Parallel()
 
-	testId := RandString(t, 10)
+	testId := acctest.RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -117,12 +121,12 @@ func TestAccComputeRouterNat_update(t *testing.T) {
 func TestAccComputeRouterNat_removeLogConfig(t *testing.T) {
 	t.Parallel()
 
-	testId := RandString(t, 10)
+	testId := acctest.RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -148,12 +152,12 @@ func TestAccComputeRouterNat_removeLogConfig(t *testing.T) {
 func TestAccComputeRouterNat_withManualIpAndSubnetConfiguration(t *testing.T) {
 	t.Parallel()
 
-	testId := RandString(t, 10)
+	testId := acctest.RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -171,12 +175,12 @@ func TestAccComputeRouterNat_withManualIpAndSubnetConfiguration(t *testing.T) {
 func TestAccComputeRouterNat_withPortAllocationMethods(t *testing.T) {
 	t.Parallel()
 
-	testId := RandString(t, 10)
+	testId := acctest.RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -234,12 +238,12 @@ func TestAccComputeRouterNat_withPortAllocationMethods(t *testing.T) {
 func TestAccComputeRouterNat_withNatIpsAndDrainNatIps(t *testing.T) {
 	t.Parallel()
 
-	testId := RandString(t, 10)
+	testId := acctest.RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			// (ERROR): Creation with drain nat IPs should fail
@@ -282,16 +286,16 @@ func TestAccComputeRouterNat_withNatIpsAndDrainNatIps(t *testing.T) {
 func TestAccComputeRouterNat_withNatRules(t *testing.T) {
 	t.Parallel()
 
-	testId := RandString(t, 10)
+	testId := acctest.RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
-	ruleDescription := RandString(t, 10)
-	ruleDescriptionUpdate := RandString(t, 10)
+	ruleDescription := acctest.RandString(t, 10)
+	ruleDescriptionUpdate := acctest.RandString(t, 10)
 	match := "inIpRange(destination.ip, '1.1.0.0/16') || inIpRange(destination.ip, '2.2.0.0/16')"
 	matchUpdate := "destination.ip == '1.1.0.1' || destination.ip == '8.8.8.8'"
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -404,7 +408,7 @@ func TestAccComputeRouterNat_withNatRules(t *testing.T) {
 
 func testAccCheckComputeRouterNatDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		routersService := config.NewComputeClient(config.UserAgent).Routers
 
@@ -413,12 +417,12 @@ func testAccCheckComputeRouterNatDestroyProducer(t *testing.T) func(s *terraform
 				continue
 			}
 
-			project, err := GetTestProject(rs.Primary, config)
+			project, err := acctest.GetTestProject(rs.Primary, config)
 			if err != nil {
 				return err
 			}
 
-			region, err := GetTestRegion(rs.Primary, config)
+			region, err := acctest.GetTestRegion(rs.Primary, config)
 			if err != nil {
 				return err
 			}
@@ -438,7 +442,7 @@ func testAccCheckComputeRouterNatDestroyProducer(t *testing.T) func(s *terraform
 
 func testAccCheckComputeRouterNatDelete(t *testing.T, n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := GoogleProviderConfig(t)
+		config := acctest.GoogleProviderConfig(t)
 
 		routersService := config.NewComputeClient(config.UserAgent).Routers
 
@@ -447,12 +451,12 @@ func testAccCheckComputeRouterNatDelete(t *testing.T, n string) resource.TestChe
 				continue
 			}
 
-			project, err := GetTestProject(rs.Primary, config)
+			project, err := acctest.GetTestProject(rs.Primary, config)
 			if err != nil {
 				return err
 			}
 
-			region, err := GetTestRegion(rs.Primary, config)
+			region, err := acctest.GetTestRegion(rs.Primary, config)
 			if err != nil {
 				return err
 			}

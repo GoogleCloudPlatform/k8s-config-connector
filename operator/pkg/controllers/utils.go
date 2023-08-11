@@ -17,13 +17,20 @@ package controllers
 import (
 	"context"
 	"fmt"
+	"strings"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
+	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/scale/scheme/autoscalingv1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
@@ -117,4 +124,198 @@ func IsControllerManagerService(obj *manifest.Object) bool {
 		return false
 	}
 	return obj.GetName() == k8s.NamespacedManagerServiceTmpl
+}
+
+func GetControllerResource(ctx context.Context, c client.Client, name string) (*customizev1alpha1.ControllerResource, error) {
+	obj := &customizev1alpha1.ControllerResource{}
+	if err := c.Get(ctx, types.NamespacedName{Name: name}, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func GetNamespacedControllerResource(ctx context.Context, c client.Client, namespace, name string) (*customizev1alpha1.NamespacedControllerResource, error) {
+	obj := &customizev1alpha1.NamespacedControllerResource{}
+	if err := c.Get(ctx, types.NamespacedName{Namespace: namespace, Name: name}, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+// ListControllerResources lists all ControllerResources.
+func ListControllerResources(ctx context.Context, c client.Client) ([]customizev1alpha1.ControllerResource, error) {
+	list := &customizev1alpha1.ControllerResourceList{}
+	if err := c.List(ctx, list); err != nil {
+		return nil, err
+	}
+	return list.Items, nil
+}
+
+// ListNamespacedControllerResources lists all NamespacedControllerResource CRs in the given namespace.
+func ListNamespacedControllerResources(ctx context.Context, c client.Client, namespace string) ([]customizev1alpha1.NamespacedControllerResource, error) {
+	list := &customizev1alpha1.NamespacedControllerResourceList{}
+	if err := c.List(ctx, list, &client.ListOptions{Namespace: namespace}); err != nil {
+		return nil, err
+	}
+	return list.Items, nil
+}
+
+// ApplyContainerResourceCustomization applies container resource customizations specified in ControllerResource / NamespacedControllerResource CR.
+func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects, controllerName string, controllerGVK schema.GroupVersionKind, containers []customizev1alpha1.ContainerResourceSpec, replicas *int64) error {
+	cMap := make(map[string]corev1.ResourceRequirements, len(containers)) // cMap is a map of container name to its corresponding resource customization.
+	cMapApplied := make(map[string]bool)                                  // cMapApplied is a map of container name to a boolean indicating whether the customization for this container is applied.
+	for _, c := range containers {
+		cMap[c.Name] = c.Resources
+		cMapApplied[c.Name] = false
+	}
+	var shouldUpdateHPA bool // shouldUpdateHPA is a boolean indicating if we need to update the "minReplicas" field in the HorizontalPodAutoscaler for webhook manager
+	// apply customization to the matching controller in the manifest
+	for _, item := range m.Items {
+		if item.GroupVersionKind() == controllerGVK { // match GVK
+			if (!isNamespaced && item.GetName() == controllerName) || // match exact controller name for cluster-scoped controller
+				(isNamespaced && strings.HasPrefix(item.GetName(), controllerName)) { // match the prefix for namespace-scoped controller, ignore the namespace ID suffix
+				// apply container resource customization for this controller.
+				if err := item.MutateContainers(customizeContainerResourcesFn(cMap, cMapApplied)); err != nil {
+					return err
+				}
+				// apply replicas customization for this controller.
+				if replicas != nil && controllerName == "cnrm-webhook-manager" { // currently only support customizing replicas for cnrm-webhook-manager.
+					if err := item.SetNestedField(*replicas, "spec", "replicas"); err != nil {
+						return err
+					}
+					shouldUpdateHPA = true
+				}
+				break // we already found the matching controller, no need to keep looking.
+			}
+		}
+	}
+	// if we update replicas for webhook manager deployment, we need to adjust its HPA as well.
+	if shouldUpdateHPA {
+		HPAGVK := schema.GroupVersionKind{
+			Group:   autoscalingv1.SchemeGroupVersion.Group,
+			Version: autoscalingv1.SchemeGroupVersion.Version,
+			Kind:    "HorizontalPodAutoscaler",
+		}
+		for _, item := range m.Items {
+			if item.GroupVersionKind() == HPAGVK && item.GetName() == "cnrm-webhook" {
+				// update "minReplicas".
+				if err := item.SetNestedField(*replicas, "spec", "minReplicas"); err != nil {
+					return err
+				}
+				// update "maxReplicas" to match "minReplicas" if it is smaller than "minReplicas".
+				maxReplicas, found, err := unstructured.NestedInt64(item.UnstructuredObject().Object, "spec", "maxReplicas")
+				if err != nil {
+					return err
+				}
+				if found && (maxReplicas < *replicas) {
+					if err := item.SetNestedField(*replicas, "spec", "maxReplicas"); err != nil {
+						return err
+					}
+				}
+				break // we already found the HPA, no need to keep looking.
+			}
+		}
+	}
+	// check if all container resource customizations are applied
+	var notApplied []string
+	for c, applied := range cMapApplied {
+		if !applied {
+			notApplied = append(notApplied, c)
+		}
+	}
+	if len(notApplied) > 0 {
+		return fmt.Errorf("resource customization failed for the following containers because there are no matching containers in the manifest: %s", strings.Join(notApplied, ", "))
+	}
+	return nil
+}
+
+// customizeContainerResourcesFn returns a function to customize container resources.
+func customizeContainerResourcesFn(cMap map[string]corev1.ResourceRequirements, cMapApplied map[string]bool) func(container map[string]interface{}) error {
+	return func(container map[string]interface{}) error {
+		name, _, err := unstructured.NestedString(container, "name")
+		if err != nil {
+			return fmt.Errorf("error reading container name: %v", err)
+		}
+		r, found := cMap[name]
+		if !found {
+			return nil
+		}
+
+		shouldUpdateGOMEMLIMIT := false // we need to update the GOMEMLIMIT environment variable if we update the memory request.
+		if r.Limits != nil && !r.Limits.Cpu().IsZero() {
+			if err := unstructured.SetNestedField(container, r.Limits.Cpu().String(), "resources", "limits", "cpu"); err != nil {
+				return fmt.Errorf("error setting cpu limit: %v", err)
+			}
+		}
+		if r.Limits != nil && !r.Limits.Memory().IsZero() {
+			if err := unstructured.SetNestedField(container, r.Limits.Memory().String(), "resources", "limits", "memory"); err != nil {
+				return fmt.Errorf("error setting memory limit: %v", err)
+			}
+		}
+		if r.Requests != nil && !r.Requests.Cpu().IsZero() {
+			if err := unstructured.SetNestedField(container, r.Requests.Cpu().String(), "resources", "requests", "cpu"); err != nil {
+				return fmt.Errorf("error setting cpu request: %v", err)
+			}
+		}
+		if r.Requests != nil && !r.Requests.Memory().IsZero() {
+			if err := unstructured.SetNestedField(container, r.Requests.Memory().String(), "resources", "requests", "memory"); err != nil {
+				return fmt.Errorf("error setting memory request: %v", err)
+			}
+			shouldUpdateGOMEMLIMIT = true
+		}
+
+		// update the GOMEMLIMIT environment variable if we update the memory request.
+		if shouldUpdateGOMEMLIMIT {
+			if err := updateContainerEnvIfFound(container, "GOMEMLIMIT", calculateGoMemLimit(r.Requests.Memory().Value())); err != nil {
+				return err
+			}
+		}
+
+		cMapApplied[name] = true
+		return nil
+	}
+}
+
+// calculateGoMemLimit returns 85% of the input requested memory with the correct format.
+func calculateGoMemLimit(requestedMemory int64) string {
+	goMemLimit := resource.NewQuantity(requestedMemory*17/20, resource.BinarySI) // setting GOMEMLIMIT as 85% of the requested memory.
+	goMemLimitFormatted := goMemLimit.String() + "B"                             // adding suffix "B" to accommodate the format supported by GOMEMLIMIT.
+	return goMemLimitFormatted
+}
+
+// updateContainerEnvIfFound updates the value of the environment variable in the container's environment variable list.
+// If the environment variable is not found, the function is no-op.
+func updateContainerEnvIfFound(container map[string]interface{}, name, value string) error {
+	// retrieve env list
+	envs, found, err := unstructured.NestedSlice(container, "env")
+	if err != nil {
+		return fmt.Errorf("error getting container env list: %v", err)
+	}
+	if !found { // do not update the value if we cannot find the environment variable.
+		return nil
+	}
+
+	// update env list
+	for _, e := range envs {
+		env, ok := e.(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("failed to parse container env %v", e)
+		}
+		envName, ok, err := unstructured.NestedFieldNoCopy(env, "name")
+		if err != nil {
+			return fmt.Errorf("error getting \"name\" field from container env %v: %v", env, err)
+		}
+		if ok && envName == name { // found a match
+			if err := unstructured.SetNestedField(env, value, "value"); err != nil {
+				return fmt.Errorf("error setting container env %s: %v", name, err)
+			}
+			break
+		}
+	}
+
+	// write back env list
+	if unstructured.SetNestedSlice(container, envs, "env"); err != nil {
+		return fmt.Errorf("error setting container env list: %v", err)
+	}
+	return nil
 }

@@ -132,9 +132,9 @@ a value of 'en_US.UTF8' at creation time.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The deletion policy for the database. Setting ABANDON allows the resource 
-to be abandoned rather than deleted. This is useful for Postgres, where databases cannot be 
-deleted from the API if there are users other than cloudsqlsuperuser with access. Possible 
+            <p>{% verbatim %}The deletion policy for the database. Setting ABANDON allows the resource
+to be abandoned rather than deleted. This is useful for Postgres, where databases cannot be
+deleted from the API if there are users other than cloudsqlsuperuser with access. Possible
 values are: "ABANDON", "DELETE". Defaults to "DELETE".{% endverbatim %}</p>
         </td>
     </tr>
@@ -320,5 +320,7 @@ spec:
     tier: db-n1-standard-1
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

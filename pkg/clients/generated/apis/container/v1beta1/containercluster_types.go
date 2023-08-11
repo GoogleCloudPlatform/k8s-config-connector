@@ -56,6 +56,10 @@ type ClusterAddonsConfig struct {
 	// +optional
 	GcpFilestoreCsiDriverConfig *ClusterGcpFilestoreCsiDriverConfig `json:"gcpFilestoreCsiDriverConfig,omitempty"`
 
+	/* The status of the GCS Fuse CSI driver addon, which allows the usage of gcs bucket as volumes. Defaults to disabled; set enabled = true to enable. */
+	// +optional
+	GcsFuseCsiDriverConfig *ClusterGcsFuseCsiDriverConfig `json:"gcsFuseCsiDriverConfig,omitempty"`
+
 	/* The status of the Backup for GKE Agent addon. It is disabled by default. Set enabled = true to enable. */
 	// +optional
 	GkeBackupAgentConfig *ClusterGkeBackupAgentConfig `json:"gkeBackupAgentConfig,omitempty"`
@@ -291,8 +295,17 @@ type ClusterGcpFilestoreCsiDriverConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
+type ClusterGcsFuseCsiDriverConfig struct {
+	Enabled bool `json:"enabled"`
+}
+
 type ClusterGkeBackupAgentConfig struct {
 	Enabled bool `json:"enabled"`
+}
+
+type ClusterGpuDriverInstallationConfig struct {
+	/* Immutable. Mode for how the GPU driver is installed. */
+	GpuDriverVersion string `json:"gpuDriverVersion"`
 }
 
 type ClusterGpuSharingConfig struct {
@@ -306,6 +319,10 @@ type ClusterGpuSharingConfig struct {
 type ClusterGuestAccelerator struct {
 	/* Immutable. The number of the accelerator cards exposed to an instance. */
 	Count int `json:"count"`
+
+	/* Immutable. Configuration for auto installation of GPU driver. */
+	// +optional
+	GpuDriverInstallationConfig *ClusterGpuDriverInstallationConfig `json:"gpuDriverInstallationConfig,omitempty"`
 
 	/* Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA mig user guide (https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning). */
 	// +optional
@@ -529,6 +546,17 @@ type ClusterNetworkTags struct {
 	Tags []string `json:"tags,omitempty"`
 }
 
+type ClusterNodeAffinity struct {
+	/* Immutable. . */
+	Key string `json:"key"`
+
+	/* Immutable. . */
+	Operator string `json:"operator"`
+
+	/* Immutable. . */
+	Values []string `json:"values"`
+}
+
 type ClusterNodeConfig struct {
 	/* Immutable. Specifies options for controlling advanced machine features. */
 	// +optional
@@ -637,6 +665,10 @@ type ClusterNodeConfig struct {
 	/* Immutable. Shielded Instance options. */
 	// +optional
 	ShieldedInstanceConfig *ClusterShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+
+	/* Immutable. Node affinity options for sole tenant node pools. */
+	// +optional
+	SoleTenantConfig *ClusterSoleTenantConfig `json:"soleTenantConfig,omitempty"`
 
 	/* Immutable. Whether the nodes are created as spot VM instances. */
 	// +optional
@@ -820,6 +852,16 @@ type ClusterSandboxConfig struct {
 	SandboxType string `json:"sandboxType"`
 }
 
+type ClusterSecurityPostureConfig struct {
+	/* Sets the mode of the Kubernetes security posture API's off-cluster features. Available options include DISABLED and BASIC. */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
+	/* Sets the mode of the Kubernetes security posture API's workload vulnerability scanning. Available options include VULNERABILITY_DISABLED and VULNERABILITY_BASIC. */
+	// +optional
+	VulnerabilityMode *string `json:"vulnerabilityMode,omitempty"`
+}
+
 type ClusterServiceExternalIpsConfig struct {
 	/* When enabled, services with exterenal ips specified will be allowed. */
 	Enabled bool `json:"enabled"`
@@ -833,6 +875,11 @@ type ClusterShieldedInstanceConfig struct {
 	/* Immutable. Defines whether the instance has Secure Boot enabled. */
 	// +optional
 	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
+}
+
+type ClusterSoleTenantConfig struct {
+	/* Immutable. . */
+	NodeAffinity []ClusterNodeAffinity `json:"nodeAffinity"`
 }
 
 type ClusterStandardRolloutPolicy struct {
@@ -1132,6 +1179,10 @@ type ContainerClusterSpec struct {
 	/* Configuration for the ResourceUsageExportConfig feature. */
 	// +optional
 	ResourceUsageExportConfig *ClusterResourceUsageExportConfig `json:"resourceUsageExportConfig,omitempty"`
+
+	/* Defines the config needed to enable/disable features for the Security Posture API. */
+	// +optional
+	SecurityPostureConfig *ClusterSecurityPostureConfig `json:"securityPostureConfig,omitempty"`
 
 	/* If set, and enabled=true, services with external ips field will not be blocked. */
 	// +optional

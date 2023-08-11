@@ -21,6 +21,7 @@ import (
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 	"os"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	corev1v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers/configconnector"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers/configconnectorcontext"
@@ -47,6 +48,8 @@ func init() {
 	_ = apiextensions.SchemeBuilder.AddToScheme(scheme)
 
 	_ = corev1v1beta1.AddToScheme(scheme)
+	// +kubebuilder:scaffold:scheme
+	_ = customizev1alpha1.AddToScheme(scheme)
 	// +kubebuilder:scaffold:scheme
 }
 

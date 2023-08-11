@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_managed_zone.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_managed_zone.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dns/resource_dns_managed_zone.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dns/resource_dns_managed_zone.go
 index 776475685..cf84f1f21 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_managed_zone.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_managed_zone.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dns/resource_dns_managed_zone.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dns/resource_dns_managed_zone.go
 @@ -78,8 +78,8 @@ Must be unique within the project.`,
  				Type:         schema.TypeString,
  				Optional:     true,
@@ -27,10 +27,10 @@ index 776475685..cf84f1f21 100644
  			},
  			"dnssec_config": {
  				Type:        schema.TypeList,
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_policy.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dns/resource_dns_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dns/resource_dns_policy.go
 index 37c83057f..f11ea6a36 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_policy.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_policy.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dns/resource_dns_policy.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dns/resource_dns_policy.go
 @@ -81,8 +81,8 @@ are not available when an alternative name server is specified.`,
  			"description": {
  				Type:        schema.TypeString,

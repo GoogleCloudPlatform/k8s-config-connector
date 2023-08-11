@@ -224,6 +224,10 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td></td>
     </tr>
     <tr>
+        <td><code>RunJob</code></td>
+        <td></td>
+    </tr>
+    <tr>
         <td><code>RunService</code></td>
         <td>Y</td>
     </tr>
@@ -497,6 +501,14 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td>
             
             <p><code>{% verbatim %}projects/{{project}}/topics/{{name}}{% endverbatim %}</code></p>
+            
+        </td>
+    </tr>
+    <tr>
+        <td><code>RunJob</code></td>
+        <td>
+            
+            <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/jobs/{{name}}{% endverbatim %}</code></p>
             
         </td>
     </tr>
@@ -1194,11 +1206,8 @@ metadata:
   name: iampartialpolicy-dep-project
 spec:
   name: Config Connector Sample
-  billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID?}"
   organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID of the parent organization
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
     external: "${ORG_ID?}"
 ```
 
@@ -1246,5 +1255,7 @@ metadata:
   name: iampartialpolicy-dep-pubsubadmin
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

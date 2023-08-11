@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,23 +7,25 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccDatasourceGoogleServiceAccount_basic(t *testing.T) {
 	t.Parallel()
 
 	resourceName := "data.google_service_account.acceptance"
-	account := fmt.Sprintf("tf-test-%d", RandInt(t))
+	account := fmt.Sprintf("tf-test-%d", acctest.RandInt(t))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCheckGoogleServiceAccount_basic(account),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						resourceName, "id", fmt.Sprintf("projects/%s/serviceAccounts/%s@%s.iam.gserviceaccount.com", GetTestProjectFromEnv(), account, GetTestProjectFromEnv())),
+						resourceName, "id", fmt.Sprintf("projects/%s/serviceAccounts/%s@%s.iam.gserviceaccount.com", envvar.GetTestProjectFromEnv(), account, envvar.GetTestProjectFromEnv())),
 					resource.TestCheckResourceAttrSet(resourceName, "email"),
 					resource.TestCheckResourceAttrSet(resourceName, "unique_id"),
 					resource.TestCheckResourceAttrSet(resourceName, "name"),

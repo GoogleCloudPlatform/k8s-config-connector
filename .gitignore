@@ -143,5 +143,5 @@ Session.vim
 # End of https://www.gitignore.io/api/go,vim,emacs,visualstudiocode
 #
 
-# always check in vendored files
-!/vendor/**/*
+# always skip vendored files
+/vendor

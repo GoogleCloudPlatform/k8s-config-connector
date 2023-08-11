@@ -108,6 +108,31 @@ spec:
                         are swapped by the API to their basic counterparts. See
                         [official docs](https://cloud.google.com/bigquery/docs/access-control).
                       type: string
+                    routine:
+                      description: |-
+                        A routine from a different dataset to grant access to. Queries
+                        executed against that routine will have read access to tables in
+                        this dataset. The role field is not required when this field is
+                        set. If that routine is updated by any user, access to the routine
+                        needs to be granted again via an update operation.
+                      properties:
+                        datasetId:
+                          description: The ID of the dataset containing this table.
+                          type: string
+                        projectId:
+                          description: The ID of the project containing this table.
+                          type: string
+                        routineId:
+                          description: |-
+                            The ID of the routine. The ID must contain only letters (a-z,
+                            A-Z), numbers (0-9), or underscores (_). The maximum length
+                            is 256 characters.
+                          type: string
+                      required:
+                      - datasetId
+                      - projectId
+                      - routineId
+                      type: object
                     specialGroup:
                       description: |-
                         A special group to grant access to. Possible values include:
@@ -305,6 +330,14 @@ spec:
                 description: Immutable. Optional. The datasetId of the resource. Used
                   for creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
+                type: string
+              storageBillingModel:
+                description: |-
+                  Specifies the storage billing model for the dataset.
+                  Set this flag value to LOGICAL to use logical bytes for storage billing,
+                  or to PHYSICAL to use physical bytes instead.
+
+                  LOGICAL is the default if this flag isn't specified.
                 type: string
             type: object
           status:

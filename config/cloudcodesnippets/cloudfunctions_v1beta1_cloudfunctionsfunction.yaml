@@ -9,7 +9,7 @@ insertText: |
     projectRef:
       external: \${2:projects/[PROJECT_ID?]}
     region: \${3:us-west2}
-    runtime: \${4:nodejs8}
+    runtime: \${4:nodejs10}
     sourceArchiveUrl: \${5:gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip}
     entryPoint: \${6:helloGET}
     httpsTrigger:

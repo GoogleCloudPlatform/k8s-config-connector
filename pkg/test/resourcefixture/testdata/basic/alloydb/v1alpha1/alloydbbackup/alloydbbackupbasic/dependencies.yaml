@@ -12,6 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+apiVersion: alloydb.cnrm.cloud.google.com/v1alpha1
+kind: AlloyDBCluster
+metadata:
+  name: alloydbcluster-${uniqueId}
+spec:
+  location: us-central1
+  network: ${data.google_compute_network.default.id}
+  projectRef:
+    external: ${projectId}
+  resourceID: alloydbcluster${uniqueId}
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1alpha1
+kind: AlloyDBInstance
+metadata:
+  name: alloydbinstance-${uniqueId}
+spec:
+  cluster: ""
+  instanceType: PRIMARY
+  resourceID: alloydbinstance${uniqueId}
+---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
@@ -32,25 +52,3 @@ spec:
   reservedPeeringRanges:
   - ${google_compute_global_address.private_ip_alloc.name}
   service: servicenetworking.googleapis.com
----
-apiVersion: alloydb.cnrm.cloud.google.com/v1alpha1
-kind: AlloyDBCluster
-metadata:
-  name: alloydbcluster-${uniqueId}
-spec:
-  location: us-central1
-  network: ${data.google_compute_network.default.id}
-  projectRef:
-    external: ${projectId}
-  resourceID: alloydbcluster${uniqueId}
----
-apiVersion: alloydb.cnrm.cloud.google.com/v1alpha1
-kind: AlloyDBInstance
-metadata:
-  name: alloydbinstance-${uniqueId}
-spec:
-  cluster: ""
-  dependsOn:
-  - ${google_service_networking_connection.vpc_connection}
-  instanceType: PRIMARY
-  resourceID: alloydbinstance${uniqueId}

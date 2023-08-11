@@ -143,7 +143,7 @@ spec:
                 type: string
               namespacedName:
                 description: Output only. Namespaced name of the TagValue. Will be
-                  in the format {organizationId}/{tag_key_short_name}/{shortName}.
+                  in the format {parentNamespace}/{tagKeyShortName}/{shortName}.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

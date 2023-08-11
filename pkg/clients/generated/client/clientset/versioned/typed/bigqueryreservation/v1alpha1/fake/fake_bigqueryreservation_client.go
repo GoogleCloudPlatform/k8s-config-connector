@@ -31,6 +31,10 @@ type FakeBigqueryreservationV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeBigqueryreservationV1alpha1) BigQueryReservationCapacityCommitments(namespace string) v1alpha1.BigQueryReservationCapacityCommitmentInterface {
+	return &FakeBigQueryReservationCapacityCommitments{c, namespace}
+}
+
 func (c *FakeBigqueryreservationV1alpha1) BigQueryReservationReservations(namespace string) v1alpha1.BigQueryReservationReservationInterface {
 	return &FakeBigQueryReservationReservations{c, namespace}
 }

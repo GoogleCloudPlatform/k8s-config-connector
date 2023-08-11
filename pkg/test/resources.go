@@ -62,6 +62,16 @@ func FakeCRDs() []*apiextensions.CustomResourceDefinition {
 			Version: "v1alpha1",
 			Kind:    "Test3ServerGeneratedResourceIDKind",
 		}),
+		CRDForGVK(metav1.GroupVersionKind{
+			Group:   "test4.cnrm.cloud.google.com",
+			Version: "v1alpha1",
+			Kind:    "Test4DCLResourceServerGeneratedResourceIDKind",
+		}),
+		CRDForGVK(metav1.GroupVersionKind{
+			Group:   "test4.cnrm.cloud.google.com",
+			Version: "v1alpha1",
+			Kind:    "Test4DCLResourceUserSpecifiedResourceIDKind",
+		}),
 	}
 }
 

@@ -1,30 +1,18 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
-	"fmt"
 	"time"
+
+	tpgdataproc "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataproc"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 
 	"google.golang.org/api/dataproc/v1"
 )
 
-type DataprocClusterOperationWaiter struct {
-	Service *dataproc.Service
-	CommonOperationWaiter
-}
-
-func (w *DataprocClusterOperationWaiter) QueryOp() (interface{}, error) {
-	if w == nil {
-		return nil, fmt.Errorf("Cannot query operation, it's unset or nil.")
-	}
-	return w.Service.Projects.Regions.Operations.Get(w.Op.Name).Do()
-}
-
-func dataprocClusterOperationWait(config *Config, op *dataproc.Operation, activity, userAgent string, timeout time.Duration) error {
-	w := &DataprocClusterOperationWaiter{
-		Service: config.NewDataprocClient(userAgent),
-	}
-	if err := w.SetOp(op); err != nil {
-		return err
-	}
-	return OperationWait(w, activity, timeout, config.PollInterval)
+// Deprecated: For backward compatibility dataprocClusterOperationWait is still working,
+// but all new code should use DataprocClusterOperationWait in the tpgdataproc package instead.
+func dataprocClusterOperationWait(config *transport_tpg.Config, op *dataproc.Operation, activity, userAgent string, timeout time.Duration) error {
+	return tpgdataproc.DataprocClusterOperationWait(config, op, activity, userAgent, timeout)
 }

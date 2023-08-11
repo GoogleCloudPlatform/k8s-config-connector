@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,19 +7,20 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
 )
 
 func TestAccDataSourceComputeSslCertificate(t *testing.T) {
 	t.Parallel()
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceComputeSslCertificateConfig(RandString(t, 10)),
+				Config: testAccDataSourceComputeSslCertificateConfig(acctest.RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
-					CheckDataSourceStateMatchesResourceStateWithIgnores(
+					acctest.CheckDataSourceStateMatchesResourceStateWithIgnores(
 						"data.google_compute_ssl_certificate.cert",
 						"google_compute_ssl_certificate.foobar",
 						map[string]struct{}{

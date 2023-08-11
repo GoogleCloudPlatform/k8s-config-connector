@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_firewall.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_firewall.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_firewall.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_firewall.go
 index 697deff7d..f382914f6 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_firewall.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_firewall.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_firewall.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_firewall.go
 @@ -79,21 +79,8 @@ func resourceComputeFirewallEnableLoggingCustomizeDiff(_ context.Context, diff *
  // Per https://github.com/hashicorp/terraform-provider-google/issues/2924
  // Make one of the source_ parameters Required in ingress google_compute_firewall

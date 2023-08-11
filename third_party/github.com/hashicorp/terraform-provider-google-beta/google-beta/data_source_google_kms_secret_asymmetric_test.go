@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -14,26 +16,28 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccKmsSecretAsymmetricBasic(t *testing.T) {
 	// Nested tests confuse VCR
-	SkipIfVcr(t)
+	acctest.SkipIfVcr(t)
 	t.Parallel()
 
-	projectOrg := GetTestOrgFromEnv(t)
-	projectBillingAccount := GetTestBillingAccountFromEnv(t)
+	projectOrg := envvar.GetTestOrgFromEnv(t)
+	projectBillingAccount := envvar.GetTestBillingAccountFromEnv(t)
 
-	projectID := "tf-test-" + RandString(t, 10)
-	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
-	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	projectID := "tf-test-" + acctest.RandString(t, 10)
+	keyRingName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
+	cryptoKeyName := fmt.Sprintf("tf-test-%s", acctest.RandString(t, 10))
 
-	plaintext := fmt.Sprintf("secret-%s", RandString(t, 10))
+	plaintext := fmt.Sprintf("secret-%s", acctest.RandString(t, 10))
 
 	// The first test creates resources needed to encrypt plaintext and produce ciphertext
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: kmsCryptoKeyAsymmetricDecryptBasic(projectID, projectOrg, projectBillingAccount, keyRingName, cryptoKeyName),
@@ -44,9 +48,9 @@ func TestAccKmsSecretAsymmetricBasic(t *testing.T) {
 					}
 
 					// The second test asserts that the data source has the correct plaintext, given the created ciphertext
-					VcrTest(t, resource.TestCase{
-						PreCheck:                 func() { AccTestPreCheck(t) },
-						ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+					acctest.VcrTest(t, resource.TestCase{
+						PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+						ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 						Steps: []resource.TestStep{
 							{
 								Config: googleKmsSecretAsymmetricDatasource(cryptoKeyVersionID, ciphertext),

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -19,21 +22,24 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 func TestAccServiceManagementServiceConsumersIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":    RandString(t, 10),
+		"random_suffix":    acctest.RandString(t, 10),
 		"role":             "roles/servicemanagement.serviceController",
-		"project_name":     GetTestProjectFromEnv(),
-		"consumer_project": GetTestProjectFromEnv(),
+		"project_name":     envvar.GetTestProjectFromEnv(),
+		"consumer_project": envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceManagementServiceConsumersIamBinding_basicGenerated(context),
@@ -62,15 +68,15 @@ func TestAccServiceManagementServiceConsumersIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":    RandString(t, 10),
+		"random_suffix":    acctest.RandString(t, 10),
 		"role":             "roles/servicemanagement.serviceController",
-		"project_name":     GetTestProjectFromEnv(),
-		"consumer_project": GetTestProjectFromEnv(),
+		"project_name":     envvar.GetTestProjectFromEnv(),
+		"consumer_project": envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -90,18 +96,19 @@ func TestAccServiceManagementServiceConsumersIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":    RandString(t, 10),
+		"random_suffix":    acctest.RandString(t, 10),
 		"role":             "roles/servicemanagement.serviceController",
-		"project_name":     GetTestProjectFromEnv(),
-		"consumer_project": GetTestProjectFromEnv(),
+		"project_name":     envvar.GetTestProjectFromEnv(),
+		"consumer_project": envvar.GetTestProjectFromEnv(),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceManagementServiceConsumersIamPolicy_basicGenerated(context),
+				Check:  resource.TestCheckResourceAttrSet("data.google_endpoints_service_consumers_iam_policy.foo", "policy_data"),
 			},
 			{
 				ResourceName:      "google_endpoints_service_consumers_iam_policy.foo",
@@ -123,7 +130,7 @@ func TestAccServiceManagementServiceConsumersIamPolicyGenerated(t *testing.T) {
 }
 
 func testAccServiceManagementServiceConsumersIamMember_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_endpoints_service" "endpoints_service" {
   service_name = "endpoint%{random_suffix}.endpoints.%{project_name}.cloud.goog"
   project = "%{project_name}"
@@ -149,7 +156,7 @@ resource "google_endpoints_service_consumers_iam_member" "foo" {
 }
 
 func testAccServiceManagementServiceConsumersIamPolicy_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_endpoints_service" "endpoints_service" {
   service_name = "endpoint%{random_suffix}.endpoints.%{project_name}.cloud.goog"
   project = "%{project_name}"
@@ -177,11 +184,19 @@ resource "google_endpoints_service_consumers_iam_policy" "foo" {
   consumer_project = "%{consumer_project}"
   policy_data = data.google_iam_policy.foo.policy_data
 }
+
+data "google_endpoints_service_consumers_iam_policy" "foo" {
+  service_name = google_endpoints_service.endpoints_service.service_name
+  consumer_project = "%{consumer_project}"
+  depends_on = [
+    google_endpoints_service_consumers_iam_policy.foo
+  ]
+}
 `, context)
 }
 
 func testAccServiceManagementServiceConsumersIamPolicy_emptyBinding(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_endpoints_service" "endpoints_service" {
   service_name = "endpoint%{random_suffix}.endpoints.%{project_name}.cloud.goog"
   project = "%{project_name}"
@@ -209,7 +224,7 @@ resource "google_endpoints_service_consumers_iam_policy" "foo" {
 }
 
 func testAccServiceManagementServiceConsumersIamBinding_basicGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_endpoints_service" "endpoints_service" {
   service_name = "endpoint%{random_suffix}.endpoints.%{project_name}.cloud.goog"
   project = "%{project_name}"
@@ -235,7 +250,7 @@ resource "google_endpoints_service_consumers_iam_binding" "foo" {
 }
 
 func testAccServiceManagementServiceConsumersIamBinding_updateGenerated(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_endpoints_service" "endpoints_service" {
   service_name = "endpoint%{random_suffix}.endpoints.%{project_name}.cloud.goog"
   project = "%{project_name}"

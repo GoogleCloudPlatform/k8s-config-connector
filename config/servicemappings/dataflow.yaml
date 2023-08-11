@@ -26,8 +26,8 @@ spec:
       kind: DataflowFlexTemplateJob
       metadataMapping:
         name: name
-      # TODO(b/254868598): Enable support for labels field
       ignoredFields:
+        # TODO(b/254868598): Enable support for labels field
         - labels
       serverGeneratedIDField: "job_id"
       idTemplate: "{{job_id}}"
@@ -41,6 +41,37 @@ spec:
       containers:
         - type: project
           tfField: project
+      resourceReferences:
+        - tfField: kms_key_name
+          key: kmsKeyNameRef
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          description: |-
+            The name for the Cloud KMS key for the job.
+          targetField: self_link
+        - tfField: service_account_email
+          key: serviceAccountEmailRef
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: network
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: subnetwork
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       mutableButUnreadableFields:
         - container_spec_gcs_path
         - parameters

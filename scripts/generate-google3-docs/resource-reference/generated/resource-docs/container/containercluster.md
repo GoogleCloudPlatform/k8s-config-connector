@@ -12,6 +12,13 @@ Note: The ContainerCluster annotation can include
 If set to <code>true</code>, the <code>remove-default-node-pool</code> directive
 removes the default node pool created during cluster creation.
 
+Note: In <code>maintenancePolicy</code>, specify <code>startTime</code> and
+<code>endTime</code> in RFC3339 Zulu date format. Specify <code>recurrence</code>
+in RFC5545 RRULE format. GKE may accept other formats, but will return values in UTC,
+causing a permanent diff. For more details on how to debug and fix an issue which
+could lead to a permanent diff, please refer to the
+<a href="/config-connector/docs/troubleshooting#resource_keeps_updating_every_5-15_mins">Config Connector Troubleshooting page</a>
+
 <table>
 <thead>
 <tr>
@@ -100,6 +107,8 @@ addonsConfig:
   gcePersistentDiskCsiDriverConfig:
     enabled: boolean
   gcpFilestoreCsiDriverConfig:
+    enabled: boolean
+  gcsFuseCsiDriverConfig:
     enabled: boolean
   gkeBackupAgentConfig:
     enabled: boolean
@@ -270,6 +279,8 @@ nodeConfig:
     enabled: boolean
   guestAccelerator:
   - count: integer
+    gpuDriverInstallationConfig:
+      gpuDriverVersion: string
     gpuPartitionSize: string
     gpuSharingConfig:
       gpuSharingStrategy: string
@@ -319,6 +330,12 @@ nodeConfig:
   shieldedInstanceConfig:
     enableIntegrityMonitoring: boolean
     enableSecureBoot: boolean
+  soleTenantConfig:
+    nodeAffinity:
+    - key: string
+      operator: string
+      values:
+      - string
   spot: boolean
   tags:
   - string
@@ -379,6 +396,9 @@ resourceUsageExportConfig:
     datasetId: string
   enableNetworkEgressMetering: boolean
   enableResourceConsumptionMetering: boolean
+securityPostureConfig:
+  mode: string
+  vulnerabilityMode: string
 serviceExternalIpsConfig:
   enabled: boolean
 subnetworkRef:
@@ -512,6 +532,26 @@ workloadIdentityConfig:
     <tr>
         <td>
             <p><code>addonsConfig.gcpFilestoreCsiDriverConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.gcsFuseCsiDriverConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The status of the GCS Fuse CSI driver addon, which allows the usage of gcs bucket as volumes. Defaults to disabled; set enabled = true to enable.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>addonsConfig.gcsFuseCsiDriverConfig.enabled</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>
@@ -2266,6 +2306,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.guestAccelerator[].gpuDriverInstallationConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Configuration for auto installation of GPU driver.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.guestAccelerator[].gpuDriverInstallationConfig.gpuDriverVersion</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Mode for how the GPU driver is installed.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.guestAccelerator[].gpuPartitionSize</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2714,6 +2774,76 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Immutable. Defines whether the instance has Secure Boot enabled.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Node affinity options for sole tenant node pools.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[].key</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[].operator</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[].values</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.soleTenantConfig.nodeAffinity[].values[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3333,6 +3463,36 @@ will be provisioned.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>securityPostureConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Defines the config needed to enable/disable features for the Security Posture API.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>securityPostureConfig.mode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Sets the mode of the Kubernetes security posture API's off-cluster features. Available options include DISABLED and BASIC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>securityPostureConfig.vulnerabilityMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Sets the mode of the Kubernetes security posture API's workload vulnerability scanning. Available options include VULNERABILITY_DISABLED and VULNERABILITY_BASIC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>serviceExternalIpsConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -3778,5 +3938,7 @@ metadata:
   name: containercluster-dep-vpcnative
 ```
 
+
+Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
 {% endblock %}

@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 // ----------------------------------------------------------------------------
 //
 //     ***     AUTO GENERATED CODE    ***    Type: MMv1     ***
@@ -21,19 +24,24 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 func TestAccLoggingLinkedDataset_loggingLinkedDatasetBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingLinkedDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -50,16 +58,16 @@ func TestAccLoggingLinkedDataset_loggingLinkedDatasetBasicExample(t *testing.T) 
 }
 
 func testAccLoggingLinkedDataset_loggingLinkedDatasetBasicExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_logging_project_bucket_config" "logging_linked_dataset" {
   location         = "global"
   project          = "%{project}"
   enable_analytics = true
-  bucket_id        = "tftest%{random_suffix}"
+  bucket_id        = "tf-test-my-bucket%{random_suffix}"
 }
 
 resource "google_logging_linked_dataset" "logging_linked_dataset" {
-  link_id     = "tftest%{random_suffix}"
+  link_id     = "mylink%{random_suffix}"
   bucket      = google_logging_project_bucket_config.logging_linked_dataset.id
   description = "Linked dataset test"
 }
@@ -70,13 +78,13 @@ func TestAccLoggingLinkedDataset_loggingLinkedDatasetAllParamsExample(t *testing
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       GetTestProjectFromEnv(),
-		"random_suffix": RandString(t, 10),
+		"project":       envvar.GetTestProjectFromEnv(),
+		"random_suffix": acctest.RandString(t, 10),
 	}
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		CheckDestroy:             testAccCheckLoggingLinkedDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -93,25 +101,21 @@ func TestAccLoggingLinkedDataset_loggingLinkedDatasetAllParamsExample(t *testing
 }
 
 func testAccLoggingLinkedDataset_loggingLinkedDatasetAllParamsExample(context map[string]interface{}) string {
-	return Nprintf(`
+	return acctest.Nprintf(`
 resource "google_logging_project_bucket_config" "logging_linked_dataset" {
   location         = "global"
   project          = "%{project}"
   enable_analytics = true
-  bucket_id        = "tftest%{random_suffix}"
+  bucket_id        = "tf-test-my-bucket%{random_suffix}"
 }
 
 resource "google_logging_linked_dataset" "logging_linked_dataset" {
-  link_id     = "tftest%{random_suffix}"
-  bucket      = "tftest%{random_suffix}"
+  link_id     = "mylink%{random_suffix}"
+  bucket      = "tf-test-my-bucket%{random_suffix}"
   parent      = "projects/%{project}"
   location    = "global"
   description = "Linked dataset test"
 
-  # Using forced dependency in order to test use of the bucket name by itself without
-  # referencing the entire resource link, which is what is outputted by the 
-  # google_logging_project_bucket_config resource. Use of the outputted ID is tested in
-  # the basic example.
   depends_on = ["google_logging_project_bucket_config.logging_linked_dataset"]
 }
 `, context)
@@ -127,9 +131,9 @@ func testAccCheckLoggingLinkedDatasetDestroyProducer(t *testing.T) func(s *terra
 				continue
 			}
 
-			config := GoogleProviderConfig(t)
+			config := acctest.GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{LoggingBasePath}}{{parent}}/locations/{{location}}/buckets/{{bucket}}/links/{{link_id}}")
+			url, err := tpgresource.ReplaceVarsForTest(config, rs, "{{LoggingBasePath}}{{parent}}/locations/{{location}}/buckets/{{bucket}}/links/{{link_id}}")
 			if err != nil {
 				return err
 			}
@@ -140,7 +144,13 @@ func testAccCheckLoggingLinkedDatasetDestroyProducer(t *testing.T) func(s *terra
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
+			_, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+				Config:    config,
+				Method:    "GET",
+				Project:   billingProject,
+				RawURL:    url,
+				UserAgent: config.UserAgent,
+			})
 			if err == nil {
 				return fmt.Errorf("LoggingLinkedDataset still exists at %s", url)
 			}

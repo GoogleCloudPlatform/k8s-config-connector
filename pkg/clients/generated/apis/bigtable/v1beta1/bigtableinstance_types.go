@@ -66,7 +66,7 @@ type InstanceCluster struct {
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	/* The number of nodes in your Cloud Bigtable cluster. Required, with a minimum of 1 for each cluster in an instance. */
+	/* The number of nodes in the cluster. If no value is set, Cloud Bigtable automatically allocates nodes based on your data footprint and optimized for 50% storage utilization. */
 	// +optional
 	NumNodes *int `json:"numNodes,omitempty"`
 

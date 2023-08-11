@@ -1,3 +1,5 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
 package google
 
 import (
@@ -5,6 +7,8 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/acctest"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/envvar"
 )
 
 // Even though the resource has generated tests, keep this one around until we are able to generate
@@ -12,14 +16,14 @@ import (
 func TestAccComputeInstanceIamPolicy(t *testing.T) {
 	t.Parallel()
 
-	project := GetTestProjectFromEnv()
+	project := envvar.GetTestProjectFromEnv()
 	role := "roles/compute.osLogin"
-	zone := GetTestZoneFromEnv()
-	instanceName := fmt.Sprintf("tf-test-instance-%s", RandString(t, 10))
+	zone := envvar.GetTestZoneFromEnv()
+	instanceName := fmt.Sprintf("tf-test-instance-%s", acctest.RandString(t, 10))
 
-	VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+	acctest.VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeInstanceIamPolicy_basic(zone, instanceName, role),
