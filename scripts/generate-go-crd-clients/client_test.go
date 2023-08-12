@@ -123,6 +123,7 @@ func TestComputeInstanceGoClient(t *testing.T) {
 	bootDiskType := "pd-ssd"
 	machineType := "n1-standard-1"
 	zone := "europe-west1-b"
+	networkIpKind := "ComputeAddress"
 	computeInstance := computev1beta1.ComputeInstance{
 		// TypeMeta (Kind/APIVersion) is automatically filled out
 		ObjectMeta: v1.ObjectMeta{
@@ -151,9 +152,9 @@ func TestComputeInstanceGoClient(t *testing.T) {
 					SubnetworkRef: &v1alpha1.ResourceRef{
 						External: "default",
 					},
-					NetworkIpRef: &v1alpha1.ResourceRef{
-						Kind: "ComputeAddress",
-						Name: computeAddressName,
+					NetworkIpRef: &computev1beta1.InstanceNetworkIpRef{
+						Kind: &networkIpKind,
+						Name: &computeAddressName,
 					},
 				},
 			},
