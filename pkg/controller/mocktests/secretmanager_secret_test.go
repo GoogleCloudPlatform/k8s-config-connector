@@ -121,10 +121,10 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 		t.Fatalf("error from tfprovider.New: %v", err)
 	}
 	t.Logf("creating dclconfig")
-	dclConfig, err := clientconfig.New(h.Ctx, clientconfig.Options{
-		UserAgent:  "kcc/dev",
-		HTTPClient: gcpHTTPClient,
-	})
+	dclOptions := clientconfig.Options{}
+	dclOptions.UserAgent = "kcc/dev"
+	dclOptions.HTTPClient = gcpHTTPClient
+	dclConfig, err := clientconfig.New(h.Ctx, dclOptions)
 	if err != nil {
 		t.Fatalf("error from clientconfig.New: %v", err)
 	}

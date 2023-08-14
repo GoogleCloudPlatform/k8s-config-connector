@@ -20,8 +20,10 @@ import (
 	"sync"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
@@ -40,7 +42,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/controller"
+	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -68,8 +70,8 @@ func Add(mgr manager.Manager, p *tfschema.Provider, smLoader *servicemappingload
 		registrationFunc: regFunc,
 		defaulters:       defaulters,
 	}
-	c, err := controller.New(controllerName, mgr,
-		controller.Options{
+	c, err := crcontroller.New(controllerName, mgr,
+		crcontroller.Options{
 			Reconciler:              r,
 			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
 		})
@@ -158,7 +160,13 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 	return crd.Spec.Group == serviceAccountKeyAPIGroup && crd.Spec.Names.Kind == serviceAccountKeyKind
 }
 
-func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+func RegisterDefaultController(config *controller.Config) registrationFunc {
+	return func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+		return registerDefaultController(r, config, crd, gvk)
+	}
+}
+
+func registerDefaultController(r *ReconcileRegistration, config *controller.Config, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
@@ -179,6 +187,10 @@ func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.Cust
 		}
 	case "IAMAuditConfig":
 		if err := auditconfig.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
+			return nil, err
+		}
+	case "APIKeysKey":
+		if err := apikeys.AddKeyReconciler(r.mgr, config); err != nil {
 			return nil, err
 		}
 	default:
