@@ -76,6 +76,9 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 	// Disable the cache. The cache causes problems in namespaced mode when trying
 	// to read resources in our system namespace.
 	opts.NewClient = nocache.NoCacheClientFunc
+	opts.BaseContext = func() context.Context {
+		return ctx
+	}
 	mgr, err := manager.New(restConfig, opts)
 	if err != nil {
 		return nil, fmt.Errorf("error creating new manager: %w", err)

@@ -20,19 +20,20 @@ import (
 	"sync"
 	"time"
 
-	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/unmanageddetector"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	dclcontroller "cnrm.googlesource.com/cnrm/pkg/controller/dcl"
+	"cnrm.googlesource.com/cnrm/pkg/controller/deletiondefender"
+	"cnrm.googlesource.com/cnrm/pkg/controller/direct/apikeys/apikeyskey"
+	"cnrm.googlesource.com/cnrm/pkg/controller/gsakeysecretgenerator"
+	"cnrm.googlesource.com/cnrm/pkg/controller/iam/auditconfig"
+	"cnrm.googlesource.com/cnrm/pkg/controller/iam/partialpolicy"
+	"cnrm.googlesource.com/cnrm/pkg/controller/iam/policy"
+	"cnrm.googlesource.com/cnrm/pkg/controller/iam/policymember"
+	"cnrm.googlesource.com/cnrm/pkg/controller/tf"
+	"cnrm.googlesource.com/cnrm/pkg/controller/unmanageddetector"
+	"cnrm.googlesource.com/cnrm/pkg/crd/crdgeneration"
+	"cnrm.googlesource.com/cnrm/pkg/dcl/conversion"
+	"cnrm.googlesource.com/cnrm/pkg/k8s"
+	"cnrm.googlesource.com/cnrm/pkg/servicemapping/servicemappingloader"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -177,6 +178,10 @@ func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.Cust
 		}
 	case "IAMAuditConfig":
 		if err := auditconfig.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
+			return nil, err
+		}
+	case "APIKeysKey":
+		if err := apikeyskey.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
 			return nil, err
 		}
 	default:
