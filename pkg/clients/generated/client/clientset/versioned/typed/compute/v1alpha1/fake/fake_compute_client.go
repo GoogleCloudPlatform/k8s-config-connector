@@ -103,6 +103,10 @@ func (c *FakeComputeV1alpha1) ComputeRegionPerInstanceConfigs(namespace string) 
 	return &FakeComputeRegionPerInstanceConfigs{c, namespace}
 }
 
+func (c *FakeComputeV1alpha1) ComputeRegionSSLPolicies(namespace string) v1alpha1.ComputeRegionSSLPolicyInterface {
+	return &FakeComputeRegionSSLPolicies{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeComputeV1alpha1) RESTClient() rest.Interface {

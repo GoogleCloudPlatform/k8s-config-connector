@@ -161,5 +161,11 @@ var (
 		Kind:    reflect.TypeOf(ComputeRegionPerInstanceConfig{}).Name(),
 	}
 
+	ComputeRegionSSLPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeRegionSSLPolicy{}).Name(),
+	}
+
 	computeAPIVersion = SchemeGroupVersion.String()
 )

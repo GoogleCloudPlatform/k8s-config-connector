@@ -56,3 +56,5 @@ type ComputeRegionAutoscalerExpansion interface{}
 type ComputeRegionDiskResourcePolicyAttachmentExpansion interface{}
 
 type ComputeRegionPerInstanceConfigExpansion interface{}
+
+type ComputeRegionSSLPolicyExpansion interface{}

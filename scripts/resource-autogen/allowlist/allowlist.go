@@ -92,6 +92,7 @@ var (
 		"compute/google_compute_region_autoscaler",
 		"compute/google_compute_region_disk_resource_policy_attachment",
 		"compute/google_compute_region_per_instance_config",
+		"compute/google_compute_region_ssl_policy",
 		"container_analysis/google_container_analysis_occurrence",
 		"data_catalog/google_data_catalog_entry",
 		"data_catalog/google_data_catalog_entry_group",
