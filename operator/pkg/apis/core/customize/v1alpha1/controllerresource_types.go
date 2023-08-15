@@ -49,7 +49,7 @@ type ControllerResourceSpec struct {
 // a config connector controller.
 type ContainerResourceSpec struct {
 	// The name of the container whose resource requirements will be customized.
-	// +kubebuilder:validation:Enum=manager;webhook;deletiondefender;prom-to-sd;recorder
+	// +kubebuilder:validation:Enum=manager;webhook;deletiondefender;prom-to-sd;recorder;unmanageddetector
 	// Required
 	Name string `json:"name"`
 	// Resources specifies the resource customization of this container.

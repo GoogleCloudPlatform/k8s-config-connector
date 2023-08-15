@@ -53,6 +53,7 @@ spec:
                       - deletiondefender
                       - prom-to-sd
                       - recorder
+                      - unmanageddetector
                       type: string
                     resources:
                       description: Resources specifies the resource customization

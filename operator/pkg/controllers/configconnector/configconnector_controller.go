@@ -607,7 +607,7 @@ func (r *ConfigConnectorReconciler) applyControllerResourceCustomization(ctx con
 		Version: appsv1.SchemeGroupVersion.Version,
 	}
 	switch cr.Name {
-	case "cnrm-controller-manager", "cnrm-deletiondefender":
+	case "cnrm-controller-manager", "cnrm-deletiondefender", "cnrm-unmanaged-detector":
 		controllerGVK.Kind = "StatefulSet"
 	case "cnrm-webhook-manager", "cnrm-resource-stats-recorder":
 		controllerGVK.Kind = "Deployment"
