@@ -71,23 +71,59 @@ func formatGCPShortName(kind string) string {
 	return fmt.Sprintf("gcp%v", strings.ToLower(kind))
 }
 
-func GetCustomResourceDefinition(kind, group, version string, openAPIV3Schema *apiextensions.JSONSchemaProps, engineLabel string) *apiextensions.CustomResourceDefinition {
+func GetCustomResourceDefinition(kind, group string, versions []string, storageVersion string, openAPIV3Schema *apiextensions.JSONSchemaProps, engineLabel string) *apiextensions.CustomResourceDefinition {
+	// `storageVersion` must be unset if there is only one version.
+	if len(versions) == 1 && storageVersion != "" {
+		panic(fmt.Sprintf("invalid storage version %v: must be empty "+
+			"when there is only one version", storageVersion))
+	}
+	// `storageVersion` is required when there are more than one version, and it
+	// needs to be either `v1alpha1` or `v1beta1`.
+	if len(versions) > 1 && !IsValidStorageVersion(storageVersion) {
+		panic(fmt.Sprintf("invalid storage version %v: must be %v or "+
+			"%v when there are more than one version", storageVersion,
+			k8s.KCCAPIVersionV1Alpha1, k8s.KCCAPIVersion))
+	}
 	singular := strings.ToLower(kind)
 	plural := text.Pluralize(singular)
 	fullName := plural + "." + group
-	crdVersion := apiextensions.CustomResourceDefinitionVersion{
-		Schema: &apiextensions.CustomResourceValidation{
-			OpenAPIV3Schema: openAPIV3Schema,
-		},
-		AdditionalPrinterColumns: crdboilerplate.GetAdditionalPrinterColumns(),
-		Subresources: &apiextensions.CustomResourceSubresources{
-			Status: &apiextensions.CustomResourceSubresourceStatus{},
-		},
-		Name:    version,
-		Served:  true,
-		Storage: true,
+	crdVersions := make([]apiextensions.CustomResourceDefinitionVersion, len(versions))
+	for i, version := range versions {
+		// There should be only one storage version. When there is only one
+		// version in the CRD, or if the current version is the same as the
+		// `storageVersion` value, then the current version is the storage
+		// version.
+		storage := false
+		if len(versions) == 1 || version == storageVersion {
+			storage = true
+		}
+		// When v1alpha1 is supported and the storage version is a different
+		// version, v1alpha1 is considered deprecated.
+		deprecated := false
+		if len(versions) > 1 && version == k8s.KCCAPIVersionV1Alpha1 &&
+			version != storageVersion {
+			deprecated = true
+		}
+		crdVersions[i] = apiextensions.CustomResourceDefinitionVersion{
+			Schema: &apiextensions.CustomResourceValidation{
+				OpenAPIV3Schema: openAPIV3Schema,
+			},
+			AdditionalPrinterColumns: crdboilerplate.GetAdditionalPrinterColumns(),
+			Subresources: &apiextensions.CustomResourceSubresources{
+				Status: &apiextensions.CustomResourceSubresourceStatus{},
+			},
+			Name:       version,
+			Served:     true,
+			Storage:    storage,
+			Deprecated: deprecated,
+		}
+		if deprecated {
+			deprecationWarning := fmt.Sprintf("%s/%s %s is deprecated, use %s/%s %s instead", group, version, kind, group, storageVersion, kind)
+			crdVersions[i].DeprecationWarning = &deprecationWarning
+		}
 	}
-	return &apiextensions.CustomResourceDefinition{
+
+	result := &apiextensions.CustomResourceDefinition{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: "apiextensions.k8s.io/v1",
 			Kind:       "CustomResourceDefinition",
@@ -104,11 +140,9 @@ func GetCustomResourceDefinition(kind, group, version string, openAPIV3Schema *a
 			},
 		},
 		Spec: apiextensions.CustomResourceDefinitionSpec{
-			Group: group,
-			Versions: []apiextensions.CustomResourceDefinitionVersion{
-				crdVersion,
-			},
-			Scope: apiextensions.NamespaceScoped,
+			Group:    group,
+			Versions: []apiextensions.CustomResourceDefinitionVersion{},
+			Scope:    apiextensions.NamespaceScoped,
 			Names: apiextensions.CustomResourceDefinitionNames{
 				Singular:   singular,
 				Plural:     plural,
@@ -122,6 +156,11 @@ func GetCustomResourceDefinition(kind, group, version string, openAPIV3Schema *a
 			StoredVersions: []string{},
 		},
 	}
+
+	for _, crdVersion := range crdVersions {
+		result.Spec.Versions = append(result.Spec.Versions, crdVersion)
+	}
+	return result
 }
 
 func GenerateResourceIDFieldDescription(targetField string, isServerGeneratedResourceID bool) string {
@@ -214,4 +253,11 @@ func MarkHierarchicalReferencesRequiredButMutuallyExclusive(spec *apiextensions.
 
 func resourceSupportsHierarchicalRefs(hierarchicalRefs []corekccv1alpha1.HierarchicalReference) bool {
 	return len(hierarchicalRefs) > 0
+}
+
+func IsValidStorageVersion(version string) bool {
+	if version == k8s.KCCAPIVersion || version == k8s.KCCAPIVersionV1Alpha1 {
+		return true
+	}
+	return false
 }

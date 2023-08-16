@@ -172,6 +172,15 @@ type ResourceConfig struct {
 	// If set to true, ReconciliationIntervalInSeconds should also be set to 0 to avoid
 	// repeated creation of the resource.
 	Unreadable *bool `json:"unreadable,omitempty"`
+
+	// V1alpha1ToV1beta1 indicates whether the resource is during v1alpha1 to
+	// v1beta1 conversion.
+	V1alpha1ToV1beta1 *bool `json:"v1alpha1ToV1beta1,omitempty"`
+
+	// StorageVersion indicates which storage version the resource uses.
+	// It must be set when V1alpha1ToV1beta1 is set to `true`. It must be
+	// `v1alpha1` when first set.
+	StorageVersion *string `json:"storageVersion,omitempty"`
 }
 
 type IAMConfig struct {

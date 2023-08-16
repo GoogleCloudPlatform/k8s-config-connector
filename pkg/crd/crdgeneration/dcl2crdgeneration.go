@@ -70,7 +70,7 @@ func (a *DCL2CRDGenerator) GenerateCRDFromOpenAPISchema(schema *openapi.Schema, 
 	if err != nil {
 		return nil, fmt.Errorf("error generating CRD schema for %v: %v", gvk.Kind, err)
 	}
-	crd := GetCustomResourceDefinition(gvk.Kind, gvk.Group, gvk.Version, openAPIV3Schema, Dcl2CRDLabel)
+	crd := GetCustomResourceDefinition(gvk.Kind, gvk.Group, []string{gvk.Version}, "", openAPIV3Schema, Dcl2CRDLabel)
 	if r.DCLVersion == "alpha" {
 		crd.ObjectMeta.Labels[k8s.KCCStabilityLabel] = k8s.StabilityLevelAlpha
 	} else {
