@@ -122,8 +122,8 @@ func (s *CloudFunctionsV1) DeleteFunction(ctx context.Context, req *pb.DeleteFun
 
 	fqn := name.String()
 
-	kind := (&pb.CloudFunction{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, kind, fqn); err != nil {
+	oldObj := &pb.CloudFunction{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, status.Errorf(codes.NotFound, "function %q not found", name)
 		} else {

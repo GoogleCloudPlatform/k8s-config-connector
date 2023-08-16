@@ -119,8 +119,8 @@ func (s *PrivateCAV1) DeleteCaPool(ctx context.Context, req *pb.DeleteCaPoolRequ
 
 	fqn := name.String()
 
-	caPoolKind := (&pb.CaPool{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, caPoolKind, fqn); err != nil {
+	oldObj := &pb.CaPool{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, status.Errorf(codes.NotFound, "caPool %q not found", name)
 		} else {

@@ -31,7 +31,7 @@ type Storage interface {
 	// List returns all matching objects
 	List(ctx context.Context, kind protoreflect.Descriptor, options ListOptions, callback func(obj proto.Message) error) error
 	// Deleting deletes the object, returning a not found error if it does not exist.
-	Delete(ctx context.Context, kind protoreflect.Descriptor, fqn string) error
+	Delete(ctx context.Context, fqn string, dest proto.Message) error
 }
 
 // ListOptions restricts the objects returned by a List
