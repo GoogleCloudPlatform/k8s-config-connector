@@ -192,6 +192,12 @@ generate-go-client: client-types
 	go generate ./pkg/clients/generated/...
 	./scripts/generate-go-crd-clients/generate-clients.sh
 
+# Generate google3 docs
+.PHONY: resource-docs
+resource-docs:
+	@go run ./scripts/generate-google3-docs/resource-reference/main.go
+	@go run ./scripts/generate-google3-docs/resource-lists/main.go
+
 # Run against the configured Kubernetes cluster in ~/.kube/config
 .PHONY: run
 run: generate fmt vet
