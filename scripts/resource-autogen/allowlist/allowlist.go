@@ -162,6 +162,7 @@ var (
 		"vertex_ai/google_vertex_ai_featurestore_entitytype",
 		"vertex_ai/google_vertex_ai_featurestore_entitytype_feature",
 		"vertex_ai/google_vertex_ai_index",
+		"vertex_ai/google_vertex_ai_index_endpoint",
 		"vertex_ai/google_vertex_ai_metadata_store",
 		"vertex_ai/google_vertex_ai_tensorboard",
 		"workflows/google_workflows_workflow",

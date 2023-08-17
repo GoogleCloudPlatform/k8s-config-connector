@@ -55,6 +55,10 @@ func (c *FakeVertexaiV1alpha1) VertexAIIndexes(namespace string) v1alpha1.Vertex
 	return &FakeVertexAIIndexes{c, namespace}
 }
 
+func (c *FakeVertexaiV1alpha1) VertexAIIndexEndpoints(namespace string) v1alpha1.VertexAIIndexEndpointInterface {
+	return &FakeVertexAIIndexEndpoints{c, namespace}
+}
+
 func (c *FakeVertexaiV1alpha1) VertexAIMetadataStores(namespace string) v1alpha1.VertexAIMetadataStoreInterface {
 	return &FakeVertexAIMetadataStores{c, namespace}
 }
