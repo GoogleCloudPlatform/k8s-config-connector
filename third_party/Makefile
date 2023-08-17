@@ -276,3 +276,5 @@ apply-patches:
 	# and non-computed `params` field in the
 	# `google_compute_instance_from_template` resource.
 	git apply ../hack/terraform-overrides/compute_instance_from_template_params_field.patch
+	# Add the missing output fields. b/296315266.
+	git apply ../hack/terraform-overrides/runservice.patch
