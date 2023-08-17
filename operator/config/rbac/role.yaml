@@ -129,6 +129,8 @@ rules:
   resources:
     - controllerresources
     - namespacedcontrollerresources
+    - validatingwebhookconfigurationcustomizations
+    - mutatingwebhookconfigurationcustomizations
   verbs:
     - create
     - delete
@@ -142,6 +144,8 @@ rules:
   resources:
     - controllerresources/status
     - namespacedcontrollerresources/status
+    - validatingwebhookconfigurationcustomizations/status
+    - mutatingwebhookconfigurationcustomizations/status
   verbs:
     - get
     - patch

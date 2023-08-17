@@ -67,7 +67,9 @@ func mutatingWebhooksForWebhookConfigs(whCfgs []WebhookConfig, svcName string, w
 			FailurePolicy:           &whCfg.FailurePolicy,
 			SideEffects:             &whCfg.SideEffects,
 			AdmissionReviewVersions: admissionReviewVersions,
-			TimeoutSeconds:          &k8s.WebhookTimeoutSeconds,
+			// This field is removed due to go/kcccl/65384.
+			// It is currently not necessary to set this field because 10s is the default in Kubernetes.
+			// TimeoutSeconds:          &k8s.WebhookTimeoutSeconds,
 		}
 		cc := getClientConfig(svcName, whCfg.Path)
 		wh.ClientConfig = *cc
@@ -92,7 +94,9 @@ func validatingWebhooksForWebhookConfigs(whCfgs []WebhookConfig, svcName string,
 			FailurePolicy:           &whCfg.FailurePolicy,
 			SideEffects:             &whCfg.SideEffects,
 			AdmissionReviewVersions: admissionReviewVersions,
-			TimeoutSeconds:          &k8s.WebhookTimeoutSeconds,
+			// This field is removed due to go/kcccl/65384.
+			// It is currently not necessary to set this field because 10s is the default in Kubernetes.
+			// TimeoutSeconds:          &k8s.WebhookTimeoutSeconds,
 		}
 		cc := getClientConfig(svcName, whCfg.Path)
 		wh.ClientConfig = *cc

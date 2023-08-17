@@ -42,4 +42,16 @@ var (
 		Version: GroupVersion.Version,
 		Kind:    "NamespacedControllerResource",
 	}
+
+	ValidatingWebhookConfigurationCustomizationGroupVersionKind = schema.GroupVersionKind{
+		Group:   GroupVersion.Group,
+		Version: GroupVersion.Version,
+		Kind:    "ValidatingWebhookConfigurationCustomization",
+	}
+
+	MutatingWebhookConfigurationCustomizationGroupVersionKind = schema.GroupVersionKind{
+		Group:   GroupVersion.Group,
+		Version: GroupVersion.Version,
+		Kind:    "MutatingWebhookConfigurationCustomization",
+	}
 )

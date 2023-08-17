@@ -586,22 +586,38 @@ func (r *ConfigConnectorReconciler) selectCRDsByVersion(m *manifest.Objects, ver
 // applyCustomizations fetches and applies all cluster-scoped customization CRDs.
 func (r *ConfigConnectorReconciler) applyCustomizations() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
-		crs, err := controllers.ListControllerResources(ctx, r.client)
-		if err != nil {
-			return err
+		if err := r.fetchAndApplyAllControllerResourceCRs(ctx, m); err != nil {
+			r.log.Error(err, "error applying all controller resource customization CRs")
+			// Don't fail entire reconciliation if we cannot apply controller resource customization CRs.
+			// return err
 		}
-		for _, cr := range crs {
-			r.log.Info("applying cluster-scoped controller resource customization", "name", cr.Name)
-			if err := r.applyControllerResourceCustomization(ctx, cr, m); err != nil {
-				return err
-			}
+		if err := r.fetchAndApplyAllWebhookConfigurationCustomizationCRs(ctx); err != nil {
+			r.log.Error(err, "error applying all webhook configuration customization CRs")
+			// Don't fail entire reconciliation if we cannot apply webhook configuration customization CRs.
+			// return err
 		}
 		return nil
 	}
 }
 
-// applyControllerResourceCustomization applies customizations specified in ControllerResource CR.
-func (r *ConfigConnectorReconciler) applyControllerResourceCustomization(ctx context.Context, cr customizev1alpha1.ControllerResource, m *manifest.Objects) error {
+// fetchAndApplyAllControllerResourceCRs lists all cluster-scoped controller resource CRs, and applies them to
+// the corresponding manifest objects.
+func (r *ConfigConnectorReconciler) fetchAndApplyAllControllerResourceCRs(ctx context.Context, m *manifest.Objects) error {
+	crs, err := controllers.ListControllerResources(ctx, r.client)
+	if err != nil {
+		return err
+	}
+	for _, cr := range crs {
+		r.log.Info("applying cluster-scoped controller resource customization", "name", cr.Name)
+		if err := r.applyControllerResourceCR(ctx, &cr, m); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// applyControllerResourceCR applies customizations specified in a ControllerResource CR.
+func (r *ConfigConnectorReconciler) applyControllerResourceCR(ctx context.Context, cr *customizev1alpha1.ControllerResource, m *manifest.Objects) error {
 	controllerGVK := schema.GroupVersionKind{
 		Group:   appsv1.SchemeGroupVersion.Group,
 		Version: appsv1.SchemeGroupVersion.Version,
@@ -614,27 +630,16 @@ func (r *ConfigConnectorReconciler) applyControllerResourceCustomization(ctx con
 	default:
 		msg := fmt.Sprintf("resource customization for controller %s is not supported", cr.Name)
 		r.log.Info(msg)
-		return r.handleApplyCustomizationFailed(ctx, cr.Name, msg)
+		return r.handleApplyControllerResourceCRFailed(ctx, cr, msg)
 	}
 	if err := controllers.ApplyContainerResourceCustomization(false, m, cr.Name, controllerGVK, cr.Spec.Containers, cr.Spec.Replicas); err != nil {
 		r.log.Error(err, "failed to apply customization", "Name", cr.Name)
-		return r.handleApplyCustomizationFailed(ctx, cr.Name, fmt.Sprintf("failed to apply customization %s: %v", cr.Name, err))
+		return r.handleApplyControllerResourceCRFailed(ctx, cr, fmt.Sprintf("failed to apply customization %s: %v", cr.Name, err))
 	}
-	return r.handleApplyCustomizationSucceeded(ctx, cr.Name)
+	return r.handleApplyControllerResourceCRSucceeded(ctx, cr)
 }
 
-func (r *ConfigConnectorReconciler) handleApplyCustomizationFailed(ctx context.Context, name string, msg string) error {
-	cr, err := controllers.GetControllerResource(ctx, r.client, name)
-	if err != nil {
-		if apierrors.IsNotFound(err) {
-			r.log.Info("ControllerResource object not found; skipping the handling of failed customization apply", "name", name)
-			return nil
-		}
-		// Don't fail entire reconciliation if we cannot get ControllerResource object.
-		// return fmt.Errorf("error getting ControllerResource object %v: %v", name, err)
-		r.log.Error(err, "error getting ControllerResource object %v", "Name", name)
-		return nil
-	}
+func (r *ConfigConnectorReconciler) handleApplyControllerResourceCRFailed(ctx context.Context, cr *customizev1alpha1.ControllerResource, msg string) error {
 	cr.Status.CommonStatus = v1alpha1.CommonStatus{
 		Healthy: false,
 		Errors:  []string{msg},
@@ -642,18 +647,7 @@ func (r *ConfigConnectorReconciler) handleApplyCustomizationFailed(ctx context.C
 	return r.updateControllerResourceStatus(ctx, cr)
 }
 
-func (r *ConfigConnectorReconciler) handleApplyCustomizationSucceeded(ctx context.Context, name string) error {
-	cr, err := controllers.GetControllerResource(ctx, r.client, name)
-	if err != nil {
-		if apierrors.IsNotFound(err) {
-			r.log.Info("ControllerResource object not found; skipping the handling of succeeded customization apply", "name", name)
-			return nil
-		}
-		// Don't fail entire reconciliation if we cannot get ControllerResource object.
-		// return fmt.Errorf("error getting ControllerResource object %v: %v", name, err)
-		r.log.Error(err, "error getting ControllerResource object", "Name", name)
-		return nil
-	}
+func (r *ConfigConnectorReconciler) handleApplyControllerResourceCRSucceeded(ctx context.Context, cr *customizev1alpha1.ControllerResource) error {
 	cr.SetCommonStatus(v1alpha1.CommonStatus{
 		Healthy: true,
 		Errors:  []string{},
@@ -664,8 +658,139 @@ func (r *ConfigConnectorReconciler) handleApplyCustomizationSucceeded(ctx contex
 func (r *ConfigConnectorReconciler) updateControllerResourceStatus(ctx context.Context, cr *customizev1alpha1.ControllerResource) error {
 	if err := r.client.Status().Update(ctx, cr); err != nil {
 		r.log.Error(err, "error updating ControllerResource status", "Name", cr.Name)
-		// Don't fail entire reconciliation if we cannot update ControllerResource status.
-		// return fmt.Errorf("failed to update ControllerResource %v: %v", cr.Name, err)
+		return fmt.Errorf("failed to update ControllerResource %v: %w", cr.Name, err)
+	}
+	return nil
+}
+
+// fetchAndApplyAllWebhookConfigurationCustomizationCRs lists all cluster-scoped webhook configuration customization CRs, and applies
+// them to the corresponding webhook configurations in the cluster.
+func (r *ConfigConnectorReconciler) fetchAndApplyAllWebhookConfigurationCustomizationCRs(ctx context.Context) error {
+	vwhcrs, err := controllers.ListValidatingWebhookConfigurationCustomizations(ctx, r.client)
+	if err != nil {
+		return err
+	}
+	for _, cr := range vwhcrs {
+		r.log.Info("applying validating webhook configuration customization", "name", cr.Name)
+		if err := r.applyValidatingWebhookConfigurationCustomizationCR(ctx, &cr); err != nil {
+			return err
+		}
+	}
+	mwhcrs, err := controllers.ListMutatingWebhookConfigurationCustomizations(ctx, r.client)
+	if err != nil {
+		return err
+	}
+	for _, cr := range mwhcrs {
+		r.log.Info("applying mutating webhook configuration customization", "name", cr.Name)
+		if err := r.applyMutatingWebhookConfigurationCustomizationCR(ctx, &cr); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// applyValidatingWebhookConfigurationCustomizationCR applies customizations specified in a ValidatingWebhookConfigurationCustomization CR.
+func (r *ConfigConnectorReconciler) applyValidatingWebhookConfigurationCustomizationCR(ctx context.Context, cr *customizev1alpha1.ValidatingWebhookConfigurationCustomization) error {
+	// 1. get the webhook configuration.
+	whCfg := &admissionregistration.ValidatingWebhookConfiguration{}
+	targetWebhookConfigurationName := fmt.Sprintf("%s.cnrm.cloud.google.com", cr.Name)
+	if err := r.client.Get(ctx, client.ObjectKey{Name: targetWebhookConfigurationName}, whCfg); err != nil {
+		if apierrors.IsNotFound(err) {
+			r.log.Info("target webhook configuration not found, skipped customization", "target webhook configuration name", targetWebhookConfigurationName)
+			return nil
+		}
+		return r.handleApplyValidatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("failed to apply cusotmization to webhook configuration %s: %v", targetWebhookConfigurationName, err))
+	}
+	// 2. update webhook configuration.
+	whMap := make(map[string]*int32) // whMap is a map of webhook fully qualified name to its customized timeout value.
+	for _, wh := range cr.Spec.Webhooks {
+		whMap[fmt.Sprintf("%s.cnrm.cloud.google.com", wh.Name)] = wh.TimeoutSeconds
+	}
+	for index, wh := range whCfg.Webhooks {
+		if _, found := whMap[wh.Name]; found { // found a webhook that we want to customize.
+			whCfg.Webhooks[index].TimeoutSeconds = whMap[wh.Name]
+		}
+	}
+	// 3. write back the updated webhook configuration.
+	if err := r.client.Update(ctx, whCfg); err != nil {
+		return r.handleApplyValidatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("error updating webhook configuration %s: %v", targetWebhookConfigurationName, err))
+	}
+	return r.handleApplyValidatingWebhookConfigurationCustomizationCRSucceeded(ctx, cr)
+}
+
+// applyMutatingWebhookConfigurationCustomizationCR applies customizations specified in a MutatingWebhookConfigurationCustomization CR.
+func (r *ConfigConnectorReconciler) applyMutatingWebhookConfigurationCustomizationCR(ctx context.Context, cr *customizev1alpha1.MutatingWebhookConfigurationCustomization) error {
+	// 1. get the webhook configuration.
+	whCfg := &admissionregistration.MutatingWebhookConfiguration{}
+	targetWebhookConfigurationName := fmt.Sprintf("%s.cnrm.cloud.google.com", cr.Name)
+	if err := r.client.Get(ctx, client.ObjectKey{Name: targetWebhookConfigurationName}, whCfg); err != nil {
+		if apierrors.IsNotFound(err) {
+			r.log.Info("target webhook configuration not found, skipped customization", "target webhook configuration name", targetWebhookConfigurationName)
+			return nil
+		}
+		return r.handleApplyMutatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("failed to apply cusotmization to webhook configuration %s: %v", targetWebhookConfigurationName, err))
+	}
+	// 2. update webhook configuration.
+	whMap := make(map[string]*int32) // whMap is a map of webhook fully qualified name to its customized timeout value.
+	for _, wh := range cr.Spec.Webhooks {
+		whMap[fmt.Sprintf("%s.cnrm.cloud.google.com", wh.Name)] = wh.TimeoutSeconds
+	}
+	for index, wh := range whCfg.Webhooks {
+		if _, found := whMap[wh.Name]; found { // found a webhook that we want to customize.
+			whCfg.Webhooks[index].TimeoutSeconds = whMap[wh.Name]
+		}
+	}
+	// 3. write back the updated webhook configuration.
+	if err := r.client.Update(ctx, whCfg); err != nil {
+		return r.handleApplyMutatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("error updating webhook configuration %s: %v", targetWebhookConfigurationName, err))
+	}
+	return r.handleApplyMutatingWebhookConfigurationCustomizationCRSucceeded(ctx, cr)
+}
+
+func (r *ConfigConnectorReconciler) handleApplyValidatingWebhookConfigurationCustomizationCRFailed(ctx context.Context, cr *customizev1alpha1.ValidatingWebhookConfigurationCustomization, msg string) error {
+	cr.SetCommonStatus(v1alpha1.CommonStatus{
+		Healthy: false,
+		Errors:  []string{msg},
+	})
+	return r.updateValidatingWebhookConfigurationCustomizationStatus(ctx, cr)
+}
+
+func (r *ConfigConnectorReconciler) handleApplyValidatingWebhookConfigurationCustomizationCRSucceeded(ctx context.Context, cr *customizev1alpha1.ValidatingWebhookConfigurationCustomization) error {
+	cr.SetCommonStatus(v1alpha1.CommonStatus{
+		Healthy: true,
+		Errors:  []string{},
+	})
+	return r.updateValidatingWebhookConfigurationCustomizationStatus(ctx, cr)
+}
+
+func (r *ConfigConnectorReconciler) updateValidatingWebhookConfigurationCustomizationStatus(ctx context.Context, cr *customizev1alpha1.ValidatingWebhookConfigurationCustomization) error {
+	if err := r.client.Status().Update(ctx, cr); err != nil {
+		r.log.Error(err, "error updating ValidatingWebhookConfigurationCustomization status", "Name", cr.Name)
+		return fmt.Errorf("failed to update ValidatingWebhookConfigurationCustomization %v: %w", cr.Name, err)
+	}
+	return nil
+}
+
+func (r *ConfigConnectorReconciler) handleApplyMutatingWebhookConfigurationCustomizationCRFailed(ctx context.Context, cr *customizev1alpha1.MutatingWebhookConfigurationCustomization, msg string) error {
+	cr.SetCommonStatus(v1alpha1.CommonStatus{
+		Healthy: false,
+		Errors:  []string{msg},
+	})
+	return r.updateMutatingWebhookConfigurationCustomizationStatus(ctx, cr)
+}
+
+func (r *ConfigConnectorReconciler) handleApplyMutatingWebhookConfigurationCustomizationCRSucceeded(ctx context.Context, cr *customizev1alpha1.MutatingWebhookConfigurationCustomization) error {
+	cr.SetCommonStatus(v1alpha1.CommonStatus{
+		Healthy: true,
+		Errors:  []string{},
+	})
+	return r.updateMutatingWebhookConfigurationCustomizationStatus(ctx, cr)
+}
+
+func (r *ConfigConnectorReconciler) updateMutatingWebhookConfigurationCustomizationStatus(ctx context.Context, cr *customizev1alpha1.MutatingWebhookConfigurationCustomization) error {
+	if err := r.client.Status().Update(ctx, cr); err != nil {
+		r.log.Error(err, "error updating MutatingWebhookConfigurationCustomization status", "Name", cr.Name)
+		return fmt.Errorf("failed to update MutatingWebhookConfigurationCustomization %v: %w", cr.Name, err)
 	}
 	return nil
 }

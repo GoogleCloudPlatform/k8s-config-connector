@@ -339,3 +339,37 @@ func checkForDuplicate(containers []customizev1alpha1.ContainerResourceSpec) err
 	}
 	return nil
 }
+
+func GetValidatingWebhookConfigurationCustomization(ctx context.Context, c client.Client, name string) (*customizev1alpha1.ValidatingWebhookConfigurationCustomization, error) {
+	obj := &customizev1alpha1.ValidatingWebhookConfigurationCustomization{}
+	if err := c.Get(ctx, types.NamespacedName{Name: name}, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+// ListValidatingWebhookConfigurationCustomizations lists all ValidatingWebhookConfigurationCustomization CRs.
+func ListValidatingWebhookConfigurationCustomizations(ctx context.Context, c client.Client) ([]customizev1alpha1.ValidatingWebhookConfigurationCustomization, error) {
+	list := &customizev1alpha1.ValidatingWebhookConfigurationCustomizationList{}
+	if err := c.List(ctx, list); err != nil {
+		return nil, err
+	}
+	return list.Items, nil
+}
+
+func GetMutatingWebhookConfigurationCustomization(ctx context.Context, c client.Client, name string) (*customizev1alpha1.MutatingWebhookConfigurationCustomization, error) {
+	obj := &customizev1alpha1.MutatingWebhookConfigurationCustomization{}
+	if err := c.Get(ctx, types.NamespacedName{Name: name}, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+// ListMutatingWebhookConfigurationCustomizations lists all MutatingWebhookConfigurationCustomization CRs.
+func ListMutatingWebhookConfigurationCustomizations(ctx context.Context, c client.Client) ([]customizev1alpha1.MutatingWebhookConfigurationCustomization, error) {
+	list := &customizev1alpha1.MutatingWebhookConfigurationCustomizationList{}
+	if err := c.List(ctx, list); err != nil {
+		return nil, err
+	}
+	return list.Items, nil
+}
