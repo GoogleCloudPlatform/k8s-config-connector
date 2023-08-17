@@ -64,6 +64,11 @@ var testDisabledList = map[string]bool{
 	// The resources below have special test requirements
 	"computeinterconnectattachment": true,
 	"firestoreindex":                true,
+	// The test external cluster to be attached requires special setup.
+	// It cannot be attached to multiple projects, or be used multiple times if it's already registered.
+	"container-attached-cluster-basic":         true,
+	"container-attached-cluster-full":          true,
+	"container-attached-cluster-ignore-errors": true,
 	// The below test requires more resources than the default quota allows
 	"computenodegroup":      true,
 	"sole-tenant-node-pool": true,

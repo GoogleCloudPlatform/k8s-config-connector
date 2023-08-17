@@ -60,6 +60,7 @@ import (
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1"
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1alpha1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1beta1"
+	containerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containerattached/v1beta1"
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
@@ -177,6 +178,7 @@ type Interface interface {
 	ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface
 	ContaineranalysisV1alpha1() containeranalysisv1alpha1.ContaineranalysisV1alpha1Interface
 	ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface
+	ContainerattachedV1beta1() containerattachedv1beta1.ContainerattachedV1beta1Interface
 	DatacatalogV1alpha1() datacatalogv1alpha1.DatacatalogV1alpha1Interface
 	DatacatalogV1beta1() datacatalogv1beta1.DatacatalogV1beta1Interface
 	DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface
@@ -293,6 +295,7 @@ type Clientset struct {
 	containerV1beta1             *containerv1beta1.ContainerV1beta1Client
 	containeranalysisV1alpha1    *containeranalysisv1alpha1.ContaineranalysisV1alpha1Client
 	containeranalysisV1beta1     *containeranalysisv1beta1.ContaineranalysisV1beta1Client
+	containerattachedV1beta1     *containerattachedv1beta1.ContainerattachedV1beta1Client
 	datacatalogV1alpha1          *datacatalogv1alpha1.DatacatalogV1alpha1Client
 	datacatalogV1beta1           *datacatalogv1beta1.DatacatalogV1beta1Client
 	dataflowV1beta1              *dataflowv1beta1.DataflowV1beta1Client
@@ -543,6 +546,11 @@ func (c *Clientset) ContaineranalysisV1alpha1() containeranalysisv1alpha1.Contai
 // ContaineranalysisV1beta1 retrieves the ContaineranalysisV1beta1Client
 func (c *Clientset) ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface {
 	return c.containeranalysisV1beta1
+}
+
+// ContainerattachedV1beta1 retrieves the ContainerattachedV1beta1Client
+func (c *Clientset) ContainerattachedV1beta1() containerattachedv1beta1.ContainerattachedV1beta1Interface {
+	return c.containerattachedV1beta1
 }
 
 // DatacatalogV1alpha1 retrieves the DatacatalogV1alpha1Client
@@ -1104,6 +1112,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.containerattachedV1beta1, err = containerattachedv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.datacatalogV1alpha1, err = datacatalogv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1460,6 +1472,7 @@ func New(c rest.Interface) *Clientset {
 	cs.containerV1beta1 = containerv1beta1.New(c)
 	cs.containeranalysisV1alpha1 = containeranalysisv1alpha1.New(c)
 	cs.containeranalysisV1beta1 = containeranalysisv1beta1.New(c)
+	cs.containerattachedV1beta1 = containerattachedv1beta1.New(c)
 	cs.datacatalogV1alpha1 = datacatalogv1alpha1.New(c)
 	cs.datacatalogV1beta1 = datacatalogv1beta1.New(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.New(c)

@@ -60,6 +60,7 @@ SUPPORTED_SERVICES=(
   eventarc.googleapis.com
   file.googleapis.com
   gkehub.googleapis.com
+  gkemulticloud.googleapis.com
   iap.googleapis.com
   identitytoolkit.googleapis.com
   krmapihosting.googleapis.com

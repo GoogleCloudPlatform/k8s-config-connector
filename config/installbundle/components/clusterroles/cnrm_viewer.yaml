@@ -247,6 +247,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - containerattached.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - datacatalog.cnrm.cloud.google.com
   resources:
   - '*'

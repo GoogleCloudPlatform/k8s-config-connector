@@ -368,6 +368,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - containerattached.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - datacatalog.cnrm.cloud.google.com
   resources:
   - '*'
