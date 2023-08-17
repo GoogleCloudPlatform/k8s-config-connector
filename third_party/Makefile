@@ -277,4 +277,6 @@ apply-patches:
 	# `google_compute_instance_from_template` resource.
 	git apply ../hack/terraform-overrides/compute_instance_from_template_params_field.patch
 	# Add the missing output fields. b/296315266.
-	git apply ../hack/terraform-overrides/runservice.patch
+	git apply ../hack/terraform-overrides/runservice_missing_fields.patch
+	# Correct the field type of terminal_condition field. b/296456403.
+	git apply ../hack/terraform-overrides/runservice_terminalcondition.patch
