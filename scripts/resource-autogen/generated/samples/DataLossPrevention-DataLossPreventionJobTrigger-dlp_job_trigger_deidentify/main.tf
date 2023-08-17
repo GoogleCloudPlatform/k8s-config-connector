@@ -1,0 +1,101 @@
+/**
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+```hcl
+resource "google_data_loss_prevention_job_trigger" "deidentify" {
+  parent       = "projects/my-project-name"
+  description  = "Description for the job_trigger created by terraform"
+  display_name = "TerraformDisplayName"
+  
+  triggers {
+    schedule {
+      recurrence_period_duration = "86400s"
+    }
+  }
+  
+  inspect_job {
+    inspect_template_name = "sample-inspect-template"
+    actions {
+      deidentify {
+        cloud_storage_output    = "gs://samplebucket/dir/"
+        file_types_to_transform = ["CSV", "TSV"]
+        transformation_details_storage_config {
+          table {
+            project_id = "my-project-name"
+            dataset_id = google_bigquery_dataset.default.dataset_id
+            table_id   = google_bigquery_table.default.table_id
+          }
+        }
+        transformation_config {
+          deidentify_template            = "sample-deidentify-template"
+          image_redact_template          = "sample-image-redact-template"
+          structured_deidentify_template = "sample-structured-deidentify-template"
+        }
+      }
+    }
+    storage_config {
+      cloud_storage_options {
+        file_set {
+          url = "gs://mybucket/directory/"
+        }
+      }
+    }
+  }
+}
+  
+resource "google_bigquery_dataset" "default" {
+  dataset_id                  = "tf_test"
+  friendly_name               = "terraform-test"
+  description                 = "Description for the dataset created by terraform"
+  location                    = "US"
+  default_table_expiration_ms = 3600000
+  
+  labels = {
+    env = "default"
+  }
+}
+  
+resource "google_bigquery_table" "default" {
+  dataset_id          = google_bigquery_dataset.default.dataset_id
+  table_id            = "tf_test"
+  deletion_protection = false
+  
+  time_partitioning {
+    type = "DAY"
+  }
+  
+  labels = {
+    env = "default"
+  }
+  
+  schema = <<EOF
+    [
+    {
+      "name": "quantity",
+      "type": "NUMERIC",
+      "mode": "NULLABLE",
+      "description": "The quantity"
+    },
+    {
+      "name": "name",
+      "type": "STRING",
+      "mode": "NULLABLE",
+      "description": "Name of the object"
+    }
+    ]
+  EOF
+}
+```
