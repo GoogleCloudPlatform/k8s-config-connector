@@ -203,3 +203,9 @@ resource-docs:
 run: generate fmt vet
 	SERVICE_MAPPING_DIR=config/servicemappings/ go run ./cmd/manager/main.go
 
+# Ensures dependencies are up-to-date
+.PHONY: ensure
+ensure:
+	make -C third_party all
+	go mod tidy -compat=1.19
+

@@ -19,7 +19,8 @@ set -o nounset
 set -o pipefail
 
 
-source $(dirname "${BASH_SOURCE}")/../shared-vars-public.sh
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+source ${REPO_ROOT}/scripts/shared-vars-public.sh
 cd "${REPO_ROOT}/pkg/clients/generated/"
 
 # Extract API & version names
