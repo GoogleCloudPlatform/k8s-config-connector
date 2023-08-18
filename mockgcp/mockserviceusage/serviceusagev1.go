@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"strings"
 
-	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -28,6 +27,7 @@ import (
 	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/serviceusage/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 

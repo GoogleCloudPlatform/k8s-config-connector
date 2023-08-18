@@ -17,12 +17,13 @@ package mockprivateca
 import (
 	"context"
 
-	pb "google.golang.org/genproto/googleapis/cloud/security/privateca/v1"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/security/privateca/v1"
 )
 
 type PrivateCAV1 struct {

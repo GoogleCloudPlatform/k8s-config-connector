@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"strconv"
 
-	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/serviceusage/v1beta1"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/types/known/anypb"
 )
