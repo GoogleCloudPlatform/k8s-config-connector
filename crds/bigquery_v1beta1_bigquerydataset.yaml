@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.107.0
+    cnrm.cloud.google.com/version: 1.108.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -343,6 +343,14 @@ spec:
                 description: Immutable. Optional. The datasetId of the resource. Used
                   for creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
+                type: string
+              storageBillingModel:
+                description: |-
+                  Specifies the storage billing model for the dataset.
+                  Set this flag value to LOGICAL to use logical bytes for storage billing,
+                  or to PHYSICAL to use physical bytes instead.
+
+                  LOGICAL is the default if this flag isn't specified.
                 type: string
             type: object
           status:

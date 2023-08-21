@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.107.0
+    cnrm.cloud.google.com/version: 1.108.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -135,6 +135,11 @@ spec:
                       type: string
                   type: object
                 type: array
+              labelFingerprint:
+                description: |-
+                  The fingerprint used for optimistic locking of this resource.  Used
+                  internally during updates.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.

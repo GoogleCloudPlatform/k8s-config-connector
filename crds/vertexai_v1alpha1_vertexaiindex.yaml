@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.107.0
+    cnrm.cloud.google.com/version: 1.108.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -140,6 +140,14 @@ spec:
                           Type of normalization to be carried out on each vector. The value must be one of the followings:
                           * UNIT_L2_NORM: Unit L2 normalization type
                           * NONE: No normalization type is specified.
+                        type: string
+                      shardSize:
+                        description: |-
+                          Immutable. Index data is split into equal parts to be processed. These are called "shards".
+                          The shard size must be specified when creating an index. The value must be one of the followings:
+                          * SHARD_SIZE_SMALL: Small (2GB)
+                          * SHARD_SIZE_MEDIUM: Medium (20GB)
+                          * SHARD_SIZE_LARGE: Large (50GB).
                         type: string
                     required:
                     - dimensions

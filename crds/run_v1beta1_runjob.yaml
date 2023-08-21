@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.107.0
+    cnrm.cloud.google.com/version: 1.108.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -71,6 +71,17 @@ spec:
             type: object
           spec:
             properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.
+
+                  Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected on new resources.
+                  All system annotations in v1 now have a corresponding field in v2 Job.
+
+                  This field follows Kubernetes annotations' namespacing, limits, and rules.
+                type: object
               binaryAuthorization:
                 description: Settings for the Binary Authorization feature.
                 properties:
@@ -136,6 +147,17 @@ spec:
               template:
                 description: The template used to create executions for this Job.
                 properties:
+                  annotations:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects.
+
+                      Cloud Run API v2 does not support annotations with 'run.googleapis.com', 'cloud.googleapis.com', 'serving.knative.dev', or 'autoscaling.knative.dev' namespaces, and they will be rejected.
+                      All system annotations in v1 now have a corresponding field in v2 ExecutionTemplate.
+
+                      This field follows Kubernetes annotations' namespacing, limits, and rules.
+                    type: object
                   parallelism:
                     description: Specifies the maximum desired number of tasks the
                       execution should run at given time. Must be <= taskCount. When
@@ -597,7 +619,7 @@ spec:
                                     limits of all containers in a pod. This field''s
                                     values are of the ''Quantity'' k8s type: https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/quantity/.
                                     The default is nil which means that the limit
-                                    is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir.'
+                                    is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir.'
                                   type: string
                               type: object
                             name:

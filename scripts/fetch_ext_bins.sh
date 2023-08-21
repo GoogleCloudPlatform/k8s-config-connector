@@ -18,7 +18,7 @@ set -o nounset
 set -o pipefail
 
 # needs KUBEBUILDER_VERSION
-source $(dirname "${BASH_SOURCE}")/shared-vars-public.sh
+source $(dirname "${BASH_SOURCE}")/shared-vars.sh
 
 # Enable tracing in this script off by setting the TRACE variable in your
 # environment to any value:

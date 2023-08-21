@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.107.0
+    cnrm.cloud.google.com/version: 1.108.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -279,6 +279,14 @@ spec:
                       labels:
                         description: Immutable. A set of key/value label pairs assigned
                           to the disk.
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      resourceManagerTags:
+                        description: Immutable. A map of resource manager tags. Resource
+                          manager tag keys and values have the same definition as
+                          resource manager tags. Keys must be in the format tagKeys/{tag_key_id},
+                          and values are in the format tagValues/456. The field is
+                          ignored (both PUT & PATCH) when empty.
                         type: object
                         x-kubernetes-preserve-unknown-fields: true
                       size:
@@ -708,6 +716,19 @@ spec:
                     type: string
                 required:
                 - totalEgressBandwidthTier
+                type: object
+              params:
+                description: Immutable. Stores additional params passed with the request,
+                  but not persisted as part of resource payload.
+                properties:
+                  resourceManagerTags:
+                    description: Immutable. A map of resource manager tags. Resource
+                      manager tag keys and values have the same definition as resource
+                      manager tags. Keys must be in the format tagKeys/{tag_key_id},
+                      and values are in the format tagValues/456. The field is ignored
+                      (both PUT & PATCH) when empty.
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
                 type: object
               reservationAffinity:
                 description: Immutable. Specifies the reservations that this instance
