@@ -101,7 +101,7 @@ spec:
           description: The secret required
           key: secretRef
           gvk:
-            kind: SecretManagerSecret
+            kind: SecretManagerSecretVersion
             version: v1beta1
             group: secretmanager.cnrm.cloud.google.com
           targetField: name

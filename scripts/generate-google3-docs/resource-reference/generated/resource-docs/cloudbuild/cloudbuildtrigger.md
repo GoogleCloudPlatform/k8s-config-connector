@@ -2634,7 +2634,7 @@ One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `SecretManagerSecret` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `SecretManagerSecretVersion` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
