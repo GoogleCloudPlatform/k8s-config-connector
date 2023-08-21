@@ -22,14 +22,32 @@ on:
 
 
 jobs:
+  validations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # This is introduced to make sure 'go generate' works properly
+          path: 'src/k8s-config-connector'
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.19.11'
+      - name: 'Run validations'
+        run: |
+          cd ./src/k8s-config-connector
+          ./scripts/github-actions/ga-validation.sh
+        env:
+          # This is introduced to make sure 'go generate' works properly
+          GOPATH: /home/runner/work/k8s-config-connector/k8s-config-connector
   unit-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-go@v2
+      - uses: actions/setup-go@v4
         with:
-          go-version: '^1.19.11'
+          go-version: '1.19.11'
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'
       - name: 'Run unit tests'
