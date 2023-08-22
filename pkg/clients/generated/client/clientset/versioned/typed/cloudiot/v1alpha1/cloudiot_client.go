@@ -32,6 +32,7 @@ import (
 type CloudiotV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	CloudIOTDevicesGetter
+	CloudIOTDeviceRegistriesGetter
 }
 
 // CloudiotV1alpha1Client is used to interact with features provided by the cloudiot.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type CloudiotV1alpha1Client struct {
 
 func (c *CloudiotV1alpha1Client) CloudIOTDevices(namespace string) CloudIOTDeviceInterface {
 	return newCloudIOTDevices(c, namespace)
+}
+
+func (c *CloudiotV1alpha1Client) CloudIOTDeviceRegistries(namespace string) CloudIOTDeviceRegistryInterface {
+	return newCloudIOTDeviceRegistries(c, namespace)
 }
 
 // NewForConfig creates a new CloudiotV1alpha1Client for the given config.

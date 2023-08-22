@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(CloudIOTDevice{}).Name(),
 	}
 
+	CloudIOTDeviceRegistryGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudIOTDeviceRegistry{}).Name(),
+	}
+
 	cloudiotAPIVersion = SchemeGroupVersion.String()
 )

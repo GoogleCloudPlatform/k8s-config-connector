@@ -72,6 +72,7 @@ var (
 		"cloudfunctions2/google_cloudfunctions2_function",
 		"cloud_ids/google_cloud_ids_endpoint",
 		"cloudiot/google_cloudiot_device",
+		"cloudiot/google_cloudiot_registry",
 		"cloud_tasks/google_cloud_tasks_queue",
 		"compute/google_compute_autoscaler",
 		"compute/google_compute_backend_bucket_signed_url_key",

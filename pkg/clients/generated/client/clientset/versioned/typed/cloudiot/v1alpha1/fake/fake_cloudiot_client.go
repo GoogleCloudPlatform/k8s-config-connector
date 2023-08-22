@@ -35,6 +35,10 @@ func (c *FakeCloudiotV1alpha1) CloudIOTDevices(namespace string) v1alpha1.CloudI
 	return &FakeCloudIOTDevices{c, namespace}
 }
 
+func (c *FakeCloudiotV1alpha1) CloudIOTDeviceRegistries(namespace string) v1alpha1.CloudIOTDeviceRegistryInterface {
+	return &FakeCloudIOTDeviceRegistries{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeCloudiotV1alpha1) RESTClient() rest.Interface {
