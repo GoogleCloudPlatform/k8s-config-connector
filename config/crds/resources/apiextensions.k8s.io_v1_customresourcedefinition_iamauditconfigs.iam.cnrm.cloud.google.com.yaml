@@ -92,8 +92,6 @@ spec:
                     type: string
                   namespace:
                     type: string
-                required:
-                - kind
                 type: object
               service:
                 description: 'Immutable. Required. The service for which to enable

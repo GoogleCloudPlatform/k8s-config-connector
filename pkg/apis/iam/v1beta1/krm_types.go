@@ -23,7 +23,7 @@ import "k8s.io/apimachinery/pkg/runtime/schema"
 // go-clients have an accurate representation of this struct.
 // ResourceReference defines a relationship to another resource
 type ResourceReference struct {
-	Kind       string `json:"kind"`
+	Kind       string `json:"kind,omitempty"`
 	Namespace  string `json:"namespace,omitempty"`
 	Name       string `json:"name,omitempty"`
 	APIVersion string `json:"apiVersion,omitempty"`
