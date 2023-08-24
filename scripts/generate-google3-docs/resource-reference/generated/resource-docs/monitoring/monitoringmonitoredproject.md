@@ -220,10 +220,11 @@ observedGeneration: integer
 apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
 kind: MonitoringMonitoredProject
 metadata:
+  # name needs to be the project ID of a monitored project
   name: mmp-sample-dep
 spec:
   # Replace ${PROJECT_ID?} with your project ID
-  metricsScope: "${PROJECT_ID?}"
+  metricsScope: "location/global/metricsScopes/${PROJECT_ID?}"
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
