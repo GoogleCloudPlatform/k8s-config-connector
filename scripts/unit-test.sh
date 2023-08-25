@@ -18,5 +18,5 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 make -C operator test
-UNIT_TEST_PACKAGES=$(go list ./pkg/... ./cmd/... ./config/tests/... ./scripts/generate-go-crd-clients/... | grep -v mocktests) 
+UNIT_TEST_PACKAGES=$(go list ./pkg/... ./cmd/... ./config/tests/... ./scripts/generate-go-crd-clients/... ./scripts/resource-autogen/... | grep -v mocktests)
 go test -v ${UNIT_TEST_PACKAGES} -coverprofile cover.out -count=1
