@@ -280,3 +280,5 @@ apply-patches:
 	git apply ../hack/terraform-overrides/runservice_missing_fields.patch
 	# Correct the field type of terminal_condition field. b/296456403.
 	git apply ../hack/terraform-overrides/runservice_terminalcondition.patch
+	# Mark the field "template.volumes.secret.items.mode" as optional. b/297596079.
+	git apply ../hack/terraform-overrides/runservice_template_volumes_secret_items_mode.patch
