@@ -39,7 +39,7 @@ spec:
             properties:
               containers:
                 description: The list of containers whose resource requirements to
-                  be customized. Required
+                  be customized.
                 items:
                   description: ContainerResourceSpec is the specification of the resource
                     customization for a container of a config connector controller.
@@ -94,8 +94,6 @@ spec:
                   is "cnrm-webhook-manager".
                 format: int64
                 type: integer
-            required:
-            - containers
             type: object
           status:
             description: ControllerResourceStatus defines the observed state of ControllerResource.

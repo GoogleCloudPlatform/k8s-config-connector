@@ -37,8 +37,8 @@ type ControllerResource struct {
 // a config connector controller.
 type ControllerResourceSpec struct {
 	// The list of containers whose resource requirements to be customized.
-	// Required
-	Containers []ContainerResourceSpec `json:"containers"`
+	// +optional
+	Containers []ContainerResourceSpec `json:"containers,omitempty"`
 	// The number of desired replicas of the config connector controller.
 	// This field takes effect only if the controller name is "cnrm-webhook-manager".
 	// +optional
