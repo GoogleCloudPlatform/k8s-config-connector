@@ -209,3 +209,6 @@ ensure:
 	make -C third_party all
 	go mod tidy -compat=1.19
 
+# Should run all needed commands before any PR is sent out.
+.PHONY: ready-pr
+reviewable: manifests resource-docs generate-go-client
