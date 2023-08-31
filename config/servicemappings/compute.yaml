@@ -510,7 +510,7 @@ spec:
           targetField: self_link
         - key: subnetworkRef
           description: |-
-            The subnetwork that the load balanced IP should belong to for this
+            Immutable. The subnetwork that the load balanced IP should belong to for this
             forwarding rule. This field is only used for internal load
             balancing.
 
@@ -654,6 +654,20 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - key: subnetworkRef
+          description: |-
+            Immutable. The subnetwork that the load balanced IP should belong to for this
+            forwarding rule. This field is only used for internal load
+            balancing.
+
+            If the network specified is in auto subnet mode, this field is
+            optional. However, if the network is in custom subnet mode, a
+            subnetwork must be specified.
+          tfField: subnetwork
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
       containers:
         - type: project
           tfField: project
@@ -2426,6 +2440,15 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: security_policy
+          description: |-
+            The resource URL for the security policy associated with this target instance.
+          key: securityPolicyRef
+          gvk:
+            kind: ComputeSecurityPolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project
@@ -2460,6 +2483,15 @@ spec:
                 version: v1beta1
                 group: compute.cnrm.cloud.google.com
               targetField: self_link
+        - tfField: security_policy
+          description: |-
+            The resource URL for the security policy associated with this target pool.
+          key: securityPolicyRef
+          gvk:
+            kind: ComputeSecurityPolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project

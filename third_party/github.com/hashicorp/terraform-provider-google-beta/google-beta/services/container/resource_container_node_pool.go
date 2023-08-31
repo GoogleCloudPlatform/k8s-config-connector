@@ -188,6 +188,12 @@ var schemaNodePool = map[string]*schema.Schema{
 					Required:    true,
 					Description: `Type defines the type of placement policy`,
 				},
+				"policy_name": {
+					Type:        schema.TypeString,
+					Optional:    true,
+					ForceNew:    true,
+					Description: `If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. If not found, InvalidArgument error is returned.`,
+				},
 				"tpu_topology": {
 					Type:        schema.TypeString,
 					Optional:    true,
@@ -364,6 +370,57 @@ var schemaNodePool = map[string]*schema.Schema{
 					Computed:     true,
 					ValidateFunc: verify.ValidateIpCidrRange,
 					Description:  `The IP address range for pod IPs in this node pool. Only applicable if create_pod_range is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) to pick a specific range to use.`,
+				},
+				"additional_node_network_configs": {
+					Type:        schema.TypeList,
+					Optional:    true,
+					ForceNew:    true,
+					Description: `We specify the additional node networks for this node pool using this list. Each node network corresponds to an additional interface`,
+					Elem: &schema.Resource{
+						Schema: map[string]*schema.Schema{
+							"network": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								ForceNew:    true,
+								Description: `Name of the VPC where the additional interface belongs.`,
+							},
+							"subnetwork": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								ForceNew:    true,
+								Description: `Name of the subnetwork where the additional interface belongs.`,
+							},
+						},
+					},
+				},
+				"additional_pod_network_configs": {
+					Type:        schema.TypeList,
+					Optional:    true,
+					ForceNew:    true,
+					Description: `We specify the additional pod networks for this node pool using this list. Each pod network corresponds to an additional alias IP range for the node`,
+					Elem: &schema.Resource{
+						Schema: map[string]*schema.Schema{
+							"subnetwork": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								ForceNew:    true,
+								Description: `Name of the subnetwork where the additional pod network belongs.`,
+							},
+							"secondary_pod_range": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								ForceNew:    true,
+								Description: `The name of the secondary range on the subnet which provides IP address for this pod range.`,
+							},
+							"max_pods_per_node": {
+								Type:        schema.TypeInt,
+								Optional:    true,
+								ForceNew:    true,
+								Computed:    true,
+								Description: `The maximum number of pods per node which use this pod network.`,
+							},
+						},
+					},
 				},
 				"pod_cidr_overprovision_config": {
 					Type:        schema.TypeList,
@@ -859,6 +916,7 @@ func expandNodePool(d *schema.ResourceData, prefix string) (*container.NodePool,
 			placement_policy := v.([]interface{})[0].(map[string]interface{})
 			np.PlacementPolicy = &container.PlacementPolicy{
 				Type:        placement_policy["type"].(string),
+				PolicyName:  placement_policy["policy_name"].(string),
 				TpuTopology: placement_policy["tpu_topology"].(string),
 			}
 		}
@@ -1051,6 +1109,7 @@ func flattenNodePool(d *schema.ResourceData, config *transport_tpg.Config, np *c
 		nodePool["placement_policy"] = []map[string]interface{}{
 			{
 				"type":         np.PlacementPolicy.Type,
+				"policy_name":  np.PlacementPolicy.PolicyName,
 				"tpu_topology": np.PlacementPolicy.TpuTopology,
 			},
 		}
@@ -1080,11 +1139,44 @@ func flattenNodeNetworkConfig(c *container.NodeNetworkConfig, d *schema.Resource
 	result := []map[string]interface{}{}
 	if c != nil {
 		result = append(result, map[string]interface{}{
-			"create_pod_range":              d.Get(prefix + "network_config.0.create_pod_range"), // API doesn't return this value so we set the old one. Field is ForceNew + Required
-			"pod_ipv4_cidr_block":           c.PodIpv4CidrBlock,
-			"pod_range":                     c.PodRange,
-			"enable_private_nodes":          c.EnablePrivateNodes,
-			"pod_cidr_overprovision_config": flattenPodCidrOverprovisionConfig(c.PodCidrOverprovisionConfig),
+			"create_pod_range":                d.Get(prefix + "network_config.0.create_pod_range"), // API doesn't return this value so we set the old one. Field is ForceNew + Required
+			"pod_ipv4_cidr_block":             c.PodIpv4CidrBlock,
+			"pod_range":                       c.PodRange,
+			"enable_private_nodes":            c.EnablePrivateNodes,
+			"pod_cidr_overprovision_config":   flattenPodCidrOverprovisionConfig(c.PodCidrOverprovisionConfig),
+			"additional_node_network_configs": flattenAdditionalNodeNetworkConfig(c.AdditionalNodeNetworkConfigs),
+			"additional_pod_network_configs":  flattenAdditionalPodNetworkConfig(c.AdditionalPodNetworkConfigs),
+		})
+	}
+	return result
+}
+
+func flattenAdditionalNodeNetworkConfig(c []*container.AdditionalNodeNetworkConfig) []map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+
+	result := []map[string]interface{}{}
+	for _, nodeNetworkConfig := range c {
+		result = append(result, map[string]interface{}{
+			"network":    nodeNetworkConfig.Network,
+			"subnetwork": nodeNetworkConfig.Subnetwork,
+		})
+	}
+	return result
+}
+
+func flattenAdditionalPodNetworkConfig(c []*container.AdditionalPodNetworkConfig) []map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+
+	result := []map[string]interface{}{}
+	for _, podNetworkConfig := range c {
+		result = append(result, map[string]interface{}{
+			"subnetwork":          podNetworkConfig.Subnetwork,
+			"secondary_pod_range": podNetworkConfig.SecondaryPodRange,
+			"max_pods_per_node":   podNetworkConfig.MaxPodsPerNode.MaxPodsPerNode,
 		})
 	}
 	return result
@@ -1116,6 +1208,37 @@ func expandNodeNetworkConfig(v interface{}) *container.NodeNetworkConfig {
 	if v, ok := networkNodeConfig["enable_private_nodes"]; ok {
 		nnc.EnablePrivateNodes = v.(bool)
 		nnc.ForceSendFields = []string{"EnablePrivateNodes"}
+	}
+
+	if v, ok := networkNodeConfig["additional_node_network_configs"]; ok && len(v.([]interface{})) > 0 {
+		node_network_configs := v.([]interface{})
+		nodeNetworkConfigs := make([]*container.AdditionalNodeNetworkConfig, 0, len(node_network_configs))
+		for _, raw := range node_network_configs {
+			data := raw.(map[string]interface{})
+			networkConfig := &container.AdditionalNodeNetworkConfig{
+				Network:    data["network"].(string),
+				Subnetwork: data["subnetwork"].(string),
+			}
+			nodeNetworkConfigs = append(nodeNetworkConfigs, networkConfig)
+		}
+		nnc.AdditionalNodeNetworkConfigs = nodeNetworkConfigs
+	}
+
+	if v, ok := networkNodeConfig["additional_pod_network_configs"]; ok && len(v.([]interface{})) > 0 {
+		pod_network_configs := v.([]interface{})
+		podNetworkConfigs := make([]*container.AdditionalPodNetworkConfig, 0, len(pod_network_configs))
+		for _, raw := range pod_network_configs {
+			data := raw.(map[string]interface{})
+			podnetworkConfig := &container.AdditionalPodNetworkConfig{
+				Subnetwork:        data["network"].(string),
+				SecondaryPodRange: data["subnetwork"].(string),
+				MaxPodsPerNode: &container.MaxPodsConstraint{
+					MaxPodsPerNode: data["max_pods_per_node"].(int64),
+				},
+			}
+			podNetworkConfigs = append(podNetworkConfigs, podnetworkConfig)
+		}
+		nnc.AdditionalPodNetworkConfigs = podNetworkConfigs
 	}
 
 	nnc.PodCidrOverprovisionConfig = expandPodCidrOverprovisionConfig(networkNodeConfig["pod_cidr_overprovision_config"])

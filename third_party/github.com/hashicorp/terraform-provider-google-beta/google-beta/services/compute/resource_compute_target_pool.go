@@ -123,6 +123,12 @@ func ResourceComputeTargetPool() *schema.Resource {
 				Default:     "NONE",
 				Description: `How to distribute load. Options are "NONE" (no affinity). "CLIENT_IP" (hash of the source/dest addresses / ports), and "CLIENT_IP_PROTO" also includes the protocol (default "NONE").`,
 			},
+
+			"security_policy": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: `The resource URL for the security policy associated with this target pool.`,
+			},
 		},
 		UseJSONNumber: true,
 	}
@@ -245,6 +251,33 @@ func resourceComputeTargetPoolCreate(d *schema.ResourceData, meta interface{}) e
 	if err != nil {
 		return err
 	}
+
+	// security_policy isn't set by Create
+	if o, n := d.GetChange("security_policy"); o.(string) != n.(string) {
+		pol, err := tpgresource.ParseSecurityPolicyRegionalFieldValue(n.(string), d, config)
+		if err != nil {
+			return fmt.Errorf("Error parsing TargetPool security policy: %s", err)
+		}
+
+		region, err := tpgresource.GetRegion(d, config)
+		if err != nil {
+			return err
+		}
+
+		spr := emptySecurityPolicyReference()
+		spr.SecurityPolicy = pol.RelativeLink()
+
+		op, err := config.NewComputeClient(userAgent).TargetPools.SetSecurityPolicy(project, region, d.Get("name").(string), spr).Do()
+		if err != nil {
+			return fmt.Errorf("Error setting TargetPool security policy:: %s", err)
+		}
+
+		waitErr := ComputeOperationWaitTime(config, op, project, "Setting TargetPool Security Policy", userAgent, d.Timeout(schema.TimeoutCreate))
+		if waitErr != nil {
+			return waitErr
+		}
+	}
+
 	return resourceComputeTargetPoolRead(d, meta)
 }
 
@@ -381,6 +414,32 @@ func resourceComputeTargetPoolUpdate(d *schema.ResourceData, meta interface{}) e
 		}
 	}
 
+	if d.HasChange("security_policy") {
+		sp := d.Get("security_policy").(string)
+		pol, err := tpgresource.ParseSecurityPolicyRegionalFieldValue(sp, d, config)
+		if err != nil {
+			return fmt.Errorf("Error parsing TargetPool security policy: %s", err)
+		}
+
+		region, err := tpgresource.GetRegion(d, config)
+		if err != nil {
+			return err
+		}
+
+		spr := emptySecurityPolicyReference()
+		spr.SecurityPolicy = pol.RelativeLink()
+
+		op, err := config.NewComputeClient(userAgent).TargetPools.SetSecurityPolicy(project, region, d.Get("name").(string), spr).Do()
+		if err != nil {
+			return fmt.Errorf("Error updating TargetPool security policy:: %s", err)
+		}
+
+		waitErr := ComputeOperationWaitTime(config, op, project, "Updating TargetPool Security Policy", userAgent, d.Timeout(schema.TimeoutCreate))
+		if waitErr != nil {
+			return waitErr
+		}
+	}
+
 	d.Partial(false)
 
 	return resourceComputeTargetPoolRead(d, meta)
@@ -454,6 +513,9 @@ func resourceComputeTargetPoolRead(d *schema.ResourceData, meta interface{}) err
 	}
 	if err := d.Set("project", project); err != nil {
 		return fmt.Errorf("Error setting project: %s", err)
+	}
+	if err := d.Set("security_policy", tpool.SecurityPolicy); err != nil {
+		return fmt.Errorf("Error setting security_policy: %s", err)
 	}
 	return nil
 }

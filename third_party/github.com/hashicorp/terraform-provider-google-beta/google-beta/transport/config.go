@@ -191,6 +191,7 @@ type Config struct {
 	ApigeeBasePath                   string
 	AppEngineBasePath                string
 	ArtifactRegistryBasePath         string
+	BackupDRBasePath                 string
 	BeyondcorpBasePath               string
 	BigQueryBasePath                 string
 	BigqueryAnalyticsHubBasePath     string
@@ -217,6 +218,7 @@ type Config struct {
 	ComputeBasePath                  string
 	ContainerAnalysisBasePath        string
 	ContainerAttachedBasePath        string
+	CoreBillingBasePath              string
 	DatabaseMigrationServiceBasePath string
 	DataCatalogBasePath              string
 	DataformBasePath                 string
@@ -232,6 +234,7 @@ type Config struct {
 	DialogflowCXBasePath             string
 	DNSBasePath                      string
 	DocumentAIBasePath               string
+	DocumentAIWarehouseBasePath      string
 	EssentialContactsBasePath        string
 	FilestoreBasePath                string
 	FirebaseBasePath                 string
@@ -257,6 +260,7 @@ type Config struct {
 	MemcacheBasePath                 string
 	MLEngineBasePath                 string
 	MonitoringBasePath               string
+	NetworkConnectivityBasePath      string
 	NetworkManagementBasePath        string
 	NetworkSecurityBasePath          string
 	NetworkServicesBasePath          string
@@ -318,6 +322,7 @@ const ApiGatewayBasePathKey = "ApiGateway"
 const ApigeeBasePathKey = "Apigee"
 const AppEngineBasePathKey = "AppEngine"
 const ArtifactRegistryBasePathKey = "ArtifactRegistry"
+const BackupDRBasePathKey = "BackupDR"
 const BeyondcorpBasePathKey = "Beyondcorp"
 const BigQueryBasePathKey = "BigQuery"
 const BigqueryAnalyticsHubBasePathKey = "BigqueryAnalyticsHub"
@@ -344,6 +349,7 @@ const CloudTasksBasePathKey = "CloudTasks"
 const ComputeBasePathKey = "Compute"
 const ContainerAnalysisBasePathKey = "ContainerAnalysis"
 const ContainerAttachedBasePathKey = "ContainerAttached"
+const CoreBillingBasePathKey = "CoreBilling"
 const DatabaseMigrationServiceBasePathKey = "DatabaseMigrationService"
 const DataCatalogBasePathKey = "DataCatalog"
 const DataformBasePathKey = "Dataform"
@@ -359,6 +365,7 @@ const DialogflowBasePathKey = "Dialogflow"
 const DialogflowCXBasePathKey = "DialogflowCX"
 const DNSBasePathKey = "DNS"
 const DocumentAIBasePathKey = "DocumentAI"
+const DocumentAIWarehouseBasePathKey = "DocumentAIWarehouse"
 const EssentialContactsBasePathKey = "EssentialContacts"
 const FilestoreBasePathKey = "Filestore"
 const FirebaseBasePathKey = "Firebase"
@@ -384,6 +391,7 @@ const LookerBasePathKey = "Looker"
 const MemcacheBasePathKey = "Memcache"
 const MLEngineBasePathKey = "MLEngine"
 const MonitoringBasePathKey = "Monitoring"
+const NetworkConnectivityBasePathKey = "NetworkConnectivity"
 const NetworkManagementBasePathKey = "NetworkManagement"
 const NetworkSecurityBasePathKey = "NetworkSecurity"
 const NetworkServicesBasePathKey = "NetworkServices"
@@ -439,6 +447,7 @@ var DefaultBasePaths = map[string]string{
 	ApigeeBasePathKey:                   "https://apigee.googleapis.com/v1/",
 	AppEngineBasePathKey:                "https://appengine.googleapis.com/v1/",
 	ArtifactRegistryBasePathKey:         "https://artifactregistry.googleapis.com/v1/",
+	BackupDRBasePathKey:                 "https://backupdr.googleapis.com/v1/",
 	BeyondcorpBasePathKey:               "https://beyondcorp.googleapis.com/v1/",
 	BigQueryBasePathKey:                 "https://bigquery.googleapis.com/bigquery/v2/",
 	BigqueryAnalyticsHubBasePathKey:     "https://analyticshub.googleapis.com/v1beta1/",
@@ -465,6 +474,7 @@ var DefaultBasePaths = map[string]string{
 	ComputeBasePathKey:                  "https://compute.googleapis.com/compute/beta/",
 	ContainerAnalysisBasePathKey:        "https://containeranalysis.googleapis.com/v1beta1/",
 	ContainerAttachedBasePathKey:        "https://{{location}}-gkemulticloud.googleapis.com/v1/",
+	CoreBillingBasePathKey:              "https://cloudbilling.googleapis.com/v1/",
 	DatabaseMigrationServiceBasePathKey: "https://datamigration.googleapis.com/v1/",
 	DataCatalogBasePathKey:              "https://datacatalog.googleapis.com/v1beta1/",
 	DataformBasePathKey:                 "https://dataform.googleapis.com/v1beta1/",
@@ -480,6 +490,7 @@ var DefaultBasePaths = map[string]string{
 	DialogflowCXBasePathKey:             "https://{{location}}-dialogflow.googleapis.com/v3/",
 	DNSBasePathKey:                      "https://dns.googleapis.com/dns/v1beta2/",
 	DocumentAIBasePathKey:               "https://{{location}}-documentai.googleapis.com/v1/",
+	DocumentAIWarehouseBasePathKey:      "https://contentwarehouse.googleapis.com/v1/",
 	EssentialContactsBasePathKey:        "https://essentialcontacts.googleapis.com/v1/",
 	FilestoreBasePathKey:                "https://file.googleapis.com/v1beta1/",
 	FirebaseBasePathKey:                 "https://firebase.googleapis.com/v1beta1/",
@@ -505,6 +516,7 @@ var DefaultBasePaths = map[string]string{
 	MemcacheBasePathKey:                 "https://memcache.googleapis.com/v1beta2/",
 	MLEngineBasePathKey:                 "https://ml.googleapis.com/v1/",
 	MonitoringBasePathKey:               "https://monitoring.googleapis.com/",
+	NetworkConnectivityBasePathKey:      "https://networkconnectivity.googleapis.com/v1/",
 	NetworkManagementBasePathKey:        "https://networkmanagement.googleapis.com/v1/",
 	NetworkSecurityBasePathKey:          "https://networksecurity.googleapis.com/v1beta1/",
 	NetworkServicesBasePathKey:          "https://networkservices.googleapis.com/v1/",
@@ -663,6 +675,11 @@ func HandleSDKDefaults(d *schema.ResourceData) error {
 			"GOOGLE_ARTIFACT_REGISTRY_CUSTOM_ENDPOINT",
 		}, DefaultBasePaths[ArtifactRegistryBasePathKey]))
 	}
+	if d.Get("backup_dr_custom_endpoint") == "" {
+		d.Set("backup_dr_custom_endpoint", MultiEnvDefault([]string{
+			"GOOGLE_BACKUP_DR_CUSTOM_ENDPOINT",
+		}, DefaultBasePaths[BackupDRBasePathKey]))
+	}
 	if d.Get("beyondcorp_custom_endpoint") == "" {
 		d.Set("beyondcorp_custom_endpoint", MultiEnvDefault([]string{
 			"GOOGLE_BEYONDCORP_CUSTOM_ENDPOINT",
@@ -793,6 +810,11 @@ func HandleSDKDefaults(d *schema.ResourceData) error {
 			"GOOGLE_CONTAINER_ATTACHED_CUSTOM_ENDPOINT",
 		}, DefaultBasePaths[ContainerAttachedBasePathKey]))
 	}
+	if d.Get("core_billing_custom_endpoint") == "" {
+		d.Set("core_billing_custom_endpoint", MultiEnvDefault([]string{
+			"GOOGLE_CORE_BILLING_CUSTOM_ENDPOINT",
+		}, DefaultBasePaths[CoreBillingBasePathKey]))
+	}
 	if d.Get("database_migration_service_custom_endpoint") == "" {
 		d.Set("database_migration_service_custom_endpoint", MultiEnvDefault([]string{
 			"GOOGLE_DATABASE_MIGRATION_SERVICE_CUSTOM_ENDPOINT",
@@ -867,6 +889,11 @@ func HandleSDKDefaults(d *schema.ResourceData) error {
 		d.Set("document_ai_custom_endpoint", MultiEnvDefault([]string{
 			"GOOGLE_DOCUMENT_AI_CUSTOM_ENDPOINT",
 		}, DefaultBasePaths[DocumentAIBasePathKey]))
+	}
+	if d.Get("document_ai_warehouse_custom_endpoint") == "" {
+		d.Set("document_ai_warehouse_custom_endpoint", MultiEnvDefault([]string{
+			"GOOGLE_DOCUMENT_AI_WAREHOUSE_CUSTOM_ENDPOINT",
+		}, DefaultBasePaths[DocumentAIWarehouseBasePathKey]))
 	}
 	if d.Get("essential_contacts_custom_endpoint") == "" {
 		d.Set("essential_contacts_custom_endpoint", MultiEnvDefault([]string{
@@ -992,6 +1019,11 @@ func HandleSDKDefaults(d *schema.ResourceData) error {
 		d.Set("monitoring_custom_endpoint", MultiEnvDefault([]string{
 			"GOOGLE_MONITORING_CUSTOM_ENDPOINT",
 		}, DefaultBasePaths[MonitoringBasePathKey]))
+	}
+	if d.Get("network_connectivity_custom_endpoint") == "" {
+		d.Set("network_connectivity_custom_endpoint", MultiEnvDefault([]string{
+			"GOOGLE_NETWORK_CONNECTIVITY_CUSTOM_ENDPOINT",
+		}, DefaultBasePaths[NetworkConnectivityBasePathKey]))
 	}
 	if d.Get("network_management_custom_endpoint") == "" {
 		d.Set("network_management_custom_endpoint", MultiEnvDefault([]string{
@@ -2028,6 +2060,7 @@ func ConfigureBasePaths(c *Config) {
 	c.ApigeeBasePath = DefaultBasePaths[ApigeeBasePathKey]
 	c.AppEngineBasePath = DefaultBasePaths[AppEngineBasePathKey]
 	c.ArtifactRegistryBasePath = DefaultBasePaths[ArtifactRegistryBasePathKey]
+	c.BackupDRBasePath = DefaultBasePaths[BackupDRBasePathKey]
 	c.BeyondcorpBasePath = DefaultBasePaths[BeyondcorpBasePathKey]
 	c.BigQueryBasePath = DefaultBasePaths[BigQueryBasePathKey]
 	c.BigqueryAnalyticsHubBasePath = DefaultBasePaths[BigqueryAnalyticsHubBasePathKey]
@@ -2054,6 +2087,7 @@ func ConfigureBasePaths(c *Config) {
 	c.ComputeBasePath = DefaultBasePaths[ComputeBasePathKey]
 	c.ContainerAnalysisBasePath = DefaultBasePaths[ContainerAnalysisBasePathKey]
 	c.ContainerAttachedBasePath = DefaultBasePaths[ContainerAttachedBasePathKey]
+	c.CoreBillingBasePath = DefaultBasePaths[CoreBillingBasePathKey]
 	c.DatabaseMigrationServiceBasePath = DefaultBasePaths[DatabaseMigrationServiceBasePathKey]
 	c.DataCatalogBasePath = DefaultBasePaths[DataCatalogBasePathKey]
 	c.DataformBasePath = DefaultBasePaths[DataformBasePathKey]
@@ -2069,6 +2103,7 @@ func ConfigureBasePaths(c *Config) {
 	c.DialogflowCXBasePath = DefaultBasePaths[DialogflowCXBasePathKey]
 	c.DNSBasePath = DefaultBasePaths[DNSBasePathKey]
 	c.DocumentAIBasePath = DefaultBasePaths[DocumentAIBasePathKey]
+	c.DocumentAIWarehouseBasePath = DefaultBasePaths[DocumentAIWarehouseBasePathKey]
 	c.EssentialContactsBasePath = DefaultBasePaths[EssentialContactsBasePathKey]
 	c.FilestoreBasePath = DefaultBasePaths[FilestoreBasePathKey]
 	c.FirebaseBasePath = DefaultBasePaths[FirebaseBasePathKey]
@@ -2094,6 +2129,7 @@ func ConfigureBasePaths(c *Config) {
 	c.MemcacheBasePath = DefaultBasePaths[MemcacheBasePathKey]
 	c.MLEngineBasePath = DefaultBasePaths[MLEngineBasePathKey]
 	c.MonitoringBasePath = DefaultBasePaths[MonitoringBasePathKey]
+	c.NetworkConnectivityBasePath = DefaultBasePaths[NetworkConnectivityBasePathKey]
 	c.NetworkManagementBasePath = DefaultBasePaths[NetworkManagementBasePathKey]
 	c.NetworkSecurityBasePath = DefaultBasePaths[NetworkSecurityBasePathKey]
 	c.NetworkServicesBasePath = DefaultBasePaths[NetworkServicesBasePathKey]

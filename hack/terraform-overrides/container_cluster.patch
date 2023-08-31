@@ -243,10 +243,10 @@ index da9bc8449..dff9ffa1a 100644
  
  	d.SetId(containerClusterFullName(project, location, clusterName))
 
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/resource_container_cluster_test.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/resource_container_cluster_test.go
 index 72aa2c52e..291591981 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/resource_container_cluster_test.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/container/resource_container_cluster_test.go
 @@ -3512,30 +3512,6 @@ func TestAccContainerCluster_withGatewayApiConfig(t *testing.T) {
  	})
  }

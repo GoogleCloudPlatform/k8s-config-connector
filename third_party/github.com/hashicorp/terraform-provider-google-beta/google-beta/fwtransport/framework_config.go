@@ -56,6 +56,7 @@ type FrameworkProviderConfig struct {
 	ApigeeBasePath                   string
 	AppEngineBasePath                string
 	ArtifactRegistryBasePath         string
+	BackupDRBasePath                 string
 	BeyondcorpBasePath               string
 	BigQueryBasePath                 string
 	BigqueryAnalyticsHubBasePath     string
@@ -82,6 +83,7 @@ type FrameworkProviderConfig struct {
 	ComputeBasePath                  string
 	ContainerAnalysisBasePath        string
 	ContainerAttachedBasePath        string
+	CoreBillingBasePath              string
 	DatabaseMigrationServiceBasePath string
 	DataCatalogBasePath              string
 	DataformBasePath                 string
@@ -97,6 +99,7 @@ type FrameworkProviderConfig struct {
 	DialogflowCXBasePath             string
 	DNSBasePath                      string
 	DocumentAIBasePath               string
+	DocumentAIWarehouseBasePath      string
 	EssentialContactsBasePath        string
 	FilestoreBasePath                string
 	FirebaseBasePath                 string
@@ -122,6 +125,7 @@ type FrameworkProviderConfig struct {
 	MemcacheBasePath                 string
 	MLEngineBasePath                 string
 	MonitoringBasePath               string
+	NetworkConnectivityBasePath      string
 	NetworkManagementBasePath        string
 	NetworkSecurityBasePath          string
 	NetworkServicesBasePath          string
@@ -205,6 +209,7 @@ func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context, 
 	p.ApigeeBasePath = data.ApigeeCustomEndpoint.ValueString()
 	p.AppEngineBasePath = data.AppEngineCustomEndpoint.ValueString()
 	p.ArtifactRegistryBasePath = data.ArtifactRegistryCustomEndpoint.ValueString()
+	p.BackupDRBasePath = data.BackupDRCustomEndpoint.ValueString()
 	p.BeyondcorpBasePath = data.BeyondcorpCustomEndpoint.ValueString()
 	p.BigQueryBasePath = data.BigQueryCustomEndpoint.ValueString()
 	p.BigqueryAnalyticsHubBasePath = data.BigqueryAnalyticsHubCustomEndpoint.ValueString()
@@ -231,6 +236,7 @@ func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context, 
 	p.ComputeBasePath = data.ComputeCustomEndpoint.ValueString()
 	p.ContainerAnalysisBasePath = data.ContainerAnalysisCustomEndpoint.ValueString()
 	p.ContainerAttachedBasePath = data.ContainerAttachedCustomEndpoint.ValueString()
+	p.CoreBillingBasePath = data.CoreBillingCustomEndpoint.ValueString()
 	p.DatabaseMigrationServiceBasePath = data.DatabaseMigrationServiceCustomEndpoint.ValueString()
 	p.DataCatalogBasePath = data.DataCatalogCustomEndpoint.ValueString()
 	p.DataformBasePath = data.DataformCustomEndpoint.ValueString()
@@ -246,6 +252,7 @@ func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context, 
 	p.DialogflowCXBasePath = data.DialogflowCXCustomEndpoint.ValueString()
 	p.DNSBasePath = data.DNSCustomEndpoint.ValueString()
 	p.DocumentAIBasePath = data.DocumentAICustomEndpoint.ValueString()
+	p.DocumentAIWarehouseBasePath = data.DocumentAIWarehouseCustomEndpoint.ValueString()
 	p.EssentialContactsBasePath = data.EssentialContactsCustomEndpoint.ValueString()
 	p.FilestoreBasePath = data.FilestoreCustomEndpoint.ValueString()
 	p.FirebaseBasePath = data.FirebaseCustomEndpoint.ValueString()
@@ -271,6 +278,7 @@ func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context, 
 	p.MemcacheBasePath = data.MemcacheCustomEndpoint.ValueString()
 	p.MLEngineBasePath = data.MLEngineCustomEndpoint.ValueString()
 	p.MonitoringBasePath = data.MonitoringCustomEndpoint.ValueString()
+	p.NetworkConnectivityBasePath = data.NetworkConnectivityCustomEndpoint.ValueString()
 	p.NetworkManagementBasePath = data.NetworkManagementCustomEndpoint.ValueString()
 	p.NetworkSecurityBasePath = data.NetworkSecurityCustomEndpoint.ValueString()
 	p.NetworkServicesBasePath = data.NetworkServicesCustomEndpoint.ValueString()
@@ -489,6 +497,14 @@ func (p *FrameworkProviderConfig) HandleDefaults(ctx context.Context, data *fwmo
 			data.ArtifactRegistryCustomEndpoint = types.StringValue(customEndpoint.(string))
 		}
 	}
+	if data.BackupDRCustomEndpoint.IsNull() {
+		customEndpoint := transport_tpg.MultiEnvDefault([]string{
+			"GOOGLE_BACKUP_DR_CUSTOM_ENDPOINT",
+		}, transport_tpg.DefaultBasePaths[transport_tpg.BackupDRBasePathKey])
+		if customEndpoint != nil {
+			data.BackupDRCustomEndpoint = types.StringValue(customEndpoint.(string))
+		}
+	}
 	if data.BeyondcorpCustomEndpoint.IsNull() {
 		customEndpoint := transport_tpg.MultiEnvDefault([]string{
 			"GOOGLE_BEYONDCORP_CUSTOM_ENDPOINT",
@@ -697,6 +713,14 @@ func (p *FrameworkProviderConfig) HandleDefaults(ctx context.Context, data *fwmo
 			data.ContainerAttachedCustomEndpoint = types.StringValue(customEndpoint.(string))
 		}
 	}
+	if data.CoreBillingCustomEndpoint.IsNull() {
+		customEndpoint := transport_tpg.MultiEnvDefault([]string{
+			"GOOGLE_CORE_BILLING_CUSTOM_ENDPOINT",
+		}, transport_tpg.DefaultBasePaths[transport_tpg.CoreBillingBasePathKey])
+		if customEndpoint != nil {
+			data.CoreBillingCustomEndpoint = types.StringValue(customEndpoint.(string))
+		}
+	}
 	if data.DatabaseMigrationServiceCustomEndpoint.IsNull() {
 		customEndpoint := transport_tpg.MultiEnvDefault([]string{
 			"GOOGLE_DATABASE_MIGRATION_SERVICE_CUSTOM_ENDPOINT",
@@ -815,6 +839,14 @@ func (p *FrameworkProviderConfig) HandleDefaults(ctx context.Context, data *fwmo
 		}, transport_tpg.DefaultBasePaths[transport_tpg.DocumentAIBasePathKey])
 		if customEndpoint != nil {
 			data.DocumentAICustomEndpoint = types.StringValue(customEndpoint.(string))
+		}
+	}
+	if data.DocumentAIWarehouseCustomEndpoint.IsNull() {
+		customEndpoint := transport_tpg.MultiEnvDefault([]string{
+			"GOOGLE_DOCUMENT_AI_WAREHOUSE_CUSTOM_ENDPOINT",
+		}, transport_tpg.DefaultBasePaths[transport_tpg.DocumentAIWarehouseBasePathKey])
+		if customEndpoint != nil {
+			data.DocumentAIWarehouseCustomEndpoint = types.StringValue(customEndpoint.(string))
 		}
 	}
 	if data.EssentialContactsCustomEndpoint.IsNull() {
@@ -1015,6 +1047,14 @@ func (p *FrameworkProviderConfig) HandleDefaults(ctx context.Context, data *fwmo
 		}, transport_tpg.DefaultBasePaths[transport_tpg.MonitoringBasePathKey])
 		if customEndpoint != nil {
 			data.MonitoringCustomEndpoint = types.StringValue(customEndpoint.(string))
+		}
+	}
+	if data.NetworkConnectivityCustomEndpoint.IsNull() {
+		customEndpoint := transport_tpg.MultiEnvDefault([]string{
+			"GOOGLE_NETWORK_CONNECTIVITY_CUSTOM_ENDPOINT",
+		}, transport_tpg.DefaultBasePaths[transport_tpg.NetworkConnectivityBasePathKey])
+		if customEndpoint != nil {
+			data.NetworkConnectivityCustomEndpoint = types.StringValue(customEndpoint.(string))
 		}
 	}
 	if data.NetworkManagementCustomEndpoint.IsNull() {

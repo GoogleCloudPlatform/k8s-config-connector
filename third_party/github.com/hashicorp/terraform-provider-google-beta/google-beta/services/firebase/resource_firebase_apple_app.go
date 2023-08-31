@@ -59,6 +59,14 @@ func ResourceFirebaseAppleApp() *schema.Resource {
 				Required:    true,
 				Description: `The user-assigned display name of the App.`,
 			},
+			"api_key_id": {
+				Type:     schema.TypeString,
+				Computed: true,
+				Optional: true,
+				Description: `The globally unique, Google-assigned identifier (UID) for the Firebase API key associated with the AppleApp.
+If apiKeyId is not set during creation, then Firebase automatically associates an apiKeyId with the AppleApp.
+This auto-associated key may be an existing valid key or, if no valid key exists, a new one will be provisioned.`,
+			},
 			"app_store_id": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -131,6 +139,12 @@ func resourceFirebaseAppleAppCreate(d *schema.ResourceData, meta interface{}) er
 		return err
 	} else if v, ok := d.GetOkExists("team_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(teamIdProp)) && (ok || !reflect.DeepEqual(v, teamIdProp)) {
 		obj["teamId"] = teamIdProp
+	}
+	apiKeyIdProp, err := expandFirebaseAppleAppApiKeyId(d.Get("api_key_id"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("api_key_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(apiKeyIdProp)) && (ok || !reflect.DeepEqual(v, apiKeyIdProp)) {
+		obj["apiKeyId"] = apiKeyIdProp
 	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/iosApps")
@@ -268,6 +282,9 @@ func resourceFirebaseAppleAppRead(d *schema.ResourceData, meta interface{}) erro
 	if err := d.Set("team_id", flattenFirebaseAppleAppTeamId(res["teamId"], d, config)); err != nil {
 		return fmt.Errorf("Error reading AppleApp: %s", err)
 	}
+	if err := d.Set("api_key_id", flattenFirebaseAppleAppApiKeyId(res["apiKeyId"], d, config)); err != nil {
+		return fmt.Errorf("Error reading AppleApp: %s", err)
+	}
 
 	return nil
 }
@@ -306,6 +323,12 @@ func resourceFirebaseAppleAppUpdate(d *schema.ResourceData, meta interface{}) er
 	} else if v, ok := d.GetOkExists("team_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, teamIdProp)) {
 		obj["teamId"] = teamIdProp
 	}
+	apiKeyIdProp, err := expandFirebaseAppleAppApiKeyId(d.Get("api_key_id"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("api_key_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, apiKeyIdProp)) {
+		obj["apiKeyId"] = apiKeyIdProp
+	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/iosApps/{{app_id}}")
 	if err != nil {
@@ -325,6 +348,10 @@ func resourceFirebaseAppleAppUpdate(d *schema.ResourceData, meta interface{}) er
 
 	if d.HasChange("team_id") {
 		updateMask = append(updateMask, "teamId")
+	}
+
+	if d.HasChange("api_key_id") {
+		updateMask = append(updateMask, "apiKeyId")
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
@@ -474,6 +501,10 @@ func flattenFirebaseAppleAppTeamId(v interface{}, d *schema.ResourceData, config
 	return v
 }
 
+func flattenFirebaseAppleAppApiKeyId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
 func expandFirebaseAppleAppDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
@@ -487,5 +518,9 @@ func expandFirebaseAppleAppAppStoreId(v interface{}, d tpgresource.TerraformReso
 }
 
 func expandFirebaseAppleAppTeamId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandFirebaseAppleAppApiKeyId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

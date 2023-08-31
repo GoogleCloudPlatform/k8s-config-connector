@@ -102,9 +102,10 @@ type ComputeSubnetworkSpec struct {
 	// +optional
 	Ipv6AccessType *string `json:"ipv6AccessType,omitempty"`
 
-	/* Denotes the logging options for the subnetwork flow logs. If logging is enabled
-	logs will be exported to Stackdriver. This field cannot be set if the 'purpose' of this
-	subnetwork is 'INTERNAL_HTTPS_LOAD_BALANCER'. */
+	/* This field denotes the VPC flow logging options for this subnetwork. If
+	logging is enabled, logs are exported to Cloud Logging. Flow logging
+	isn't supported if the subnet 'purpose' field is set to subnetwork is
+	'REGIONAL_MANAGED_PROXY' or 'GLOBAL_MANAGED_PROXY'. */
 	// +optional
 	LogConfig *SubnetworkLogConfig `json:"logConfig,omitempty"`
 
@@ -121,12 +122,12 @@ type ComputeSubnetworkSpec struct {
 	// +optional
 	PrivateIpv6GoogleAccess *string `json:"privateIpv6GoogleAccess,omitempty"`
 
-	/* Immutable. The purpose of the resource. This field can be either 'PRIVATE_RFC_1918', 'INTERNAL_HTTPS_LOAD_BALANCER', 'REGIONAL_MANAGED_PROXY', or 'PRIVATE_SERVICE_CONNECT'.
-	A subnetwork with purpose set to 'INTERNAL_HTTPS_LOAD_BALANCER' is a user-created subnetwork that is reserved for Internal HTTP(S) Load Balancing.
-	A subnetwork in a given region with purpose set to 'REGIONAL_MANAGED_PROXY' is a proxy-only subnet and is shared between all the regional Envoy-based load balancers.
+	/* Immutable. The purpose of the resource. This field can be either 'PRIVATE_RFC_1918', 'REGIONAL_MANAGED_PROXY', 'GLOBAL_MANAGED_PROXY', or 'PRIVATE_SERVICE_CONNECT'.
+	A subnet with purpose set to 'REGIONAL_MANAGED_PROXY' is a user-created subnetwork that is reserved for regional Envoy-based load balancers.
+	A subnetwork in a given region with purpose set to 'GLOBAL_MANAGED_PROXY' is a proxy-only subnet and is shared between all the cross-regional Envoy-based load balancers.
 	A subnetwork with purpose set to 'PRIVATE_SERVICE_CONNECT' reserves the subnet for hosting a Private Service Connect published service.
-	If unspecified, the purpose defaults to 'PRIVATE_RFC_1918'.
-	The enableFlowLogs field isn't supported with the purpose field set to 'INTERNAL_HTTPS_LOAD_BALANCER'. */
+	Note that 'REGIONAL_MANAGED_PROXY' is the preferred setting for all regional Envoy load balancers.
+	If unspecified, the purpose defaults to 'PRIVATE_RFC_1918'. */
 	// +optional
 	Purpose *string `json:"purpose,omitempty"`
 
@@ -138,11 +139,10 @@ type ComputeSubnetworkSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* The role of subnetwork.
+	Currently, this field is only used when 'purpose' is 'REGIONAL_MANAGED_PROXY'.
 	The value can be set to 'ACTIVE' or 'BACKUP'.
-	An 'ACTIVE' subnetwork is one that is currently being used.
-	A 'BACKUP' subnetwork is one that is ready to be promoted to 'ACTIVE' or is currently draining.
-
-	Subnetwork role must be specified when purpose is set to 'INTERNAL_HTTPS_LOAD_BALANCER' or 'REGIONAL_MANAGED_PROXY'. Possible values: ["ACTIVE", "BACKUP"]. */
+	An 'ACTIVE' subnetwork is one that is currently being used for Envoy-based load balancers in a region.
+	A 'BACKUP' subnetwork is one that is ready to be promoted to 'ACTIVE' or is currently draining. Possible values: ["ACTIVE", "BACKUP"]. */
 	// +optional
 	Role *string `json:"role,omitempty"`
 

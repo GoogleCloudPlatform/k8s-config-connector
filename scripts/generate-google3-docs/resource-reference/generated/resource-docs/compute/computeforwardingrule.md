@@ -179,6 +179,8 @@ target:
 * By internal TCP/UDP load balancers, backend service-based network load
 balancers, and internal and external protocol forwarding.
 
+This option should be set to TRUE when the Forwarding Rule
+IPProtocol is set to L3_DEFAULT.
 
 Set this field to true to allow packets addressed to any port or packets
 lacking destination port information (for example, UDP fragments after the
@@ -363,7 +365,11 @@ options are 'TCP', 'UDP', 'ESP',
 
 The valid IP protocols are different for different load balancing products
 as described in [Load balancing
-features](https://cloud.google.com/load-balancing/docs/features#protocols_from_the_load_balancer_to_the_backends). Possible values: ["TCP", "UDP", "ESP", "AH", "SCTP", "ICMP", "L3_DEFAULT"].{% endverbatim %}</p>
+features](https://cloud.google.com/load-balancing/docs/features#protocols_from_the_load_balancer_to_the_backends).
+
+A Forwarding Rule with protocol L3_DEFAULT can attach with target instance or
+backend service with UNSPECIFIED protocol.
+A forwarding rule with "L3_DEFAULT" IPProtocal cannot be attached to a backend service with TCP or UDP. Possible values: ["TCP", "UDP", "ESP", "AH", "SCTP", "ICMP", "L3_DEFAULT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -373,7 +379,10 @@ features](https://cloud.google.com/load-balancing/docs/features#protocols_from_t
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The IP Version that will be used by this global forwarding rule. Possible values: ["IPV4", "IPV6"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The IP address version that will be used by this forwarding rule.
+Valid options are IPV4 and IPV6.
+
+If not set, the IPv4 address will be used by default. Possible values: ["IPV4", "IPV6"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -628,7 +637,7 @@ pair, and cannot have overlapping 'portRange's.{% endverbatim %}</p>
 
 * If 'IPProtocol' is one of TCP, UDP, or SCTP.
 * By internal TCP/UDP load balancers, backend service-based network load
-balancers, and internal protocol forwarding.
+balancers, internal protocol forwarding and when protocol is not L3_DEFAULT.
 
 
 You can specify a list of up to five ports by number, separated by commas.
@@ -757,7 +766,7 @@ This field is only used for INTERNAL load balancing.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The subnetwork that the load balanced IP should belong to for this
+            <p>{% verbatim %}Immutable. The subnetwork that the load balanced IP should belong to for this
 forwarding rule. This field is only used for internal load
 balancing.
 

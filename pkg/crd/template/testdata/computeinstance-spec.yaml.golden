@@ -83,6 +83,7 @@ networkInterface:
   ipv6AccessConfig:
   - externalIpv6: string
     externalIpv6PrefixLength: string
+    name: string
     networkTier: string
     publicPtrDomainName: string
   ipv6AccessType: string
@@ -123,6 +124,9 @@ resourcePolicies:
 scheduling:
   automaticRestart: boolean
   instanceTerminationAction: string
+  localSsdRecoveryTimeout:
+    nanos: integer
+    seconds: integer
   maintenanceInterval: string
   maxRunDuration:
     nanos: integer

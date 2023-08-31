@@ -782,6 +782,21 @@ func (in *RunJobStatus) DeepCopyInto(out *RunJobStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.Creator != nil {
+		in, out := &in.Creator, &out.Creator
+		*out = new(string)
+		**out = **in
+	}
+	if in.DeleteTime != nil {
+		in, out := &in.DeleteTime, &out.DeleteTime
+		*out = new(string)
+		**out = **in
+	}
 	if in.Etag != nil {
 		in, out := &in.Etag, &out.Etag
 		*out = new(string)
@@ -790,6 +805,16 @@ func (in *RunJobStatus) DeepCopyInto(out *RunJobStatus) {
 	if in.ExecutionCount != nil {
 		in, out := &in.ExecutionCount, &out.ExecutionCount
 		*out = new(int)
+		**out = **in
+	}
+	if in.ExpireTime != nil {
+		in, out := &in.ExpireTime, &out.ExpireTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.LastModifier != nil {
+		in, out := &in.LastModifier, &out.LastModifier
+		*out = new(string)
 		**out = **in
 	}
 	if in.LatestCreatedExecution != nil {
@@ -818,6 +843,11 @@ func (in *RunJobStatus) DeepCopyInto(out *RunJobStatus) {
 	}
 	if in.Uid != nil {
 		in, out := &in.Uid, &out.Uid
+		*out = new(string)
+		**out = **in
+	}
+	if in.UpdateTime != nil {
+		in, out := &in.UpdateTime, &out.UpdateTime
 		*out = new(string)
 		**out = **in
 	}

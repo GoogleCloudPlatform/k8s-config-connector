@@ -84,7 +84,7 @@ type AlloyDBInstanceSpec struct {
 	// +optional
 	MachineConfig *InstanceMachineConfig `json:"machineConfig,omitempty"`
 
-	/* Read pool specific config. */
+	/* Read pool specific config. If the instance type is READ_POOL, this configuration must be provided. */
 	// +optional
 	ReadPoolConfig *InstanceReadPoolConfig `json:"readPoolConfig,omitempty"`
 

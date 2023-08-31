@@ -88,7 +88,7 @@ Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }.`,
 			"notification_config": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				Deprecated:  "This field has been replaced by notificationConfigs",
+				Deprecated:  "`notification_config` is deprecated and will be removed in a future major release. Use `notification_configs` instead.",
 				Description: `A nested object resource`,
 				MaxItems:    1,
 				Elem: &schema.Resource{

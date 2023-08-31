@@ -508,11 +508,12 @@ func ContainerAzureClusterLoggingConfigComponentConfigSchema() *schema.Resource 
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
 			"enable_components": {
-				Type:        schema.TypeList,
-				Computed:    true,
-				Optional:    true,
-				Description: "Components of the logging configuration to be enabled.",
-				Elem:        &schema.Schema{Type: schema.TypeString},
+				Type:             schema.TypeList,
+				Computed:         true,
+				Optional:         true,
+				DiffSuppressFunc: tpgresource.CompareCaseInsensitive,
+				Description:      "Components of the logging configuration to be enabled.",
+				Elem:             &schema.Schema{Type: schema.TypeString},
 			},
 		},
 	}

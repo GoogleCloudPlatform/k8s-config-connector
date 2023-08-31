@@ -121,6 +121,12 @@ spec:
                     description: 'Logging level. Supported values include: "NORMAL",
                       "VERBOSE".'
                     type: string
+                  userIpRequestHeaders:
+                    description: An optional list of case-insensitive request header
+                      names to use for resolving the callers client IP address.
+                    items:
+                      type: string
+                    type: array
                 type: object
               description:
                 description: An optional description of this security policy. Max
@@ -457,8 +463,7 @@ spec:
                             on.
                           type: string
                         enforceOnKeyConfigs:
-                          description: Immutable. Enforce On Key Config of this security
-                            policy.
+                          description: Enforce On Key Config of this security policy.
                           items:
                             properties:
                               enforceOnKeyName:

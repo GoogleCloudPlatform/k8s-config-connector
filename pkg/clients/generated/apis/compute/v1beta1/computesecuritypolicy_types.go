@@ -57,6 +57,10 @@ type SecuritypolicyAdvancedOptionsConfig struct {
 	/* Logging level. Supported values include: "NORMAL", "VERBOSE". */
 	// +optional
 	LogLevel *string `json:"logLevel,omitempty"`
+
+	/* An optional list of case-insensitive request header names to use for resolving the callers client IP address. */
+	// +optional
+	UserIpRequestHeaders []string `json:"userIpRequestHeaders,omitempty"`
 }
 
 type SecuritypolicyAutoDeployConfig struct {
@@ -195,7 +199,7 @@ type SecuritypolicyRateLimitOptions struct {
 	// +optional
 	EnforceOnKey *string `json:"enforceOnKey,omitempty"`
 
-	/* Immutable. Enforce On Key Config of this security policy. */
+	/* Enforce On Key Config of this security policy. */
 	// +optional
 	EnforceOnKeyConfigs []SecuritypolicyEnforceOnKeyConfigs `json:"enforceOnKeyConfigs,omitempty"`
 

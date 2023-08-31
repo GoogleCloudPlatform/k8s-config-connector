@@ -128,7 +128,7 @@ type CertificateProvisioningIssue struct {
 }
 
 type CertificateSelfManaged struct {
-	/* DEPRECATED. Deprecated in favor of `pem_certificate`. Immutable. **Deprecated** The certificate chain in PEM-encoded form.
+	/* DEPRECATED. `certificate_pem` is deprecated and will be removed in a future major release. Use `pem_certificate` instead. Immutable. The certificate chain in PEM-encoded form.
 
 	Leaf certificate comes first, followed by intermediate ones if any. */
 	// +optional
@@ -144,7 +144,7 @@ type CertificateSelfManaged struct {
 	// +optional
 	PemPrivateKey *CertificatePemPrivateKey `json:"pemPrivateKey,omitempty"`
 
-	/* DEPRECATED. Deprecated in favor of `pem_private_key`. Immutable. **Deprecated** The private key of the leaf certificate in PEM-encoded form. */
+	/* DEPRECATED. `private_key_pem` is deprecated and will be removed in a future major release. Use `pem_private_key` instead. Immutable. The private key of the leaf certificate in PEM-encoded form. */
 	// +optional
 	PrivateKeyPem *CertificatePrivateKeyPem `json:"privateKeyPem,omitempty"`
 }
@@ -160,7 +160,7 @@ type CertificateManagerCertificateSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* The Certificate Manager location. If not specified, "global" is used. */
+	/* Immutable. The Certificate Manager location. If not specified, "global" is used. */
 	// +optional
 	Location *string `json:"location,omitempty"`
 
@@ -184,7 +184,9 @@ type CertificateManagerCertificateSpec struct {
 
 	EDGE_CACHE: Certificates with scope EDGE_CACHE are special-purposed certificates,
 	served from non-core Google data centers.
-	Currently allowed only for managed certificates. */
+
+	ALL_REGIONS: Certificates with ALL_REGIONS scope are served from all GCP regions (You can only use ALL_REGIONS with global certs).
+	see https://cloud.google.com/compute/docs/regions-zones. */
 	// +optional
 	Scope *string `json:"scope,omitempty"`
 

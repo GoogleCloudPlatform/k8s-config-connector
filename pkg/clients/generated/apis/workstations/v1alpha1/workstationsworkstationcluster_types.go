@@ -36,6 +36,11 @@ import (
 )
 
 type WorkstationclusterPrivateClusterConfig struct {
+	/* Additional project IDs that are allowed to attach to the workstation cluster's service attachment.
+	By default, the workstation cluster's project and the VPC host project (if different) are allowed. */
+	// +optional
+	AllowedProjects []string `json:"allowedProjects,omitempty"`
+
 	/* Hostname for the workstation cluster.
 	This field will be populated only when private endpoint is enabled.
 	To access workstations in the cluster, create a new DNS zone mapping this domain name to an internal IP address and a forwarding rule mapping that address to the service attachment. */

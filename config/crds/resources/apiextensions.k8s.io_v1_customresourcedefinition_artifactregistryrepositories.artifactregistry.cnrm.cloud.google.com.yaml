@@ -58,6 +58,75 @@ spec:
             type: object
           spec:
             properties:
+              cleanupPolicies:
+                description: |-
+                  Cleanup policies for this repository. Cleanup policies indicate when
+                  certain package versions can be automatically deleted.
+                  Map keys are policy IDs supplied by users during policy creation. They must
+                  unique within a repository and be under 128 characters in length.
+                items:
+                  properties:
+                    action:
+                      description: 'Policy action. Possible values: ["DELETE", "KEEP"].'
+                      type: string
+                    condition:
+                      description: Policy condition for matching versions.
+                      properties:
+                        newerThan:
+                          description: Match versions newer than a duration.
+                          type: string
+                        olderThan:
+                          description: Match versions older than a duration.
+                          type: string
+                        packageNamePrefixes:
+                          description: Match versions by package prefix. Applied on
+                            any prefix match.
+                          items:
+                            type: string
+                          type: array
+                        tagPrefixes:
+                          description: Match versions by tag prefix. Applied on any
+                            prefix match.
+                          items:
+                            type: string
+                          type: array
+                        tagState:
+                          description: 'Match versions by tag status. Default value:
+                            "ANY" Possible values: ["TAGGED", "UNTAGGED", "ANY"].'
+                          type: string
+                        versionNamePrefixes:
+                          description: Match versions by version name prefix. Applied
+                            on any prefix match.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    id:
+                      type: string
+                    mostRecentVersions:
+                      description: |-
+                        Policy condition for retaining a minimum number of versions. May only be
+                        specified with a Keep action.
+                      properties:
+                        keepCount:
+                          description: Minimum number of versions to keep.
+                          type: integer
+                        packageNamePrefixes:
+                          description: Match versions by package prefix. Applied on
+                            any prefix match.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                  required:
+                  - id
+                  type: object
+                type: array
+              cleanupPolicyDryRun:
+                description: |-
+                  If true, the cleanup pipeline is prevented from deleting versions in this
+                  repository.
+                type: boolean
               description:
                 description: The user-provided description of the repository.
                 type: string

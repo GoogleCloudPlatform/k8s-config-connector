@@ -35,6 +35,49 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type RepositoryCleanupPolicies struct {
+	/* Policy action. Possible values: ["DELETE", "KEEP"]. */
+	// +optional
+	Action *string `json:"action,omitempty"`
+
+	/* Policy condition for matching versions. */
+	// +optional
+	Condition *RepositoryCondition `json:"condition,omitempty"`
+
+	Id string `json:"id"`
+
+	/* Policy condition for retaining a minimum number of versions. May only be
+	specified with a Keep action. */
+	// +optional
+	MostRecentVersions *RepositoryMostRecentVersions `json:"mostRecentVersions,omitempty"`
+}
+
+type RepositoryCondition struct {
+	/* Match versions newer than a duration. */
+	// +optional
+	NewerThan *string `json:"newerThan,omitempty"`
+
+	/* Match versions older than a duration. */
+	// +optional
+	OlderThan *string `json:"olderThan,omitempty"`
+
+	/* Match versions by package prefix. Applied on any prefix match. */
+	// +optional
+	PackageNamePrefixes []string `json:"packageNamePrefixes,omitempty"`
+
+	/* Match versions by tag prefix. Applied on any prefix match. */
+	// +optional
+	TagPrefixes []string `json:"tagPrefixes,omitempty"`
+
+	/* Match versions by tag status. Default value: "ANY" Possible values: ["TAGGED", "UNTAGGED", "ANY"]. */
+	// +optional
+	TagState *string `json:"tagState,omitempty"`
+
+	/* Match versions by version name prefix. Applied on any prefix match. */
+	// +optional
+	VersionNamePrefixes []string `json:"versionNamePrefixes,omitempty"`
+}
+
 type RepositoryDockerConfig struct {
 	/* The repository which enabled this flag prevents all tags from being modified, moved or deleted. This does not prevent tags from being created. */
 	// +optional
@@ -62,6 +105,16 @@ type RepositoryMavenRepository struct {
 	/* Immutable. Address of the remote repository. Default value: "MAVEN_CENTRAL" Possible values: ["MAVEN_CENTRAL"]. */
 	// +optional
 	PublicRepository *string `json:"publicRepository,omitempty"`
+}
+
+type RepositoryMostRecentVersions struct {
+	/* Minimum number of versions to keep. */
+	// +optional
+	KeepCount *int `json:"keepCount,omitempty"`
+
+	/* Match versions by package prefix. Applied on any prefix match. */
+	// +optional
+	PackageNamePrefixes []string `json:"packageNamePrefixes,omitempty"`
 }
 
 type RepositoryNpmRepository struct {
@@ -121,6 +174,18 @@ type RepositoryVirtualRepositoryConfig struct {
 }
 
 type ArtifactRegistryRepositorySpec struct {
+	/* Cleanup policies for this repository. Cleanup policies indicate when
+	certain package versions can be automatically deleted.
+	Map keys are policy IDs supplied by users during policy creation. They must
+	unique within a repository and be under 128 characters in length. */
+	// +optional
+	CleanupPolicies []RepositoryCleanupPolicies `json:"cleanupPolicies,omitempty"`
+
+	/* If true, the cleanup pipeline is prevented from deleting versions in this
+	repository. */
+	// +optional
+	CleanupPolicyDryRun *bool `json:"cleanupPolicyDryRun,omitempty"`
+
 	/* The user-provided description of the repository. */
 	// +optional
 	Description *string `json:"description,omitempty"`

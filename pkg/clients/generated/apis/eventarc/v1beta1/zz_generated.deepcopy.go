@@ -99,6 +99,11 @@ func (in *EventarcTriggerSpec) DeepCopyInto(out *EventarcTriggerSpec) {
 		**out = **in
 	}
 	in.Destination.DeepCopyInto(&out.Destination)
+	if in.EventDataContentType != nil {
+		in, out := &in.EventDataContentType, &out.EventDataContentType
+		*out = new(string)
+		**out = **in
+	}
 	if in.MatchingCriteria != nil {
 		in, out := &in.MatchingCriteria, &out.MatchingCriteria
 		*out = make([]TriggerMatchingCriteria, len(*in))

@@ -328,6 +328,10 @@ type BackendserviceConnectionTrackingPolicy struct {
 	// +optional
 	ConnectionPersistenceOnUnhealthyBackends *string `json:"connectionPersistenceOnUnhealthyBackends,omitempty"`
 
+	/* Enable Strong Session Affinity for Network Load Balancing. This option is not available publicly. */
+	// +optional
+	EnableStrongAffinity *bool `json:"enableStrongAffinity,omitempty"`
+
 	/* Specifies how long to keep a Connection Tracking entry while there is
 	no matching traffic (in seconds).
 
@@ -759,7 +763,7 @@ type ComputeBackendServiceSpec struct {
 	/* Immutable. Indicates whether the backend service will be used with internal or
 	external load balancing. A backend service created for one type of
 	load balancing cannot be used with the other. For more information, refer to
-	[Choosing a load balancer](https://cloud.google.com/load-balancing/docs/backend-service). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED", "EXTERNAL_MANAGED"]. */
+	[Choosing a load balancer](https://cloud.google.com/load-balancing/docs/backend-service). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED", "INTERNAL_MANAGED", "EXTERNAL_MANAGED"]. */
 	// +optional
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
 
@@ -861,13 +865,19 @@ type ComputeBackendServiceSpec struct {
 
 	/* The protocol this BackendService uses to communicate with backends.
 	The default is HTTP. **NOTE**: HTTP2 is only valid for beta HTTP/2 load balancer
-	types and may result in errors if used with the GA API. Possible values: ["HTTP", "HTTPS", "HTTP2", "TCP", "SSL", "GRPC"]. */
+	types and may result in errors if used with the GA API. **NOTE**: With protocol “UNSPECIFIED”,
+	the backend service can be used by Layer 4 Internal Load Balancing or Network Load Balancing
+	with TCP/UDP/L3_DEFAULT Forwarding Rule protocol. Possible values: ["HTTP", "HTTPS", "HTTP2", "TCP", "SSL", "GRPC", "UNSPECIFIED"]. */
 	// +optional
 	Protocol *string `json:"protocol,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* The security policy associated with this backend service. */
+	// +optional
+	SecurityPolicy *string `json:"securityPolicy,omitempty"`
 
 	/* The security policy associated with this backend service. */
 	// +optional

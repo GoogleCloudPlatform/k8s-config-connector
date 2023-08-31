@@ -23,7 +23,7 @@ all: clone-terraform-google-provider-beta apply-patches
 clone-terraform-google-provider-beta:
 	rm -rf github.com/hashicorp/terraform-provider-google-beta
 	mkdir -p github.com/hashicorp
-	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta --branch v4.75.1 --depth 1
+	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta --branch v4.80.0 --depth 1
 	rm -rf github.com/hashicorp/terraform-provider-google-beta/.git
 
 .PHONY: apply-patches
@@ -276,8 +276,6 @@ apply-patches:
 	# and non-computed `params` field in the
 	# `google_compute_instance_from_template` resource.
 	git apply ../hack/terraform-overrides/compute_instance_from_template_params_field.patch
-	# Add the missing output fields. b/296315266.
-	git apply ../hack/terraform-overrides/runservice_missing_fields.patch
 	# Correct the field type of terminal_condition field. b/296456403.
 	git apply ../hack/terraform-overrides/runservice_terminalcondition.patch
 	# Mark the field "template.volumes.secret.items.mode" as optional. b/297596079.

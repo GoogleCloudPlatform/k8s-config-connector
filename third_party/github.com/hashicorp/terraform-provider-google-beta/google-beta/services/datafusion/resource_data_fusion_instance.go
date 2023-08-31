@@ -281,8 +281,8 @@ able to access the public internet.`,
 			"service_account": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Deprecated:  "Use `tenant_project_id` instead to extract the tenant project ID.",
-				Description: `Deprecated. Use 'tenant_project_id' instead to extract the tenant project ID.`,
+				Deprecated:  "`service_account` is deprecated and will be removed in a future major release. Instead, use `tenant_project_id` to extract the tenant project ID.",
+				Description: `Service account which will be used to access resources in the customer project.`,
 			},
 			"service_endpoint": {
 				Type:        schema.TypeString,

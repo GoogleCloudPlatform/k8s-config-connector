@@ -111,6 +111,10 @@ type EventarcTriggerSpec struct {
 	/* Required. Destination specifies where the events should be sent to. */
 	Destination TriggerDestination `json:"destination"`
 
+	/* Optional. EventDataContentType specifies the type of payload in MIME format that is expected from the CloudEvent data field. This is set to `application/json` if the value is not defined. */
+	// +optional
+	EventDataContentType *string `json:"eventDataContentType,omitempty"`
+
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 

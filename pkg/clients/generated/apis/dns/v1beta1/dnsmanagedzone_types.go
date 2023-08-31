@@ -123,7 +123,8 @@ type ManagedzonePrivateVisibilityConfig struct {
 	// +optional
 	GkeClusters []ManagedzoneGkeClusters `json:"gkeClusters,omitempty"`
 
-	Networks []ManagedzoneNetworks `json:"networks"`
+	// +optional
+	Networks []ManagedzoneNetworks `json:"networks,omitempty"`
 }
 
 type ManagedzoneServiceDirectoryConfig struct {
@@ -175,7 +176,7 @@ type DNSManagedZoneSpec struct {
 	PeeringConfig *ManagedzonePeeringConfig `json:"peeringConfig,omitempty"`
 
 	/* For privately visible zones, the set of Virtual Private Cloud
-	resources that the zone is visible from. */
+	resources that the zone is visible from. At least one of 'gke_clusters' or 'networks' must be specified. */
 	// +optional
 	PrivateVisibilityConfig *ManagedzonePrivateVisibilityConfig `json:"privateVisibilityConfig,omitempty"`
 

@@ -53,6 +53,14 @@ func ResourceFirebaseWebApp() *schema.Resource {
 				Required:    true,
 				Description: `The user-assigned display name of the App.`,
 			},
+			"api_key_id": {
+				Type:     schema.TypeString,
+				Computed: true,
+				Optional: true,
+				Description: `The globally unique, Google-assigned identifier (UID) for the Firebase API key associated with the WebApp.
+If apiKeyId is not set during creation, then Firebase automatically associates an apiKeyId with the WebApp.
+This auto-associated key may be an existing valid key or, if no valid key exists, a new one will be provisioned.`,
+			},
 			"app_id": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -105,6 +113,12 @@ func resourceFirebaseWebAppCreate(d *schema.ResourceData, meta interface{}) erro
 		return err
 	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(displayNameProp)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
+	}
+	apiKeyIdProp, err := expandFirebaseWebAppApiKeyId(d.Get("api_key_id"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("api_key_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(apiKeyIdProp)) && (ok || !reflect.DeepEqual(v, apiKeyIdProp)) {
+		obj["apiKeyId"] = apiKeyIdProp
 	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/webApps")
@@ -236,6 +250,9 @@ func resourceFirebaseWebAppRead(d *schema.ResourceData, meta interface{}) error 
 	if err := d.Set("app_urls", flattenFirebaseWebAppAppUrls(res["appUrls"], d, config)); err != nil {
 		return fmt.Errorf("Error reading WebApp: %s", err)
 	}
+	if err := d.Set("api_key_id", flattenFirebaseWebAppApiKeyId(res["apiKeyId"], d, config)); err != nil {
+		return fmt.Errorf("Error reading WebApp: %s", err)
+	}
 
 	return nil
 }
@@ -262,6 +279,12 @@ func resourceFirebaseWebAppUpdate(d *schema.ResourceData, meta interface{}) erro
 	} else if v, ok := d.GetOkExists("display_name"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
+	apiKeyIdProp, err := expandFirebaseWebAppApiKeyId(d.Get("api_key_id"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("api_key_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, apiKeyIdProp)) {
+		obj["apiKeyId"] = apiKeyIdProp
+	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/webApps/{{app_id}}")
 	if err != nil {
@@ -273,6 +296,10 @@ func resourceFirebaseWebAppUpdate(d *schema.ResourceData, meta interface{}) erro
 
 	if d.HasChange("display_name") {
 		updateMask = append(updateMask, "displayName")
+	}
+
+	if d.HasChange("api_key_id") {
+		updateMask = append(updateMask, "apiKeyId")
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
@@ -414,6 +441,14 @@ func flattenFirebaseWebAppAppUrls(v interface{}, d *schema.ResourceData, config 
 	return v
 }
 
+func flattenFirebaseWebAppApiKeyId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
 func expandFirebaseWebAppDisplayName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandFirebaseWebAppApiKeyId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

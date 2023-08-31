@@ -282,7 +282,7 @@ func resourceFirebaseDatabaseInstanceRead(d *schema.ResourceData, meta interface
 	if err := d.Set("name", flattenFirebaseDatabaseInstanceName(res["name"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Instance: %s", err)
 	}
-	if err := d.Set("database_url", flattenFirebaseDatabaseInstanceDatabaseUrl(res["database_url"], d, config)); err != nil {
+	if err := d.Set("database_url", flattenFirebaseDatabaseInstanceDatabaseUrl(res["databaseUrl"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Instance: %s", err)
 	}
 	if err := d.Set("type", flattenFirebaseDatabaseInstanceType(res["type"], d, config)); err != nil {

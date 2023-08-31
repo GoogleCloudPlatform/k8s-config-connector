@@ -73,6 +73,22 @@ type ClusterAutomatedBackupPolicy struct {
 	WeeklySchedule *ClusterWeeklySchedule `json:"weeklySchedule,omitempty"`
 }
 
+type ClusterContinuousBackupConfig struct {
+	/* Whether continuous backup recovery is enabled. If not set, defaults to true. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* EncryptionConfig describes the encryption config of a cluster or a backup that is encrypted with a CMEK (customer-managed encryption key). */
+	// +optional
+	EncryptionConfig *ClusterEncryptionConfig `json:"encryptionConfig,omitempty"`
+
+	/* The numbers of days that are eligible to restore from using PITR. To support the entire recovery window, backups and logs are retained for one day more than the recovery window.
+
+	If not set, defaults to 14 days. */
+	// +optional
+	RecoveryWindowDays *int `json:"recoveryWindowDays,omitempty"`
+}
+
 type ClusterEncryptionConfig struct {
 	/* Immutable. The fully-qualified resource name of the KMS key. Each Cloud KMS key is regionalized and has the following format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]. */
 	// +optional
@@ -102,6 +118,19 @@ type ClusterQuantityBasedRetention struct {
 	/* The number of backups to retain. */
 	// +optional
 	Count *int `json:"count,omitempty"`
+}
+
+type ClusterRestoreBackupSource struct {
+	/* Immutable. The name of the backup that this cluster is restored from. */
+	BackupName string `json:"backupName"`
+}
+
+type ClusterRestoreContinuousBackupSource struct {
+	/* Immutable. The name of the source cluster that this cluster is restored from. */
+	Cluster string `json:"cluster"`
+
+	/* Immutable. The point in time that this cluster is restored to, in RFC 3339 format. */
+	PointInTime string `json:"pointInTime"`
 }
 
 type ClusterStartTimes struct {
@@ -145,11 +174,15 @@ type ClusterWeeklySchedule struct {
 }
 
 type AlloyDBClusterSpec struct {
-	/* The automated backup policy for this cluster.
-
-	If no policy is provided then the default policy will be used. The default policy takes one backup a day, has a backup window of 1 hour, and retains backups for 14 days. */
+	/* The automated backup policy for this cluster. AutomatedBackupPolicy is disabled by default. */
 	// +optional
 	AutomatedBackupPolicy *ClusterAutomatedBackupPolicy `json:"automatedBackupPolicy,omitempty"`
+
+	/* The continuous backup config for this cluster.
+
+	If no policy is provided then the default policy will be used. The default policy takes one backup a day and retains backups for 14 days. */
+	// +optional
+	ContinuousBackupConfig *ClusterContinuousBackupConfig `json:"continuousBackupConfig,omitempty"`
 
 	/* User-settable and human-readable display name for the Cluster. */
 	// +optional
@@ -177,12 +210,38 @@ type AlloyDBClusterSpec struct {
 	/* Immutable. Optional. The clusterId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Immutable. The source when restoring from a backup. Conflicts with 'restore_continuous_backup_source', both can't be set together. */
+	// +optional
+	RestoreBackupSource *ClusterRestoreBackupSource `json:"restoreBackupSource,omitempty"`
+
+	/* Immutable. The source when restoring via point in time recovery (PITR). Conflicts with 'restore_backup_source', both can't be set together. */
+	// +optional
+	RestoreContinuousBackupSource *ClusterRestoreContinuousBackupSource `json:"restoreContinuousBackupSource,omitempty"`
 }
 
 type ClusterBackupSourceStatus struct {
 	/* The name of the backup resource. */
 	// +optional
 	BackupName *string `json:"backupName,omitempty"`
+}
+
+type ClusterContinuousBackupInfoStatus struct {
+	/* The earliest restorable time that can be restored to. Output only field. */
+	// +optional
+	EarliestRestorableTime *string `json:"earliestRestorableTime,omitempty"`
+
+	/* When ContinuousBackup was most recently enabled. Set to null if ContinuousBackup is not enabled. */
+	// +optional
+	EnabledTime *string `json:"enabledTime,omitempty"`
+
+	/* Output only. The encryption information for the WALs and backups required for ContinuousBackup. */
+	// +optional
+	EncryptionInfo []ClusterEncryptionInfoStatus `json:"encryptionInfo,omitempty"`
+
+	/* Days of the week on which a continuous backup is taken. Output only field. Ignored if passed into the request. */
+	// +optional
+	Schedule []string `json:"schedule,omitempty"`
 }
 
 type ClusterEncryptionInfoStatus struct {
@@ -216,6 +275,10 @@ type AlloyDBClusterStatus struct {
 	/* Cluster created from backup. */
 	// +optional
 	BackupSource []ClusterBackupSourceStatus `json:"backupSource,omitempty"`
+
+	/* ContinuousBackupInfo describes the continuous backup properties of a cluster. */
+	// +optional
+	ContinuousBackupInfo []ClusterContinuousBackupInfoStatus `json:"continuousBackupInfo,omitempty"`
 
 	/* The database engine major version. This is an output-only field and it's populated at the Cluster creation time. This field cannot be changed after cluster creation. */
 	// +optional

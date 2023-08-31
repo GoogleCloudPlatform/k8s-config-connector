@@ -55,6 +55,7 @@ var (
 		"scheduling.0.instance_termination_action",
 		"scheduling.0.max_run_duration",
 		"scheduling.0.maintenance_interval",
+		"scheduling.0.local_ssd_recovery_timeout",
 	}
 
 	shieldedInstanceConfigKeys = []string{
@@ -406,14 +407,26 @@ func ResourceComputeInstance() *schema.Resource {
 										Description: `The domain name to be used when creating DNSv6 records for the external IPv6 ranges.`,
 									},
 									"external_ipv6": {
-										Type:        schema.TypeString,
-										Computed:    true,
-										Description: `The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. The field is output only, an IPv6 address from a subnetwork associated with the instance will be allocated dynamically.`,
+										Type:             schema.TypeString,
+										Optional:         true,
+										Computed:         true,
+										ForceNew:         true,
+										DiffSuppressFunc: ipv6RepresentationDiffSuppress,
+										Description:      `The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. To use a static external IP address, it must be unused and in the same region as the instance's zone. If not specified, Google Cloud will automatically assign an external IPv6 address from the instance's subnetwork.`,
 									},
 									"external_ipv6_prefix_length": {
 										Type:        schema.TypeString,
+										Optional:    true,
 										Computed:    true,
+										ForceNew:    true,
 										Description: `The prefix length of the external IPv6 range.`,
+									},
+									"name": {
+										Type:        schema.TypeString,
+										Optional:    true,
+										Computed:    true,
+										ForceNew:    true,
+										Description: `The name of this access configuration. In ipv6AccessConfigs, the recommended name is External IPv6.`,
 									},
 								},
 							},
@@ -712,6 +725,36 @@ be from 0 to 999,999,999 inclusive.`,
 							Optional:     true,
 							AtLeastOneOf: schedulingKeys,
 							Description:  `Specifies the frequency of planned maintenance events. The accepted values are: PERIODIC`,
+						},
+						"local_ssd_recovery_timeout": {
+							Type:     schema.TypeList,
+							Optional: true,
+							Description: `Specifies the maximum amount of time a Local Ssd Vm should wait while
+  recovery of the Local Ssd state is attempted. Its value should be in
+  between 0 and 168 hours with hour granularity and the default value being 1
+  hour.`,
+							MaxItems: 1,
+							ForceNew: true,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"seconds": {
+										Type:     schema.TypeInt,
+										Required: true,
+										ForceNew: true,
+										Description: `Span of time at a resolution of a second.
+Must be from 0 to 315,576,000,000 inclusive.`,
+									},
+									"nanos": {
+										Type:     schema.TypeInt,
+										Optional: true,
+										ForceNew: true,
+										Description: `Span of time that's a fraction of a second at nanosecond
+resolution. Durations less than one second are represented
+with a 0 seconds field and a positive nanos field. Must
+be from 0 to 999,999,999 inclusive.`,
+									},
+								},
+							},
 						},
 					},
 				},
@@ -2483,7 +2526,15 @@ func expandBootDisk(d *schema.ResourceData, config *transport_tpg.Config, projec
 	}
 
 	if v, ok := d.GetOk("boot_disk.0.source"); ok {
-		source, err := tpgresource.ParseDiskFieldValue(v.(string), d, config)
+		var err error
+		var source interface {
+			RelativeLink() string
+		}
+		if strings.Contains(v.(string), "regions/") {
+			source, err = tpgresource.ParseRegionDiskFieldValue(v.(string), d, config)
+		} else {
+			source, err = tpgresource.ParseDiskFieldValue(v.(string), d, config)
+		}
 		if err != nil {
 			return nil, err
 		}

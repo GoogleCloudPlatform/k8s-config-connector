@@ -53,6 +53,14 @@ func ResourceFirebaseAndroidApp() *schema.Resource {
 				Required:    true,
 				Description: `The user-assigned display name of the AndroidApp.`,
 			},
+			"api_key_id": {
+				Type:     schema.TypeString,
+				Computed: true,
+				Optional: true,
+				Description: `The globally unique, Google-assigned identifier (UID) for the Firebase API key associated with the AndroidApp.
+If apiKeyId is not set during creation, then Firebase automatically associates an apiKeyId with the AndroidApp.
+This auto-associated key may be an existing valid key or, if no valid key exists, a new one will be provisioned.`,
+			},
 			"package_name": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -143,6 +151,12 @@ func resourceFirebaseAndroidAppCreate(d *schema.ResourceData, meta interface{}) 
 		return err
 	} else if v, ok := d.GetOkExists("sha256_hashes"); !tpgresource.IsEmptyValue(reflect.ValueOf(sha256HashesProp)) && (ok || !reflect.DeepEqual(v, sha256HashesProp)) {
 		obj["sha256Hashes"] = sha256HashesProp
+	}
+	apiKeyIdProp, err := expandFirebaseAndroidAppApiKeyId(d.Get("api_key_id"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("api_key_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(apiKeyIdProp)) && (ok || !reflect.DeepEqual(v, apiKeyIdProp)) {
+		obj["apiKeyId"] = apiKeyIdProp
 	}
 	etagProp, err := expandFirebaseAndroidAppEtag(d.Get("etag"), d, config)
 	if err != nil {
@@ -286,6 +300,9 @@ func resourceFirebaseAndroidAppRead(d *schema.ResourceData, meta interface{}) er
 	if err := d.Set("sha256_hashes", flattenFirebaseAndroidAppSha256Hashes(res["sha256Hashes"], d, config)); err != nil {
 		return fmt.Errorf("Error reading AndroidApp: %s", err)
 	}
+	if err := d.Set("api_key_id", flattenFirebaseAndroidAppApiKeyId(res["apiKeyId"], d, config)); err != nil {
+		return fmt.Errorf("Error reading AndroidApp: %s", err)
+	}
 	if err := d.Set("etag", flattenFirebaseAndroidAppEtag(res["etag"], d, config)); err != nil {
 		return fmt.Errorf("Error reading AndroidApp: %s", err)
 	}
@@ -333,6 +350,12 @@ func resourceFirebaseAndroidAppUpdate(d *schema.ResourceData, meta interface{}) 
 	} else if v, ok := d.GetOkExists("sha256_hashes"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sha256HashesProp)) {
 		obj["sha256Hashes"] = sha256HashesProp
 	}
+	apiKeyIdProp, err := expandFirebaseAndroidAppApiKeyId(d.Get("api_key_id"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("api_key_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, apiKeyIdProp)) {
+		obj["apiKeyId"] = apiKeyIdProp
+	}
 	etagProp, err := expandFirebaseAndroidAppEtag(d.Get("etag"), d, config)
 	if err != nil {
 		return err
@@ -362,6 +385,10 @@ func resourceFirebaseAndroidAppUpdate(d *schema.ResourceData, meta interface{}) 
 
 	if d.HasChange("sha256_hashes") {
 		updateMask = append(updateMask, "sha256Hashes")
+	}
+
+	if d.HasChange("api_key_id") {
+		updateMask = append(updateMask, "apiKeyId")
 	}
 
 	if d.HasChange("etag") {
@@ -515,6 +542,10 @@ func flattenFirebaseAndroidAppSha256Hashes(v interface{}, d *schema.ResourceData
 	return v
 }
 
+func flattenFirebaseAndroidAppApiKeyId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
 func flattenFirebaseAndroidAppEtag(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
@@ -532,6 +563,10 @@ func expandFirebaseAndroidAppSha1Hashes(v interface{}, d tpgresource.TerraformRe
 }
 
 func expandFirebaseAndroidAppSha256Hashes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandFirebaseAndroidAppApiKeyId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

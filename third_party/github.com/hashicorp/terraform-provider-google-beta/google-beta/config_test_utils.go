@@ -31,6 +31,7 @@ func configureTestBasePaths(c *transport_tpg.Config, url string) {
 	c.ApigeeBasePath = url
 	c.AppEngineBasePath = url
 	c.ArtifactRegistryBasePath = url
+	c.BackupDRBasePath = url
 	c.BeyondcorpBasePath = url
 	c.BigQueryBasePath = url
 	c.BigqueryAnalyticsHubBasePath = url
@@ -57,6 +58,7 @@ func configureTestBasePaths(c *transport_tpg.Config, url string) {
 	c.ComputeBasePath = url
 	c.ContainerAnalysisBasePath = url
 	c.ContainerAttachedBasePath = url
+	c.CoreBillingBasePath = url
 	c.DatabaseMigrationServiceBasePath = url
 	c.DataCatalogBasePath = url
 	c.DataformBasePath = url
@@ -72,6 +74,7 @@ func configureTestBasePaths(c *transport_tpg.Config, url string) {
 	c.DialogflowCXBasePath = url
 	c.DNSBasePath = url
 	c.DocumentAIBasePath = url
+	c.DocumentAIWarehouseBasePath = url
 	c.EssentialContactsBasePath = url
 	c.FilestoreBasePath = url
 	c.FirebaseBasePath = url
@@ -97,6 +100,7 @@ func configureTestBasePaths(c *transport_tpg.Config, url string) {
 	c.MemcacheBasePath = url
 	c.MLEngineBasePath = url
 	c.MonitoringBasePath = url
+	c.NetworkConnectivityBasePath = url
 	c.NetworkManagementBasePath = url
 	c.NetworkSecurityBasePath = url
 	c.NetworkServicesBasePath = url

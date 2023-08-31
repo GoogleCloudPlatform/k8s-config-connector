@@ -76,9 +76,9 @@ var (
 		"addons_config.0.gce_persistent_disk_csi_driver_config",
 		"addons_config.0.gke_backup_agent_config",
 		"addons_config.0.config_connector_config",
+		"addons_config.0.gcs_fuse_csi_driver_config",
 		"addons_config.0.istio_config",
 		"addons_config.0.kalm_config",
-		"addons_config.0.gcs_fuse_csi_driver_config",
 	}
 
 	privateClusterConfigKeys = []string{
@@ -185,6 +185,7 @@ func ResourceContainerCluster() *schema.Resource {
 			containerClusterNodeVersionRemoveDefaultCustomizeDiff,
 			containerClusterNetworkPolicyEmptyCustomizeDiff,
 			containerClusterSurgeSettingsCustomizeDiff,
+			containerClusterEnableK8sBetaApisCustomizeDiff,
 		),
 
 		Timeouts: &schema.ResourceTimeout{
@@ -395,6 +396,23 @@ func ResourceContainerCluster() *schema.Resource {
 								},
 							},
 						},
+						"gcs_fuse_csi_driver_config": {
+							Type:          schema.TypeList,
+							Optional:      true,
+							Computed:      true,
+							AtLeastOneOf:  addonsConfigKeys,
+							MaxItems:      1,
+							Description:   `The status of the GCS Fuse CSI driver addon, which allows the usage of gcs bucket as volumes. Defaults to disabled; set enabled = true to enable.`,
+							ConflictsWith: []string{"enable_autopilot"},
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"enabled": {
+										Type:     schema.TypeBool,
+										Required: true,
+									},
+								},
+							},
+						},
 						"istio_config": {
 							Type:         schema.TypeList,
 							Optional:     true,
@@ -427,23 +445,6 @@ func ResourceContainerCluster() *schema.Resource {
 							AtLeastOneOf: addonsConfigKeys,
 							MaxItems:     1,
 							Description:  `Configuration for the KALM addon, which manages the lifecycle of k8s. It is disabled by default; Set enabled = true to enable.`,
-							Elem: &schema.Resource{
-								Schema: map[string]*schema.Schema{
-									"enabled": {
-										Type:     schema.TypeBool,
-										Required: true,
-									},
-								},
-							},
-						},
-						"gcs_fuse_csi_driver_config": {
-							Type:          schema.TypeList,
-							Optional:      true,
-							Computed:      true,
-							AtLeastOneOf:  addonsConfigKeys,
-							MaxItems:      1,
-							Description:   `The status of the GCS Fuse CSI driver addon, which allows the usage of gcs bucket as volumes. Defaults to disabled; set enabled = true to enable.`,
-							ConflictsWith: []string{"enable_autopilot"},
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"enabled": {
@@ -807,6 +808,23 @@ func ResourceContainerCluster() *schema.Resource {
 				Description: `Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days.`,
 			},
 
+			"enable_k8s_beta_apis": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				MaxItems:    1,
+				Description: `Configuration for Kubernetes Beta APIs.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"enabled_apis": {
+							Type:        schema.TypeSet,
+							Required:    true,
+							Elem:        &schema.Schema{Type: schema.TypeString},
+							Description: `Enabled Kubernetes Beta APIs.`,
+						},
+					},
+				},
+			},
+
 			"enable_tpu": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -836,6 +854,12 @@ func ResourceContainerCluster() *schema.Resource {
 				ForceNew:    true,
 				Description: `Enable Autopilot for this cluster.`,
 				// ConflictsWith: many fields, see https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#comparison. The conflict is only set one-way, on other fields w/ this field.
+			},
+
+			"allow_net_admin": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: `Enable NET_ADMIN for this cluster.`,
 			},
 
 			"authenticator_groups_config": {
@@ -955,7 +979,7 @@ func ResourceContainerCluster() *schema.Resource {
 						"maintenance_exclusion": {
 							Type:        schema.TypeSet,
 							Optional:    true,
-							MaxItems:    3,
+							MaxItems:    20,
 							Description: `Exceptions to maintenance window. Non-emergency maintenance should not occur in these windows.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
@@ -1095,6 +1119,29 @@ func ResourceContainerCluster() *schema.Resource {
 										Type:        schema.TypeBool,
 										Required:    true,
 										Description: `Whether or not the managed collection is enabled.`,
+									},
+								},
+							},
+						},
+						"advanced_datapath_observability_config": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Computed:    true,
+							MaxItems:    2,
+							Description: `Configuration of Advanced Datapath Observability features.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"enable_metrics": {
+										Type:        schema.TypeBool,
+										Required:    true,
+										Description: `Whether or not the advanced datapath metrics are enabled.`,
+									},
+									"relay_mode": {
+										Type:         schema.TypeString,
+										Optional:     true,
+										Computed:     true,
+										Description:  `Mode used to make Relay available.`,
+										ValidateFunc: validation.StringInSlice([]string{"DISABLED", "INTERNAL_VPC_LB", "EXTERNAL_LB"}, false),
 									},
 								},
 							},
@@ -1483,6 +1530,23 @@ func ResourceContainerCluster() *schema.Resource {
 								},
 							},
 						},
+						"additional_pod_ranges_config": {
+							Type:        schema.TypeList,
+							MaxItems:    1,
+							Optional:    true,
+							Description: `AdditionalPodRangesConfig is the configuration for additional pod secondary ranges supporting the ClusterUpdate message.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"pod_range_names": {
+										Type:        schema.TypeSet,
+										MinItems:    1,
+										Required:    true,
+										Elem:        &schema.Schema{Type: schema.TypeString},
+										Description: `Name for pod secondary ipv4 range which has the actual range defined ahead.`,
+									},
+								},
+							},
+						},
 					},
 				},
 			},
@@ -1522,7 +1586,7 @@ func ResourceContainerCluster() *schema.Resource {
 							Optional:         true,
 							AtLeastOneOf:     privateClusterConfigKeys,
 							DiffSuppressFunc: containerClusterPrivateClusterConfigSuppress,
-							Description:      `When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true.`,
+							Description:      `When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used.`,
 						},
 						"enable_private_nodes": {
 							Type:             schema.TypeBool,
@@ -1804,6 +1868,13 @@ func ResourceContainerCluster() *schema.Resource {
 				Description: `Whether L4ILB Subsetting is enabled for this cluster.`,
 				Default:     false,
 			},
+			"enable_multi_networking": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				ForceNew:    true,
+				Description: `Whether multi-networking is enabled for this cluster.`,
+				Default:     false,
+			},
 			"private_ipv6_google_access": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -1866,11 +1937,12 @@ func ResourceContainerCluster() *schema.Resource {
 				},
 			},
 			"dns_config": {
-				Type:        schema.TypeList,
-				Optional:    true,
-				MaxItems:    1,
-				ForceNew:    true,
-				Description: `Configuration for Cloud DNS for Kubernetes Engine.`,
+				Type:             schema.TypeList,
+				Optional:         true,
+				MaxItems:         1,
+				ForceNew:         true,
+				DiffSuppressFunc: suppressDiffForAutopilot,
+				Description:      `Configuration for Cloud DNS for Kubernetes Engine.`,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"cluster_dns": {
@@ -1997,6 +2069,13 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		return err
 	}
 
+	var workloadPolicyConfig *container.WorkloadPolicyConfig
+	if allowed := d.Get("allow_net_admin").(bool); allowed {
+		workloadPolicyConfig = &container.WorkloadPolicyConfig{
+			AllowNetAdmin: allowed,
+		}
+	}
+
 	cluster := &container.Cluster{
 		Name:                           clusterName,
 		InitialNodeCount:               int64(d.Get("initial_node_count").(int)),
@@ -2019,8 +2098,9 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		Autoscaling:             expandClusterAutoscaling(d.Get("cluster_autoscaling"), d),
 		BinaryAuthorization:     expandBinaryAuthorization(d.Get("binary_authorization"), d.Get("enable_binary_authorization").(bool)),
 		Autopilot: &container.Autopilot{
-			Enabled:         d.Get("enable_autopilot").(bool),
-			ForceSendFields: []string{"Enabled"},
+			Enabled:              d.Get("enable_autopilot").(bool),
+			WorkloadPolicyConfig: workloadPolicyConfig,
+			ForceSendFields:      []string{"Enabled"},
 		},
 		ReleaseChannel:   expandReleaseChannel(d.Get("release_channel")),
 		ClusterTelemetry: expandClusterTelemetry(d.Get("cluster_telemetry")),
@@ -2033,6 +2113,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 			EnableL4ilbSubsetting:     d.Get("enable_l4_ilb_subsetting").(bool),
 			DnsConfig:                 expandDnsConfig(d.Get("dns_config")),
 			GatewayApiConfig:          expandGatewayApiConfig(d.Get("gateway_api_config")),
+			EnableMultiNetworking:     d.Get("enable_multi_networking").(bool),
 		},
 		MasterAuth:           expandMasterAuth(d.Get("master_auth")),
 		NotificationConfig:   expandNotificationConfig(d.Get("notification_config")),
@@ -2041,6 +2122,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		NodePoolAutoConfig:   expandNodePoolAutoConfig(d.Get("node_pool_auto_config")),
 		ProtectConfig:        expandProtectConfig(d.Get("protect_config")),
 		CostManagementConfig: expandCostManagementConfig(d.Get("cost_management_config")),
+		EnableK8sBetaApis:    expandEnableK8sBetaApis(d.Get("enable_k8s_beta_apis"), nil),
 	}
 
 	v := d.Get("enable_shielded_nodes")
@@ -2177,6 +2259,13 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		cluster.SecurityPostureConfig = expandSecurityPostureConfig(v)
 	}
 
+	// For now PSC based cluster don't support `enable_private_endpoint` on `create`, but only on `update` API call.
+	// If cluster is PSC based and enable_private_endpoint is set to true we will ignore it on `create` call and update cluster right after creation.
+	enablePrivateEndpointPSCCluster := isEnablePrivateEndpointPSCCluster(cluster)
+	if enablePrivateEndpointPSCCluster {
+		cluster.PrivateClusterConfig.EnablePrivateEndpoint = false
+	}
+
 	req := &container.CreateClusterRequest{
 		Cluster: cluster,
 	}
@@ -2261,6 +2350,67 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		err = ContainerOperationWait(config, op, project, location, "removing default node pool", userAgent, d.Timeout(schema.TimeoutCreate))
 		if err != nil {
 			return errwrap.Wrapf("Error while waiting to delete default node pool: {{err}}", err)
+		}
+	}
+
+	if enablePrivateEndpointPSCCluster {
+		name := containerClusterFullName(project, location, clusterName)
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredEnablePrivateEndpoint: true,
+				ForceSendFields:              []string{"DesiredEnablePrivateEndpoint"},
+			},
+		}
+
+		err = transport_tpg.Retry(transport_tpg.RetryOptions{
+			RetryFunc: func() error {
+				clusterUpdateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Update(name, req)
+				if config.UserProjectOverride {
+					clusterUpdateCall.Header().Add("X-Goog-User-Project", project)
+				}
+				op, err = clusterUpdateCall.Do()
+				return err
+			},
+		})
+		if err != nil {
+			return errwrap.Wrapf("Error updating enable private endpoint: {{err}}", err)
+		}
+
+		err = ContainerOperationWait(config, op, project, location, "updating enable private endpoint", userAgent, d.Timeout(schema.TimeoutCreate))
+		if err != nil {
+			return errwrap.Wrapf("Error while waiting to enable private endpoint: {{err}}", err)
+		}
+	}
+
+	if names, ok := d.GetOk("ip_allocation_policy.0.additional_pod_ranges_config.0.pod_range_names"); ok {
+		name := containerClusterFullName(project, location, clusterName)
+		additionalPodRangesConfig := &container.AdditionalPodRangesConfig{
+			PodRangeNames: tpgresource.ConvertStringSet(names.(*schema.Set)),
+		}
+
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				AdditionalPodRangesConfig: additionalPodRangesConfig,
+			},
+		}
+
+		err = transport_tpg.Retry(transport_tpg.RetryOptions{
+			RetryFunc: func() error {
+				clusterUpdateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Update(name, req)
+				if config.UserProjectOverride {
+					clusterUpdateCall.Header().Add("X-Goog-User-Project", project)
+				}
+				op, err = clusterUpdateCall.Do()
+				return err
+			},
+		})
+		if err != nil {
+			return errwrap.Wrapf("Error updating AdditionalPodRangesConfig: {{err}}", err)
+		}
+
+		err = ContainerOperationWait(config, op, project, location, "updating AdditionalPodRangesConfig", userAgent, d.Timeout(schema.TimeoutCreate))
+		if err != nil {
+			return errwrap.Wrapf("Error while waiting to update AdditionalPodRangesConfig: {{err}}", err)
 		}
 	}
 
@@ -2427,9 +2577,14 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 			return err
 		}
 	}
-	if cluster.Autopilot != nil {
-		if err := d.Set("enable_autopilot", cluster.Autopilot.Enabled); err != nil {
+	if autopilot := cluster.Autopilot; autopilot != nil {
+		if err := d.Set("enable_autopilot", autopilot.Enabled); err != nil {
 			return fmt.Errorf("Error setting enable_autopilot: %s", err)
+		}
+		if autopilot.WorkloadPolicyConfig != nil {
+			if err := d.Set("allow_net_admin", autopilot.WorkloadPolicyConfig.AllowNetAdmin); err != nil {
+				return fmt.Errorf("Error setting allow_net_admin: %s", err)
+			}
 		}
 	}
 	if cluster.ShieldedNodes != nil {
@@ -2466,6 +2621,9 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	}
 	if err := d.Set("enable_intranode_visibility", cluster.NetworkConfig.EnableIntraNodeVisibility); err != nil {
 		return fmt.Errorf("Error setting enable_intranode_visibility: %s", err)
+	}
+	if err := d.Set("enable_multi_networking", cluster.NetworkConfig.EnableMultiNetworking); err != nil {
+		return fmt.Errorf("Error setting enable_multi_networking: %s", err)
 	}
 	if err := d.Set("private_ipv6_google_access", cluster.NetworkConfig.PrivateIpv6GoogleAccess); err != nil {
 		return fmt.Errorf("Error setting private_ipv6_google_access: %s", err)
@@ -2553,6 +2711,9 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 		return err
 	}
 	if err := d.Set("gateway_api_config", flattenGatewayApiConfig(cluster.NetworkConfig.GatewayApiConfig)); err != nil {
+		return err
+	}
+	if err := d.Set("enable_k8s_beta_apis", flattenEnableK8sBetaApis(cluster.EnableK8sBetaApis)); err != nil {
 		return err
 	}
 	if err := d.Set("logging_config", flattenContainerClusterLoggingConfig(cluster.LoggingConfig)); err != nil {
@@ -2674,6 +2835,25 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s's cluster-wide autoscaling has been updated", d.Id())
+	}
+
+	if d.HasChange("allow_net_admin") {
+		allowed := d.Get("allow_net_admin").(bool)
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredAutopilotWorkloadPolicyConfig: &container.WorkloadPolicyConfig{
+					AllowNetAdmin: allowed,
+				},
+			},
+		}
+
+		updateF := updateFunc(req, "updating net admin for GKE autopilot workload policy config")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s's autopilot workload policy config allow_net_admin has been set to %v", d.Id(), allowed)
 	}
 
 	if d.HasChange("enable_binary_authorization") {
@@ -2895,7 +3075,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 			// Wait until it's updated
 			err = ContainerOperationWait(config, op, project, location, "updating L4", userAgent, d.Timeout(schema.TimeoutUpdate))
-			log.Println("[DEBUG] done updating enable_intranode_visibility")
+			log.Println("[DEBUG] done updating enable_l4_ilb_subsetting")
 			return err
 		}
 
@@ -3144,6 +3324,51 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 		log.Printf("[INFO] Network policy for GKE cluster %s has been updated", d.Id())
 
+	}
+
+	if d.HasChange("ip_allocation_policy.0.additional_pod_ranges_config") {
+		o, n := d.GetChange("ip_allocation_policy.0.additional_pod_ranges_config.0.pod_range_names")
+		old_names := o.(*schema.Set)
+		new_names := n.(*schema.Set)
+
+		// Filter unchanged names.
+		removed_names := old_names.Difference(new_names)
+		added_names := new_names.Difference(old_names)
+
+		var additional_config *container.AdditionalPodRangesConfig
+		var removed_config *container.AdditionalPodRangesConfig
+		if added_names.Len() > 0 {
+			var names []string
+			for _, name := range added_names.List() {
+				names = append(names, name.(string))
+			}
+			additional_config = &container.AdditionalPodRangesConfig{
+				PodRangeNames: names,
+			}
+		}
+		if removed_names.Len() > 0 {
+			var names []string
+			for _, name := range removed_names.List() {
+				names = append(names, name.(string))
+			}
+			removed_config = &container.AdditionalPodRangesConfig{
+				PodRangeNames: names,
+			}
+		}
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				AdditionalPodRangesConfig:        additional_config,
+				RemovedAdditionalPodRangesConfig: removed_config,
+			},
+		}
+
+		updateF := updateFunc(req, "updating AdditionalPodRangesConfig")
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s's AdditionalPodRangesConfig has been updated", d.Id())
 	}
 
 	if n, ok := d.GetOk("node_pool.#"); ok {
@@ -3625,6 +3850,44 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 	}
 
+	if d.HasChange("enable_k8s_beta_apis") {
+		log.Print("[INFO] Enable Kubernetes Beta APIs")
+		if v, ok := d.GetOk("enable_k8s_beta_apis"); ok {
+			name := containerClusterFullName(project, location, clusterName)
+			clusterGetCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Get(name)
+			if config.UserProjectOverride {
+				clusterGetCall.Header().Add("X-Goog-User-Project", project)
+			}
+			// Fetch the cluster information to get the already enabled Beta APIs.
+			cluster, err := clusterGetCall.Do()
+			if err != nil {
+				return err
+			}
+
+			// To avoid an already enabled Beta APIs error, we need to deduplicate the requested APIs
+			// with those that are already enabled.
+			var enabledAPIs []string
+			if cluster.EnableK8sBetaApis != nil && len(cluster.EnableK8sBetaApis.EnabledApis) > 0 {
+				enabledAPIs = cluster.EnableK8sBetaApis.EnabledApis
+			}
+			enableK8sBetaAPIs := expandEnableK8sBetaApis(v, enabledAPIs)
+
+			req := &container.UpdateClusterRequest{
+				Update: &container.ClusterUpdate{
+					DesiredK8sBetaApis: enableK8sBetaAPIs,
+				},
+			}
+
+			updateF := updateFunc(req, "updating enabled Kubernetes Beta APIs")
+			// Call update serially.
+			if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+				return err
+			}
+
+			log.Printf("[INFO] GKE cluster %s enabled Kubernetes Beta APIs has been updated", d.Id())
+		}
+	}
+
 	if d.HasChange("node_pool_defaults") && d.HasChange("node_pool_defaults.0.node_config_defaults.0.logging_variant") {
 		if v, ok := d.GetOk("node_pool_defaults.0.node_config_defaults.0.logging_variant"); ok {
 			loggingVariant := v.(string)
@@ -3993,6 +4256,13 @@ func expandClusterAddonsConfig(configured interface{}) *container.AddonsConfig {
 			ForceSendFields: []string{"Enabled"},
 		}
 	}
+	if v, ok := config["gcs_fuse_csi_driver_config"]; ok && len(v.([]interface{})) > 0 {
+		addon := v.([]interface{})[0].(map[string]interface{})
+		ac.GcsFuseCsiDriverConfig = &container.GcsFuseCsiDriverConfig{
+			Enabled:         addon["enabled"].(bool),
+			ForceSendFields: []string{"Enabled"},
+		}
+	}
 
 	if v, ok := config["istio_config"]; ok && len(v.([]interface{})) > 0 {
 		addon := v.([]interface{})[0].(map[string]interface{})
@@ -4006,14 +4276,6 @@ func expandClusterAddonsConfig(configured interface{}) *container.AddonsConfig {
 	if v, ok := config["kalm_config"]; ok && len(v.([]interface{})) > 0 {
 		addon := v.([]interface{})[0].(map[string]interface{})
 		ac.KalmConfig = &container.KalmConfig{
-			Enabled:         addon["enabled"].(bool),
-			ForceSendFields: []string{"Enabled"},
-		}
-	}
-
-	if v, ok := config["gcs_fuse_csi_driver_config"]; ok && len(v.([]interface{})) > 0 {
-		addon := v.([]interface{})[0].(map[string]interface{})
-		ac.GcsFuseCsiDriverConfig = &container.GcsFuseCsiDriverConfig{
 			Enabled:         addon["enabled"].(bool),
 			ForceSendFields: []string{"Enabled"},
 		}
@@ -4424,6 +4686,25 @@ func flattenSecurityPostureConfig(spc *container.SecurityPostureConfig) []map[st
 	return []map[string]interface{}{result}
 }
 
+func flattenAdditionalPodRangesConfig(ipAllocationPolicy *container.IPAllocationPolicy) []map[string]interface{} {
+	if ipAllocationPolicy == nil {
+		return nil
+	}
+	result := make(map[string]interface{})
+
+	if aprc := ipAllocationPolicy.AdditionalPodRangesConfig; aprc != nil {
+		if len(aprc.PodRangeNames) > 0 {
+			result["pod_range_names"] = aprc.PodRangeNames
+		} else {
+			return nil
+		}
+	} else {
+		return nil
+	}
+
+	return []map[string]interface{}{result}
+}
+
 func expandNotificationConfig(configured interface{}) *container.NotificationConfig {
 	l := configured.([]interface{})
 	if len(l) == 0 || l[0] == nil {
@@ -4560,6 +4841,22 @@ func expandNetworkPolicy(configured interface{}) *container.NetworkPolicy {
 		}
 	}
 	return result
+}
+
+func isEnablePrivateEndpointPSCCluster(cluster *container.Cluster) bool {
+	// EnablePrivateEndpoint not provided
+	if cluster == nil || cluster.PrivateClusterConfig == nil {
+		return false
+	}
+	// Not a PSC cluster
+	if cluster.PrivateClusterConfig.EnablePrivateNodes || len(cluster.PrivateClusterConfig.MasterIpv4CidrBlock) > 0 {
+		return false
+	}
+	// PSC Cluster with EnablePrivateEndpoint
+	if cluster.PrivateClusterConfig.EnablePrivateEndpoint {
+		return true
+	}
+	return false
 }
 
 func expandPrivateClusterConfig(configured interface{}) *container.PrivateClusterConfig {
@@ -4791,6 +5088,28 @@ func expandGatewayApiConfig(configured interface{}) *container.GatewayAPIConfig 
 	}
 }
 
+func expandEnableK8sBetaApis(configured interface{}, enabledAPIs []string) *container.K8sBetaAPIConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+
+	config := l[0].(map[string]interface{})
+	result := &container.K8sBetaAPIConfig{}
+	if v, ok := config["enabled_apis"]; ok {
+		notEnabledAPIsSet := v.(*schema.Set)
+		for _, enabledAPI := range enabledAPIs {
+			if notEnabledAPIsSet.Contains(enabledAPI) {
+				notEnabledAPIsSet.Remove(enabledAPI)
+			}
+		}
+
+		result.EnabledApis = tpgresource.ConvertStringSet(notEnabledAPIsSet)
+	}
+
+	return result
+}
+
 func expandContainerClusterLoggingConfig(configured interface{}) *container.LoggingConfig {
 	l := configured.([]interface{})
 	if len(l) == 0 {
@@ -4830,6 +5149,16 @@ func expandMonitoringConfig(configured interface{}) *container.MonitoringConfig 
 			Enabled: managed_prometheus["enabled"].(bool),
 		}
 	}
+
+	if v, ok := config["advanced_datapath_observability_config"]; ok && len(v.([]interface{})) > 0 {
+		advanced_datapath_observability_config := v.([]interface{})[0].(map[string]interface{})
+
+		mc.AdvancedDatapathObservabilityConfig = &container.AdvancedDatapathObservabilityConfig{
+			EnableMetrics: advanced_datapath_observability_config["enable_metrics"].(bool),
+			RelayMode:     advanced_datapath_observability_config["relay_mode"].(string),
+		}
+	}
+
 	return mc
 }
 
@@ -5057,6 +5386,13 @@ func flattenClusterAddonsConfig(c *container.AddonsConfig) []map[string]interfac
 			},
 		}
 	}
+	if c.GcsFuseCsiDriverConfig != nil {
+		result["gcs_fuse_csi_driver_config"] = []map[string]interface{}{
+			{
+				"enabled": c.GcsFuseCsiDriverConfig.Enabled,
+			},
+		}
+	}
 
 	if c.IstioConfig != nil {
 		result["istio_config"] = []map[string]interface{}{
@@ -5071,14 +5407,6 @@ func flattenClusterAddonsConfig(c *container.AddonsConfig) []map[string]interfac
 		result["kalm_config"] = []map[string]interface{}{
 			{
 				"enabled": c.KalmConfig.Enabled,
-			},
-		}
-	}
-
-	if c.GcsFuseCsiDriverConfig != nil {
-		result["gcs_fuse_csi_driver_config"] = []map[string]interface{}{
-			{
-				"enabled": c.GcsFuseCsiDriverConfig.Enabled,
 			},
 		}
 	}
@@ -5250,6 +5578,7 @@ func flattenIPAllocationPolicy(c *container.Cluster, d *schema.ResourceData, con
 			"services_secondary_range_name": p.ServicesSecondaryRangeName,
 			"stack_type":                    p.StackType,
 			"pod_cidr_overprovision_config": flattenPodCidrOverprovisionConfig(p.PodCidrOverprovisionConfig),
+			"additional_pod_ranges_config":  flattenAdditionalPodRangesConfig(c.IpAllocationPolicy),
 		},
 	}, nil
 }
@@ -5570,6 +5899,17 @@ func flattenGatewayApiConfig(c *container.GatewayAPIConfig) []map[string]interfa
 	}
 }
 
+func flattenEnableK8sBetaApis(c *container.K8sBetaAPIConfig) []map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return []map[string]interface{}{
+		{
+			"enabled_apis": c.EnabledApis,
+		},
+	}
+}
+
 func flattenContainerClusterLoggingConfig(c *container.LoggingConfig) []map[string]interface{} {
 	if c == nil {
 		return nil
@@ -5594,7 +5934,20 @@ func flattenMonitoringConfig(c *container.MonitoringConfig) []map[string]interfa
 	if c.ManagedPrometheusConfig != nil {
 		result["managed_prometheus"] = flattenManagedPrometheusConfig(c.ManagedPrometheusConfig)
 	}
+	if c.AdvancedDatapathObservabilityConfig != nil {
+		result["advanced_datapath_observability_config"] = flattenAdvancedDatapathObservabilityConfig(c.AdvancedDatapathObservabilityConfig)
+	}
+
 	return []map[string]interface{}{result}
+}
+
+func flattenAdvancedDatapathObservabilityConfig(c *container.AdvancedDatapathObservabilityConfig) []map[string]interface{} {
+	return []map[string]interface{}{
+		{
+			"enable_metrics": c.EnableMetrics,
+			"relay_mode":     c.RelayMode,
+		},
+	}
 }
 
 func flattenManagedPrometheusConfig(c *container.ManagedPrometheusConfig) []map[string]interface{} {
@@ -5746,12 +6099,15 @@ func containerClusterPrivateClusterConfigSuppress(k, old, new string, d *schema.
 	// Do not suppress diffs when private_endpoint_subnetwork is configured
 	_, hasSubnet := d.GetOk("private_cluster_config.0.private_endpoint_subnetwork")
 
+	// Do not suppress diffs when master_global_access_config is configured
+	_, hasGlobalAccessConfig := d.GetOk("private_cluster_config.0.master_global_access_config")
+
 	if k == "private_cluster_config.0.enable_private_endpoint" {
 		return suppressEndpoint && !hasSubnet
 	} else if k == "private_cluster_config.0.enable_private_nodes" {
 		return suppressNodes && !hasSubnet
 	} else if k == "private_cluster_config.#" {
-		return suppressEndpoint && suppressNodes && !hasSubnet
+		return suppressEndpoint && suppressNodes && !hasSubnet && !hasGlobalAccessConfig
 	}
 	return false
 }
@@ -5764,6 +6120,9 @@ func validatePrivateClusterConfig(cluster *container.Cluster) error {
 		return fmt.Errorf("master_ipv4_cidr_block can only be set if enable_private_nodes is true")
 	}
 	if cluster.PrivateClusterConfig.EnablePrivateNodes && len(cluster.PrivateClusterConfig.MasterIpv4CidrBlock) == 0 {
+		if len(cluster.PrivateClusterConfig.PrivateEndpointSubnetwork) > 0 {
+			return nil
+		}
 		if cluster.Autopilot == nil || !cluster.Autopilot.Enabled {
 			return fmt.Errorf("master_ipv4_cidr_block must be set if enable_private_nodes is true")
 		}
@@ -5873,6 +6232,34 @@ func containerClusterSurgeSettingsCustomizeDiff(_ context.Context, d *schema.Res
 		if v != "SURGE" {
 			if _, maxSurgeIsPresent := d.GetOk("cluster_autoscaling.0.auto_provisioning_defaults.0.upgrade_settings.0.max_unavailable"); maxSurgeIsPresent {
 				return fmt.Errorf("Surge upgrade settings max_surge/max_unavailable can only be used when strategy is set to SURGE")
+			}
+		}
+	}
+
+	return nil
+}
+
+func containerClusterEnableK8sBetaApisCustomizeDiff(_ context.Context, d *schema.ResourceDiff, meta interface{}) error {
+	// separate func to allow unit testing
+	return containerClusterEnableK8sBetaApisCustomizeDiffFunc(d)
+}
+
+func containerClusterEnableK8sBetaApisCustomizeDiffFunc(d tpgresource.TerraformResourceDiff) error {
+	// The Kubernetes Beta APIs cannot be disabled once they have been enabled by users.
+	// The reason why we don't allow disabling is that the controller does not have the
+	// ability to clean up the Kubernetes objects created by the APIs. If the user
+	// removes the already enabled Kubernetes Beta API from the list, we need to force
+	// a new cluster.
+	if !d.HasChange("enable_k8s_beta_apis.0.enabled_apis") {
+		return nil
+	}
+	old, new := d.GetChange("enable_k8s_beta_apis.0.enabled_apis")
+	if old != "" && new != "" {
+		oldAPIsSet := old.(*schema.Set)
+		newAPIsSet := new.(*schema.Set)
+		for _, oldAPI := range oldAPIsSet.List() {
+			if !newAPIsSet.Contains(oldAPI) {
+				return d.ForceNew("enable_k8s_beta_apis.0.enabled_apis")
 			}
 		}
 	}

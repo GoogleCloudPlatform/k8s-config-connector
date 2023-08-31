@@ -120,6 +120,11 @@ func (in *SpannerDatabaseSpec) DeepCopyInto(out *SpannerDatabaseSpec) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
+	if in.EnableDropProtection != nil {
+		in, out := &in.EnableDropProtection, &out.EnableDropProtection
+		*out = new(bool)
+		**out = **in
+	}
 	if in.EncryptionConfig != nil {
 		in, out := &in.EncryptionConfig, &out.EncryptionConfig
 		*out = new(DatabaseEncryptionConfig)

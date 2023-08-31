@@ -43,6 +43,15 @@ type FhirstoreBigqueryDestination struct {
 	SchemaConfig FhirstoreSchemaConfig `json:"schemaConfig"`
 }
 
+type FhirstoreLastUpdatedPartitionConfig struct {
+	/* Number of milliseconds for which to keep the storage for a partition. */
+	// +optional
+	ExpirationMs *string `json:"expirationMs,omitempty"`
+
+	/* Type of partitioning. Possible values: ["PARTITION_TYPE_UNSPECIFIED", "HOUR", "DAY", "MONTH", "YEAR"]. */
+	Type string `json:"type"`
+}
+
 type FhirstoreNotificationConfig struct {
 	/* The Cloud Pub/Sub topic that notifications of changes are published on. Supplied by the client.
 	PubsubMessage.Data will contain the resource name. PubsubMessage.MessageId is the ID of this message.
@@ -69,9 +78,21 @@ type FhirstoreNotificationConfigs struct {
 	it needs to fetch the full resource as a separate operation. */
 	// +optional
 	SendFullResource *bool `json:"sendFullResource,omitempty"`
+
+	/* Whether to send full FHIR resource to this Pub/Sub topic for deleting FHIR resource. Note that setting this to
+	true does not guarantee that all previous resources will be sent in the format of full FHIR resource. When a
+	resource change is too large or during heavy traffic, only the resource name will be sent. Clients should always
+	check the "payloadType" label from a Pub/Sub message to determine whether it needs to fetch the full previous
+	resource as a separate operation. */
+	// +optional
+	SendPreviousResourceOnDelete *bool `json:"sendPreviousResourceOnDelete,omitempty"`
 }
 
 type FhirstoreSchemaConfig struct {
+	/* The configuration for exported BigQuery tables to be partitioned by FHIR resource's last updated time column. */
+	// +optional
+	LastUpdatedPartitionConfig *FhirstoreLastUpdatedPartitionConfig `json:"lastUpdatedPartitionConfig,omitempty"`
+
 	/* The depth for all recursive structures in the output analytics schema. For example, concept in the CodeSystem
 	resource is a recursive structure; when the depth is 2, the CodeSystem table will have a column called
 	concept.concept but not concept.concept.concept. If not specified or set to 0, the server will use the default
@@ -110,6 +131,12 @@ type HealthcareFHIRStoreSpec struct {
 	/* Immutable. Identifies the dataset addressed by this request. Must be in the format
 	'projects/{project}/locations/{location}/datasets/{dataset}'. */
 	Dataset string `json:"dataset"`
+
+	/* If true, overrides the default search behavior for this FHIR store to handling=strict which returns an error for unrecognized search parameters.
+	If false, uses the FHIR specification default handling=lenient which ignores unrecognized search parameters.
+	The handling can always be changed from the default on an individual API call by setting the HTTP header Prefer: handling=strict or Prefer: handling=lenient. */
+	// +optional
+	DefaultSearchHandlingStrict *bool `json:"defaultSearchHandlingStrict,omitempty"`
 
 	/* Immutable. Whether to disable referential integrity in this FHIR store. This field is immutable after FHIR store
 	creation. The default value is false, meaning that the API will enforce referential integrity and fail the

@@ -177,6 +177,10 @@ settings:
       external: string
       name: string
       namespace: string
+    pscConfig:
+    - allowedConsumerProjects:
+      - string
+      pscEnabled: boolean
     requireSsl: boolean
   locationPreference:
     followGaeApplication: string
@@ -400,7 +404,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Specifies if the replica is the failover target. If the field is set to true the replica will be designated as a failover replica. If the master instance fails, the replica instance will be promoted as the new master instance.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Specifies if the replica is the failover target. If the field is set to true the replica will be designated as a failover replica. If the master instance fails, the replica instance will be promoted as the new master instance. Not supported for Postgres.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -766,7 +770,7 @@ is set to true. Defaults to ZONAL.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The number of days of transaction logs we retain for point in time restore, from 1-7.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of days of transaction logs we retain for point in time restore, from 1-7. (For PostgreSQL Enterprise Plus instances, from 1 to 35.).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1152,6 +1156,56 @@ Specifying this field has no-ops; it's recommended to remove this field from you
     </tr>
     <tr>
         <td>
+            <p><code>settings.ipConfiguration.pscConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}PSC settings for a Cloud SQL instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].allowedConsumerProjects</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}List of consumer projects that are allow-listed for PSC connections to this instance. This instance can be connected to with PSC from any network in these projects. Each consumer project in this list may be represented by a project number (numeric) or by a project id (alphanumeric).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].allowedConsumerProjects[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.pscConfig[].pscEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether PSC connectivity is enabled for this instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>settings.ipConfiguration.requireSsl</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1440,6 +1494,7 @@ conditions:
   status: string
   type: string
 connectionName: string
+dnsName: string
 firstIpAddress: string
 instanceType: string
 ipAddress:
@@ -1448,6 +1503,7 @@ ipAddress:
   type: string
 observedGeneration: integer
 privateIpAddress: string
+pscServiceAttachmentLink: string
 publicIpAddress: string
 selfLink: string
 serverCaCert:
@@ -1537,6 +1593,13 @@ serviceAccountEmailAddress: string
         </td>
     </tr>
     <tr>
+        <td><code>dnsName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The dns name of the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>firstIpAddress</code></td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -1597,6 +1660,13 @@ serviceAccountEmailAddress: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>pscServiceAttachmentLink</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The link to service attachment of PSC instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

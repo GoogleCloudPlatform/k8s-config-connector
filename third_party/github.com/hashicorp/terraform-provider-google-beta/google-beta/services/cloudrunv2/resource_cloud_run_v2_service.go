@@ -253,7 +253,7 @@ If not specified, defaults to the same value as container.ports[0].containerPort
 												"tcp_socket": {
 													Type:        schema.TypeList,
 													Optional:    true,
-													Deprecated:  "Cloud Run does not support tcp socket in liveness probe and `liveness_probe.tcp_socket` field will be removed in a future major release.",
+													Deprecated:  "`tcp_socket` is deprecated and will be removed in a future major release. This field is not supported by the Cloud Run API.",
 													Description: `TCPSocket specifies an action involving a TCP port. This field is not supported in liveness probe currently.`,
 													MaxItems:    1,
 													Elem: &schema.Resource{
@@ -712,6 +712,15 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.`,
 				Optional:    true,
 				Description: `Arbitrary version identifier for the API client.`,
 			},
+			"custom_audiences": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Description: `One or more custom audiences that you want this service to support. Specify each custom audience as the full URL in a string. The custom audiences are encoded in the token and used to authenticate requests.
+For more information, see https://cloud.google.com/run/docs/configuring/custom-audiences.`,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -1060,6 +1069,12 @@ func resourceCloudRunV2ServiceCreate(d *schema.ResourceData, meta interface{}) e
 	} else if v, ok := d.GetOkExists("binary_authorization"); !tpgresource.IsEmptyValue(reflect.ValueOf(binaryAuthorizationProp)) && (ok || !reflect.DeepEqual(v, binaryAuthorizationProp)) {
 		obj["binaryAuthorization"] = binaryAuthorizationProp
 	}
+	custom_audiencesProp, err := expandCloudRunV2ServiceCustomAudiences(d.Get("custom_audiences"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("custom_audiences"); !tpgresource.IsEmptyValue(reflect.ValueOf(custom_audiencesProp)) && (ok || !reflect.DeepEqual(v, custom_audiencesProp)) {
+		obj["custom_audiences"] = custom_audiencesProp
+	}
 	templateProp, err := expandCloudRunV2ServiceTemplate(d.Get("template"), d, config)
 	if err != nil {
 		return err
@@ -1225,6 +1240,9 @@ func resourceCloudRunV2ServiceRead(d *schema.ResourceData, meta interface{}) err
 	if err := d.Set("binary_authorization", flattenCloudRunV2ServiceBinaryAuthorization(res["binaryAuthorization"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Service: %s", err)
 	}
+	if err := d.Set("custom_audiences", flattenCloudRunV2ServiceCustomAudiences(res["custom_audiences"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Service: %s", err)
+	}
 	if err := d.Set("template", flattenCloudRunV2ServiceTemplate(res["template"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Service: %s", err)
 	}
@@ -1325,6 +1343,12 @@ func resourceCloudRunV2ServiceUpdate(d *schema.ResourceData, meta interface{}) e
 		return err
 	} else if v, ok := d.GetOkExists("binary_authorization"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, binaryAuthorizationProp)) {
 		obj["binaryAuthorization"] = binaryAuthorizationProp
+	}
+	custom_audiencesProp, err := expandCloudRunV2ServiceCustomAudiences(d.Get("custom_audiences"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("custom_audiences"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, custom_audiencesProp)) {
+		obj["custom_audiences"] = custom_audiencesProp
 	}
 	templateProp, err := expandCloudRunV2ServiceTemplate(d.Get("template"), d, config)
 	if err != nil {
@@ -1531,6 +1555,10 @@ func flattenCloudRunV2ServiceBinaryAuthorizationBreakglassJustification(v interf
 }
 
 func flattenCloudRunV2ServiceBinaryAuthorizationUseDefault(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2ServiceCustomAudiences(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -2801,6 +2829,10 @@ func expandCloudRunV2ServiceBinaryAuthorizationBreakglassJustification(v interfa
 }
 
 func expandCloudRunV2ServiceBinaryAuthorizationUseDefault(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunV2ServiceCustomAudiences(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

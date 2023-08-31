@@ -237,6 +237,66 @@ type AlertpolicyConditionMonitoringQueryLanguage struct {
 	Trigger *AlertpolicyTrigger `json:"trigger,omitempty"`
 }
 
+type AlertpolicyConditionPrometheusQueryLanguage struct {
+	/* The alerting rule name of this alert in the corresponding Prometheus
+	configuration file.
+
+	Some external tools may require this field to be populated correctly
+	in order to refer to the original Prometheus configuration file.
+	The rule group name and the alert name are necessary to update the
+	relevant AlertPolicies in case the definition of the rule group changes
+	in the future.
+
+	This field is optional. If this field is not empty, then it must be a
+	valid Prometheus label name. */
+	// +optional
+	AlertRule *string `json:"alertRule,omitempty"`
+
+	/* Alerts are considered firing once their PromQL expression evaluated
+	to be "true" for this long. Alerts whose PromQL expression was not
+	evaluated to be "true" for long enough are considered pending. The
+	default value is zero. Must be zero or positive. */
+	// +optional
+	Duration *string `json:"duration,omitempty"`
+
+	/* How often this rule should be evaluated. Must be a positive multiple
+	of 30 seconds or missing. The default value is 30 seconds. If this
+	PrometheusQueryLanguageCondition was generated from a Prometheus
+	alerting rule, then this value should be taken from the enclosing
+	rule group. */
+	// +optional
+	EvaluationInterval *string `json:"evaluationInterval,omitempty"`
+
+	/* Labels to add to or overwrite in the PromQL query result. Label names
+	must be valid.
+
+	Label values can be templatized by using variables. The only available
+	variable names are the names of the labels in the PromQL result, including
+	"__name__" and "value". "labels" may be empty. This field is intended to be
+	used for organizing and identifying the AlertPolicy. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	/* The PromQL expression to evaluate. Every evaluation cycle this
+	expression is evaluated at the current time, and all resultant time
+	series become pending/firing alerts. This field must not be empty. */
+	Query string `json:"query"`
+
+	/* The rule group name of this alert in the corresponding Prometheus
+	configuration file.
+
+	Some external tools may require this field to be populated correctly
+	in order to refer to the original Prometheus configuration file.
+	The rule group name and the alert name are necessary to update the
+	relevant AlertPolicies in case the definition of the rule group changes
+	in the future.
+
+	This field is optional. If this field is not empty, then it must be a
+	valid Prometheus label name. */
+	// +optional
+	RuleGroup *string `json:"ruleGroup,omitempty"`
+}
+
 type AlertpolicyConditionThreshold struct {
 	/* Specifies the alignment of data points in
 	individual time series as well as how to
@@ -379,6 +439,16 @@ type AlertpolicyConditions struct {
 	/* A Monitoring Query Language query that outputs a boolean stream. */
 	// +optional
 	ConditionMonitoringQueryLanguage *AlertpolicyConditionMonitoringQueryLanguage `json:"conditionMonitoringQueryLanguage,omitempty"`
+
+	/* A Monitoring Query Language query that outputs a boolean stream
+
+	A condition type that allows alert policies to be defined using
+	Prometheus Query Language (PromQL).
+
+	The PrometheusQueryLanguageCondition message contains information
+	from a Prometheus alerting rule and its associated rule group. */
+	// +optional
+	ConditionPrometheusQueryLanguage *AlertpolicyConditionPrometheusQueryLanguage `json:"conditionPrometheusQueryLanguage,omitempty"`
 
 	/* A condition that compares a time series against a
 	threshold. */

@@ -101,6 +101,7 @@
 databaseDialect: string
 ddl:
 - string
+enableDropProtection: boolean
 encryptionConfig:
   kmsKeyRef:
     external: string
@@ -152,6 +153,16 @@ error in any statement, the database is not created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>enableDropProtection</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>

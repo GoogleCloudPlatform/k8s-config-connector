@@ -61,7 +61,7 @@ type JobContainers struct {
 	/* URL of the Container image in Google Container Registry or Google Artifact Registry. More info: https://kubernetes.io/docs/concepts/containers/images. */
 	Image string `json:"image"`
 
-	/* DEPRECATED. Cloud Run Job does not support liveness probe and `liveness_probe` field will be removed in a future major release. Periodic probe of container liveness. Container will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	/* DEPRECATED. `liveness_probe` is deprecated and will be removed in a future major release. This field is not supported by the Cloud Run API. Periodic probe of container liveness. Container will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 	This field is not supported in Cloud Run Job currently. */
 	// +optional
 	LivenessProbe *JobLivenessProbe `json:"livenessProbe,omitempty"`
@@ -80,7 +80,7 @@ type JobContainers struct {
 	// +optional
 	Resources *JobResources `json:"resources,omitempty"`
 
-	/* DEPRECATED. Cloud Run Job does not support startup probe and `startup_probe` field will be removed in a future major release. Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	/* DEPRECATED. `startup_probe` is deprecated and will be removed in a future major release. This field is not supported by the Cloud Run API. Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 	This field is not supported in Cloud Run Job currently. */
 	// +optional
 	StartupProbe *JobStartupProbe `json:"startupProbe,omitempty"`
@@ -404,6 +404,18 @@ type RunJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   RunJob's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The creation time. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Email address of the authenticated creator. */
+	// +optional
+	Creator *string `json:"creator,omitempty"`
+
+	/* The deletion time. */
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
 	/* A system-generated fingerprint for this version of the resource. May be used to detect modification conflict during updates. */
 	// +optional
 	Etag *string `json:"etag,omitempty"`
@@ -411,6 +423,14 @@ type RunJobStatus struct {
 	/* Number of executions created for this job. */
 	// +optional
 	ExecutionCount *int `json:"executionCount,omitempty"`
+
+	/* For a deleted resource, the time after which it will be permamently deleted. */
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	/* Email address of the last authenticated modifier. */
+	// +optional
+	LastModifier *string `json:"lastModifier,omitempty"`
 
 	/* Name of the last created execution. */
 	// +optional
@@ -437,6 +457,10 @@ type RunJobStatus struct {
 	/* Server assigned unique identifier for the Execution. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted. */
 	// +optional
 	Uid *string `json:"uid,omitempty"`
+
+	/* The last-modified time. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

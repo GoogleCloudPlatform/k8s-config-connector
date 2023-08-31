@@ -58,6 +58,7 @@ compressionMode: string
 connectionDrainingTimeoutSec: integer
 connectionTrackingPolicy:
   connectionPersistenceOnUnhealthyBackends: string
+  enableStrongAffinity: boolean
   idleTimeoutSec: integer
   trackingMode: string
 consistentHash:
@@ -140,6 +141,7 @@ outlierDetection:
 portName: string
 protocol: string
 resourceID: string
+securityPolicy: string
 securityPolicyRef:
   external: string
   name: string

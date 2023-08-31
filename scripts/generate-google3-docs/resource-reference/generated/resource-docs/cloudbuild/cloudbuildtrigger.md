@@ -200,6 +200,10 @@ disabled: boolean
 filename: string
 filter: string
 gitFileSource:
+  bitbucketServerConfigRef:
+    external: string
+    name: string
+    namespace: string
   githubEnterpriseConfigRef:
     external: string
     name: string
@@ -259,6 +263,10 @@ serviceAccountRef:
   name: string
   namespace: string
 sourceToBuild:
+  bitbucketServerConfigRef:
+    external: string
+    name: string
+    namespace: string
   githubEnterpriseConfigRef:
     external: string
     name: string
@@ -852,7 +860,7 @@ The elements are of the form "KEY=VALUE" for the environment variable "KEY" bein
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Compute Engine machine type on which to run the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"].{% endverbatim %}</p>
+            <p>{% verbatim %}Compute Engine machine type on which to run the build.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1692,6 +1700,49 @@ When using Pub/Sub, Webhook or Manual set the file name using git_file_source in
     </tr>
     <tr>
         <td>
+            <p><code>gitFileSource.bitbucketServerConfigRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Only `external` field is supported to configure the reference.
+
+The full resource name of the bitbucket server config. Format:
+projects/{project}/locations/{location}/bitbucketServerConfigs/{id}.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gitFileSource.bitbucketServerConfigRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `CloudBuildBitbucketServerConfig` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gitFileSource.bitbucketServerConfigRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gitFileSource.bitbucketServerConfigRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>gitFileSource.githubEnterpriseConfigRef</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2342,6 +2393,49 @@ Triggers that respond to such events build source at whatever commit caused the 
 This field is currently only used by Webhook, Pub/Sub, Manual, and Cron triggers.
 
 One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceToBuild.bitbucketServerConfigRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Only `external` field is supported to configure the reference.
+
+The full resource name of the bitbucket server config. Format:
+projects/{project}/locations/{location}/bitbucketServerConfigs/{id}.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceToBuild.bitbucketServerConfigRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `CloudBuildBitbucketServerConfig` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceToBuild.bitbucketServerConfigRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceToBuild.bitbucketServerConfigRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

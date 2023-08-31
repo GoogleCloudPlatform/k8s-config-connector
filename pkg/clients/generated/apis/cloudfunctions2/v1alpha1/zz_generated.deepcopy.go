@@ -108,6 +108,11 @@ func (in *CloudFunctions2FunctionSpec) DeepCopyInto(out *CloudFunctions2Function
 		*out = new(FunctionEventTrigger)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.KmsKeyName != nil {
+		in, out := &in.KmsKeyName, &out.KmsKeyName
+		*out = new(string)
+		**out = **in
+	}
 	out.ProjectRef = in.ProjectRef
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID

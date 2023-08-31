@@ -85,6 +85,15 @@ spec:
             version: v1beta1
             group: bigquery.cnrm.cloud.google.com
           valueTemplate: "{{project}}.{{dataset_id}}.{{value}}"
+        - tfField: cloud_storage_config.bucket
+          description: User-provided name for the Cloud Storage bucket.
+            The bucket must be created by the user. The bucket name must
+            be without any prefix like "gs://".
+          key: bucketRef
+          gvk:
+            kind: StorageBucket
+            version: v1beta1
+            group: storage.cnrm.cloud.google.com
       containers:
         - type: project
           tfField: project

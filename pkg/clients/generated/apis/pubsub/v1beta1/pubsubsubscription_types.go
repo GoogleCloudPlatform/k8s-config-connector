@@ -35,6 +35,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type SubscriptionAvroConfig struct {
+	/* When true, write the subscription name, messageId, publishTime, attributes, and orderingKey as additional fields in the output. */
+	// +optional
+	WriteMetadata *bool `json:"writeMetadata,omitempty"`
+}
+
 type SubscriptionBigqueryConfig struct {
 	/* When true and useTopicSchema is true, any fields that are a part of the topic schema that are not part of the BigQuery table schema are dropped when writing to BigQuery.
 	Otherwise, the schemas must be kept in sync and any messages with extra fields are not written and remain in the subscription's backlog. */
@@ -52,6 +58,38 @@ type SubscriptionBigqueryConfig struct {
 	The subscription name, messageId, and publishTime fields are put in their own columns while all other message properties (other than data) are written to a JSON object in the attributes column. */
 	// +optional
 	WriteMetadata *bool `json:"writeMetadata,omitempty"`
+}
+
+type SubscriptionCloudStorageConfig struct {
+	/* If set, message data will be written to Cloud Storage in Avro format. */
+	// +optional
+	AvroConfig *SubscriptionAvroConfig `json:"avroConfig,omitempty"`
+
+	/* User-provided name for the Cloud Storage bucket. The bucket must be created by the user. The bucket name must be without any prefix like "gs://". */
+	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+
+	/* User-provided prefix for Cloud Storage filename. */
+	// +optional
+	FilenamePrefix *string `json:"filenamePrefix,omitempty"`
+
+	/* User-provided suffix for Cloud Storage filename. Must not end in "/". */
+	// +optional
+	FilenameSuffix *string `json:"filenameSuffix,omitempty"`
+
+	/* The maximum bytes that can be written to a Cloud Storage file before a new file is created. Min 1 KB, max 10 GiB.
+	The maxBytes limit may be exceeded in cases where messages are larger than the limit. */
+	// +optional
+	MaxBytes *int `json:"maxBytes,omitempty"`
+
+	/* The maximum duration that can elapse before a new Cloud Storage file is created. Min 1 minute, max 10 minutes, default 5 minutes.
+	May not exceed the subscription's acknowledgement deadline.
+	A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s". */
+	// +optional
+	MaxDuration *string `json:"maxDuration,omitempty"`
+
+	/* An output-only field that indicates whether or not the subscription can receive messages. */
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type SubscriptionDeadLetterPolicy struct {
@@ -81,6 +119,13 @@ type SubscriptionExpirationPolicy struct {
 	A duration in seconds with up to nine fractional digits, terminated by 's'.
 	Example - "3.5s". */
 	Ttl string `json:"ttl"`
+}
+
+type SubscriptionNoWrapper struct {
+	/* When true, writes the Pub/Sub message metadata to
+	'x-goog-pubsub-<KEY>:<VAL>' headers of the HTTP request. Writes the
+	Pub/Sub message attributes to '<KEY>:<VAL>' headers of the HTTP request. */
+	WriteMetadata bool `json:"writeMetadata"`
 }
 
 type SubscriptionOidcToken struct {
@@ -126,6 +171,11 @@ type SubscriptionPushConfig struct {
 	- v1 or v1beta2: uses the push format defined in the v1 Pub/Sub API. */
 	// +optional
 	Attributes map[string]string `json:"attributes,omitempty"`
+
+	/* When set, the payload to the push endpoint is not wrapped.Sets the
+	'data' field as the HTTP body for delivery. */
+	// +optional
+	NoWrapper *SubscriptionNoWrapper `json:"noWrapper,omitempty"`
 
 	/* If specified, Pub/Sub will generate and attach an OIDC JWT token as
 	an Authorization header in the HTTP request for every pushed message. */
@@ -173,10 +223,16 @@ type PubSubSubscriptionSpec struct {
 	AckDeadlineSeconds *int `json:"ackDeadlineSeconds,omitempty"`
 
 	/* If delivery to BigQuery is used with this subscription, this field is used to configure it.
-	Either pushConfig or bigQueryConfig can be set, but not both.
-	If both are empty, then the subscriber will pull and ack messages using API methods. */
+	Either pushConfig, bigQueryConfig or cloudStorageConfig can be set, but not combined.
+	If all three are empty, then the subscriber will pull and ack messages using API methods. */
 	// +optional
 	BigqueryConfig *SubscriptionBigqueryConfig `json:"bigqueryConfig,omitempty"`
+
+	/* If delivery to Cloud Storage is used with this subscription, this field is used to configure it.
+	Either pushConfig, bigQueryConfig or cloudStorageConfig can be set, but not combined.
+	If all three are empty, then the subscriber will pull and ack messages using API methods. */
+	// +optional
+	CloudStorageConfig *SubscriptionCloudStorageConfig `json:"cloudStorageConfig,omitempty"`
 
 	/* A policy that specifies the conditions for dead lettering messages in
 	this subscription. If dead_letter_policy is not set, dead lettering

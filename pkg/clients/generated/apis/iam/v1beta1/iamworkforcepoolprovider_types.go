@@ -35,15 +35,39 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type WorkforcepoolproviderClientSecret struct {
+	/* The value of the client secret. */
+	// +optional
+	Value *WorkforcepoolproviderValue `json:"value,omitempty"`
+}
+
 type WorkforcepoolproviderOidc struct {
 	/* Required. The client ID. Must match the audience claim of the JWT issued by the identity provider. */
 	ClientId string `json:"clientId"`
 
+	/* The optional client secret. Required to enable Authorization Code flow for web sign-in. */
+	// +optional
+	ClientSecret *WorkforcepoolproviderClientSecret `json:"clientSecret,omitempty"`
+
 	/* Required. The OIDC issuer URI. Must be a valid URI using the 'https' scheme. */
 	IssuerUri string `json:"issuerUri"`
 
+	/* OIDC JWKs in JSON String format. For details on definition of a JWK, see https:tools.ietf.org/html/rfc7517. If not set, then we use the `jwks_uri` from the discovery document fetched from the .well-known path for the `issuer_uri`. Currently, RSA and EC asymmetric keys are supported. The JWK must use following format and include only the following fields: ```{"keys": [{"kty": "RSA/EC", "alg": "<algorithm>", "use": "sig", "kid": "<key-id>", "n": "", "e": "", "x": "", "y": "", "crv": ""}]}``` */
+	// +optional
+	JwksJson *string `json:"jwksJson,omitempty"`
+
 	/* Required. Configuration for web single sign-on for the OIDC provider. Here, web sign-in refers to console sign-in and gcloud sign-in through the browser. */
 	WebSsoConfig WorkforcepoolproviderWebSsoConfig `json:"webSsoConfig"`
+}
+
+type WorkforcepoolproviderPlainText struct {
+	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+	// +optional
+	Value *string `json:"value,omitempty"`
+
+	/* Source for the field's value. Cannot be used if 'value' is specified. */
+	// +optional
+	ValueFrom *WorkforcepoolproviderValueFrom `json:"valueFrom,omitempty"`
 }
 
 type WorkforcepoolproviderSaml struct {
@@ -51,11 +75,27 @@ type WorkforcepoolproviderSaml struct {
 	IdpMetadataXml string `json:"idpMetadataXml"`
 }
 
+type WorkforcepoolproviderValue struct {
+	/* Input only. The plain text of the client secret value. */
+	// +optional
+	PlainText *WorkforcepoolproviderPlainText `json:"plainText,omitempty"`
+}
+
+type WorkforcepoolproviderValueFrom struct {
+	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+	// +optional
+	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+}
+
 type WorkforcepoolproviderWebSsoConfig struct {
-	/* Required. The behavior for how OIDC Claims are included in the `assertion` object used for attribute mapping and attribute condition. Possible values: ASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED, ONLY_ID_TOKEN_CLAIMS */
+	/* Additional scopes to request for in the OIDC authentication request on top of scopes requested by default. By default, the `openid`, `profile` and `email` scopes that are supported by the identity provider are requested. Each additional scope may be at most 256 characters. A maximum of 10 additional scopes may be configured. */
+	// +optional
+	AdditionalScopes []string `json:"additionalScopes,omitempty"`
+
+	/* Required. The behavior for how OIDC Claims are included in the `assertion` object used for attribute mapping and attribute condition. Possible values: ASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED, MERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS, ONLY_ID_TOKEN_CLAIMS */
 	AssertionClaimsBehavior string `json:"assertionClaimsBehavior"`
 
-	/* Required. The Response Type to request for in the OIDC Authorization Request for web sign-in. Possible values: RESPONSE_TYPE_UNSPECIFIED, ID_TOKEN */
+	/* Required. The Response Type to request for in the OIDC Authorization Request for web sign-in. The `CODE` Response Type is recommended to avoid the Implicit Flow, for security reasons. Possible values: RESPONSE_TYPE_UNSPECIFIED, CODE, ID_TOKEN */
 	ResponseType string `json:"responseType"`
 }
 
@@ -98,6 +138,22 @@ type IAMWorkforcePoolProviderSpec struct {
 	WorkforcePoolRef v1alpha1.ResourceRef `json:"workforcePoolRef"`
 }
 
+type WorkforcepoolproviderClientSecretStatus struct {
+	// +optional
+	Value *WorkforcepoolproviderValueStatus `json:"value,omitempty"`
+}
+
+type WorkforcepoolproviderOidcStatus struct {
+	// +optional
+	ClientSecret *WorkforcepoolproviderClientSecretStatus `json:"clientSecret,omitempty"`
+}
+
+type WorkforcepoolproviderValueStatus struct {
+	/* Output only. A thumbprint to represent the current client secret value. */
+	// +optional
+	Thumbprint *string `json:"thumbprint,omitempty"`
+}
+
 type IAMWorkforcePoolProviderStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IAMWorkforcePoolProvider's current state. */
@@ -105,6 +161,9 @@ type IAMWorkforcePoolProviderStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	Oidc *WorkforcepoolproviderOidcStatus `json:"oidc,omitempty"`
 
 	/* Output only. The state of the provider. Possible values: STATE_UNSPECIFIED, ACTIVE, DELETED */
 	// +optional

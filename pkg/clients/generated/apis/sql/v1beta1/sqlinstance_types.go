@@ -80,7 +80,7 @@ type InstanceBackupConfiguration struct {
 	// +optional
 	StartTime *string `json:"startTime,omitempty"`
 
-	/* The number of days of transaction logs we retain for point in time restore, from 1-7. */
+	/* The number of days of transaction logs we retain for point in time restore, from 1-7. (For PostgreSQL Enterprise Plus instances, from 1 to 35.). */
 	// +optional
 	TransactionLogRetentionDays *int `json:"transactionLogRetentionDays,omitempty"`
 }
@@ -160,6 +160,10 @@ type InstanceIpConfiguration struct {
 	// +optional
 	PrivateNetworkRef *v1alpha1.ResourceRef `json:"privateNetworkRef,omitempty"`
 
+	/* PSC settings for a Cloud SQL instance. */
+	// +optional
+	PscConfig []InstancePscConfig `json:"pscConfig,omitempty"`
+
 	// +optional
 	RequireSsl *bool `json:"requireSsl,omitempty"`
 }
@@ -227,6 +231,16 @@ type InstancePasswordValidationPolicy struct {
 	ReuseInterval *int `json:"reuseInterval,omitempty"`
 }
 
+type InstancePscConfig struct {
+	/* List of consumer projects that are allow-listed for PSC connections to this instance. This instance can be connected to with PSC from any network in these projects. Each consumer project in this list may be represented by a project number (numeric) or by a project id (alphanumeric). */
+	// +optional
+	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
+
+	/* Whether PSC connectivity is enabled for this instance. */
+	// +optional
+	PscEnabled *bool `json:"pscEnabled,omitempty"`
+}
+
 type InstanceReplicaConfiguration struct {
 	/* Immutable. PEM representation of the trusted CA's x509 certificate. */
 	// +optional
@@ -248,7 +262,7 @@ type InstanceReplicaConfiguration struct {
 	// +optional
 	DumpFilePath *string `json:"dumpFilePath,omitempty"`
 
-	/* Immutable. Specifies if the replica is the failover target. If the field is set to true the replica will be designated as a failover replica. If the master instance fails, the replica instance will be promoted as the new master instance. */
+	/* Immutable. Specifies if the replica is the failover target. If the field is set to true the replica will be designated as a failover replica. If the master instance fails, the replica instance will be promoted as the new master instance. Not supported for Postgres. */
 	// +optional
 	FailoverTarget *bool `json:"failoverTarget,omitempty"`
 
@@ -499,6 +513,10 @@ type SQLInstanceStatus struct {
 	// +optional
 	ConnectionName *string `json:"connectionName,omitempty"`
 
+	/* The dns name of the instance. */
+	// +optional
+	DnsName *string `json:"dnsName,omitempty"`
+
 	// +optional
 	FirstIpAddress *string `json:"firstIpAddress,omitempty"`
 
@@ -515,6 +533,10 @@ type SQLInstanceStatus struct {
 
 	// +optional
 	PrivateIpAddress *string `json:"privateIpAddress,omitempty"`
+
+	/* The link to service attachment of PSC instance. */
+	// +optional
+	PscServiceAttachmentLink *string `json:"pscServiceAttachmentLink,omitempty"`
 
 	// +optional
 	PublicIpAddress *string `json:"publicIpAddress,omitempty"`

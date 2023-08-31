@@ -620,7 +620,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}DEPRECATED. Cloud Run Job does not support liveness probe and `liveness_probe` field will be removed in a future major release. Periodic probe of container liveness. Container will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+            <p>{% verbatim %}DEPRECATED. `liveness_probe` is deprecated and will be removed in a future major release. This field is not supported by the Cloud Run API. Periodic probe of container liveness. Container will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
     </tr>
@@ -823,7 +823,7 @@ If omitted, a port number will be chosen and passed to the container through the
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}DEPRECATED. Cloud Run Job does not support startup probe and `startup_probe` field will be removed in a future major release. Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+            <p>{% verbatim %}DEPRECATED. `startup_probe` is deprecated and will be removed in a future major release. This field is not supported by the Cloud Run API. Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1345,8 +1345,13 @@ conditions:
   reason: string
   status: string
   type: string
+createTime: string
+creator: string
+deleteTime: string
 etag: string
 executionCount: integer
+expireTime: string
+lastModifier: string
 latestCreatedExecution:
 - completionTime: string
   createTime: string
@@ -1363,6 +1368,7 @@ terminalCondition:
   state: string
   type: string
 uid: string
+updateTime: string
 ```
 
 <table class="properties responsive">
@@ -1422,6 +1428,27 @@ uid: string
         </td>
     </tr>
     <tr>
+        <td><code>createTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The creation time.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>creator</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Email address of the authenticated creator.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>deleteTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The deletion time.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>etag</code></td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -1433,6 +1460,20 @@ uid: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Number of executions created for this job.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>expireTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}For a deleted resource, the time after which it will be permamently deleted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>lastModifier</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Email address of the last authenticated modifier.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1571,6 +1612,13 @@ A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to n
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Server assigned unique identifier for the Execution. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The last-modified time.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

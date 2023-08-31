@@ -92,6 +92,10 @@ type TableExternalDataConfiguration struct {
 	// +optional
 	CsvOptions *TableCsvOptions `json:"csvOptions,omitempty"`
 
+	/* Specifies how source URIs are interpreted for constructing the file set to load.  By default source URIs are expanded against the underlying storage.  Other options include specifying manifest files. Only applicable to object storage systems. */
+	// +optional
+	FileSetSpecType *string `json:"fileSetSpecType,omitempty"`
+
 	/* Additional options if source_format is set to "GOOGLE_SHEETS". */
 	// +optional
 	GoogleSheetsOptions *TableGoogleSheetsOptions `json:"googleSheetsOptions,omitempty"`
@@ -268,6 +272,10 @@ type BigQueryTableSpec struct {
 	/* If specified, configures this table as a materialized view. */
 	// +optional
 	MaterializedView *TableMaterializedView `json:"materializedView,omitempty"`
+
+	/* The maximum staleness of data that could be returned when the table (or stale MV) is queried. Staleness encoded as a string encoding of sql IntervalValue type. */
+	// +optional
+	MaxStaleness *string `json:"maxStaleness,omitempty"`
 
 	/* If specified, configures range-based partitioning for this table. */
 	// +optional

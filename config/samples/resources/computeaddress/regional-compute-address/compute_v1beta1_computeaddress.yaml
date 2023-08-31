@@ -22,6 +22,5 @@ spec:
   addressType: INTERNAL
   description: a test regional address
   location: us-central1
-  ipVersion: IPV6
   subnetworkRef:
     name: computeaddress-dep-regional

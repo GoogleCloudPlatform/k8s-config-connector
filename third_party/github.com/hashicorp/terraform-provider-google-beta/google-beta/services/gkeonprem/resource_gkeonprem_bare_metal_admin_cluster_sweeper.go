@@ -108,7 +108,7 @@ func testSweepGkeonpremBareMetalAdminCluster(region string) error {
 			continue
 		}
 
-		deleteTemplate := "https://gkeonprem.googleapis.com/v1/projects/{{project}}/locations/{{location}}/bareMetalAdminClusters/{{name}}:unenroll"
+		deleteTemplate := "https://gkeonprem.googleapis.com/v1/projects/{{project}}/locations/{{location}}/bareMetalAdminClusters/{{name}}:unenroll?ignore_errors=true"
 		deleteUrl, err := tpgresource.ReplaceVars(d, config, deleteTemplate)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] error preparing delete url: %s", err)

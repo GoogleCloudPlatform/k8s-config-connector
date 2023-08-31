@@ -109,6 +109,7 @@ destination:
     external: string
     name: string
     namespace: string
+eventDataContentType: string
 location: string
 matchingCriteria:
 - attribute: string
@@ -434,6 +435,16 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>eventDataContentType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. EventDataContentType specifies the type of payload in MIME format that is expected from the CloudEvent data field. This is set to `application/json` if the value is not defined.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

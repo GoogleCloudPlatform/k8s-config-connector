@@ -72,6 +72,8 @@ spec:
                 items:
                   type: string
                 type: array
+              enableDropProtection:
+                type: boolean
               encryptionConfig:
                 description: Immutable. Encryption configuration for the database.
                 properties:

@@ -119,6 +119,25 @@ after the Secret has been created.`,
 				ForceNew:    true,
 				Description: `This must be unique within the project.`,
 			},
+			"annotations": {
+				Type:     schema.TypeMap,
+				Optional: true,
+				Description: `Custom metadata about the secret.
+
+Annotations are distinct from various forms of labels. Annotations exist to allow
+client tools to store their own state information without requiring a database.
+
+Annotation keys must be between 1 and 63 characters long, have a UTF-8 encoding of
+maximum 128 bytes, begin and end with an alphanumeric character ([a-z0-9A-Z]), and
+may have dashes (-), underscores (_), dots (.), and alphanumerics in between these
+symbols.
+
+The total size of annotation keys and values must be less than 16KiB.
+
+An object containing a list of "key": value pairs. Example:
+{ "name": "wrench", "mass": "1.3kg", "count": "3" }.`,
+				Elem: &schema.Schema{Type: schema.TypeString},
+			},
 			"expire_time": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -190,6 +209,20 @@ For publication to succeed, the Secret Manager Service Agent service account mus
 				Description: `The TTL for the Secret.
 A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".`,
 			},
+			"version_aliases": {
+				Type:     schema.TypeMap,
+				Optional: true,
+				Description: `Mapping from version alias to version name.
+
+A version alias is a string with a maximum length of 63 characters and can contain
+uppercase and lowercase letters, numerals, and the hyphen (-) and underscore ('_')
+characters. An alias string must start with a letter and cannot be the string
+'latest' or 'NEW'. No more than 50 aliases can be assigned to a given secret.
+
+An object containing a list of "key": value pairs. Example:
+{ "name": "wrench", "mass": "1.3kg", "count": "3" }.`,
+				Elem: &schema.Schema{Type: schema.TypeString},
+			},
 			"create_time": {
 				Type:        schema.TypeString,
 				Computed:    true,
@@ -225,6 +258,18 @@ func resourceSecretManagerSecretCreate(d *schema.ResourceData, meta interface{})
 		return err
 	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
+	}
+	annotationsProp, err := expandSecretManagerSecretAnnotations(d.Get("annotations"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("annotations"); !tpgresource.IsEmptyValue(reflect.ValueOf(annotationsProp)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
+		obj["annotations"] = annotationsProp
+	}
+	versionAliasesProp, err := expandSecretManagerSecretVersionAliases(d.Get("version_aliases"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("version_aliases"); !tpgresource.IsEmptyValue(reflect.ValueOf(versionAliasesProp)) && (ok || !reflect.DeepEqual(v, versionAliasesProp)) {
+		obj["versionAliases"] = versionAliasesProp
 	}
 	replicationProp, err := expandSecretManagerSecretReplication(d.Get("replication"), d, config)
 	if err != nil {
@@ -353,6 +398,12 @@ func resourceSecretManagerSecretRead(d *schema.ResourceData, meta interface{}) e
 	if err := d.Set("labels", flattenSecretManagerSecretLabels(res["labels"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Secret: %s", err)
 	}
+	if err := d.Set("annotations", flattenSecretManagerSecretAnnotations(res["annotations"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Secret: %s", err)
+	}
+	if err := d.Set("version_aliases", flattenSecretManagerSecretVersionAliases(res["versionAliases"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Secret: %s", err)
+	}
 	if err := d.Set("replication", flattenSecretManagerSecretReplication(res["replication"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Secret: %s", err)
 	}
@@ -391,6 +442,18 @@ func resourceSecretManagerSecretUpdate(d *schema.ResourceData, meta interface{})
 	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
+	annotationsProp, err := expandSecretManagerSecretAnnotations(d.Get("annotations"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("annotations"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
+		obj["annotations"] = annotationsProp
+	}
+	versionAliasesProp, err := expandSecretManagerSecretVersionAliases(d.Get("version_aliases"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("version_aliases"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, versionAliasesProp)) {
+		obj["versionAliases"] = versionAliasesProp
+	}
 	topicsProp, err := expandSecretManagerSecretTopics(d.Get("topics"), d, config)
 	if err != nil {
 		return err
@@ -420,6 +483,14 @@ func resourceSecretManagerSecretUpdate(d *schema.ResourceData, meta interface{})
 
 	if d.HasChange("labels") {
 		updateMask = append(updateMask, "labels")
+	}
+
+	if d.HasChange("annotations") {
+		updateMask = append(updateMask, "annotations")
+	}
+
+	if d.HasChange("version_aliases") {
+		updateMask = append(updateMask, "versionAliases")
 	}
 
 	if d.HasChange("topics") {
@@ -538,6 +609,14 @@ func flattenSecretManagerSecretCreateTime(v interface{}, d *schema.ResourceData,
 }
 
 func flattenSecretManagerSecretLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenSecretManagerSecretAnnotations(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenSecretManagerSecretVersionAliases(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -663,6 +742,28 @@ func flattenSecretManagerSecretRotationRotationPeriod(v interface{}, d *schema.R
 }
 
 func expandSecretManagerSecretLabels(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
+	if v == nil {
+		return map[string]string{}, nil
+	}
+	m := make(map[string]string)
+	for k, val := range v.(map[string]interface{}) {
+		m[k] = val.(string)
+	}
+	return m, nil
+}
+
+func expandSecretManagerSecretAnnotations(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
+	if v == nil {
+		return map[string]string{}, nil
+	}
+	m := make(map[string]string)
+	for k, val := range v.(map[string]interface{}) {
+		m[k] = val.(string)
+	}
+	return m, nil
+}
+
+func expandSecretManagerSecretVersionAliases(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}

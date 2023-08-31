@@ -31,10 +31,10 @@ index 4dcd779a0..ac787ba9c 100644
  	}
  
  	return []map[string]interface{}{data}
-diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy_test.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy_test.go
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_security_policy_test.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_security_policy_test.go
 index b00e79d2e..8bcbc115e 100644
---- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy_test.go
-+++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy_test.go
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_security_policy_test.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/compute/resource_compute_security_policy_test.go
 @@ -971,7 +971,7 @@ resource "google_compute_security_policy" "policy" {
    description = "updated description"
  

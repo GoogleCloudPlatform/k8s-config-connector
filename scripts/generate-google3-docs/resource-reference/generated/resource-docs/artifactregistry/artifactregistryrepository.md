@@ -97,6 +97,24 @@
 ### Spec
 #### Schema
 ```yaml
+cleanupPolicies:
+- action: string
+  condition:
+    newerThan: string
+    olderThan: string
+    packageNamePrefixes:
+    - string
+    tagPrefixes:
+    - string
+    tagState: string
+    versionNamePrefixes:
+    - string
+  id: string
+  mostRecentVersions:
+    keepCount: integer
+    packageNamePrefixes:
+    - string
+cleanupPolicyDryRun: boolean
 description: string
 dockerConfig:
   immutableTags: boolean
@@ -138,6 +156,201 @@ virtualRepositoryConfig:
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Cleanup policies for this repository. Cleanup policies indicate when
+certain package versions can be automatically deleted.
+Map keys are policy IDs supplied by users during policy creation. They must
+unique within a repository and be under 128 characters in length.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].action</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Policy action. Possible values: ["DELETE", "KEEP"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].condition</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Policy condition for matching versions.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].condition.newerThan</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Match versions newer than a duration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].condition.olderThan</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Match versions older than a duration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].condition.packageNamePrefixes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Match versions by package prefix. Applied on any prefix match.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].condition.packageNamePrefixes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].condition.tagPrefixes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Match versions by tag prefix. Applied on any prefix match.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].condition.tagPrefixes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].condition.tagState</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Match versions by tag status. Default value: "ANY" Possible values: ["TAGGED", "UNTAGGED", "ANY"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].condition.versionNamePrefixes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Match versions by version name prefix. Applied on any prefix match.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].condition.versionNamePrefixes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].id</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].mostRecentVersions</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Policy condition for retaining a minimum number of versions. May only be
+specified with a Keep action.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].mostRecentVersions.keepCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Minimum number of versions to keep.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].mostRecentVersions.packageNamePrefixes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Match versions by package prefix. Applied on any prefix match.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicies[].mostRecentVersions.packageNamePrefixes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cleanupPolicyDryRun</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}If true, the cleanup pipeline is prevented from deleting versions in this
+repository.{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>description</code></p>
@@ -480,6 +693,8 @@ Repository. Upstream policies cannot be set on a standard repository.{% endverba
 </tbody>
 </table>
 
+
+<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
 
 
 ### Status

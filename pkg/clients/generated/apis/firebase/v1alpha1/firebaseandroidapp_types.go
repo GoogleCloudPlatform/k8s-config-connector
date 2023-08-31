@@ -36,6 +36,12 @@ import (
 )
 
 type FirebaseAndroidAppSpec struct {
+	/* The globally unique, Google-assigned identifier (UID) for the Firebase API key associated with the AndroidApp.
+	If apiKeyId is not set during creation, then Firebase automatically associates an apiKeyId with the AndroidApp.
+	This auto-associated key may be an existing valid key or, if no valid key exists, a new one will be provisioned. */
+	// +optional
+	ApiKeyId *string `json:"apiKeyId,omitempty"`
+
 	// +optional
 	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
 

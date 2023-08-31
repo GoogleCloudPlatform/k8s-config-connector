@@ -636,6 +636,11 @@ func (in *BigQueryTableSpec) DeepCopyInto(out *BigQueryTableSpec) {
 		*out = new(TableMaterializedView)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.MaxStaleness != nil {
+		in, out := &in.MaxStaleness, &out.MaxStaleness
+		*out = new(string)
+		**out = **in
+	}
 	if in.RangePartitioning != nil {
 		in, out := &in.RangePartitioning, &out.RangePartitioning
 		*out = new(TableRangePartitioning)
@@ -1606,6 +1611,11 @@ func (in *TableExternalDataConfiguration) DeepCopyInto(out *TableExternalDataCon
 		in, out := &in.CsvOptions, &out.CsvOptions
 		*out = new(TableCsvOptions)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.FileSetSpecType != nil {
+		in, out := &in.FileSetSpecType, &out.FileSetSpecType
+		*out = new(string)
+		**out = **in
 	}
 	if in.GoogleSheetsOptions != nil {
 		in, out := &in.GoogleSheetsOptions, &out.GoogleSheetsOptions

@@ -158,6 +158,13 @@ type TriggerBuild struct {
 type TriggerGitFileSource struct {
 	/* Only `external` field is supported to configure the reference.
 
+	The full resource name of the bitbucket server config. Format:
+	projects/{project}/locations/{location}/bitbucketServerConfigs/{id}. */
+	// +optional
+	BitbucketServerConfigRef *v1alpha1.ResourceRef `json:"bitbucketServerConfigRef,omitempty"`
+
+	/* Only `external` field is supported to configure the reference.
+
 	The full resource name of the github enterprise config. Format:
 	projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}. */
 	// +optional
@@ -264,7 +271,7 @@ type TriggerOptions struct {
 	// +optional
 	Logging *string `json:"logging,omitempty"`
 
-	/* Compute Engine machine type on which to run the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"]. */
+	/* Compute Engine machine type on which to run the build. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
@@ -450,6 +457,13 @@ type TriggerSource struct {
 }
 
 type TriggerSourceToBuild struct {
+	/* Only `external` field is supported to configure the reference.
+
+	The full resource name of the bitbucket server config. Format:
+	projects/{project}/locations/{location}/bitbucketServerConfigs/{id}. */
+	// +optional
+	BitbucketServerConfigRef *v1alpha1.ResourceRef `json:"bitbucketServerConfigRef,omitempty"`
+
 	/* Only `external` field is supported to configure the reference.
 
 	The full resource name of the github enterprise config. Format:

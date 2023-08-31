@@ -551,14 +551,22 @@ spec:
                       items:
                         properties:
                           externalIpv6:
-                            description: The first IPv6 address of the external IPv6
-                              range associated with this instance, prefix length is
-                              stored in externalIpv6PrefixLength in ipv6AccessConfig.
-                              The field is output only, an IPv6 address from a subnetwork
-                              associated with the instance will be allocated dynamically.
+                            description: Immutable. The first IPv6 address of the
+                              external IPv6 range associated with this instance, prefix
+                              length is stored in externalIpv6PrefixLength in ipv6AccessConfig.
+                              To use a static external IP address, it must be unused
+                              and in the same region as the instance's zone. If not
+                              specified, Google Cloud will automatically assign an
+                              external IPv6 address from the instance's subnetwork.
                             type: string
                           externalIpv6PrefixLength:
-                            description: The prefix length of the external IPv6 range.
+                            description: Immutable. The prefix length of the external
+                              IPv6 range.
+                            type: string
+                          name:
+                            description: Immutable. The name of this access configuration.
+                              In ipv6AccessConfigs, the recommended name is External
+                              IPv6.
                             type: string
                           networkTier:
                             description: The service-level to be provided for IPv6
@@ -794,6 +802,28 @@ spec:
                     description: Specifies the action GCE should take when SPOT VM
                       is preempted.
                     type: string
+                  localSsdRecoveryTimeout:
+                    description: |-
+                      Immutable. Specifies the maximum amount of time a Local Ssd Vm should wait while
+                        recovery of the Local Ssd state is attempted. Its value should be in
+                        between 0 and 168 hours with hour granularity and the default value being 1
+                        hour.
+                    properties:
+                      nanos:
+                        description: |-
+                          Immutable. Span of time that's a fraction of a second at nanosecond
+                          resolution. Durations less than one second are represented
+                          with a 0 seconds field and a positive nanos field. Must
+                          be from 0 to 999,999,999 inclusive.
+                        type: integer
+                      seconds:
+                        description: |-
+                          Immutable. Span of time at a resolution of a second.
+                          Must be from 0 to 315,576,000,000 inclusive.
+                        type: integer
+                    required:
+                    - seconds
+                    type: object
                   maintenanceInterval:
                     description: 'Specifies the frequency of planned maintenance events.
                       The accepted values are: PERIODIC.'

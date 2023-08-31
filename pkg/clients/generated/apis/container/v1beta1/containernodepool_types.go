@@ -35,6 +35,30 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type NodepoolAdditionalNodeNetworkConfigs struct {
+	/* Immutable. Name of the VPC where the additional interface belongs. */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
+	/* Immutable. Name of the subnetwork where the additional interface belongs. */
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+}
+
+type NodepoolAdditionalPodNetworkConfigs struct {
+	/* Immutable. The maximum number of pods per node which use this pod network. */
+	// +optional
+	MaxPodsPerNode *int `json:"maxPodsPerNode,omitempty"`
+
+	/* Immutable. The name of the secondary range on the subnet which provides IP address for this pod range. */
+	// +optional
+	SecondaryPodRange *string `json:"secondaryPodRange,omitempty"`
+
+	/* Immutable. Name of the subnetwork where the additional pod network belongs. */
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+}
+
 type NodepoolAdvancedMachineFeatures struct {
 	/* Immutable. The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed. */
 	ThreadsPerCore int `json:"threadsPerCore"`
@@ -124,6 +148,11 @@ type NodepoolGvnic struct {
 	Enabled bool `json:"enabled"`
 }
 
+type NodepoolHostMaintenancePolicy struct {
+	/* Immutable. . */
+	MaintenanceInterval string `json:"maintenanceInterval"`
+}
+
 type NodepoolKubeletConfig struct {
 	/* Enable CPU CFS quota enforcement for containers that specify CPU limits. */
 	// +optional
@@ -162,6 +191,14 @@ type NodepoolManagement struct {
 }
 
 type NodepoolNetworkConfig struct {
+	/* Immutable. We specify the additional node networks for this node pool using this list. Each node network corresponds to an additional interface. */
+	// +optional
+	AdditionalNodeNetworkConfigs []NodepoolAdditionalNodeNetworkConfigs `json:"additionalNodeNetworkConfigs,omitempty"`
+
+	/* Immutable. We specify the additional pod networks for this node pool using this list. Each pod network corresponds to an additional alias IP range for the node. */
+	// +optional
+	AdditionalPodNetworkConfigs []NodepoolAdditionalPodNetworkConfigs `json:"additionalPodNetworkConfigs,omitempty"`
+
 	/* Immutable. Whether to create a new range for pod IPs in this node pool. Defaults are provided for pod_range and pod_ipv4_cidr_block if they are not specified. */
 	// +optional
 	CreatePodRange *bool `json:"createPodRange,omitempty"`
@@ -229,6 +266,10 @@ type NodepoolNodeConfig struct {
 	/* Immutable. Enable or disable gvnic in the node pool. */
 	// +optional
 	Gvnic *NodepoolGvnic `json:"gvnic,omitempty"`
+
+	/* Immutable. The maintenance policy for the hosts on which the GKE VMs run on. */
+	// +optional
+	HostMaintenancePolicy *NodepoolHostMaintenancePolicy `json:"hostMaintenancePolicy,omitempty"`
 
 	/* The image type to use for this node. Note that for a given image type, the latest version of it will be used. */
 	// +optional
@@ -325,6 +366,10 @@ type NodepoolNodeConfig struct {
 }
 
 type NodepoolPlacementPolicy struct {
+	/* Immutable. If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. If not found, InvalidArgument error is returned. */
+	// +optional
+	PolicyNameRef *v1alpha1.ResourceRef `json:"policyNameRef,omitempty"`
+
 	/* TPU placement topology for pod slice node pool. https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies. */
 	// +optional
 	TpuTopology *string `json:"tpuTopology,omitempty"`

@@ -86,7 +86,7 @@ with length <2000 characters. For example: 'https://container.googleapis.com/v1/
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Deprecated:  "This field is unavailable in the GA provider and will be removed from the beta provider in a future release.",
+				Deprecated:  "`description` is deprecated and will be removed in a future major release.",
 				Description: `The name of this entity type to be displayed on the console. This field is unavailable in v1 of the API.`,
 			},
 			"endpoint": {

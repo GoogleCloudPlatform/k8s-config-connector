@@ -200,6 +200,12 @@ spec:
                     required:
                     - quote
                     type: object
+                  fileSetSpecType:
+                    description: Specifies how source URIs are interpreted for constructing
+                      the file set to load.  By default source URIs are expanded against
+                      the underlying storage.  Other options include specifying manifest
+                      files. Only applicable to object storage systems.
+                    type: string
                   googleSheetsOptions:
                     description: Additional options if source_format is set to "GOOGLE_SHEETS".
                     properties:
@@ -330,6 +336,11 @@ spec:
                 required:
                 - query
                 type: object
+              maxStaleness:
+                description: The maximum staleness of data that could be returned
+                  when the table (or stale MV) is queried. Staleness encoded as a
+                  string encoding of sql IntervalValue type.
+                type: string
               rangePartitioning:
                 description: If specified, configures range-based partitioning for
                   this table.

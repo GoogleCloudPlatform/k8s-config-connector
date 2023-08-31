@@ -65,6 +65,10 @@ type ComputeTargetPoolSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* The resource URL for the security policy associated with this target pool. */
+	// +optional
+	SecurityPolicyRef *v1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
+
 	/* Immutable. How to distribute load. Options are "NONE" (no affinity). "CLIENT_IP" (hash of the source/dest addresses / ports), and "CLIENT_IP_PROTO" also includes the protocol (default "NONE"). */
 	// +optional
 	SessionAffinity *string `json:"sessionAffinity,omitempty"`

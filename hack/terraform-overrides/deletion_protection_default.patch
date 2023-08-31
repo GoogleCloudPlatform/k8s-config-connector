@@ -8,8 +8,8 @@ index 828f785dc..b10a3a69e 100644
  				Optional: true,
 -				Default:  true,
 +				Default:  false,
- 				Description: `Whether or not to allow Terraform to destroy the instance. Unless this field is set to false
- in Terraform state, a 'terraform destroy' or 'terraform apply' that would delete the instance will fail.`,
+ 				Description: `Whether or not to allow Terraform to destroy the database. Defaults to true. Unless this field is set to false
+ in Terraform state, a 'terraform destroy' or 'terraform apply' that would delete the database will fail.`,
  			},
 @@ -593,7 +593,7 @@ func resourceSpannerDatabaseImport(d *schema.ResourceData, meta interface{}) ([]
  	d.SetId(id)
@@ -24,7 +24,7 @@ diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/goo
 index 8a4a785b3..170e1e1a8 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sql/resource_sql_database_instance.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sql/resource_sql_database_instance.go
-@@ -116,7 +116,7 @@ func resourceSqlDatabaseInstance() *schema.Resource {
+@@ -116,7 +116,7 @@ func ResourceSqlDatabaseInstance() *schema.Resource {
  			},
  			"deletion_protection": {
  				Type:        schema.TypeBool,

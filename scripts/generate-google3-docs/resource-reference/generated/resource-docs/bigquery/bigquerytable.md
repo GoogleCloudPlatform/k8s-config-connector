@@ -125,6 +125,7 @@ externalDataConfiguration:
     fieldDelimiter: string
     quote: string
     skipLeadingRows: integer
+  fileSetSpecType: string
   googleSheetsOptions:
     range: string
     skipLeadingRows: integer
@@ -151,6 +152,7 @@ materializedView:
   enableRefresh: boolean
   query: string
   refreshIntervalMs: integer
+maxStaleness: string
 rangePartitioning:
   field: string
   range:
@@ -448,6 +450,16 @@ view:
     </tr>
     <tr>
         <td>
+            <p><code>externalDataConfiguration.fileSetSpecType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Specifies how source URIs are interpreted for constructing the file set to load.  By default source URIs are expanded against the underlying storage.  Other options include specifying manifest files. Only applicable to object storage systems.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>externalDataConfiguration.googleSheetsOptions</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -704,6 +716,16 @@ view:
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Specifies maximum frequency at which this materialized view will be refreshed. The default is 1800000.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maxStaleness</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The maximum staleness of data that could be returned when the table (or stale MV) is queried. Staleness encoded as a string encoding of sql IntervalValue type.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -113,7 +113,8 @@ spec:
                     type: integer
                 type: object
               readPoolConfig:
-                description: Read pool specific config.
+                description: Read pool specific config. If the instance type is READ_POOL,
+                  this configuration must be provided.
                 properties:
                   nodeCount:
                     description: Read capacity, i.e. number of nodes in a read pool

@@ -113,6 +113,11 @@ control plane for this VMware User Cluster (default: 8192 MB memory).`,
 										Computed:    true,
 										Description: `The Vsphere datastore used by the Control Plane Node.`,
 									},
+									"storage_policy_name": {
+										Type:        schema.TypeString,
+										Computed:    true,
+										Description: `The Vsphere storage policy used by the control plane Node.`,
+									},
 								},
 							},
 						},
@@ -837,6 +842,11 @@ Inherited from the admin cluster.`,
 							Computed:    true,
 							Description: `The name of the vCenter resource pool for the user cluster.`,
 						},
+						"storage_policy_name": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: `The name of the vCenter storage policy for the user cluster.`,
+						},
 					},
 				},
 			},
@@ -1512,9 +1522,15 @@ func flattenGkeonpremVmwareClusterControlPlaneNodeVsphereConfig(v interface{}, d
 	transformed := make(map[string]interface{})
 	transformed["datastore"] =
 		flattenGkeonpremVmwareClusterControlPlaneNodeVsphereConfigDatastore(original["datastore"], d, config)
+	transformed["storage_policy_name"] =
+		flattenGkeonpremVmwareClusterControlPlaneNodeVsphereConfigStoragePolicyName(original["storagePolicyName"], d, config)
 	return []interface{}{transformed}
 }
 func flattenGkeonpremVmwareClusterControlPlaneNodeVsphereConfigDatastore(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenGkeonpremVmwareClusterControlPlaneNodeVsphereConfigStoragePolicyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -2221,6 +2237,8 @@ func flattenGkeonpremVmwareClusterVcenter(v interface{}, d *schema.ResourceData,
 		flattenGkeonpremVmwareClusterVcenterCaCertData(original["caCertData"], d, config)
 	transformed["address"] =
 		flattenGkeonpremVmwareClusterVcenterAddress(original["address"], d, config)
+	transformed["storage_policy_name"] =
+		flattenGkeonpremVmwareClusterVcenterStoragePolicyName(original["storagePolicyName"], d, config)
 	return []interface{}{transformed}
 }
 func flattenGkeonpremVmwareClusterVcenterResourcePool(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -2248,6 +2266,10 @@ func flattenGkeonpremVmwareClusterVcenterCaCertData(v interface{}, d *schema.Res
 }
 
 func flattenGkeonpremVmwareClusterVcenterAddress(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenGkeonpremVmwareClusterVcenterStoragePolicyName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -2433,10 +2455,21 @@ func expandGkeonpremVmwareClusterControlPlaneNodeVsphereConfig(v interface{}, d 
 		transformed["datastore"] = transformedDatastore
 	}
 
+	transformedStoragePolicyName, err := expandGkeonpremVmwareClusterControlPlaneNodeVsphereConfigStoragePolicyName(original["storage_policy_name"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedStoragePolicyName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["storagePolicyName"] = transformedStoragePolicyName
+	}
+
 	return transformed, nil
 }
 
 func expandGkeonpremVmwareClusterControlPlaneNodeVsphereConfigDatastore(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandGkeonpremVmwareClusterControlPlaneNodeVsphereConfigStoragePolicyName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

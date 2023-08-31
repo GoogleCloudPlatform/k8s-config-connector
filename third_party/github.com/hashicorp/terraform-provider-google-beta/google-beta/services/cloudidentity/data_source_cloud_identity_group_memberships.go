@@ -70,6 +70,7 @@ func dataSourceGoogleCloudIdentityGroupMembershipsRead(d *schema.ResourceData, m
 		for _, member := range resp.Memberships {
 			result = append(result, map[string]interface{}{
 				"name":                 member.Name,
+				"type":                 member.Type,
 				"roles":                flattenCloudIdentityGroupMembershipsRoles(member.Roles),
 				"member_key":           flattenCloudIdentityGroupsEntityKey(member.MemberKey),
 				"preferred_member_key": flattenCloudIdentityGroupsEntityKey(member.PreferredMemberKey),

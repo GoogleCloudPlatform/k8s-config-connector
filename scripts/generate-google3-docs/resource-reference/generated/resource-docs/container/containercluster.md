@@ -123,6 +123,7 @@ addonsConfig:
     enabled: boolean
   networkPolicyConfig:
     disabled: boolean
+allowNetAdmin: boolean
 authenticatorGroupsConfig:
   securityGroup: string
 binaryAuthorization:
@@ -190,9 +191,13 @@ dnsConfig:
 enableAutopilot: boolean
 enableBinaryAuthorization: boolean
 enableIntranodeVisibility: boolean
+enableK8sBetaApis:
+  enabledApis:
+  - string
 enableKubernetesAlpha: boolean
 enableL4IlbSubsetting: boolean
 enableLegacyAbac: boolean
+enableMultiNetworking: boolean
 enableShieldedNodes: boolean
 enableTpu: boolean
 gatewayApiConfig:
@@ -201,6 +206,9 @@ identityServiceConfig:
   enabled: boolean
 initialNodeCount: integer
 ipAllocationPolicy:
+  additionalPodRangesConfig:
+    podRangeNames:
+    - string
   clusterIpv4CidrBlock: string
   clusterSecondaryRangeName: string
   podCidrOverprovisionConfig:
@@ -249,6 +257,9 @@ meshCertificates:
   enableCertificates: boolean
 minMasterVersion: string
 monitoringConfig:
+  advancedDatapathObservabilityConfig:
+  - enableMetrics: boolean
+    relayMode: string
   enableComponents:
   - string
   managedPrometheus:
@@ -288,6 +299,8 @@ nodeConfig:
     type: string
   gvnic:
     enabled: boolean
+  hostMaintenancePolicy:
+    maintenanceInterval: string
   imageType: string
   kubeletConfig:
     cpuCfsQuota: boolean
@@ -687,6 +700,16 @@ workloadIdentityConfig:
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>allowNetAdmin</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enable NET_ADMIN for this cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1386,6 +1409,36 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>enableK8sBetaApis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration for Kubernetes Beta APIs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>enableK8sBetaApis.enabledApis</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Enabled Kubernetes Beta APIs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>enableK8sBetaApis.enabledApis[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>enableKubernetesAlpha</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1412,6 +1465,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Whether the ABAC authorizer is enabled for this cluster. When enabled, identities in the system, including service accounts, nodes, and controllers, will have statically granted permissions beyond those provided by the RBAC configuration or IAM. Defaults to false.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>enableMultiNetworking</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Whether multi-networking is enabled for this cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1492,6 +1555,36 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. Configuration of cluster IP allocation for VPC-native clusters. Adding this block enables IP aliasing, making the cluster VPC-native instead of routes-based.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalPodRangesConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}AdditionalPodRangesConfig is the configuration for additional pod secondary ranges supporting the ClusterUpdate message.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalPodRangesConfig.podRangeNames</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Name for pod secondary ipv4 range which has the actual range defined ahead.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.additionalPodRangesConfig.podRangeNames[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1996,6 +2089,46 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>monitoringConfig.advancedDatapathObservabilityConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Configuration of Advanced Datapath Observability features.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>monitoringConfig.advancedDatapathObservabilityConfig[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>monitoringConfig.advancedDatapathObservabilityConfig[].enableMetrics</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether or not the advanced datapath metrics are enabled.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>monitoringConfig.advancedDatapathObservabilityConfig[].relayMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Mode used to make Relay available.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>monitoringConfig.enableComponents</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2392,6 +2525,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Immutable. Whether or not gvnic is enabled.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.hostMaintenancePolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. The maintenance policy for the hosts on which the GKE VMs run on.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.hostMaintenancePolicy.maintenanceInterval</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. .{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3213,7 +3366,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true.{% endverbatim %}</p>
+            <p>{% verbatim %}When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

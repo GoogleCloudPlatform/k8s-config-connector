@@ -40,7 +40,7 @@ type ApigeeInstanceAttachmentSpec struct {
 	Environment string `json:"environment"`
 
 	/* Immutable. The Apigee instance associated with the Apigee environment,
-	in the format 'organisations/{{org_name}}/instances/{{instance_name}}'. */
+	in the format 'organizations/{{org_name}}/instances/{{instance_name}}'. */
 	InstanceId string `json:"instanceId"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */

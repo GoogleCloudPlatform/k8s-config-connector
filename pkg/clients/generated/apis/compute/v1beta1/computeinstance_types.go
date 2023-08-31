@@ -173,13 +173,17 @@ type InstanceInitializeParams struct {
 }
 
 type InstanceIpv6AccessConfig struct {
-	/* The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. The field is output only, an IPv6 address from a subnetwork associated with the instance will be allocated dynamically. */
+	/* Immutable. The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. To use a static external IP address, it must be unused and in the same region as the instance's zone. If not specified, Google Cloud will automatically assign an external IPv6 address from the instance's subnetwork. */
 	// +optional
 	ExternalIpv6 *string `json:"externalIpv6,omitempty"`
 
-	/* The prefix length of the external IPv6 range. */
+	/* Immutable. The prefix length of the external IPv6 range. */
 	// +optional
 	ExternalIpv6PrefixLength *string `json:"externalIpv6PrefixLength,omitempty"`
+
+	/* Immutable. The name of this access configuration. In ipv6AccessConfigs, the recommended name is External IPv6. */
+	// +optional
+	Name *string `json:"name,omitempty"`
 
 	/* The service-level to be provided for IPv6 traffic when the subnet has an external subnet. Only PREMIUM tier is valid for IPv6. */
 	NetworkTier string `json:"networkTier"`
@@ -190,6 +194,19 @@ type InstanceIpv6AccessConfig struct {
 }
 
 type InstanceLabels struct {
+}
+
+type InstanceLocalSsdRecoveryTimeout struct {
+	/* Immutable. Span of time that's a fraction of a second at nanosecond
+	resolution. Durations less than one second are represented
+	with a 0 seconds field and a positive nanos field. Must
+	be from 0 to 999,999,999 inclusive. */
+	// +optional
+	Nanos *int `json:"nanos,omitempty"`
+
+	/* Immutable. Span of time at a resolution of a second.
+	Must be from 0 to 315,576,000,000 inclusive. */
+	Seconds int `json:"seconds"`
 }
 
 type InstanceMaxRunDuration struct {
@@ -298,6 +315,13 @@ type InstanceScheduling struct {
 	/* Specifies the action GCE should take when SPOT VM is preempted. */
 	// +optional
 	InstanceTerminationAction *string `json:"instanceTerminationAction,omitempty"`
+
+	/* Immutable. Specifies the maximum amount of time a Local Ssd Vm should wait while
+	recovery of the Local Ssd state is attempted. Its value should be in
+	between 0 and 168 hours with hour granularity and the default value being 1
+	hour. */
+	// +optional
+	LocalSsdRecoveryTimeout *InstanceLocalSsdRecoveryTimeout `json:"localSsdRecoveryTimeout,omitempty"`
 
 	/* Specifies the frequency of planned maintenance events. The accepted values are: PERIODIC. */
 	// +optional

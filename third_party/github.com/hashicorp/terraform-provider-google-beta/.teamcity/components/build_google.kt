@@ -1,9 +1,15 @@
+/*
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 // this file is copied from mmv1, any changes made here will be overwritten
 
 import jetbrains.buildServer.configs.kotlin.ParametrizedWithType
 
-class ClientConfiguration(var custId: String,
-                          var org: String,
+// TODO(SarahFrench) Refactor this - ENVs stored here aren't all client configuration
+class ClientConfiguration(val custId: String,
+                          val org: String,
                           val org2 : String,
                           val billingAccount : String,
                           val billingAccount2: String,
@@ -19,6 +25,9 @@ class ClientConfiguration(var custId: String,
                           val identityUser : String ) {
 }
 
+// ParametrizedWithType.ConfigureGoogleSpecificTestParameters allows build configs to be created
+// with the environment variables needed to configure the provider and/or configure test code.
+// Extension of ParametrizedWithType. For docs, see https://teamcity.jetbrains.com/app/dsl-documentation/root/parametrized-with-type/index.html
 fun ParametrizedWithType.ConfigureGoogleSpecificTestParameters(config: ClientConfiguration) {
     hiddenPasswordVariable("env.GOOGLE_CUST_ID", config.custId, "The ID of the Google Identity Customer")
     hiddenPasswordVariable("env.GOOGLE_ORG", config.org, "The Google Organization Id")

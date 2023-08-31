@@ -573,10 +573,9 @@ The elements are of the form "KEY=VALUE" for the environment variable "KEY" bein
 										Description:  `Option to specify the logging mode, which determines if and where build logs are stored. Possible values: ["LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "CLOUD_LOGGING_ONLY", "NONE"]`,
 									},
 									"machine_type": {
-										Type:         schema.TypeString,
-										Optional:     true,
-										ValidateFunc: verify.ValidateEnum([]string{"UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32", ""}),
-										Description:  `Compute Engine machine type on which to run the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"]`,
+										Type:        schema.TypeString,
+										Optional:    true,
+										Description: `Compute Engine machine type on which to run the build.`,
 									},
 									"requested_verify_option": {
 										Type:         schema.TypeString,
@@ -854,6 +853,12 @@ When using Pub/Sub, Webhook or Manual set the file name using git_file_source in
 							ValidateFunc: verify.ValidateEnum([]string{"UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"}),
 							Description: `The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
 Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"]`,
+						},
+						"bitbucket_server_config": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Description: `The full resource name of the bitbucket server config.
+Format: projects/{project}/locations/{location}/bitbucketServerConfigs/{id}.`,
 						},
 						"github_enterprise_config": {
 							Type:     schema.TypeString,
@@ -1176,6 +1181,12 @@ One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source
 							ValidateFunc: verify.ValidateEnum([]string{"UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"}),
 							Description: `The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
 Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"]`,
+						},
+						"bitbucket_server_config": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Description: `The full resource name of the bitbucket server config.
+Format: projects/{project}/locations/{location}/bitbucketServerConfigs/{id}.`,
 						},
 						"github_enterprise_config": {
 							Type:     schema.TypeString,
@@ -1950,6 +1961,8 @@ func flattenCloudBuildTriggerGitFileSource(v interface{}, d *schema.ResourceData
 		flattenCloudBuildTriggerGitFileSourceRevision(original["revision"], d, config)
 	transformed["github_enterprise_config"] =
 		flattenCloudBuildTriggerGitFileSourceGithubEnterpriseConfig(original["githubEnterpriseConfig"], d, config)
+	transformed["bitbucket_server_config"] =
+		flattenCloudBuildTriggerGitFileSourceBitbucketServerConfig(original["bitbucketServerConfig"], d, config)
 	return []interface{}{transformed}
 }
 func flattenCloudBuildTriggerGitFileSourcePath(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -1973,6 +1986,10 @@ func flattenCloudBuildTriggerGitFileSourceRevision(v interface{}, d *schema.Reso
 }
 
 func flattenCloudBuildTriggerGitFileSourceGithubEnterpriseConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudBuildTriggerGitFileSourceBitbucketServerConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -2074,6 +2091,8 @@ func flattenCloudBuildTriggerSourceToBuild(v interface{}, d *schema.ResourceData
 		flattenCloudBuildTriggerSourceToBuildRepoType(original["repoType"], d, config)
 	transformed["github_enterprise_config"] =
 		flattenCloudBuildTriggerSourceToBuildGithubEnterpriseConfig(original["githubEnterpriseConfig"], d, config)
+	transformed["bitbucket_server_config"] =
+		flattenCloudBuildTriggerSourceToBuildBitbucketServerConfig(original["bitbucketServerConfig"], d, config)
 	return []interface{}{transformed}
 }
 func flattenCloudBuildTriggerSourceToBuildUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -2093,6 +2112,10 @@ func flattenCloudBuildTriggerSourceToBuildRepoType(v interface{}, d *schema.Reso
 }
 
 func flattenCloudBuildTriggerSourceToBuildGithubEnterpriseConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudBuildTriggerSourceToBuildBitbucketServerConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -3029,6 +3052,13 @@ func expandCloudBuildTriggerGitFileSource(v interface{}, d tpgresource.Terraform
 		transformed["githubEnterpriseConfig"] = transformedGithubEnterpriseConfig
 	}
 
+	transformedBitbucketServerConfig, err := expandCloudBuildTriggerGitFileSourceBitbucketServerConfig(original["bitbucket_server_config"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedBitbucketServerConfig); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["bitbucketServerConfig"] = transformedBitbucketServerConfig
+	}
+
 	return transformed, nil
 }
 
@@ -3053,6 +3083,10 @@ func expandCloudBuildTriggerGitFileSourceRevision(v interface{}, d tpgresource.T
 }
 
 func expandCloudBuildTriggerGitFileSourceGithubEnterpriseConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudBuildTriggerGitFileSourceBitbucketServerConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
@@ -3227,6 +3261,13 @@ func expandCloudBuildTriggerSourceToBuild(v interface{}, d tpgresource.Terraform
 		transformed["githubEnterpriseConfig"] = transformedGithubEnterpriseConfig
 	}
 
+	transformedBitbucketServerConfig, err := expandCloudBuildTriggerSourceToBuildBitbucketServerConfig(original["bitbucket_server_config"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedBitbucketServerConfig); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["bitbucketServerConfig"] = transformedBitbucketServerConfig
+	}
+
 	return transformed, nil
 }
 
@@ -3247,6 +3288,10 @@ func expandCloudBuildTriggerSourceToBuildRepoType(v interface{}, d tpgresource.T
 }
 
 func expandCloudBuildTriggerSourceToBuildGithubEnterpriseConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudBuildTriggerSourceToBuildBitbucketServerConfig(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

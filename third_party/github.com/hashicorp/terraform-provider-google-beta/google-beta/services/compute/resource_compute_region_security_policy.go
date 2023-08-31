@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -99,6 +100,49 @@ If it is not provided, the provider region is used.`,
 - CLOUD_ARMOR_NETWORK: Cloud Armor network policies can be configured to filter packets targeting network load balancing resources such as backend services, target pools, target instances, and instances with external IPs. They filter requests before the request is served from the application.
 This field can be set only at resource creation time. Possible values: ["CLOUD_ARMOR", "CLOUD_ARMOR_EDGE", "CLOUD_ARMOR_NETWORK"]`,
 			},
+			"user_defined_fields": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Description: `Definitions of user-defined fields for CLOUD_ARMOR_NETWORK policies.
+A user-defined field consists of up to 4 bytes extracted from a fixed offset in the packet, relative to the IPv4, IPv6, TCP, or UDP header, with an optional mask to select certain bits.
+Rules may then specify matching values for these fields.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"base": {
+							Type:         schema.TypeString,
+							Required:     true,
+							ValidateFunc: verify.ValidateEnum([]string{"IPV4", "IPV6", "TCP", "UDP"}),
+							Description: `The base relative to which 'offset' is measured. Possible values are:
+- IPV4: Points to the beginning of the IPv4 header.
+- IPV6: Points to the beginning of the IPv6 header.
+- TCP: Points to the beginning of the TCP header, skipping over any IPv4 options or IPv6 extension headers. Not present for non-first fragments.
+- UDP: Points to the beginning of the UDP header, skipping over any IPv4 options or IPv6 extension headers. Not present for non-first fragments. Possible values: ["IPV4", "IPV6", "TCP", "UDP"]`,
+						},
+						"mask": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Description: `If specified, apply this mask (bitwise AND) to the field to ignore bits before matching.
+Encoded as a hexadecimal number (starting with "0x").
+The last byte of the field (in network byte order) corresponds to the least significant byte of the mask.`,
+						},
+						"name": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: `The name of this field. Must be unique within the policy.`,
+						},
+						"offset": {
+							Type:        schema.TypeInt,
+							Optional:    true,
+							Description: `Offset of the first byte of the field (in network byte order) relative to 'base'.`,
+						},
+						"size": {
+							Type:        schema.TypeInt,
+							Optional:    true,
+							Description: `Size of the field in bytes. Valid values: 1-4.`,
+						},
+					},
+				},
+			},
 			"fingerprint": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -168,6 +212,12 @@ func resourceComputeRegionSecurityPolicyCreate(d *schema.ResourceData, meta inte
 		return err
 	} else if v, ok := d.GetOkExists("ddos_protection_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(ddosProtectionConfigProp)) && (ok || !reflect.DeepEqual(v, ddosProtectionConfigProp)) {
 		obj["ddosProtectionConfig"] = ddosProtectionConfigProp
+	}
+	userDefinedFieldsProp, err := expandComputeRegionSecurityPolicyUserDefinedFields(d.Get("user_defined_fields"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("user_defined_fields"); !tpgresource.IsEmptyValue(reflect.ValueOf(userDefinedFieldsProp)) && (ok || !reflect.DeepEqual(v, userDefinedFieldsProp)) {
+		obj["userDefinedFields"] = userDefinedFieldsProp
 	}
 	regionProp, err := expandComputeRegionSecurityPolicyRegion(d.Get("region"), d, config)
 	if err != nil {
@@ -294,6 +344,9 @@ func resourceComputeRegionSecurityPolicyRead(d *schema.ResourceData, meta interf
 	if err := d.Set("self_link_with_policy_id", flattenComputeRegionSecurityPolicySelfLinkWithPolicyId(res["selfLinkWithId"], d, config)); err != nil {
 		return fmt.Errorf("Error reading RegionSecurityPolicy: %s", err)
 	}
+	if err := d.Set("user_defined_fields", flattenComputeRegionSecurityPolicyUserDefinedFields(res["userDefinedFields"], d, config)); err != nil {
+		return fmt.Errorf("Error reading RegionSecurityPolicy: %s", err)
+	}
 	if err := d.Set("region", flattenComputeRegionSecurityPolicyRegion(res["region"], d, config)); err != nil {
 		return fmt.Errorf("Error reading RegionSecurityPolicy: %s", err)
 	}
@@ -335,6 +388,12 @@ func resourceComputeRegionSecurityPolicyUpdate(d *schema.ResourceData, meta inte
 	} else if v, ok := d.GetOkExists("ddos_protection_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, ddosProtectionConfigProp)) {
 		obj["ddosProtectionConfig"] = ddosProtectionConfigProp
 	}
+	userDefinedFieldsProp, err := expandComputeRegionSecurityPolicyUserDefinedFields(d.Get("user_defined_fields"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("user_defined_fields"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, userDefinedFieldsProp)) {
+		obj["userDefinedFields"] = userDefinedFieldsProp
+	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/securityPolicies/{{name}}")
 	if err != nil {
@@ -342,6 +401,29 @@ func resourceComputeRegionSecurityPolicyUpdate(d *schema.ResourceData, meta inte
 	}
 
 	log.Printf("[DEBUG] Updating RegionSecurityPolicy %q: %#v", d.Id(), obj)
+	updateMask := []string{}
+
+	if d.HasChange("description") {
+		updateMask = append(updateMask, "description")
+	}
+
+	if d.HasChange("fingerprint") {
+		updateMask = append(updateMask, "fingerprint")
+	}
+
+	if d.HasChange("ddos_protection_config") {
+		updateMask = append(updateMask, "ddosProtectionConfig")
+	}
+
+	if d.HasChange("user_defined_fields") {
+		updateMask = append(updateMask, "userDefinedFields")
+	}
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
+	// won't set it
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	if err != nil {
+		return err
+	}
 
 	// err == nil indicates that the billing_project value was found
 	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
@@ -494,6 +576,74 @@ func flattenComputeRegionSecurityPolicySelfLinkWithPolicyId(v interface{}, d *sc
 	return v
 }
 
+func flattenComputeRegionSecurityPolicyUserDefinedFields(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return v
+	}
+	l := v.([]interface{})
+	transformed := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		original := raw.(map[string]interface{})
+		if len(original) < 1 {
+			// Do not include empty json objects coming back from the api
+			continue
+		}
+		transformed = append(transformed, map[string]interface{}{
+			"name":   flattenComputeRegionSecurityPolicyUserDefinedFieldsName(original["name"], d, config),
+			"base":   flattenComputeRegionSecurityPolicyUserDefinedFieldsBase(original["base"], d, config),
+			"offset": flattenComputeRegionSecurityPolicyUserDefinedFieldsOffset(original["offset"], d, config),
+			"size":   flattenComputeRegionSecurityPolicyUserDefinedFieldsSize(original["size"], d, config),
+			"mask":   flattenComputeRegionSecurityPolicyUserDefinedFieldsMask(original["mask"], d, config),
+		})
+	}
+	return transformed
+}
+func flattenComputeRegionSecurityPolicyUserDefinedFieldsName(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenComputeRegionSecurityPolicyUserDefinedFieldsBase(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenComputeRegionSecurityPolicyUserDefinedFieldsOffset(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := tpgresource.StringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenComputeRegionSecurityPolicyUserDefinedFieldsSize(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := tpgresource.StringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenComputeRegionSecurityPolicyUserDefinedFieldsMask(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
 func flattenComputeRegionSecurityPolicyRegion(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
@@ -537,6 +687,76 @@ func expandComputeRegionSecurityPolicyDdosProtectionConfig(v interface{}, d tpgr
 }
 
 func expandComputeRegionSecurityPolicyDdosProtectionConfigDdosProtection(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandComputeRegionSecurityPolicyUserDefinedFields(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	req := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		if raw == nil {
+			continue
+		}
+		original := raw.(map[string]interface{})
+		transformed := make(map[string]interface{})
+
+		transformedName, err := expandComputeRegionSecurityPolicyUserDefinedFieldsName(original["name"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["name"] = transformedName
+		}
+
+		transformedBase, err := expandComputeRegionSecurityPolicyUserDefinedFieldsBase(original["base"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedBase); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["base"] = transformedBase
+		}
+
+		transformedOffset, err := expandComputeRegionSecurityPolicyUserDefinedFieldsOffset(original["offset"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedOffset); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["offset"] = transformedOffset
+		}
+
+		transformedSize, err := expandComputeRegionSecurityPolicyUserDefinedFieldsSize(original["size"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedSize); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["size"] = transformedSize
+		}
+
+		transformedMask, err := expandComputeRegionSecurityPolicyUserDefinedFieldsMask(original["mask"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedMask); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["mask"] = transformedMask
+		}
+
+		req = append(req, transformed)
+	}
+	return req, nil
+}
+
+func expandComputeRegionSecurityPolicyUserDefinedFieldsName(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandComputeRegionSecurityPolicyUserDefinedFieldsBase(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandComputeRegionSecurityPolicyUserDefinedFieldsOffset(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandComputeRegionSecurityPolicyUserDefinedFieldsSize(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandComputeRegionSecurityPolicyUserDefinedFieldsMask(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

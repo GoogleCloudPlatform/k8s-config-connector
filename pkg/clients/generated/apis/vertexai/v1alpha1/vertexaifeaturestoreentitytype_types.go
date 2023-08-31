@@ -84,7 +84,7 @@ type FeaturestoreentitytypeSnapshotAnalysis struct {
 	// +optional
 	Disabled *bool `json:"disabled,omitempty"`
 
-	/* DEPRECATED. This field is unavailable in the GA provider and will be removed from the beta provider in a future release. Configuration of the snapshot analysis based monitoring pipeline running interval. The value is rolled up to full day.
+	/* DEPRECATED. `monitoring_interval` is deprecated and will be removed in a future release. Configuration of the snapshot analysis based monitoring pipeline running interval. The value is rolled up to full day.
 
 	A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
 	// +optional

@@ -64,7 +64,7 @@ spec:
               instanceId:
                 description: |-
                   Immutable. The Apigee instance associated with the Apigee environment,
-                  in the format 'organisations/{{org_name}}/instances/{{instance_name}}'.
+                  in the format 'organizations/{{org_name}}/instances/{{instance_name}}'.
                 type: string
               resourceID:
                 description: Immutable. Optional. The service-generated name of the

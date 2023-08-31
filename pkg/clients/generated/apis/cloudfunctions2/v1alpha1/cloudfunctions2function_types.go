@@ -310,6 +310,11 @@ type CloudFunctions2FunctionSpec struct {
 	// +optional
 	EventTrigger *FunctionEventTrigger `json:"eventTrigger,omitempty"`
 
+	/* Resource name of a KMS crypto key (managed by the user) used to encrypt/decrypt function resources.
+	It must match the pattern projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}. */
+	// +optional
+	KmsKeyName *string `json:"kmsKeyName,omitempty"`
+
 	/* Immutable. The location of this cloud function. */
 	Location string `json:"location"`
 

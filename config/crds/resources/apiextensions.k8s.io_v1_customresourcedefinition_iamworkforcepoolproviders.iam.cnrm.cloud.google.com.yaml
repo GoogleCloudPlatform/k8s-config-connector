@@ -127,25 +127,97 @@ spec:
                     description: Required. The client ID. Must match the audience
                       claim of the JWT issued by the identity provider.
                     type: string
+                  clientSecret:
+                    description: The optional client secret. Required to enable Authorization
+                      Code flow for web sign-in.
+                    properties:
+                      value:
+                        description: The value of the client secret.
+                        properties:
+                          plainText:
+                            description: Input only. The plain text of the client
+                              secret value.
+                            oneOf:
+                            - not:
+                                required:
+                                - valueFrom
+                              required:
+                              - value
+                            - not:
+                                required:
+                                - value
+                              required:
+                              - valueFrom
+                            properties:
+                              value:
+                                description: Value of the field. Cannot be used if
+                                  'valueFrom' is specified.
+                                type: string
+                              valueFrom:
+                                description: Source for the field's value. Cannot
+                                  be used if 'value' is specified.
+                                properties:
+                                  secretKeyRef:
+                                    description: Reference to a value with the given
+                                      key in the given Secret in the resource's namespace.
+                                    properties:
+                                      key:
+                                        description: Key that identifies the value
+                                          to be extracted.
+                                        type: string
+                                      name:
+                                        description: Name of the Secret to extract
+                                          a value from.
+                                        type: string
+                                    required:
+                                    - name
+                                    - key
+                                    type: object
+                                type: object
+                            type: object
+                        type: object
+                    type: object
                   issuerUri:
                     description: Required. The OIDC issuer URI. Must be a valid URI
                       using the 'https' scheme.
+                    type: string
+                  jwksJson:
+                    description: 'OIDC JWKs in JSON String format. For details on
+                      definition of a JWK, see https:tools.ietf.org/html/rfc7517.
+                      If not set, then we use the `jwks_uri` from the discovery document
+                      fetched from the .well-known path for the `issuer_uri`. Currently,
+                      RSA and EC asymmetric keys are supported. The JWK must use following
+                      format and include only the following fields: ```{"keys": [{"kty":
+                      "RSA/EC", "alg": "<algorithm>", "use": "sig", "kid": "<key-id>",
+                      "n": "", "e": "", "x": "", "y": "", "crv": ""}]}```'
                     type: string
                   webSsoConfig:
                     description: Required. Configuration for web single sign-on for
                       the OIDC provider. Here, web sign-in refers to console sign-in
                       and gcloud sign-in through the browser.
                     properties:
+                      additionalScopes:
+                        description: Additional scopes to request for in the OIDC
+                          authentication request on top of scopes requested by default.
+                          By default, the `openid`, `profile` and `email` scopes that
+                          are supported by the identity provider are requested. Each
+                          additional scope may be at most 256 characters. A maximum
+                          of 10 additional scopes may be configured.
+                        items:
+                          type: string
+                        type: array
                       assertionClaimsBehavior:
                         description: 'Required. The behavior for how OIDC Claims are
                           included in the `assertion` object used for attribute mapping
                           and attribute condition. Possible values: ASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED,
-                          ONLY_ID_TOKEN_CLAIMS'
+                          MERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS, ONLY_ID_TOKEN_CLAIMS'
                         type: string
                       responseType:
                         description: 'Required. The Response Type to request for in
-                          the OIDC Authorization Request for web sign-in. Possible
-                          values: RESPONSE_TYPE_UNSPECIFIED, ID_TOKEN'
+                          the OIDC Authorization Request for web sign-in. The `CODE`
+                          Response Type is recommended to avoid the Implicit Flow,
+                          for security reasons. Possible values: RESPONSE_TYPE_UNSPECIFIED,
+                          CODE, ID_TOKEN'
                         type: string
                     required:
                     - assertionClaimsBehavior
@@ -252,6 +324,19 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              oidc:
+                properties:
+                  clientSecret:
+                    properties:
+                      value:
+                        properties:
+                          thumbprint:
+                            description: Output only. A thumbprint to represent the
+                              current client secret value.
+                            type: string
+                        type: object
+                    type: object
+                type: object
               state:
                 description: 'Output only. The state of the provider. Possible values:
                   STATE_UNSPECIFIED, ACTIVE, DELETED'

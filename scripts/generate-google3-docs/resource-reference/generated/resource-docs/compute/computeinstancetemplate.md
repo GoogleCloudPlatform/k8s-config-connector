@@ -104,6 +104,7 @@ disk:
   labels:
     string: string
   mode: string
+  provisionedIops: integer
   resourcePolicies:
   - external: string
     name: string
@@ -165,6 +166,7 @@ networkInterface:
   ipv6AccessConfig:
   - externalIpv6: string
     externalIpv6PrefixLength: string
+    name: string
     networkTier: string
     publicPtrDomainName: string
   ipv6AccessType: string
@@ -200,6 +202,9 @@ resourcePolicies:
 scheduling:
   automaticRestart: boolean
   instanceTerminationAction: string
+  localSsdRecoveryTimeout:
+  - nanos: integer
+    seconds: integer
   maintenanceInterval: string
   maxRunDuration:
     nanos: integer
@@ -470,6 +475,16 @@ tags:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The mode in which to attach this disk, either READ_WRITE or READ_ONLY. If you are attaching or creating a boot disk, this must read-write mode.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>disk[].provisionedIops</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Indicates how many IOPS to provision for the disk. This sets the number of I/O operations per second that the disk can handle. Values must be between 10,000 and 120,000. For more details, see the [Extreme persistent disk documentation](https://cloud.google.com/compute/docs/disks/extreme-persistent-disk).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1170,6 +1185,16 @@ local SSD.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>networkInterface[].ipv6AccessConfig[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of this access configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>networkInterface[].ipv6AccessConfig[].networkTier</code></p>
             <p><i>Required*</i></p>
         </td>
@@ -1526,6 +1551,53 @@ local SSD.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Specifies the action GCE should take when SPOT VM is preempted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduling.localSsdRecoveryTimeout</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Specifies the maximum amount of time a Local Ssd Vm should wait while
+  recovery of the Local Ssd state is attempted. Its value should be in
+  between 0 and 168 hours with hour granularity and the default value being 1
+  hour.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduling.localSsdRecoveryTimeout[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduling.localSsdRecoveryTimeout[].nanos</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Span of time that's a fraction of a second at nanosecond
+resolution. Durations less than one second are represented
+with a 0 seconds field and a positive nanos field. Must
+be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduling.localSsdRecoveryTimeout[].seconds</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Span of time at a resolution of a second.
+Must be from 0 to 315,576,000,000 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

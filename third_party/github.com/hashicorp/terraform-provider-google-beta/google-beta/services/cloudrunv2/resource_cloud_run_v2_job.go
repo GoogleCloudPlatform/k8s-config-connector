@@ -149,7 +149,7 @@ func ResourceCloudRunV2Job() *schema.Resource {
 												"liveness_probe": {
 													Type:       schema.TypeList,
 													Optional:   true,
-													Deprecated: "Cloud Run Job does not support liveness probe and `liveness_probe` field will be removed in a future major release.",
+													Deprecated: "`liveness_probe` is deprecated and will be removed in a future major release. This field is not supported by the Cloud Run API.",
 													Description: `Periodic probe of container liveness. Container will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 This field is not supported in Cloud Run Job currently.`,
 													MaxItems: 1,
@@ -281,7 +281,7 @@ If omitted, a port number will be chosen and passed to the container through the
 													Type:       schema.TypeList,
 													Computed:   true,
 													Optional:   true,
-													Deprecated: "Cloud Run Job does not support startup probe and `startup_probe` field will be removed in a future major release.",
+													Deprecated: "`startup_probe` is deprecated and will be removed in a future major release. This field is not supported by the Cloud Run API.",
 													Description: `Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 This field is not supported in Cloud Run Job currently.`,
 													MaxItems: 1,
@@ -702,6 +702,21 @@ A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to n
 					},
 				},
 			},
+			"create_time": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: `The creation time.`,
+			},
+			"creator": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: `Email address of the authenticated creator.`,
+			},
+			"delete_time": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: `The deletion time.`,
+			},
 			"etag": {
 				Type:        schema.TypeString,
 				Computed:    true,
@@ -712,10 +727,20 @@ A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to n
 				Computed:    true,
 				Description: `Number of executions created for this job.`,
 			},
+			"expire_time": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: `For a deleted resource, the time after which it will be permamently deleted.`,
+			},
 			"generation": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: `A number that monotonically increases every time the user modifies the desired state.`,
+			},
+			"last_modifier": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: `Email address of the last authenticated modifier.`,
 			},
 			"latest_created_execution": {
 				Type:        schema.TypeList,
@@ -816,6 +841,11 @@ A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to n
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: `Server assigned unique identifier for the Execution. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted.`,
+			},
+			"update_time": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: `The last-modified time.`,
 			},
 			"project": {
 				Type:     schema.TypeString,
@@ -993,6 +1023,24 @@ func resourceCloudRunV2JobRead(d *schema.ResourceData, meta interface{}) error {
 		return fmt.Errorf("Error reading Job: %s", err)
 	}
 	if err := d.Set("annotations", flattenCloudRunV2JobAnnotations(res["annotations"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Job: %s", err)
+	}
+	if err := d.Set("create_time", flattenCloudRunV2JobCreateTime(res["createTime"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Job: %s", err)
+	}
+	if err := d.Set("update_time", flattenCloudRunV2JobUpdateTime(res["updateTime"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Job: %s", err)
+	}
+	if err := d.Set("delete_time", flattenCloudRunV2JobDeleteTime(res["deleteTime"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Job: %s", err)
+	}
+	if err := d.Set("expire_time", flattenCloudRunV2JobExpireTime(res["expireTime"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Job: %s", err)
+	}
+	if err := d.Set("creator", flattenCloudRunV2JobCreator(res["creator"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Job: %s", err)
+	}
+	if err := d.Set("last_modifier", flattenCloudRunV2JobLastModifier(res["lastModifier"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Job: %s", err)
 	}
 	if err := d.Set("client", flattenCloudRunV2JobClient(res["client"], d, config)); err != nil {
@@ -1219,6 +1267,30 @@ func flattenCloudRunV2JobLabels(v interface{}, d *schema.ResourceData, config *t
 }
 
 func flattenCloudRunV2JobAnnotations(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2JobCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2JobUpdateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2JobDeleteTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2JobExpireTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2JobCreator(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2JobLastModifier(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 

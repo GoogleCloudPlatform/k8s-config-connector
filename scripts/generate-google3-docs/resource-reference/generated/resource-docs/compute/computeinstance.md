@@ -186,6 +186,7 @@ networkInterface:
   ipv6AccessConfig:
   - externalIpv6: string
     externalIpv6PrefixLength: string
+    name: string
     networkTier: string
     publicPtrDomainName: string
   ipv6AccessType: string
@@ -226,6 +227,9 @@ resourcePolicies:
 scheduling:
   automaticRestart: boolean
   instanceTerminationAction: string
+  localSsdRecoveryTimeout:
+    nanos: integer
+    seconds: integer
   maintenanceInterval: string
   maxRunDuration:
     nanos: integer
@@ -1169,7 +1173,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. The field is output only, an IPv6 address from a subnetwork associated with the instance will be allocated dynamically.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. To use a static external IP address, it must be unused and in the same region as the instance's zone. If not specified, Google Cloud will automatically assign an external IPv6 address from the instance's subnetwork.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1179,7 +1183,17 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The prefix length of the external IPv6 range.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The prefix length of the external IPv6 range.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkInterface[].ipv6AccessConfig[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The name of this access configuration. In ipv6AccessConfigs, the recommended name is External IPv6.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1590,6 +1604,43 @@ zone: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the action GCE should take when SPOT VM is preempted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduling.localSsdRecoveryTimeout</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Specifies the maximum amount of time a Local Ssd Vm should wait while
+  recovery of the Local Ssd state is attempted. Its value should be in
+  between 0 and 168 hours with hour granularity and the default value being 1
+  hour.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduling.localSsdRecoveryTimeout.nanos</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Span of time that's a fraction of a second at nanosecond
+resolution. Durations less than one second are represented
+with a 0 seconds field and a positive nanos field. Must
+be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduling.localSsdRecoveryTimeout.seconds</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Span of time at a resolution of a second.
+Must be from 0 to 315,576,000,000 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

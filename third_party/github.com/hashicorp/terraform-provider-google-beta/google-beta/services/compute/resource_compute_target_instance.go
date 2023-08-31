@@ -35,6 +35,7 @@ func ResourceComputeTargetInstance() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceComputeTargetInstanceCreate,
 		Read:   resourceComputeTargetInstanceRead,
+		Update: resourceComputeTargetInstanceUpdate,
 		Delete: resourceComputeTargetInstanceDelete,
 
 		Importer: &schema.ResourceImporter{
@@ -43,6 +44,7 @@ func ResourceComputeTargetInstance() *schema.Resource {
 
 		Timeouts: &schema.ResourceTimeout{
 			Create: schema.DefaultTimeout(20 * time.Minute),
+			Update: schema.DefaultTimeout(20 * time.Minute),
 			Delete: schema.DefaultTimeout(20 * time.Minute),
 		},
 
@@ -91,6 +93,11 @@ Currently only NO_NAT (default value) is supported. Default value: "NO_NAT" Poss
 				Optional:    true,
 				ForceNew:    true,
 				Description: `The URL of the network this target instance uses to forward traffic. If not specified, the traffic will be forwarded to the network that the default network interface belongs to.`,
+			},
+			"security_policy": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: `The resource URL for the security policy associated with this target instance.`,
 			},
 			"zone": {
 				Type:             schema.TypeString,
@@ -158,6 +165,12 @@ func resourceComputeTargetInstanceCreate(d *schema.ResourceData, meta interface{
 	} else if v, ok := d.GetOkExists("nat_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(natPolicyProp)) && (ok || !reflect.DeepEqual(v, natPolicyProp)) {
 		obj["natPolicy"] = natPolicyProp
 	}
+	securityPolicyProp, err := expandComputeTargetInstanceSecurityPolicy(d.Get("security_policy"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("security_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(securityPolicyProp)) && (ok || !reflect.DeepEqual(v, securityPolicyProp)) {
+		obj["securityPolicy"] = securityPolicyProp
+	}
 	zoneProp, err := expandComputeTargetInstanceZone(d.Get("zone"), d, config)
 	if err != nil {
 		return err
@@ -212,6 +225,39 @@ func resourceComputeTargetInstanceCreate(d *schema.ResourceData, meta interface{
 		// The resource didn't actually create
 		d.SetId("")
 		return fmt.Errorf("Error waiting to create TargetInstance: %s", err)
+	}
+
+	// security_policy isn't set by Create
+	if v, ok := d.GetOkExists("security_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, securityPolicyProp)) {
+		obj := make(map[string]interface{})
+		securityPolicyProp, err := expandComputeTargetInstanceSecurityPolicy(v, d, config)
+		if err != nil {
+			return err
+		}
+		obj["security_policy"] = securityPolicyProp
+
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/targetInstances/{{name}}/setSecurityPolicy")
+		if err != nil {
+			return err
+		}
+
+		res, err = transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+			Config:    config,
+			Method:    "POST",
+			Project:   project,
+			RawURL:    url,
+			UserAgent: userAgent,
+			Body:      obj,
+		})
+
+		if err != nil {
+			return fmt.Errorf("Error adding SecurityPolicy to TargetInstance %q: %s", d.Id(), err)
+		}
+
+		err = ComputeOperationWaitTime(config, res, project, "Updating TargetInstance SecurityPolicy", userAgent, d.Timeout(schema.TimeoutUpdate))
+		if err != nil {
+			return err
+		}
 	}
 
 	log.Printf("[DEBUG] Finished creating TargetInstance %q: %#v", d.Id(), res)
@@ -277,6 +323,9 @@ func resourceComputeTargetInstanceRead(d *schema.ResourceData, meta interface{})
 	if err := d.Set("nat_policy", flattenComputeTargetInstanceNatPolicy(res["natPolicy"], d, config)); err != nil {
 		return fmt.Errorf("Error reading TargetInstance: %s", err)
 	}
+	if err := d.Set("security_policy", flattenComputeTargetInstanceSecurityPolicy(res["securityPolicy"], d, config)); err != nil {
+		return fmt.Errorf("Error reading TargetInstance: %s", err)
+	}
 	if err := d.Set("zone", flattenComputeTargetInstanceZone(res["zone"], d, config)); err != nil {
 		return fmt.Errorf("Error reading TargetInstance: %s", err)
 	}
@@ -285,6 +334,71 @@ func resourceComputeTargetInstanceRead(d *schema.ResourceData, meta interface{})
 	}
 
 	return nil
+}
+
+func resourceComputeTargetInstanceUpdate(d *schema.ResourceData, meta interface{}) error {
+	config := meta.(*transport_tpg.Config)
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
+	if err != nil {
+		return err
+	}
+
+	billingProject := ""
+
+	project, err := tpgresource.GetProject(d, config)
+	if err != nil {
+		return fmt.Errorf("Error fetching project for TargetInstance: %s", err)
+	}
+	billingProject = project
+
+	d.Partial(true)
+
+	if d.HasChange("security_policy") {
+		obj := make(map[string]interface{})
+
+		securityPolicyProp, err := expandComputeTargetInstanceSecurityPolicy(d.Get("security_policy"), d, config)
+		if err != nil {
+			return err
+		} else if v, ok := d.GetOkExists("security_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, securityPolicyProp)) {
+			obj["securityPolicy"] = securityPolicyProp
+		}
+
+		url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/zones/{{zone}}/targetInstances/{{name}}/setSecurityPolicy")
+		if err != nil {
+			return err
+		}
+
+		// err == nil indicates that the billing_project value was found
+		if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
+			billingProject = bp
+		}
+
+		res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+			Config:    config,
+			Method:    "POST",
+			Project:   billingProject,
+			RawURL:    url,
+			UserAgent: userAgent,
+			Body:      obj,
+			Timeout:   d.Timeout(schema.TimeoutUpdate),
+		})
+		if err != nil {
+			return fmt.Errorf("Error updating TargetInstance %q: %s", d.Id(), err)
+		} else {
+			log.Printf("[DEBUG] Finished updating TargetInstance %q: %#v", d.Id(), res)
+		}
+
+		err = ComputeOperationWaitTime(
+			config, res, project, "Updating TargetInstance", userAgent,
+			d.Timeout(schema.TimeoutUpdate))
+		if err != nil {
+			return err
+		}
+	}
+
+	d.Partial(false)
+
+	return resourceComputeTargetInstanceRead(d, meta)
 }
 
 func resourceComputeTargetInstanceDelete(d *schema.ResourceData, meta interface{}) error {
@@ -388,6 +502,10 @@ func flattenComputeTargetInstanceNatPolicy(v interface{}, d *schema.ResourceData
 	return v
 }
 
+func flattenComputeTargetInstanceSecurityPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
 func flattenComputeTargetInstanceZone(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return v
@@ -441,6 +559,10 @@ func expandComputeTargetInstanceInstance(v interface{}, d tpgresource.TerraformR
 }
 
 func expandComputeTargetInstanceNatPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandComputeTargetInstanceSecurityPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

@@ -602,6 +602,24 @@ func schemaNodeConfig() *schema.Schema {
 						},
 					},
 				},
+				"host_maintenance_policy": {
+					Type:        schema.TypeList,
+					Optional:    true,
+					Description: `The maintenance policy for the hosts on which the GKE VMs run on.`,
+					ForceNew:    true,
+					MaxItems:    1,
+					Elem: &schema.Resource{
+						Schema: map[string]*schema.Schema{
+							"maintenance_interval": {
+								Type:         schema.TypeString,
+								Required:     true,
+								ForceNew:     true,
+								Description:  `.`,
+								ValidateFunc: validation.StringInSlice([]string{"MAINTENANCE_INTERVAL_UNSPECIFIED", "AS_NEEDED", "PERIODIC"}, false),
+							},
+						},
+					},
+				},
 			},
 		},
 	}
@@ -873,6 +891,9 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 		nc.SoleTenantConfig = expandSoleTenantConfig(v)
 	}
 
+	if v, ok := nodeConfig["host_maintenance_policy"]; ok {
+		nc.HostMaintenancePolicy = expandHostMaintenancePolicy(v)
+	}
 	return nc
 }
 
@@ -975,6 +996,23 @@ func expandSoleTenantConfig(v interface{}) *container.SoleTenantConfig {
 	}
 }
 
+func expandHostMaintenancePolicy(v interface{}) *container.HostMaintenancePolicy {
+	if v == nil {
+		return nil
+	}
+	ls := v.([]interface{})
+	if len(ls) == 0 {
+		return nil
+	}
+	cfg := ls[0].(map[string]interface{})
+	mPolicy := &container.HostMaintenancePolicy{}
+	if maintenanceInterval, ok := cfg["maintenance_interval"]; ok {
+		mPolicy.MaintenanceInterval = maintenanceInterval.(string)
+	}
+
+	return mPolicy
+}
+
 func flattenNodeConfigDefaults(c *container.NodeConfigDefaults) []map[string]interface{} {
 	result := make([]map[string]interface{}, 0, 1)
 
@@ -1023,6 +1061,7 @@ func flattenNodeConfig(c *container.NodeConfig) []map[string]interface{} {
 		"taint":                              flattenTaints(c.Taints),
 		"workload_metadata_config":           flattenWorkloadMetadataConfig(c.WorkloadMetadataConfig),
 		"sandbox_config":                     flattenSandboxConfig(c.SandboxConfig),
+		"host_maintenance_policy":            flattenHostMaintenancePolicy(c.HostMaintenancePolicy),
 		"boot_disk_kms_key":                  c.BootDiskKmsKey,
 		"kubelet_config":                     flattenKubeletConfig(c.KubeletConfig),
 		"linux_node_config":                  flattenLinuxNodeConfig(c.LinuxNodeConfig),
@@ -1343,4 +1382,15 @@ func flattenSoleTenantConfig(c *container.SoleTenantConfig) []map[string]interfa
 	return append(result, map[string]interface{}{
 		"node_affinity": affinities,
 	})
+}
+
+func flattenHostMaintenancePolicy(c *container.HostMaintenancePolicy) []map[string]interface{} {
+	result := []map[string]interface{}{}
+	if c != nil {
+		result = append(result, map[string]interface{}{
+			"maintenance_interval": c.MaintenanceInterval,
+		})
+	}
+
+	return result
 }

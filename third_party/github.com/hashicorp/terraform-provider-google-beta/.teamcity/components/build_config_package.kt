@@ -1,38 +1,43 @@
+/*
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 // this file is copied from mmv1, any changes made here will be overwritten
 
 import jetbrains.buildServer.configs.kotlin.*
+import jetbrains.buildServer.configs.kotlin.AbsoluteId
 
-class packageDetails(name: String, displayName: String, environment: String) {
-    val packageName = name
+class packageDetails(packageName: String, displayName: String, providerName: String) {
+    val packageName = packageName
     val displayName = displayName
-    val environment = environment
+    val providerName = providerName
 
-    fun buildConfiguration(providerName : String, path : String, nightlyTestsEnabled: Boolean, startHour: Int, parallelism: Int, daysOfWeek: String, daysOfMonth: String) : BuildType {
+    // buildConfiguration returns a BuildType for a service package
+    // For BuildType docs, see https://teamcity.jetbrains.com/app/dsl-documentation/root/build-type/index.html
+    fun buildConfiguration(path: String, manualVcsRoot: AbsoluteId, parallelism: Int, environmentVariables: ClientConfiguration, buildTimeout: Int = defaultBuildTimeoutDuration) : BuildType {
+
+        val testPrefix: String = "TestAcc"
+        val testTimeout: String = "12"
+        val sweeperRegions: String = "" // Not used
+        val sweeperRun: String = "" // Not used
+
         return BuildType {
             // TC needs a consistent ID for dynamically generated packages
-            id(uniqueID(providerName))
+            id(uniqueID())
 
             name = "%s - Acceptance Tests".format(displayName)
 
             vcs {
-                root(providerRepository)
+                root(rootId = manualVcsRoot)
                 cleanCheckout = true
             }
 
             steps {
+                SetGitCommitBuildId()
                 ConfigureGoEnv()
                 DownloadTerraformBinary()
-                // Adds steps:
-                // - Determine Working Directory for this Package
-                // - Pre-Sweeper
-                // - Compile Test Binary
-                // - Run via jen20/teamcity-go-test
-                // - Post-Sweeper
-                RunAcceptanceTests(path, packageName)
-            }
-
-            failureConditions {
-                errorMessage = true
+                RunAcceptanceTests()
             }
 
             features {
@@ -40,21 +45,33 @@ class packageDetails(name: String, displayName: String, environment: String) {
             }
 
             params {
-                TerraformAcceptanceTestParameters(parallelism, "TestAcc", "12", "us-central1", "")
+                ConfigureGoogleSpecificTestParameters(environmentVariables)
+                // TODO(SarahFrench) Split TerraformAcceptanceTestParameters function into 2: one that's used for all tests/sweeper commands, and one that's specific to sweepers
+                // We shouldn't be adding sweeper-specific parameters to non-sweeper builds
+                TerraformAcceptanceTestParameters(parallelism, testPrefix, testTimeout, sweeperRegions, sweeperRun)
                 TerraformAcceptanceTestsFlag()
                 TerraformCoreBinaryTesting()
                 TerraformShouldPanicForSchemaErrors()
                 ReadOnlySettings()
-                WorkingDirectory(path, packageName)
+                WorkingDirectory(path)
             }
 
-            triggers {
-                RunNightly(nightlyTestsEnabled, startHour, daysOfWeek, daysOfMonth)
+            failureConditions {
+                errorMessage = true
+                executionTimeoutMin = buildTimeout
             }
+
+            // Dependencies are not set here; instead, the `sequential` block in the Project instance creates dependencies between builds
+            // Triggers are not set here; the pre-sweeper at the start of the `sequential` block has a cron trigger.
         }
     }
 
-    fun uniqueID(provider : String) : String {
-        return "%s_SERVICE_%s_%s".format(provider.replace("-", "").toUpperCase(), environment.toUpperCase(), packageName.toUpperCase())
+    fun uniqueID() : String {
+        // Replacing chars can be necessary, due to limitations on IDs
+        // "ID should start with a latin letter and contain only latin letters, digits and underscores (at most 225 characters)." 
+        var pv = this.providerName.replace("-", "").toUpperCase()
+        var pkg = this.packageName.replace("-", "").toUpperCase()
+
+        return "%s_PACKAGE_%s".format(pv, pkg)
     }
 }

@@ -117,6 +117,10 @@ type InstancetemplateDisk struct {
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
+	/* Immutable. Indicates how many IOPS to provision for the disk. This sets the number of I/O operations per second that the disk can handle. Values must be between 10,000 and 120,000. For more details, see the [Extreme persistent disk documentation](https://cloud.google.com/compute/docs/disks/extreme-persistent-disk). */
+	// +optional
+	ProvisionedIops *int `json:"provisionedIops,omitempty"`
+
 	// +optional
 	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
 
@@ -174,12 +178,29 @@ type InstancetemplateIpv6AccessConfig struct {
 	// +optional
 	ExternalIpv6PrefixLength *string `json:"externalIpv6PrefixLength,omitempty"`
 
+	/* The name of this access configuration. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
 	/* The service-level to be provided for IPv6 traffic when the subnet has an external subnet. Only PREMIUM tier is valid for IPv6. */
 	NetworkTier string `json:"networkTier"`
 
 	/* The domain name to be used when creating DNSv6 records for the external IPv6 ranges. */
 	// +optional
 	PublicPtrDomainName *string `json:"publicPtrDomainName,omitempty"`
+}
+
+type InstancetemplateLocalSsdRecoveryTimeout struct {
+	/* Immutable. Span of time that's a fraction of a second at nanosecond
+	resolution. Durations less than one second are represented
+	with a 0 seconds field and a positive nanos field. Must
+	be from 0 to 999,999,999 inclusive. */
+	// +optional
+	Nanos *int `json:"nanos,omitempty"`
+
+	/* Immutable. Span of time at a resolution of a second.
+	Must be from 0 to 315,576,000,000 inclusive. */
+	Seconds int `json:"seconds"`
 }
 
 type InstancetemplateMaxRunDuration struct {
@@ -279,6 +300,13 @@ type InstancetemplateScheduling struct {
 	/* Immutable. Specifies the action GCE should take when SPOT VM is preempted. */
 	// +optional
 	InstanceTerminationAction *string `json:"instanceTerminationAction,omitempty"`
+
+	/* Specifies the maximum amount of time a Local Ssd Vm should wait while
+	recovery of the Local Ssd state is attempted. Its value should be in
+	between 0 and 168 hours with hour granularity and the default value being 1
+	hour. */
+	// +optional
+	LocalSsdRecoveryTimeout []InstancetemplateLocalSsdRecoveryTimeout `json:"localSsdRecoveryTimeout,omitempty"`
 
 	/* Specifies the frequency of planned maintenance events. The accepted values are: PERIODIC. */
 	// +optional

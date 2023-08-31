@@ -7,6 +7,18 @@ bigqueryConfig:
     namespace: string
   useTopicSchema: boolean
   writeMetadata: boolean
+cloudStorageConfig:
+  avroConfig:
+    writeMetadata: boolean
+  bucketRef:
+    external: string
+    name: string
+    namespace: string
+  filenamePrefix: string
+  filenameSuffix: string
+  maxBytes: integer
+  maxDuration: string
+  state: string
 deadLetterPolicy:
   deadLetterTopicRef:
     external: string
@@ -22,6 +34,8 @@ messageRetentionDuration: string
 pushConfig:
   attributes:
     string: string
+  noWrapper:
+    writeMetadata: boolean
   oidcToken:
     audience: string
     serviceAccountEmail: string

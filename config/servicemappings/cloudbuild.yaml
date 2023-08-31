@@ -201,5 +201,29 @@ spec:
             version: v1beta1
             group: cloudbuild.cnrm.cloud.google.com
           targetField: name
+        - tfField: git_file_source.bitbucket_server_config
+          key: bitbucketServerConfigRef
+          description: |-
+            Only `external` field is supported to configure the reference.
+
+            The full resource name of the bitbucket server config. Format:
+            projects/{project}/locations/{location}/bitbucketServerConfigs/{id}.
+          gvk:
+            kind: CloudBuildBitbucketServerConfig
+            version: v1beta1
+            group: cloudbuild.cnrm.cloud.google.com
+          targetField: name
+        - tfField: source_to_build.bitbucket_server_config
+          key: bitbucketServerConfigRef
+          description: |-
+            Only `external` field is supported to configure the reference.
+
+            The full resource name of the bitbucket server config. Format:
+            projects/{project}/locations/{location}/bitbucketServerConfigs/{id}.
+          gvk:
+            kind: CloudBuildBitbucketServerConfig
+            version: v1beta1
+            group: cloudbuild.cnrm.cloud.google.com
+          targetField: name
       ignoredFields:
         - trigger_template.project_id

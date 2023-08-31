@@ -1,6 +1,7 @@
 databaseDialect: string
 ddl:
 - string
+enableDropProtection: boolean
 encryptionConfig:
   kmsKeyRef:
     external: string

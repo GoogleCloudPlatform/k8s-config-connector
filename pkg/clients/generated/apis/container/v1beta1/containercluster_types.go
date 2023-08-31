@@ -35,6 +35,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type ClusterAdditionalPodRangesConfig struct {
+	/* Name for pod secondary ipv4 range which has the actual range defined ahead. */
+	PodRangeNames []string `json:"podRangeNames"`
+}
+
 type ClusterAddonsConfig struct {
 	/* The status of the CloudRun addon. It is disabled by default. Set disabled = false to enable. */
 	// +optional
@@ -83,6 +88,15 @@ type ClusterAddonsConfig struct {
 	/* Whether we should enable the network policy addon for the master. This must be enabled in order to enable network policy for the nodes. To enable this, you must also define a network_policy block, otherwise nothing will happen. It can only be disabled if the nodes already do not have network policies enabled. Defaults to disabled; set disabled = false to enable. */
 	// +optional
 	NetworkPolicyConfig *ClusterNetworkPolicyConfig `json:"networkPolicyConfig,omitempty"`
+}
+
+type ClusterAdvancedDatapathObservabilityConfig struct {
+	/* Whether or not the advanced datapath metrics are enabled. */
+	EnableMetrics bool `json:"enableMetrics"`
+
+	/* Mode used to make Relay available. */
+	// +optional
+	RelayMode *string `json:"relayMode,omitempty"`
 }
 
 type ClusterAdvancedMachineFeatures struct {
@@ -257,6 +271,11 @@ type ClusterDnsConfig struct {
 	ClusterDnsScope *string `json:"clusterDnsScope,omitempty"`
 }
 
+type ClusterEnableK8sBetaApis struct {
+	/* Enabled Kubernetes Beta APIs. */
+	EnabledApis []string `json:"enabledApis"`
+}
+
 type ClusterEphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	LocalSsdCount int `json:"localSsdCount"`
@@ -345,6 +364,11 @@ type ClusterHorizontalPodAutoscaling struct {
 	Disabled bool `json:"disabled"`
 }
 
+type ClusterHostMaintenancePolicy struct {
+	/* Immutable. . */
+	MaintenanceInterval string `json:"maintenanceInterval"`
+}
+
 type ClusterHttpLoadBalancing struct {
 	Disabled bool `json:"disabled"`
 }
@@ -356,6 +380,10 @@ type ClusterIdentityServiceConfig struct {
 }
 
 type ClusterIpAllocationPolicy struct {
+	/* AdditionalPodRangesConfig is the configuration for additional pod secondary ranges supporting the ClusterUpdate message. */
+	// +optional
+	AdditionalPodRangesConfig *ClusterAdditionalPodRangesConfig `json:"additionalPodRangesConfig,omitempty"`
+
 	/* Immutable. The IP address range for the cluster pod IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
 	// +optional
 	ClusterIpv4CidrBlock *string `json:"clusterIpv4CidrBlock,omitempty"`
@@ -518,6 +546,10 @@ type ClusterMeshCertificates struct {
 }
 
 type ClusterMonitoringConfig struct {
+	/* Configuration of Advanced Datapath Observability features. */
+	// +optional
+	AdvancedDatapathObservabilityConfig []ClusterAdvancedDatapathObservabilityConfig `json:"advancedDatapathObservabilityConfig,omitempty"`
+
 	/* GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS. */
 	// +optional
 	EnableComponents []string `json:"enableComponents,omitempty"`
@@ -592,6 +624,10 @@ type ClusterNodeConfig struct {
 	/* Immutable. Enable or disable gvnic in the node pool. */
 	// +optional
 	Gvnic *ClusterGvnic `json:"gvnic,omitempty"`
+
+	/* Immutable. The maintenance policy for the hosts on which the GKE VMs run on. */
+	// +optional
+	HostMaintenancePolicy *ClusterHostMaintenancePolicy `json:"hostMaintenancePolicy,omitempty"`
 
 	/* The image type to use for this node. Note that for a given image type, the latest version of it will be used. */
 	// +optional
@@ -734,7 +770,7 @@ type ClusterPodSecurityPolicyConfig struct {
 }
 
 type ClusterPrivateClusterConfig struct {
-	/* When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true. */
+	/* When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. */
 	// +optional
 	EnablePrivateEndpoint *bool `json:"enablePrivateEndpoint,omitempty"`
 
@@ -979,6 +1015,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	AddonsConfig *ClusterAddonsConfig `json:"addonsConfig,omitempty"`
 
+	/* Enable NET_ADMIN for this cluster. */
+	// +optional
+	AllowNetAdmin *bool `json:"allowNetAdmin,omitempty"`
+
 	/* Configuration for the Google Groups for GKE feature. */
 	// +optional
 	AuthenticatorGroupsConfig *ClusterAuthenticatorGroupsConfig `json:"authenticatorGroupsConfig,omitempty"`
@@ -1043,6 +1083,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	EnableIntranodeVisibility *bool `json:"enableIntranodeVisibility,omitempty"`
 
+	/* Configuration for Kubernetes Beta APIs. */
+	// +optional
+	EnableK8sBetaApis *ClusterEnableK8sBetaApis `json:"enableK8sBetaApis,omitempty"`
+
 	/* Immutable. Whether to enable Kubernetes Alpha features for this cluster. Note that when this option is enabled, the cluster cannot be upgraded and will be automatically deleted after 30 days. */
 	// +optional
 	EnableKubernetesAlpha *bool `json:"enableKubernetesAlpha,omitempty"`
@@ -1054,6 +1098,10 @@ type ContainerClusterSpec struct {
 	/* Whether the ABAC authorizer is enabled for this cluster. When enabled, identities in the system, including service accounts, nodes, and controllers, will have statically granted permissions beyond those provided by the RBAC configuration or IAM. Defaults to false. */
 	// +optional
 	EnableLegacyAbac *bool `json:"enableLegacyAbac,omitempty"`
+
+	/* Immutable. Whether multi-networking is enabled for this cluster. */
+	// +optional
+	EnableMultiNetworking *bool `json:"enableMultiNetworking,omitempty"`
 
 	/* Enable Shielded Nodes features on all nodes in this cluster. Defaults to true. */
 	// +optional

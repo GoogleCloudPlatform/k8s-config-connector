@@ -58,6 +58,10 @@ type ComputeTargetInstanceSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* The resource URL for the security policy associated with this target instance. */
+	// +optional
+	SecurityPolicyRef *v1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
+
 	/* Immutable. URL of the zone where the target instance resides. */
 	Zone string `json:"zone"`
 }

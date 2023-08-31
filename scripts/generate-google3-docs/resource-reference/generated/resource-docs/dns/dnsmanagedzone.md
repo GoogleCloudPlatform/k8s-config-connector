@@ -424,7 +424,7 @@ zone. The value of this field contains the network to peer with.{% endverbatim %
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}For privately visible zones, the set of Virtual Private Cloud
-resources that the zone is visible from.{% endverbatim %}</p>
+resources that the zone is visible from. At least one of 'gke_clusters' or 'networks' must be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -492,7 +492,7 @@ This should be specified in the format like
     <tr>
         <td>
             <p><code>privateVisibilityConfig.networks</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
@@ -502,7 +502,7 @@ This should be specified in the format like
     <tr>
         <td>
             <p><code>privateVisibilityConfig.networks[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>

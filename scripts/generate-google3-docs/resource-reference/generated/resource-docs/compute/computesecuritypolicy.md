@@ -95,6 +95,8 @@ advancedOptionsConfig:
     - string
   jsonParsing: string
   logLevel: string
+  userIpRequestHeaders:
+  - string
 description: string
 recaptchaOptionsConfig:
   redirectSiteKeyRef:
@@ -314,6 +316,26 @@ type: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Logging level. Supported values include: "NORMAL", "VERBOSE".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>advancedOptionsConfig.userIpRequestHeaders</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}An optional list of case-insensitive request header names to use for resolving the callers client IP address.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>advancedOptionsConfig.userIpRequestHeaders[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -868,7 +890,7 @@ used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. Enforce On Key Config of this security policy.{% endverbatim %}</p>
+            <p>{% verbatim %}Enforce On Key Config of this security policy.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

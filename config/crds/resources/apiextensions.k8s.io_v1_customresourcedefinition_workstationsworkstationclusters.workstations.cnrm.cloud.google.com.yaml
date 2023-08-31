@@ -78,6 +78,13 @@ spec:
               privateClusterConfig:
                 description: Configuration for private cluster.
                 properties:
+                  allowedProjects:
+                    description: |-
+                      Additional project IDs that are allowed to attach to the workstation cluster's service attachment.
+                      By default, the workstation cluster's project and the VPC host project (if different) are allowed.
+                    items:
+                      type: string
+                    type: array
                   clusterHostname:
                     description: |-
                       Hostname for the workstation cluster.

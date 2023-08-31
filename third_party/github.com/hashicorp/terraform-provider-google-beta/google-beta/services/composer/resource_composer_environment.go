@@ -82,6 +82,7 @@ var (
 	}
 
 	composerPrivateEnvironmentConfig = []string{
+		"config.0.private_environment_config.0.connection_type",
 		"config.0.private_environment_config.0.enable_private_endpoint",
 		"config.0.private_environment_config.0.master_ipv4_cidr_block",
 		"config.0.private_environment_config.0.cloud_sql_ipv4_cidr_block",
@@ -464,6 +465,15 @@ func ResourceComposerEnvironment() *schema.Resource {
 							Description:  `The configuration used for the Private IP Cloud Composer environment.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
+									"connection_type": {
+										Type:         schema.TypeString,
+										Optional:     true,
+										Computed:     true,
+										AtLeastOneOf: composerPrivateEnvironmentConfig,
+										ForceNew:     true,
+										ValidateFunc: validation.StringInSlice([]string{"VPC_PEERING", "PRIVATE_SERVICE_CONNECT"}, false),
+										Description:  `Mode of internal communication within the Composer environment. Must be one of "VPC_PEERING" or "PRIVATE_SERVICE_CONNECT".`,
+									},
 									"enable_private_endpoint": {
 										Type:         schema.TypeBool,
 										Optional:     true,
@@ -799,9 +809,9 @@ func ResourceComposerEnvironment() *schema.Resource {
 							Type:         schema.TypeString,
 							Optional:     true,
 							Computed:     true,
-							ForceNew:     true,
+							ForceNew:     false,
 							AtLeastOneOf: composerConfigKeys,
-							ValidateFunc: validation.StringInSlice([]string{"HIGH_RESILIENCE"}, false),
+							ValidateFunc: validation.StringInSlice([]string{"STANDARD_RESILIENCE", "HIGH_RESILIENCE"}, false),
 							Description:  `Whether high resilience is enabled or not. This field is supported for Cloud Composer environments in versions composer-2.1.15-airflow-*.*.* and newer.`,
 						},
 						"master_authorized_networks_config": {
@@ -1166,6 +1176,20 @@ func resourceComposerEnvironmentUpdate(d *schema.ResourceData, meta interface{})
 				return err
 			}
 		}
+		if d.HasChange("config.0.resilience_mode") {
+			patchObj := &composer.Environment{Config: &composer.EnvironmentConfig{}}
+			if config != nil {
+				if config.ResilienceMode == "STANDARD_RESILIENCE" {
+					patchObj.Config.ResilienceMode = "RESILIENCE_MODE_UNSPECIFIED"
+				} else {
+					patchObj.Config.ResilienceMode = config.ResilienceMode
+				}
+			}
+			err = resourceComposerEnvironmentPatchField("config.ResilienceMode", userAgent, patchObj, d, tfConfig)
+			if err != nil {
+				return err
+			}
+		}
 		if d.HasChange("config.0.master_authorized_networks_config") {
 			patchObj := &composer.Environment{Config: &composer.EnvironmentConfig{}}
 			if config != nil {
@@ -1300,7 +1324,11 @@ func flattenComposerEnvironmentConfig(envCfg *composer.EnvironmentConfig) interf
 	transformed["workloads_config"] = flattenComposerEnvironmentConfigWorkloadsConfig(envCfg.WorkloadsConfig)
 	transformed["recovery_config"] = flattenComposerEnvironmentConfigRecoveryConfig(envCfg.RecoveryConfig)
 	transformed["environment_size"] = envCfg.EnvironmentSize
-	transformed["resilience_mode"] = envCfg.ResilienceMode
+	if envCfg.ResilienceMode == "RESILIENCE_MODE_UNSPECIFIED" || envCfg.ResilienceMode == "" {
+		transformed["resilience_mode"] = "STANDARD_RESILIENCE"
+	} else {
+		transformed["resilience_mode"] = envCfg.ResilienceMode
+	}
 	transformed["master_authorized_networks_config"] = flattenComposerEnvironmentConfigMasterAuthorizedNetworksConfig(envCfg.MasterAuthorizedNetworksConfig)
 	return []interface{}{transformed}
 }
@@ -1463,6 +1491,9 @@ func flattenComposerEnvironmentConfigPrivateEnvironmentConfig(envCfg *composer.P
 	}
 
 	transformed := make(map[string]interface{})
+	if envCfg.NetworkingConfig != nil {
+		transformed["connection_type"] = envCfg.NetworkingConfig.ConnectionType
+	}
 	transformed["enable_private_endpoint"] = envCfg.PrivateClusterConfig.EnablePrivateEndpoint
 	transformed["master_ipv4_cidr_block"] = envCfg.PrivateClusterConfig.MasterIpv4CidrBlock
 	transformed["cloud_sql_ipv4_cidr_block"] = envCfg.CloudSqlIpv4CidrBlock
@@ -1647,7 +1678,11 @@ func expandComposerEnvironmentConfig(v interface{}, d *schema.ResourceData, conf
 	if err != nil {
 		return nil, err
 	}
-	transformed.ResilienceMode = transformedResilienceMode
+	if transformedResilienceMode == "STANDARD_RESILIENCE" {
+		transformed.ResilienceMode = "RESILIENCE_MODE_UNSPECIFIED"
+	} else {
+		transformed.ResilienceMode = transformedResilienceMode
+	}
 
 	transformedMasterAuthorizedNetworksConfig, err := expandComposerEnvironmentConfigMasterAuthorizedNetworksConfig(original["master_authorized_networks_config"], d, config)
 	if err != nil {
@@ -1902,6 +1937,11 @@ func expandComposerEnvironmentConfigPrivateEnvironmentConfig(v interface{}, d *s
 	}
 
 	subBlock := &composer.PrivateClusterConfig{}
+	networkConfig := &composer.NetworkingConfig{}
+
+	if v, ok := original["connection_type"]; ok {
+		networkConfig.ConnectionType = v.(string)
+	}
 
 	if v, ok := original["enable_private_endpoint"]; ok {
 		subBlock.EnablePrivateEndpoint = v.(bool)
@@ -1930,6 +1970,7 @@ func expandComposerEnvironmentConfigPrivateEnvironmentConfig(v interface{}, d *s
 	}
 
 	transformed.PrivateClusterConfig = subBlock
+	transformed.NetworkingConfig = networkConfig
 
 	return transformed, nil
 }
