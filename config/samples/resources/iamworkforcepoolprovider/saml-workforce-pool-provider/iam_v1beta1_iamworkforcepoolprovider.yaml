@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMWorkforcePoolProvider
 metadata:
-  name: iamwfpp-sample-saml
+  name: iamworkforcepoolprovider-sample-samlworkforcepoolprovider
 spec:
   location: "global"
   workforcePoolRef:
-    name: "iamwfpp-dep-saml"
+    name: "iamworkforcepoolprovider-dep-samlworkforcepoolprovider"
   displayName: "Display name"
   description: "A sample SAML workforce pool provider."
   state: "ACTIVE"

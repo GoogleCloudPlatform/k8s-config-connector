@@ -549,7 +549,7 @@ state: string
 
 ### Oidc Workforce Pool Provider
 ```yaml
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -566,24 +566,35 @@ state: string
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMWorkforcePoolProvider
 metadata:
-  name: iamwfpp-sample-oidc
+  name: iamworkforcepoolprovider-sample-oidcworkforcepoolprovider
 spec:
   location: "global"
   workforcePoolRef:
-    name: "iamwfpp-dep-oidc"
+    name: "iamworkforcepoolprovider-dep-oidcworkforcepoolprovider"
   attributeMapping:
     google.subject: "assertion.sub"
   oidc:
     issuerUri: "https://example.com"
     clientId: "client-id"
+    clientSecret:
+      value:
+        plainText:
+          value: "client-secret"
+    jwksJson: "{\"keys\":[{\"kty\":\"RSA\",\"e\":\"AQAB\",\"use\":\"sig\",\"kid\"\
+      :\"1i-PmZZrF1j2rOUAxkcQaaz3MnOXcwwziuch_XWjvqI\",\"alg\":\"RS256\",\"n\":\"\
+      kFpYE2Zm32y--cnUiFLm4cYmFO8tR4-5KU5-aqhRwiHPP0FkgdQZSoSyp_1DO6PruYfluRMviwOpbmM6LH7KemxVdxLKqLDkHSG0XC3dZkACRFNvBBOdFrvJ0ABXv3vVx592lFE0m-Je5-FerRSQCml6E7icNiTSxizEmvDsTIe8mvArjsODDrgWP25bEFwDPBd5cCl3_2gtW6YdaCRewLXdzuB5Wmp_vOu6trTUzEKbnQlWFtDDCPfOpywYXF8dY1Lbwas5iwwIZozwD2_CuTiyXa3T2_4oa119_rQrIC2BAv7q_S1Xoa2lk3q2GZUSVQ5i3gIbJuDHmp-6yh3k4w\"\
+      }]}"
     webSsoConfig:
-      responseType: "ID_TOKEN"
-      assertionClaimsBehavior: "ONLY_ID_TOKEN_CLAIMS"
+      responseType: "CODE"
+      assertionClaimsBehavior: "MERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS"
+      additionalScopes:
+      - "groups"
+      - "photos"
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMWorkforcePool
 metadata:
-  name: iamwfpp-dep-oidc
+  name: iamworkforcepoolprovider-dep-oidcworkforcepoolprovider
 spec:
   organizationRef:
     # Replace "${ORG_ID?}" with the numeric ID for your organization.
@@ -598,7 +609,7 @@ spec:
 
 ### Saml Workforce Pool Provider
 ```yaml
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -615,11 +626,11 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMWorkforcePoolProvider
 metadata:
-  name: iamwfpp-sample-saml
+  name: iamworkforcepoolprovider-sample-samlworkforcepoolprovider
 spec:
   location: "global"
   workforcePoolRef:
-    name: "iamwfpp-dep-saml"
+    name: "iamworkforcepoolprovider-dep-samlworkforcepoolprovider"
   displayName: "Display name"
   description: "A sample SAML workforce pool provider."
   state: "ACTIVE"
@@ -638,7 +649,7 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMWorkforcePool
 metadata:
-  name: iamwfpp-dep-saml
+  name: iamworkforcepoolprovider-dep-samlworkforcepoolprovider
 spec:
   organizationRef:
     # Replace "${ORG_ID?}" with the numeric ID for your organization.
