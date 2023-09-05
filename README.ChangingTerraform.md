@@ -16,7 +16,7 @@ Generally speaking:
 *   Otherwise, make the change locally first.
 
 Either way, it is recommended that you consult someone from the
-[Terraform Provider Google](https://github.com/hashicorp/terraform-provider-google-beta)
+[Terraform Provider Google](https://github.com/hashicorp/terraform-provider-google)
 project about the change you intend to make first to get
 an early signal about the likelihood of your change being accepted upstream.
 
