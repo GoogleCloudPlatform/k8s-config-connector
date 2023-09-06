@@ -50,7 +50,7 @@ operator:
 # Build manager binary
 .PHONY: manager
 manager: generate fmt vet
-	go build -o bin/manager cnrm.googlesource.com/cnrm/cmd/manager
+	go build -o bin/manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
 
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
@@ -209,3 +209,6 @@ ensure:
 	make -C third_party all
 	go mod tidy -compat=1.19
 
+# Should run all needed commands before any PR is sent out.
+.PHONY: ready-pr
+reviewable: manifests resource-docs generate-go-client

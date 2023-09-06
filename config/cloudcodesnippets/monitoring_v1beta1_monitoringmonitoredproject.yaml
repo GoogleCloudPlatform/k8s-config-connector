@@ -6,4 +6,4 @@ insertText: |
   metadata:
     name: \${1:monitoringmonitoredproject-name}
   spec:
-    metricsScope: \${2:[PROJECT_ID?]}
+    metricsScope: \${2:location/global/metricsScopes/[PROJECT_ID?]}
