@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.108.0
+    cnrm.cloud.google.com/version: 1.109.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -204,6 +204,9 @@ spec:
                     - disabled
                     type: object
                 type: object
+              allowNetAdmin:
+                description: Enable NET_ADMIN for this cluster.
+                type: boolean
               authenticatorGroupsConfig:
                 description: Configuration for the Google Groups for GKE feature.
                 properties:
@@ -548,6 +551,17 @@ spec:
                 description: Whether Intra-node visibility is enabled for this cluster.
                   This makes same node pod to pod traffic visible for VPC network.
                 type: boolean
+              enableK8sBetaApis:
+                description: Configuration for Kubernetes Beta APIs.
+                properties:
+                  enabledApis:
+                    description: Enabled Kubernetes Beta APIs.
+                    items:
+                      type: string
+                    type: array
+                required:
+                - enabledApis
+                type: object
               enableKubernetesAlpha:
                 description: Immutable. Whether to enable Kubernetes Alpha features
                   for this cluster. Note that when this option is enabled, the cluster
@@ -562,6 +576,10 @@ spec:
                   nodes, and controllers, will have statically granted permissions
                   beyond those provided by the RBAC configuration or IAM. Defaults
                   to false.
+                type: boolean
+              enableMultiNetworking:
+                description: Immutable. Whether multi-networking is enabled for this
+                  cluster.
                 type: boolean
               enableShieldedNodes:
                 description: Enable Shielded Nodes features on all nodes in this cluster.
@@ -602,6 +620,20 @@ spec:
                   VPC-native clusters. Adding this block enables IP aliasing, making
                   the cluster VPC-native instead of routes-based.
                 properties:
+                  additionalPodRangesConfig:
+                    description: AdditionalPodRangesConfig is the configuration for
+                      additional pod secondary ranges supporting the ClusterUpdate
+                      message.
+                    properties:
+                      podRangeNames:
+                        description: Name for pod secondary ipv4 range which has the
+                          actual range defined ahead.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - podRangeNames
+                    type: object
                   clusterIpv4CidrBlock:
                     description: Immutable. The IP address range for the cluster pod
                       IPs. Set to blank to have a range chosen with the default size.
@@ -857,6 +889,22 @@ spec:
               monitoringConfig:
                 description: Monitoring configuration for the cluster.
                 properties:
+                  advancedDatapathObservabilityConfig:
+                    description: Configuration of Advanced Datapath Observability
+                      features.
+                    items:
+                      properties:
+                        enableMetrics:
+                          description: Whether or not the advanced datapath metrics
+                            are enabled.
+                          type: boolean
+                        relayMode:
+                          description: Mode used to make Relay available.
+                          type: string
+                      required:
+                      - enableMetrics
+                      type: object
+                    type: array
                   enableComponents:
                     description: GKE components exposing metrics. Valid values include
                       SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER,
@@ -1070,6 +1118,16 @@ spec:
                         type: boolean
                     required:
                     - enabled
+                    type: object
+                  hostMaintenancePolicy:
+                    description: Immutable. The maintenance policy for the hosts on
+                      which the GKE VMs run on.
+                    properties:
+                      maintenanceInterval:
+                        description: Immutable. .
+                        type: string
+                    required:
+                    - maintenanceInterval
                     type: object
                   imageType:
                     description: The image type to use for this node. Note that for
@@ -1465,9 +1523,7 @@ spec:
                   enablePrivateEndpoint:
                     description: When true, the cluster's private endpoint is used
                       as the cluster endpoint and access through the public endpoint
-                      is disabled. When false, either endpoint can be used. This field
-                      only applies to private clusters, when enable_private_nodes
-                      is true.
+                      is disabled. When false, either endpoint can be used.
                     type: boolean
                   enablePrivateNodes:
                     description: Immutable. Enables the private cluster feature, creating

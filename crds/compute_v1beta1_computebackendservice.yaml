@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.108.0
+    cnrm.cloud.google.com/version: 1.109.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -476,6 +476,10 @@ spec:
                       unhealthy backends regardless of protocol and session affinity. It is
                       generally not recommended to use this mode overriding the default. Default value: "DEFAULT_FOR_PROTOCOL" Possible values: ["DEFAULT_FOR_PROTOCOL", "NEVER_PERSIST", "ALWAYS_PERSIST"].
                     type: string
+                  enableStrongAffinity:
+                    description: Enable Strong Session Affinity for Network Load Balancing.
+                      This option is not available publicly.
+                    type: boolean
                   idleTimeoutSec:
                     description: |-
                       Specifies how long to keep a Connection Tracking entry while there is
@@ -793,7 +797,7 @@ spec:
                   Immutable. Indicates whether the backend service will be used with internal or
                   external load balancing. A backend service created for one type of
                   load balancing cannot be used with the other. For more information, refer to
-                  [Choosing a load balancer](https://cloud.google.com/load-balancing/docs/backend-service). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED", "EXTERNAL_MANAGED"].
+                  [Choosing a load balancer](https://cloud.google.com/load-balancing/docs/backend-service). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED", "INTERNAL_MANAGED", "EXTERNAL_MANAGED"].
                 type: string
               localityLbPolicies:
                 description: |-
@@ -1106,12 +1110,17 @@ spec:
                 description: |-
                   The protocol this BackendService uses to communicate with backends.
                   The default is HTTP. **NOTE**: HTTP2 is only valid for beta HTTP/2 load balancer
-                  types and may result in errors if used with the GA API. Possible values: ["HTTP", "HTTPS", "HTTP2", "TCP", "SSL", "GRPC"].
+                  types and may result in errors if used with the GA API. **NOTE**: With protocol “UNSPECIFIED”,
+                  the backend service can be used by Layer 4 Internal Load Balancing or Network Load Balancing
+                  with TCP/UDP/L3_DEFAULT Forwarding Rule protocol. Possible values: ["HTTP", "HTTPS", "HTTP2", "TCP", "SSL", "GRPC", "UNSPECIFIED"].
                 type: string
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
+                type: string
+              securityPolicy:
+                description: The security policy associated with this backend service.
                 type: string
               securityPolicyRef:
                 description: The security policy associated with this backend service.
