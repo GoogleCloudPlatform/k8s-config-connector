@@ -127,7 +127,7 @@ function setup_envs {
   header_text "setting up env vars"
 
   # Setup env vars
-  export PATH=$PATH:/tmp/kubebuilder/bin:$GOPATH/bin
+  export PATH=$PATH:/tmp/kubebuilder/bin
   export PATH=$PATH:$kustomize_bin_dir
   export TEST_ASSET_KUBECTL=/tmp/kubebuilder/bin/kubectl
   export TEST_ASSET_KUBE_APISERVER=$kube_bin_dir/kube-apiserver
