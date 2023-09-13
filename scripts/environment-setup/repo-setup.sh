@@ -15,7 +15,8 @@
 set -o errexit
 [[ ":$PATH:" != *":${GOPATH}/bin:"* ]] && echo "PATH=\"${GOPATH}/bin:\$PATH\"" >> ~/.profile
 source ~/.profile
-cd ${GOPATH}/src/github.com/GoogleCloudPlatform/k8s-config-connector
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
 GOOS=$(go env GOOS)
 GOARCH=$(go env GOARCH)
 
