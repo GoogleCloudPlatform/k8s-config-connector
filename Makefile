@@ -211,4 +211,4 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-reviewable: manifests resource-docs generate-go-client
+ready-pr: manifests resource-docs generate-go-client
