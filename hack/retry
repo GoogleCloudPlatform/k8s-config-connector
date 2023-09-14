@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+COMMAND_TO_RUN=""
+MAX_RETRIES=10
+SLEEP_SECONDS=5
+SUCCESS_REGEX=""
+
+while [[ $# -gt 0 ]]; do
+  case "${1}" in
+    # The number of seconds to wait after a failed command before retrying, default 5, example:
+    # --sleep-seconds 15
+    --sleep-seconds) SLEEP_SECONDS="${2:-}"; shift ;;
+    # The maximum number of times to try the command, default 10, example
+    # --max-retries 3
+    --max-retries)   MAX_RETRIES="${2:-}"; shift ;;
+    # The command to retry, example
+    # --command 'gcloud projects add-iam-policy-binding my-project-id --member "user:my-user@google.com" --role "roles/owner"'
+    --command)       COMMAND_TO_RUN="${2:-}"; shift ;;
+    # if the stdout / stderr of the command matches the success-regex, then the command will be considered a success,
+    # regardless of the exit code. This is to help handle ill-behaving CLIs that don't provide granular exit
+    # codes which indicate success.
+    --success-regex) SUCCESS_REGEX="${2:-}"; shift;;
+    *)               echo "Unrecognized command line parameter: $1"; exit 1 ;;
+  esac
+  shift
+done
+
+if [[ "${COMMAND_TO_RUN}" == "" ]]; then
+    echo "The --command parameter is required"
+    exit 1
+fi
+
+RETRY_NUM=1
+RESULT=0
+
+for (( RETRY_NUM=1; RETRY_NUM<=${MAX_RETRIES}; RETRY_NUM++ ))
+do
+  TEST_FILE=$(mktemp)
+  trap "rm -f $TEST_FILE" EXIT
+  echo "Attempt ${RETRY_NUM}/${MAX_RETRIES} of '${COMMAND_TO_RUN}'..."
+  if eval "${COMMAND_TO_RUN} &> $TEST_FILE"; then
+    echo "Succeeded."
+    exit $?
+  else
+    RESULT=$?
+    OUTPUT=$(cat "${TEST_FILE}")
+    if [[ "${SUCCESS_REGEX}" != "" ]] && echo "${OUTPUT}" | grep -q "${SUCCESS_REGEX}"; then
+      echo "Succeeded, since output \"$OUTPUT\" matched regex \"${SUCCESS_REGEX}\""
+      exit 0
+    else
+      echo "Failed with exit code ${RESULT} and output ${OUTPUT}"
+      if [[ ${RETRY_NUM} -lt ${MAX_RETRIES} ]]; then
+        sleep "${SLEEP_SECONDS}"
+        # Some backoff
+        sleep "${RETRY_NUM}"
+        # Some randomization
+        sleep $((RANDOM % 10))
+      fi
+    fi
+  fi
+done
+
+echo "FAIL: The command '${COMMAND_TO_RUN}' failed ${MAX_RETRIES} times"
+exit ${RESULT}

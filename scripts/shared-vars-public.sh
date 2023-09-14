@@ -15,9 +15,7 @@
 
 
 # Paths
-SCRIPT_DIR=$(dirname "${BASH_SOURCE}")
-REPO_ROOT=$(cd ${SCRIPT_DIR}/..; pwd)
-RETRY_CMD=${SCRIPT_DIR}/retry.sh
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 # general purpose folders
 BIN_DIR=bin

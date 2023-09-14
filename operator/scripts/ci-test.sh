@@ -16,8 +16,10 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-OPERATOR_SRC_ROOT=$(dirname "${BASH_SOURCE[0]}")/..
-cd "${OPERATOR_SRC_ROOT}"
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}/operator
+
 source ./scripts/fetch_ext_bins.sh && \
 	fetch_tools && \
 	setup_envs

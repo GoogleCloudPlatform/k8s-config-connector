@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+PROJECT_ID := $(shell gcloud config get-value project)
+SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
+OPERATOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/operator:${SHORT_SHA}
+
 # enable multi-versions feature for CRDs
 CRD_OPTIONS ?= "crd"
 
@@ -67,3 +71,20 @@ controller-gen:
 ifneq (Version: v$(CONTROLLER_GEN_VERSION), $(shell $(CONTROLLER_GEN) --version))
 	GOFLAGS='' go install sigs.k8s.io/controller-tools/cmd/controller-gen@v$(CONTROLLER_GEN_VERSION)
 endif
+
+
+# Build the docker image
+.PHONY: docker-build
+docker-build:
+	docker build .. -f Dockerfile -t ${OPERATOR_IMG}
+	@echo "updating kustomize image patch file for manager"
+	cp config/manager/manager_image_patch_template.yaml config/manager/manager_image_patch.yaml
+	sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' config/manager/manager_image_patch.yaml
+	cp -f config/autopilot-manager/manager_image_patch_template.yaml config/autopilot-manager/manager_image_patch.yaml
+	sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' config/autopilot-manager/manager_image_patch.yaml
+
+
+# Push the docker image
+.PHONY: docker-push
+docker-push:
+	docker push ${OPERATOR_IMG}
