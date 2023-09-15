@@ -45,20 +45,15 @@ if [[ ! $(gcloud beta container clusters list | grep ${CLUSTER_NAME}) ]]; then
         --workload-pool=${PROJECT_ID}.svc.id.goog
 fi
 
-GCLOUD_PKG="google-cloud-sdk-gke-gcloud-auth-plugin"
-if apt list $GCLOUD_PKG --installed | grep $GCLOUD_PKG; then
-    printf "GCloud already installed, skipping install"
-else
-    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" \
-        | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" \
+    | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key \
-        --keyring /usr/share/keyrings/cloud.google.gpg add -
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key \
+    --keyring /usr/share/keyrings/cloud.google.gpg add -
 
-    sudo apt-get update && sudo apt-get install google-cloud-cli
+sudo apt-get update && sudo apt-get install google-cloud-cli
 
-    sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
-fi
+sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
 
 # Configure kubectl to communicate with the cluster.
 gcloud container clusters get-credentials ${CLUSTER_NAME}

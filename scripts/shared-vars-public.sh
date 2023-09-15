@@ -28,3 +28,64 @@ KUBEBUILDER_VERSION=2.3.1
 KUBEAPISERVER_VERSION=1.21.0
 KUSTOMIZE_VERSION=3.5.4
 
+# Supported GCP services API endpoints in Config Connector
+SUPPORTED_SERVICES=(
+  accesscontextmanager.googleapis.com
+  alloydb.googleapis.com
+  apigee.googleapis.com
+  appengine.googleapis.com
+  artifactregistry.googleapis.com
+  bigquery.googleapis.com
+  bigtableadmin.googleapis.com
+  billingbudgets.googleapis.com
+  binaryauthorization.googleapis.com
+  certificatemanager.googleapis.com
+  cloudasset.googleapis.com
+  cloudbilling.googleapis.com
+  cloudbuild.googleapis.com
+  cloudidentity.googleapis.com
+  cloudfunctions.googleapis.com
+  cloudkms.googleapis.com
+  cloudresourcemanager.googleapis.com
+  cloudscheduler.googleapis.com
+  compute.googleapis.com
+  container.googleapis.com
+  containeranalysis.googleapis.com
+  datacatalog.googleapis.com
+  dataflow.googleapis.com
+  datafusion.googleapis.com
+  dataproc.googleapis.com
+  dlp.googleapis.com
+  dns.googleapis.com
+  eventarc.googleapis.com
+  file.googleapis.com
+  gkehub.googleapis.com
+  iap.googleapis.com
+  identitytoolkit.googleapis.com
+  krmapihosting.googleapis.com
+  logging.googleapis.com
+  monitoring.googleapis.com
+  memcache.googleapis.com
+  networkconnectivity.googleapis.com
+  networksecurity.googleapis.com
+  networkservices.googleapis.com
+  osconfig.googleapis.com
+  privateca.googleapis.com
+  pubsub.googleapis.com
+  pubsublite.googleapis.com
+  recaptchaenterprise.googleapis.com
+  redis.googleapis.com
+  run.googleapis.com
+  secretmanager.googleapis.com
+  servicedirectory.googleapis.com
+  servicenetworking.googleapis.com
+  sourcerepo.googleapis.com
+  spanner.googleapis.com
+  sqladmin.googleapis.com
+  storagetransfer.googleapis.com
+  vpcaccess.googleapis.com
+)
+
+# Regex used to match long running tests cases (10m+ runtime). Any new
+# long-running tests should be added to this regex in alphabetical order.
+LONG_RUNNING_CRUD_TESTS_REGEX="alloydbbackup|alloydbinstance|cidrconnector|configcontrollerinstance|containercluster|containernodepool|datafusioninstance|filestorebackup|filestoreinstance|gkehubmembership|memcacheinstance|redisinstance|removedefaultnodepool|subnetconnector"

@@ -21,6 +21,14 @@ toc:
     path: /config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanageraccesspolicy.md
   - title: "AccessContextManagerServicePerimeter"
     path: /config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanagerserviceperimeter.md
+- title: "AlloyDB"
+  section:
+  - title: "AlloyDBBackup"
+    path: /config-connector/docs/reference/resource-docs/alloydb/alloydbbackup.md
+  - title: "AlloyDBCluster"
+    path: /config-connector/docs/reference/resource-docs/alloydb/alloydbcluster.md
+  - title: "AlloyDBInstance"
+    path: /config-connector/docs/reference/resource-docs/alloydb/alloydbinstance.md
 - title: "Apigee"
   section:
   - title: "ApigeeEnvironment"

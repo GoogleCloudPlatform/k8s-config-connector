@@ -82,6 +82,15 @@
 - ExpectedSkeleton: null
   ResourceConfigId: FirestoreIndex
   URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: AlloyDBBackup
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: AlloyDBCluster
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: AlloyDBInstance
+  URI: ""
 - ExpectedSkeleton:
     apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
     kind: ArtifactRegistryRepository

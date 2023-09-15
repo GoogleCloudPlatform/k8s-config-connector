@@ -24,7 +24,7 @@ package scheme
 import (
 	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1alpha1"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1beta1"
-	alloydbv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1alpha1"
+	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigateway/v1alpha1"
 	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1alpha1"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1beta1"
@@ -145,7 +145,7 @@ var ParameterCodec = runtime.NewParameterCodec(Scheme)
 var localSchemeBuilder = runtime.SchemeBuilder{
 	accesscontextmanagerv1beta1.AddToScheme,
 	accesscontextmanagerv1alpha1.AddToScheme,
-	alloydbv1alpha1.AddToScheme,
+	alloydbv1beta1.AddToScheme,
 	apigatewayv1alpha1.AddToScheme,
 	apigeev1alpha1.AddToScheme,
 	apigeev1beta1.AddToScheme,

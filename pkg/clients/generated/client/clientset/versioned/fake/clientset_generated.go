@@ -27,8 +27,8 @@ import (
 	fakeaccesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1/fake"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
 	fakeaccesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1/fake"
-	alloydbv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1alpha1"
-	fakealloydbv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1alpha1/fake"
+	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
+	fakealloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1/fake"
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1"
 	fakeapigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1/fake"
 	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
@@ -310,9 +310,9 @@ func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.
 	return &fakeaccesscontextmanagerv1alpha1.FakeAccesscontextmanagerV1alpha1{Fake: &c.Fake}
 }
 
-// AlloydbV1alpha1 retrieves the AlloydbV1alpha1Client
-func (c *Clientset) AlloydbV1alpha1() alloydbv1alpha1.AlloydbV1alpha1Interface {
-	return &fakealloydbv1alpha1.FakeAlloydbV1alpha1{Fake: &c.Fake}
+// AlloydbV1beta1 retrieves the AlloydbV1beta1Client
+func (c *Clientset) AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface {
+	return &fakealloydbv1beta1.FakeAlloydbV1beta1{Fake: &c.Fake}
 }
 
 // ApigatewayV1alpha1 retrieves the ApigatewayV1alpha1Client

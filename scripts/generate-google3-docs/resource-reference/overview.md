@@ -37,6 +37,18 @@ Custom Resource Definitions in the GitHub repository. For example, this
   <td><a href="/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanagerserviceperimeter.md">AccessContextManagerServicePerimeter</a></td>
 </tr>
 <tr>
+  <td><a href="/alloydb/docs/">{{alloydb_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/alloydb/alloydbbackup.md">AlloyDBBackup</a></td>
+</tr>
+<tr>
+  <td><a href="/alloydb/docs/">{{alloydb_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/alloydb/alloydbcluster.md">AlloyDBCluster</a></td>
+</tr>
+<tr>
+  <td><a href="/alloydb/docs/">{{alloydb_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/alloydb/alloydbinstance.md">AlloyDBInstance</a></td>
+</tr>
+<tr>
   <td><a href="/artifact-registry/docs/">{{ar_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md">ArtifactRegistryRepository</a></td>
 </tr>

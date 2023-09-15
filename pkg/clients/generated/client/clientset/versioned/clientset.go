@@ -27,7 +27,7 @@ import (
 
 	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
-	alloydbv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1alpha1"
+	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1"
 	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
@@ -144,7 +144,7 @@ type Interface interface {
 	Discovery() discovery.DiscoveryInterface
 	AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Interface
 	AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Interface
-	AlloydbV1alpha1() alloydbv1alpha1.AlloydbV1alpha1Interface
+	AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface
 	ApigatewayV1alpha1() apigatewayv1alpha1.ApigatewayV1alpha1Interface
 	ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface
 	ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface
@@ -260,7 +260,7 @@ type Clientset struct {
 	*discovery.DiscoveryClient
 	accesscontextmanagerV1beta1  *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
 	accesscontextmanagerV1alpha1 *accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Client
-	alloydbV1alpha1              *alloydbv1alpha1.AlloydbV1alpha1Client
+	alloydbV1beta1               *alloydbv1beta1.AlloydbV1beta1Client
 	apigatewayV1alpha1           *apigatewayv1alpha1.ApigatewayV1alpha1Client
 	apigeeV1alpha1               *apigeev1alpha1.ApigeeV1alpha1Client
 	apigeeV1beta1                *apigeev1beta1.ApigeeV1beta1Client
@@ -380,9 +380,9 @@ func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.
 	return c.accesscontextmanagerV1alpha1
 }
 
-// AlloydbV1alpha1 retrieves the AlloydbV1alpha1Client
-func (c *Clientset) AlloydbV1alpha1() alloydbv1alpha1.AlloydbV1alpha1Interface {
-	return c.alloydbV1alpha1
+// AlloydbV1beta1 retrieves the AlloydbV1beta1Client
+func (c *Clientset) AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface {
+	return c.alloydbV1beta1
 }
 
 // ApigatewayV1alpha1 retrieves the ApigatewayV1alpha1Client
@@ -972,7 +972,7 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.alloydbV1alpha1, err = alloydbv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	cs.alloydbV1beta1, err = alloydbv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1427,7 +1427,7 @@ func New(c rest.Interface) *Clientset {
 	var cs Clientset
 	cs.accesscontextmanagerV1beta1 = accesscontextmanagerv1beta1.New(c)
 	cs.accesscontextmanagerV1alpha1 = accesscontextmanagerv1alpha1.New(c)
-	cs.alloydbV1alpha1 = alloydbv1alpha1.New(c)
+	cs.alloydbV1beta1 = alloydbv1beta1.New(c)
 	cs.apigatewayV1alpha1 = apigatewayv1alpha1.New(c)
 	cs.apigeeV1alpha1 = apigeev1alpha1.New(c)
 	cs.apigeeV1beta1 = apigeev1beta1.New(c)

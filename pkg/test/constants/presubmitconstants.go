@@ -30,6 +30,7 @@ var (
 	// depedencies for more resource coverage in our presubmit-lite test.
 	RepresentativeCRUDTestsForAllServices = map[string][]string{
 		"accesscontextmanager": {"accesscontextmanagerserviceperimeter"},
+		"alloydb":              {"fullalloydbcluster"},
 		"apigee":               {"apigeeenvironment"},
 		"artifactregistry":     {"artifactregistryrepository"},
 		"bigquery":             {"bigqueryjob"},
