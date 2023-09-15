@@ -18,7 +18,7 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 source ${REPO_ROOT}/scripts/shared-vars-public.sh
 cd ${REPO_ROOT}
-source ${SCRIPT_DIR}/fetch_ext_bins.sh && \
+source ${REPO_ROOT}/scripts/fetch_ext_bins.sh && \
 	fetch_tools && \
 	setup_envs
 
