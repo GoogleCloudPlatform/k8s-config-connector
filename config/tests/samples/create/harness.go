@@ -23,8 +23,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
@@ -36,6 +34,8 @@ import (
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
 	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"golang.org/x/oauth2/google"
 
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"

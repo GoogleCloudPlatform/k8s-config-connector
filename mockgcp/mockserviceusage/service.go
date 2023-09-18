@@ -38,7 +38,7 @@ type MockService struct {
 	projects   *projects.ProjectStore
 	operations *operations.Operations
 
-	serviceusagev1 *ServiceUsageV1
+	serviceusagev1      *ServiceUsageV1
 	serviceusagev1beta1 *ServiceUsageV1Beta1
 }
 
