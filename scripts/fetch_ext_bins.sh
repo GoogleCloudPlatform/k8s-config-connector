@@ -114,8 +114,11 @@ function fetch_tools {
   # given the default version packaged with kubebuilder can be out-of-date.
   header_text "fetching kube-apiserver"
   mkdir -p "$kube_bin_dir"
-  curl -sL --retry 5 dl.k8s.io/v${KUBEAPISERVER_VERSION}/bin/${goos}/${goarch}/kube-apiserver > $kube_bin_dir/kube-apiserver
+  curl -sL --retry 5 "https://dl.k8s.io/v${KUBEAPISERVER_VERSION}/bin/${goos}/${goarch}/kube-apiserver" -o "$kube_bin_dir/kube-apiserver"
   chmod a+rx $kube_bin_dir/kube-apiserver
+
+  echo "kube-apiserver version:"
+  $kube_bin_dir/kube-apiserver --version
 
   # Download kustomize
   curl -O -L https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_${goos}_${goarch}.tar.gz
