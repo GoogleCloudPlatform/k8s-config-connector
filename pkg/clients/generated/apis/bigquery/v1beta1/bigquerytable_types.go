@@ -40,6 +40,14 @@ type TableAvroOptions struct {
 	UseAvroLogicalTypes bool `json:"useAvroLogicalTypes"`
 }
 
+type TableColumnReferences struct {
+	/* The column in the primary key that are referenced by the referencingColumn. */
+	ReferencedColumn string `json:"referencedColumn"`
+
+	/* The column that composes the foreign key. */
+	ReferencingColumn string `json:"referencingColumn"`
+}
+
 type TableCsvOptions struct {
 	/* Indicates if BigQuery should accept rows that are missing trailing optional columns. */
 	// +optional
@@ -144,6 +152,18 @@ type TableExternalDataConfiguration struct {
 	SourceUris []string `json:"sourceUris"`
 }
 
+type TableForeignKeys struct {
+	/* The pair of the foreign key column and primary key column. */
+	ColumnReferences TableColumnReferences `json:"columnReferences"`
+
+	/* Set only if the foreign key constraint is named. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* The table that holds the primary key and is referenced by this foreign key. */
+	ReferencedTable TableReferencedTable `json:"referencedTable"`
+}
+
 type TableGoogleSheetsOptions struct {
 	/* Range of a sheet to query from. Only used when non-empty. At least one of range or skip_leading_rows must be set. Typical format: "sheet_name!top_left_cell_id:bottom_right_cell_id" For example: "sheet1!A1:B20". */
 	// +optional
@@ -175,6 +195,10 @@ type TableJsonOptions struct {
 }
 
 type TableMaterializedView struct {
+	/* Immutable. Allow non incremental materialized view definition. The default value is false. */
+	// +optional
+	AllowNonIncrementalDefinition *bool `json:"allowNonIncrementalDefinition,omitempty"`
+
 	/* Specifies if BigQuery should automatically refresh materialized view when the base table is updated. The default is true. */
 	// +optional
 	EnableRefresh *bool `json:"enableRefresh,omitempty"`
@@ -197,6 +221,11 @@ type TableParquetOptions struct {
 	EnumAsString *bool `json:"enumAsString,omitempty"`
 }
 
+type TablePrimaryKey struct {
+	/* The columns that are composed of the primary key constraint. */
+	Columns []string `json:"columns"`
+}
+
 type TableRange struct {
 	/* End of the range partitioning, exclusive. */
 	End int `json:"end"`
@@ -214,6 +243,27 @@ type TableRangePartitioning struct {
 
 	/* Information required to partition based on ranges. Structure is documented below. */
 	Range TableRange `json:"range"`
+}
+
+type TableReferencedTable struct {
+	/* The ID of the dataset containing this table. */
+	DatasetId string `json:"datasetId"`
+
+	/* The ID of the project containing this table. */
+	ProjectId string `json:"projectId"`
+
+	/* The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters. Certain operations allow suffixing of the table ID with a partition decorator, such as sample_table$20190123. */
+	TableId string `json:"tableId"`
+}
+
+type TableTableConstraints struct {
+	/* Present only if the table has a foreign key. The foreign key is not enforced. */
+	// +optional
+	ForeignKeys []TableForeignKeys `json:"foreignKeys,omitempty"`
+
+	/* Represents a primary key constraint on a table's columns. Present only if the table has a primary key. The primary key is not enforced. */
+	// +optional
+	PrimaryKey *TablePrimaryKey `json:"primaryKey,omitempty"`
 }
 
 type TableTimePartitioning struct {
@@ -288,6 +338,10 @@ type BigQueryTableSpec struct {
 	/* A JSON schema for the table. */
 	// +optional
 	Schema *string `json:"schema,omitempty"`
+
+	/* Defines the primary key and foreign keys. */
+	// +optional
+	TableConstraints *TableTableConstraints `json:"tableConstraints,omitempty"`
 
 	/* If specified, configures time-based partitioning for this table. */
 	// +optional

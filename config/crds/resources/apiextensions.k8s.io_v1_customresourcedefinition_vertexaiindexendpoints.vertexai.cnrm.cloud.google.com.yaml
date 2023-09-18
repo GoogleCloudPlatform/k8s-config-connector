@@ -99,6 +99,10 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+              publicEndpointEnabled:
+                description: Immutable. If true, the deployed index will be accessible
+                  through public endpoint.
+                type: boolean
               region:
                 description: Immutable. The region of the index endpoint. eg us-central1.
                 type: string
@@ -158,6 +162,10 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              publicEndpointDomainName:
+                description: If publicEndpointEnabled is true, this field will be
+                  populated with the domain name to use for this index endpoint.
+                type: string
               updateTime:
                 description: The timestamp of when the Index was last updated in RFC3339
                   UTC "Zulu" format, with nanosecond resolution and up to nine fractional

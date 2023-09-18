@@ -163,6 +163,7 @@ networkInterface:
   aliasIpRange:
   - ipCidrRange: string
     subnetworkRangeName: string
+  internalIpv6PrefixLength: integer
   ipv6AccessConfig:
   - externalIpv6: string
     externalIpv6PrefixLength: string
@@ -170,6 +171,7 @@ networkInterface:
     networkTier: string
     publicPtrDomainName: string
   ipv6AccessType: string
+  ipv6Address: string
   name: string
   networkAttachment: string
   networkIp: string
@@ -1145,6 +1147,16 @@ local SSD.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>networkInterface[].internalIpv6PrefixLength</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}The prefix length of the primary internal IPv6 range.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>networkInterface[].ipv6AccessConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1221,6 +1233,16 @@ local SSD.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}One of EXTERNAL, INTERNAL to indicate whether the IP can be accessed from the Internet. This field is always inherited from its subnetwork.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkInterface[].ipv6Address</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An IPv6 internal network address for this network interface. If not specified, Google Cloud will automatically assign an internal IPv6 address from the instance's subnetwork.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

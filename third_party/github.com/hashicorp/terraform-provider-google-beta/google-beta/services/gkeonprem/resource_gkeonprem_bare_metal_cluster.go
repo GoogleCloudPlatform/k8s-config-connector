@@ -794,6 +794,23 @@ Name must be 63 characters or less, begin and end with alphanumerics,
 with dashes (-), underscores (_), dots (.), and alphanumerics between.`,
 				Elem: &schema.Schema{Type: schema.TypeString},
 			},
+			"binary_authorization": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `Binary Authorization related configurations.`,
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"evaluation_mode": {
+							Type:         schema.TypeString,
+							Optional:     true,
+							ValidateFunc: verify.ValidateEnum([]string{"DISABLED", "PROJECT_SINGLETON_POLICY_ENFORCE", ""}),
+							Description: `Mode of operation for binauthz policy evaluation. If unspecified,
+defaults to DISABLED. Possible values: ["DISABLED", "PROJECT_SINGLETON_POLICY_ENFORCE"]`,
+						},
+					},
+				},
+			},
 			"cluster_operations": {
 				Type:        schema.TypeList,
 				Optional:    true,
@@ -949,6 +966,22 @@ Examples: ["127.0.0.1", "example.com", ".corp", "localhost"].`,
 									},
 								},
 							},
+						},
+					},
+				},
+			},
+			"upgrade_policy": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `The cluster upgrade policy.`,
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"policy": {
+							Type:         schema.TypeString,
+							Optional:     true,
+							ValidateFunc: verify.ValidateEnum([]string{"SERIAL", "CONCURRENT", ""}),
+							Description:  `Specifies which upgrade policy to use. Possible values: ["SERIAL", "CONCURRENT"]`,
 						},
 					},
 				},
@@ -1256,6 +1289,18 @@ func resourceGkeonpremBareMetalClusterCreate(d *schema.ResourceData, meta interf
 	} else if v, ok := d.GetOkExists("security_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(securityConfigProp)) && (ok || !reflect.DeepEqual(v, securityConfigProp)) {
 		obj["securityConfig"] = securityConfigProp
 	}
+	binaryAuthorizationProp, err := expandGkeonpremBareMetalClusterBinaryAuthorization(d.Get("binary_authorization"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("binary_authorization"); !tpgresource.IsEmptyValue(reflect.ValueOf(binaryAuthorizationProp)) && (ok || !reflect.DeepEqual(v, binaryAuthorizationProp)) {
+		obj["binaryAuthorization"] = binaryAuthorizationProp
+	}
+	upgradePolicyProp, err := expandGkeonpremBareMetalClusterUpgradePolicy(d.Get("upgrade_policy"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("upgrade_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(upgradePolicyProp)) && (ok || !reflect.DeepEqual(v, upgradePolicyProp)) {
+		obj["upgradePolicy"] = upgradePolicyProp
+	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{GkeonpremBasePath}}projects/{{project}}/locations/{{location}}/bareMetalClusters?bare_metal_cluster_id={{name}}")
 	if err != nil {
@@ -1403,6 +1448,12 @@ func resourceGkeonpremBareMetalClusterRead(d *schema.ResourceData, meta interfac
 	if err := d.Set("security_config", flattenGkeonpremBareMetalClusterSecurityConfig(res["securityConfig"], d, config)); err != nil {
 		return fmt.Errorf("Error reading BareMetalCluster: %s", err)
 	}
+	if err := d.Set("binary_authorization", flattenGkeonpremBareMetalClusterBinaryAuthorization(res["binaryAuthorization"], d, config)); err != nil {
+		return fmt.Errorf("Error reading BareMetalCluster: %s", err)
+	}
+	if err := d.Set("upgrade_policy", flattenGkeonpremBareMetalClusterUpgradePolicy(res["upgradePolicy"], d, config)); err != nil {
+		return fmt.Errorf("Error reading BareMetalCluster: %s", err)
+	}
 	if err := d.Set("uid", flattenGkeonpremBareMetalClusterUid(res["uid"], d, config)); err != nil {
 		return fmt.Errorf("Error reading BareMetalCluster: %s", err)
 	}
@@ -1543,6 +1594,18 @@ func resourceGkeonpremBareMetalClusterUpdate(d *schema.ResourceData, meta interf
 	} else if v, ok := d.GetOkExists("security_config"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, securityConfigProp)) {
 		obj["securityConfig"] = securityConfigProp
 	}
+	binaryAuthorizationProp, err := expandGkeonpremBareMetalClusterBinaryAuthorization(d.Get("binary_authorization"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("binary_authorization"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, binaryAuthorizationProp)) {
+		obj["binaryAuthorization"] = binaryAuthorizationProp
+	}
+	upgradePolicyProp, err := expandGkeonpremBareMetalClusterUpgradePolicy(d.Get("upgrade_policy"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("upgrade_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, upgradePolicyProp)) {
+		obj["upgradePolicy"] = upgradePolicyProp
+	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{GkeonpremBasePath}}projects/{{project}}/locations/{{location}}/bareMetalClusters/{{name}}")
 	if err != nil {
@@ -1606,6 +1669,14 @@ func resourceGkeonpremBareMetalClusterUpdate(d *schema.ResourceData, meta interf
 
 	if d.HasChange("security_config") {
 		updateMask = append(updateMask, "securityConfig")
+	}
+
+	if d.HasChange("binary_authorization") {
+		updateMask = append(updateMask, "binaryAuthorization")
+	}
+
+	if d.HasChange("upgrade_policy") {
+		updateMask = append(updateMask, "upgradePolicy")
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
@@ -2737,6 +2808,40 @@ func flattenGkeonpremBareMetalClusterSecurityConfigAuthorizationAdminUsers(v int
 	return transformed
 }
 func flattenGkeonpremBareMetalClusterSecurityConfigAuthorizationAdminUsersUsername(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenGkeonpremBareMetalClusterBinaryAuthorization(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["evaluation_mode"] =
+		flattenGkeonpremBareMetalClusterBinaryAuthorizationEvaluationMode(original["evaluationMode"], d, config)
+	return []interface{}{transformed}
+}
+func flattenGkeonpremBareMetalClusterBinaryAuthorizationEvaluationMode(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenGkeonpremBareMetalClusterUpgradePolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["policy"] =
+		flattenGkeonpremBareMetalClusterUpgradePolicyPolicy(original["policy"], d, config)
+	return []interface{}{transformed}
+}
+func flattenGkeonpremBareMetalClusterUpgradePolicyPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -4402,5 +4507,51 @@ func expandGkeonpremBareMetalClusterSecurityConfigAuthorizationAdminUsers(v inte
 }
 
 func expandGkeonpremBareMetalClusterSecurityConfigAuthorizationAdminUsersUsername(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandGkeonpremBareMetalClusterBinaryAuthorization(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedEvaluationMode, err := expandGkeonpremBareMetalClusterBinaryAuthorizationEvaluationMode(original["evaluation_mode"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedEvaluationMode); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["evaluationMode"] = transformedEvaluationMode
+	}
+
+	return transformed, nil
+}
+
+func expandGkeonpremBareMetalClusterBinaryAuthorizationEvaluationMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandGkeonpremBareMetalClusterUpgradePolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedPolicy, err := expandGkeonpremBareMetalClusterUpgradePolicyPolicy(original["policy"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedPolicy); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["policy"] = transformedPolicy
+	}
+
+	return transformed, nil
+}
+
+func expandGkeonpremBareMetalClusterUpgradePolicyPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

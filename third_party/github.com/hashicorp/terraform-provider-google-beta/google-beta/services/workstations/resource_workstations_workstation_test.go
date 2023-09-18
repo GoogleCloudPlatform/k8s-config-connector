@@ -87,6 +87,10 @@ resource "google_workstations_workstation" "default" {
   labels = {
 	  foo = "bar"
   }
+
+  env = {
+    name = "bar"
+  }
 }
 `, context)
 }
@@ -135,6 +139,10 @@ resource "google_workstations_workstation" "default" {
 
   labels = {
 	  foo = "bar"
+  }
+
+  env = {
+    name = "test"
   }
 }
 `, context)

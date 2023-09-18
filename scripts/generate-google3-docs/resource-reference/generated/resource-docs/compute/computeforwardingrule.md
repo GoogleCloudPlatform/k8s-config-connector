@@ -216,7 +216,7 @@ internal load balancer.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. This is used in PSC consumer ForwardingRule to control whether the PSC endpoint can be accessed from another region.{% endverbatim %}</p>
+            <p>{% verbatim %}This is used in PSC consumer ForwardingRule to control whether the PSC endpoint can be accessed from another region.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

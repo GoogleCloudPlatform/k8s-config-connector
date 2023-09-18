@@ -42,10 +42,10 @@ type FrameworkProviderConfig struct {
 	Zone                       types.String
 	RequestBatcherIam          *transport_tpg.RequestBatcher
 	RequestBatcherServiceUsage *transport_tpg.RequestBatcher
-	Scopes                     []string
+	Scopes                     types.List
 	TokenSource                oauth2.TokenSource
 	UserAgent                  string
-	UserProjectOverride        bool
+	UserProjectOverride        types.Bool
 
 	// paths for client setup
 	AccessApprovalBasePath           string
@@ -58,6 +58,7 @@ type FrameworkProviderConfig struct {
 	ArtifactRegistryBasePath         string
 	BackupDRBasePath                 string
 	BeyondcorpBasePath               string
+	BiglakeBasePath                  string
 	BigQueryBasePath                 string
 	BigqueryAnalyticsHubBasePath     string
 	BigqueryConnectionBasePath       string
@@ -89,6 +90,7 @@ type FrameworkProviderConfig struct {
 	DataformBasePath                 string
 	DataFusionBasePath               string
 	DataLossPreventionBasePath       string
+	DataPipelineBasePath             string
 	DataplexBasePath                 string
 	DataprocBasePath                 string
 	DataprocMetastoreBasePath        string
@@ -150,6 +152,7 @@ type FrameworkProviderConfig struct {
 	SpannerBasePath                  string
 	SQLBasePath                      string
 	StorageBasePath                  string
+	StorageInsightsBasePath          string
 	StorageTransferBasePath          string
 	TagsBasePath                     string
 	TPUBasePath                      string
@@ -160,16 +163,11 @@ type FrameworkProviderConfig struct {
 	WorkstationsBasePath             string
 }
 
-var defaultClientScopes = []string{
-	"https://www.googleapis.com/auth/cloud-platform",
-	"https://www.googleapis.com/auth/userinfo.email",
-}
-
 // LoadAndValidateFramework handles the bulk of configuring the provider
 // it is pulled out so that we can manually call this from our testing provider as well
-func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context, data fwmodels.ProviderModel, tfVersion string, diags *diag.Diagnostics, providerversion string) {
+func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context, data *fwmodels.ProviderModel, tfVersion string, diags *diag.Diagnostics, providerversion string) {
 	// Set defaults if needed
-	p.HandleDefaults(ctx, &data, diags)
+	p.HandleDefaults(ctx, data, diags)
 	if diags.HasError() {
 		return
 	}
@@ -185,7 +183,7 @@ func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context, 
 	}
 
 	// Set up client configuration
-	p.SetupClient(ctx, data, diags)
+	p.SetupClient(ctx, *data, diags)
 	if diags.HasError() {
 		return
 	}
@@ -211,6 +209,7 @@ func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context, 
 	p.ArtifactRegistryBasePath = data.ArtifactRegistryCustomEndpoint.ValueString()
 	p.BackupDRBasePath = data.BackupDRCustomEndpoint.ValueString()
 	p.BeyondcorpBasePath = data.BeyondcorpCustomEndpoint.ValueString()
+	p.BiglakeBasePath = data.BiglakeCustomEndpoint.ValueString()
 	p.BigQueryBasePath = data.BigQueryCustomEndpoint.ValueString()
 	p.BigqueryAnalyticsHubBasePath = data.BigqueryAnalyticsHubCustomEndpoint.ValueString()
 	p.BigqueryConnectionBasePath = data.BigqueryConnectionCustomEndpoint.ValueString()
@@ -242,6 +241,7 @@ func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context, 
 	p.DataformBasePath = data.DataformCustomEndpoint.ValueString()
 	p.DataFusionBasePath = data.DataFusionCustomEndpoint.ValueString()
 	p.DataLossPreventionBasePath = data.DataLossPreventionCustomEndpoint.ValueString()
+	p.DataPipelineBasePath = data.DataPipelineCustomEndpoint.ValueString()
 	p.DataplexBasePath = data.DataplexCustomEndpoint.ValueString()
 	p.DataprocBasePath = data.DataprocCustomEndpoint.ValueString()
 	p.DataprocMetastoreBasePath = data.DataprocMetastoreCustomEndpoint.ValueString()
@@ -303,6 +303,7 @@ func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context, 
 	p.SpannerBasePath = data.SpannerCustomEndpoint.ValueString()
 	p.SQLBasePath = data.SQLCustomEndpoint.ValueString()
 	p.StorageBasePath = data.StorageCustomEndpoint.ValueString()
+	p.StorageInsightsBasePath = data.StorageInsightsCustomEndpoint.ValueString()
 	p.StorageTransferBasePath = data.StorageTransferCustomEndpoint.ValueString()
 	p.TagsBasePath = data.TagsCustomEndpoint.ValueString()
 	p.TPUBasePath = data.TPUCustomEndpoint.ValueString()
@@ -313,10 +314,13 @@ func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context, 
 	p.WorkstationsBasePath = data.WorkstationsCustomEndpoint.ValueString()
 
 	p.Context = ctx
-	p.Region = data.Region
-	p.Zone = data.Zone
-	p.PollInterval = 10 * time.Second
+	p.BillingProject = data.BillingProject
 	p.Project = data.Project
+	p.Region = data.Region
+	p.Scopes = data.Scopes
+	p.Zone = data.Zone
+	p.UserProjectOverride = data.UserProjectOverride
+	p.PollInterval = 10 * time.Second
 	p.RequestBatcherServiceUsage = transport_tpg.NewRequestBatcher("Service Usage", ctx, batchingConfig)
 	p.RequestBatcherIam = transport_tpg.NewRequestBatcher("IAM", ctx, batchingConfig)
 }
@@ -389,7 +393,7 @@ func (p *FrameworkProviderConfig) HandleDefaults(ctx context.Context, data *fwmo
 
 	if len(data.Scopes.Elements()) == 0 {
 		var d diag.Diagnostics
-		data.Scopes, d = types.ListValueFrom(ctx, types.StringType, defaultClientScopes)
+		data.Scopes, d = types.ListValueFrom(ctx, types.StringType, transport_tpg.DefaultClientScopes)
 		diags.Append(d...)
 		if diags.HasError() {
 			return
@@ -511,6 +515,14 @@ func (p *FrameworkProviderConfig) HandleDefaults(ctx context.Context, data *fwmo
 		}, transport_tpg.DefaultBasePaths[transport_tpg.BeyondcorpBasePathKey])
 		if customEndpoint != nil {
 			data.BeyondcorpCustomEndpoint = types.StringValue(customEndpoint.(string))
+		}
+	}
+	if data.BiglakeCustomEndpoint.IsNull() {
+		customEndpoint := transport_tpg.MultiEnvDefault([]string{
+			"GOOGLE_BIGLAKE_CUSTOM_ENDPOINT",
+		}, transport_tpg.DefaultBasePaths[transport_tpg.BiglakeBasePathKey])
+		if customEndpoint != nil {
+			data.BiglakeCustomEndpoint = types.StringValue(customEndpoint.(string))
 		}
 	}
 	if data.BigQueryCustomEndpoint.IsNull() {
@@ -759,6 +771,14 @@ func (p *FrameworkProviderConfig) HandleDefaults(ctx context.Context, data *fwmo
 		}, transport_tpg.DefaultBasePaths[transport_tpg.DataLossPreventionBasePathKey])
 		if customEndpoint != nil {
 			data.DataLossPreventionCustomEndpoint = types.StringValue(customEndpoint.(string))
+		}
+	}
+	if data.DataPipelineCustomEndpoint.IsNull() {
+		customEndpoint := transport_tpg.MultiEnvDefault([]string{
+			"GOOGLE_DATA_PIPELINE_CUSTOM_ENDPOINT",
+		}, transport_tpg.DefaultBasePaths[transport_tpg.DataPipelineBasePathKey])
+		if customEndpoint != nil {
+			data.DataPipelineCustomEndpoint = types.StringValue(customEndpoint.(string))
 		}
 	}
 	if data.DataplexCustomEndpoint.IsNull() {
@@ -1247,6 +1267,14 @@ func (p *FrameworkProviderConfig) HandleDefaults(ctx context.Context, data *fwmo
 		}, transport_tpg.DefaultBasePaths[transport_tpg.StorageBasePathKey])
 		if customEndpoint != nil {
 			data.StorageCustomEndpoint = types.StringValue(customEndpoint.(string))
+		}
+	}
+	if data.StorageInsightsCustomEndpoint.IsNull() {
+		customEndpoint := transport_tpg.MultiEnvDefault([]string{
+			"GOOGLE_STORAGE_INSIGHTS_CUSTOM_ENDPOINT",
+		}, transport_tpg.DefaultBasePaths[transport_tpg.StorageInsightsBasePathKey])
+		if customEndpoint != nil {
+			data.StorageInsightsCustomEndpoint = types.StringValue(customEndpoint.(string))
 		}
 	}
 	if data.StorageTransferCustomEndpoint.IsNull() {

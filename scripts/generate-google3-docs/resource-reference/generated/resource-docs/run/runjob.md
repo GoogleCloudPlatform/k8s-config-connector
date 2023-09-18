@@ -1212,7 +1212,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     <tr>
         <td>
             <p><code>template.template.volumes[].secret.items[].mode</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>

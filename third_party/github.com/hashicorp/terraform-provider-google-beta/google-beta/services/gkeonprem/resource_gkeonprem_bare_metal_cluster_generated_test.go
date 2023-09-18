@@ -215,6 +215,12 @@ resource "google_gkeonprem_bare_metal_cluster" "cluster-manuallb" {
       }
     }
   }
+  binary_authorization {
+    evaluation_mode = "DISABLED"
+  }
+  upgrade_policy {
+    policy = "SERIAL"
+  }
 }
 `, context)
 }

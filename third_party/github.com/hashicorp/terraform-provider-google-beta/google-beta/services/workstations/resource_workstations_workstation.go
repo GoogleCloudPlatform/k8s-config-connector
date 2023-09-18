@@ -83,6 +83,12 @@ func ResourceWorkstationsWorkstation() *schema.Resource {
 				Optional:    true,
 				Description: `Human-readable name for this resource.`,
 			},
+			"env": {
+				Type:        schema.TypeMap,
+				Optional:    true,
+				Description: `'Client-specified environment variables passed to the workstation container's entrypoint.'`,
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
 			"labels": {
 				Type:        schema.TypeMap,
 				Optional:    true,
@@ -152,6 +158,12 @@ func resourceWorkstationsWorkstationCreate(d *schema.ResourceData, meta interfac
 		return err
 	} else if v, ok := d.GetOkExists("annotations"); !tpgresource.IsEmptyValue(reflect.ValueOf(annotationsProp)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
 		obj["annotations"] = annotationsProp
+	}
+	envProp, err := expandWorkstationsWorkstationEnv(d.Get("env"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("env"); !tpgresource.IsEmptyValue(reflect.ValueOf(envProp)) && (ok || !reflect.DeepEqual(v, envProp)) {
+		obj["env"] = envProp
 	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{WorkstationsBasePath}}projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations?workstationId={{workstation_id}}")
@@ -263,6 +275,9 @@ func resourceWorkstationsWorkstationRead(d *schema.ResourceData, meta interface{
 	if err := d.Set("annotations", flattenWorkstationsWorkstationAnnotations(res["annotations"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Workstation: %s", err)
 	}
+	if err := d.Set("env", flattenWorkstationsWorkstationEnv(res["env"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Workstation: %s", err)
+	}
 	if err := d.Set("create_time", flattenWorkstationsWorkstationCreateTime(res["createTime"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Workstation: %s", err)
 	}
@@ -310,6 +325,12 @@ func resourceWorkstationsWorkstationUpdate(d *schema.ResourceData, meta interfac
 	} else if v, ok := d.GetOkExists("annotations"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
 		obj["annotations"] = annotationsProp
 	}
+	envProp, err := expandWorkstationsWorkstationEnv(d.Get("env"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("env"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, envProp)) {
+		obj["env"] = envProp
+	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{WorkstationsBasePath}}projects/{{project}}/locations/{{location}}/workstationClusters/{{workstation_cluster_id}}/workstationConfigs/{{workstation_config_id}}/workstations/{{workstation_id}}")
 	if err != nil {
@@ -329,6 +350,10 @@ func resourceWorkstationsWorkstationUpdate(d *schema.ResourceData, meta interfac
 
 	if d.HasChange("annotations") {
 		updateMask = append(updateMask, "annotations")
+	}
+
+	if d.HasChange("env") {
+		updateMask = append(updateMask, "env")
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
@@ -462,6 +487,10 @@ func flattenWorkstationsWorkstationAnnotations(v interface{}, d *schema.Resource
 	return v
 }
 
+func flattenWorkstationsWorkstationEnv(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
 func flattenWorkstationsWorkstationCreateTime(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
@@ -490,6 +519,17 @@ func expandWorkstationsWorkstationLabels(v interface{}, d tpgresource.TerraformR
 }
 
 func expandWorkstationsWorkstationAnnotations(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
+	if v == nil {
+		return map[string]string{}, nil
+	}
+	m := make(map[string]string)
+	for k, val := range v.(map[string]interface{}) {
+		m[k] = val.(string)
+	}
+	return m, nil
+}
+
+func expandWorkstationsWorkstationEnv(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}

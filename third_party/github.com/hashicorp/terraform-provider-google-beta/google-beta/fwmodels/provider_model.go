@@ -34,6 +34,7 @@ type ProviderModel struct {
 	ArtifactRegistryCustomEndpoint         types.String `tfsdk:"artifact_registry_custom_endpoint"`
 	BackupDRCustomEndpoint                 types.String `tfsdk:"backup_dr_custom_endpoint"`
 	BeyondcorpCustomEndpoint               types.String `tfsdk:"beyondcorp_custom_endpoint"`
+	BiglakeCustomEndpoint                  types.String `tfsdk:"biglake_custom_endpoint"`
 	BigQueryCustomEndpoint                 types.String `tfsdk:"big_query_custom_endpoint"`
 	BigqueryAnalyticsHubCustomEndpoint     types.String `tfsdk:"bigquery_analytics_hub_custom_endpoint"`
 	BigqueryConnectionCustomEndpoint       types.String `tfsdk:"bigquery_connection_custom_endpoint"`
@@ -65,6 +66,7 @@ type ProviderModel struct {
 	DataformCustomEndpoint                 types.String `tfsdk:"dataform_custom_endpoint"`
 	DataFusionCustomEndpoint               types.String `tfsdk:"data_fusion_custom_endpoint"`
 	DataLossPreventionCustomEndpoint       types.String `tfsdk:"data_loss_prevention_custom_endpoint"`
+	DataPipelineCustomEndpoint             types.String `tfsdk:"data_pipeline_custom_endpoint"`
 	DataplexCustomEndpoint                 types.String `tfsdk:"dataplex_custom_endpoint"`
 	DataprocCustomEndpoint                 types.String `tfsdk:"dataproc_custom_endpoint"`
 	DataprocMetastoreCustomEndpoint        types.String `tfsdk:"dataproc_metastore_custom_endpoint"`
@@ -126,6 +128,7 @@ type ProviderModel struct {
 	SpannerCustomEndpoint                  types.String `tfsdk:"spanner_custom_endpoint"`
 	SQLCustomEndpoint                      types.String `tfsdk:"sql_custom_endpoint"`
 	StorageCustomEndpoint                  types.String `tfsdk:"storage_custom_endpoint"`
+	StorageInsightsCustomEndpoint          types.String `tfsdk:"storage_insights_custom_endpoint"`
 	StorageTransferCustomEndpoint          types.String `tfsdk:"storage_transfer_custom_endpoint"`
 	TagsCustomEndpoint                     types.String `tfsdk:"tags_custom_endpoint"`
 	TPUCustomEndpoint                      types.String `tfsdk:"tpu_custom_endpoint"`

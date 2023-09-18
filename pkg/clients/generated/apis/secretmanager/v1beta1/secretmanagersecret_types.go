@@ -35,13 +35,21 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type SecretAuto struct {
+	/* The customer-managed encryption configuration of the Secret.
+	If no configuration is provided, Google-managed default
+	encryption is used. */
+	// +optional
+	CustomerManagedEncryption *SecretCustomerManagedEncryption `json:"customerManagedEncryption,omitempty"`
+}
+
 type SecretCustomerManagedEncryption struct {
 	/* Customer Managed Encryption for the secret. */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type SecretReplicas struct {
-	/* Immutable. Customer Managed Encryption for the secret. */
+	/* Customer Managed Encryption for the secret. */
 	// +optional
 	CustomerManagedEncryption *SecretCustomerManagedEncryption `json:"customerManagedEncryption,omitempty"`
 
@@ -51,6 +59,10 @@ type SecretReplicas struct {
 
 type SecretReplication struct {
 	/* Immutable. The Secret will automatically be replicated without any restrictions. */
+	// +optional
+	Auto *SecretAuto `json:"auto,omitempty"`
+
+	/* DEPRECATED. `automatic` is deprecated and will be removed in a future major release. Use `auto` instead. Immutable. The Secret will automatically be replicated without any restrictions. */
 	// +optional
 	Automatic *bool `json:"automatic,omitempty"`
 

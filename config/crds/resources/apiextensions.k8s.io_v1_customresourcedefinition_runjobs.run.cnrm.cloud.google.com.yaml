@@ -677,7 +677,6 @@ spec:
                                             type: string
                                         type: object
                                     required:
-                                    - mode
                                     - path
                                     - versionRef
                                     type: object

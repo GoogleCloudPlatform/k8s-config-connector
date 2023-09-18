@@ -52,6 +52,15 @@ type SecretversionValueFrom struct {
 }
 
 type SecretManagerSecretVersionSpec struct {
+	/* The deletion policy for the secret version. Setting 'ABANDON' allows the resource
+	to be abandoned rather than deleted. Setting 'DISABLE' allows the resource to be
+	disabled rather than deleted. Default is 'DELETE'. Possible values are:
+	* DELETE
+	* DISABLE
+	* ABANDON. */
+	// +optional
+	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
+
 	/* The current state of the SecretVersion. */
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`

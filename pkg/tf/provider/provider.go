@@ -24,7 +24,7 @@ import (
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
@@ -81,7 +81,7 @@ func NewConfig() Config {
 
 // New builds a new tfschema.Provider for the google provider.
 func New(ctx context.Context, config Config) (*tfschema.Provider, error) {
-	googleProvider := google.Provider()
+	googleProvider := provider.Provider()
 	cfgMap := map[string]interface{}{}
 	if config.AccessToken != "" {
 		cfgMap["access_token"] = config.AccessToken

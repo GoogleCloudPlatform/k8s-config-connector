@@ -64,10 +64,10 @@ resource "google_sourcerepo_repository" "git_repository" {
 
 resource "google_secret_manager_secret" "secret" {
   provider  = google-beta
-  secret_id = "secret"
+  secret_id = "tf_test_my_secret%{random_suffix}"
 
   replication {
-    automatic = true
+    auto {}
   }
 }
 

@@ -35,6 +35,19 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type FlowConditionalCases struct {
+	/* A JSON encoded list of cascading if-else conditions. Cases are mutually exclusive. The first one with a matching condition is selected, all the rest ignored.
+	See [Case](https://cloud.google.com/dialogflow/cx/docs/reference/rest/v3/Fulfillment#case) for the schema. */
+	// +optional
+	Cases *string `json:"cases,omitempty"`
+}
+
+type FlowConversationSuccess struct {
+	/* Custom metadata. Dialogflow doesn't impose any structure on this. */
+	// +optional
+	Metadata *string `json:"metadata,omitempty"`
+}
+
 type FlowEventHandlers struct {
 	/* The name of the event to handle. */
 	// +optional
@@ -59,7 +72,49 @@ type FlowEventHandlers struct {
 	TriggerFulfillment *FlowTriggerFulfillment `json:"triggerFulfillment,omitempty"`
 }
 
+type FlowLiveAgentHandoff struct {
+	/* Custom metadata. Dialogflow doesn't impose any structure on this. */
+	// +optional
+	Metadata *string `json:"metadata,omitempty"`
+}
+
 type FlowMessages struct {
+	/* The channel which the response is associated with. Clients can specify the channel via QueryParameters.channel, and only associated channel response will be returned. */
+	// +optional
+	Channel *string `json:"channel,omitempty"`
+
+	/* Indicates that the conversation succeeded, i.e., the bot handled the issue that the customer talked to it about.
+	Dialogflow only uses this to determine which conversations should be counted as successful and doesn't process the metadata in this message in any way. Note that Dialogflow also considers conversations that get to the conversation end page as successful even if they don't return ConversationSuccess.
+	You may set this, for example:
+	* In the entryFulfillment of a Page if entering the page indicates that the conversation succeeded.
+	* In a webhook response when you determine that you handled the customer issue. */
+	// +optional
+	ConversationSuccess *FlowConversationSuccess `json:"conversationSuccess,omitempty"`
+
+	/* Indicates that the conversation should be handed off to a live agent.
+	Dialogflow only uses this to determine which conversations were handed off to a human agent for measurement purposes. What else to do with this signal is up to you and your handoff procedures.
+	You may set this, for example:
+	* In the entryFulfillment of a Page if entering the page indicates something went extremely wrong in the conversation.
+	* In a webhook response when you determine that the customer issue can only be handled by a human. */
+	// +optional
+	LiveAgentHandoff *FlowLiveAgentHandoff `json:"liveAgentHandoff,omitempty"`
+
+	/* A text or ssml response that is preferentially used for TTS output audio synthesis, as described in the comment on the ResponseMessage message. */
+	// +optional
+	OutputAudioText *FlowOutputAudioText `json:"outputAudioText,omitempty"`
+
+	/* A custom, platform-specific payload. */
+	// +optional
+	Payload *string `json:"payload,omitempty"`
+
+	/* Specifies an audio clip to be played by the client as part of the response. */
+	// +optional
+	PlayAudio *FlowPlayAudio `json:"playAudio,omitempty"`
+
+	/* Represents the signal that telles the client to transfer the phone call connected to the agent to a third-party endpoint. */
+	// +optional
+	TelephonyTransferCall *FlowTelephonyTransferCall `json:"telephonyTransferCall,omitempty"`
+
 	/* The text response message. */
 	// +optional
 	Text *FlowText `json:"text,omitempty"`
@@ -82,6 +137,44 @@ type FlowNluSettings struct {
 	* MODEL_TYPE_ADVANCED: Use advanced NLU model. Possible values: ["MODEL_TYPE_STANDARD", "MODEL_TYPE_ADVANCED"]. */
 	// +optional
 	ModelType *string `json:"modelType,omitempty"`
+}
+
+type FlowOutputAudioText struct {
+	/* Whether the playback of this message can be interrupted by the end user's speech and the client can then starts the next Dialogflow request. */
+	// +optional
+	AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
+
+	/* The SSML text to be synthesized. For more information, see SSML. */
+	// +optional
+	Ssml *string `json:"ssml,omitempty"`
+
+	/* The raw text to be synthesized. */
+	// +optional
+	Text *string `json:"text,omitempty"`
+}
+
+type FlowPlayAudio struct {
+	/* Whether the playback of this message can be interrupted by the end user's speech and the client can then starts the next Dialogflow request. */
+	// +optional
+	AllowPlaybackInterruption *bool `json:"allowPlaybackInterruption,omitempty"`
+
+	/* URI of the audio clip. Dialogflow does not impose any validation on this value. It is specific to the client that reads it. */
+	AudioUri string `json:"audioUri"`
+}
+
+type FlowSetParameterActions struct {
+	/* Display name of the parameter. */
+	// +optional
+	Parameter *string `json:"parameter,omitempty"`
+
+	/* The new JSON-encoded value of the parameter. A null value clears the parameter. */
+	// +optional
+	Value *string `json:"value,omitempty"`
+}
+
+type FlowTelephonyTransferCall struct {
+	/* Transfer the call to a phone number in E.164 format. */
+	PhoneNumber string `json:"phoneNumber"`
 }
 
 type FlowText struct {
@@ -125,6 +218,10 @@ type FlowTransitionRoutes struct {
 }
 
 type FlowTriggerFulfillment struct {
+	/* Conditional cases for this fulfillment. */
+	// +optional
+	ConditionalCases []FlowConditionalCases `json:"conditionalCases,omitempty"`
+
 	/* The list of rich message responses to present to the user. */
 	// +optional
 	Messages []FlowMessages `json:"messages,omitempty"`
@@ -132,6 +229,10 @@ type FlowTriggerFulfillment struct {
 	/* Whether Dialogflow should return currently queued fulfillment response messages in streaming APIs. If a webhook is specified, it happens before Dialogflow invokes webhook. Warning: 1) This flag only affects streaming API. Responses are still queued and returned once in non-streaming API. 2) The flag can be enabled in any fulfillment but only the first 3 partial responses will be returned. You may only want to apply it to fulfillments that have slow webhooks. */
 	// +optional
 	ReturnPartialResponses *bool `json:"returnPartialResponses,omitempty"`
+
+	/* Set parameter values before executing the webhook. */
+	// +optional
+	SetParameterActions []FlowSetParameterActions `json:"setParameterActions,omitempty"`
 
 	/* The tag used by the webhook to identify which fulfillment is being called. This field is required if webhook is specified. */
 	// +optional

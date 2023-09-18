@@ -59,12 +59,12 @@ spec:
           spec:
             properties:
               autoclass:
-                description: Immutable. The bucket's autoclass configuration.
+                description: The bucket's autoclass configuration.
                 properties:
                   enabled:
-                    description: Immutable. While set to true, autoclass automatically
-                      transitions objects in your bucket to appropriate storage classes
-                      based on each object's access pattern.
+                    description: While set to true, autoclass automatically transitions
+                      objects in your bucket to appropriate storage classes based
+                      on each object's access pattern.
                     type: boolean
                 required:
                 - enabled

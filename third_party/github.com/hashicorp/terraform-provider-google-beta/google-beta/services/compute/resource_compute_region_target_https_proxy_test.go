@@ -37,7 +37,7 @@ func TestAccComputeRegionTargetHttpsProxy_update(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccComputeRegionTargetHttpsProxy_basicBeta(resourceSuffix),
+				Config: testAccComputeRegionTargetHttpsProxy_basic3(resourceSuffix),
 			},
 			{
 				ResourceName:      "google_compute_region_target_https_proxy.foobar",
@@ -245,7 +245,7 @@ resource "google_compute_region_ssl_certificate" "foobar2" {
 `, id, id, id, id, id, id, id, id, id)
 }
 
-func testAccComputeRegionTargetHttpsProxy_basicBeta(id string) string {
+func testAccComputeRegionTargetHttpsProxy_basic3(id string) string {
 	return fmt.Sprintf(`
 resource "google_compute_region_target_https_proxy" "foobar" {
   description      = "Resource created for Terraform acceptance testing"

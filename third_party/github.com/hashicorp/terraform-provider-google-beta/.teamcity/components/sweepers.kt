@@ -37,6 +37,7 @@ class sweeperDetails() {
 
             steps {
                 SetGitCommitBuildId()
+                TagBuildToIndicatePurpose()
                 ConfigureGoEnv()
                 DownloadTerraformBinary()
                 RunSweepers(sweeperName)
@@ -49,12 +50,15 @@ class sweeperDetails() {
             params {
                 ConfigureGoogleSpecificTestParameters(environmentVariables)
                 TerraformAcceptanceTestParameters(parallelism, testPrefix, testTimeout, sweeperRegions, sweeperRun)
+                TerraformLoggingParameters()
                 TerraformAcceptanceTestsFlag()
                 TerraformCoreBinaryTesting()
                 TerraformShouldPanicForSchemaErrors()
                 ReadOnlySettings()
                 WorkingDirectory(path)
             }
+
+            artifactRules = "%teamcity.build.checkoutDir%/debug*.txt"
 
             failureConditions {
                 errorMessage = true

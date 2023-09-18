@@ -339,6 +339,19 @@ spec:
                         description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                         type: string
                     type: object
+                  confidentialNodes:
+                    description: 'Immutable. Configuration for the confidential nodes
+                      feature, which makes nodes run on confidential VMs. Warning:
+                      This configuration can''t be changed (or added/removed) after
+                      pool creation without deleting and recreating the entire pool.'
+                    properties:
+                      enabled:
+                        description: Immutable. Whether Confidential Nodes feature
+                          is enabled for all nodes in this pool.
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
                   diskSizeGb:
                     description: Immutable. Size of the disk attached to each node,
                       specified in GB. The smallest allowed disk size is 10GB.

@@ -10994,6 +10994,11 @@ func (in *InstanceNetworkInterface) DeepCopyInto(out *InstanceNetworkInterface) 
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.InternalIpv6PrefixLength != nil {
+		in, out := &in.InternalIpv6PrefixLength, &out.InternalIpv6PrefixLength
+		*out = new(int)
+		**out = **in
+	}
 	if in.Ipv6AccessConfig != nil {
 		in, out := &in.Ipv6AccessConfig, &out.Ipv6AccessConfig
 		*out = make([]InstanceIpv6AccessConfig, len(*in))
@@ -11003,6 +11008,11 @@ func (in *InstanceNetworkInterface) DeepCopyInto(out *InstanceNetworkInterface) 
 	}
 	if in.Ipv6AccessType != nil {
 		in, out := &in.Ipv6AccessType, &out.Ipv6AccessType
+		*out = new(string)
+		**out = **in
+	}
+	if in.Ipv6Address != nil {
+		in, out := &in.Ipv6Address, &out.Ipv6Address
 		*out = new(string)
 		**out = **in
 	}
@@ -12360,6 +12370,11 @@ func (in *InstancetemplateNetworkInterface) DeepCopyInto(out *InstancetemplateNe
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.InternalIpv6PrefixLength != nil {
+		in, out := &in.InternalIpv6PrefixLength, &out.InternalIpv6PrefixLength
+		*out = new(int)
+		**out = **in
+	}
 	if in.Ipv6AccessConfig != nil {
 		in, out := &in.Ipv6AccessConfig, &out.Ipv6AccessConfig
 		*out = make([]InstancetemplateIpv6AccessConfig, len(*in))
@@ -12369,6 +12384,11 @@ func (in *InstancetemplateNetworkInterface) DeepCopyInto(out *InstancetemplateNe
 	}
 	if in.Ipv6AccessType != nil {
 		in, out := &in.Ipv6AccessType, &out.Ipv6AccessType
+		*out = new(string)
+		**out = **in
+	}
+	if in.Ipv6Address != nil {
+		in, out := &in.Ipv6Address, &out.Ipv6Address
 		*out = new(string)
 		**out = **in
 	}

@@ -127,6 +127,8 @@ nodeConfig:
     external: string
     name: string
     namespace: string
+  confidentialNodes:
+    enabled: boolean
   diskSizeGb: integer
   diskType: string
   ephemeralStorageConfig:
@@ -725,6 +727,26 @@ version: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.confidentialNodes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.confidentialNodes.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

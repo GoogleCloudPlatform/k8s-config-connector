@@ -230,6 +230,10 @@ type InstancetemplateNetworkInterface struct {
 	// +optional
 	AliasIpRange []InstancetemplateAliasIpRange `json:"aliasIpRange,omitempty"`
 
+	/* The prefix length of the primary internal IPv6 range. */
+	// +optional
+	InternalIpv6PrefixLength *int `json:"internalIpv6PrefixLength,omitempty"`
+
 	/* An array of IPv6 access configurations for this interface. Currently, only one IPv6 access config, DIRECT_IPV6, is supported. If there is no ipv6AccessConfig specified, then this instance will have no external IPv6 Internet access. */
 	// +optional
 	Ipv6AccessConfig []InstancetemplateIpv6AccessConfig `json:"ipv6AccessConfig,omitempty"`
@@ -237,6 +241,10 @@ type InstancetemplateNetworkInterface struct {
 	/* One of EXTERNAL, INTERNAL to indicate whether the IP can be accessed from the Internet. This field is always inherited from its subnetwork. */
 	// +optional
 	Ipv6AccessType *string `json:"ipv6AccessType,omitempty"`
+
+	/* An IPv6 internal network address for this network interface. If not specified, Google Cloud will automatically assign an internal IPv6 address from the instance's subnetwork. */
+	// +optional
+	Ipv6Address *string `json:"ipv6Address,omitempty"`
 
 	/* The name of the network_interface. */
 	// +optional

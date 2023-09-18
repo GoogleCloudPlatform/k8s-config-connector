@@ -149,6 +149,7 @@ externalDataConfiguration:
   - string
 friendlyName: string
 materializedView:
+  allowNonIncrementalDefinition: boolean
   enableRefresh: boolean
   query: string
   refreshIntervalMs: integer
@@ -161,6 +162,19 @@ rangePartitioning:
     start: integer
 resourceID: string
 schema: string
+tableConstraints:
+  foreignKeys:
+  - columnReferences:
+      referencedColumn: string
+      referencingColumn: string
+    name: string
+    referencedTable:
+      datasetId: string
+      projectId: string
+      tableId: string
+  primaryKey:
+    columns:
+    - string
 timePartitioning:
   expirationMs: integer
   field: string
@@ -690,6 +704,16 @@ view:
     </tr>
     <tr>
         <td>
+            <p><code>materializedView.allowNonIncrementalDefinition</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Allow non incremental materialized view definition. The default value is false.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>materializedView.enableRefresh</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -806,6 +830,146 @@ view:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}A JSON schema for the table.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Defines the primary key and foreign keys.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.foreignKeys</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Present only if the table has a foreign key. The foreign key is not enforced.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.foreignKeys[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.foreignKeys[].columnReferences</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The pair of the foreign key column and primary key column.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.foreignKeys[].columnReferences.referencedColumn</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The column in the primary key that are referenced by the referencingColumn.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.foreignKeys[].columnReferences.referencingColumn</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The column that composes the foreign key.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.foreignKeys[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Set only if the foreign key constraint is named.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.foreignKeys[].referencedTable</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The table that holds the primary key and is referenced by this foreign key.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.foreignKeys[].referencedTable.datasetId</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The ID of the dataset containing this table.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.foreignKeys[].referencedTable.projectId</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The ID of the project containing this table.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.foreignKeys[].referencedTable.tableId</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters. Certain operations allow suffixing of the table ID with a partition decorator, such as sample_table$20190123.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.primaryKey</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Represents a primary key constraint on a table's columns. Present only if the table has a primary key. The primary key is not enforced.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.primaryKey.columns</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The columns that are composed of the primary key constraint.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>tableConstraints.primaryKey.columns[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

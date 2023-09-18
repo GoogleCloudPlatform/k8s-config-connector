@@ -193,6 +193,7 @@ type Config struct {
 	ArtifactRegistryBasePath         string
 	BackupDRBasePath                 string
 	BeyondcorpBasePath               string
+	BiglakeBasePath                  string
 	BigQueryBasePath                 string
 	BigqueryAnalyticsHubBasePath     string
 	BigqueryConnectionBasePath       string
@@ -224,6 +225,7 @@ type Config struct {
 	DataformBasePath                 string
 	DataFusionBasePath               string
 	DataLossPreventionBasePath       string
+	DataPipelineBasePath             string
 	DataplexBasePath                 string
 	DataprocBasePath                 string
 	DataprocMetastoreBasePath        string
@@ -285,6 +287,7 @@ type Config struct {
 	SpannerBasePath                  string
 	SQLBasePath                      string
 	StorageBasePath                  string
+	StorageInsightsBasePath          string
 	StorageTransferBasePath          string
 	TagsBasePath                     string
 	TPUBasePath                      string
@@ -324,6 +327,7 @@ const AppEngineBasePathKey = "AppEngine"
 const ArtifactRegistryBasePathKey = "ArtifactRegistry"
 const BackupDRBasePathKey = "BackupDR"
 const BeyondcorpBasePathKey = "Beyondcorp"
+const BiglakeBasePathKey = "Biglake"
 const BigQueryBasePathKey = "BigQuery"
 const BigqueryAnalyticsHubBasePathKey = "BigqueryAnalyticsHub"
 const BigqueryConnectionBasePathKey = "BigqueryConnection"
@@ -355,6 +359,7 @@ const DataCatalogBasePathKey = "DataCatalog"
 const DataformBasePathKey = "Dataform"
 const DataFusionBasePathKey = "DataFusion"
 const DataLossPreventionBasePathKey = "DataLossPrevention"
+const DataPipelineBasePathKey = "DataPipeline"
 const DataplexBasePathKey = "Dataplex"
 const DataprocBasePathKey = "Dataproc"
 const DataprocMetastoreBasePathKey = "DataprocMetastore"
@@ -416,6 +421,7 @@ const SourceRepoBasePathKey = "SourceRepo"
 const SpannerBasePathKey = "Spanner"
 const SQLBasePathKey = "SQL"
 const StorageBasePathKey = "Storage"
+const StorageInsightsBasePathKey = "StorageInsights"
 const StorageTransferBasePathKey = "StorageTransfer"
 const TagsBasePathKey = "Tags"
 const TPUBasePathKey = "TPU"
@@ -449,6 +455,7 @@ var DefaultBasePaths = map[string]string{
 	ArtifactRegistryBasePathKey:         "https://artifactregistry.googleapis.com/v1/",
 	BackupDRBasePathKey:                 "https://backupdr.googleapis.com/v1/",
 	BeyondcorpBasePathKey:               "https://beyondcorp.googleapis.com/v1/",
+	BiglakeBasePathKey:                  "https://biglake.googleapis.com/v1/",
 	BigQueryBasePathKey:                 "https://bigquery.googleapis.com/bigquery/v2/",
 	BigqueryAnalyticsHubBasePathKey:     "https://analyticshub.googleapis.com/v1beta1/",
 	BigqueryConnectionBasePathKey:       "https://bigqueryconnection.googleapis.com/v1/",
@@ -480,6 +487,7 @@ var DefaultBasePaths = map[string]string{
 	DataformBasePathKey:                 "https://dataform.googleapis.com/v1beta1/",
 	DataFusionBasePathKey:               "https://datafusion.googleapis.com/v1beta1/",
 	DataLossPreventionBasePathKey:       "https://dlp.googleapis.com/v2/",
+	DataPipelineBasePathKey:             "https://datapipelines.googleapis.com/v1/",
 	DataplexBasePathKey:                 "https://dataplex.googleapis.com/v1/",
 	DataprocBasePathKey:                 "https://dataproc.googleapis.com/v1beta2/",
 	DataprocMetastoreBasePathKey:        "https://metastore.googleapis.com/v1beta/",
@@ -541,6 +549,7 @@ var DefaultBasePaths = map[string]string{
 	SpannerBasePathKey:                  "https://spanner.googleapis.com/v1/",
 	SQLBasePathKey:                      "https://sqladmin.googleapis.com/sql/v1beta4/",
 	StorageBasePathKey:                  "https://storage.googleapis.com/storage/v1/",
+	StorageInsightsBasePathKey:          "https://storageinsights.googleapis.com/v1/",
 	StorageTransferBasePathKey:          "https://storagetransfer.googleapis.com/v1/",
 	TagsBasePathKey:                     "https://cloudresourcemanager.googleapis.com/v3/",
 	TPUBasePathKey:                      "https://tpu.googleapis.com/v1/",
@@ -684,6 +693,11 @@ func HandleSDKDefaults(d *schema.ResourceData) error {
 		d.Set("beyondcorp_custom_endpoint", MultiEnvDefault([]string{
 			"GOOGLE_BEYONDCORP_CUSTOM_ENDPOINT",
 		}, DefaultBasePaths[BeyondcorpBasePathKey]))
+	}
+	if d.Get("biglake_custom_endpoint") == "" {
+		d.Set("biglake_custom_endpoint", MultiEnvDefault([]string{
+			"GOOGLE_BIGLAKE_CUSTOM_ENDPOINT",
+		}, DefaultBasePaths[BiglakeBasePathKey]))
 	}
 	if d.Get("big_query_custom_endpoint") == "" {
 		d.Set("big_query_custom_endpoint", MultiEnvDefault([]string{
@@ -839,6 +853,11 @@ func HandleSDKDefaults(d *schema.ResourceData) error {
 		d.Set("data_loss_prevention_custom_endpoint", MultiEnvDefault([]string{
 			"GOOGLE_DATA_LOSS_PREVENTION_CUSTOM_ENDPOINT",
 		}, DefaultBasePaths[DataLossPreventionBasePathKey]))
+	}
+	if d.Get("data_pipeline_custom_endpoint") == "" {
+		d.Set("data_pipeline_custom_endpoint", MultiEnvDefault([]string{
+			"GOOGLE_DATA_PIPELINE_CUSTOM_ENDPOINT",
+		}, DefaultBasePaths[DataPipelineBasePathKey]))
 	}
 	if d.Get("dataplex_custom_endpoint") == "" {
 		d.Set("dataplex_custom_endpoint", MultiEnvDefault([]string{
@@ -1144,6 +1163,11 @@ func HandleSDKDefaults(d *schema.ResourceData) error {
 		d.Set("storage_custom_endpoint", MultiEnvDefault([]string{
 			"GOOGLE_STORAGE_CUSTOM_ENDPOINT",
 		}, DefaultBasePaths[StorageBasePathKey]))
+	}
+	if d.Get("storage_insights_custom_endpoint") == "" {
+		d.Set("storage_insights_custom_endpoint", MultiEnvDefault([]string{
+			"GOOGLE_STORAGE_INSIGHTS_CUSTOM_ENDPOINT",
+		}, DefaultBasePaths[StorageInsightsBasePathKey]))
 	}
 	if d.Get("storage_transfer_custom_endpoint") == "" {
 		d.Set("storage_transfer_custom_endpoint", MultiEnvDefault([]string{
@@ -2062,6 +2086,7 @@ func ConfigureBasePaths(c *Config) {
 	c.ArtifactRegistryBasePath = DefaultBasePaths[ArtifactRegistryBasePathKey]
 	c.BackupDRBasePath = DefaultBasePaths[BackupDRBasePathKey]
 	c.BeyondcorpBasePath = DefaultBasePaths[BeyondcorpBasePathKey]
+	c.BiglakeBasePath = DefaultBasePaths[BiglakeBasePathKey]
 	c.BigQueryBasePath = DefaultBasePaths[BigQueryBasePathKey]
 	c.BigqueryAnalyticsHubBasePath = DefaultBasePaths[BigqueryAnalyticsHubBasePathKey]
 	c.BigqueryConnectionBasePath = DefaultBasePaths[BigqueryConnectionBasePathKey]
@@ -2093,6 +2118,7 @@ func ConfigureBasePaths(c *Config) {
 	c.DataformBasePath = DefaultBasePaths[DataformBasePathKey]
 	c.DataFusionBasePath = DefaultBasePaths[DataFusionBasePathKey]
 	c.DataLossPreventionBasePath = DefaultBasePaths[DataLossPreventionBasePathKey]
+	c.DataPipelineBasePath = DefaultBasePaths[DataPipelineBasePathKey]
 	c.DataplexBasePath = DefaultBasePaths[DataplexBasePathKey]
 	c.DataprocBasePath = DefaultBasePaths[DataprocBasePathKey]
 	c.DataprocMetastoreBasePath = DefaultBasePaths[DataprocMetastoreBasePathKey]
@@ -2154,6 +2180,7 @@ func ConfigureBasePaths(c *Config) {
 	c.SpannerBasePath = DefaultBasePaths[SpannerBasePathKey]
 	c.SQLBasePath = DefaultBasePaths[SQLBasePathKey]
 	c.StorageBasePath = DefaultBasePaths[StorageBasePathKey]
+	c.StorageInsightsBasePath = DefaultBasePaths[StorageInsightsBasePathKey]
 	c.StorageTransferBasePath = DefaultBasePaths[StorageTransferBasePathKey]
 	c.TagsBasePath = DefaultBasePaths[TagsBasePathKey]
 	c.TPUBasePath = DefaultBasePaths[TPUBasePathKey]

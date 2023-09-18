@@ -31,21 +31,9 @@ func TestAccFirebaseWebApp_firebaseWebAppFull(t *testing.T) {
 		PreCheck: func() { acctest.AccTestPreCheck(t) },
 		Steps: []resource.TestStep{
 			{
-				ExternalProviders: map[string]resource.ExternalProvider{
-					"google": {
-						VersionConstraint: "4.58.0",
-						Source:            "hashicorp/google-beta",
-					},
-				},
 				Config: testAccFirebaseWebApp_firebaseWebAppFull(context, "", "key1"),
 			},
 			{
-				ExternalProviders: map[string]resource.ExternalProvider{
-					"google": {
-						VersionConstraint: "4.58.0",
-						Source:            "hashicorp/google-beta",
-					},
-				},
 				Config: testAccFirebaseWebApp_firebaseWebAppFull(context, "2", "key2"),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet("data.google_firebase_web_app_config.default", "api_key"),

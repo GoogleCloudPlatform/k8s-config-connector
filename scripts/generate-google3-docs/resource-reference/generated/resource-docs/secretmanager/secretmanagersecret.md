@@ -102,6 +102,12 @@ annotations:
   string: string
 expireTime: string
 replication:
+  auto:
+    customerManagedEncryption:
+      kmsKeyRef:
+        external: string
+        name: string
+        namespace: string
   automatic: boolean
   userManaged:
     replicas:
@@ -179,12 +185,76 @@ after the Secret has been created.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>replication.auto</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replication.auto.customerManagedEncryption</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The customer-managed encryption configuration of the Secret.
+If no configuration is provided, Google-managed default
+encryption is used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replication.auto.customerManagedEncryption.kmsKeyRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The customer-managed encryption configuration of the Secret.
+If no configuration is provided, Google-managed default
+encryption is used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replication.auto.customerManagedEncryption.kmsKeyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replication.auto.customerManagedEncryption.kmsKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replication.auto.customerManagedEncryption.kmsKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>replication.automatic</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. `automatic` is deprecated and will be removed in a future major release. Use `auto` instead. Immutable. The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -224,7 +294,7 @@ after the Secret has been created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Customer Managed Encryption for the secret.{% endverbatim %}</p>
+            <p>{% verbatim %}Customer Managed Encryption for the secret.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

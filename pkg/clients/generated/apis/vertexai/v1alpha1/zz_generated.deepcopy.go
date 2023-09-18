@@ -1558,6 +1558,11 @@ func (in *VertexAIIndexEndpointSpec) DeepCopyInto(out *VertexAIIndexEndpointSpec
 		**out = **in
 	}
 	out.ProjectRef = in.ProjectRef
+	if in.PublicEndpointEnabled != nil {
+		in, out := &in.PublicEndpointEnabled, &out.PublicEndpointEnabled
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -1602,6 +1607,11 @@ func (in *VertexAIIndexEndpointStatus) DeepCopyInto(out *VertexAIIndexEndpointSt
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
 		*out = new(int)
+		**out = **in
+	}
+	if in.PublicEndpointDomainName != nil {
+		in, out := &in.PublicEndpointDomainName, &out.PublicEndpointDomainName
+		*out = new(string)
 		**out = **in
 	}
 	if in.UpdateTime != nil {

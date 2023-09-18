@@ -131,7 +131,7 @@ type ComputeForwardingRuleSpec struct {
 	// +optional
 	AllowGlobalAccess *bool `json:"allowGlobalAccess,omitempty"`
 
-	/* Immutable. This is used in PSC consumer ForwardingRule to control whether the PSC endpoint can be accessed from another region. */
+	/* This is used in PSC consumer ForwardingRule to control whether the PSC endpoint can be accessed from another region. */
 	// +optional
 	AllowPscGlobalAccess *bool `json:"allowPscGlobalAccess,omitempty"`
 

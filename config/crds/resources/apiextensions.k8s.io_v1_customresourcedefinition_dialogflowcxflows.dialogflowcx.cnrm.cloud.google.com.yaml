@@ -95,11 +95,105 @@ spec:
                         could cause infinite loop. It is invalid to specify such fulfillment
                         for a handler handling webhooks.
                       properties:
+                        conditionalCases:
+                          description: Conditional cases for this fulfillment.
+                          items:
+                            properties:
+                              cases:
+                                description: |-
+                                  A JSON encoded list of cascading if-else conditions. Cases are mutually exclusive. The first one with a matching condition is selected, all the rest ignored.
+                                  See [Case](https://cloud.google.com/dialogflow/cx/docs/reference/rest/v3/Fulfillment#case) for the schema.
+                                type: string
+                            type: object
+                          type: array
                         messages:
                           description: The list of rich message responses to present
                             to the user.
                           items:
                             properties:
+                              channel:
+                                description: The channel which the response is associated
+                                  with. Clients can specify the channel via QueryParameters.channel,
+                                  and only associated channel response will be returned.
+                                type: string
+                              conversationSuccess:
+                                description: |-
+                                  Indicates that the conversation succeeded, i.e., the bot handled the issue that the customer talked to it about.
+                                  Dialogflow only uses this to determine which conversations should be counted as successful and doesn't process the metadata in this message in any way. Note that Dialogflow also considers conversations that get to the conversation end page as successful even if they don't return ConversationSuccess.
+                                  You may set this, for example:
+                                  * In the entryFulfillment of a Page if entering the page indicates that the conversation succeeded.
+                                  * In a webhook response when you determine that you handled the customer issue.
+                                properties:
+                                  metadata:
+                                    description: Custom metadata. Dialogflow doesn't
+                                      impose any structure on this.
+                                    type: string
+                                type: object
+                              liveAgentHandoff:
+                                description: |-
+                                  Indicates that the conversation should be handed off to a live agent.
+                                  Dialogflow only uses this to determine which conversations were handed off to a human agent for measurement purposes. What else to do with this signal is up to you and your handoff procedures.
+                                  You may set this, for example:
+                                  * In the entryFulfillment of a Page if entering the page indicates something went extremely wrong in the conversation.
+                                  * In a webhook response when you determine that the customer issue can only be handled by a human.
+                                properties:
+                                  metadata:
+                                    description: Custom metadata. Dialogflow doesn't
+                                      impose any structure on this.
+                                    type: string
+                                type: object
+                              outputAudioText:
+                                description: A text or ssml response that is preferentially
+                                  used for TTS output audio synthesis, as described
+                                  in the comment on the ResponseMessage message.
+                                properties:
+                                  allowPlaybackInterruption:
+                                    description: Whether the playback of this message
+                                      can be interrupted by the end user's speech
+                                      and the client can then starts the next Dialogflow
+                                      request.
+                                    type: boolean
+                                  ssml:
+                                    description: The SSML text to be synthesized.
+                                      For more information, see SSML.
+                                    type: string
+                                  text:
+                                    description: The raw text to be synthesized.
+                                    type: string
+                                type: object
+                              payload:
+                                description: A custom, platform-specific payload.
+                                type: string
+                              playAudio:
+                                description: Specifies an audio clip to be played
+                                  by the client as part of the response.
+                                properties:
+                                  allowPlaybackInterruption:
+                                    description: Whether the playback of this message
+                                      can be interrupted by the end user's speech
+                                      and the client can then starts the next Dialogflow
+                                      request.
+                                    type: boolean
+                                  audioUri:
+                                    description: URI of the audio clip. Dialogflow
+                                      does not impose any validation on this value.
+                                      It is specific to the client that reads it.
+                                    type: string
+                                required:
+                                - audioUri
+                                type: object
+                              telephonyTransferCall:
+                                description: Represents the signal that telles the
+                                  client to transfer the phone call connected to the
+                                  agent to a third-party endpoint.
+                                properties:
+                                  phoneNumber:
+                                    description: Transfer the call to a phone number
+                                      in E.164 format.
+                                    type: string
+                                required:
+                                - phoneNumber
+                                type: object
                               text:
                                 description: The text response message.
                                 properties:
@@ -128,6 +222,19 @@ spec:
                             may only want to apply it to fulfillments that have slow
                             webhooks.'
                           type: boolean
+                        setParameterActions:
+                          description: Set parameter values before executing the webhook.
+                          items:
+                            properties:
+                              parameter:
+                                description: Display name of the parameter.
+                                type: string
+                              value:
+                                description: The new JSON-encoded value of the parameter.
+                                  A null value clears the parameter.
+                                type: string
+                            type: object
+                          type: array
                         tag:
                           description: The tag used by the webhook to identify which
                             fulfillment is being called. This field is required if
@@ -230,11 +337,105 @@ spec:
                         At least one of triggerFulfillment and target must be specified.
                         When both are defined, triggerFulfillment is executed first.
                       properties:
+                        conditionalCases:
+                          description: Conditional cases for this fulfillment.
+                          items:
+                            properties:
+                              cases:
+                                description: |-
+                                  A JSON encoded list of cascading if-else conditions. Cases are mutually exclusive. The first one with a matching condition is selected, all the rest ignored.
+                                  See [Case](https://cloud.google.com/dialogflow/cx/docs/reference/rest/v3/Fulfillment#case) for the schema.
+                                type: string
+                            type: object
+                          type: array
                         messages:
                           description: The list of rich message responses to present
                             to the user.
                           items:
                             properties:
+                              channel:
+                                description: The channel which the response is associated
+                                  with. Clients can specify the channel via QueryParameters.channel,
+                                  and only associated channel response will be returned.
+                                type: string
+                              conversationSuccess:
+                                description: |-
+                                  Indicates that the conversation succeeded, i.e., the bot handled the issue that the customer talked to it about.
+                                  Dialogflow only uses this to determine which conversations should be counted as successful and doesn't process the metadata in this message in any way. Note that Dialogflow also considers conversations that get to the conversation end page as successful even if they don't return ConversationSuccess.
+                                  You may set this, for example:
+                                  * In the entryFulfillment of a Page if entering the page indicates that the conversation succeeded.
+                                  * In a webhook response when you determine that you handled the customer issue.
+                                properties:
+                                  metadata:
+                                    description: Custom metadata. Dialogflow doesn't
+                                      impose any structure on this.
+                                    type: string
+                                type: object
+                              liveAgentHandoff:
+                                description: |-
+                                  Indicates that the conversation should be handed off to a live agent.
+                                  Dialogflow only uses this to determine which conversations were handed off to a human agent for measurement purposes. What else to do with this signal is up to you and your handoff procedures.
+                                  You may set this, for example:
+                                  * In the entryFulfillment of a Page if entering the page indicates something went extremely wrong in the conversation.
+                                  * In a webhook response when you determine that the customer issue can only be handled by a human.
+                                properties:
+                                  metadata:
+                                    description: Custom metadata. Dialogflow doesn't
+                                      impose any structure on this.
+                                    type: string
+                                type: object
+                              outputAudioText:
+                                description: A text or ssml response that is preferentially
+                                  used for TTS output audio synthesis, as described
+                                  in the comment on the ResponseMessage message.
+                                properties:
+                                  allowPlaybackInterruption:
+                                    description: Whether the playback of this message
+                                      can be interrupted by the end user's speech
+                                      and the client can then starts the next Dialogflow
+                                      request.
+                                    type: boolean
+                                  ssml:
+                                    description: The SSML text to be synthesized.
+                                      For more information, see SSML.
+                                    type: string
+                                  text:
+                                    description: The raw text to be synthesized.
+                                    type: string
+                                type: object
+                              payload:
+                                description: A custom, platform-specific payload.
+                                type: string
+                              playAudio:
+                                description: Specifies an audio clip to be played
+                                  by the client as part of the response.
+                                properties:
+                                  allowPlaybackInterruption:
+                                    description: Whether the playback of this message
+                                      can be interrupted by the end user's speech
+                                      and the client can then starts the next Dialogflow
+                                      request.
+                                    type: boolean
+                                  audioUri:
+                                    description: URI of the audio clip. Dialogflow
+                                      does not impose any validation on this value.
+                                      It is specific to the client that reads it.
+                                    type: string
+                                required:
+                                - audioUri
+                                type: object
+                              telephonyTransferCall:
+                                description: Represents the signal that telles the
+                                  client to transfer the phone call connected to the
+                                  agent to a third-party endpoint.
+                                properties:
+                                  phoneNumber:
+                                    description: Transfer the call to a phone number
+                                      in E.164 format.
+                                    type: string
+                                required:
+                                - phoneNumber
+                                type: object
                               text:
                                 description: The text response message.
                                 properties:
@@ -263,6 +464,19 @@ spec:
                             may only want to apply it to fulfillments that have slow
                             webhooks.'
                           type: boolean
+                        setParameterActions:
+                          description: Set parameter values before executing the webhook.
+                          items:
+                            properties:
+                              parameter:
+                                description: Display name of the parameter.
+                                type: string
+                              value:
+                                description: The new JSON-encoded value of the parameter.
+                                  A null value clears the parameter.
+                                type: string
+                            type: object
+                          type: array
                         tag:
                           description: The tag used by the webhook to identify which
                             fulfillment is being called. This field is required if

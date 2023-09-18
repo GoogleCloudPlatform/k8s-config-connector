@@ -190,6 +190,7 @@ dnsConfig:
   clusterDnsScope: string
 enableAutopilot: boolean
 enableBinaryAuthorization: boolean
+enableFqdnNetworkPolicy: boolean
 enableIntranodeVisibility: boolean
 enableK8sBetaApis:
   enabledApis:
@@ -280,6 +281,8 @@ nodeConfig:
     external: string
     name: string
     namespace: string
+  confidentialNodes:
+    enabled: boolean
   diskSizeGb: integer
   diskType: string
   ephemeralStorageConfig:
@@ -519,7 +522,7 @@ workloadIdentityConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. Defaults to enabled; set disabled = true to disable.{% endverbatim %}</p>
+            <p>{% verbatim %}Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. Set enabled = true to enable. The Compute Engine persistent disk CSI Driver is enabled by default on newly created clusters for the following versions: Linux clusters: GKE version 1.18.10-gke.2100 or later, or 1.19.3-gke.2100 or later.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1399,6 +1402,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>enableFqdnNetworkPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether FQDN Network Policy is enabled on this cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>enableIntranodeVisibility</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2134,7 +2147,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS.{% endverbatim %}</p>
+            <p>{% verbatim %}GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET and WORKLOADS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2325,6 +2338,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.confidentialNodes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.confidentialNodes.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

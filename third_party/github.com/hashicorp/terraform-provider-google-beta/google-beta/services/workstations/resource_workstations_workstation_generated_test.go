@@ -113,6 +113,10 @@ resource "google_workstations_workstation" "default" {
     "label" = "key"
   }
 
+  env = {
+    name = "foo"
+  }
+
   annotations = {
     label-one = "value-one"
   }

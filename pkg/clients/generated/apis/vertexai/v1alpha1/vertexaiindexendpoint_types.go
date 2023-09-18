@@ -53,6 +53,10 @@ type VertexAIIndexEndpointSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
+	/* Immutable. If true, the deployed index will be accessible through public endpoint. */
+	// +optional
+	PublicEndpointEnabled *bool `json:"publicEndpointEnabled,omitempty"`
+
 	/* Immutable. The region of the index endpoint. eg us-central1. */
 	Region string `json:"region"`
 
@@ -80,6 +84,10 @@ type VertexAIIndexEndpointStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* If publicEndpointEnabled is true, this field will be populated with the domain name to use for this index endpoint. */
+	// +optional
+	PublicEndpointDomainName *string `json:"publicEndpointDomainName,omitempty"`
 
 	/* The timestamp of when the Index was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
 	// +optional

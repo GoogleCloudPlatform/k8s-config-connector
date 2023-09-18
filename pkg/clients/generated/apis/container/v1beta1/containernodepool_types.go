@@ -95,6 +95,11 @@ type NodepoolBlueGreenSettings struct {
 	StandardRolloutPolicy NodepoolStandardRolloutPolicy `json:"standardRolloutPolicy"`
 }
 
+type NodepoolConfidentialNodes struct {
+	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool. */
+	Enabled bool `json:"enabled"`
+}
+
 type NodepoolEphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	LocalSsdCount int `json:"localSsdCount"`
@@ -238,6 +243,10 @@ type NodepoolNodeConfig struct {
 
 	// +optional
 	BootDiskKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
+
+	/* Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool. */
+	// +optional
+	ConfidentialNodes *NodepoolConfidentialNodes `json:"confidentialNodes,omitempty"`
 
 	/* Immutable. Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. */
 	// +optional

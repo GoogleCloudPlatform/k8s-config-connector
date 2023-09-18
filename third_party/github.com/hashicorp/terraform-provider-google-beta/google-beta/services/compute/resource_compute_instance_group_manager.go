@@ -1341,28 +1341,32 @@ func expandAllInstancesConfig(old []interface{}, new []interface{}) *compute.Ins
 	var properties *compute.InstancePropertiesPatch
 	for _, raw := range new {
 		properties = &compute.InstancePropertiesPatch{}
-		data := raw.(map[string]interface{})
-		properties.Metadata = tpgresource.ConvertStringMap(data["metadata"].(map[string]interface{}))
-		if len(properties.Metadata) == 0 {
-			properties.NullFields = append(properties.NullFields, "Metadata")
-		}
-		properties.Labels = tpgresource.ConvertStringMap(data["labels"].(map[string]interface{}))
-		if len(properties.Labels) == 0 {
-			properties.NullFields = append(properties.NullFields, "Labels")
+		if raw != nil {
+			data := raw.(map[string]interface{})
+			properties.Metadata = tpgresource.ConvertStringMap(data["metadata"].(map[string]interface{}))
+			if len(properties.Metadata) == 0 {
+				properties.NullFields = append(properties.NullFields, "Metadata")
+			}
+			properties.Labels = tpgresource.ConvertStringMap(data["labels"].(map[string]interface{}))
+			if len(properties.Labels) == 0 {
+				properties.NullFields = append(properties.NullFields, "Labels")
+			}
 		}
 	}
 
 	if properties != nil {
 		for _, raw := range old {
-			data := raw.(map[string]interface{})
-			for k := range data["metadata"].(map[string]interface{}) {
-				if _, exist := properties.Metadata[k]; !exist {
-					properties.NullFields = append(properties.NullFields, fmt.Sprintf("Metadata.%s", k))
+			if raw != nil {
+				data := raw.(map[string]interface{})
+				for k := range data["metadata"].(map[string]interface{}) {
+					if _, exist := properties.Metadata[k]; !exist {
+						properties.NullFields = append(properties.NullFields, fmt.Sprintf("Metadata.%s", k))
+					}
 				}
-			}
-			for k := range data["labels"].(map[string]interface{}) {
-				if _, exist := properties.Labels[k]; !exist {
-					properties.NullFields = append(properties.NullFields, fmt.Sprintf("Labels.%s", k))
+				for k := range data["labels"].(map[string]interface{}) {
+					if _, exist := properties.Labels[k]; !exist {
+						properties.NullFields = append(properties.NullFields, fmt.Sprintf("Labels.%s", k))
+					}
 				}
 			}
 		}

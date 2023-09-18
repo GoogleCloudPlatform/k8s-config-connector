@@ -77,6 +77,7 @@
 ### Spec
 #### Schema
 ```yaml
+deletionPolicy: string
 enabled: boolean
 resourceID: string
 secretData:
@@ -98,6 +99,21 @@ secretRef:
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>deletionPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The deletion policy for the secret version. Setting 'ABANDON' allows the resource
+to be abandoned rather than deleted. Setting 'DISABLE' allows the resource to be
+disabled rather than deleted. Default is 'DELETE'. Possible values are:
+  * DELETE
+  * DISABLE
+  * ABANDON.{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>enabled</code></p>

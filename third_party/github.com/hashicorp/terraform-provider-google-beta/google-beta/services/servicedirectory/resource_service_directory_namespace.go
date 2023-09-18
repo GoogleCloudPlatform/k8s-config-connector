@@ -52,6 +52,7 @@ func ResourceServiceDirectoryNamespace() *schema.Resource {
 			"location": {
 				Type:     schema.TypeString,
 				Required: true,
+				ForceNew: true,
 				Description: `The location for the Namespace.
 A full list of valid locations can be found by running
 'gcloud beta service-directory locations list'.`,

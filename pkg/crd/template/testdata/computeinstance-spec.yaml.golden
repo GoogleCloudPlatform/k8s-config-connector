@@ -80,6 +80,7 @@ networkInterface:
   aliasIpRange:
   - ipCidrRange: string
     subnetworkRangeName: string
+  internalIpv6PrefixLength: integer
   ipv6AccessConfig:
   - externalIpv6: string
     externalIpv6PrefixLength: string
@@ -87,6 +88,7 @@ networkInterface:
     networkTier: string
     publicPtrDomainName: string
   ipv6AccessType: string
+  ipv6Address: string
   name: string
   networkIp: string
   networkIpRef:

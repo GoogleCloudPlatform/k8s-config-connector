@@ -25,7 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	apimachinerytypes "k8s.io/apimachinery/pkg/types"
@@ -48,7 +48,7 @@ func NewManagementConflictAnnotationDefaulter(smLoader *servicemappingloader.Ser
 		smLoader:              smLoader,
 		serviceMetadataLoader: serviceMetadataLoader,
 		dclSchemaLoader:       dclSchemaLoader,
-		tfResourceMap:         google.ResourceMap(),
+		tfResourceMap:         provider.ResourceMap(),
 	}
 }
 

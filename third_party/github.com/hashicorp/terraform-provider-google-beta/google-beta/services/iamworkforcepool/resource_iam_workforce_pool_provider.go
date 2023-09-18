@@ -239,6 +239,33 @@ However, existing tokens still grant access.`,
 								},
 							},
 						},
+						"jwks_json": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Description: `OIDC JWKs in JSON String format. For details on definition of a
+JWK, see https:tools.ietf.org/html/rfc7517. If not set, then we
+use the 'jwks_uri' from the discovery document fetched from the
+.well-known path for the 'issuer_uri'. Currently, RSA and EC asymmetric
+keys are supported. The JWK must use following format and include only
+the following fields:
+'''
+{
+  "keys": [
+    {
+          "kty": "RSA/EC",
+          "alg": "<algorithm>",
+          "use": "sig",
+          "kid": "<key-id>",
+          "n": "",
+          "e": "",
+          "x": "",
+          "y": "",
+          "crv": ""
+    }
+  ]
+}
+'''`,
+						},
 						"web_sso_config": {
 							Type:        schema.TypeList,
 							Computed:    true,
@@ -264,6 +291,15 @@ However, existing tokens still grant access.`,
 The 'CODE' Response Type is recommended to avoid the Implicit Flow, for security reasons.
 * CODE: The 'response_type=code' selection uses the Authorization Code Flow for web sign-in. Requires a configured client secret.
 * ID_TOKEN: The 'response_type=id_token' selection uses the Implicit Flow for web sign-in. Possible values: ["CODE", "ID_TOKEN"]`,
+									},
+									"additional_scopes": {
+										Type:     schema.TypeList,
+										Optional: true,
+										Description: `Additional scopes to request for in the OIDC authentication request on top of scopes requested by default. By default, the 'openid', 'profile' and 'email' scopes that are supported by the identity provider are requested.
+Each additional scope may be at most 256 characters. A maximum of 10 additional scopes may be configured.`,
+										Elem: &schema.Schema{
+											Type: schema.TypeString,
+										},
 									},
 								},
 							},
@@ -787,6 +823,8 @@ func flattenIAMWorkforcePoolWorkforcePoolProviderOidc(v interface{}, d *schema.R
 		flattenIAMWorkforcePoolWorkforcePoolProviderOidcClientSecret(original["clientSecret"], d, config)
 	transformed["web_sso_config"] =
 		flattenIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfig(original["webSsoConfig"], d, config)
+	transformed["jwks_json"] =
+		flattenIAMWorkforcePoolWorkforcePoolProviderOidcJwksJson(original["jwksJson"], d, config)
 	return []interface{}{transformed}
 }
 func flattenIAMWorkforcePoolWorkforcePoolProviderOidcIssuerUri(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -841,6 +879,8 @@ func flattenIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfig(v interface{},
 		flattenIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfigResponseType(original["responseType"], d, config)
 	transformed["assertion_claims_behavior"] =
 		flattenIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehavior(original["assertionClaimsBehavior"], d, config)
+	transformed["additional_scopes"] =
+		flattenIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfigAdditionalScopes(original["additionalScopes"], d, config)
 	return []interface{}{transformed}
 }
 func flattenIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfigResponseType(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -848,6 +888,14 @@ func flattenIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfigResponseType(v 
 }
 
 func flattenIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehavior(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfigAdditionalScopes(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenIAMWorkforcePoolWorkforcePoolProviderOidcJwksJson(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -938,6 +986,13 @@ func expandIAMWorkforcePoolWorkforcePoolProviderOidc(v interface{}, d tpgresourc
 		transformed["webSsoConfig"] = transformedWebSsoConfig
 	}
 
+	transformedJwksJson, err := expandIAMWorkforcePoolWorkforcePoolProviderOidcJwksJson(original["jwks_json"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedJwksJson); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["jwksJson"] = transformedJwksJson
+	}
+
 	return transformed, nil
 }
 
@@ -1025,6 +1080,13 @@ func expandIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfig(v interface{}, 
 		transformed["assertionClaimsBehavior"] = transformedAssertionClaimsBehavior
 	}
 
+	transformedAdditionalScopes, err := expandIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfigAdditionalScopes(original["additional_scopes"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedAdditionalScopes); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["additionalScopes"] = transformedAdditionalScopes
+	}
+
 	return transformed, nil
 }
 
@@ -1033,6 +1095,14 @@ func expandIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfigResponseType(v i
 }
 
 func expandIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehavior(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandIAMWorkforcePoolWorkforcePoolProviderOidcWebSsoConfigAdditionalScopes(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandIAMWorkforcePoolWorkforcePoolProviderOidcJwksJson(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 

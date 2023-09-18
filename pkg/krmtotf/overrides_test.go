@@ -23,7 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 )
 
 func Test_FlattenComputeInstanceMetadata(t *testing.T) {
@@ -219,7 +219,7 @@ func Test_ExpandComputeInstanceMetadata(t *testing.T) {
 
 func Test_MergeClusterConfigsFromLiveState(t *testing.T) {
 	t.Parallel()
-	resourceMap := google.ResourceMap()
+	resourceMap := provider.ResourceMap()
 	tests := []struct {
 		name      string
 		config    map[string]interface{}

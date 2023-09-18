@@ -182,7 +182,7 @@ spec:
                     description: Hostname for the MySQL connection.
                     type: string
                   password:
-                    description: Immutable. Password for the MySQL connection.
+                    description: Password for the MySQL connection.
                     oneOf:
                     - not:
                         required:

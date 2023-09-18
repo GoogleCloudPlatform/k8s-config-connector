@@ -604,6 +604,21 @@ Enabled by default.`,
 					},
 				},
 			},
+			"upgrade_policy": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `Specifies upgrade policy for the cluster.`,
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"control_plane_only": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Controls whether the upgrade applies to the control plane only.`,
+						},
+					},
+				},
+			},
 			"vm_tracking_enabled": {
 				Type:        schema.TypeBool,
 				Computed:    true,
@@ -953,6 +968,12 @@ func resourceGkeonpremVmwareClusterCreate(d *schema.ResourceData, meta interface
 	} else if v, ok := d.GetOkExists("enable_control_plane_v2"); !tpgresource.IsEmptyValue(reflect.ValueOf(enableControlPlaneV2Prop)) && (ok || !reflect.DeepEqual(v, enableControlPlaneV2Prop)) {
 		obj["enableControlPlaneV2"] = enableControlPlaneV2Prop
 	}
+	upgradePolicyProp, err := expandGkeonpremVmwareClusterUpgradePolicy(d.Get("upgrade_policy"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("upgrade_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(upgradePolicyProp)) && (ok || !reflect.DeepEqual(v, upgradePolicyProp)) {
+		obj["upgradePolicy"] = upgradePolicyProp
+	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{GkeonpremBasePath}}projects/{{project}}/locations/{{location}}/vmwareClusters?vmware_cluster_id={{name}}")
 	if err != nil {
@@ -1100,6 +1121,9 @@ func resourceGkeonpremVmwareClusterRead(d *schema.ResourceData, meta interface{}
 	if err := d.Set("enable_control_plane_v2", flattenGkeonpremVmwareClusterEnableControlPlaneV2(res["enableControlPlaneV2"], d, config)); err != nil {
 		return fmt.Errorf("Error reading VmwareCluster: %s", err)
 	}
+	if err := d.Set("upgrade_policy", flattenGkeonpremVmwareClusterUpgradePolicy(res["upgradePolicy"], d, config)); err != nil {
+		return fmt.Errorf("Error reading VmwareCluster: %s", err)
+	}
 	if err := d.Set("uid", flattenGkeonpremVmwareClusterUid(res["uid"], d, config)); err != nil {
 		return fmt.Errorf("Error reading VmwareCluster: %s", err)
 	}
@@ -1234,6 +1258,12 @@ func resourceGkeonpremVmwareClusterUpdate(d *schema.ResourceData, meta interface
 	} else if v, ok := d.GetOkExists("enable_control_plane_v2"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, enableControlPlaneV2Prop)) {
 		obj["enableControlPlaneV2"] = enableControlPlaneV2Prop
 	}
+	upgradePolicyProp, err := expandGkeonpremVmwareClusterUpgradePolicy(d.Get("upgrade_policy"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("upgrade_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, upgradePolicyProp)) {
+		obj["upgradePolicy"] = upgradePolicyProp
+	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{GkeonpremBasePath}}projects/{{project}}/locations/{{location}}/vmwareClusters/{{name}}")
 	if err != nil {
@@ -1293,6 +1323,10 @@ func resourceGkeonpremVmwareClusterUpdate(d *schema.ResourceData, meta interface
 
 	if d.HasChange("enable_control_plane_v2") {
 		updateMask = append(updateMask, "enableControlPlaneV2")
+	}
+
+	if d.HasChange("upgrade_policy") {
+		updateMask = append(updateMask, "upgradePolicy")
 	}
 	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
@@ -2158,6 +2192,23 @@ func flattenGkeonpremVmwareClusterValidationCheckScenario(v interface{}, d *sche
 }
 
 func flattenGkeonpremVmwareClusterEnableControlPlaneV2(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
+func flattenGkeonpremVmwareClusterUpgradePolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["control_plane_only"] =
+		flattenGkeonpremVmwareClusterUpgradePolicyControlPlaneOnly(original["controlPlaneOnly"], d, config)
+	return []interface{}{transformed}
+}
+func flattenGkeonpremVmwareClusterUpgradePolicyControlPlaneOnly(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -3228,5 +3279,28 @@ func expandGkeonpremVmwareClusterAuthorizationAdminUsersUsername(v interface{}, 
 }
 
 func expandGkeonpremVmwareClusterEnableControlPlaneV2(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandGkeonpremVmwareClusterUpgradePolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedControlPlaneOnly, err := expandGkeonpremVmwareClusterUpgradePolicyControlPlaneOnly(original["control_plane_only"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedControlPlaneOnly); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["controlPlaneOnly"] = transformedControlPlaneOnly
+	}
+
+	return transformed, nil
+}
+
+func expandGkeonpremVmwareClusterUpgradePolicyControlPlaneOnly(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }

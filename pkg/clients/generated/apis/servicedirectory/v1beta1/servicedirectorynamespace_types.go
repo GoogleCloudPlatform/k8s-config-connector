@@ -36,7 +36,7 @@ import (
 )
 
 type ServiceDirectoryNamespaceSpec struct {
-	/* The location for the Namespace.
+	/* Immutable. The location for the Namespace.
 	A full list of valid locations can be found by running
 	'gcloud beta service-directory locations list'. */
 	Location string `json:"location"`

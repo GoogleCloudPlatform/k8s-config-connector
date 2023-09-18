@@ -12,7 +12,7 @@ const val providerName = "google-beta"
 // GoogleBeta returns an instance of Project,
 // which has multiple build configurations defined within it.
 // See https://teamcity.jetbrains.com/app/dsl-documentation/root/project/index.html
-fun GoogleBeta(environment: String, manualVcsRoot: AbsoluteId, branchRef: String, configuration: ClientConfiguration) : Project {
+fun GoogleBeta(environment: String, projDescription: String, manualVcsRoot: AbsoluteId, branchRef: String, configuration: ClientConfiguration) : Project {
 
     // Create build configs for each package defined in packages.kt and services.kt files
     val allPackages = packages + services
@@ -28,8 +28,9 @@ fun GoogleBeta(environment: String, manualVcsRoot: AbsoluteId, branchRef: String
         postSweeperConfig.addTrigger(triggerConfig)
     }
 
-    
     return Project{
+
+        description = projDescription
 
         // Register build configs in the project
         buildType(preSweeperConfig)

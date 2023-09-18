@@ -3165,7 +3165,7 @@ resource "google_compute_region_instance_template" "foobar" {
     network = "default"
   }
 
-  scheduling { 
+  scheduling {
     local_ssd_recovery_timeout {
 	nanos = 0
 	seconds = 3600

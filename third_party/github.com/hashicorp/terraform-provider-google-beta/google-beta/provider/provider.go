@@ -22,6 +22,7 @@ import (
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/artifactregistry"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/backupdr"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/beyondcorp"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/biglake"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigquery"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigqueryanalyticshub"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/bigqueryconnection"
@@ -53,6 +54,7 @@ import (
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/datafusion"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/datalossprevention"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/datapipeline"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataplex"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataproc"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dataprocmetastore"
@@ -114,6 +116,7 @@ import (
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/spanner"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/sql"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/storage"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/storageinsights"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/storagetransfer"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/tags"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/tpu"
@@ -155,7 +158,7 @@ func Provider() *schema.Provider {
 			"credentials": {
 				Type:          schema.TypeString,
 				Optional:      true,
-				ValidateFunc:  validateCredentials,
+				ValidateFunc:  ValidateCredentials,
 				ConflictsWith: []string{"access_token"},
 			},
 
@@ -283,6 +286,11 @@ func Provider() *schema.Provider {
 				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"beyondcorp_custom_endpoint": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
+			},
+			"biglake_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
@@ -438,6 +446,11 @@ func Provider() *schema.Provider {
 				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
 			"data_loss_prevention_custom_endpoint": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
+			},
+			"data_pipeline_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
@@ -747,6 +760,11 @@ func Provider() *schema.Provider {
 				Optional:     true,
 				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
 			},
+			"storage_insights_custom_endpoint": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
+			},
 			"storage_transfer_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
@@ -817,7 +835,7 @@ func Provider() *schema.Provider {
 	}
 
 	provider.ConfigureContextFunc = func(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
-		return providerConfigure(ctx, d, provider)
+		return ProviderConfigure(ctx, d, provider)
 	}
 
 	transport_tpg.ConfigureDCLProvider(provider)
@@ -1030,6 +1048,7 @@ func DatasourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_gke_backup_backup_plan_iam_policy":               tpgiamresource.DataSourceIamPolicy(gkebackup.GKEBackupBackupPlanIamSchema, gkebackup.GKEBackupBackupPlanIamUpdaterProducer),
 			"google_gke_hub_membership_iam_policy":                   tpgiamresource.DataSourceIamPolicy(gkehub.GKEHubMembershipIamSchema, gkehub.GKEHubMembershipIamUpdaterProducer),
 			"google_gke_hub_feature_iam_policy":                      tpgiamresource.DataSourceIamPolicy(gkehub2.GKEHub2FeatureIamSchema, gkehub2.GKEHub2FeatureIamUpdaterProducer),
+			"google_gke_hub_scope_iam_policy":                        tpgiamresource.DataSourceIamPolicy(gkehub2.GKEHub2ScopeIamSchema, gkehub2.GKEHub2ScopeIamUpdaterProducer),
 			"google_healthcare_consent_store_iam_policy":             tpgiamresource.DataSourceIamPolicy(healthcare.HealthcareConsentStoreIamSchema, healthcare.HealthcareConsentStoreIamUpdaterProducer),
 			"google_iap_app_engine_service_iam_policy":               tpgiamresource.DataSourceIamPolicy(iap.IapAppEngineServiceIamSchema, iap.IapAppEngineServiceIamUpdaterProducer),
 			"google_iap_app_engine_version_iam_policy":               tpgiamresource.DataSourceIamPolicy(iap.IapAppEngineVersionIamSchema, iap.IapAppEngineVersionIamUpdaterProducer),
@@ -1087,9 +1106,9 @@ func DatasourceMapWithErrors() (map[string]*schema.Resource, error) {
 		})
 }
 
-// Generated resources: 369
-// Generated IAM resources: 234
-// Total generated resources: 603
+// Generated resources: 382
+// Generated IAM resources: 237
+// Total generated resources: 619
 func ResourceMap() map[string]*schema.Resource {
 	resourceMap, _ := ResourceMapWithErrors()
 	return resourceMap
@@ -1151,6 +1170,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_apigee_nat_address":                                      apigee.ResourceApigeeNatAddress(),
 			"google_apigee_organization":                                     apigee.ResourceApigeeOrganization(),
 			"google_apigee_sync_authorization":                               apigee.ResourceApigeeSyncAuthorization(),
+			"google_apigee_target_server":                                    apigee.ResourceApigeeTargetServer(),
 			"google_app_engine_application_url_dispatch_rules":               appengine.ResourceAppEngineApplicationUrlDispatchRules(),
 			"google_app_engine_domain_mapping":                               appengine.ResourceAppEngineDomainMapping(),
 			"google_app_engine_firewall_rule":                                appengine.ResourceAppEngineFirewallRule(),
@@ -1166,6 +1186,9 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_beyondcorp_app_connection":                               beyondcorp.ResourceBeyondcorpAppConnection(),
 			"google_beyondcorp_app_connector":                                beyondcorp.ResourceBeyondcorpAppConnector(),
 			"google_beyondcorp_app_gateway":                                  beyondcorp.ResourceBeyondcorpAppGateway(),
+			"google_biglake_catalog":                                         biglake.ResourceBiglakeCatalog(),
+			"google_biglake_database":                                        biglake.ResourceBiglakeDatabase(),
+			"google_biglake_table":                                           biglake.ResourceBiglakeTable(),
 			"google_bigquery_dataset":                                        bigquery.ResourceBigQueryDataset(),
 			"google_bigquery_dataset_access":                                 bigquery.ResourceBigQueryDatasetAccess(),
 			"google_bigquery_job":                                            bigquery.ResourceBigQueryJob(),
@@ -1290,6 +1313,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_compute_machine_image_iam_policy":                        tpgiamresource.ResourceIamPolicy(compute.ComputeMachineImageIamSchema, compute.ComputeMachineImageIamUpdaterProducer, compute.ComputeMachineImageIdParseFunc),
 			"google_compute_managed_ssl_certificate":                         compute.ResourceComputeManagedSslCertificate(),
 			"google_compute_network":                                         compute.ResourceComputeNetwork(),
+			"google_compute_network_attachment":                              compute.ResourceComputeNetworkAttachment(),
 			"google_compute_network_edge_security_service":                   compute.ResourceComputeNetworkEdgeSecurityService(),
 			"google_compute_network_endpoint":                                compute.ResourceComputeNetworkEndpoint(),
 			"google_compute_network_endpoint_group":                          compute.ResourceComputeNetworkEndpointGroup(),
@@ -1389,6 +1413,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_data_loss_prevention_inspect_template":                   datalossprevention.ResourceDataLossPreventionInspectTemplate(),
 			"google_data_loss_prevention_job_trigger":                        datalossprevention.ResourceDataLossPreventionJobTrigger(),
 			"google_data_loss_prevention_stored_info_type":                   datalossprevention.ResourceDataLossPreventionStoredInfoType(),
+			"google_data_pipeline_pipeline":                                  datapipeline.ResourceDataPipelinePipeline(),
 			"google_dataplex_asset_iam_binding":                              tpgiamresource.ResourceIamBinding(dataplex.DataplexAssetIamSchema, dataplex.DataplexAssetIamUpdaterProducer, dataplex.DataplexAssetIdParseFunc),
 			"google_dataplex_asset_iam_member":                               tpgiamresource.ResourceIamMember(dataplex.DataplexAssetIamSchema, dataplex.DataplexAssetIamUpdaterProducer, dataplex.DataplexAssetIdParseFunc),
 			"google_dataplex_asset_iam_policy":                               tpgiamresource.ResourceIamPolicy(dataplex.DataplexAssetIamSchema, dataplex.DataplexAssetIamUpdaterProducer, dataplex.DataplexAssetIdParseFunc),
@@ -1432,6 +1457,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_dialogflow_cx_flow":                                      dialogflowcx.ResourceDialogflowCXFlow(),
 			"google_dialogflow_cx_intent":                                    dialogflowcx.ResourceDialogflowCXIntent(),
 			"google_dialogflow_cx_page":                                      dialogflowcx.ResourceDialogflowCXPage(),
+			"google_dialogflow_cx_test_case":                                 dialogflowcx.ResourceDialogflowCXTestCase(),
 			"google_dialogflow_cx_webhook":                                   dialogflowcx.ResourceDialogflowCXWebhook(),
 			"google_dns_managed_zone":                                        dns.ResourceDNSManagedZone(),
 			"google_dns_managed_zone_iam_binding":                            tpgiamresource.ResourceIamBinding(dns.DNSManagedZoneIamSchema, dns.DNSManagedZoneIamUpdaterProducer, dns.DNSManagedZoneIdParseFunc),
@@ -1481,7 +1507,14 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_gke_hub_feature_iam_binding":                             tpgiamresource.ResourceIamBinding(gkehub2.GKEHub2FeatureIamSchema, gkehub2.GKEHub2FeatureIamUpdaterProducer, gkehub2.GKEHub2FeatureIdParseFunc),
 			"google_gke_hub_feature_iam_member":                              tpgiamresource.ResourceIamMember(gkehub2.GKEHub2FeatureIamSchema, gkehub2.GKEHub2FeatureIamUpdaterProducer, gkehub2.GKEHub2FeatureIdParseFunc),
 			"google_gke_hub_feature_iam_policy":                              tpgiamresource.ResourceIamPolicy(gkehub2.GKEHub2FeatureIamSchema, gkehub2.GKEHub2FeatureIamUpdaterProducer, gkehub2.GKEHub2FeatureIdParseFunc),
+			"google_gke_hub_membership_binding":                              gkehub2.ResourceGKEHub2MembershipBinding(),
 			"google_gke_hub_membership_rbac_role_binding":                    gkehub2.ResourceGKEHub2MembershipRBACRoleBinding(),
+			"google_gke_hub_namespace":                                       gkehub2.ResourceGKEHub2Namespace(),
+			"google_gke_hub_scope":                                           gkehub2.ResourceGKEHub2Scope(),
+			"google_gke_hub_scope_iam_binding":                               tpgiamresource.ResourceIamBinding(gkehub2.GKEHub2ScopeIamSchema, gkehub2.GKEHub2ScopeIamUpdaterProducer, gkehub2.GKEHub2ScopeIdParseFunc),
+			"google_gke_hub_scope_iam_member":                                tpgiamresource.ResourceIamMember(gkehub2.GKEHub2ScopeIamSchema, gkehub2.GKEHub2ScopeIamUpdaterProducer, gkehub2.GKEHub2ScopeIdParseFunc),
+			"google_gke_hub_scope_iam_policy":                                tpgiamresource.ResourceIamPolicy(gkehub2.GKEHub2ScopeIamSchema, gkehub2.GKEHub2ScopeIamUpdaterProducer, gkehub2.GKEHub2ScopeIdParseFunc),
+			"google_gke_hub_scope_rbac_role_binding":                         gkehub2.ResourceGKEHub2ScopeRBACRoleBinding(),
 			"google_gkeonprem_bare_metal_admin_cluster":                      gkeonprem.ResourceGkeonpremBareMetalAdminCluster(),
 			"google_gkeonprem_bare_metal_cluster":                            gkeonprem.ResourceGkeonpremBareMetalCluster(),
 			"google_gkeonprem_bare_metal_node_pool":                          gkeonprem.ResourceGkeonpremBareMetalNodePool(),
@@ -1614,6 +1647,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_pubsub_lite_reservation":                                 pubsublite.ResourcePubsubLiteReservation(),
 			"google_pubsub_lite_subscription":                                pubsublite.ResourcePubsubLiteSubscription(),
 			"google_pubsub_lite_topic":                                       pubsublite.ResourcePubsubLiteTopic(),
+			"google_redis_cluster":                                           redis.ResourceRedisCluster(),
 			"google_redis_instance":                                          redis.ResourceRedisInstance(),
 			"google_resource_manager_lien":                                   resourcemanager.ResourceResourceManagerLien(),
 			"google_runtimeconfig_config_iam_binding":                        tpgiamresource.ResourceIamBinding(runtimeconfig.RuntimeConfigConfigIamSchema, runtimeconfig.RuntimeConfigConfigIamUpdaterProducer, runtimeconfig.RuntimeConfigConfigIdParseFunc),
@@ -1662,6 +1696,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_storage_default_object_access_control":                   storage.ResourceStorageDefaultObjectAccessControl(),
 			"google_storage_hmac_key":                                        storage.ResourceStorageHmacKey(),
 			"google_storage_object_access_control":                           storage.ResourceStorageObjectAccessControl(),
+			"google_storage_insights_report_config":                          storageinsights.ResourceStorageInsightsReportConfig(),
 			"google_storage_transfer_agent_pool":                             storagetransfer.ResourceStorageTransferAgentPool(),
 			"google_tags_tag_binding":                                        tags.ResourceTagsTagBinding(),
 			"google_tags_tag_key":                                            tags.ResourceTagsTagKey(),
@@ -1862,7 +1897,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 	)
 }
 
-func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Provider) (interface{}, diag.Diagnostics) {
+func ProviderConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Provider) (interface{}, diag.Diagnostics) {
 	err := transport_tpg.HandleSDKDefaults(d)
 	if err != nil {
 		return nil, diag.FromErr(err)
@@ -1959,6 +1994,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.ArtifactRegistryBasePath = d.Get("artifact_registry_custom_endpoint").(string)
 	config.BackupDRBasePath = d.Get("backup_dr_custom_endpoint").(string)
 	config.BeyondcorpBasePath = d.Get("beyondcorp_custom_endpoint").(string)
+	config.BiglakeBasePath = d.Get("biglake_custom_endpoint").(string)
 	config.BigQueryBasePath = d.Get("big_query_custom_endpoint").(string)
 	config.BigqueryAnalyticsHubBasePath = d.Get("bigquery_analytics_hub_custom_endpoint").(string)
 	config.BigqueryConnectionBasePath = d.Get("bigquery_connection_custom_endpoint").(string)
@@ -1990,6 +2026,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.DataformBasePath = d.Get("dataform_custom_endpoint").(string)
 	config.DataFusionBasePath = d.Get("data_fusion_custom_endpoint").(string)
 	config.DataLossPreventionBasePath = d.Get("data_loss_prevention_custom_endpoint").(string)
+	config.DataPipelineBasePath = d.Get("data_pipeline_custom_endpoint").(string)
 	config.DataplexBasePath = d.Get("dataplex_custom_endpoint").(string)
 	config.DataprocBasePath = d.Get("dataproc_custom_endpoint").(string)
 	config.DataprocMetastoreBasePath = d.Get("dataproc_metastore_custom_endpoint").(string)
@@ -2051,6 +2088,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.SpannerBasePath = d.Get("spanner_custom_endpoint").(string)
 	config.SQLBasePath = d.Get("sql_custom_endpoint").(string)
 	config.StorageBasePath = d.Get("storage_custom_endpoint").(string)
+	config.StorageInsightsBasePath = d.Get("storage_insights_custom_endpoint").(string)
 	config.StorageTransferBasePath = d.Get("storage_transfer_custom_endpoint").(string)
 	config.TagsBasePath = d.Get("tags_custom_endpoint").(string)
 	config.TPUBasePath = d.Get("tpu_custom_endpoint").(string)
@@ -2089,7 +2127,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	return transport_tpg.ProviderDCLConfigure(d, &config), nil
 }
 
-func validateCredentials(v interface{}, k string) (warnings []string, errors []error) {
+func ValidateCredentials(v interface{}, k string) (warnings []string, errors []error) {
 	if v == nil || v.(string) == "" {
 		return
 	}

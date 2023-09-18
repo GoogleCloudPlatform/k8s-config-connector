@@ -12,7 +12,9 @@ import (
 func TestAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBasic(t *testing.T) {
 	t.Parallel()
 
-	context := map[string]interface{}{}
+	context := map[string]interface{}{
+		"random_suffix": acctest.RandString(t, 10),
+	}
 
 	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
@@ -42,7 +44,9 @@ func TestAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBasic(t *testing.T) 
 func TestAccGkeonpremBareMetalCluster_bareMetalClusterUpdateManualLb(t *testing.T) {
 	t.Parallel()
 
-	context := map[string]interface{}{}
+	context := map[string]interface{}{
+		"random_suffix": acctest.RandString(t, 10),
+	}
 
 	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
@@ -72,7 +76,9 @@ func TestAccGkeonpremBareMetalCluster_bareMetalClusterUpdateManualLb(t *testing.
 func TestAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBgpLb(t *testing.T) {
 	t.Parallel()
 
-	context := map[string]interface{}{}
+	context := map[string]interface{}{
+		"random_suffix": acctest.RandString(t, 10),
+	}
 
 	acctest.VcrTest(t, resource.TestCase{
 		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
@@ -104,7 +110,7 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateMetalLbStart(context
 
   resource "google_gkeonprem_bare_metal_cluster" "cluster-metallb" {
     provider = google-beta
-    name = "cluster-metallb"
+    name = "cluster-metallb%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     bare_metal_version = "1.12.3"
@@ -180,7 +186,7 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateMetalLb(context map[
 
   resource "google_gkeonprem_bare_metal_cluster" "cluster-metallb" {
     provider = google-beta
-    name = "cluster-metallb"
+    name = "cluster-metallb%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     bare_metal_version = "1.12.3"
@@ -254,7 +260,7 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateManualLbStart(contex
 
   resource "google_gkeonprem_bare_metal_cluster" "cluster-manuallb" {
     provider = google-beta
-    name = "cluster-manuallb"
+    name = "cluster-manuallb%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     bare_metal_version = "1.12.3"
@@ -319,6 +325,12 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateManualLbStart(contex
         }
       }
     }
+    binary_authorization {
+      evaluation_mode = "DISABLED"
+    }
+    upgrade_policy {
+      policy = "SERIAL"
+    }
   }
 `, context)
 }
@@ -328,7 +340,7 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateManualLb(context map
 
   resource "google_gkeonprem_bare_metal_cluster" "cluster-manuallb" {
     provider = google-beta
-    name = "cluster-manuallb"
+    name = "cluster-manuallb%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     bare_metal_version = "1.12.3"
@@ -382,6 +394,12 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateManualLb(context map
         }
       }
     }
+    binary_authorization {
+      evaluation_mode = "PROJECT_SINGLETON_POLICY_ENFORCE"
+    }
+    upgrade_policy {
+      policy = "CONCURRENT"
+    }
   }
 `, context)
 }
@@ -391,7 +409,7 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBgpLbStart(context m
 
   resource "google_gkeonprem_bare_metal_cluster" "cluster-bgplb" {
     provider = google-beta
-    name = "cluster-bgplb"
+    name = "cluster-bgplb%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     bare_metal_version = "1.12.3"
@@ -476,7 +494,7 @@ func testAccGkeonpremBareMetalCluster_bareMetalClusterUpdateBgpLb(context map[st
 
   resource "google_gkeonprem_bare_metal_cluster" "cluster-bgplb" {
     provider = google-beta
-    name = "cluster-bgplb"
+    name = "cluster-bgplb%{random_suffix}"
     location = "us-west1"
     admin_cluster_membership = "projects/870316890899/locations/global/memberships/gkeonprem-terraform-test"
     bare_metal_version = "1.12.3"

@@ -117,7 +117,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The location for the Namespace.
+            <p>{% verbatim %}Immutable. The location for the Namespace.
 A full list of valid locations can be found by running
 'gcloud beta service-directory locations list'.{% endverbatim %}</p>
         </td>

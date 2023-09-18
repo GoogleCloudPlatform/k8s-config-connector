@@ -45,7 +45,7 @@ type BucketAction struct {
 }
 
 type BucketAutoclass struct {
-	/* Immutable. While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern. */
+	/* While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern. */
 	Enabled bool `json:"enabled"`
 }
 
@@ -165,7 +165,7 @@ type BucketWebsite struct {
 }
 
 type StorageBucketSpec struct {
-	/* Immutable. The bucket's autoclass configuration. */
+	/* The bucket's autoclass configuration. */
 	// +optional
 	Autoclass *BucketAutoclass `json:"autoclass,omitempty"`
 

@@ -181,6 +181,10 @@ resource "google_workstations_workstation" "default" {
     "label" = "key"
   }
 
+  env = {
+    name = "foo"
+  }
+
   annotations = {
     label-one = "value-one"
   }
@@ -255,6 +259,10 @@ resource "google_workstations_workstation" "default" {
 
   labels = {
     "label" = "key"
+  }
+
+  env = {
+    name = "foo"
   }
 
   annotations = {
@@ -352,6 +360,10 @@ resource "google_workstations_workstation" "default" {
     "label" = "key"
   }
 
+  env = {
+    name = "foo"
+  }
+
   annotations = {
     label-one = "value-one"
   }
@@ -431,6 +443,10 @@ resource "google_workstations_workstation" "default" {
     "label" = "key"
   }
 
+  env = {
+    name = "foo"
+  }
+
   annotations = {
     label-one = "value-one"
   }
@@ -505,6 +521,10 @@ resource "google_workstations_workstation" "default" {
 
   labels = {
     "label" = "key"
+  }
+
+  env = {
+    name = "foo"
   }
 
   annotations = {

@@ -53,7 +53,7 @@ type ClusterAddonsConfig struct {
 	// +optional
 	DnsCacheConfig *ClusterDnsCacheConfig `json:"dnsCacheConfig,omitempty"`
 
-	/* Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. Defaults to enabled; set disabled = true to disable. */
+	/* Whether this cluster should enable the Google Compute Engine Persistent Disk Container Storage Interface (CSI) Driver. Set enabled = true to enable. The Compute Engine persistent disk CSI Driver is enabled by default on newly created clusters for the following versions: Linux clusters: GKE version 1.18.10-gke.2100 or later, or 1.19.3-gke.2100 or later. */
 	// +optional
 	GcePersistentDiskCsiDriverConfig *ClusterGcePersistentDiskCsiDriverConfig `json:"gcePersistentDiskCsiDriverConfig,omitempty"`
 
@@ -219,7 +219,7 @@ type ClusterClusterTelemetry struct {
 }
 
 type ClusterConfidentialNodes struct {
-	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this cluster. */
+	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool. */
 	Enabled bool `json:"enabled"`
 }
 
@@ -550,7 +550,7 @@ type ClusterMonitoringConfig struct {
 	// +optional
 	AdvancedDatapathObservabilityConfig []ClusterAdvancedDatapathObservabilityConfig `json:"advancedDatapathObservabilityConfig,omitempty"`
 
-	/* GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS. */
+	/* GKE components exposing metrics. Valid values include SYSTEM_COMPONENTS, APISERVER, SCHEDULER, CONTROLLER_MANAGER, STORAGE, HPA, POD, DAEMONSET, DEPLOYMENT, STATEFULSET and WORKLOADS. */
 	// +optional
 	EnableComponents []string `json:"enableComponents,omitempty"`
 
@@ -596,6 +596,10 @@ type ClusterNodeConfig struct {
 
 	// +optional
 	BootDiskKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
+
+	/* Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool. */
+	// +optional
+	ConfidentialNodes *ClusterConfidentialNodes `json:"confidentialNodes,omitempty"`
 
 	/* Immutable. Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. */
 	// +optional
@@ -1078,6 +1082,10 @@ type ContainerClusterSpec struct {
 	/* DEPRECATED. Deprecated in favor of binary_authorization. Enable Binary Authorization for this cluster. If enabled, all container images will be validated by Google Binary Authorization. */
 	// +optional
 	EnableBinaryAuthorization *bool `json:"enableBinaryAuthorization,omitempty"`
+
+	/* Whether FQDN Network Policy is enabled on this cluster. */
+	// +optional
+	EnableFqdnNetworkPolicy *bool `json:"enableFqdnNetworkPolicy,omitempty"`
 
 	/* Whether Intra-node visibility is enabled for this cluster. This makes same node pod to pod traffic visible for VPC network. */
 	// +optional

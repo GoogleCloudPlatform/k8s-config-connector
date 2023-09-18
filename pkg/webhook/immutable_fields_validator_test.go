@@ -32,7 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	"github.com/nasa9084/go-openapi"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -42,7 +42,7 @@ import (
 
 func TestChangesOnImmutableFields(t *testing.T) {
 	t.Parallel()
-	p := google.Provider()
+	p := provider.Provider()
 	v := newImmutableFieldsValidatorHandler(t)
 	for _, testcase := range TestCases {
 		t.Run(testcase.Name, func(t *testing.T) {

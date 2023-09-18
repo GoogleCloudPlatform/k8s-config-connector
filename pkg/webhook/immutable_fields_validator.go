@@ -37,7 +37,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/typeutil"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	"github.com/nasa9084/go-openapi"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -66,7 +66,7 @@ var (
 func NewImmutableFieldsValidatorHandler(smLoader *servicemappingloader.ServiceMappingLoader, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader) *immutableFieldsValidatorHandler {
 	return &immutableFieldsValidatorHandler{
 		smLoader:              smLoader,
-		tfResourceMap:         google.ResourceMap(),
+		tfResourceMap:         provider.ResourceMap(),
 		dclSchemaLoader:       dclSchemaLoader,
 		serviceMetadataLoader: serviceMetadataLoader,
 	}

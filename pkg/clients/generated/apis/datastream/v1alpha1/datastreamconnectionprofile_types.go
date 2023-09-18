@@ -101,7 +101,7 @@ type ConnectionprofileMysqlProfile struct {
 	/* Hostname for the MySQL connection. */
 	Hostname string `json:"hostname"`
 
-	/* Immutable. Password for the MySQL connection. */
+	/* Password for the MySQL connection. */
 	Password ConnectionprofilePassword `json:"password"`
 
 	/* Port for the MySQL connection. */

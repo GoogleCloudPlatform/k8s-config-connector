@@ -26,7 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-provider-google-beta/google-beta"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
@@ -36,7 +36,7 @@ const (
 
 func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv1alpha1.ResourceConfig) (*apiextensions.CustomResourceDefinition, error) {
 	resource := resourceConfig.Name
-	p := google.Provider()
+	p := provider.Provider()
 	r, ok := p.ResourcesMap[resource]
 	if !ok {
 		return nil, fmt.Errorf("unknown resource %v", resource)

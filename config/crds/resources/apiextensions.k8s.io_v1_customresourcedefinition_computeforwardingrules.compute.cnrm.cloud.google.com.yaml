@@ -89,9 +89,8 @@ spec:
                   internal load balancer.
                 type: boolean
               allowPscGlobalAccess:
-                description: Immutable. This is used in PSC consumer ForwardingRule
-                  to control whether the PSC endpoint can be accessed from another
-                  region.
+                description: This is used in PSC consumer ForwardingRule to control
+                  whether the PSC endpoint can be accessed from another region.
                 type: boolean
               backendServiceRef:
                 description: |-

@@ -179,7 +179,7 @@ website:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The bucket's autoclass configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}The bucket's autoclass configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -189,7 +189,7 @@ website:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern.{% endverbatim %}</p>
+            <p>{% verbatim %}While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
