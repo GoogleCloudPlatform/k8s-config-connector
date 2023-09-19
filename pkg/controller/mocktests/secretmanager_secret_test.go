@@ -26,12 +26,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type httpRoundTripperKeyType int

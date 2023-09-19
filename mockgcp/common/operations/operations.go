@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/google/uuid"
 	pb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
@@ -27,6 +26,8 @@ import (
 	"google.golang.org/protobuf/encoding/prototext"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/klog/v2"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type Operations struct {

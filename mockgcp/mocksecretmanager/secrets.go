@@ -19,7 +19,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	secretmanager "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -27,6 +26,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
 type SecretsV1 struct {

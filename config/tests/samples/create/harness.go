@@ -34,8 +34,6 @@ import (
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
 	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"golang.org/x/oauth2/google"
 
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
@@ -49,6 +47,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type Harness struct {

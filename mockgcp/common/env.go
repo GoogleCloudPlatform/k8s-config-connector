@@ -15,8 +15,9 @@
 package common
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
 type MockEnvironment struct {

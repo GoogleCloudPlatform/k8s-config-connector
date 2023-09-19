@@ -26,6 +26,11 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcertificatemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
@@ -34,10 +39,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type mockRoundTripper struct {

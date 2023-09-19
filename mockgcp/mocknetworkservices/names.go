@@ -17,9 +17,10 @@ package mocknetworkservices
 import (
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
 type meshName struct {

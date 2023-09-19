@@ -21,13 +21,14 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/api/option"
 	secretmanager "google.golang.org/api/secretmanager/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 func TestSecretManagerSecretVersion(t *testing.T) {

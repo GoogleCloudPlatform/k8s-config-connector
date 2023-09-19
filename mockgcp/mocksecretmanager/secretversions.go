@@ -20,8 +20,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	secretmanager "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -31,6 +29,9 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/klog/v2"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 // Creates a new [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] containing secret data and attaches

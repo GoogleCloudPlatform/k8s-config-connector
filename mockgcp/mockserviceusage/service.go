@@ -17,17 +17,18 @@ package mockserviceusage
 import (
 	"context"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	pb_v1 "google.golang.org/genproto/googleapis/api/serviceusage/v1"
+	pb_v1beta1 "google.golang.org/genproto/googleapis/api/serviceusage/v1beta1"
+	"google.golang.org/grpc"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb_v1_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/api/serviceusage/v1"
 	pb_v1beta1_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/api/serviceusage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	pb_v1 "google.golang.org/genproto/googleapis/api/serviceusage/v1"
-	pb_v1beta1 "google.golang.org/genproto/googleapis/api/serviceusage/v1beta1"
-	"google.golang.org/grpc"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // MockService represents a mocked serviceusage service.
