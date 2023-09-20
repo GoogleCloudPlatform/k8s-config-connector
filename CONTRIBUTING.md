@@ -70,12 +70,12 @@ summary, you perform the follow steps to get your fork ready:
     https://docs.github.com/en/get-started/quickstart/fork-a-repo#cloning-your-forked-repository
 
     We recommend you to create the local clone under the path
-    `~/go/src/github.com/YOUR-USERNAME`. This will help to avoid a few known
+    `~/go/src/github.com/YOUR_USERNAME`. This will help to avoid a few known
     build frictions related to generated code.
 
     ```shell
-    mkdir -p ~/go/src/github.com/YOUR-USERNAME
-    cd ~/go/src/github.com/YOUR-USERNAME
+    mkdir -p ~/go/src/github.com/YOUR_USERNAME
+    cd ~/go/src/github.com/YOUR_USERNAME
     git clone https://github.com/YOUR_USERNAME/k8s-config-connector   # If you use ssh key auth, this will be git@github.com:YOUR_USERNAME/k8s-config-connector.git
     ```
 
@@ -154,6 +154,7 @@ repo to quickly set up a local dev environment.
     resource in the next step. So we can do:
 
     ```shell
+    cd ~/go/src/github.com/YOUR_USERNAME/k8s-config-connector
     make manifests
     kubectl apply -f config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com.yaml
     ```
