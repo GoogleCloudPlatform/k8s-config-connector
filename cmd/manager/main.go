@@ -43,6 +43,7 @@ import (
 var logger = klog.Log.WithName("setup")
 
 func main() {
+	log.Printf("I have finished the getting started guide.")
 	ctx := context.Background()
 
 	stop := signals.SetupSignalHandler()

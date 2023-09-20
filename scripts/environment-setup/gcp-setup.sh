@@ -79,16 +79,8 @@ gcloud iam service-accounts add-iam-policy-binding cnrm-system@${PROJECT_ID}.iam
     --member="serviceAccount:${PROJECT_ID}.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
     --role="roles/iam.workloadIdentityUser"
 
-cd ${GOPATH}/src/github.com/GoogleCloudPlatform/k8s-config-connector
-
-make docker-build
-make docker-push
-
 # To ensure the logs are ingested, enable the stackdriver service.
 gcloud services enable stackdriver.googleapis.com
-
-# Deploy the pods and CRDs to your cluster.
-make deploy
 
 GREEN='\033[0;32m'
 NC='\033[0m'

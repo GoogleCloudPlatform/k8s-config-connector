@@ -17,7 +17,9 @@
 set -o errexit
 
 # This will pull the current go version used in the repository
-GO_VERSION=`cat ${HOME}/go/src/github.com/GoogleCloudPlatform/k8s-config-connector/go.mod | grep -P -o "(?<=^go ).*"`
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+GO_VERSION=`cat go.mod | grep -P -o "(?<=^go ).*"`
 sudo apt-get install wget
 wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
 sudo tar -xvzf go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local
