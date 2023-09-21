@@ -1,4 +1,4 @@
-# How to Contribute
+# How to Contribute to Config Connector
 
 We'd love to accept your patches and contributions to this project. Source code
 in this project is currently being mirrored from internal Google repository. The
