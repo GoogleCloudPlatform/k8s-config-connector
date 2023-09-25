@@ -101,3 +101,48 @@ index 24c0afc04..8d51a4eba 100644
  		return []*schema.ResourceData{d}, nil
  	}
  }
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/logging/resource_logging_billing_account_sink.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/logging/resource_logging_billing_account_sink.go
+index b675beec1..0c477ca83 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/logging/resource_logging_billing_account_sink.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/logging/resource_logging_billing_account_sink.go
+@@ -66,6 +66,10 @@ func resourceLoggingBillingAccountSinkRead(d *schema.ResourceData, meta interfac
+ 		return err
+ 	}
+ 
++	if err := d.Set("unique_writer_identity", false); err != nil {
++		return fmt.Errorf("Error setting unique_writer_identity: %s", err)
++	}
++
+ 	return nil
+ }
+ 
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/logging/resource_logging_folder_sink.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/logging/resource_logging_folder_sink.go
+index 3dcf07925..deb5f016d 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/logging/resource_logging_folder_sink.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/logging/resource_logging_folder_sink.go
+@@ -85,6 +85,10 @@ func resourceLoggingFolderSinkRead(d *schema.ResourceData, meta interface{}) err
+ 		return fmt.Errorf("Error setting include_children: %s", err)
+ 	}
+ 
++	if err := d.Set("unique_writer_identity", false); err != nil {
++		return fmt.Errorf("Error setting unique_writer_identity: %s", err)
++	}
++
+ 	return nil
+ }
+ 
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/logging/resource_logging_organization_sink.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/logging/resource_logging_organization_sink.go
+index 5593d1fb0..1a9055f0b 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/logging/resource_logging_organization_sink.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/logging/resource_logging_organization_sink.go
+@@ -84,6 +84,10 @@ func resourceLoggingOrganizationSinkRead(d *schema.ResourceData, meta interface{
+ 		return fmt.Errorf("Error setting include_children: %s", err)
+ 	}
+ 
++	if err := d.Set("unique_writer_identity", false); err != nil {
++		return fmt.Errorf("Error setting unique_writer_identity: %s", err)
++	}
++
+ 	return nil
+ }
+ 

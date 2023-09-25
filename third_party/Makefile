@@ -163,8 +163,10 @@ apply-patches:
 	git apply ../hack/terraform-overrides/sql_database_instance_settings.patch
 	# `project_team` field should be an object rather than a list
 	git apply ../hack/terraform-overrides/storage_default_object_access_control.patch
-	# Add combined_resources.go so that we can create custom TF resources
+	# 1) Add combined_resources.go so that we can create custom TF resources
 	# that combined multiple TF resources.
+	# 2) Set unique_writer_identity to false for Org/Folder/BillingAccount logging sink
+	# on read, this avoids constant diff being generated in the combined KCC resource.
 	git apply ../hack/terraform-overrides/combined_resources.patch
 	# Add a combined logging log sink resource to the provider, in order to
 	# avoid needing to implement more generic resource merging in KCC.
