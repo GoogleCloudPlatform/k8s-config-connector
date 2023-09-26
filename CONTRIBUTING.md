@@ -47,39 +47,66 @@ We follow the
 [Fork and pull model](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/about-collaborative-development-models#fork-and-pull-model)
 in GitHub.
 
-You need to first fork this repository, and you can later on open a pull request
+You need to first fork this repository, and you can later open a pull request
 to propose changes from your own fork to the **master** branch in this source
 repository.
 
 GitHub provides detailed instructions in
-[Fork a repo](https://docs.github.com/en/get-started/quickstart/fork-a-repo). In
-summary, you perform the follow steps to get your fork ready:
+[Fork a repo](https://docs.github.com/en/get-started/quickstart/fork-a-repo).
 
-1.  Set up Git and authentication with GitHub.com.
+If you're doing this for the first time, the easiest way to get going is with the `gh` CLI tool:
 
-    https://docs.github.com/en/get-started/quickstart/set-up-git
+1. Install the `gh` CLI tool following the [instructions](https://github.com/cli/cli#installation)
 
-2.  Fork the `k8s-config-connector` repo. Instructions below assumes you also
-    name your fork as `k8s-config-connector`. If you use a different name for
-    the fork, you should replace the commands with the right name.
-
-    https://docs.github.com/en/get-started/quickstart/fork-a-repo#forking-a-repository
-
-3.  Clone your forked repo to your dev machine.
-
-    https://docs.github.com/en/get-started/quickstart/fork-a-repo#cloning-your-forked-repository
-
-    We recommend you to create the local clone under the path
-    `~/go/src/github.com/YOUR_USERNAME`. This will help to avoid a few known
-    build frictions related to generated code.
+1. Clone the repo.  We recommend you to create the local clone under the path
+    `~/go/src/github.com/GoogleCloudPlatform`. 
 
     ```shell
-    mkdir -p ~/go/src/github.com/YOUR_USERNAME
-    cd ~/go/src/github.com/YOUR_USERNAME
-    git clone https://github.com/YOUR_USERNAME/k8s-config-connector   # If you use ssh key auth, this will be git@github.com:YOUR_USERNAME/k8s-config-connector.git
+    gh repo clone github.com/GoogleCloudPlatform/k8s-config-connector ~/go/src/github.com/GoogleCloudPlatform/k8s-config-connector
+    cd ~/go/src/github.com/GoogleCloudPlatform/k8s-config-connector
     ```
 
-### Set up your environment
+1. Create a fork of the repo in your github account (and set up the remotes):
+
+   ```shell
+   gh repo fork --remote
+   ```
+
+1. You can now inspect the remotes with `git remote -v`, you should see a remote
+   named `upstream` that is the main project, and a remote named `origin` that is your fork.
+   You will typically work locally, push branches to your fork (`origin`), and then send
+   Pull-Requests (PRs) to the main project (`upstream`) when they are ready.
+
+
+### Run tests against a mock environment
+
+KCC includes some tests that run against a [mock](https://en.wikipedia.org/wiki/Mock_object) version of GCP.  You should be able
+to run these tests at this point (though you will need to have [go installed](https://go.dev/doc/install) ).
+
+To run just one test:
+
+```
+# Download and set up envtest, a local test version of kubernetes apiserver
+export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@master use -p path)
+
+RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock go test ./tests/e2e/ -test.count=1 -v -run TestAllInSeries/samples/privatecacapool
+```
+
+This test takes about a minute (after compilation) - and we're working on making it much faster.  mockgcp coverage is currently pretty sparse,
+but we are working on adding coverage for more of the GCP APIs.
+
+Successful output should look like this:
+
+```
+...
+--- PASS: TestAllInSeries (50.71s)
+    --- PASS: TestAllInSeries/samples (50.71s)
+        --- PASS: TestAllInSeries/samples/privatecacapool (48.92s)
+PASS
+ok  	github.com/GoogleCloudPlatform/k8s-config-connector/tests/e2e	51.313s
+```
+
+### Set up for testing against a real environment
 
 Once you have cloned your forked repo, you can use some helper scripts in the
 repo to quickly set up a local dev environment.
@@ -99,7 +126,7 @@ repo to quickly set up a local dev environment.
 1.  Change to environment-setup directory.
 
     ```shell
-    cd ~/go/src/github.com/YOUR_USERNAME/k8s-config-connector/scripts/environment-setup
+    cd ~/go/src/github.com/GoogleCloudPlatform/k8s-config-connector/scripts/environment-setup
     ```
 
 1.  Set up sudoless Docker.
@@ -118,7 +145,7 @@ repo to quickly set up a local dev environment.
 1.  Install Golang.
 
     ```shell
-    cd ~/go/src/github.com/YOUR_USERNAME/k8s-config-connector/scripts/environment-setup
+    cd ~/go/src/github.com/GoogleCloudPlatform/k8s-config-connector/scripts/environment-setup
     ./golang-setup.sh
     source ~/.profile
     ```
@@ -154,7 +181,7 @@ repo to quickly set up a local dev environment.
     resource in the next step. So we can do:
 
     ```shell
-    cd ~/go/src/github.com/YOUR_USERNAME/k8s-config-connector
+    cd ~/go/src/github.com/GoogleCloudPlatform/k8s-config-connector
     make manifests
     kubectl apply -f config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com.yaml
     ```
