@@ -75,7 +75,7 @@ fmt:
 	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg cmd scripts config/tests
 	# 04bfe4ee9ca5764577b029acc6a1957fd1997153 includes fix to not log "Skipped" for each skipped file
 	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache \
-	-ignore "vendor/**" -ignore "third_party/**" \
+	-ignore ".build/**" -ignore "vendor/**" -ignore "third_party/**" \
 	-ignore "config/crds/**" -ignore "config/cloudcodesnippets/**" \
 	-ignore "**/*.html" -ignore "config/installbundle/components/clusterroles/cnrm_admin.yaml" \
 	-ignore "config/installbundle/components/clusterroles/cnrm_viewer.yaml" \
@@ -179,17 +179,9 @@ install: manifests
 deploy-controller: docker-build docker-push
 	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
-
-# Generate strong-typed definitions for existing CRDs
-.PHONY: client-types
-client-types:
-	go run ./scripts/generate-go-crd-clients
-	make fmt
-
 # Generate CRD go clients
 .PHONY: generate-go-client
-generate-go-client: client-types
-	go generate ./pkg/clients/generated/...
+generate-go-client:
 	./scripts/generate-go-crd-clients/generate-clients.sh
 
 # Generate google3 docs

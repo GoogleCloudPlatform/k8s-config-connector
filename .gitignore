@@ -145,3 +145,4 @@ Session.vim
 
 # always skip vendored files
 /vendor
+.build
