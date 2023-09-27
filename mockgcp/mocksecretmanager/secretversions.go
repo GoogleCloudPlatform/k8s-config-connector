@@ -253,6 +253,26 @@ func (s *SecretsV1) EnableSecretVersion(ctx context.Context, req *pb.EnableSecre
 	return secretVersion, nil
 }
 
+func (s *SecretsV1) DisableSecretVersion(ctx context.Context, req *pb.DisableSecretVersionRequest) (*pb.SecretVersion, error) {
+	name, err := s.parseSecretVersionName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	secretVersion, err := s.getSecretVersion(ctx, name)
+	if err != nil {
+		return nil, err
+	}
+
+	secretVersion.State = pb.SecretVersion_DISABLED
+	fqn := secretVersion.Name
+	if err := s.storage.Update(ctx, fqn, secretVersion); err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating secret version: %v", err)
+	}
+
+	return secretVersion, nil
+}
+
 // Destroys a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 //
 // Sets the [state][google.cloud.secretmanager.v1.SecretVersion.state] of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] to
