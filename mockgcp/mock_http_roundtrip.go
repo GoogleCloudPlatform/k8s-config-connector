@@ -24,6 +24,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -127,6 +128,62 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	return rt
 }
 
+func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
+	if req.Body != nil {
+		var requestBody bytes.Buffer
+		if _, err := io.Copy(&requestBody, req.Body); err != nil {
+			return fmt.Errorf("error reading request body: %w", err)
+		}
+
+		s := requestBody.String()
+
+		s, err := m.modifyUpdateMask(s)
+		if err != nil {
+			return err
+		}
+
+		req.Body = io.NopCloser(strings.NewReader(s))
+	}
+	return nil
+}
+
+// modifyUpdateMask fixes up the updateMask parameter, which is a proto FieldMask.
+// Technically, when transported over JSON it should be passed as json fields (displayName),
+// and when transported over proto is should be passed as proto fields (display_name).
+// However, because GCP APIs seem to accept display_name or displayName over JSON.
+// If we don't map display_name => displayName, the proto validation will reject it.
+// e.g. https://github.com/grpc-ecosystem/grpc-gateway/issues/2239
+func (m *mockRoundTripper) modifyUpdateMask(s string) (string, error) {
+	if len(s) == 0 {
+		return "", nil
+	}
+
+	o := make(map[string]any)
+	if err := json.Unmarshal([]byte(s), &o); err != nil {
+		return "", fmt.Errorf("parsing json: %w", err)
+	}
+
+	for k, v := range o {
+		switch k {
+		case "updateMask":
+			vString := v.(string)
+			tokens := strings.Split(vString, ",")
+			for i, token := range tokens {
+				switch token {
+				case "display_name":
+					tokens[i] = "displayName"
+				}
+			}
+			o[k] = strings.Join(tokens, ",")
+		}
+	}
+	b, err := json.Marshal(o)
+	if err != nil {
+		return "", fmt.Errorf("building json: %w", err)
+	}
+	return string(b), nil
+}
+
 func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	log.Printf("request: %v %v", req.Method, req.URL)
 
@@ -134,6 +191,10 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 
 	mux := m.hosts[req.Host]
 	if mux != nil {
+		if err := m.prefilterRequest(req); err != nil {
+			return nil, err
+		}
+
 		var body bytes.Buffer
 		w := &bufferedResponseWriter{body: &body, header: make(http.Header)}
 		mux.ServeHTTP(w, req)
