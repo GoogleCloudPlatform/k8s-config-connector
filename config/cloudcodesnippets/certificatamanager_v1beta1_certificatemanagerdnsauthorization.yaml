@@ -1,0 +1,12 @@
+label: Config Connector CertificateManagerDNSAuthorization
+markdownDescription: Creates yaml for a CertificateManagerDNSAuthorization resource
+insertText: |
+  apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+  kind: CertificateManagerDNSAuthorization
+  metadata:
+    name: \${1:certificatemanagerdnsauthorization-name}
+  spec:
+    description: \${2:sample dns authorization}
+    domain: \${3:subdomain.hashicorptest.com}
+    projectRef:
+      external: \${4:[PROJECT_ID?]}

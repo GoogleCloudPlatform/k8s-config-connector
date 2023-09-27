@@ -1,0 +1,13 @@
+label: Config Connector CertificateManagerCertificateMap
+markdownDescription: Creates yaml for a CertificateManagerCertificateMap resource
+insertText: |
+  apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+  kind: CertificateManagerCertificateMap
+  metadata:
+    labels:
+      \${1:value}: \${2:cert-map}
+    name: \${3:certificatemanagercertificatemap-name}
+  spec:
+    description: \${4:sample certificate map}
+    projectRef:
+      external: \${5:[PROJECT_ID?]}
