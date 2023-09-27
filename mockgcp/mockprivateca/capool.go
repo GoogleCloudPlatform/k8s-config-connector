@@ -70,6 +70,47 @@ func (s *PrivateCAV1) CreateCaPool(ctx context.Context, req *pb.CreateCaPoolRequ
 	return s.operations.NewLRO(ctx)
 }
 
+func (s *PrivateCAV1) UpdateCaPool(ctx context.Context, req *pb.UpdateCaPoolRequest) (*longrunning.Operation, error) {
+	reqName := req.GetCaPool().GetName()
+
+	name, err := s.parseCAPoolName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.CaPool{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "caPool %q not found", reqName)
+		}
+		return nil, status.Errorf(codes.Internal, "error reading caPool: %v", err)
+	}
+
+	// Required. A list of fields to be updated in this request.
+	paths := req.GetUpdateMask().GetPaths()
+
+	// TODO: Some sort of helper for fieldmask?
+	for _, path := range paths {
+		switch path {
+		case "issuancePolicy":
+			obj.IssuancePolicy = req.GetCaPool().GetIssuancePolicy()
+		case "publishingOptions":
+			obj.PublishingOptions = req.GetCaPool().GetPublishingOptions()
+		case "labels":
+			obj.Labels = req.GetCaPool().GetLabels()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating caPool: %v", err)
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
 func (s *PrivateCAV1) DeleteCaPool(ctx context.Context, req *pb.DeleteCaPoolRequest) (*longrunning.Operation, error) {
 	name, err := s.parseCAPoolName(req.Name)
 	if err != nil {
