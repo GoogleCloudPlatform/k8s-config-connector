@@ -16,13 +16,13 @@ package mockcertificatemanager
 
 import (
 	"context"
-	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/klog/v2"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/certificatemanager/v1"
 )
@@ -71,6 +71,48 @@ func (s *CertificateManagerV1) CreateCertificate(ctx context.Context, req *pb.Cr
 	return s.operations.NewLRO(ctx)
 }
 
+func (s *CertificateManagerV1) UpdateCertificate(ctx context.Context, req *pb.UpdateCertificateRequest) (*longrunning.Operation, error) {
+	reqName := req.GetCertificate().GetName()
+
+	name, err := s.parseCertificateName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Certificate{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "certificate %q not found", reqName)
+		}
+		return nil, status.Errorf(codes.Internal, "error reading certificate: %v", err)
+	}
+
+	// Required. The update mask applies to the resource.
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		klog.Warningf("update_mask was not provided in request, should be required")
+	}
+
+	// TODO: Some sort of helper for fieldmask?
+	for _, path := range paths {
+		switch path {
+		case "description":
+			obj.Description = req.GetCertificate().GetDescription()
+		case "labels":
+			obj.Labels = req.GetCertificate().GetLabels()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating certificate: %v", err)
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
 func (s *CertificateManagerV1) DeleteCertificate(ctx context.Context, req *pb.DeleteCertificateRequest) (*longrunning.Operation, error) {
 	name, err := s.parseCertificateName(req.Name)
 	if err != nil {
@@ -95,10 +137,6 @@ func (s *CertificateManagerV1) GetCertificateMap(ctx context.Context, req *pb.Ge
 	name, err := s.parseCertificateMapName(req.Name)
 	if err != nil {
 		return nil, err
-	}
-
-	if time.Now().UnixNano()%2 == 0 {
-		return nil, status.Errorf(codes.Internal, "try again!")
 	}
 
 	fqn := name.String()
@@ -129,6 +167,47 @@ func (s *CertificateManagerV1) CreateCertificateMap(ctx context.Context, req *pb
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating certificate map: %v", err)
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
+func (s *CertificateManagerV1) UpdateCertificateMap(ctx context.Context, req *pb.UpdateCertificateMapRequest) (*longrunning.Operation, error) {
+	reqName := req.GetCertificateMap().GetName()
+
+	name, err := s.parseCertificateMapName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.CertificateMap{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "certificateMap %q not found", reqName)
+		}
+		return nil, status.Errorf(codes.Internal, "error reading certificateMap: %v", err)
+	}
+
+	// Required. The update mask applies to the resource.
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		klog.Warningf("update_mask was not provided in request, should be required")
+	}
+	// TODO: Some sort of helper for fieldmask?
+	for _, path := range paths {
+		switch path {
+		case "description":
+			obj.Description = req.GetCertificateMap().GetDescription()
+		case "labels":
+			obj.Labels = req.GetCertificateMap().GetLabels()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating certificateMap: %v", err)
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -193,6 +272,48 @@ func (s *CertificateManagerV1) CreateDnsAuthorization(ctx context.Context, req *
 	return s.operations.NewLRO(ctx)
 }
 
+func (s *CertificateManagerV1) UpdateDnsAuthorization(ctx context.Context, req *pb.UpdateDnsAuthorizationRequest) (*longrunning.Operation, error) {
+	reqName := req.GetDnsAuthorization().GetName()
+
+	name, err := s.parseDNSAuthorizationName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.DnsAuthorization{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "dnsAuthorization %q not found", reqName)
+		}
+		return nil, status.Errorf(codes.Internal, "error reading dnsAuthorization: %v", err)
+	}
+
+	// Required. The update mask applies to the resource.
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		klog.Warningf("update_mask was not provided in request, should be required")
+	}
+
+	// TODO: Some sort of helper for fieldmask?
+	for _, path := range paths {
+		switch path {
+		case "description":
+			obj.Description = req.GetDnsAuthorization().GetDescription()
+		case "labels":
+			obj.Labels = req.GetDnsAuthorization().GetLabels()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating dnsAuthorization: %v", err)
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
 func (s *CertificateManagerV1) DeleteDnsAuthorization(ctx context.Context, req *pb.DeleteDnsAuthorizationRequest) (*longrunning.Operation, error) {
 	name, err := s.parseDNSAuthorizationName(req.Name)
 	if err != nil {
@@ -247,6 +368,47 @@ func (s *CertificateManagerV1) CreateCertificateMapEntry(ctx context.Context, re
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating certificate map entry: %v", err)
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
+func (s *CertificateManagerV1) UpdateCertificateMapEntry(ctx context.Context, req *pb.UpdateCertificateMapEntryRequest) (*longrunning.Operation, error) {
+	reqName := req.GetCertificateMapEntry().GetName()
+
+	name, err := s.parseCertificateMapEntryName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.CertificateMapEntry{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "certificateMapEntry %q not found", reqName)
+		}
+		return nil, status.Errorf(codes.Internal, "error reading certificateMapEntry: %v", err)
+	}
+
+	// Required. The update mask applies to the resource.
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		klog.Warningf("update_mask was not provided in request, should be required")
+	}
+	// TODO: Some sort of helper for fieldmask?
+	for _, path := range paths {
+		switch path {
+		case "description":
+			obj.Description = req.GetCertificateMapEntry().GetDescription()
+		case "labels":
+			obj.Labels = req.GetCertificateMapEntry().GetLabels()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating certificateMapEntry: %v", err)
 	}
 
 	return s.operations.NewLRO(ctx)
