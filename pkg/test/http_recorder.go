@@ -26,8 +26,8 @@ import (
 	"time"
 	"unicode"
 
-	"gopkg.in/yaml.v2"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/yaml"
 )
 
 type LogEntry struct {
@@ -96,7 +96,7 @@ func (r *HTTPRecorder) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 
 	if recordErr := r.record(&entry, req, response); recordErr != nil {
-		klog.Warningf("failed to record HTTP request: %v", err)
+		klog.Warningf("failed to record HTTP request: %v", recordErr)
 	}
 
 	return response, err
