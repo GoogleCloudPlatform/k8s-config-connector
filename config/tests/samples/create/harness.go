@@ -73,6 +73,7 @@ func NewHarnessWithManager(t *testing.T, ctx context.Context, mgr manager.Manage
 		Ctx:    ctx,
 		client: mgr.GetClient(),
 	}
+	h.Ctx = test.WithContext(h.Ctx, t)
 	return h
 }
 
@@ -88,6 +89,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		T:   t,
 		Ctx: ctx,
 	}
+	h.Ctx = test.WithContext(h.Ctx, t)
 
 	kccConfig := kccmanager.Config{}
 	// Prevent manager from binding to a port to serve prometheus metrics
