@@ -348,15 +348,16 @@ func (t *Harness) waitForCRDReady(obj client.Object) {
 			logger.Info("Error getting resource", "kind", kind, "id", id, "error", err)
 			return false, err
 		}
-		conditions := dynamic.GetConditions(t.T, u)
-		for _, condition := range conditions {
+		objectStatus := dynamic.GetObjectStatus(t.T, u)
+		// CRDs do not have observedGeneration
+		for _, condition := range objectStatus.Conditions {
 			if condition.Type == "Established" && condition.Status == "True" {
 				logger.Info("crd is ready", "kind", kind, "id", id)
 				return true, nil
 			}
 		}
 		// This resource is not completely ready. Let's keep polling.
-		logger.Info("CRD is not ready", "kind", kind, "id", id, "conditions", conditions)
+		logger.Info("CRD is not ready", "kind", kind, "id", id, "conditions", objectStatus.Conditions)
 		return false, nil
 	}); err != nil {
 		t.Errorf("error while polling for ready on %v %v: %v", kind, id, err)

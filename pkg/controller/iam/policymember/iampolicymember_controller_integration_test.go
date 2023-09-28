@@ -170,7 +170,7 @@ func testPolicyMemberCreateDelete(t *testing.T, mgr manager.Manager, k8sPolicyMe
 	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sPolicyMember), k8sPolicyMember); err != nil {
 		t.Fatalf("unexpected error getting resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sPolicyMember.Status.Conditions)
+	testcontroller.AssertReadyCondition(t, k8sPolicyMember)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, v1beta1.IAMPolicyMemberGVK.Kind, &k8sPolicyMember.ObjectMeta, k8s.UpToDate)
 	if err := kubeClient.Delete(context.TODO(), k8sPolicyMember); err != nil {
 		t.Fatalf("error deleting policy member: %v", err)
@@ -257,7 +257,7 @@ func testReconcileResourceLevelAcquire(t *testing.T, mgr manager.Manager, k8sPol
 	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sPolicyMember), k8sPolicyMember); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sPolicyMember.Status.Conditions)
+	testcontroller.AssertReadyCondition(t, k8sPolicyMember)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, v1beta1.IAMPolicyMemberGVK.Kind, &k8sPolicyMember.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sPolicyMember, preReconcileGeneration)
 }

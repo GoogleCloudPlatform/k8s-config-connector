@@ -17,16 +17,36 @@ package testcontroller
 import (
 	"testing"
 
-	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
+	"k8s.io/apimachinery/pkg/api/meta"
+	"k8s.io/apimachinery/pkg/runtime"
 )
 
-// AssertReadyCondition checks that the given conditions slice contains a Ready condition.
-func AssertReadyCondition(t *testing.T, conditions []condition.Condition) {
+// AssertReadyCondition checks that the given statuc.onditions slice contains a Ready condition.
+func AssertReadyCondition(t *testing.T, object runtime.Object) {
 	t.Helper()
-	if len(conditions) != 1 {
-		t.Fatalf("expected 1 condition, instead have %v", len(conditions))
+
+	gvk := object.GetObjectKind().GroupVersionKind()
+
+	accessor, err := meta.Accessor(object)
+	if err != nil {
+		t.Fatalf("unable to get accessor for object of type %T: %v", object, err)
 	}
-	readyCondition := conditions[0]
+	objectID := gvk.Kind + ":" + accessor.GetName()
+
+	objectStatus := dynamic.GetObjectStatus(t, object)
+	if objectStatus.ObservedGeneration == nil {
+		t.Fatalf("resource %v does not yet have status.observedGeneration", objectID)
+	}
+	if *objectStatus.ObservedGeneration < objectStatus.Generation {
+		t.Fatalf("resource %v status.observedGeneration is behind current generation", objectID)
+	}
+
+	if len(objectStatus.Conditions) != 1 {
+		t.Fatalf("expected 1 condition, instead have %v", len(objectStatus.Conditions))
+	}
+
+	readyCondition := objectStatus.Conditions[0]
 	if readyCondition.Type != "Ready" {
 		t.Errorf("readyCondition type mismatch: got '%v', want '%v'", readyCondition.Type, "Ready")
 	}
