@@ -27,8 +27,8 @@ import (
 	fakeaccesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1/fake"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
 	fakeaccesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1/fake"
-	alloydbv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1alpha1"
-	fakealloydbv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1alpha1/fake"
+	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
+	fakealloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1/fake"
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1"
 	fakeapigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1/fake"
 	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
@@ -93,6 +93,8 @@ import (
 	fakecontaineranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1alpha1/fake"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1beta1"
 	fakecontaineranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1beta1/fake"
+	containerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containerattached/v1beta1"
+	fakecontainerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containerattached/v1beta1/fake"
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
 	fakedatacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1/fake"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
@@ -310,9 +312,9 @@ func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.
 	return &fakeaccesscontextmanagerv1alpha1.FakeAccesscontextmanagerV1alpha1{Fake: &c.Fake}
 }
 
-// AlloydbV1alpha1 retrieves the AlloydbV1alpha1Client
-func (c *Clientset) AlloydbV1alpha1() alloydbv1alpha1.AlloydbV1alpha1Interface {
-	return &fakealloydbv1alpha1.FakeAlloydbV1alpha1{Fake: &c.Fake}
+// AlloydbV1beta1 retrieves the AlloydbV1beta1Client
+func (c *Clientset) AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface {
+	return &fakealloydbv1beta1.FakeAlloydbV1beta1{Fake: &c.Fake}
 }
 
 // ApigatewayV1alpha1 retrieves the ApigatewayV1alpha1Client
@@ -473,6 +475,11 @@ func (c *Clientset) ContaineranalysisV1alpha1() containeranalysisv1alpha1.Contai
 // ContaineranalysisV1beta1 retrieves the ContaineranalysisV1beta1Client
 func (c *Clientset) ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface {
 	return &fakecontaineranalysisv1beta1.FakeContaineranalysisV1beta1{Fake: &c.Fake}
+}
+
+// ContainerattachedV1beta1 retrieves the ContainerattachedV1beta1Client
+func (c *Clientset) ContainerattachedV1beta1() containerattachedv1beta1.ContainerattachedV1beta1Interface {
+	return &fakecontainerattachedv1beta1.FakeContainerattachedV1beta1{Fake: &c.Fake}
 }
 
 // DatacatalogV1alpha1 retrieves the DatacatalogV1alpha1Client

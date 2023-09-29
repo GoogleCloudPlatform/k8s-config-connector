@@ -8,12 +8,20 @@ insertText: |
   spec:
     location: \${2:global}
     workforcePoolRef:
-      name: \${3:iamwfpp-dep-oidc}
+      name: \${3:iamworkforcepoolprovider-dep-oidcworkforcepoolprovider}
     attributeMapping:
       google.subject: \${4:assertion.sub}
     oidc:
       issuerUri: \${5:https://example.com}
       clientId: \${6:client-id}
+      clientSecret:
+        value:
+          plainText:
+            value: \${7:client-secret}
+      jwksJson: \${8:["keys":[["kty":"RSA","e":"AQAB","use":"sig","kid":"1i-PmZZrF1j2rOUAxkcQaaz3MnOXcwwziuch_XWjvqI","alg":"RS256","n":"kFpYE2Zm32y--cnUiFLm4cYmFO8tR4-5KU5-aqhRwiHPP0FkgdQZSoSyp_1DO6PruYfluRMviwOpbmM6LH7KemxVdxLKqLDkHSG0XC3dZkACRFNvBBOdFrvJ0ABXv3vVx592lFE0m-Je5-FerRSQCml6E7icNiTSxizEmvDsTIe8mvArjsODDrgWP25bEFwDPBd5cCl3_2gtW6YdaCRewLXdzuB5Wmp_vOu6trTUzEKbnQlWFtDDCPfOpywYXF8dY1Lbwas5iwwIZozwD2_CuTiyXa3T2_4oa119_rQrIC2BAv7q_S1Xoa2lk3q2GZUSVQ5i3gIbJuDHmp-6yh3k4w"]]]}
       webSsoConfig:
-        responseType: \${7:ID_TOKEN}
-        assertionClaimsBehavior: \${8:ONLY_ID_TOKEN_CLAIMS}
+        responseType: \${9:CODE}
+        assertionClaimsBehavior: \${10:MERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS}
+        additionalScopes:
+        - \${11:groups}
+        - \${12:photos}

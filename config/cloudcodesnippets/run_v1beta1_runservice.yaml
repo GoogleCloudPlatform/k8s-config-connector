@@ -13,12 +13,18 @@ insertText: |
       external: \${5:projects/[PROJECT_ID?]}
     template:
       containers:
-      - env:
-        - name: \${6:FOO}
-          value: \${7:bar]}
-        image: \${8:gcr.io/cloudrun/hello}
-      scaling:
-        maxInstanceCount: \${9:2}
-    traffic:
-    - percent: \${10:100}
-      type: \${11:TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST}
+      - image: \${6:gcr.io/cloudrun/hello}
+        volumeMounts:
+        - name: \${7:a-volume}
+          mountPath: \${8:/secrets}
+      volumes:
+      - name: \${9:a-volume}
+        secret:
+          secretRef:
+            name: \${10:runservice-dep-secret}
+            defaultMode: \${11:292}
+            items:
+            - versionRef:
+                name: \${12:runservice-dep-secret}
+                path: \${13:my-secret}
+                mode: \${14:256}

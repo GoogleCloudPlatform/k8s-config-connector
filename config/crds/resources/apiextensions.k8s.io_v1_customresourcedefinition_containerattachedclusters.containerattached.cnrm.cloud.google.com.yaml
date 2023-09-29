@@ -1,0 +1,350 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: containerattachedclusters.containerattached.cnrm.cloud.google.com
+spec:
+  group: containerattached.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ContainerAttachedCluster
+    plural: containerattachedclusters
+    shortNames:
+    - gcpcontainerattachedcluster
+    - gcpcontainerattachedclusters
+    singular: containerattachedcluster
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Optional. Annotations on the cluster. This field has the same
+                  restrictions as Kubernetes annotations. The total size of all keys and
+                  values combined is limited to 256k. Key can have 2 segments: prefix (optional)
+                  and name (required), separated by a slash (/). Prefix must be a DNS subdomain.
+                  Name must be 63 characters or less, begin and end with alphanumerics,
+                  with dashes (-), underscores (_), dots (.), and alphanumerics between.
+                type: object
+              authorization:
+                description: Configuration related to the cluster RBAC settings.
+                properties:
+                  adminUsers:
+                    description: |-
+                      Users that can perform operations as a cluster admin. A managed
+                      ClusterRoleBinding will be created to grant the 'cluster-admin' ClusterRole
+                      to the users. Up to ten admin users can be provided.
+
+                      For more info on RBAC, see
+                      https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              binaryAuthorization:
+                description: Binary Authorization configuration.
+                properties:
+                  evaluationMode:
+                    description: 'Configure Binary Authorization evaluation mode.
+                      Possible values: ["DISABLED", "PROJECT_SINGLETON_POLICY_ENFORCE"].'
+                    type: string
+                type: object
+              deletionPolicy:
+                description: Policy to determine what flags to send on delete.
+                type: string
+              description:
+                description: |-
+                  A human readable description of this attached cluster. Cannot be longer
+                  than 255 UTF-8 encoded bytes.
+                type: string
+              distribution:
+                description: |-
+                  Immutable. The Kubernetes distribution of the underlying attached cluster. Supported values:
+                  "eks", "aks".
+                type: string
+              fleet:
+                description: Fleet configuration.
+                properties:
+                  membership:
+                    description: |-
+                      The name of the managed Hub Membership resource associated to this
+                      cluster. Membership names are formatted as
+                      projects/<project-number>/locations/global/membership/<cluster-id>.
+                    type: string
+                  projectRef:
+                    description: The number of the Fleet host project where this cluster
+                      will be registered.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: string of the format `projects/{{value}}`,
+                          where {{value}} is the `number` field of a `Project` resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                required:
+                - projectRef
+                type: object
+              location:
+                description: Immutable. The location for the resource.
+                type: string
+              loggingConfig:
+                description: Logging configuration.
+                properties:
+                  componentConfig:
+                    description: The configuration of the logging components.
+                    properties:
+                      enableComponents:
+                        description: 'The components to be enabled. Possible values:
+                          ["SYSTEM_COMPONENTS", "WORKLOADS"].'
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                type: object
+              monitoringConfig:
+                description: Monitoring configuration.
+                properties:
+                  managedPrometheusConfig:
+                    description: Enable Google Cloud Managed Service for Prometheus
+                      in the cluster.
+                    properties:
+                      enabled:
+                        description: Enable Managed Collection.
+                        type: boolean
+                    type: object
+                type: object
+              oidcConfig:
+                description: |-
+                  OIDC discovery information of the target cluster.
+
+                  Kubernetes Service Account (KSA) tokens are JWT tokens signed by the cluster
+                  API server. This fields indicates how GCP services
+                  validate KSA tokens in order to allow system workloads (such as GKE Connect
+                  and telemetry agents) to authenticate back to GCP.
+
+                  Both clusters with public and private issuer URLs are supported.
+                  Clusters with public issuers only need to specify the 'issuer_url' field
+                  while clusters with private issuers need to provide both
+                  'issuer_url' and 'jwks'.
+                properties:
+                  issuerUrl:
+                    description: Immutable. A JSON Web Token (JWT) issuer URI. 'issuer'
+                      must start with 'https://'.
+                    type: string
+                  jwks:
+                    description: Immutable. OIDC verification keys in JWKS format
+                      (RFC 7517).
+                    type: string
+                required:
+                - issuerUrl
+                type: object
+              platformVersion:
+                description: The platform version for the cluster (e.g. '1.23.0-gke.1').
+                type: string
+              projectRef:
+                description: The ID of the project in which the resource belongs.
+                  If it is not provided, the provider project is used.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The name of the resource. Used for
+                  creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+            required:
+            - distribution
+            - fleet
+            - location
+            - oidcConfig
+            - platformVersion
+            - projectRef
+            type: object
+          status:
+            properties:
+              clusterRegion:
+                description: |-
+                  Output only. The region where this cluster runs.
+
+                  For EKS clusters, this is an AWS region. For AKS clusters,
+                  this is an Azure region.
+                type: string
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              createTime:
+                description: Output only. The time at which this cluster was created.
+                type: string
+              errors:
+                description: A set of errors found in the cluster.
+                items:
+                  properties:
+                    message:
+                      description: Human-friendly description of the error.
+                      type: string
+                  type: object
+                type: array
+              kubernetesVersion:
+                description: The Kubernetes version of the cluster.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+              reconciling:
+                description: If set, there are currently changes in flight to the
+                  cluster.
+                type: boolean
+              state:
+                description: |-
+                  The current state of the cluster. Possible values:
+                  STATE_UNSPECIFIED, PROVISIONING, RUNNING, RECONCILING, STOPPING, ERROR,
+                  DEGRADED.
+                type: string
+              uid:
+                description: A globally unique identifier for the cluster.
+                type: string
+              updateTime:
+                description: The time at which this cluster was last updated.
+                type: string
+              workloadIdentityConfig:
+                description: Workload Identity settings.
+                items:
+                  properties:
+                    identityProvider:
+                      description: |-
+                        The ID of the OIDC Identity Provider (IdP) associated to
+                        the Workload Identity Pool.
+                      type: string
+                    issuerUri:
+                      description: The OIDC issuer URL for this cluster.
+                      type: string
+                    workloadPool:
+                      description: The Workload Identity Pool associated to the cluster.
+                      type: string
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

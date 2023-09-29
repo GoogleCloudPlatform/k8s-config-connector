@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.109.0
+    cnrm.cloud.google.com/version: 1.110.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -334,6 +334,10 @@ spec:
                 description: If specified, configures this table as a materialized
                   view.
                 properties:
+                  allowNonIncrementalDefinition:
+                    description: Immutable. Allow non incremental materialized view
+                      definition. The default value is false.
+                    type: boolean
                   enableRefresh:
                     description: Specifies if BigQuery should automatically refresh
                       materialized view when the base table is updated. The default
@@ -392,6 +396,74 @@ spec:
               schema:
                 description: A JSON schema for the table.
                 type: string
+              tableConstraints:
+                description: Defines the primary key and foreign keys.
+                properties:
+                  foreignKeys:
+                    description: Present only if the table has a foreign key. The
+                      foreign key is not enforced.
+                    items:
+                      properties:
+                        columnReferences:
+                          description: The pair of the foreign key column and primary
+                            key column.
+                          properties:
+                            referencedColumn:
+                              description: The column in the primary key that are
+                                referenced by the referencingColumn.
+                              type: string
+                            referencingColumn:
+                              description: The column that composes the foreign key.
+                              type: string
+                          required:
+                          - referencedColumn
+                          - referencingColumn
+                          type: object
+                        name:
+                          description: Set only if the foreign key constraint is named.
+                          type: string
+                        referencedTable:
+                          description: The table that holds the primary key and is
+                            referenced by this foreign key.
+                          properties:
+                            datasetId:
+                              description: The ID of the dataset containing this table.
+                              type: string
+                            projectId:
+                              description: The ID of the project containing this table.
+                              type: string
+                            tableId:
+                              description: The ID of the table. The ID must contain
+                                only letters (a-z, A-Z), numbers (0-9), or underscores
+                                (_). The maximum length is 1,024 characters. Certain
+                                operations allow suffixing of the table ID with a
+                                partition decorator, such as sample_table$20190123.
+                              type: string
+                          required:
+                          - datasetId
+                          - projectId
+                          - tableId
+                          type: object
+                      required:
+                      - columnReferences
+                      - referencedTable
+                      type: object
+                    type: array
+                  primaryKey:
+                    description: Represents a primary key constraint on a table's
+                      columns. Present only if the table has a primary key. The primary
+                      key is not enforced.
+                    properties:
+                      columns:
+                        description: The columns that are composed of the primary
+                          key constraint.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - columns
+                    type: object
+                type: object
               timePartitioning:
                 description: If specified, configures time-based partitioning for
                   this table.

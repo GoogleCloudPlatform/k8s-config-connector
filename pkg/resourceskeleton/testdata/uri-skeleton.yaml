@@ -67,6 +67,17 @@
       location: us-central1-c
   ResourceConfigId: ContainerCluster
   URI: "https://container.googleapis.com/v1/projects/kcc-test/locations/us-central1-c/clusters/twenty-namespace-big-workload"
+- ExpectedSkeleton:
+    apiVersion: containerattached.cnrm.cloud.google.com/v1beta1
+    kind: ContainerAttachedCluster
+    metadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: kcc-test
+      name: containerattachedcluster-test
+    spec:
+      location: us-west1
+  ResourceConfigId: ContainerAttachedCluster
+  URI: "https://us-west1-gkemulticloud.googleapis.com/v1/projects/kcc-test/locations/us-west1/attachedClusters/containerattachedcluster-test"
 - ExpectedSkeleton: null
   ResourceConfigId: ContainerNodePool
   URI: "https://container.googleapis.com/v1/projects/kcc-test/zones/us-central1-c/clusters/twenty-namespace-big-workload/nodePools/default-pool"
@@ -81,6 +92,15 @@
   URI: "https://sourcerepo.googleapis.com/v1/projects/kcc-test/repos/cloudbuildtrigger-dep-cloudsourcerepo"
 - ExpectedSkeleton: null
   ResourceConfigId: FirestoreIndex
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: AlloyDBBackup
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: AlloyDBCluster
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: AlloyDBInstance
   URI: ""
 - ExpectedSkeleton:
     apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1

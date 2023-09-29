@@ -33,8 +33,24 @@ Custom Resource Definitions in the GitHub repository. For example, this
   <td><a href="/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanageraccesspolicy.md">AccessContextManagerAccessPolicy</a></td>
 </tr>
 <tr>
+  <td><a href="/container-attached/docs/">{{anthos_attached_clusters_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/containerattached/containerattachedcluster.md">ContainerAttachedCluster</a></td>
+</tr>
+<tr>
   <td><a href="/vpc-service-controls/docs/">{{acm_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanagerserviceperimeter.md">AccessContextManagerServicePerimeter</a></td>
+</tr>
+<tr>
+  <td><a href="/alloydb/docs/">{{alloydb_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/alloydb/alloydbbackup.md">AlloyDBBackup</a></td>
+</tr>
+<tr>
+  <td><a href="/alloydb/docs/">{{alloydb_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/alloydb/alloydbcluster.md">AlloyDBCluster</a></td>
+</tr>
+<tr>
+  <td><a href="/alloydb/docs/">{{alloydb_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/alloydb/alloydbinstance.md">AlloyDBInstance</a></td>
 </tr>
 <tr>
   <td><a href="/artifact-registry/docs/">{{ar_name}}</a></td>

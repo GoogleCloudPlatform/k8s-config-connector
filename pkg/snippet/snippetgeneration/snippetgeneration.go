@@ -32,6 +32,7 @@ import (
 // generation for resources that have multiple samples. It is a map of
 // 'resource samples directory name' -> 'sample subdirectory name'.
 var preferredSampleForResource = map[string]string{
+	"alloydbinstance":                   "primary-instance",
 	"bigqueryjob":                       "query-bigquery-job",
 	"bigtableappprofile":                "multicluster-bigtable-app-profile",
 	"bigtableinstance":                  "replicated-instance",
@@ -63,6 +64,7 @@ var preferredSampleForResource = map[string]string{
 	"computesslpolicy":                  "modern-tls-1-1-ssl-policy",
 	"computeurlmap":                     "global-compute-url-map",
 	"configcontrollerinstance":          "autopilot-config-controller-instance",
+	"containerattachedcluster":          "container-attached-cluster-basic",
 	"containercluster":                  "vpc-native-container-cluster",
 	"containernodepool":                 "basic-node-pool",
 	"dataflowjob":                       "streaming-dataflow-job",

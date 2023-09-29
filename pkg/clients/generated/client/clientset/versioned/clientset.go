@@ -27,7 +27,7 @@ import (
 
 	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
-	alloydbv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1alpha1"
+	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/alloydb/v1beta1"
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1"
 	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
@@ -60,6 +60,7 @@ import (
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1"
 	containeranalysisv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1alpha1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1beta1"
+	containerattachedv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containerattached/v1beta1"
 	datacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1alpha1"
 	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
@@ -144,7 +145,7 @@ type Interface interface {
 	Discovery() discovery.DiscoveryInterface
 	AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Interface
 	AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Interface
-	AlloydbV1alpha1() alloydbv1alpha1.AlloydbV1alpha1Interface
+	AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface
 	ApigatewayV1alpha1() apigatewayv1alpha1.ApigatewayV1alpha1Interface
 	ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface
 	ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface
@@ -177,6 +178,7 @@ type Interface interface {
 	ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface
 	ContaineranalysisV1alpha1() containeranalysisv1alpha1.ContaineranalysisV1alpha1Interface
 	ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface
+	ContainerattachedV1beta1() containerattachedv1beta1.ContainerattachedV1beta1Interface
 	DatacatalogV1alpha1() datacatalogv1alpha1.DatacatalogV1alpha1Interface
 	DatacatalogV1beta1() datacatalogv1beta1.DatacatalogV1beta1Interface
 	DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface
@@ -260,7 +262,7 @@ type Clientset struct {
 	*discovery.DiscoveryClient
 	accesscontextmanagerV1beta1  *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
 	accesscontextmanagerV1alpha1 *accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Client
-	alloydbV1alpha1              *alloydbv1alpha1.AlloydbV1alpha1Client
+	alloydbV1beta1               *alloydbv1beta1.AlloydbV1beta1Client
 	apigatewayV1alpha1           *apigatewayv1alpha1.ApigatewayV1alpha1Client
 	apigeeV1alpha1               *apigeev1alpha1.ApigeeV1alpha1Client
 	apigeeV1beta1                *apigeev1beta1.ApigeeV1beta1Client
@@ -293,6 +295,7 @@ type Clientset struct {
 	containerV1beta1             *containerv1beta1.ContainerV1beta1Client
 	containeranalysisV1alpha1    *containeranalysisv1alpha1.ContaineranalysisV1alpha1Client
 	containeranalysisV1beta1     *containeranalysisv1beta1.ContaineranalysisV1beta1Client
+	containerattachedV1beta1     *containerattachedv1beta1.ContainerattachedV1beta1Client
 	datacatalogV1alpha1          *datacatalogv1alpha1.DatacatalogV1alpha1Client
 	datacatalogV1beta1           *datacatalogv1beta1.DatacatalogV1beta1Client
 	dataflowV1beta1              *dataflowv1beta1.DataflowV1beta1Client
@@ -380,9 +383,9 @@ func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.
 	return c.accesscontextmanagerV1alpha1
 }
 
-// AlloydbV1alpha1 retrieves the AlloydbV1alpha1Client
-func (c *Clientset) AlloydbV1alpha1() alloydbv1alpha1.AlloydbV1alpha1Interface {
-	return c.alloydbV1alpha1
+// AlloydbV1beta1 retrieves the AlloydbV1beta1Client
+func (c *Clientset) AlloydbV1beta1() alloydbv1beta1.AlloydbV1beta1Interface {
+	return c.alloydbV1beta1
 }
 
 // ApigatewayV1alpha1 retrieves the ApigatewayV1alpha1Client
@@ -543,6 +546,11 @@ func (c *Clientset) ContaineranalysisV1alpha1() containeranalysisv1alpha1.Contai
 // ContaineranalysisV1beta1 retrieves the ContaineranalysisV1beta1Client
 func (c *Clientset) ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface {
 	return c.containeranalysisV1beta1
+}
+
+// ContainerattachedV1beta1 retrieves the ContainerattachedV1beta1Client
+func (c *Clientset) ContainerattachedV1beta1() containerattachedv1beta1.ContainerattachedV1beta1Interface {
+	return c.containerattachedV1beta1
 }
 
 // DatacatalogV1alpha1 retrieves the DatacatalogV1alpha1Client
@@ -972,7 +980,7 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.alloydbV1alpha1, err = alloydbv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	cs.alloydbV1beta1, err = alloydbv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1101,6 +1109,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.containeranalysisV1beta1, err = containeranalysisv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.containerattachedV1beta1, err = containerattachedv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1427,7 +1439,7 @@ func New(c rest.Interface) *Clientset {
 	var cs Clientset
 	cs.accesscontextmanagerV1beta1 = accesscontextmanagerv1beta1.New(c)
 	cs.accesscontextmanagerV1alpha1 = accesscontextmanagerv1alpha1.New(c)
-	cs.alloydbV1alpha1 = alloydbv1alpha1.New(c)
+	cs.alloydbV1beta1 = alloydbv1beta1.New(c)
 	cs.apigatewayV1alpha1 = apigatewayv1alpha1.New(c)
 	cs.apigeeV1alpha1 = apigeev1alpha1.New(c)
 	cs.apigeeV1beta1 = apigeev1beta1.New(c)
@@ -1460,6 +1472,7 @@ func New(c rest.Interface) *Clientset {
 	cs.containerV1beta1 = containerv1beta1.New(c)
 	cs.containeranalysisV1alpha1 = containeranalysisv1alpha1.New(c)
 	cs.containeranalysisV1beta1 = containeranalysisv1beta1.New(c)
+	cs.containerattachedV1beta1 = containerattachedv1beta1.New(c)
 	cs.datacatalogV1alpha1 = datacatalogv1alpha1.New(c)
 	cs.datacatalogV1beta1 = datacatalogv1beta1.New(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.New(c)

@@ -1,0 +1,16 @@
+label: Config Connector CertificateManagerCertificateMapEntry
+markdownDescription: Creates yaml for a CertificateManagerCertificateMapEntry resource
+insertText: |
+  apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+  kind: CertificateManagerCertificateMapEntry
+  metadata:
+    name: \${1:certificatemanagercertificatemapentry-name}
+  spec:
+    description: \${2:sample certificate map entry}
+    projectRef:
+      external: \${3:[PROJECT_ID?]}
+    matcher: \${4:PRIMARY}
+    certificatesRefs:
+    - name: \${5:certificatemanagercertificatemapentry-dep}
+    mapRef:
+      name: \${6:certificatemanagercertificatemapentry-dep}
