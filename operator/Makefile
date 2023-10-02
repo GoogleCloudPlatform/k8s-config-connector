@@ -72,6 +72,15 @@ ifneq (Version: v$(CONTROLLER_GEN_VERSION), $(shell $(CONTROLLER_GEN) --version)
 	GOFLAGS='' go install sigs.k8s.io/controller-tools/cmd/controller-gen@v$(CONTROLLER_GEN_VERSION)
 endif
 
+# Install CRDs into a cluster
+.PHONY: install
+install: manifests
+	kustomize build config/crd | kubectl apply -f -
+
+# Uninstall CRDs from a cluster
+.PHONY: uninstall
+uninstall: manifests
+	kustomize build config/crd | kubectl delete -f -
 
 # Build the docker image
 .PHONY: docker-build
@@ -83,8 +92,18 @@ docker-build:
 	cp -f config/autopilot-manager/manager_image_patch_template.yaml config/autopilot-manager/manager_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' config/autopilot-manager/manager_image_patch.yaml
 
-
 # Push the docker image
 .PHONY: docker-push
 docker-push:
 	docker push ${OPERATOR_IMG}
+
+# Deploy controller in the configured Kubernetes cluster in ~/.kube/config
+# Note: run docker-build first to generate config/manager/manager_image_patch.yaml
+.PHONY: deploy
+deploy: manifests  # docker-build, docker-push also required, but not explicit to speed up deploy
+	kustomize build config/default | kubectl apply -f -
+
+# Destroy controller in the configured Kubernetes cluster in ~/.kube/config
+.PHONY: destroy
+destroy: manifests
+	kustomize build config/default | kubectl delete -f -
