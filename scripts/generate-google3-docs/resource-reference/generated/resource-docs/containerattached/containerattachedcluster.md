@@ -7,6 +7,8 @@
 
 
 
+Note: Before using this resource, make sure you review and complete the steps in Prerequisites section.
+
 <table>
 <thead>
 <tr>
@@ -56,6 +58,50 @@
 </tr>
 </tbody>
 </table>
+
+## Prerequisites
+We need to prepare the target cluster to be attached to make sure the Multi-cloud service connects to the target cluster.
+That requires an install-agent to be deployed into the target cluster.
+
+Steps to deploy the install-agent into target cluster:
+
+1. Get the manifest yaml file for the install-agent
+
+`gcloud container attached clusters generate-install-manifest my-cluster  --location=GOOGLE_CLOUD_REGION --platform-version=PLATFORM_VERSION --output-file=manifest.yaml`
+
+Example command:
+
+`gcloud container attached clusters generate-install-manifest kcc-attached-cluster  --location=us-west1 --platform-version=1.25.0-gke.5 --output-file=manifest.yaml`
+
+2. Checkout the target cluster and get kubeconfig context
+
+EKS cluster: `aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER`
+
+AKS cluster: `az aks get-credentials -n $CLUSTER -g $AZURE_RESOURCE_GROUP`
+
+`export KUBECONFIG_CONTEXT=$(kubectl config current-context)`
+
+3. Apply manifest yaml to target cluster
+
+`kubectl use-context $KUBECONFIG_CONTEXT` (optional, previous aws/az command should already switch context)
+
+`kubectl apply -f manifest.yaml`
+
+You should see below logs:
+
+```
+ namespace/gke-install created
+ serviceaccount/gke-install-agent created
+ clusterrolebinding.rbac.authorization.k8s.io/multicloud-install-agent-admin created
+ deployment.apps/gke-multicloud-agent created
+```
+
+4. Switch back to the GKE cluster with KCC installed
+
+Run `kubectl config get-contexts` to see all context that configured, should be at least two contexts show up here:
+one associates to the target cluster, one associates to your GKE cluster with KCC installed.
+
+Run `kubectl config use-context GKE_CONTEXT` to switch back to the GKE context.
 
 ## Custom Resource Definition Properties
 
