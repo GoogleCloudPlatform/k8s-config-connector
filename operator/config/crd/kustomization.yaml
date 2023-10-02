@@ -48,3 +48,15 @@ patchesJson6902:
     kind: CustomResourceDefinition
     name: controllerresources.customize.core.cnrm.cloud.google.com
   path: controllerresources_required_fields_patch.yaml
+- target:
+    group: apiextensions.k8s.io
+    version: v1
+    kind: CustomResourceDefinition
+    name: validatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com
+  path: validate_validatingwebhookconfigurationcustomizations_name_patch.yaml
+- target:
+    group: apiextensions.k8s.io
+    version: v1
+    kind: CustomResourceDefinition
+    name: mutatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com
+  path: validate_mutatingwebhookconfigurationcustomizations_name_patch.yaml
