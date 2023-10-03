@@ -18,6 +18,7 @@ metadata:
   name: pubsublitereservation-${uniqueId}
 spec:
   projectRef:
-    name: project-${uniqueId}
+    external: ${projectId}
   resourceID: pubsublitereservation${uniqueId}
   throughputCapacity: 2
+  region: us-central1
