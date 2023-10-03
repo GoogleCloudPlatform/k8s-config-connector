@@ -25,7 +25,7 @@ spec:
   description: "Test attached cluster"
   distribution: "eks"
   oidcConfig:
-    issuerUrl: https://oidc.eks.us-west-2.amazonaws.com/id/917F5DD7A27C5CA2B2B626B94C0752B37
+    issuerUrl: https://oidc.eks.us-west-2.amazonaws.com/id/17F5DD7A27C5CA2B2B626B94C0752B37
   platformVersion: 1.25.0-gke.5
   fleet:
     projectRef:
