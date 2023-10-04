@@ -48,7 +48,7 @@ type CertificateManagerCertificateMapEntrySpec struct {
 	// +optional
 	Hostname *string `json:"hostname,omitempty"`
 
-	/* A map entry that is inputted into the cetrificate map. */
+	/* A map entry that is inputted into the certificate map. */
 	MapRef v1alpha1.ResourceRef `json:"mapRef"`
 
 	/* Immutable. A predefined matcher for particular cases, other than SNI selection. */

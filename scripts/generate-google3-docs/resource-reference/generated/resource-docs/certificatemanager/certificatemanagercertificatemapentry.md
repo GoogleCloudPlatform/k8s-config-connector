@@ -183,7 +183,7 @@ selecting a proper certificate.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A map entry that is inputted into the cetrificate map.{% endverbatim %}</p>
+            <p>{% verbatim %}A map entry that is inputted into the certificate map.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
