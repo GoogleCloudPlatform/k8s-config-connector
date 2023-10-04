@@ -120,7 +120,7 @@ spec:
         - tfField: map
           key: mapRef
           description: |-
-            A map entry that is inputted into the cetrificate map.
+            A map entry that is inputted into the certificate map.
           gvk:
             kind: CertificateManagerCertificateMap
             version: v1beta1
