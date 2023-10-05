@@ -70,6 +70,12 @@ jobs:
           ./scripts/github-actions/ga-mock-test.sh
         env:
           GOPATH: /home/runner/go
+          ARTIFACTS: /tmp/artifacts
+      - name: 'Upload artifacts'
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: /tmp/artifacts/
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
