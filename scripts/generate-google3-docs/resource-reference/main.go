@@ -46,7 +46,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
-	"github.com/Masterminds/sprig"
 	"github.com/golang-collections/go-datastructures/set"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -194,7 +193,8 @@ func templateForGVK(gvk schema.GroupVersionKind) (*template.Template, error) {
 		filepath.Join(templatesPath, "shared/resource.tmpl"),
 		filepath.Join(templatesPath, "shared/endnote.tmpl"),
 	}
-	template, err := template.New(templateFileName).Funcs(sprig.TxtFuncMap()).ParseFiles(templateFiles...)
+	// template, err := template.New(templateFileName).Funcs(sprig.TxtFuncMap()).ParseFiles(templateFiles...)
+	template, err := template.New(templateFileName).ParseFiles(templateFiles...)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing template files: %v", err)
 	}
