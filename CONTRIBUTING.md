@@ -1,15 +1,9 @@
 # How to Contribute
 
-We'd love to accept your patches and contributions to this project. Source code
-in this project is currently being mirrored from internal Google repository. The
-team is currently focusing on:
-
-*   Adding more documentation on design, architecture and development flow.
-*   Migrating required infrastracture and tooling to this open source project.
-
-As a result please expect low maintainer resourcing to review pull requests and
-take contributions. The team will conduct PR reviews and try to upstream
-completed PRs on a best-effort basis.
+We'd love to accept your patches and contributions to this project. We use this
+GitHub project as our primary source of truth and the main development
+repository for Config Connetor. The source code in this project is also
+mirrored to internal Google repository for the purposes of releases.
 
 ## Contributor License Agreement
 
