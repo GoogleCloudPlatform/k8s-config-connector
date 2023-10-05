@@ -39,7 +39,7 @@ fi
 make manifests
 changed_file_count=$(git diff --name-only | wc -l)
 if [[ "${changed_file_count}" != "0" ]]; then
-    echo "ERROR: Manifests must be regenerated. Please run 'make manifests' and update your PR."
+    echo "ERROR: Manifests must be regenerated. Please run 'make ready-pr' or 'make manifests' and update your PR."
     echo "Affected files:"
     git diff --name-only
     exit 1
@@ -47,7 +47,7 @@ fi
 make generate-go-client
 changed_file_count=$(git diff --name-only | wc -l)
 if [[ "${changed_file_count}" != "0" ]]; then
-    echo "ERROR: Resource Go Clients must be regenerated. Please run 'make generate-go-client' and update your PR."
+    echo "ERROR: Resource Go Clients must be regenerated. Please run 'make ready-pr' or 'make generate-go-client' and update your PR."
     echo "Affected files:"
     git diff --name-only
     exit 1
@@ -66,7 +66,7 @@ fi
 make resource-docs
 changed_file_count=$(git diff --name-only | wc -l)
 if [[ "${changed_file_count}" != "0" ]]; then
-    echo "ERROR: Resource docs must be regenerated. Please run 'make resource-docs' and update your PR."
+    echo "ERROR: Resource docs must be regenerated. Please run 'make ready-pr' or 'make resource-docs' and update your PR."
     echo "Affected files:"
     git diff --name-only
     exit 1
