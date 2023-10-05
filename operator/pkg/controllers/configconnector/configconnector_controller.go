@@ -705,18 +705,32 @@ func (r *ConfigConnectorReconciler) applyValidatingWebhookConfigurationCustomiza
 		return r.handleApplyValidatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("failed to apply cusotmization to webhook configuration %s: %v", targetWebhookConfigurationName, err))
 	}
 	// 2. update webhook configuration.
-	whMap := make(map[string]*int32) // whMap is a map of webhook fully qualified name to its customized timeout value.
+	whTimeouts := make(map[string]*int32) // whTimeouts is a map of webhook fully qualified name to its customized timeout value.
+	whApplied := make(map[string]bool)    // whApplied is a map of webhook fully qualified name to a boolean indicating whether the customization for this webhook is applied.
 	for _, wh := range cr.Spec.Webhooks {
-		whMap[fmt.Sprintf("%s.cnrm.cloud.google.com", wh.Name)] = wh.TimeoutSeconds
+		fqn := fmt.Sprintf("%s.cnrm.cloud.google.com", wh.Name)
+		whTimeouts[fqn] = wh.TimeoutSeconds
+		whApplied[fqn] = false
 	}
 	for index, wh := range whCfg.Webhooks {
-		if _, found := whMap[wh.Name]; found { // found a webhook that we want to customize.
-			whCfg.Webhooks[index].TimeoutSeconds = whMap[wh.Name]
+		if _, found := whTimeouts[wh.Name]; found { // found a webhook that we want to customize.
+			whCfg.Webhooks[index].TimeoutSeconds = whTimeouts[wh.Name]
+			whApplied[wh.Name] = true
 		}
 	}
 	// 3. write back the updated webhook configuration.
 	if err := r.client.Update(ctx, whCfg); err != nil {
 		return r.handleApplyValidatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("error updating webhook configuration %s: %v", targetWebhookConfigurationName, err))
+	}
+	// 4. check for not applied webhook customization
+	var notApplied []string
+	for wh, applied := range whApplied {
+		if !applied {
+			notApplied = append(notApplied, wh)
+		}
+	}
+	if len(notApplied) > 0 {
+		return r.handleApplyValidatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("the following webhook customizations were not applied: %s", strings.Join(notApplied, ", ")))
 	}
 	return r.handleApplyValidatingWebhookConfigurationCustomizationCRSucceeded(ctx, cr)
 }
@@ -737,18 +751,32 @@ func (r *ConfigConnectorReconciler) applyMutatingWebhookConfigurationCustomizati
 		return r.handleApplyMutatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("failed to apply cusotmization to webhook configuration %s: %v", targetWebhookConfigurationName, err))
 	}
 	// 2. update webhook configuration.
-	whMap := make(map[string]*int32) // whMap is a map of webhook fully qualified name to its customized timeout value.
+	whTimeouts := make(map[string]*int32) // whTimeouts is a map of webhook fully qualified name to its customized timeout value.
+	whApplied := make(map[string]bool)    // whApplied is a map of webhook fully qualified name to a boolean indicating whether the customization for this webhook is applied.
 	for _, wh := range cr.Spec.Webhooks {
-		whMap[fmt.Sprintf("%s.cnrm.cloud.google.com", wh.Name)] = wh.TimeoutSeconds
+		fqn := fmt.Sprintf("%s.cnrm.cloud.google.com", wh.Name)
+		whTimeouts[fqn] = wh.TimeoutSeconds
+		whApplied[fqn] = false
 	}
 	for index, wh := range whCfg.Webhooks {
-		if _, found := whMap[wh.Name]; found { // found a webhook that we want to customize.
-			whCfg.Webhooks[index].TimeoutSeconds = whMap[wh.Name]
+		if _, found := whTimeouts[wh.Name]; found { // found a webhook that we want to customize.
+			whCfg.Webhooks[index].TimeoutSeconds = whTimeouts[wh.Name]
+			whApplied[wh.Name] = true
 		}
 	}
 	// 3. write back the updated webhook configuration.
 	if err := r.client.Update(ctx, whCfg); err != nil {
 		return r.handleApplyMutatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("error updating webhook configuration %s: %v", targetWebhookConfigurationName, err))
+	}
+	// 4. check for not applied webhook customization
+	var notApplied []string
+	for wh, applied := range whApplied {
+		if !applied {
+			notApplied = append(notApplied, wh)
+		}
+	}
+	if len(notApplied) > 0 {
+		return r.handleApplyMutatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("the following webhook customizations were not applied: %s", strings.Join(notApplied, ", ")))
 	}
 	return r.handleApplyMutatingWebhookConfigurationCustomizationCRSucceeded(ctx, cr)
 }
