@@ -102,7 +102,7 @@ spec:
                   selecting a proper certificate.
                 type: string
               mapRef:
-                description: A map entry that is inputted into the cetrificate map.
+                description: A map entry that is inputted into the certificate map.
                 oneOf:
                 - not:
                     required:
@@ -306,7 +306,7 @@ spec:
                   selecting a proper certificate.
                 type: string
               mapRef:
-                description: A map entry that is inputted into the cetrificate map.
+                description: A map entry that is inputted into the certificate map.
                 oneOf:
                 - not:
                     required:
