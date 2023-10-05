@@ -691,6 +691,9 @@ func (r *ConfigConnectorReconciler) fetchAndApplyAllWebhookConfigurationCustomiz
 
 // applyValidatingWebhookConfigurationCustomizationCR applies customizations specified in a ValidatingWebhookConfigurationCustomization CR.
 func (r *ConfigConnectorReconciler) applyValidatingWebhookConfigurationCustomizationCR(ctx context.Context, cr *customizev1alpha1.ValidatingWebhookConfigurationCustomization) error {
+	if err := checkForDuplicateWebhooks(cr.Spec.Webhooks); err != nil {
+		return r.handleApplyValidatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("invalid webhook configuration customization: %v", err))
+	}
 	// 1. get the webhook configuration.
 	whCfg := &admissionregistration.ValidatingWebhookConfiguration{}
 	targetWebhookConfigurationName := fmt.Sprintf("%s.cnrm.cloud.google.com", cr.Name)
@@ -720,6 +723,9 @@ func (r *ConfigConnectorReconciler) applyValidatingWebhookConfigurationCustomiza
 
 // applyMutatingWebhookConfigurationCustomizationCR applies customizations specified in a MutatingWebhookConfigurationCustomization CR.
 func (r *ConfigConnectorReconciler) applyMutatingWebhookConfigurationCustomizationCR(ctx context.Context, cr *customizev1alpha1.MutatingWebhookConfigurationCustomization) error {
+	if err := checkForDuplicateWebhooks(cr.Spec.Webhooks); err != nil {
+		return r.handleApplyMutatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("invalid webhook configuration customization: %v", err))
+	}
 	// 1. get the webhook configuration.
 	whCfg := &admissionregistration.MutatingWebhookConfiguration{}
 	targetWebhookConfigurationName := fmt.Sprintf("%s.cnrm.cloud.google.com", cr.Name)
@@ -840,4 +846,16 @@ func containsVersion(object *manifest.Object, version string) (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+func checkForDuplicateWebhooks(webhooks []customizev1alpha1.WebhookCustomizationSpec) error {
+	var wNames []string
+	for _, w := range webhooks {
+		wNames = append(wNames, w.Name)
+	}
+	duplicates := controllers.FindDuplicateStrings(wNames)
+	if len(duplicates) > 0 {
+		return fmt.Errorf("the following webhooks are specified multiple times in the Spec: %s", strings.Join(duplicates, ", "))
+	}
+	return nil
 }

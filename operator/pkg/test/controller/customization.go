@@ -224,6 +224,47 @@ var NamespacedControllerResourceCRWrongNamespace = &customizev1alpha1.Namespaced
 	},
 }
 
+var (
+	ValidatingWebhookCRForDuplicatedWebhook = &customizev1alpha1.ValidatingWebhookConfigurationCustomization{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "validating-webhook",
+		},
+		Spec: customizev1alpha1.WebhookConfigurationCustomizationSpec{
+			Webhooks: []customizev1alpha1.WebhookCustomizationSpec{
+				{
+					Name: "deny-immutable-field-updates", // a valid webhook name
+				},
+				{
+					Name: "resource-validation", // another valid webhook name
+				},
+				{
+					Name: "deny-immutable-field-updates", // a valid webhook name but duplicated
+				},
+			},
+		},
+	}
+	MutatingWebhookCRForDuplicatedWebhook = &customizev1alpha1.MutatingWebhookConfigurationCustomization{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "mutating-webhook",
+		},
+		Spec: customizev1alpha1.WebhookConfigurationCustomizationSpec{
+			Webhooks: []customizev1alpha1.WebhookCustomizationSpec{
+				{
+					Name: "container-annotation-handler", // a valid webhook name
+				},
+				{
+					Name: "iam-defaulter", // another valid webhook name
+				},
+				{
+					Name: "container-annotation-handler", // a valid webhook name but duplicated
+				},
+			},
+		},
+	}
+	ErrDuplicatedWebhookForValidatingWebhookCR = fmt.Sprintf("invalid webhook configuration customization: the following webhooks are specified multiple times in the Spec: deny-immutable-field-updates")
+	ErrDuplicatedWebhookForMutatingWebhookCR   = fmt.Sprintf("invalid webhook configuration customization: the following webhooks are specified multiple times in the Spec: container-annotation-handler")
+)
+
 var ClusterModeComponents = []string{`
 apiVersion: v1
 kind: ServiceAccount

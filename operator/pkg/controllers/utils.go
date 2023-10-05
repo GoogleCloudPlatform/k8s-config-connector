@@ -162,7 +162,7 @@ func ListNamespacedControllerResources(ctx context.Context, c client.Client, nam
 
 // ApplyContainerResourceCustomization applies container resource customizations specified in ControllerResource / NamespacedControllerResource CR.
 func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects, controllerName string, controllerGVK schema.GroupVersionKind, containers []customizev1alpha1.ContainerResourceSpec, replicas *int64) error {
-	if err := checkForDuplicate(containers); err != nil {
+	if err := checkForDuplicateContainers(containers); err != nil {
 		return err
 	}
 	cMap := make(map[string]corev1.ResourceRequirements, len(containers)) // cMap is a map of container name to its corresponding resource customization.
@@ -328,10 +328,22 @@ func updateContainerEnvIfFound(container map[string]interface{}, name, value str
 	return nil
 }
 
-func checkForDuplicate(containers []customizev1alpha1.ContainerResourceSpec) error {
-	counter := make(map[string]int)
+func checkForDuplicateContainers(containers []customizev1alpha1.ContainerResourceSpec) error {
+	var cNames []string
 	for _, c := range containers {
-		counter[c.Name]++
+		cNames = append(cNames, c.Name)
+	}
+	duplicates := FindDuplicateStrings(cNames)
+	if len(duplicates) > 0 {
+		return fmt.Errorf("the following containers are specified multiple times in the Spec: %s", strings.Join(duplicates, ", "))
+	}
+	return nil
+}
+
+func FindDuplicateStrings(strs []string) []string {
+	counter := make(map[string]int)
+	for _, s := range strs {
+		counter[s]++
 	}
 	var duplicates []string
 	for c, cnt := range counter {
@@ -339,10 +351,7 @@ func checkForDuplicate(containers []customizev1alpha1.ContainerResourceSpec) err
 			duplicates = append(duplicates, c)
 		}
 	}
-	if len(duplicates) > 0 {
-		return fmt.Errorf("the following containers are specified multiple times in the Spec: %s", strings.Join(duplicates, ", "))
-	}
-	return nil
+	return duplicates
 }
 
 func GetValidatingWebhookConfigurationCustomization(ctx context.Context, c client.Client, name string) (*customizev1alpha1.ValidatingWebhookConfigurationCustomization, error) {
