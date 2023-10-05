@@ -115,12 +115,12 @@ func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile
 		return reconcile.Result{}, err
 	}
 
-	logger.Info("Waiting to obtain lock...", "kind", crd.Spec.Names.Kind)
+	logger.V(2).Info("Waiting to obtain lock...", "kind", crd.Spec.Names.Kind)
 	start := time.Now()
 	r.mu.Lock()
-	logger.Info("Obtained lock", "kind", crd.Spec.Names.Kind, "elapsed (μs)", time.Since(start).Microseconds())
+	logger.V(2).Info("Obtained lock", "kind", crd.Spec.Names.Kind, "elapsed (μs)", time.Since(start).Microseconds())
 	defer func() {
-		logger.Info("Releasing lock...", "kind", crd.Spec.Names.Kind)
+		logger.V(2).Info("Releasing lock...", "kind", crd.Spec.Names.Kind)
 		r.mu.Unlock()
 	}()
 	gvk := schema.GroupVersionKind{
