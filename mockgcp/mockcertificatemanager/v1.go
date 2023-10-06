@@ -152,3 +152,62 @@ func (s *CertificateManagerV1) DeleteCertificateMap(ctx context.Context, req *pb
 
 	return s.operations.NewLRO(ctx)
 }
+
+func (s *CertificateManagerV1) GetDnsAuthorization(ctx context.Context, req *pb.GetDnsAuthorizationRequest) (*pb.DnsAuthorization, error) {
+	name, err := s.parseDNSAuthorizationName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.DnsAuthorization{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "dns authorization %q not found", name)
+		} else {
+			return nil, status.Errorf(codes.Internal, "error reading dns authorization: %v", err)
+		}
+	}
+
+	return obj, nil
+}
+
+func (s *CertificateManagerV1) CreateDnsAuthorization(ctx context.Context, req *pb.CreateDnsAuthorizationRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/dnsAuthorizations/" + req.DnsAuthorizationId
+	name, err := s.parseDNSAuthorizationName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.Clone(req.DnsAuthorization).(*pb.DnsAuthorization)
+	obj.Name = fqn
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.Internal, "error creating dns authorization: %v", err)
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
+func (s *CertificateManagerV1) DeleteDnsAuthorization(ctx context.Context, req *pb.DeleteDnsAuthorizationRequest) (*longrunning.Operation, error) {
+	name, err := s.parseDNSAuthorizationName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	kind := (&pb.DnsAuthorization{}).ProtoReflect().Descriptor()
+	if err := s.storage.Delete(ctx, kind, fqn); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "dns authorization %q not found", name)
+		} else {
+			return nil, status.Errorf(codes.Internal, "error deleting dns authorization: %v", err)
+		}
+	}
+
+	return s.operations.NewLRO(ctx)
+}
