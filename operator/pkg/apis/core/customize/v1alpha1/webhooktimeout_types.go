@@ -20,6 +20,7 @@ import (
 )
 
 // +kubebuilder:object:root=true
+// +kubebuilder:unservedversion
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=validatingwebhookconfigurationcustomizations,scope=Cluster
 
@@ -43,6 +44,7 @@ type ValidatingWebhookConfigurationCustomizationList struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:unservedversion
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=mutatingwebhookconfigurationcustomizations,scope=Cluster
 
