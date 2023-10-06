@@ -57,8 +57,6 @@ Before you can use this resource, you must prepare the target cluster
 so that the multi-cloud service can connect to the target cluster.
 To prepare the cluster, follow the steps to deploy an install-agent into the target cluster:
 
-Steps to deploy the install-agent into target cluster:
-
 1. Get the manifest yaml file for the install-agent:
 
 `gcloud container attached clusters generate-install-manifest my-cluster  --location=GOOGLE_CLOUD_REGION --platform-version=PLATFORM_VERSION --output-file=manifest.yaml`
@@ -77,7 +75,7 @@ AKS cluster: `az aks get-credentials -n $CLUSTER -g $AZURE_RESOURCE_GROUP`
 
 3. Apply the `manifest.yaml` file to the target cluster:
 
-(optional, previous aws/az command should already switch context) `kubectl use-context $KUBECONFIG_CONTEXT`
+(Optional if you used the previous command to switch context) `kubectl use-context $KUBECONFIG_CONTEXT`
 
 `kubectl apply -f manifest.yaml`
 
