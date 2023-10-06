@@ -21,7 +21,7 @@ import (
 	"testing"
 	"time"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
+	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
@@ -654,13 +654,13 @@ func TestConfigConnectorContextControllerWatchMultipleCustomizationCR(t *testing
 				Namespace: "foo-ns",
 			},
 		}
-		fooCR = &customizev1alpha1.NamespacedControllerResource{
+		fooCR = &customizev1beta1.NamespacedControllerResource{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "cnrm-controller-manager",
 				Namespace: "foo-ns",
 			},
-			Spec: customizev1alpha1.NamespacedControllerResourceSpec{
-				Containers: []customizev1alpha1.ContainerResourceSpec{
+			Spec: customizev1beta1.NamespacedControllerResourceSpec{
+				Containers: []customizev1beta1.ContainerResourceSpec{
 					{
 						Name:      "manager",
 						Resources: v1.ResourceRequirements{},
@@ -668,13 +668,13 @@ func TestConfigConnectorContextControllerWatchMultipleCustomizationCR(t *testing
 				},
 			},
 		}
-		barCR = &customizev1alpha1.NamespacedControllerResource{
+		barCR = &customizev1beta1.NamespacedControllerResource{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "cnrm-controller-manager",
 				Namespace: "bar-ns",
 			},
-			Spec: customizev1alpha1.NamespacedControllerResourceSpec{
-				Containers: []customizev1alpha1.ContainerResourceSpec{
+			Spec: customizev1beta1.NamespacedControllerResourceSpec{
+				Containers: []customizev1beta1.ContainerResourceSpec{
 					{
 						Name:      "manager",
 						Resources: v1.ResourceRequirements{},
@@ -773,10 +773,10 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 	tests := []struct {
 		name                          string
 		manifests                     []string
-		namespacedCustomizationCR     *customizev1alpha1.NamespacedControllerResource
-		clusterScopedCustomizationCR  *customizev1alpha1.ControllerResource
+		namespacedCustomizationCR     *customizev1beta1.NamespacedControllerResource
+		clusterScopedCustomizationCR  *customizev1beta1.ControllerResource
 		expectedManifests             []string
-		expectedCustomizationCRStatus customizev1alpha1.NamespacedControllerResourceStatus
+		expectedCustomizationCRStatus customizev1beta1.NamespacedControllerResourceStatus
 		skipCheckingCRStatus          bool
 	}{
 		{
@@ -784,7 +784,7 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			manifests:                 testcontroller.NamespacedComponents,
 			namespacedCustomizationCR: testcontroller.NamespacedControllerResourceCRForControllerManagerResources,
 			expectedManifests:         testcontroller.NamespacedComponentsWithCustomizedControllerManager,
-			expectedCustomizationCRStatus: customizev1alpha1.NamespacedControllerResourceStatus{
+			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: true,
 				},
@@ -795,7 +795,7 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			manifests:                 testcontroller.NamespacedComponents,
 			namespacedCustomizationCR: testcontroller.NamespacedControllerResourceCRForNonExistingController,
 			expectedManifests:         testcontroller.NamespacedComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1alpha1.NamespacedControllerResourceStatus{
+			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: false,
 					Errors:  []string{testcontroller.ErrNonExistingController},
@@ -807,7 +807,7 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			manifests:                 testcontroller.NamespacedComponents,
 			namespacedCustomizationCR: testcontroller.NamespacedControllerResourceCRForNonExistingContainer,
 			expectedManifests:         testcontroller.NamespacedComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1alpha1.NamespacedControllerResourceStatus{
+			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: false,
 					Errors:  []string{testcontroller.ErrNonExistingContainer},
@@ -826,7 +826,7 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			manifests:                 testcontroller.NamespacedComponents,
 			namespacedCustomizationCR: testcontroller.NamespacedControllerResourceCRWrongNamespace,
 			expectedManifests:         testcontroller.NamespacedComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1alpha1.NamespacedControllerResourceStatus{
+			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{}, // no update to status because it is not in the same namespace as the CCC reconciler.
 			},
 		},
@@ -883,7 +883,7 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			if tc.skipCheckingCRStatus {
 				return
 			}
-			updatedCR := &customizev1alpha1.NamespacedControllerResource{}
+			updatedCR := &customizev1beta1.NamespacedControllerResource{}
 			if err := c.Get(ctx, types.NamespacedName{Namespace: tc.namespacedCustomizationCR.Namespace, Name: tc.namespacedCustomizationCR.Name}, updatedCR); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}

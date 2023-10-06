@@ -20,7 +20,7 @@ import (
 	"strings"
 	"time"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
+	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
@@ -617,7 +617,7 @@ func (r *ConfigConnectorReconciler) fetchAndApplyAllControllerResourceCRs(ctx co
 }
 
 // applyControllerResourceCR applies customizations specified in a ControllerResource CR.
-func (r *ConfigConnectorReconciler) applyControllerResourceCR(ctx context.Context, cr *customizev1alpha1.ControllerResource, m *manifest.Objects) error {
+func (r *ConfigConnectorReconciler) applyControllerResourceCR(ctx context.Context, cr *customizev1beta1.ControllerResource, m *manifest.Objects) error {
 	controllerGVK := schema.GroupVersionKind{
 		Group:   appsv1.SchemeGroupVersion.Group,
 		Version: appsv1.SchemeGroupVersion.Version,
@@ -639,7 +639,7 @@ func (r *ConfigConnectorReconciler) applyControllerResourceCR(ctx context.Contex
 	return r.handleApplyControllerResourceCRSucceeded(ctx, cr)
 }
 
-func (r *ConfigConnectorReconciler) handleApplyControllerResourceCRFailed(ctx context.Context, cr *customizev1alpha1.ControllerResource, msg string) error {
+func (r *ConfigConnectorReconciler) handleApplyControllerResourceCRFailed(ctx context.Context, cr *customizev1beta1.ControllerResource, msg string) error {
 	cr.Status.CommonStatus = v1alpha1.CommonStatus{
 		Healthy: false,
 		Errors:  []string{msg},
@@ -647,7 +647,7 @@ func (r *ConfigConnectorReconciler) handleApplyControllerResourceCRFailed(ctx co
 	return r.updateControllerResourceStatus(ctx, cr)
 }
 
-func (r *ConfigConnectorReconciler) handleApplyControllerResourceCRSucceeded(ctx context.Context, cr *customizev1alpha1.ControllerResource) error {
+func (r *ConfigConnectorReconciler) handleApplyControllerResourceCRSucceeded(ctx context.Context, cr *customizev1beta1.ControllerResource) error {
 	cr.SetCommonStatus(v1alpha1.CommonStatus{
 		Healthy: true,
 		Errors:  []string{},
@@ -655,7 +655,7 @@ func (r *ConfigConnectorReconciler) handleApplyControllerResourceCRSucceeded(ctx
 	return r.updateControllerResourceStatus(ctx, cr)
 }
 
-func (r *ConfigConnectorReconciler) updateControllerResourceStatus(ctx context.Context, cr *customizev1alpha1.ControllerResource) error {
+func (r *ConfigConnectorReconciler) updateControllerResourceStatus(ctx context.Context, cr *customizev1beta1.ControllerResource) error {
 	if err := r.client.Status().Update(ctx, cr); err != nil {
 		r.log.Error(err, "error updating ControllerResource status", "Name", cr.Name)
 		return fmt.Errorf("failed to update ControllerResource %v: %w", cr.Name, err)
@@ -690,7 +690,7 @@ func (r *ConfigConnectorReconciler) fetchAndApplyAllWebhookConfigurationCustomiz
 }
 
 // applyValidatingWebhookConfigurationCustomizationCR applies customizations specified in a ValidatingWebhookConfigurationCustomization CR.
-func (r *ConfigConnectorReconciler) applyValidatingWebhookConfigurationCustomizationCR(ctx context.Context, cr *customizev1alpha1.ValidatingWebhookConfigurationCustomization) error {
+func (r *ConfigConnectorReconciler) applyValidatingWebhookConfigurationCustomizationCR(ctx context.Context, cr *customizev1beta1.ValidatingWebhookConfigurationCustomization) error {
 	if err := checkForDuplicateWebhooks(cr.Spec.Webhooks); err != nil {
 		return r.handleApplyValidatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("invalid webhook configuration customization: %v", err))
 	}
@@ -722,7 +722,7 @@ func (r *ConfigConnectorReconciler) applyValidatingWebhookConfigurationCustomiza
 }
 
 // applyMutatingWebhookConfigurationCustomizationCR applies customizations specified in a MutatingWebhookConfigurationCustomization CR.
-func (r *ConfigConnectorReconciler) applyMutatingWebhookConfigurationCustomizationCR(ctx context.Context, cr *customizev1alpha1.MutatingWebhookConfigurationCustomization) error {
+func (r *ConfigConnectorReconciler) applyMutatingWebhookConfigurationCustomizationCR(ctx context.Context, cr *customizev1beta1.MutatingWebhookConfigurationCustomization) error {
 	if err := checkForDuplicateWebhooks(cr.Spec.Webhooks); err != nil {
 		return r.handleApplyMutatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("invalid webhook configuration customization: %v", err))
 	}
@@ -753,7 +753,7 @@ func (r *ConfigConnectorReconciler) applyMutatingWebhookConfigurationCustomizati
 	return r.handleApplyMutatingWebhookConfigurationCustomizationCRSucceeded(ctx, cr)
 }
 
-func (r *ConfigConnectorReconciler) handleApplyValidatingWebhookConfigurationCustomizationCRFailed(ctx context.Context, cr *customizev1alpha1.ValidatingWebhookConfigurationCustomization, msg string) error {
+func (r *ConfigConnectorReconciler) handleApplyValidatingWebhookConfigurationCustomizationCRFailed(ctx context.Context, cr *customizev1beta1.ValidatingWebhookConfigurationCustomization, msg string) error {
 	cr.SetCommonStatus(v1alpha1.CommonStatus{
 		Healthy: false,
 		Errors:  []string{msg},
@@ -761,7 +761,7 @@ func (r *ConfigConnectorReconciler) handleApplyValidatingWebhookConfigurationCus
 	return r.updateValidatingWebhookConfigurationCustomizationStatus(ctx, cr)
 }
 
-func (r *ConfigConnectorReconciler) handleApplyValidatingWebhookConfigurationCustomizationCRSucceeded(ctx context.Context, cr *customizev1alpha1.ValidatingWebhookConfigurationCustomization) error {
+func (r *ConfigConnectorReconciler) handleApplyValidatingWebhookConfigurationCustomizationCRSucceeded(ctx context.Context, cr *customizev1beta1.ValidatingWebhookConfigurationCustomization) error {
 	cr.SetCommonStatus(v1alpha1.CommonStatus{
 		Healthy: true,
 		Errors:  []string{},
@@ -769,7 +769,7 @@ func (r *ConfigConnectorReconciler) handleApplyValidatingWebhookConfigurationCus
 	return r.updateValidatingWebhookConfigurationCustomizationStatus(ctx, cr)
 }
 
-func (r *ConfigConnectorReconciler) updateValidatingWebhookConfigurationCustomizationStatus(ctx context.Context, cr *customizev1alpha1.ValidatingWebhookConfigurationCustomization) error {
+func (r *ConfigConnectorReconciler) updateValidatingWebhookConfigurationCustomizationStatus(ctx context.Context, cr *customizev1beta1.ValidatingWebhookConfigurationCustomization) error {
 	if err := r.client.Status().Update(ctx, cr); err != nil {
 		r.log.Error(err, "error updating ValidatingWebhookConfigurationCustomization status", "Name", cr.Name)
 		return fmt.Errorf("failed to update ValidatingWebhookConfigurationCustomization %v: %w", cr.Name, err)
@@ -777,7 +777,7 @@ func (r *ConfigConnectorReconciler) updateValidatingWebhookConfigurationCustomiz
 	return nil
 }
 
-func (r *ConfigConnectorReconciler) handleApplyMutatingWebhookConfigurationCustomizationCRFailed(ctx context.Context, cr *customizev1alpha1.MutatingWebhookConfigurationCustomization, msg string) error {
+func (r *ConfigConnectorReconciler) handleApplyMutatingWebhookConfigurationCustomizationCRFailed(ctx context.Context, cr *customizev1beta1.MutatingWebhookConfigurationCustomization, msg string) error {
 	cr.SetCommonStatus(v1alpha1.CommonStatus{
 		Healthy: false,
 		Errors:  []string{msg},
@@ -785,7 +785,7 @@ func (r *ConfigConnectorReconciler) handleApplyMutatingWebhookConfigurationCusto
 	return r.updateMutatingWebhookConfigurationCustomizationStatus(ctx, cr)
 }
 
-func (r *ConfigConnectorReconciler) handleApplyMutatingWebhookConfigurationCustomizationCRSucceeded(ctx context.Context, cr *customizev1alpha1.MutatingWebhookConfigurationCustomization) error {
+func (r *ConfigConnectorReconciler) handleApplyMutatingWebhookConfigurationCustomizationCRSucceeded(ctx context.Context, cr *customizev1beta1.MutatingWebhookConfigurationCustomization) error {
 	cr.SetCommonStatus(v1alpha1.CommonStatus{
 		Healthy: true,
 		Errors:  []string{},
@@ -793,7 +793,7 @@ func (r *ConfigConnectorReconciler) handleApplyMutatingWebhookConfigurationCusto
 	return r.updateMutatingWebhookConfigurationCustomizationStatus(ctx, cr)
 }
 
-func (r *ConfigConnectorReconciler) updateMutatingWebhookConfigurationCustomizationStatus(ctx context.Context, cr *customizev1alpha1.MutatingWebhookConfigurationCustomization) error {
+func (r *ConfigConnectorReconciler) updateMutatingWebhookConfigurationCustomizationStatus(ctx context.Context, cr *customizev1beta1.MutatingWebhookConfigurationCustomization) error {
 	if err := r.client.Status().Update(ctx, cr); err != nil {
 		r.log.Error(err, "error updating MutatingWebhookConfigurationCustomization status", "Name", cr.Name)
 		return fmt.Errorf("failed to update MutatingWebhookConfigurationCustomization %v: %w", cr.Name, err)
@@ -848,7 +848,7 @@ func containsVersion(object *manifest.Object, version string) (bool, error) {
 	return false, nil
 }
 
-func checkForDuplicateWebhooks(webhooks []customizev1alpha1.WebhookCustomizationSpec) error {
+func checkForDuplicateWebhooks(webhooks []customizev1beta1.WebhookCustomizationSpec) error {
 	var wNames []string
 	for _, w := range webhooks {
 		wNames = append(wNames, w.Name)

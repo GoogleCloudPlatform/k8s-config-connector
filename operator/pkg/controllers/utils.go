@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"strings"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
+	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 
@@ -126,16 +126,16 @@ func IsControllerManagerService(obj *manifest.Object) bool {
 	return obj.GetName() == k8s.NamespacedManagerServiceTmpl
 }
 
-func GetControllerResource(ctx context.Context, c client.Client, name string) (*customizev1alpha1.ControllerResource, error) {
-	obj := &customizev1alpha1.ControllerResource{}
+func GetControllerResource(ctx context.Context, c client.Client, name string) (*customizev1beta1.ControllerResource, error) {
+	obj := &customizev1beta1.ControllerResource{}
 	if err := c.Get(ctx, types.NamespacedName{Name: name}, obj); err != nil {
 		return nil, err
 	}
 	return obj, nil
 }
 
-func GetNamespacedControllerResource(ctx context.Context, c client.Client, namespace, name string) (*customizev1alpha1.NamespacedControllerResource, error) {
-	obj := &customizev1alpha1.NamespacedControllerResource{}
+func GetNamespacedControllerResource(ctx context.Context, c client.Client, namespace, name string) (*customizev1beta1.NamespacedControllerResource, error) {
+	obj := &customizev1beta1.NamespacedControllerResource{}
 	if err := c.Get(ctx, types.NamespacedName{Namespace: namespace, Name: name}, obj); err != nil {
 		return nil, err
 	}
@@ -143,8 +143,8 @@ func GetNamespacedControllerResource(ctx context.Context, c client.Client, names
 }
 
 // ListControllerResources lists all ControllerResources.
-func ListControllerResources(ctx context.Context, c client.Client) ([]customizev1alpha1.ControllerResource, error) {
-	list := &customizev1alpha1.ControllerResourceList{}
+func ListControllerResources(ctx context.Context, c client.Client) ([]customizev1beta1.ControllerResource, error) {
+	list := &customizev1beta1.ControllerResourceList{}
 	if err := c.List(ctx, list); err != nil {
 		return nil, err
 	}
@@ -152,8 +152,8 @@ func ListControllerResources(ctx context.Context, c client.Client) ([]customizev
 }
 
 // ListNamespacedControllerResources lists all NamespacedControllerResource CRs in the given namespace.
-func ListNamespacedControllerResources(ctx context.Context, c client.Client, namespace string) ([]customizev1alpha1.NamespacedControllerResource, error) {
-	list := &customizev1alpha1.NamespacedControllerResourceList{}
+func ListNamespacedControllerResources(ctx context.Context, c client.Client, namespace string) ([]customizev1beta1.NamespacedControllerResource, error) {
+	list := &customizev1beta1.NamespacedControllerResourceList{}
 	if err := c.List(ctx, list, &client.ListOptions{Namespace: namespace}); err != nil {
 		return nil, err
 	}
@@ -161,7 +161,7 @@ func ListNamespacedControllerResources(ctx context.Context, c client.Client, nam
 }
 
 // ApplyContainerResourceCustomization applies container resource customizations specified in ControllerResource / NamespacedControllerResource CR.
-func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects, controllerName string, controllerGVK schema.GroupVersionKind, containers []customizev1alpha1.ContainerResourceSpec, replicas *int64) error {
+func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects, controllerName string, controllerGVK schema.GroupVersionKind, containers []customizev1beta1.ContainerResourceSpec, replicas *int64) error {
 	if err := checkForDuplicateContainers(containers); err != nil {
 		return err
 	}
@@ -328,7 +328,7 @@ func updateContainerEnvIfFound(container map[string]interface{}, name, value str
 	return nil
 }
 
-func checkForDuplicateContainers(containers []customizev1alpha1.ContainerResourceSpec) error {
+func checkForDuplicateContainers(containers []customizev1beta1.ContainerResourceSpec) error {
 	var cNames []string
 	for _, c := range containers {
 		cNames = append(cNames, c.Name)
@@ -354,8 +354,8 @@ func FindDuplicateStrings(strs []string) []string {
 	return duplicates
 }
 
-func GetValidatingWebhookConfigurationCustomization(ctx context.Context, c client.Client, name string) (*customizev1alpha1.ValidatingWebhookConfigurationCustomization, error) {
-	obj := &customizev1alpha1.ValidatingWebhookConfigurationCustomization{}
+func GetValidatingWebhookConfigurationCustomization(ctx context.Context, c client.Client, name string) (*customizev1beta1.ValidatingWebhookConfigurationCustomization, error) {
+	obj := &customizev1beta1.ValidatingWebhookConfigurationCustomization{}
 	if err := c.Get(ctx, types.NamespacedName{Name: name}, obj); err != nil {
 		return nil, err
 	}
@@ -363,16 +363,16 @@ func GetValidatingWebhookConfigurationCustomization(ctx context.Context, c clien
 }
 
 // ListValidatingWebhookConfigurationCustomizations lists all ValidatingWebhookConfigurationCustomization CRs.
-func ListValidatingWebhookConfigurationCustomizations(ctx context.Context, c client.Client) ([]customizev1alpha1.ValidatingWebhookConfigurationCustomization, error) {
-	list := &customizev1alpha1.ValidatingWebhookConfigurationCustomizationList{}
+func ListValidatingWebhookConfigurationCustomizations(ctx context.Context, c client.Client) ([]customizev1beta1.ValidatingWebhookConfigurationCustomization, error) {
+	list := &customizev1beta1.ValidatingWebhookConfigurationCustomizationList{}
 	if err := c.List(ctx, list); err != nil {
 		return nil, err
 	}
 	return list.Items, nil
 }
 
-func GetMutatingWebhookConfigurationCustomization(ctx context.Context, c client.Client, name string) (*customizev1alpha1.MutatingWebhookConfigurationCustomization, error) {
-	obj := &customizev1alpha1.MutatingWebhookConfigurationCustomization{}
+func GetMutatingWebhookConfigurationCustomization(ctx context.Context, c client.Client, name string) (*customizev1beta1.MutatingWebhookConfigurationCustomization, error) {
+	obj := &customizev1beta1.MutatingWebhookConfigurationCustomization{}
 	if err := c.Get(ctx, types.NamespacedName{Name: name}, obj); err != nil {
 		return nil, err
 	}
@@ -380,8 +380,8 @@ func GetMutatingWebhookConfigurationCustomization(ctx context.Context, c client.
 }
 
 // ListMutatingWebhookConfigurationCustomizations lists all MutatingWebhookConfigurationCustomization CRs.
-func ListMutatingWebhookConfigurationCustomizations(ctx context.Context, c client.Client) ([]customizev1alpha1.MutatingWebhookConfigurationCustomization, error) {
-	list := &customizev1alpha1.MutatingWebhookConfigurationCustomizationList{}
+func ListMutatingWebhookConfigurationCustomizations(ctx context.Context, c client.Client) ([]customizev1beta1.MutatingWebhookConfigurationCustomization, error) {
+	list := &customizev1beta1.MutatingWebhookConfigurationCustomizationList{}
 	if err := c.List(ctx, list); err != nil {
 		return nil, err
 	}

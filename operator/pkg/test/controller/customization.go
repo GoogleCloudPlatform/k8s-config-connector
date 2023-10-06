@@ -17,7 +17,7 @@ package controller
 import (
 	"fmt"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
+	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 
 	"google.golang.org/protobuf/proto"
 	corev1 "k8s.io/api/core/v1"
@@ -26,12 +26,12 @@ import (
 )
 
 var (
-	ControllerResourceCRForControllerManagerResources = &customizev1alpha1.ControllerResource{
+	ControllerResourceCRForControllerManagerResources = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "cnrm-controller-manager",
 		},
-		Spec: customizev1alpha1.ControllerResourceSpec{
-			Containers: []customizev1alpha1.ContainerResourceSpec{
+		Spec: customizev1beta1.ControllerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: "manager",
 					Resources: corev1.ResourceRequirements{
@@ -46,13 +46,13 @@ var (
 			},
 		},
 	}
-	ControllerResourceCRForControllerManagerReplicas = &customizev1alpha1.ControllerResource{
+	ControllerResourceCRForControllerManagerReplicas = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "cnrm-controller-manager",
 		},
-		Spec: customizev1alpha1.ControllerResourceSpec{
+		Spec: customizev1beta1.ControllerResourceSpec{
 			Replicas: proto.Int64(int64(4)),
-			Containers: []customizev1alpha1.ContainerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: "manager",
 					Resources: corev1.ResourceRequirements{
@@ -63,13 +63,13 @@ var (
 			},
 		},
 	}
-	ControllerResourceCRForWebhookManagerResourcesAndReplicas = &customizev1alpha1.ControllerResource{
+	ControllerResourceCRForWebhookManagerResourcesAndReplicas = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "cnrm-webhook-manager",
 		},
-		Spec: customizev1alpha1.ControllerResourceSpec{
+		Spec: customizev1beta1.ControllerResourceSpec{
 			Replicas: proto.Int64(int64(4)),
-			Containers: []customizev1alpha1.ContainerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: "webhook",
 					Resources: corev1.ResourceRequirements{
@@ -84,13 +84,13 @@ var (
 			},
 		},
 	}
-	ControllerResourceCRForWebhookManagerWithLargeReplicas = &customizev1alpha1.ControllerResource{
+	ControllerResourceCRForWebhookManagerWithLargeReplicas = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "cnrm-webhook-manager",
 		},
-		Spec: customizev1alpha1.ControllerResourceSpec{
+		Spec: customizev1beta1.ControllerResourceSpec{
 			Replicas: proto.Int64(int64(30)), // this value is larger than the default value of "maxReplicas" of HPA in KCC's manifests
-			Containers: []customizev1alpha1.ContainerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: "webhook",
 					Resources: corev1.ResourceRequirements{
@@ -105,13 +105,13 @@ var (
 			},
 		},
 	}
-	NamespacedControllerResourceCRForControllerManagerResources = &customizev1alpha1.NamespacedControllerResource{
+	NamespacedControllerResourceCRForControllerManagerResources = &customizev1beta1.NamespacedControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cnrm-controller-manager",
 			Namespace: "foo-ns",
 		},
-		Spec: customizev1alpha1.NamespacedControllerResourceSpec{
-			Containers: []customizev1alpha1.ContainerResourceSpec{
+		Spec: customizev1beta1.NamespacedControllerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: "manager",
 					Resources: corev1.ResourceRequirements{
@@ -130,21 +130,21 @@ var (
 
 var (
 	nonExistingControllerName                    = "controller-does-not-exist"
-	ControllerResourceCRForNonExistingController = &customizev1alpha1.ControllerResource{
+	ControllerResourceCRForNonExistingController = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: nonExistingControllerName,
 		},
-		Spec: customizev1alpha1.ControllerResourceSpec{
-			Containers: []customizev1alpha1.ContainerResourceSpec{},
+		Spec: customizev1beta1.ControllerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{},
 		},
 	}
-	NamespacedControllerResourceCRForNonExistingController = &customizev1alpha1.NamespacedControllerResource{
+	NamespacedControllerResourceCRForNonExistingController = &customizev1beta1.NamespacedControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      nonExistingControllerName,
 			Namespace: "foo-ns",
 		},
-		Spec: customizev1alpha1.NamespacedControllerResourceSpec{
-			Containers: []customizev1alpha1.ContainerResourceSpec{},
+		Spec: customizev1beta1.NamespacedControllerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{},
 		},
 	}
 	ErrNonExistingController = fmt.Sprintf("resource customization for controller %s is not supported", nonExistingControllerName)
@@ -152,25 +152,25 @@ var (
 
 var (
 	nonExistingContainerName                    = "recorder" // there is no "recorder" container in "cnrm-controller-manager".
-	ControllerResourceCRForNonExistingContainer = &customizev1alpha1.ControllerResource{
+	ControllerResourceCRForNonExistingContainer = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "cnrm-controller-manager",
 		},
-		Spec: customizev1alpha1.ControllerResourceSpec{
-			Containers: []customizev1alpha1.ContainerResourceSpec{
+		Spec: customizev1beta1.ControllerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: nonExistingContainerName,
 				},
 			},
 		},
 	}
-	NamespacedControllerResourceCRForNonExistingContainer = &customizev1alpha1.NamespacedControllerResource{
+	NamespacedControllerResourceCRForNonExistingContainer = &customizev1beta1.NamespacedControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "cnrm-controller-manager",
 			Namespace: "foo-ns",
 		},
-		Spec: customizev1alpha1.NamespacedControllerResourceSpec{
-			Containers: []customizev1alpha1.ContainerResourceSpec{
+		Spec: customizev1beta1.NamespacedControllerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: nonExistingContainerName,
 				},
@@ -181,12 +181,12 @@ var (
 )
 
 var (
-	ControllerResourceCRForDuplicatedContainer = &customizev1alpha1.ControllerResource{
+	ControllerResourceCRForDuplicatedContainer = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "cnrm-controller-manager",
 		},
-		Spec: customizev1alpha1.ControllerResourceSpec{
-			Containers: []customizev1alpha1.ContainerResourceSpec{
+		Spec: customizev1beta1.ControllerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: "manager", // a valid container name
 				},
@@ -202,13 +202,13 @@ var (
 	ErrDuplicatedContainer = fmt.Sprintf("failed to apply customization cnrm-controller-manager: the following containers are specified multiple times in the Spec: manager")
 )
 
-var NamespacedControllerResourceCRWrongNamespace = &customizev1alpha1.NamespacedControllerResource{
+var NamespacedControllerResourceCRWrongNamespace = &customizev1beta1.NamespacedControllerResource{
 	ObjectMeta: metav1.ObjectMeta{
 		Name:      "cnrm-controller-manager",
 		Namespace: "does-not-match",
 	},
-	Spec: customizev1alpha1.NamespacedControllerResourceSpec{
-		Containers: []customizev1alpha1.ContainerResourceSpec{
+	Spec: customizev1beta1.NamespacedControllerResourceSpec{
+		Containers: []customizev1beta1.ContainerResourceSpec{
 			{
 				Name: "manager",
 				Resources: corev1.ResourceRequirements{
@@ -225,12 +225,12 @@ var NamespacedControllerResourceCRWrongNamespace = &customizev1alpha1.Namespaced
 }
 
 var (
-	ValidatingWebhookCRForDuplicatedWebhook = &customizev1alpha1.ValidatingWebhookConfigurationCustomization{
+	ValidatingWebhookCRForDuplicatedWebhook = &customizev1beta1.ValidatingWebhookConfigurationCustomization{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "validating-webhook",
 		},
-		Spec: customizev1alpha1.WebhookConfigurationCustomizationSpec{
-			Webhooks: []customizev1alpha1.WebhookCustomizationSpec{
+		Spec: customizev1beta1.WebhookConfigurationCustomizationSpec{
+			Webhooks: []customizev1beta1.WebhookCustomizationSpec{
 				{
 					Name: "deny-immutable-field-updates", // a valid webhook name
 				},
@@ -243,12 +243,12 @@ var (
 			},
 		},
 	}
-	MutatingWebhookCRForDuplicatedWebhook = &customizev1alpha1.MutatingWebhookConfigurationCustomization{
+	MutatingWebhookCRForDuplicatedWebhook = &customizev1beta1.MutatingWebhookConfigurationCustomization{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "mutating-webhook",
 		},
-		Spec: customizev1alpha1.WebhookConfigurationCustomizationSpec{
-			Webhooks: []customizev1alpha1.WebhookCustomizationSpec{
+		Spec: customizev1beta1.WebhookConfigurationCustomizationSpec{
+			Webhooks: []customizev1beta1.WebhookCustomizationSpec{
 				{
 					Name: "container-annotation-handler", // a valid webhook name
 				},
