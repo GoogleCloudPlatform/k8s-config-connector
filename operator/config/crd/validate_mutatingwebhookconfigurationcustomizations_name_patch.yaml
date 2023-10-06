@@ -19,3 +19,10 @@
       enum:
         - mutating-webhook
       type: string
+- op: add
+  path: /spec/versions/1/schema/openAPIV3Schema/properties/metadata/properties
+  value:
+    name:
+      enum:
+        - mutating-webhook
+      type: string
