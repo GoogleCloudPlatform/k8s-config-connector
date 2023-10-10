@@ -42,10 +42,6 @@ type ManagedsslcertificateManaged struct {
 }
 
 type ComputeManagedSSLCertificateSpec struct {
-	/* The unique identifier for the resource. */
-	// +optional
-	CertificateId *int `json:"certificateId,omitempty"`
-
 	/* Immutable. An optional description of this resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
@@ -72,6 +68,10 @@ type ComputeManagedSSLCertificateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeManagedSSLCertificate's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The unique identifier for the resource. */
+	// +optional
+	CertificateId *int `json:"certificateId,omitempty"`
+
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`

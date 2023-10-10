@@ -58,9 +58,6 @@ spec:
             type: object
           spec:
             properties:
-              certificateId:
-                description: The unique identifier for the resource.
-                type: integer
               description:
                 description: Immutable. An optional description of this resource.
                 type: string
@@ -121,6 +118,9 @@ spec:
             type: object
           status:
             properties:
+              certificateId:
+                description: The unique identifier for the resource.
+                type: integer
               conditions:
                 description: Conditions represent the latest available observation
                   of the resource's current state.
