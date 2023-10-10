@@ -993,6 +993,90 @@ func TestConfigConnectorControllerWatchCustomizationCR(t *testing.T) {
 	}
 }
 
+// TestApplyFailsForDuplicatedWebhook ensures that applying a webhook configuration CR with duplicate Webhooks fails.
+// Due to the current implementation, it is not easy to test the happy path in unit test. We do plan to change the
+// implementation and move webhook configurations to be directly owned by the KCC operator.
+func TestApplyFailsForDuplicatedWebhook(t *testing.T) {
+	tests := []struct {
+		name                             string
+		validatingWebhookCustomizationCR *customizev1alpha1.ValidatingWebhookConfigurationCustomization
+		mutatingWebhookCustomizationCR   *customizev1alpha1.MutatingWebhookConfigurationCustomization
+		expectedCustomizationCRStatus    customizev1alpha1.WebhookConfigurationCustomizationStatus
+	}{
+		{
+			name:                             "customize for the same webhook multiple times in ValidatingWebhookCRForDuplicatedWebhook fails",
+			validatingWebhookCustomizationCR: testcontroller.ValidatingWebhookCRForDuplicatedWebhook,
+			expectedCustomizationCRStatus: customizev1alpha1.WebhookConfigurationCustomizationStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: false,
+					Errors:  []string{testcontroller.ErrDuplicatedWebhookForValidatingWebhookCR},
+				},
+			},
+		},
+		{
+			name:                           "customize for the same webhook multiple times in MutatingWebhookCRForDuplicatedWebhook fails",
+			mutatingWebhookCustomizationCR: testcontroller.MutatingWebhookCRForDuplicatedWebhook,
+			expectedCustomizationCRStatus: customizev1alpha1.WebhookConfigurationCustomizationStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: false,
+					Errors:  []string{testcontroller.ErrDuplicatedWebhookForMutatingWebhookCR},
+				},
+			},
+		},
+	}
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			// test setup
+			ctx := context.TODO()
+			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+			defer stop()
+			c := mgr.GetClient()
+			if tc.validatingWebhookCustomizationCR != nil {
+				cr := tc.validatingWebhookCustomizationCR
+				if err := c.Create(ctx, cr); err != nil {
+					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
+				}
+			}
+			if tc.mutatingWebhookCustomizationCR != nil {
+				cr := tc.mutatingWebhookCustomizationCR
+				if err := c.Create(ctx, cr); err != nil {
+					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
+				}
+			}
+			r := newConfigConnectorReconciler(c)
+
+			// run the test function
+			if err := r.fetchAndApplyAllWebhookConfigurationCustomizationCRs(ctx); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			// check the status of cluster-scoped customization CR
+			if tc.validatingWebhookCustomizationCR != nil {
+				updatedCR := &customizev1alpha1.ValidatingWebhookConfigurationCustomization{}
+				if err := c.Get(ctx, types.NamespacedName{Namespace: tc.validatingWebhookCustomizationCR.Namespace, Name: tc.validatingWebhookCustomizationCR.Name}, updatedCR); err != nil {
+					t.Fatalf("unexpected error: %v", err)
+				}
+				status := updatedCR.Status
+				if !reflect.DeepEqual(status, tc.expectedCustomizationCRStatus) {
+					t.Fatalf("unexpected diff: %v", cmp.Diff(status, tc.expectedCustomizationCRStatus))
+				}
+			}
+			if tc.mutatingWebhookCustomizationCR != nil {
+				updatedCR := &customizev1alpha1.MutatingWebhookConfigurationCustomization{}
+				if err := c.Get(ctx, types.NamespacedName{Namespace: tc.mutatingWebhookCustomizationCR.Namespace, Name: tc.mutatingWebhookCustomizationCR.Name}, updatedCR); err != nil {
+					t.Fatalf("unexpected error: %v", err)
+				}
+				status := updatedCR.Status
+				if !reflect.DeepEqual(status, tc.expectedCustomizationCRStatus) {
+					t.Fatalf("unexpected diff: %v", cmp.Diff(status, tc.expectedCustomizationCRStatus))
+				}
+			}
+		})
+	}
+}
+
 func TestApplyCustomizations(t *testing.T) {
 	tests := []struct {
 		name                          string
