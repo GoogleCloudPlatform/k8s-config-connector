@@ -280,3 +280,5 @@ apply-patches:
 	git apply ../hack/terraform-overrides/compute_instance_from_template_params_field.patch
 	# Correct the field type of terminal_condition field. b/296456403.
 	git apply ../hack/terraform-overrides/runservice_terminalcondition.patch
+	# Mark certificate id as readonly
+	git apply ../hack/terraform-overrides/compute_managed_ssl_certificate.patch
