@@ -102,6 +102,8 @@ apply-patches:
 	# Don't remove resource on read just because the job is in a terminal
 	# state. Instead, wait for the user to explicitly remove it.
 	git apply ../hack/terraform-overrides/dataflow_flex_template_job.patch
+	# Fix the issue that the max_workers read from the job is always 0.
+	git apply ../hack/terraform-overrides/dataflow_flex_template_job_max_workers.patch
 	# Adds support for TF imports for google_compute_instance_from_template
 	git apply ../hack/terraform-overrides/compute_instance_from_template_import.patch
 	# The `StorageBucketAccessControl.get` call returns 400 when its entity

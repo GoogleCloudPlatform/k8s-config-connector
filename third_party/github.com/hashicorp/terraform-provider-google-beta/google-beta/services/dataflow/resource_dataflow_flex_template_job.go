@@ -368,7 +368,7 @@ func resourceDataflowFlexTemplateJobRead(d *schema.ResourceData, meta interface{
 	if err := d.Set("num_workers", optionsMap["numWorkers"]); err != nil {
 		return fmt.Errorf("Error setting num_workers: %s", err)
 	}
-	if err := d.Set("max_workers", optionsMap["maxWorkers"]); err != nil {
+	if err := d.Set("max_workers", optionsMap["maxNumWorkers"]); err != nil {
 		return fmt.Errorf("Error setting max_workers: %s", err)
 	}
 	if err := d.Set("staging_location", optionsMap["stagingLocation"]); err != nil {
