@@ -67,9 +67,9 @@ Example command:
 
 2. Check out the target cluster and get the kubeconfig context:
 
-EKS cluster: `aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER`
+Amazon Elastic Kubernetes Service cluster: `aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER`
 
-AKS cluster: `az aks get-credentials -n $CLUSTER -g $AZURE_RESOURCE_GROUP`
+Azure Kubernetes Service cluster: `az aks get-credentials -n $CLUSTER -g $AZURE_RESOURCE_GROUP`
 
 `export KUBECONFIG_CONTEXT=$(kubectl config current-context)`
 
@@ -88,7 +88,7 @@ You should see the following logs:
  deployment.apps/gke-multicloud-agent created
 ```
 
-4. Switch back to the GKE cluster with Config Connector installed:
+4. Switch back to the Google Kubernetes Engine(GKE) cluster with Config Connector installed:
 
 Run `kubectl config get-contexts` to see all configured contexts. You should see at least two contexts:
 one associated with the target cluster, and one associated with the GKE cluster with Config Connector installed.
