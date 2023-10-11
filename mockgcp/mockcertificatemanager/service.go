@@ -17,8 +17,8 @@ package mockcertificatemanager
 import (
 	"context"
 
+	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	pb "google.golang.org/genproto/googleapis/cloud/certificatemanager/v1"
 	"google.golang.org/grpc"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 

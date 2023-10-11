@@ -17,8 +17,8 @@ package mockprivateca
 import (
 	"context"
 
-	pb "google.golang.org/genproto/googleapis/cloud/security/privateca/v1"
-	"google.golang.org/genproto/googleapis/longrunning"
+	longrunning "cloud.google.com/go/longrunning/autogen/longrunningpb"
+	pb "cloud.google.com/go/security/privateca/apiv1/privatecapb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"

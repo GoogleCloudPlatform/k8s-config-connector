@@ -17,8 +17,8 @@ package mocknetworkservices
 import (
 	"context"
 
+	longrunning "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	pb "google.golang.org/genproto/googleapis/cloud/networkservices/v1"
-	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"

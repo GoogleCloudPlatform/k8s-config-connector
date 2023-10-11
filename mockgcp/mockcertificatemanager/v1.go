@@ -17,8 +17,8 @@ package mockcertificatemanager
 import (
 	"context"
 
-	pb "google.golang.org/genproto/googleapis/cloud/certificatemanager/v1"
-	"google.golang.org/genproto/googleapis/longrunning"
+	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
+	longrunning "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"

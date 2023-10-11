@@ -13,10 +13,10 @@ import (
 	"io"
 	"net/http"
 
+	extIam "cloud.google.com/go/iam/apiv1/iampb"
+	extSecretmanager "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
-	extSecretmanager "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
-	extIam "google.golang.org/genproto/googleapis/iam/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"

@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"time"
 
+	pb "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"github.com/google/uuid"
-	pb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/prototext"

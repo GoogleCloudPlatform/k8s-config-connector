@@ -17,8 +17,8 @@ package mockiam
 import (
 	"context"
 
+	pb "cloud.google.com/go/iam/admin/apiv1/adminpb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	pb "google.golang.org/genproto/googleapis/iam/admin/v1"
 	"google.golang.org/grpc"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 

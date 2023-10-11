@@ -13,9 +13,9 @@ import (
 	"io"
 	"net/http"
 
+	extCertificatemanager "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
-	extCertificatemanager "google.golang.org/genproto/googleapis/cloud/certificatemanager/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"

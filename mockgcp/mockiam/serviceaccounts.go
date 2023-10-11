@@ -20,7 +20,7 @@ import (
 	"strconv"
 	"time"
 
-	pb "google.golang.org/genproto/googleapis/iam/admin/v1"
+	pb "cloud.google.com/go/iam/admin/apiv1/adminpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"

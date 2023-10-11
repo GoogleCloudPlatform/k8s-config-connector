@@ -67,6 +67,7 @@ require (
 	cloud.google.com/go/certificatemanager v1.7.1 // indirect
 	cloud.google.com/go/compute v1.23.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
+	cloud.google.com/go/gkemulticloud v1.0.0 // indirect
 	cloud.google.com/go/iam v1.1.1 // indirect
 	cloud.google.com/go/longrunning v0.5.1 // indirect
 	cloud.google.com/go/secretmanager v1.11.1 // indirect

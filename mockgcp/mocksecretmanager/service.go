@@ -17,8 +17,8 @@ package mocksecretmanager
 import (
 	"context"
 
+	secretmanager "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	secretmanager "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 	"google.golang.org/grpc"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 

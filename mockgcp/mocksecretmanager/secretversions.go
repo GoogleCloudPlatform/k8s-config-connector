@@ -20,7 +20,7 @@ import (
 	"strconv"
 	"strings"
 
-	secretmanager "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
+	secretmanager "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"

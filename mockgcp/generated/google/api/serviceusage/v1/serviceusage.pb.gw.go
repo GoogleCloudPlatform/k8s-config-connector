@@ -13,9 +13,9 @@ import (
 	"io"
 	"net/http"
 
+	extServiceusage "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
-	extServiceusage "google.golang.org/genproto/googleapis/api/serviceusage/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"

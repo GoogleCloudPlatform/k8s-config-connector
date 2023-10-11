@@ -22,6 +22,7 @@ gen-proto:
 		--experimental_allow_proto3_optional \
 		./third_party/googleapis/google/iam/admin/v1/*.proto \
 		./third_party/googleapis/google/cloud/certificatemanager/v1/*.proto \
+		./third_party/googleapis/google/cloud/gkemulticloud/v1/attached_service.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/google/cloud/security/privateca/v1/*.proto \
 		./third_party/googleapis/google/cloud/secretmanager/v1/service.proto \

@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"strings"
 
-	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
-	"google.golang.org/genproto/googleapis/longrunning"
+	longrunning "cloud.google.com/go/longrunning/autogen/longrunningpb"
+	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"

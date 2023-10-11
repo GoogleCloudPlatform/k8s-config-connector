@@ -13,9 +13,9 @@ import (
 	"io"
 	"net/http"
 
+	extPrivateca "cloud.google.com/go/security/privateca/apiv1/privatecapb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
-	extPrivateca "google.golang.org/genproto/googleapis/cloud/security/privateca/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"

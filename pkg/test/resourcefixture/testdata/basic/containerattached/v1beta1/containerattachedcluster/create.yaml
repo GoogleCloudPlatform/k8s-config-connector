@@ -29,5 +29,5 @@ spec:
   platformVersion: 1.25.0-gke.5
   fleet:
     projectRef:
-      name: project-${uniqueId}
+      external: "projects/461360080950"
   deletionPolicy: "DELETE_IGNORE_ERRORS"

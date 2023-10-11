@@ -17,8 +17,8 @@ package mockserviceusage
 import (
 	"context"
 
+	pb_v1 "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	pb_v1 "google.golang.org/genproto/googleapis/api/serviceusage/v1"
 	pb_v1beta1 "google.golang.org/genproto/googleapis/api/serviceusage/v1beta1"
 	"google.golang.org/grpc"
 	"sigs.k8s.io/controller-runtime/pkg/client"
