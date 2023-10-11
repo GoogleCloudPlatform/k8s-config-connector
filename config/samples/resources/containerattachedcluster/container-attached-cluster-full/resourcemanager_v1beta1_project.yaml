@@ -19,10 +19,10 @@ metadata:
   annotations:
     cnrm.cloud.google.com/deletion-policy: abandon
 spec:
-  # Replace ${PROJECT_ID?} with your gcp project id
+  # Replace ${PROJECT_ID?} with your Google Cloud project id
   resourceID: ${PROJECT_ID?}
   organizationRef:
-    # Replace ${ORG_ID?} with your gcp ord id your project associates to
+    # Replace ${ORG_ID?} with your Google Cloud ord id your project associates to
     external: "${ORG_ID?}"
-  # Replace ${PROJECT_ID?} with your gcp project id
+  # Replace ${PROJECT_ID?} with your Google Cloud project id
   name: ${PROJECT_ID?}

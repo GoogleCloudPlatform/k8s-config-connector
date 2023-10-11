@@ -739,18 +739,20 @@ kind: ContainerAttachedCluster
 metadata:
   name: containerattachedcluster-sample-basic
 spec:
-  # Replace ${EKS_CLUSTER_NAME?} with your eks cluster name
-  resourceID: ${EKS_CLUSTER_NAME?}
+  # Replace ${ATTACHED_CLUSTER_NAME?} with the name of the underlying attached cluster
+  resourceID: ${ATTACHED_CLUSTER_NAME?}
   location: us-west1
   projectRef:
-    # Replace ${PROJECT_ID?} with your gcp project id
+    # Replace ${PROJECT_ID?} with your Google Cloud project id
     external: ${PROJECT_ID?}
   description: "Test attached cluster basic sample"
-  distribution: "eks"
+  # Replace ${DISTRIBUTION?} with the Kubernetes distribution of the underlying attached cluster
+  # Supported values: "eks", "aks".
+  distribution: ${DISTRIBUTION}
   oidcConfig:
-    # Replace ${ISSUER_URL?} with the OIDC issuer URL for your eks cluster
+    # Replace ${ISSUER_URL?} with the OIDC issuer URL of the underlying attached cluster
     issuerUrl: ${ISSUER_URL?}
-  # Replace ${PLATFORM_VERSION?} with the platform version your eks cluster
+  # Replace ${PLATFORM_VERSION?} with the platform version of the underlying attached cluster
   platformVersion: ${PLATFORM_VERSION?}
   fleet:
     projectRef:
@@ -763,12 +765,12 @@ metadata:
   annotations:
     cnrm.cloud.google.com/deletion-policy: abandon
 spec:
-  # Replace ${PROJECT_ID?} with your gcp project id
+  # Replace ${PROJECT_ID?} with your Google Cloud project id
   resourceID: ${PROJECT_ID?}
   organizationRef:
-    # Replace ${ORG_ID?} with your gcp ord id your project associates to
+    # Replace ${ORG_ID?} with your Google Cloud ord id your project associates to
     external: "${ORG_ID?}"
-  # Replace ${PROJECT_ID?} with your gcp project id
+  # Replace ${PROJECT_ID?} with your Google Cloud project id
   name: ${PROJECT_ID?}
 ```
 
@@ -793,22 +795,24 @@ kind: ContainerAttachedCluster
 metadata:
   name: containerattachedcluster-sample-full
 spec:
-  # Replace ${EKS_CLUSTER_NAME?} with your eks cluster name
-  resourceID: ${EKS_CLUSTER_NAME?}
+  # Replace ${ATTACHED_CLUSTER_NAME?} with the name of the underlying attached cluster
+  resourceID: ${ATTACHED_CLUSTER_NAME?}
   location: us-west1
   projectRef:
-    # Replace ${PROJECT_ID?} with your gcp project id
+    # Replace ${PROJECT_ID?} with your Google Cloud project id
     external: ${PROJECT_ID?}
   description: "Test attached cluster full sample"
-  distribution: "eks"
+  # Replace ${DISTRIBUTION?} with the Kubernetes distribution of the underlying attached cluster
+  # Supported values: "eks", "aks".
+  distribution: ${DISTRIBUTION}
   annotations:
     label-one: "value-one"
   authorization:
     admin_users: [ "user1@example.com", "user2@example.com"]
   oidcConfig:
-    # Replace ${ISSUER_URL?} with the OIDC issuer URL for your eks cluster
+    # Replace ${ISSUER_URL?} with the OIDC issuer URL of the underlying attached cluster
     issuerUrl: ${ISSUER_URL?}
-  # Replace ${PLATFORM_VERSION?} with the platform version your eks cluster
+  # Replace ${PLATFORM_VERSION?} with the platform version of the underlying attached cluster
   platformVersion: ${PLATFORM_VERSION?}
   fleet:
     projectRef:
@@ -827,12 +831,12 @@ metadata:
   annotations:
     cnrm.cloud.google.com/deletion-policy: abandon
 spec:
-  # Replace ${PROJECT_ID?} with your gcp project id
+  # Replace ${PROJECT_ID?} with your Google Cloud project id
   resourceID: ${PROJECT_ID?}
   organizationRef:
-    # Replace ${ORG_ID?} with your gcp ord id your project associates to
+    # Replace ${ORG_ID?} with your Google Cloud ord id your project associates to
     external: "${ORG_ID?}"
-  # Replace ${PROJECT_ID?} with your gcp project id
+  # Replace ${PROJECT_ID?} with your Google Cloud project id
   name: ${PROJECT_ID?}
 ```
 
@@ -857,18 +861,20 @@ kind: ContainerAttachedCluster
 metadata:
   name: containerattachedcluster-sample-ignore-errors
 spec:
-  # Replace ${EKS_CLUSTER_NAME?} with your eks cluster name
-  resourceID: ${EKS_CLUSTER_NAME?}
+  # Replace ${ATTACHED_CLUSTER_NAME?} with the name of the underlying attached cluster
+  resourceID: ${ATTACHED_CLUSTER_NAME?}
   location: us-west1
   projectRef:
-    # Replace ${PROJECT_ID?} with your gcp project id
+    # Replace ${PROJECT_ID?} with your Google Cloud project id
     external: ${PROJECT_ID?}
   description: "Test attached cluster ignore errors sample"
-  distribution: "eks"
+  # Replace ${DISTRIBUTION?} with the Kubernetes distribution of the underlying attached cluster
+  # Supported values: "eks", "aks".
+  distribution: ${DISTRIBUTION}
   oidcConfig:
-    # Replace ${ISSUER_URL?} with the OIDC issuer URL for your eks cluster
+    # Replace ${ISSUER_URL?} with the OIDC issuer URL of the underlying attached cluster
     issuerUrl: ${ISSUER_URL?}
-    # Replace ${PLATFORM_VERSION?} with the platform version your eks cluster
+    # Replace ${PLATFORM_VERSION?} with the platform version of the underlying attached cluster
     platformVersion: ${PLATFORM_VERSION?}
   fleet:
     projectRef:
@@ -882,12 +888,12 @@ metadata:
   annotations:
     cnrm.cloud.google.com/deletion-policy: abandon
 spec:
-  # Replace ${PROJECT_ID?} with your gcp project id
+  # Replace ${PROJECT_ID?} with your Google Cloud project id
   resourceID: ${PROJECT_ID?}
   organizationRef:
-    # Replace ${ORG_ID?} with your gcp ord id your project associates to
+    # Replace ${ORG_ID?} with your Google Cloud ord id your project associates to
     external: "${ORG_ID?}"
-  # Replace ${PROJECT_ID?} with your gcp project id
+  # Replace ${PROJECT_ID?} with your Google Cloud project id
   name: ${PROJECT_ID?}
 ```
 
