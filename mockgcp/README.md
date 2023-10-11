@@ -3,6 +3,10 @@
 MockGCP contains stub implementations of GCP APIs, for use with testing KCC.  The implementations
 don't do anything (there is no "backend") - creating a mock VM does not launch a VM.  Instead, the
 goal is to provide just-enough consistent CRUD operations to test the KCC providers.
+If the tests pass, we consider that to be a "good enough" mock for GCP.  When
+we discover an issue that the mocks failed to catch, we should update mockgcp
+to more accurately simulate GCP, ideally triggering the bug and then showing
+that the fix addresses the issue.
 
 At their core, most GCP APIs are CRUD-based, so implementing a basic implementation is fairly straightforward.
 We are establishing some patterns to make the implementation as simple as possible, such as a simple
