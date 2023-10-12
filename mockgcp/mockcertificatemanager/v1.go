@@ -16,6 +16,7 @@ package mockcertificatemanager
 
 import (
 	"context"
+	"time"
 
 	pb "google.golang.org/genproto/googleapis/cloud/certificatemanager/v1"
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -83,6 +84,128 @@ func (s *CertificateManagerV1) DeleteCertificate(ctx context.Context, req *pb.De
 			return nil, status.Errorf(codes.NotFound, "certificate %q not found", name)
 		} else {
 			return nil, status.Errorf(codes.Internal, "error deleting certificate: %v", err)
+		}
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
+func (s *CertificateManagerV1) GetCertificateMap(ctx context.Context, req *pb.GetCertificateMapRequest) (*pb.CertificateMap, error) {
+	name, err := s.parseCertificateMapName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	if time.Now().UnixNano()%2 == 0 {
+		return nil, status.Errorf(codes.Internal, "try again!")
+	}
+
+	fqn := name.String()
+
+	obj := &pb.CertificateMap{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "certificateMap %q not found", name)
+		} else {
+			return nil, status.Errorf(codes.Internal, "error reading certificateMap: %v", err)
+		}
+	}
+
+	return obj, nil
+}
+
+func (s *CertificateManagerV1) CreateCertificateMap(ctx context.Context, req *pb.CreateCertificateMapRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/certificateMaps/" + req.CertificateMapId
+	name, err := s.parseCertificateMapName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.Clone(req.CertificateMap).(*pb.CertificateMap)
+	obj.Name = fqn
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.Internal, "error creating certificate map: %v", err)
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
+func (s *CertificateManagerV1) DeleteCertificateMap(ctx context.Context, req *pb.DeleteCertificateMapRequest) (*longrunning.Operation, error) {
+	name, err := s.parseCertificateMapName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	kind := (&pb.CertificateMap{}).ProtoReflect().Descriptor()
+	if err := s.storage.Delete(ctx, kind, fqn); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "certificate map %q not found", name)
+		} else {
+			return nil, status.Errorf(codes.Internal, "error deleting certificate map: %v", err)
+		}
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
+func (s *CertificateManagerV1) GetDnsAuthorization(ctx context.Context, req *pb.GetDnsAuthorizationRequest) (*pb.DnsAuthorization, error) {
+	name, err := s.parseDNSAuthorizationName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.DnsAuthorization{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "dns authorization %q not found", name)
+		} else {
+			return nil, status.Errorf(codes.Internal, "error reading dns authorization: %v", err)
+		}
+	}
+
+	return obj, nil
+}
+
+func (s *CertificateManagerV1) CreateDnsAuthorization(ctx context.Context, req *pb.CreateDnsAuthorizationRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/dnsAuthorizations/" + req.DnsAuthorizationId
+	name, err := s.parseDNSAuthorizationName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.Clone(req.DnsAuthorization).(*pb.DnsAuthorization)
+	obj.Name = fqn
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.Internal, "error creating dns authorization: %v", err)
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
+func (s *CertificateManagerV1) DeleteDnsAuthorization(ctx context.Context, req *pb.DeleteDnsAuthorizationRequest) (*longrunning.Operation, error) {
+	name, err := s.parseDNSAuthorizationName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	kind := (&pb.DnsAuthorization{}).ProtoReflect().Descriptor()
+	if err := s.storage.Delete(ctx, kind, fqn); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "dns authorization %q not found", name)
+		} else {
+			return nil, status.Errorf(codes.Internal, "error deleting dns authorization: %v", err)
 		}
 	}
 

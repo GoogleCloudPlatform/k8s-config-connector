@@ -55,3 +55,67 @@ func (s *MockService) parseCertificateName(name string) (*certificateName, error
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type certificateMapName struct {
+	Project            *projects.ProjectData
+	Location           string
+	CertificateMapName string
+}
+
+func (n *certificateMapName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/certificateMaps/" + n.CertificateMapName
+}
+
+// parseCertificateMapName parses a string into a certificateMapName.
+// The expected form is `projects/*/locations/*/certificateMaps/*`.
+func (s *MockService) parseCertificateMapName(name string) (*certificateMapName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "certificateMaps" {
+		project, err := s.projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &certificateMapName{
+			Project:            project,
+			Location:           tokens[3],
+			CertificateMapName: tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+type dnsAuthorizationName struct {
+	Project              *projects.ProjectData
+	Location             string
+	DNSAuthorizationName string
+}
+
+func (n *dnsAuthorizationName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/dnsAuthorizations/" + n.DNSAuthorizationName
+}
+
+func (s *MockService) parseDNSAuthorizationName(name string) (*dnsAuthorizationName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "dnsAuthorizations" {
+		project, err := s.projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &dnsAuthorizationName{
+			Project:              project,
+			Location:             tokens[3],
+			DNSAuthorizationName: tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
