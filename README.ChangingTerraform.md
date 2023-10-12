@@ -29,7 +29,7 @@ is generated using
 means that to actually "upstream" your change, you need to make changes to Magic
 Modules.
 
-Read through the Magic Modules README.md to learn how to get started.
+Read Magic Modules README.md to learn how to get started.
 
 You can stop reading now if your change is expected to be accepted by
 Terraform. Once the change is accepted, it will be adopted to Config Connector
