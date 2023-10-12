@@ -102,6 +102,12 @@ apply-patches:
 	# Don't remove resource on read just because the job is in a terminal
 	# state. Instead, wait for the user to explicitly remove it.
 	git apply ../hack/terraform-overrides/dataflow_flex_template_job.patch
+	# Make the same changes in
+	# https://github.com/hashicorp/terraform-provider-google-beta/pull/6357
+	# to update google_dataflow_flex_template_job to send SdkPipeline parameters
+	# via environment block fields, and to fix the issue that the returned
+    # maxWorkers was always 0.
+	git apply ../hack/terraform-overrides/dataflow_flex_template_job_environment_fields.patch
 	# Adds support for TF imports for google_compute_instance_from_template
 	git apply ../hack/terraform-overrides/compute_instance_from_template_import.patch
 	# The `StorageBucketAccessControl.get` call returns 400 when its entity
