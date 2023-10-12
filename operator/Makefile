@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+REPO_ROOT := $(shell git rev-parse --show-toplevel)
 PROJECT_ID := $(shell gcloud config get-value project)
 SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
 OPERATOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/operator:${SHORT_SHA}
+
 
 # enable multi-versions feature for CRDs
 CRD_OPTIONS ?= "crd"
@@ -107,3 +109,18 @@ deploy: manifests  # docker-build, docker-push also required, but not explicit t
 .PHONY: destroy
 destroy: manifests
 	kustomize build config/default | kubectl delete -f -
+
+# Upgrade KCC core manifest
+.PHONY: upgrade-kcc
+upgrade-kcc:
+	cd ${REPO_ROOT}/operator; go run scripts/update-kcc-manifest/main.go --version=latest
+	cd ${REPO_ROOT}/operator; go run scripts/copy-dependency-manifests/main.go
+	make -C ${REPO_ROOT}/operator manifests
+
+# Upgrade KCC core manifest for local testing
+.PHONY: upgrade-kcc-local
+upgrade-kcc-local:
+	cd ${REPO_ROOT}/operator; go run scripts/update-kcc-manifest/main.go --version=local
+	cd ${REPO_ROOT}/operator; go run scripts/copy-dependency-manifests/main.go
+	make -C ${REPO_ROOT}/operator manifests
+
