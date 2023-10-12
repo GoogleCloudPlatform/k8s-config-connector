@@ -53,7 +53,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 }
 
 func (s *MockService) ExpectedHost() string {
-	return "gkemulticloud.googleapis.com"
+	return "us-west1-gkemulticloud.googleapis.com"
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {

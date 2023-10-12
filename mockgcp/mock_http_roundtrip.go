@@ -145,6 +145,7 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 	request := fmt.Sprintf("%s %s", req.Method, req.URL)
 	body := make(map[string]interface{})
 
+	log.Printf("Host not valid, sending 403 fake response")
 	response := &http.Response{
 		StatusCode: 403,
 		Status:     "mockRoundTripper injecting fake response",
