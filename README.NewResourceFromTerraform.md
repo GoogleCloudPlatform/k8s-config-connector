@@ -197,11 +197,15 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
         - remove_default_node_pool
     ```
 
-1. Add `mutableButUnreadableFields` if necessary. Fields may not be existent in the underlying GCP resource,
+1. Add `mutableButUnreadableFields` if necessary. Fields may not exist in the underlying GCP resource,
    but are returned by Terraform on read and it's mutable. We need to add them into the `mutableButUnreadableFields`
    list in the service mapping. The difference between `mutableButUnreadableFields` and `directives` is,
-   The `mutableButUnreadableFields` fields will still be a part of resource CDR spec, they are unreadable but the 
-   value of the fields can be modified.
+   The `mutableButUnreadableFields` fields will still be a part of resource CRD spec, they are unreadable but the 
+   value of the fields can be modified. Similarly, you'll need to look at Terraform resource documentation,
+   Google Cloud API documentation, and the [pkg/apis/core/servicemapping_types](pkg/apis/core/servicemapping_types)
+   documentation to determine if any fields are `mutableButUnreadableFields`. An example is `password` field. It is
+   mutable because users may update their password through the API. However, GCP resource usually will not return the
+   `password` value for security considerations.
 
    ```yaml
     - name: google_container_cluster
@@ -411,7 +415,6 @@ section under the Appendix.
 
     ```bash
        # Export the environment variables needed in the dynamic tests if you haven't done it.
-       source scripts/shared-vars.sh
        TEST_FOLDER_ID=123456789 go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests cloudschedulerjob -timeout 900s
     ```
 
@@ -575,7 +578,7 @@ go test -v -tags=integration ./config/tests/samples/create -test.run TestAll -ru
 ```
 Replace the environment variables to real values before running the tests.
 
-Prow job will automatically run these tests in a newly created project. If this is
+The sample tests will be run periodically in a newly created project through internal CI/CD pipeline. If this is
 not feasible for your resource, for example, your resource requires a custom project with special setup,
 you can skip the test by adding it to the
 `testDisabledList` map in

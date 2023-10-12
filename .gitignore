@@ -117,6 +117,7 @@ operator/config/autopilot-manager/manager_image_patch.yaml
 
 # Test binary, build with 'go test -c'
 *.test
+*.build
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
