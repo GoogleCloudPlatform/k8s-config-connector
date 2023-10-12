@@ -29,7 +29,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
+	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/paths"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
@@ -49,7 +49,7 @@ func init() {
 	if err := appsv1.SchemeBuilder.AddToScheme(s); err != nil {
 		log.Fatalf("error registering apps v1 scheme: %v", err)
 	}
-	if err := customizev1alpha1.SchemeBuilder.AddToScheme(s); err != nil {
+	if err := customizev1beta1.SchemeBuilder.AddToScheme(s); err != nil {
 		log.Fatalf("error registering kcc customization scheme: %v", err)
 	}
 }

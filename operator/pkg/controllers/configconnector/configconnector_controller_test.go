@@ -22,7 +22,7 @@ import (
 	"testing"
 	"time"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
+	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
@@ -926,12 +926,12 @@ func TestConfigConnectorControllerWatchCustomizationCR(t *testing.T) {
 				Name: k8s.ConfigConnectorAllowedName,
 			},
 		}
-		CR = &customizev1alpha1.ControllerResource{
+		CR = &customizev1beta1.ControllerResource{
 			ObjectMeta: metav1.ObjectMeta{
 				Name: "cnrm-webhook-manager",
 			},
-			Spec: customizev1alpha1.ControllerResourceSpec{
-				Containers: []customizev1alpha1.ContainerResourceSpec{
+			Spec: customizev1beta1.ControllerResourceSpec{
+				Containers: []customizev1beta1.ContainerResourceSpec{
 					{
 						Name:      "webhook",
 						Resources: v1.ResourceRequirements{},
@@ -999,14 +999,14 @@ func TestConfigConnectorControllerWatchCustomizationCR(t *testing.T) {
 func TestApplyFailsForDuplicatedWebhook(t *testing.T) {
 	tests := []struct {
 		name                             string
-		validatingWebhookCustomizationCR *customizev1alpha1.ValidatingWebhookConfigurationCustomization
-		mutatingWebhookCustomizationCR   *customizev1alpha1.MutatingWebhookConfigurationCustomization
-		expectedCustomizationCRStatus    customizev1alpha1.WebhookConfigurationCustomizationStatus
+		validatingWebhookCustomizationCR *customizev1beta1.ValidatingWebhookConfigurationCustomization
+		mutatingWebhookCustomizationCR   *customizev1beta1.MutatingWebhookConfigurationCustomization
+		expectedCustomizationCRStatus    customizev1beta1.WebhookConfigurationCustomizationStatus
 	}{
 		{
 			name:                             "customize for the same webhook multiple times in ValidatingWebhookCRForDuplicatedWebhook fails",
 			validatingWebhookCustomizationCR: testcontroller.ValidatingWebhookCRForDuplicatedWebhook,
-			expectedCustomizationCRStatus: customizev1alpha1.WebhookConfigurationCustomizationStatus{
+			expectedCustomizationCRStatus: customizev1beta1.WebhookConfigurationCustomizationStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: false,
 					Errors:  []string{testcontroller.ErrDuplicatedWebhookForValidatingWebhookCR},
@@ -1016,7 +1016,7 @@ func TestApplyFailsForDuplicatedWebhook(t *testing.T) {
 		{
 			name:                           "customize for the same webhook multiple times in MutatingWebhookCRForDuplicatedWebhook fails",
 			mutatingWebhookCustomizationCR: testcontroller.MutatingWebhookCRForDuplicatedWebhook,
-			expectedCustomizationCRStatus: customizev1alpha1.WebhookConfigurationCustomizationStatus{
+			expectedCustomizationCRStatus: customizev1beta1.WebhookConfigurationCustomizationStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: false,
 					Errors:  []string{testcontroller.ErrDuplicatedWebhookForMutatingWebhookCR},
@@ -1054,7 +1054,7 @@ func TestApplyFailsForDuplicatedWebhook(t *testing.T) {
 
 			// check the status of cluster-scoped customization CR
 			if tc.validatingWebhookCustomizationCR != nil {
-				updatedCR := &customizev1alpha1.ValidatingWebhookConfigurationCustomization{}
+				updatedCR := &customizev1beta1.ValidatingWebhookConfigurationCustomization{}
 				if err := c.Get(ctx, types.NamespacedName{Namespace: tc.validatingWebhookCustomizationCR.Namespace, Name: tc.validatingWebhookCustomizationCR.Name}, updatedCR); err != nil {
 					t.Fatalf("unexpected error: %v", err)
 				}
@@ -1064,7 +1064,7 @@ func TestApplyFailsForDuplicatedWebhook(t *testing.T) {
 				}
 			}
 			if tc.mutatingWebhookCustomizationCR != nil {
-				updatedCR := &customizev1alpha1.MutatingWebhookConfigurationCustomization{}
+				updatedCR := &customizev1beta1.MutatingWebhookConfigurationCustomization{}
 				if err := c.Get(ctx, types.NamespacedName{Namespace: tc.mutatingWebhookCustomizationCR.Namespace, Name: tc.mutatingWebhookCustomizationCR.Name}, updatedCR); err != nil {
 					t.Fatalf("unexpected error: %v", err)
 				}
@@ -1081,10 +1081,10 @@ func TestApplyCustomizations(t *testing.T) {
 	tests := []struct {
 		name                          string
 		manifests                     []string
-		clusterScopedCustomizationCR  *customizev1alpha1.ControllerResource
-		namespacedCustomizationCR     *customizev1alpha1.NamespacedControllerResource
+		clusterScopedCustomizationCR  *customizev1beta1.ControllerResource
+		namespacedCustomizationCR     *customizev1beta1.NamespacedControllerResource
 		expectedManifests             []string
-		expectedCustomizationCRStatus customizev1alpha1.ControllerResourceStatus
+		expectedCustomizationCRStatus customizev1beta1.ControllerResourceStatus
 		skipCheckingCRStatus          bool
 	}{
 		{
@@ -1092,7 +1092,7 @@ func TestApplyCustomizations(t *testing.T) {
 			manifests:                    testcontroller.ClusterModeComponents,
 			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerResources,
 			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedControllerManager,
-			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: true,
 				},
@@ -1103,7 +1103,7 @@ func TestApplyCustomizations(t *testing.T) {
 			manifests:                    testcontroller.ClusterModeComponents,
 			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerResourcesAndReplicas,
 			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManager,
-			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: true,
 				},
@@ -1114,7 +1114,7 @@ func TestApplyCustomizations(t *testing.T) {
 			manifests:                    testcontroller.ClusterModeComponents,
 			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingController,
 			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: false,
 					Errors:  []string{testcontroller.ErrNonExistingController},
@@ -1126,7 +1126,7 @@ func TestApplyCustomizations(t *testing.T) {
 			manifests:                    testcontroller.ClusterModeComponents,
 			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForDuplicatedContainer,
 			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: false,
 					Errors:  []string{testcontroller.ErrDuplicatedContainer},
@@ -1138,7 +1138,7 @@ func TestApplyCustomizations(t *testing.T) {
 			manifests:                    testcontroller.ClusterModeComponents,
 			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingContainer,
 			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: false,
 					Errors:  []string{testcontroller.ErrNonExistingContainer},
@@ -1150,7 +1150,7 @@ func TestApplyCustomizations(t *testing.T) {
 			manifests:                    testcontroller.ClusterModeComponents,
 			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerReplicas,
 			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: true,
 				},
@@ -1161,7 +1161,7 @@ func TestApplyCustomizations(t *testing.T) {
 			manifests:                    testcontroller.ClusterModeComponents,
 			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerWithLargeReplicas,
 			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManagerWithLargeReplicas,
-			expectedCustomizationCRStatus: customizev1alpha1.ControllerResourceStatus{
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: true,
 				},
@@ -1227,7 +1227,7 @@ func TestApplyCustomizations(t *testing.T) {
 			if tc.skipCheckingCRStatus {
 				return
 			}
-			updatedCR := &customizev1alpha1.ControllerResource{}
+			updatedCR := &customizev1beta1.ControllerResource{}
 			if err := c.Get(ctx, types.NamespacedName{Namespace: tc.clusterScopedCustomizationCR.Namespace, Name: tc.clusterScopedCustomizationCR.Name}, updatedCR); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}

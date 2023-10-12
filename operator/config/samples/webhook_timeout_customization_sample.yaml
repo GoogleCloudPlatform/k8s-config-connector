@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: customize.core.cnrm.cloud.google.com/v1alpha1
+apiVersion: customize.core.cnrm.cloud.google.com/v1beta1
 kind: ValidatingWebhookConfigurationCustomization
 metadata:
   name: validating-webhook # Do not include the `.cnrm.cloud.google.com` suffix.
@@ -23,7 +23,7 @@ spec:
   - name: deny-unknown-fields # Do not include the `.cnrm.cloud.google.com` suffix.
     timeoutSeconds: 15
 ---
-apiVersion: customize.core.cnrm.cloud.google.com/v1alpha1
+apiVersion: customize.core.cnrm.cloud.google.com/v1beta1
 kind: MutatingWebhookConfigurationCustomization
 metadata:
   name: mutating-webhook # Do not include the `.cnrm.cloud.google.com` suffix.

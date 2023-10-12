@@ -22,6 +22,7 @@ import (
 	"os"
 
 	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
+	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers/configconnector"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers/configconnectorcontext"
@@ -50,6 +51,8 @@ func init() {
 	_ = corev1v1beta1.AddToScheme(scheme)
 	// +kubebuilder:scaffold:scheme
 	_ = customizev1alpha1.AddToScheme(scheme)
+	// +kubebuilder:scaffold:scheme
+	_ = customizev1beta1.AddToScheme(scheme)
 	// +kubebuilder:scaffold:scheme
 }
 

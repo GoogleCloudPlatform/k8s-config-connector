@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"strings"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
+	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
@@ -427,7 +427,7 @@ func (r *ConfigConnectorContextReconciler) applyNamespacedCustomizations() decla
 }
 
 // applyNamespacedControllerResourceCustomization applies customizations specified in NamespacedControllerResource CR.
-func (r *ConfigConnectorContextReconciler) applyNamespacedControllerResourceCustomization(ctx context.Context, cr *customizev1alpha1.NamespacedControllerResource, m *manifest.Objects) error {
+func (r *ConfigConnectorContextReconciler) applyNamespacedControllerResourceCustomization(ctx context.Context, cr *customizev1beta1.NamespacedControllerResource, m *manifest.Objects) error {
 	if cr.Name != "cnrm-controller-manager" {
 		msg := fmt.Sprintf("resource customization for controller %s is not supported", cr.Name)
 		r.log.Info(msg)
@@ -483,7 +483,7 @@ func (r *ConfigConnectorContextReconciler) handleApplyCustomizationSucceeded(ctx
 	return r.updateNamespacedControllerResourceStatus(ctx, cr)
 }
 
-func (r *ConfigConnectorContextReconciler) updateNamespacedControllerResourceStatus(ctx context.Context, cr *customizev1alpha1.NamespacedControllerResource) error {
+func (r *ConfigConnectorContextReconciler) updateNamespacedControllerResourceStatus(ctx context.Context, cr *customizev1beta1.NamespacedControllerResource) error {
 	if err := r.client.Status().Update(ctx, cr); err != nil {
 		r.log.Error(err, "failed to update NamespacedControllerResource", "Namespace", cr.Namespace, "Name", cr.Name, "Object", cr)
 		// Don't fail entire reconciliation if we cannot update NamespacedControllerResource status.

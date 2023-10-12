@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -20,7 +20,7 @@ import (
 )
 
 // +kubebuilder:object:root=true
-// +kubebuilder:unservedversion
+// +kubebuilder:storageversion
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=validatingwebhookconfigurationcustomizations,scope=Cluster
 
@@ -44,7 +44,7 @@ type ValidatingWebhookConfigurationCustomizationList struct {
 }
 
 // +kubebuilder:object:root=true
-// +kubebuilder:unservedversion
+// +kubebuilder:storageversion
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=mutatingwebhookconfigurationcustomizations,scope=Cluster
 
