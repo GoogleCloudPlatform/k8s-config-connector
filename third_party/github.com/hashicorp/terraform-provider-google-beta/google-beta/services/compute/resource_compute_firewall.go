@@ -82,8 +82,21 @@ func resourceComputeFirewallEnableLoggingCustomizeDiff(_ context.Context, diff *
 // Per https://github.com/hashicorp/terraform-provider-google/issues/2924
 // Make one of the source_ parameters Required in ingress google_compute_firewall
 func resourceComputeFirewallSourceFieldsCustomizeDiff(_ context.Context, diff *schema.ResourceDiff, v interface{}) error {
-	// Terraform Google Provider 4.x makes one of the source parameters required in ingress firewalls.
-	// Disable this check since it's a breaking change to KCC.
+	direction := diff.Get("direction").(string)
+
+	if direction != "EGRESS" {
+		_, tagsOk := diff.GetOk("source_tags")
+		_, rangesOk := diff.GetOk("source_ranges")
+		_, sasOk := diff.GetOk("source_service_accounts")
+
+		_, tagsExist := diff.GetOkExists("source_tags")
+		_, rangesExist := diff.GetOkExists("source_ranges")
+		_, sasExist := diff.GetOkExists("source_service_accounts")
+
+		if !tagsOk && !rangesOk && !sasOk && !tagsExist && !rangesExist && !sasExist {
+			return fmt.Errorf("one of source_tags, source_ranges, or source_service_accounts must be defined")
+		}
+	}
 
 	return nil
 }

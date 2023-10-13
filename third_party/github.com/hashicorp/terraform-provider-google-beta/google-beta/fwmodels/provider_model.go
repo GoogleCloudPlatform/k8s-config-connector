@@ -78,6 +78,7 @@ type ProviderModel struct {
 	DNSCustomEndpoint                      types.String `tfsdk:"dns_custom_endpoint"`
 	DocumentAICustomEndpoint               types.String `tfsdk:"document_ai_custom_endpoint"`
 	DocumentAIWarehouseCustomEndpoint      types.String `tfsdk:"document_ai_warehouse_custom_endpoint"`
+	EdgenetworkCustomEndpoint              types.String `tfsdk:"edgenetwork_custom_endpoint"`
 	EssentialContactsCustomEndpoint        types.String `tfsdk:"essential_contacts_custom_endpoint"`
 	FilestoreCustomEndpoint                types.String `tfsdk:"filestore_custom_endpoint"`
 	FirebaseCustomEndpoint                 types.String `tfsdk:"firebase_custom_endpoint"`
@@ -132,6 +133,7 @@ type ProviderModel struct {
 	StorageTransferCustomEndpoint          types.String `tfsdk:"storage_transfer_custom_endpoint"`
 	TagsCustomEndpoint                     types.String `tfsdk:"tags_custom_endpoint"`
 	TPUCustomEndpoint                      types.String `tfsdk:"tpu_custom_endpoint"`
+	TpuV2CustomEndpoint                    types.String `tfsdk:"tpu_v2_custom_endpoint"`
 	VertexAICustomEndpoint                 types.String `tfsdk:"vertex_ai_custom_endpoint"`
 	VmwareengineCustomEndpoint             types.String `tfsdk:"vmwareengine_custom_endpoint"`
 	VPCAccessCustomEndpoint                types.String `tfsdk:"vpc_access_custom_endpoint"`

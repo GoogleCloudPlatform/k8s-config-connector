@@ -158,6 +158,7 @@ func ResourceBigtableGCPolicy() *schema.Resource {
 				Optional:    true,
 				ForceNew:    true,
 				Description: `NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. GC policy that applies to all cells older than the given age.`,
+				MaxItems:    1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"days": {
@@ -331,8 +332,6 @@ func resourceBigtableGCPolicyRead(d *schema.ResourceData, meta interface{}) erro
 
 		// No GC Policy.
 		if fi.FullGCPolicy.String() == "" {
-			log.Printf("[WARN] Removing %s because it's gone.", d.Id())
-			d.SetId("")
 			return nil
 		}
 

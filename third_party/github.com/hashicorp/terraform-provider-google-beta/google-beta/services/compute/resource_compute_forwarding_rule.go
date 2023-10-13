@@ -351,6 +351,8 @@ This field is not applicable to global forwarding rules.`,
 				Description: `Service Directory resources to register this forwarding rule with.
 
 Currently, only supports a single Service Directory resource.`,
+				MinItems: 0,
+				MaxItems: 1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"namespace": {

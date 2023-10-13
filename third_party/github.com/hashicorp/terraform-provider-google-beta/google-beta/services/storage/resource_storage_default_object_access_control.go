@@ -101,7 +101,6 @@ func ResourceStorageDefaultObjectAccessControl() *schema.Resource {
 			"project_team": {
 				Type:        schema.TypeList,
 				Computed:    true,
-				MaxItems:    1,
 				Description: `The project team associated with the entity`,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{

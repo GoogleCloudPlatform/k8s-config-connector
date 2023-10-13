@@ -63,7 +63,7 @@ func TestAccContainerAwsNodePool_BasicHandWritten(t *testing.T) {
 				ResourceName:            "google_container_aws_node_pool.primary",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"fleet.0.project"},
+				ImportStateVerifyIgnore: []string{"fleet.0.project", "management.#", "management.0.%", "management.0.auto_repair"},
 			},
 			{
 				Config: testAccContainerAwsNodePool_BasicHandWrittenUpdate0(context),
@@ -72,7 +72,7 @@ func TestAccContainerAwsNodePool_BasicHandWritten(t *testing.T) {
 				ResourceName:            "google_container_aws_node_pool.primary",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"fleet.0.project"},
+				ImportStateVerifyIgnore: []string{"fleet.0.project", "management.#", "management.0.%", "management.0.auto_repair"},
 			},
 		},
 	})
@@ -107,7 +107,7 @@ func TestAccContainerAwsNodePool_BasicEnumHandWritten(t *testing.T) {
 				ResourceName:            "google_container_aws_node_pool.primary",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"fleet.0.project"},
+				ImportStateVerifyIgnore: []string{"fleet.0.project", "management.#", "management.0.%", "management.0.auto_repair"},
 			},
 			{
 				Config: testAccContainerAwsNodePool_BasicEnumHandWrittenUpdate0(context),
@@ -116,7 +116,7 @@ func TestAccContainerAwsNodePool_BasicEnumHandWritten(t *testing.T) {
 				ResourceName:            "google_container_aws_node_pool.primary",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"fleet.0.project"},
+				ImportStateVerifyIgnore: []string{"fleet.0.project", "management.#", "management.0.%", "management.0.auto_repair"},
 			},
 		},
 	})
@@ -152,7 +152,7 @@ func TestAccContainerAwsNodePool_BetaBasicHandWritten(t *testing.T) {
 				ResourceName:            "google_container_aws_node_pool.primary",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"fleet.0.project"},
+				ImportStateVerifyIgnore: []string{"fleet.0.project", "management.#", "management.0.%", "management.0.auto_repair"},
 			},
 			{
 				Config: testAccContainerAwsNodePool_BetaBasicHandWrittenUpdate0(context),
@@ -161,7 +161,7 @@ func TestAccContainerAwsNodePool_BetaBasicHandWritten(t *testing.T) {
 				ResourceName:            "google_container_aws_node_pool.primary",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"fleet.0.project"},
+				ImportStateVerifyIgnore: []string{"fleet.0.project", "management.#", "management.0.%", "management.0.auto_repair"},
 			},
 		},
 	})
@@ -197,7 +197,7 @@ func TestAccContainerAwsNodePool_BetaBasicEnumHandWritten(t *testing.T) {
 				ResourceName:            "google_container_aws_node_pool.primary",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"fleet.0.project"},
+				ImportStateVerifyIgnore: []string{"fleet.0.project", "management.#", "management.0.%", "management.0.auto_repair"},
 			},
 			{
 				Config: testAccContainerAwsNodePool_BetaBasicEnumHandWrittenUpdate0(context),
@@ -206,7 +206,7 @@ func TestAccContainerAwsNodePool_BetaBasicEnumHandWritten(t *testing.T) {
 				ResourceName:            "google_container_aws_node_pool.primary",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"fleet.0.project"},
+				ImportStateVerifyIgnore: []string{"fleet.0.project", "management.#", "management.0.%", "management.0.auto_repair"},
 			},
 		},
 	})
@@ -360,6 +360,10 @@ resource "google_container_aws_node_pool" "primary" {
 
   annotations = {
     label-one = "value-one"
+  }
+
+  management {
+    auto_repair = true
   }
 
   project = "%{project_name}"
@@ -516,6 +520,10 @@ resource "google_container_aws_node_pool" "primary" {
 
   annotations = {
     label-two = "value-two"
+  }
+
+  management {
+    auto_repair = false
   }
 
   project = "%{project_name}"
@@ -992,6 +1000,10 @@ resource "google_container_aws_node_pool" "primary" {
   name      = "tf-test-node-pool-name%{random_suffix}"
   subnet_id = "%{aws_subnet}"
   version   = "${data.google_container_aws_versions.versions.valid_versions[0]}"
+  
+  management {
+    auto_repair = true
+  }
 
   annotations = {
     label-one = "value-one"
@@ -1157,6 +1169,10 @@ resource "google_container_aws_node_pool" "primary" {
   name      = "tf-test-node-pool-name%{random_suffix}"
   subnet_id = "%{aws_subnet}"
   version   = "${data.google_container_aws_versions.versions.valid_versions[0]}"
+
+  management {
+    auto_repair = false
+  }
 
   annotations = {
     label-two = "value-two"

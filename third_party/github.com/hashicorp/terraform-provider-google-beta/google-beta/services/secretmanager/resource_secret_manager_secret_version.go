@@ -116,6 +116,13 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
   * DISABLE
   * ABANDON`,
 			},
+			"is_secret_data_base64": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				ForceNew:    true,
+				Default:     false,
+				Description: `If set to 'true', the secret data is expected to be base64-encoded string and would be sent as is.`,
+			},
 		},
 		UseJSONNumber: true,
 	}
@@ -217,6 +224,12 @@ func resourceSecretManagerSecretVersionRead(d *schema.ResourceData, meta interfa
 		billingProject = bp
 	}
 
+	// Explicitly set the field to default value if unset
+	if _, ok := d.GetOkExists("is_secret_data_base64"); !ok {
+		if err := d.Set("is_secret_data_base64", false); err != nil {
+			return fmt.Errorf("Error setting is_secret_data_base64: %s", err)
+		}
+	}
 	res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
 		Config:    config,
 		Method:    "GET",
@@ -226,6 +239,18 @@ func resourceSecretManagerSecretVersionRead(d *schema.ResourceData, meta interfa
 	})
 	if err != nil {
 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("SecretManagerSecretVersion %q", d.Id()))
+	}
+
+	res, err = resourceSecretManagerSecretVersionDecoder(d, meta, res)
+	if err != nil {
+		return err
+	}
+
+	if res == nil {
+		// Decoding the object has resulted in it being gone. It may be marked deleted
+		log.Printf("[DEBUG] Removing SecretManagerSecretVersion because it no longer exists.")
+		d.SetId("")
+		return nil
 	}
 
 	// Explicitly set virtual fields to default values if unset
@@ -332,7 +357,7 @@ func resourceSecretManagerSecretVersionImport(d *schema.ResourceData, meta inter
 
 	parts := secretRegex.FindStringSubmatch(name)
 	if len(parts) != 2 {
-		panic(fmt.Sprintf("Version name does not fit the format `projects/{{project}}/secrets/{{secret}}/versions/{{version}}`"))
+		return nil, fmt.Errorf("Version name does not fit the format `projects/{{project}}/secrets/{{secret}}/versions/{{version}}`")
 	}
 	if err := d.Set("secret", parts[1]); err != nil {
 		return nil, fmt.Errorf("Error setting secret: %s", err)
@@ -417,11 +442,15 @@ func flattenSecretManagerSecretVersionPayload(v interface{}, d *schema.ResourceD
 		return err
 	}
 
-	data, err := base64.StdEncoding.DecodeString(accessRes["payload"].(map[string]interface{})["data"].(string))
-	if err != nil {
-		return err
+	if d.Get("is_secret_data_base64").(bool) {
+		transformed["secret_data"] = accessRes["payload"].(map[string]interface{})["data"].(string)
+	} else {
+		data, err := base64.StdEncoding.DecodeString(accessRes["payload"].(map[string]interface{})["data"].(string))
+		if err != nil {
+			return err
+		}
+		transformed["secret_data"] = string(data)
 	}
-	transformed["secret_data"] = string(data)
 	return []interface{}{transformed}
 }
 
@@ -481,6 +510,9 @@ func expandSecretManagerSecretVersionPayloadSecretData(v interface{}, d tpgresou
 		return nil, nil
 	}
 
+	if d.Get("is_secret_data_base64").(bool) {
+		return v, nil
+	}
 	return base64.StdEncoding.EncodeToString([]byte(v.(string))), nil
 }
 

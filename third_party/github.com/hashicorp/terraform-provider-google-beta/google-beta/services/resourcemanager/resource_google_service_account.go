@@ -285,15 +285,14 @@ func resourceGoogleServiceAccountUpdate(d *schema.ResourceData, meta interface{}
 func resourceGoogleServiceAccountImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*transport_tpg.Config)
 	if err := tpgresource.ParseImportId([]string{
-		"projects/(?P<project>[^/]+)/serviceAccounts/(?P<unique_id>[\\d]+)",
 		"projects/(?P<project>[^/]+)/serviceAccounts/(?P<email>[^/]+)",
 		"(?P<project>[^/]+)/(?P<email>[^/]+)",
 		"(?P<email>[^/]+)"}, d, config); err != nil {
 		return nil, err
 	}
 
-	// Replace import id for the resource id, the last portion of the ID can be either the email or unique_id
-	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/serviceAccounts/{{email}}{{unique_id}}")
+	// Replace import id for the resource id
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/serviceAccounts/{{email}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

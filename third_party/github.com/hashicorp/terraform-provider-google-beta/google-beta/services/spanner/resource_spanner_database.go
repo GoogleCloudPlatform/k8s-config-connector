@@ -227,7 +227,7 @@ update the database's version_retention_period.`,
 			"deletion_protection": {
 				Type:     schema.TypeBool,
 				Optional: true,
-				Default:  false,
+				Default:  true,
 				Description: `Whether or not to allow Terraform to destroy the database. Defaults to true. Unless this field is set to false
 in Terraform state, a 'terraform destroy' or 'terraform apply' that would delete the database will fail.`,
 			},
@@ -813,7 +813,7 @@ func resourceSpannerDatabaseImport(d *schema.ResourceData, meta interface{}) ([]
 	d.SetId(id)
 
 	// Explicitly set virtual fields to default values on import
-	if err := d.Set("deletion_protection", false); err != nil {
+	if err := d.Set("deletion_protection", true); err != nil {
 		return nil, fmt.Errorf("Error setting deletion_protection: %s", err)
 	}
 

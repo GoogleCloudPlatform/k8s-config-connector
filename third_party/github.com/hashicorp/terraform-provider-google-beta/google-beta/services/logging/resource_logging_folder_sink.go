@@ -85,10 +85,6 @@ func resourceLoggingFolderSinkRead(d *schema.ResourceData, meta interface{}) err
 		return fmt.Errorf("Error setting include_children: %s", err)
 	}
 
-	if err := d.Set("unique_writer_identity", false); err != nil {
-		return fmt.Errorf("Error setting unique_writer_identity: %s", err)
-	}
-
 	return nil
 }
 

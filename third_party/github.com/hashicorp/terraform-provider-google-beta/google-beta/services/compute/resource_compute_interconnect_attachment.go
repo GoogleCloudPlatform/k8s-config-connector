@@ -267,7 +267,6 @@ they configured BGP on behalf of the customer.`,
 			"private_interconnect_info": {
 				Type:     schema.TypeList,
 				Computed: true,
-				MaxItems: 1,
 				Description: `Information specific to an InterconnectAttachment. This property
 is populated if the interconnect that this is attached to is of type DEDICATED.`,
 				Elem: &schema.Resource{
