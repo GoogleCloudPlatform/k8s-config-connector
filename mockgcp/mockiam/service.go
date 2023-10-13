@@ -18,13 +18,12 @@ import (
 	"context"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	pb "google.golang.org/genproto/googleapis/iam/admin/v1"
 	"google.golang.org/grpc"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/iam/admin/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/iam/admin/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -64,7 +63,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
 	mux := runtime.NewServeMux()
-	if err := pb_http.RegisterIAMHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterIAMHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
