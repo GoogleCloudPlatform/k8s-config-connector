@@ -79,8 +79,8 @@ var (
 		"iamcredentials.googleapis.com",
 		"artifactregistry.googleapis.com",
 	}
-	organization        = testgcp.GetOrgID(nil)
-	billingAccount      = testgcp.GetBillingAccountID(nil)
+	organization        = testgcp.TestOrgID.Get()
+	billingAccount      = testgcp.TestBillingAccountID.Get()
 	f                   = &flags{}
 	defaultBackOff      = wait.Backoff{Steps: 5, Duration: 500 * time.Millisecond, Factor: 1.5}
 	longIntervalBackOff = wait.Backoff{Steps: 3, Duration: 2 * time.Minute, Factor: 1}
