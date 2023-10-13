@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2023 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockedgenetwork
+package mockbilling
 
 import (
 	"context"
@@ -24,11 +24,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgenetwork/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/billing/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-// MockService represents a mocked edgenetwork service.
+// MockService represents a mocked certificatemanager service.
 type MockService struct {
 	kube    client.Client
 	storage storage.Storage
@@ -36,12 +36,7 @@ type MockService struct {
 	projects   projects.ProjectStore
 	operations *operations.Operations
 
-	v1 *EdgenetworkV1
-}
-
-type EdgenetworkV1 struct {
-	*MockService
-	pb.UnimplementedEdgeNetworkServer
+	v1 *BillingV1
 }
 
 // New creates a MockService.
@@ -52,22 +47,22 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		projects:   env.GetProjects(),
 		operations: operations.NewOperationsService(storage),
 	}
-	s.v1 = &EdgenetworkV1{MockService: s}
+	s.v1 = &BillingV1{MockService: s}
 	return s
 }
 
 func (s *MockService) ExpectedHost() string {
-	return "edgenetwork.googleapis.com"
+	return "cloudbilling.googleapis.com"
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterEdgeNetworkServer(grpcServer, s.v1)
+	pb.RegisterCloudBillingServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
 	mux := runtime.NewServeMux()
 
-	if err := pb.RegisterEdgeNetworkHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterCloudBillingHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
