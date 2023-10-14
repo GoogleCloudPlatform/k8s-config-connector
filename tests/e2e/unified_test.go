@@ -53,6 +53,7 @@ func TestAllInSeries(t *testing.T) {
 		// Some fixed-value fake org-ids for testing.
 		// We used fixed values so that the output is predictable (for golden testing)
 		testgcp.TestFolderID.Set("123451001")
+		testgcp.TestFolder2ID.Set("123451002")
 		testgcp.TestOrgID.Set("123450001")
 		testgcp.TestBillingAccountID.Set("123456-777777-000001")
 		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")

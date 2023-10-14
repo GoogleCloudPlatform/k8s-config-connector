@@ -151,10 +151,10 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueId string, project testgcp.GC
 		s = strings.Replace(s, "${projectNumber}", projectNumber, -1)
 	}
 	// Handle placeholder strings for folder id and org id specially because they are pure numbers while yaml marshalling expects strings.
-	s = strings.Replace(s, fmt.Sprintf("folders/${%s}", testgcp.TestFolderId), fmt.Sprintf("folders/%s", testgcp.GetFolderID(t)), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestFolderId), fmt.Sprintf("\"%s\"", testgcp.GetFolderID(t)), -1)
-	s = strings.Replace(s, fmt.Sprintf("folders/${%s}", testgcp.TestFolder2Id), fmt.Sprintf("folders/%s", testgcp.GetFolder2ID(t)), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestFolder2Id), fmt.Sprintf("\"%s\"", testgcp.GetFolder2ID(t)), -1)
+	s = strings.Replace(s, fmt.Sprintf("folders/${%s}", testgcp.TestFolderID.Key), fmt.Sprintf("folders/%s", testgcp.TestFolderID.Get()), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestFolderID.Key), fmt.Sprintf("\"%s\"", testgcp.TestFolderID.Get()), -1)
+	s = strings.Replace(s, fmt.Sprintf("folders/${%s}", testgcp.TestFolder2ID.Key), fmt.Sprintf("folders/%s", testgcp.TestFolder2ID.Get()), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestFolder2ID.Key), fmt.Sprintf("\"%s\"", testgcp.TestFolder2ID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("organizations/${%s}", testgcp.TestOrgID.Key), fmt.Sprintf("organizations/%s", testgcp.TestOrgID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestOrgID.Key), fmt.Sprintf("\"%s\"", testgcp.TestOrgID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentOrgProjectId), fmt.Sprintf("projects/%s", testgcp.GetDependentOrgProjectID(t)), -1)
