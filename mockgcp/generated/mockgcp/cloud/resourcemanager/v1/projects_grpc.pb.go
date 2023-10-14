@@ -39,28 +39,28 @@ type ProjectsClient interface {
 	// `name` (for example, `projects/415104041262`) for deletion.
 	//
 	// This method will only affect the project if it has a lifecycle state of
-	// [ACTIVE][mockgcp.cloud.resourcemanager.v3.Project.State.ACTIVE].
+	// [ACTIVE][mockgcp.cloud.resourcemanager.v1.Project.State.ACTIVE].
 	//
 	// This method changes the Project's lifecycle state from
-	// [ACTIVE][mockgcp.cloud.resourcemanager.v3.Project.State.ACTIVE]
+	// [ACTIVE][mockgcp.cloud.resourcemanager.v1.Project.State.ACTIVE]
 	// to
-	// [DELETE_REQUESTED][mockgcp.cloud.resourcemanager.v3.Project.State.DELETE_REQUESTED].
+	// [DELETE_REQUESTED][mockgcp.cloud.resourcemanager.v1.Project.State.DELETE_REQUESTED].
 	// The deletion starts at an unspecified time,
 	// at which point the Project is no longer accessible.
 	//
 	// Until the deletion completes, you can check the lifecycle state
 	// checked by retrieving the project with [GetProject]
-	// [mockgcp.cloud.resourcemanager.v3.Projects.GetProject],
+	// [mockgcp.cloud.resourcemanager.v1.Projects.GetProject],
 	// and the project remains visible to [ListProjects]
-	// [mockgcp.cloud.resourcemanager.v3.Projects.ListProjects].
+	// [mockgcp.cloud.resourcemanager.v1.Projects.ListProjects].
 	// However, you cannot update the project.
 	//
 	// After the deletion completes, the project is not retrievable by
 	// the  [GetProject]
-	// [mockgcp.cloud.resourcemanager.v3.Projects.GetProject],
+	// [mockgcp.cloud.resourcemanager.v1.Projects.GetProject],
 	// [ListProjects]
-	// [mockgcp.cloud.resourcemanager.v3.Projects.ListProjects], and
-	// [SearchProjects][mockgcp.cloud.resourcemanager.v3.Projects.SearchProjects]
+	// [mockgcp.cloud.resourcemanager.v1.Projects.ListProjects], and
+	// [SearchProjects][mockgcp.cloud.resourcemanager.v1.Projects.SearchProjects]
 	// methods.
 	//
 	// This method behaves idempotently, such that deleting a `DELETE_REQUESTED`
@@ -69,6 +69,13 @@ type ProjectsClient interface {
 	// The caller must have `resourcemanager.projects.delete` permissions for this
 	// project.
 	DeleteProject(ctx context.Context, in *DeleteProjectRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates the `display_name` and labels of the project identified by the
+	// specified `name` (for example, `projects/415104041262`). Deleting all
+	// labels requires an update mask for labels field.
+	//
+	// The caller must have `resourcemanager.projects.update` permission for this
+	// project.
+	UpdateProject(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*Project, error)
 }
 
 type projectsClient struct {
@@ -106,6 +113,15 @@ func (c *projectsClient) DeleteProject(ctx context.Context, in *DeleteProjectReq
 	return out, nil
 }
 
+func (c *projectsClient) UpdateProject(ctx context.Context, in *UpdateProjectRequest, opts ...grpc.CallOption) (*Project, error) {
+	out := new(Project)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.resourcemanager.v1.Projects/UpdateProject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectsServer is the server API for Projects service.
 // All implementations must embed UnimplementedProjectsServer
 // for forward compatibility
@@ -126,28 +142,28 @@ type ProjectsServer interface {
 	// `name` (for example, `projects/415104041262`) for deletion.
 	//
 	// This method will only affect the project if it has a lifecycle state of
-	// [ACTIVE][mockgcp.cloud.resourcemanager.v3.Project.State.ACTIVE].
+	// [ACTIVE][mockgcp.cloud.resourcemanager.v1.Project.State.ACTIVE].
 	//
 	// This method changes the Project's lifecycle state from
-	// [ACTIVE][mockgcp.cloud.resourcemanager.v3.Project.State.ACTIVE]
+	// [ACTIVE][mockgcp.cloud.resourcemanager.v1.Project.State.ACTIVE]
 	// to
-	// [DELETE_REQUESTED][mockgcp.cloud.resourcemanager.v3.Project.State.DELETE_REQUESTED].
+	// [DELETE_REQUESTED][mockgcp.cloud.resourcemanager.v1.Project.State.DELETE_REQUESTED].
 	// The deletion starts at an unspecified time,
 	// at which point the Project is no longer accessible.
 	//
 	// Until the deletion completes, you can check the lifecycle state
 	// checked by retrieving the project with [GetProject]
-	// [mockgcp.cloud.resourcemanager.v3.Projects.GetProject],
+	// [mockgcp.cloud.resourcemanager.v1.Projects.GetProject],
 	// and the project remains visible to [ListProjects]
-	// [mockgcp.cloud.resourcemanager.v3.Projects.ListProjects].
+	// [mockgcp.cloud.resourcemanager.v1.Projects.ListProjects].
 	// However, you cannot update the project.
 	//
 	// After the deletion completes, the project is not retrievable by
 	// the  [GetProject]
-	// [mockgcp.cloud.resourcemanager.v3.Projects.GetProject],
+	// [mockgcp.cloud.resourcemanager.v1.Projects.GetProject],
 	// [ListProjects]
-	// [mockgcp.cloud.resourcemanager.v3.Projects.ListProjects], and
-	// [SearchProjects][mockgcp.cloud.resourcemanager.v3.Projects.SearchProjects]
+	// [mockgcp.cloud.resourcemanager.v1.Projects.ListProjects], and
+	// [SearchProjects][mockgcp.cloud.resourcemanager.v1.Projects.SearchProjects]
 	// methods.
 	//
 	// This method behaves idempotently, such that deleting a `DELETE_REQUESTED`
@@ -156,6 +172,13 @@ type ProjectsServer interface {
 	// The caller must have `resourcemanager.projects.delete` permissions for this
 	// project.
 	DeleteProject(context.Context, *DeleteProjectRequest) (*longrunningpb.Operation, error)
+	// Updates the `display_name` and labels of the project identified by the
+	// specified `name` (for example, `projects/415104041262`). Deleting all
+	// labels requires an update mask for labels field.
+	//
+	// The caller must have `resourcemanager.projects.update` permission for this
+	// project.
+	UpdateProject(context.Context, *UpdateProjectRequest) (*Project, error)
 	mustEmbedUnimplementedProjectsServer()
 }
 
@@ -171,6 +194,9 @@ func (UnimplementedProjectsServer) CreateProject(context.Context, *CreateProject
 }
 func (UnimplementedProjectsServer) DeleteProject(context.Context, *DeleteProjectRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteProject not implemented")
+}
+func (UnimplementedProjectsServer) UpdateProject(context.Context, *UpdateProjectRequest) (*Project, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProject not implemented")
 }
 func (UnimplementedProjectsServer) mustEmbedUnimplementedProjectsServer() {}
 
@@ -239,6 +265,24 @@ func _Projects_DeleteProject_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Projects_UpdateProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).UpdateProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.resourcemanager.v1.Projects/UpdateProject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).UpdateProject(ctx, req.(*UpdateProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Projects_ServiceDesc is the grpc.ServiceDesc for Projects service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -257,6 +301,10 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteProject",
 			Handler:    _Projects_DeleteProject_Handler,
+		},
+		{
+			MethodName: "UpdateProject",
+			Handler:    _Projects_UpdateProject_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

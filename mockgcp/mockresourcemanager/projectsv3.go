@@ -39,7 +39,7 @@ type ProjectsV3 struct {
 }
 
 func (s *ProjectsV3) GetProject(ctx context.Context, req *pb.GetProjectRequest) (*pb.Project, error) {
-	projectName, err := projects.ParseProjectName(req.Name)
+	projectName, err := projects.ParseProjectName(req.GetName())
 	if err != nil {
 		return nil, err
 	}
@@ -104,34 +104,52 @@ func (s *ProjectsV3) CreateProject(ctx context.Context, req *pb.CreateProjectReq
 	return lro, nil
 }
 
+func (s *ProjectsV3) UpdateProject(ctx context.Context, req *pb.UpdateProjectRequest) (*longrunningpb.Operation, error) {
+	mutator := func(obj *pb.Project) error { // Only the `display_name` and `labels` fields can be change.
+		paths := req.GetUpdateMask().GetPaths()
+		if len(paths) == 0 {
+			if len(req.GetProject().GetLabels()) != 0 {
+				paths = append(paths, "labels")
+			}
+			if len(req.GetProject().GetDisplayName()) != 0 {
+				paths = append(paths, "display_name")
+			}
+		}
+
+		// TODO: Some sort of helper for fieldmask?
+		for _, path := range paths {
+			switch path {
+			case "display_name":
+				obj.DisplayName = req.GetProject().DisplayName
+			case "labels":
+				obj.Labels = req.GetProject().GetLabels()
+			default:
+				return status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+			}
+		}
+		return nil
+	}
+
+	_, err := s.projectsInternal.mutateProject(ctx, req.GetProject().GetName(), mutator)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
 func (s *ProjectsV3) DeleteProject(ctx context.Context, req *pb.DeleteProjectRequest) (*longrunningpb.Operation, error) {
-	projectName, err := projects.ParseProjectName(req.Name)
+	// It's actually important that we don't delete the project right away,
+	// otherwise we get not-found errors when trying to delete objects out-of-order
+	mutator := func(obj *pb.Project) error { // Only the `display_name` and `labels` fields can be change.
+		obj.State = pb.Project_DELETE_REQUESTED
+		return nil
+	}
+
+	_, err := s.projectsInternal.mutateProject(ctx, req.GetName(), mutator)
 	if err != nil {
 		return nil, err
 	}
 
-	project, err := s.projectsInternal.tryGetProject(ctx, projectName)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "error reading project: %v", err)
-	}
-	if project == nil {
-		// This API actually returns a 403 in the project-not-found case, unlike other APIs
-		msg := fmt.Sprintf("Permission 'resourcemanager.projects.get' denied on resource '//cloudresourcemanager.googleapis.com/%s' (or it may not exist).", projectName.String())
-		return nil, status.Error(codes.PermissionDenied, msg)
-	}
-
-	fqn := "projects/" + project.ProjectId
-
-	kind := (&pb.Project{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, kind, fqn); err != nil {
-		return nil, status.Errorf(codes.Internal, "error deleting project: %v", err)
-	}
-
-	lro, err := s.operations.NewLRO(ctx)
-	if err != nil {
-		return nil, err
-	}
-	lro.Done = true
-
-	return lro, nil
+	return s.operations.NewLRO(ctx)
 }

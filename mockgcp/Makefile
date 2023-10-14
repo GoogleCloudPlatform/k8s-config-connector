@@ -16,6 +16,7 @@ gen-proto:
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
 		-I ./third_party/googleapis \
+		-I ./apis \
 		--go_out ./generated \
 		--go_opt paths=source_relative \
 		--go-grpc_out ./generated \
@@ -24,6 +25,7 @@ gen-proto:
 		--grpc-gateway_opt logtostderr=true \
 		--grpc-gateway_opt paths=source_relative \
 		--experimental_allow_proto3_optional \
+		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/billing/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/certificatemanager/v1/*.proto \

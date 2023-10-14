@@ -71,21 +71,24 @@ type MockService interface {
 func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.Storage) *mockRoundTripper {
 	ctx := context.Background()
 
-	env := common.NewMockEnvironment(k8sClient)
+	rt := &mockRoundTripper{}
+
+	resourcemanagerService := mockresourcemanager.New(k8sClient, storage)
+	projectsInternal := resourcemanagerService.GetInternalService()
+	env := common.NewMockEnvironment(k8sClient, projectsInternal)
 
 	var serverOpts []grpc.ServerOption
 	server := grpc.NewServer(serverOpts...)
 
-	rt := &mockRoundTripper{}
 	rt.hosts = make(map[string]*runtime.ServeMux)
 
 	var services []MockService
 
+	services = append(services, resourcemanagerService)
 	services = append(services, mockbilling.New(env, storage))
 	services = append(services, mockcertificatemanager.New(env, storage))
 	services = append(services, mockgkemulticloud.New(env, storage))
 	services = append(services, mockiam.New(env, storage))
-	services = append(services, mockresourcemanager.New(env, storage))
 	services = append(services, mocksecretmanager.New(env, storage))
 	services = append(services, mockprivateca.New(env, storage))
 	services = append(services, mocknetworkservices.New(env, storage))
