@@ -52,10 +52,6 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		projects:          env.GetProjects(),
 		computeOperations: newComputeOperationsService(storage),
 	}
-	s.networksv1 = &NetworksV1{MockService: s}
-	s.nodegroupsv1 = &NodeGroupsV1{MockService: s}
-	s.nodetemplatesv1 = &NodeTemplatesV1{MockService: s}
-	s.subnetsv1 = &SubnetsV1{MockService: s}
 	return s
 }
 
@@ -64,16 +60,21 @@ func (s *MockService) ExpectedHost() string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterNetworksServer(grpcServer, s.networksv1)
-	pb.RegisterNodeGroupsServer(grpcServer, s.nodegroupsv1)
-	pb.RegisterNodeTemplatesServer(grpcServer, s.nodetemplatesv1)
-	pb.RegisterSubnetworksServer(grpcServer, s.subnetsv1)
+	pb.RegisterNetworksServer(grpcServer, &NetworksV1{MockService: s})
+
+	pb.RegisterSubnetworksServer(grpcServer, &SubnetsV1{MockService: s})
 
 	pb.RegisterDisksServer(grpcServer, &DisksV1{MockService: s})
 	pb.RegisterRegionDisksServer(grpcServer, &RegionalDisksV1{MockService: s})
 
 	pb.RegisterRegionOperationsServer(grpcServer, &RegionalOperationsV1{MockService: s})
 	pb.RegisterGlobalOperationsServer(grpcServer, &GlobalOperationsV1{MockService: s})
+
+	pb.RegisterNodeGroupsServer(grpcServer, &NodeGroupsV1{MockService: s})
+	pb.RegisterNodeTemplatesServer(grpcServer, &NodeTemplatesV1{MockService: s})
+
+	pb.RegisterAddressesServer(grpcServer, &RegionalAddressesV1{MockService: s})
+	pb.RegisterGlobalAddressesServer(grpcServer, &GlobalAddressesV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -108,13 +109,15 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := pb.RegisterNetworksHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
+
+	if err := pb.RegisterSubnetworksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
 	if err := pb.RegisterNodeGroupsHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterNodeTemplatesHandler(ctx, mux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterSubnetworksHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
@@ -129,6 +132,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterGlobalOperationsHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterAddressesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterGlobalAddressesHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
