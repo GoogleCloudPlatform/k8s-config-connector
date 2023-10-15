@@ -55,12 +55,18 @@ func (s *MockService) ExpectedHost() string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterNetworksServer(grpcServer, &NetworksV1{MockService: s})
-	pb.RegisterSubnetworksServer(grpcServer, &SubnetsV1{MockService: s})
 	pb.RegisterAddressesServer(grpcServer, &RegionalAddressesV1{MockService: s})
 	pb.RegisterGlobalAddressesServer(grpcServer, &GlobalAddressesV1{MockService: s})
-	pb.RegisterRegionHealthChecksServer(grpcServer, &RegionalHealthCheckV1{MockService: s})
+
+	pb.RegisterDisksServer(grpcServer, &DisksV1{MockService: s})
+	pb.RegisterRegionDisksServer(grpcServer, &RegionalDisksV1{MockService: s})
+
 	pb.RegisterHealthChecksServer(grpcServer, &GlobalHealthCheckV1{MockService: s})
+	pb.RegisterRegionHealthChecksServer(grpcServer, &RegionalHealthCheckV1{MockService: s})
+
+	pb.RegisterNetworksServer(grpcServer, &NetworksV1{MockService: s})
+
+	pb.RegisterSubnetworksServer(grpcServer, &SubnetsV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
@@ -91,12 +97,6 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*r
 		return nil, err
 	}
 
-	if err := pb.RegisterNetworksHandler(ctx, mux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterSubnetworksHandler(ctx, mux, conn); err != nil {
-		return nil, err
-	}
 	if err := pb.RegisterAddressesHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
@@ -104,10 +104,25 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*r
 		return nil, err
 	}
 
+	if err := pb.RegisterDisksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionDisksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterHealthChecksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
 	if err := pb.RegisterRegionHealthChecksHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
-	if err := pb.RegisterHealthChecksHandler(ctx, mux, conn); err != nil {
+
+	if err := pb.RegisterNetworksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterSubnetworksHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
