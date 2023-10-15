@@ -148,7 +148,7 @@ Here is an example configuration:
 
 1.  `tfField`: TF field which references a GCP resource. In the above
     example, it's `disk.source_snapshot_encryption_key.kms_key_service_account`.
-    Note that it is snack case, and it should be a path if it has parent fields.
+    Note that it is snake case, and it should be a path if it has parent fields.
 1.  `description`: description of the tfField, can be found in the
     [Terraform documentation](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs).
     If the referenced KCC kind is not supported, prepend `Only external field is
