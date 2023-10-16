@@ -58,6 +58,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterRegionHealthChecksServer(grpcServer, &RegionalHealthCheckV1{MockService: s})
 	pb.RegisterHealthChecksServer(grpcServer, &GlobalHealthCheckV1{MockService: s})
 
+	pb.RegisterBackendServicesServer(grpcServer, &GlobalBackendServicesV1{MockService: s})
+	pb.RegisterRegionBackendServicesServer(grpcServer, &RegionalBackendServicesV1{MockService: s})
+
 	pb.RegisterDisksServer(grpcServer, &DisksV1{MockService: s})
 	pb.RegisterRegionDisksServer(grpcServer, &RegionalDisksV1{MockService: s})
 
@@ -81,6 +84,13 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{})
 	if err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterBackendServicesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionBackendServicesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
