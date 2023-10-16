@@ -33,7 +33,7 @@ require (
 	github.com/prometheus/procfs v0.7.3
 	github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749
 	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd
-	github.com/spf13/cobra v1.4.0
+	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
 	github.com/tmccombs/hcl2json v0.3.4
 	github.com/zclconf/go-cty v1.11.0
@@ -142,7 +142,7 @@ require (
 	github.com/hashicorp/terraform-svchost v0.0.0-20200729002733-f050f53b9734 // indirect
 	github.com/hashicorp/yamux v0.0.0-20181012175058-2f1d1f20f75d // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/jonboulle/clockwork v0.2.2 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
