@@ -63,8 +63,6 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: '1.21.3'
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v1'
       - name: 'Run mock tests'
         run: |
           ./scripts/github-actions/ga-mock-test.sh
