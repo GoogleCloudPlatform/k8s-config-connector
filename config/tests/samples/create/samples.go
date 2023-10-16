@@ -118,12 +118,15 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 
 	name := k8s.GetNamespacedName(u)
 	defer wg.Done()
-	err := wait.PollImmediate(15*time.Second, 35*time.Minute, func() (done bool, err error) {
+	err := wait.PollImmediate(1*time.Second, 35*time.Minute, func() (done bool, err error) {
 		done = true
 		logger.Info("Testing to see if resource is ready", "kind", u.GetKind(), "name", u.GetName())
 		err = t.GetClient().Get(t.Ctx, name, u)
 		if err != nil {
 			logger.Info("Error getting resource", "kind", u.GetKind(), "name", u.GetName(), "error", err)
+			if t.Ctx.Err() != nil {
+				return false, t.Ctx.Err()
+			}
 			return false, nil
 		}
 		if u.GetKind() == "Secret" { // If unstruct is a Secret and it is found on the API server, then the Secret is ready
@@ -187,8 +190,11 @@ func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Uns
 	defer wg.Done()
 	// Do a best-faith cleanup of the resources. Gives a 30 minute buffer for cleanup, though
 	// resources that can be cleaned up quicker exit earlier.
-	err := wait.PollImmediate(15*time.Second, 30*time.Minute, func() (bool, error) {
+	err := wait.PollImmediate(1*time.Second, 30*time.Minute, func() (bool, error) {
 		if err := t.GetClient().Get(t.Ctx, k8s.GetNamespacedName(u), u); !errors.IsNotFound(err) {
+			if t.Ctx.Err() != nil {
+				return false, t.Ctx.Err()
+			}
 			return false, nil
 		}
 		return true, nil

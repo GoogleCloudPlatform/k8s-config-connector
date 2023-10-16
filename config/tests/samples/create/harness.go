@@ -60,6 +60,19 @@ type Harness struct {
 	restConfig *rest.Config
 }
 
+// ForSubtest returns a harness scoped to a subtest (created by t.Run).
+func (h *Harness) ForSubtest(t *testing.T) *Harness {
+	ctx, cancel := context.WithCancel(h.Ctx)
+	t.Cleanup(func() {
+		cancel()
+	})
+
+	subHarness := *h
+	subHarness.T = t
+	subHarness.Ctx = ctx
+	return &subHarness
+}
+
 type httpRoundTripperKeyType int
 
 // httpRoundTripperKey is the key value for http.RoundTripper in a context.Context

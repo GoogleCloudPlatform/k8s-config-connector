@@ -55,6 +55,8 @@ func TestAllInSeries(t *testing.T) {
 		cancel()
 	})
 
+	testHarness := create.NewHarness(t, ctx)
+
 	t.Run("samples", func(t *testing.T) {
 		samples := create.LoadSamples(t, project)
 
@@ -65,7 +67,7 @@ func TestAllInSeries(t *testing.T) {
 			t.Run(s.Name, func(t *testing.T) {
 				create.MaybeSkip(t, s.Name, s.Resources)
 
-				h := create.NewHarness(t, ctx)
+				h := testHarness.ForSubtest(t)
 
 				cleanupResources := true
 
@@ -112,7 +114,7 @@ func TestAllInSeries(t *testing.T) {
 			t.Run(s.Name, func(t *testing.T) {
 				create.MaybeSkip(t, s.Name, s.Resources)
 
-				h := create.NewHarness(t, ctx)
+				h := testHarness.ForSubtest(t)
 
 				cleanupResources := true
 
