@@ -50,3 +50,7 @@ updates:
     directory: /build/webhook
     schedule:
       interval: daily
+  - package-ecosystem: docker
+    directory: /operator
+    schedule:
+      interval: daily
