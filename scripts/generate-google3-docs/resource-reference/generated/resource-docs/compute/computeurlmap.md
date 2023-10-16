@@ -5637,7 +5637,7 @@ spec:
                 name: computeurlmap-dep
             retryPolicy:
               numRetries: 4
-              retryTimeout:
+              perTryTimeout:
                 seconds: "30"
               retryConditions:
                 - "5xx"
