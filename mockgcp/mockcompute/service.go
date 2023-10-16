@@ -75,6 +75,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterSubnetworksServer(grpcServer, &SubnetsV1{MockService: s})
 
+	pb.RegisterTargetVpnGatewaysServer(grpcServer, &TargetVpnGatewaysV1{MockService: s})
+
 	pb.RegisterVpnGatewaysServer(grpcServer, &VPNGatewaysV1{MockService: s})
 
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
@@ -149,6 +151,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*r
 	}
 
 	if err := pb.RegisterSubnetworksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterTargetVpnGatewaysHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
