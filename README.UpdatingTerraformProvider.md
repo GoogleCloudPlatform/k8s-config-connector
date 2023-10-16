@@ -35,9 +35,13 @@
         1.  (Optional) Consider adding the reference fields in testdata and
             samples if it is an important ask from users or belongs to a
             core user case.
-    1.  Fields may not be existent in the underlying GCP resource, and we need
+    1.  Fields may not exist in the underlying GCP resource, and we need
         to turn them into directives: Add the fields into the `directives` list
-        in the service mapping.
+        in the service mapping. `directives` fields do not exist in resource CRD.
+    1.  Fields may not exist in the underlying GCP resource, but are returned
+        by Terraform on read, we need to add them into the `mutableButUnreadableFields`
+        list in the service mapping. The fields are unreadable but the spec value of
+        the fields can be modified.
     1.  Fields can't be supported or will result in the suboptimal UX (e.g.
         multi-kind reference in the legacy style) due to lack of feature
         support, and we need to ignore the fields right now: Add the fields into

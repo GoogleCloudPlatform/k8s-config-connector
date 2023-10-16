@@ -197,6 +197,38 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
         - remove_default_node_pool
     ```
 
+1. Add `mutableButUnreadableFields` if necessary. Fields may not exist in the underlying GCP resource,
+   but are returned by Terraform on read and it's mutable. We need to add them into the `mutableButUnreadableFields`
+   list in the service mapping. The difference between `mutableButUnreadableFields` and `directives` is,
+   The `mutableButUnreadableFields` fields will still be a part of resource CRD spec, they are unreadable but the 
+   value of the fields can be modified. Similarly, you'll need to look at Terraform resource documentation,
+   Google Cloud API documentation, and the [pkg/apis/core/servicemapping_types](pkg/apis/core/servicemapping_types)
+   documentation to determine if any fields are `mutableButUnreadableFields`. An example is `password` field. It is
+   mutable because users may update their password through the API. However, GCP resource usually will not return the
+   `password` value for security considerations.
+
+   ```yaml
+    - name: google_container_cluster
+      kind: ContainerCluster
+      ...
+      mutableButUnreadableFields:
+         - min_master_version
+    ```
+
+1. Add `ignoredFields` if necessary. Fields can't be supported or will result in the suboptimal UX (e.g.
+   multi-kind reference in the legacy style) due to lack of feature support, and we need to ignore the fields right now:
+   Add the fields into the `ignoredFields` list in the service mapping, file a GitHub issue to support this field,
+   and add a TODO with the issue ID right above the entry in the ignoredFields list.
+
+    ```yaml
+    - name: google_container_cluster
+      kind: ContainerCluster
+      ...
+      ignoredFields:
+          # TODO: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/000
+          - node_pool
+    ```
+
 1.  Fill out the `resourceAvailableInAssetInventory`. Set to false.
 
 1.  Add `hierarchicalReferences` if they exist. Determine if the corresonding
@@ -242,6 +274,17 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
 
 1.  Run `make manifests`.
 1.  Run `git status`. Verify that there is a new CRD in `config/crds`.
+
+Note that you need to run `make manifests` every time when you update the service mapping file, and check the crd has 
+been updated accordingly. 
+
+### Run Unit Tests
+
+```
+make test
+```
+
+Ensure all tests pass.
 
 # Add the Service to Testing and Release
 
@@ -336,14 +379,44 @@ section under the Appendix.
 
 ## Run Tests
 
-1.  Run your newly added resource's test cases in `pkg/controller/dynamic`,
-    replacing `spannerinstance` with the name of your resource:
+1.  Set `[test-target]` to the kind (in all lower-case letters) in the following
+    command to run all the tests for your resource.
+
+    ```bash
+    go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests [test-target] -timeout 900s
+    ```
+
+    If you have multiple test cases and just want
+    to run a single test case of your resource, you can set `[test-target]` to a
+    specific test case folder name. For example:
 
     ```
-    go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests spannerinstance
+    pkg/test/resourcefixture/testdata/basic
+    ├── pubsub
+    |   ├── v1beta1
+    |       ├── pubsubsubscription
+    |           ├── basicpubsubsubscription
+    |               └── create.yaml
+    |               └── dependencies.yaml
+    |               └── update.yaml
+    |           ├── bigquerypubsubsubscription
+    |               └── create.yaml
+    |               └── dependencies.yaml
+    |               └── update.yaml
     ```
 
-    Ensure they are successful.
+    ```bash
+    go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests basicpubsubsubscription -timeout 900s
+    ```
+
+1.  If the dynamic test data contains constant placeholder
+    strings, e.g. "TEST_FOLDER_ID", you need to set them as env variables
+    first as follows:
+
+    ```bash
+       # Export the environment variables needed in the dynamic tests if you haven't done it.
+       TEST_FOLDER_ID=123456789 go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests cloudschedulerjob -timeout 900s
+    ```
 
 ## Optionally Add the Resource to Test Contexts
 
@@ -394,6 +467,11 @@ To disable the acquire and update test:
 If the test takes more than 10 minutes to finish, add it to
 LONG_RUNNING_CRUD_TESTS_REGEX in
 [./scripts/shared-vars-public.sh](./scripts/shared-vars-public.sh).
+
+## Optionally enable GCP services API endpoints
+
+Check the SUPPORTED_SERVICES in [./scripts/shared-vars-public.sh](./scripts/shared-vars-public.sh)
+to make sure the GCP services for your resource is in the list, if not, you need to add it into the list.
 
 ## Resource skeleton test cases
 
@@ -488,6 +566,24 @@ samples are created for that resource.
 1.  Follow the sample guidelines [here](README.Samples.md) and create sample(s)
     for the resource.
 
+## Run/Disable Sample Tests
+
+In addition to the integration tests run using
+[pkg/test/testdata/resourcefixture](pkg/test/testdata/resourcefixture), KCC has
+tests for resource samples. These tests can be run manually as follows (example
+given is for one of CloudSchedulerJob's samples):
+
+```bash
+go test -v -tags=integration ./config/tests/samples/create -test.run TestAll -run-tests scheduler-job-pubsub
+```
+Replace the environment variables to real values before running the tests.
+
+The sample tests will be run periodically in a newly created project through internal CI/CD pipeline. If this is
+not feasible for your resource, for example, your resource requires a custom project with special setup,
+you can skip the test by adding it to the
+`testDisabledList` map in
+[config/tests/samples/create/samples_test.go](config/tests/samples/create/samples_test.go).
+
 ## Cloud Code Snippets
 
 We have a script that generates snippet files for Cloud Code using our samples.
@@ -506,6 +602,11 @@ update to date, we need to add the new CRDs and samples to existing doc.
     [scripts/generate-google3-docs/resource-reference/templates](scripts/generate-google3-docs/resource-reference/templates),
     and name it like `spanner_spannerinstance.tmpl`, (i.e.,
     <service>_<kind>.tmpl).
+1.  Some resources need additional messages in the doc, for example, in
+    [BigQueryDataset](https://cloud.google.com/config-connector/docs/reference/resource-docs/bigquery/bigquerydataset)
+    there's a warning message. If you want to add message for your resource, similar to
+    [bigquery_bigquerydataset.tmpl](scripts/generate-google3-docs/resource-reference/templates/bigquery_bigquerydataset.tmpl),
+    add the message into the tmpl file.
 1.  Change the values for "Service name" (there are **two**, one for 'Google
     Cloud Service Name' and one for 'Config Connector Service Name'), "Service
     Documentation", "REST Resource Name", and "REST Resource Documentation"

@@ -238,6 +238,21 @@ can run it locally on your dev machine with the steps below.
     down the replica to 0.
 2.  Run `make run` and inspect the output logs.
 
+#### Test your changes
+
+If you are adding a new resource, you need to follow the steps in [NewResourceFromTerraform.md](NewResourceFromTerraform.md)
+to make code changes, add test data, and run the tests for your resource.
+
+If you are working on a existing resource, test yaml should exist under
+./pkg/test/resourcefixture/testdata/basic, you can run the test command directly
+to make sure the test can still pass. Example command:
+
+```bash
+   # Export the environment variables needed in the dynamic tests if you haven't done it.
+   TEST_FOLDER_ID=123456789 go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests cloudschedulerjob -timeout 900s
+ ```
+Replace `cloudschedulerjob` with your test target.
+
 ### Submit a Pull Request
 
 At this point you already knows how to make changes and verify it in your local
