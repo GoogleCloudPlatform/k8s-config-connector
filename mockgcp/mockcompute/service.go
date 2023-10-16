@@ -82,6 +82,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterVpnGatewaysServer(grpcServer, &VPNGatewaysV1{MockService: s})
 
+	pb.RegisterUrlMapsServer(grpcServer, &GlobalURLMapsV1{MockService: s})
+	pb.RegisterRegionUrlMapsServer(grpcServer, &RegionalURLMapsV1{MockService: s})
+
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
 }
 
@@ -165,6 +168,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*r
 	}
 
 	if err := pb.RegisterTargetVpnGatewaysHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterUrlMapsHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionUrlMapsHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
