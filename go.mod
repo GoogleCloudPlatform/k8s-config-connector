@@ -51,7 +51,7 @@ require (
 	k8s.io/client-go v0.25.0
 	k8s.io/code-generator v0.25.0
 	k8s.io/gengo v0.0.0-20211129171323-c02415ce4185
-	k8s.io/klog/v2 v2.80.1
+	k8s.io/klog/v2 v2.100.1
 	sigs.k8s.io/controller-runtime v0.13.0
 	sigs.k8s.io/controller-tools v0.6.2
 	sigs.k8s.io/kubebuilder-declarative-pattern v0.13.0-beta.1.0.20221121171032-ecacd65a9e07
