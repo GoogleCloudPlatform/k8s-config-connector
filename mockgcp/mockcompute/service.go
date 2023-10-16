@@ -64,9 +64,15 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterHealthChecksServer(grpcServer, &GlobalHealthCheckV1{MockService: s})
 	pb.RegisterRegionHealthChecksServer(grpcServer, &RegionalHealthCheckV1{MockService: s})
 
+	pb.RegisterImagesServer(grpcServer, &ImagesV1{MockService: s})
+
+	pb.RegisterInstancesServer(grpcServer, &InstancesV1{MockService: s})
+
 	pb.RegisterNetworksServer(grpcServer, &NetworksV1{MockService: s})
 
 	pb.RegisterSubnetworksServer(grpcServer, &SubnetsV1{MockService: s})
+
+	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
@@ -118,11 +124,23 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*r
 		return nil, err
 	}
 
+	if err := pb.RegisterImagesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterInstancesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
 	if err := pb.RegisterNetworksHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
 	if err := pb.RegisterSubnetworksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterZonesHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 

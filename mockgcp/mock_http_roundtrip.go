@@ -150,14 +150,27 @@ func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
 			return fmt.Errorf("error reading request body: %w", err)
 		}
 
-		s := requestBody.String()
+		if requestBody.Len() != 0 {
+			o := make(map[string]any)
+			if err := json.Unmarshal(requestBody.Bytes(), &o); err != nil {
+				return fmt.Errorf("parsing json: %w", err)
+			}
 
-		s, err := m.modifyUpdateMask(s)
-		if err != nil {
-			return err
+			if err := m.modifyUpdateMask(o); err != nil {
+				return err
+			}
+
+			if err := pruneNilArrays(o); err != nil {
+				return err
+			}
+
+			b, err := json.Marshal(o)
+			if err != nil {
+				return fmt.Errorf("building json: %w", err)
+			}
+
+			req.Body = io.NopCloser(bytes.NewBuffer(b))
 		}
-
-		req.Body = io.NopCloser(strings.NewReader(s))
 	}
 	return nil
 }
@@ -168,16 +181,7 @@ func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
 // However, because GCP APIs seem to accept display_name or displayName over JSON.
 // If we don't map display_name => displayName, the proto validation will reject it.
 // e.g. https://github.com/grpc-ecosystem/grpc-gateway/issues/2239
-func (m *mockRoundTripper) modifyUpdateMask(s string) (string, error) {
-	if len(s) == 0 {
-		return "", nil
-	}
-
-	o := make(map[string]any)
-	if err := json.Unmarshal([]byte(s), &o); err != nil {
-		return "", fmt.Errorf("parsing json: %w", err)
-	}
-
+func (m *mockRoundTripper) modifyUpdateMask(o map[string]any) error {
 	for k, v := range o {
 		switch k {
 		case "updateMask":
@@ -192,11 +196,34 @@ func (m *mockRoundTripper) modifyUpdateMask(s string) (string, error) {
 			o[k] = strings.Join(tokens, ",")
 		}
 	}
-	b, err := json.Marshal(o)
-	if err != nil {
-		return "", fmt.Errorf("building json: %w", err)
+
+	return nil
+}
+
+// pruneNilArrays replaces [nil] => []
+// For some reason terraform sends [nil], which is not really valid
+func pruneNilArrays(o map[string]any) error {
+	for k, v := range o {
+		if v == nil {
+			continue
+		}
+		switch v := v.(type) {
+		case map[string]any:
+			if err := pruneNilArrays(v); err != nil {
+				return err
+			}
+		case []any:
+			if len(v) == 1 && v[0] == nil {
+				o[k] = []any{}
+			}
+		case string, int64, bool, float64:
+			// ignore
+		default:
+			return fmt.Errorf("unhandled type %T", v)
+		}
 	}
-	return string(b), nil
+
+	return nil
 }
 
 // roundTripIAMPolicy serves the IAM policy verbs (e.g. :getIamPolicy)
