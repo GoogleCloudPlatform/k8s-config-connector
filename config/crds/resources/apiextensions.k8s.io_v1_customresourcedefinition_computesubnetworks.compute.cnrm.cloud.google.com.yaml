@@ -260,6 +260,10 @@ spec:
                   The gateway address for default routes to reach destination addresses
                   outside this subnetwork.
                 type: string
+              internalIpv6Prefix:
+                description: The internal IPv6 address range that is assigned to this
+                  subnetwork.
+                type: string
               ipv6CidrRange:
                 description: The range of internal IPv6 addresses that are owned by
                   this subnetwork.

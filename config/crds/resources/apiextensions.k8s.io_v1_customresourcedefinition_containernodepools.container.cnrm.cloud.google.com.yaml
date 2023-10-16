@@ -386,6 +386,15 @@ spec:
                     required:
                     - localSsdCount
                     type: object
+                  fastSocket:
+                    description: Enable or disable NCCL Fast Socket in the node pool.
+                    properties:
+                      enabled:
+                        description: Whether or not NCCL Fast Socket is enabled.
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
                   gcfsConfig:
                     description: Immutable. GCFS configuration for this node.
                     properties:

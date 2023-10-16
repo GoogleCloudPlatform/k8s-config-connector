@@ -262,6 +262,10 @@ func resourceLoggingSinkImportState(sinkType string) schema.StateFunc {
 			return nil, fmt.Errorf("Error setting sinkType: %s", err)
 		}
 
+		if err := d.Set("name", loggingSinkId.name); err != nil {
+			return nil, fmt.Errorf("Error setting log sink name: %v", err)
+		}
+
 		return []*schema.ResourceData{d}, nil
 	}
 }

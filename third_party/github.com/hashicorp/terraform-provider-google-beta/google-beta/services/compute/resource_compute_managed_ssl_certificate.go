@@ -103,7 +103,6 @@ which type this is. Default value: "MANAGED" Possible values: ["MANAGED"]`,
 			"certificate_id": {
 				Type:        schema.TypeInt,
 				Computed:    true,
-				Optional:    true,
 				Description: `The unique identifier for the resource.`,
 			},
 			"creation_timestamp": {

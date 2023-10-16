@@ -294,6 +294,11 @@ func (in *SecretManagerSecretVersionSpec) DeepCopyInto(out *SecretManagerSecretV
 		*out = new(bool)
 		**out = **in
 	}
+	if in.IsSecretDataBase64 != nil {
+		in, out := &in.IsSecretDataBase64, &out.IsSecretDataBase64
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)

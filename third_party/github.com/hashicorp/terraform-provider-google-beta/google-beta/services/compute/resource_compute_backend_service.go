@@ -665,7 +665,7 @@ For internal load balancing, a URL to a HealthCheck resource must be specified i
 						},
 						"oauth2_client_secret": {
 							Type:        schema.TypeString,
-							Required:    true,
+							Optional:    true,
 							Description: `OAuth2 Client Secret for IAP`,
 							Sensitive:   true,
 						},

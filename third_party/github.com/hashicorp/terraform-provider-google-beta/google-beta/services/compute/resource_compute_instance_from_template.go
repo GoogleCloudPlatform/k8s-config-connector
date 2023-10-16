@@ -88,7 +88,10 @@ func computeInstanceFromTemplateSchema() map[string]*schema.Schema {
 }
 
 func recurseOnSchema(s map[string]*schema.Schema, f func(*schema.Schema)) {
-	for _, field := range s {
+	for name, field := range s {
+		if name == "params" {
+			continue
+		}
 		f(field)
 		if e := field.Elem; e != nil {
 			if r, ok := e.(*schema.Resource); ok {

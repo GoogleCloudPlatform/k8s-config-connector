@@ -123,6 +123,9 @@ initialUser:
         name: string
   user: string
 location: string
+networkConfig:
+  allocatedIpRange: string
+  network: string
 networkRef:
   external: string
   name: string
@@ -623,8 +626,40 @@ If not set, defaults to 14 days.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>networkConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Metadata related to network configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.allocatedIpRange</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of the allocated IP range for the private IP AlloyDB cluster. For example: "google-managed-services-default".
+If set, the instance IPs for this cluster will be created in the allocated range.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.network</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster.
+It is specified in the form: "projects/{projectNumber}/global/networks/{network_id}".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>networkRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>

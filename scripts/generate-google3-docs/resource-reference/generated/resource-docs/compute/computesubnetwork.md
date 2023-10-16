@@ -441,6 +441,7 @@ creationTimestamp: string
 externalIpv6Prefix: string
 fingerprint: string
 gatewayAddress: string
+internalIpv6Prefix: string
 ipv6CidrRange: string
 observedGeneration: integer
 selfLink: string
@@ -529,6 +530,13 @@ selfLink: string
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The gateway address for default routes to reach destination addresses
 outside this subnetwork.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>internalIpv6Prefix</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The internal IPv6 address range that is assigned to this subnetwork.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

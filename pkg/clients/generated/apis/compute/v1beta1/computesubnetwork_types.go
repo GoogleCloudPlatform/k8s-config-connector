@@ -176,6 +176,10 @@ type ComputeSubnetworkStatus struct {
 	// +optional
 	GatewayAddress *string `json:"gatewayAddress,omitempty"`
 
+	/* The internal IPv6 address range that is assigned to this subnetwork. */
+	// +optional
+	InternalIpv6Prefix *string `json:"internalIpv6Prefix,omitempty"`
+
 	/* The range of internal IPv6 addresses that are owned by this subnetwork. */
 	// +optional
 	Ipv6CidrRange *string `json:"ipv6CidrRange,omitempty"`

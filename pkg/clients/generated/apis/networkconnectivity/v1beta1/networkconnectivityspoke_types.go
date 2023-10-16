@@ -61,6 +61,15 @@ type SpokeLinkedRouterApplianceInstances struct {
 	SiteToSiteDataTransfer bool `json:"siteToSiteDataTransfer"`
 }
 
+type SpokeLinkedVPCNetwork struct {
+	/* Immutable. IP ranges encompassing the subnets to be excluded from peering. */
+	// +optional
+	ExcludeExportRanges []string `json:"excludeExportRanges,omitempty"`
+
+	/* Immutable. */
+	UriRef v1alpha1.ResourceRef `json:"uriRef"`
+}
+
 type SpokeLinkedVpnTunnels struct {
 	/* Immutable. A value that controls whether site-to-site data transfer is enabled for these resources. Note that data transfer is available only in supported locations. */
 	SiteToSiteDataTransfer bool `json:"siteToSiteDataTransfer"`
@@ -84,6 +93,10 @@ type NetworkConnectivitySpokeSpec struct {
 	/* Immutable. The URIs of linked Router appliance resources */
 	// +optional
 	LinkedRouterApplianceInstances *SpokeLinkedRouterApplianceInstances `json:"linkedRouterApplianceInstances,omitempty"`
+
+	/* Immutable. VPC network that is associated with the spoke. */
+	// +optional
+	LinkedVPCNetwork *SpokeLinkedVPCNetwork `json:"linkedVPCNetwork,omitempty"`
 
 	/* Immutable. The URIs of linked VPN tunnel resources */
 	// +optional

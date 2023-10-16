@@ -58,11 +58,11 @@ type SecretReplicas struct {
 }
 
 type SecretReplication struct {
-	/* Immutable. The Secret will automatically be replicated without any restrictions. */
+	/* The Secret will automatically be replicated without any restrictions. */
 	// +optional
 	Auto *SecretAuto `json:"auto,omitempty"`
 
-	/* DEPRECATED. `automatic` is deprecated and will be removed in a future major release. Use `auto` instead. Immutable. The Secret will automatically be replicated without any restrictions. */
+	/* DEPRECATED. `automatic` is deprecated and will be removed in a future major release. Use `auto` instead. The Secret will automatically be replicated without any restrictions. */
 	// +optional
 	Automatic *bool `json:"automatic,omitempty"`
 

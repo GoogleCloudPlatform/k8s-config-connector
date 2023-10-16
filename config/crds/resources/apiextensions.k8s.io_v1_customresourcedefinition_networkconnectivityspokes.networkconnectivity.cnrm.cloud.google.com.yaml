@@ -190,6 +190,48 @@ spec:
                 - instances
                 - siteToSiteDataTransfer
                 type: object
+              linkedVPCNetwork:
+                description: Immutable. VPC network that is associated with the spoke.
+                properties:
+                  excludeExportRanges:
+                    description: Immutable. IP ranges encompassing the subnets to
+                      be excluded from peering.
+                    items:
+                      type: string
+                    type: array
+                  uriRef:
+                    description: Immutable.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: |-
+                          The URI of the VPC network resource.
+
+                          Allowed value: The `selfLink` field of a `ComputeNetwork` resource.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
+                required:
+                - uriRef
+                type: object
               linkedVpnTunnels:
                 description: Immutable. The URIs of linked VPN tunnel resources
                 properties:

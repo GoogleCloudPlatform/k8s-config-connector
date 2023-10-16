@@ -1071,7 +1071,7 @@ func ResourceBigQueryTable() *schema.Resource {
 			"deletion_protection": {
 				Type:        schema.TypeBool,
 				Optional:    true,
-				Default:     true,
+				Default:     false,
 				Description: `Whether or not to allow Terraform to destroy the instance. Unless this field is set to false in Terraform state, a terraform destroy or terraform apply that would delete the instance will fail.`,
 			},
 
@@ -1437,7 +1437,7 @@ func resourceBigQueryTableRead(d *schema.ResourceData, meta interface{}) error {
 			return err
 		}
 
-		if v, ok := d.GetOk("external_data_configuration"); ok {
+		if v, ok := d.GetOk("external_data_configuration"); ok && v.([]interface{})[0] != nil {
 			// The API response doesn't return the `external_data_configuration.schema`
 			// used when creating the table and it cannot be queried.
 			// After creation, a computed schema is stored in the toplevel `schema`,
@@ -2313,7 +2313,7 @@ func resourceBigQueryTableImport(d *schema.ResourceData, meta interface{}) ([]*s
 	}
 
 	// Explicitly set virtual fields to default values on import
-	if err := d.Set("deletion_protection", true); err != nil {
+	if err := d.Set("deletion_protection", false); err != nil {
 		return nil, fmt.Errorf("Error setting deletion_protection: %s", err)
 	}
 

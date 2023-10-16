@@ -289,6 +289,8 @@ nodeConfig:
     localSsdCount: integer
   ephemeralStorageLocalSsdConfig:
     localSsdCount: integer
+  fastSocket:
+    enabled: boolean
   gcfsConfig:
     enabled: boolean
   guestAccelerator:
@@ -2418,6 +2420,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.fastSocket</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Enable or disable NCCL Fast Socket in the node pool.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.fastSocket.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether or not NCCL Fast Socket is enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

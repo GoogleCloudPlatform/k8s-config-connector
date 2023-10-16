@@ -48,12 +48,11 @@ func ResourceAccessContextManagerAccessPolicy() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"parent": {
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-				Description: `The parent of this AccessPolicy in the Cloud Resource Hierarchy.
-Format: organizations/{organization_id}`,
+			"org_id": {
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
+				Description: `The parent organization of this AccessPolicy in the Cloud Resource Hierarchy.`,
 			},
 			"title": {
 				Type:        schema.TypeString,
@@ -98,11 +97,11 @@ func resourceAccessContextManagerAccessPolicyCreate(d *schema.ResourceData, meta
 	}
 
 	obj := make(map[string]interface{})
-	parentProp, err := expandAccessContextManagerAccessPolicyParent(d.Get("parent"), d, config)
+	orgIdProp, err := expandAccessContextManagerAccessPolicyOrgId(d.Get("org_id"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("parent"); !tpgresource.IsEmptyValue(reflect.ValueOf(parentProp)) && (ok || !reflect.DeepEqual(v, parentProp)) {
-		obj["parent"] = parentProp
+	} else if v, ok := d.GetOkExists("org_id"); !tpgresource.IsEmptyValue(reflect.ValueOf(orgIdProp)) && (ok || !reflect.DeepEqual(v, orgIdProp)) {
+		obj["parent"] = orgIdProp
 	}
 	titleProp, err := expandAccessContextManagerAccessPolicyTitle(d.Get("title"), d, config)
 	if err != nil {
@@ -230,7 +229,7 @@ func resourceAccessContextManagerAccessPolicyRead(d *schema.ResourceData, meta i
 	if err := d.Set("update_time", flattenAccessContextManagerAccessPolicyUpdateTime(res["updateTime"], d, config)); err != nil {
 		return fmt.Errorf("Error reading AccessPolicy: %s", err)
 	}
-	if err := d.Set("parent", flattenAccessContextManagerAccessPolicyParent(res["parent"], d, config)); err != nil {
+	if err := d.Set("org_id", flattenAccessContextManagerAccessPolicyOrgId(res["parent"], d, config)); err != nil {
 		return fmt.Errorf("Error reading AccessPolicy: %s", err)
 	}
 	if err := d.Set("title", flattenAccessContextManagerAccessPolicyTitle(res["title"], d, config)); err != nil {
@@ -400,8 +399,11 @@ func flattenAccessContextManagerAccessPolicyUpdateTime(v interface{}, d *schema.
 	return v
 }
 
-func flattenAccessContextManagerAccessPolicyParent(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
-	return v
+func flattenAccessContextManagerAccessPolicyOrgId(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if parent, ok := v.(string); ok {
+		return strings.TrimPrefix(parent, "organizations/")
+	}
+	return nil
 }
 
 func flattenAccessContextManagerAccessPolicyTitle(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -412,7 +414,10 @@ func flattenAccessContextManagerAccessPolicyScopes(v interface{}, d *schema.Reso
 	return v
 }
 
-func expandAccessContextManagerAccessPolicyParent(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+func expandAccessContextManagerAccessPolicyOrgId(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	if orgId, ok := v.(string); ok {
+		return "organizations/" + orgId, nil
+	}
 	return v, nil
 }
 

@@ -74,6 +74,18 @@ type ComputeTargetHTTPSProxySpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* Immutable. A URL referring to a networksecurity.ServerTlsPolicy
+	resource that describes how the proxy should authenticate inbound
+	traffic. serverTlsPolicy only applies to a global TargetHttpsProxy
+	attached to globalForwardingRules with the loadBalancingScheme
+	set to INTERNAL_SELF_MANAGED or EXTERNAL or EXTERNAL_MANAGED.
+	For details which ServerTlsPolicy resources are accepted with
+	INTERNAL_SELF_MANAGED and which with EXTERNAL, EXTERNAL_MANAGED
+	loadBalancingScheme consult ServerTlsPolicy documentation.
+	If left blank, communications are not encrypted. */
+	// +optional
+	ServerTlsPolicy *string `json:"serverTlsPolicy,omitempty"`
+
 	// +optional
 	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates,omitempty"`
 
