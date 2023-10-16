@@ -75,6 +75,20 @@ func (s *DisksV1) Insert(ctx context.Context, req *pb.InsertDiskRequest) (*pb.Op
 		obj.PhysicalBlockSizeBytes = PtrTo(int64(4096))
 	}
 
+	if obj.SourceImage != nil {
+		tokens := strings.Split(*obj.SourceImage, "/")
+		if len(tokens) == 2 {
+			// debian-cloud/debian-11
+			obj.SourceImage = PtrTo("https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010")
+			obj.SourceImageId = PtrTo("2443108620951880213")
+		}
+		if len(tokens) == 6 {
+			// projects/debian-cloud/global/images/family/debian-11
+			obj.SourceImage = PtrTo("https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010")
+			obj.SourceImageId = PtrTo("2443108620951880213")
+		}
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
