@@ -137,6 +137,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	if err := pb.RegisterTargetHttpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionTargetHttpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
 	if err := pb.RegisterNodeGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
