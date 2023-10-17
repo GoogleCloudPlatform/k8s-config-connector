@@ -28,6 +28,7 @@ go run ./scripts/generate-go-crd-clients
 make fmt # Fix up the formatting and headers
 
 # HACK: Some of the kubernetes generation tools still run better in GOPATH
+rm -rf ${REPO_ROOT}/.build/go/src/github.com/GoogleCloudPlatform/k8s-config-connector
 mkdir -p "${REPO_ROOT}/.build/go/src/github.com/GoogleCloudPlatform"
 ln -sf "${REPO_ROOT}" "${REPO_ROOT}/.build/go/src/github.com/GoogleCloudPlatform/k8s-config-connector" 
 export GOPATH="${REPO_ROOT}/.build/go"
