@@ -154,8 +154,10 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 
 	if request == "GET https://openidconnect.googleapis.com/v1/userinfo?alt=json" {
 		body["email"] = "test@example.com"
-
 		response.StatusCode = 200
+	} else {
+		log.Printf("Expect host name invalid or does not match the actual host. " +
+			"Please verify the ExpectedHost in service.go and retry.")
 	}
 
 	if body != nil {
