@@ -202,11 +202,11 @@ template:
     vpcAccess:
       egress: string
       networkInterfaces:
-      - network:
+      - networkRef:
           external: string
           name: string
           namespace: string
-        subnetwork:
+        subnetworkRef:
           external: string
           name: string
           namespace: string
@@ -1362,7 +1362,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     </tr>
     <tr>
         <td>
-            <p><code>template.template.vpcAccess.networkInterfaces[].network</code></p>
+            <p><code>template.template.vpcAccess.networkInterfaces[].networkRef</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1374,7 +1374,7 @@ looked up from the subnetwork.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>template.template.vpcAccess.networkInterfaces[].network.external</code></p>
+            <p><code>template.template.vpcAccess.networkInterfaces[].networkRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1384,7 +1384,7 @@ looked up from the subnetwork.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>template.template.vpcAccess.networkInterfaces[].network.name</code></p>
+            <p><code>template.template.vpcAccess.networkInterfaces[].networkRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1394,7 +1394,7 @@ looked up from the subnetwork.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>template.template.vpcAccess.networkInterfaces[].network.namespace</code></p>
+            <p><code>template.template.vpcAccess.networkInterfaces[].networkRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1404,7 +1404,7 @@ looked up from the subnetwork.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>template.template.vpcAccess.networkInterfaces[].subnetwork</code></p>
+            <p><code>template.template.vpcAccess.networkInterfaces[].subnetworkRef</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1416,7 +1416,7 @@ subnetwork with the same name with the network will be used.{% endverbatim %}</p
     </tr>
     <tr>
         <td>
-            <p><code>template.template.vpcAccess.networkInterfaces[].subnetwork.external</code></p>
+            <p><code>template.template.vpcAccess.networkInterfaces[].subnetworkRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1426,7 +1426,7 @@ subnetwork with the same name with the network will be used.{% endverbatim %}</p
     </tr>
     <tr>
         <td>
-            <p><code>template.template.vpcAccess.networkInterfaces[].subnetwork.name</code></p>
+            <p><code>template.template.vpcAccess.networkInterfaces[].subnetworkRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1436,7 +1436,7 @@ subnetwork with the same name with the network will be used.{% endverbatim %}</p
     </tr>
     <tr>
         <td>
-            <p><code>template.template.vpcAccess.networkInterfaces[].subnetwork.namespace</code></p>
+            <p><code>template.template.vpcAccess.networkInterfaces[].subnetworkRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>

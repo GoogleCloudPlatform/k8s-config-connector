@@ -2420,6 +2420,7 @@ spec:
             version: v1beta1
             group: networksecurity.cnrm.cloud.google.com
           valueTemplate: "projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}"
+          dclBasedResource: true
       containers:
         - type: project
           tfField: project
