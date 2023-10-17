@@ -84,7 +84,7 @@ type ComputeTargetHTTPSProxySpec struct {
 	loadBalancingScheme consult ServerTlsPolicy documentation.
 	If left blank, communications are not encrypted. */
 	// +optional
-	ServerTlsPolicy *string `json:"serverTlsPolicy,omitempty"`
+	ServerTlsPolicyRef *v1alpha1.ResourceRef `json:"serverTlsPolicyRef,omitempty"`
 
 	// +optional
 	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates,omitempty"`

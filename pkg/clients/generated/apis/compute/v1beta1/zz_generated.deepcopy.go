@@ -8415,9 +8415,9 @@ func (in *ComputeTargetHTTPSProxySpec) DeepCopyInto(out *ComputeTargetHTTPSProxy
 		*out = new(string)
 		**out = **in
 	}
-	if in.ServerTlsPolicy != nil {
-		in, out := &in.ServerTlsPolicy, &out.ServerTlsPolicy
-		*out = new(string)
+	if in.ServerTlsPolicyRef != nil {
+		in, out := &in.ServerTlsPolicyRef, &out.ServerTlsPolicyRef
+		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SslCertificates != nil {

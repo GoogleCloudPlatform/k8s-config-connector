@@ -110,10 +110,12 @@ type ClusterNetworkConfig struct {
 	// +optional
 	AllocatedIpRange *string `json:"allocatedIpRange,omitempty"`
 
-	/* The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster.
-	It is specified in the form: "projects/{projectNumber}/global/networks/{network_id}". */
+	/* Only `external` field is supported to configure the reference.
+	(Required) The relative resource name of the VPC network on which
+	the instance can be accessed. It is specified in the following form:
+	projects/{projectNumber}/global/networks/{network_id}." */
 	// +optional
-	Network *string `json:"network,omitempty"`
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 }
 
 type ClusterPassword struct {
@@ -216,7 +218,6 @@ type AlloyDBClusterSpec struct {
 	NetworkConfig *ClusterNetworkConfig `json:"networkConfig,omitempty"`
 
 	/* Only `external` field is supported to configure the reference.
-
 	(Required) The relative resource name of the VPC network on which
 	the instance can be accessed. It is specified in the following form:
 	projects/{projectNumber}/global/networks/{network_id}." */

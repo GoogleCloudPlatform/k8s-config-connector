@@ -874,9 +874,9 @@ func (in *ClusterNetworkConfig) DeepCopyInto(out *ClusterNetworkConfig) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Network != nil {
-		in, out := &in.Network, &out.Network
-		*out = new(string)
+	if in.NetworkRef != nil {
+		in, out := &in.NetworkRef, &out.NetworkRef
+		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
 	return

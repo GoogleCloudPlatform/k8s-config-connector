@@ -229,8 +229,14 @@ template:
       namespace: string
     egress: string
     networkInterfaces:
-    - network: string
-      subnetwork: string
+    - network:
+        external: string
+        name: string
+        namespace: string
+      subnetwork:
+        external: string
+        name: string
+        namespace: string
       tags:
       - string
 traffic:
@@ -1674,10 +1680,40 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">string</code></p>
+            <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The VPC network that the Cloud Run resource will be able to send traffic to. At least one of network or subnetwork must be specified. If both
 network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be
 looked up from the subnetwork.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.vpcAccess.networkInterfaces[].network.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.vpcAccess.networkInterfaces[].network.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.vpcAccess.networkInterfaces[].network.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1686,10 +1722,40 @@ looked up from the subnetwork.{% endverbatim %}</p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">string</code></p>
+            <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both
 network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the
 subnetwork with the same name with the network will be used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.vpcAccess.networkInterfaces[].subnetwork.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.vpcAccess.networkInterfaces[].subnetwork.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.vpcAccess.networkInterfaces[].subnetwork.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

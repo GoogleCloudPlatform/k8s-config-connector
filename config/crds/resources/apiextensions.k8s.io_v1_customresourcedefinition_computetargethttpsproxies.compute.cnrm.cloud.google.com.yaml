@@ -124,7 +124,7 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
-              serverTlsPolicy:
+              serverTlsPolicyRef:
                 description: |-
                   Immutable. A URL referring to a networksecurity.ServerTlsPolicy
                   resource that describes how the proxy should authenticate inbound
@@ -135,7 +135,33 @@ spec:
                   INTERNAL_SELF_MANAGED and which with EXTERNAL, EXTERNAL_MANAGED
                   loadBalancingScheme consult ServerTlsPolicy documentation.
                   If left blank, communications are not encrypted.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: string of the format `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}`,
+                      where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               sslCertificates:
                 items:
                   description: |-

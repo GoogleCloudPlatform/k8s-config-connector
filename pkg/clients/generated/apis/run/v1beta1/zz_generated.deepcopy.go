@@ -330,12 +330,12 @@ func (in *JobNetworkInterfaces) DeepCopyInto(out *JobNetworkInterfaces) {
 	*out = *in
 	if in.Network != nil {
 		in, out := &in.Network, &out.Network
-		*out = new(string)
+		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Subnetwork != nil {
 		in, out := &in.Subnetwork, &out.Subnetwork
-		*out = new(string)
+		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Tags != nil {
@@ -1471,12 +1471,12 @@ func (in *ServiceNetworkInterfaces) DeepCopyInto(out *ServiceNetworkInterfaces) 
 	*out = *in
 	if in.Network != nil {
 		in, out := &in.Network, &out.Network
-		*out = new(string)
+		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Subnetwork != nil {
 		in, out := &in.Subnetwork, &out.Subnetwork
-		*out = new(string)
+		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Tags != nil {

@@ -90,7 +90,10 @@ location: string
 proxyBind: boolean
 quicOverride: string
 resourceID: string
-serverTlsPolicy: string
+serverTlsPolicyRef:
+  external: string
+  name: string
+  namespace: string
 sslCertificates:
 - external: string
   name: string
@@ -225,11 +228,11 @@ specified, Google manages whether QUIC is used. Default value: "NONE" Possible v
     </tr>
     <tr>
         <td>
-            <p><code>serverTlsPolicy</code></p>
+            <p><code>serverTlsPolicyRef</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">string</code></p>
+            <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. A URL referring to a networksecurity.ServerTlsPolicy
 resource that describes how the proxy should authenticate inbound
 traffic. serverTlsPolicy only applies to a global TargetHttpsProxy
@@ -239,6 +242,36 @@ For details which ServerTlsPolicy resources are accepted with
 INTERNAL_SELF_MANAGED and which with EXTERNAL, EXTERNAL_MANAGED
 loadBalancingScheme consult ServerTlsPolicy documentation.
 If left blank, communications are not encrypted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serverTlsPolicyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}`, where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serverTlsPolicyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serverTlsPolicyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

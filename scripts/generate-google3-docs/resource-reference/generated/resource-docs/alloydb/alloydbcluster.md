@@ -125,7 +125,10 @@ initialUser:
 location: string
 networkConfig:
   allocatedIpRange: string
-  network: string
+  networkRef:
+    external: string
+    name: string
+    namespace: string
 networkRef:
   external: string
   name: string
@@ -647,13 +650,45 @@ If set, the instance IPs for this cluster will be created in the allocated range
     </tr>
     <tr>
         <td>
-            <p><code>networkConfig.network</code></p>
+            <p><code>networkConfig.networkRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Only `external` field is supported to configure the reference.
+(Required) The relative resource name of the VPC network on which 
+the instance can be accessed. It is specified in the following form: 
+projects/{projectNumber}/global/networks/{network_id}."{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.networkRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster.
-It is specified in the form: "projects/{projectNumber}/global/networks/{network_id}".{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.networkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.networkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -664,7 +699,6 @@ It is specified in the form: "projects/{projectNumber}/global/networks/{network_
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Only `external` field is supported to configure the reference.
-
 (Required) The relative resource name of the VPC network on which 
 the instance can be accessed. It is specified in the following form: 
 projects/{projectNumber}/global/networks/{network_id}."{% endverbatim %}</p>

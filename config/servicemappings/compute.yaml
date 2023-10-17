@@ -2403,6 +2403,23 @@ spec:
             version: v1beta1
             group: certificatemanager.cnrm.cloud.google.com
           valueTemplate: "//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificateMaps/{{value}}"
+        - key: serverTlsPolicyRef
+          tfField: server_tls_policy
+          description: |-
+            Immutable. A URL referring to a networksecurity.ServerTlsPolicy
+            resource that describes how the proxy should authenticate inbound
+            traffic. serverTlsPolicy only applies to a global TargetHttpsProxy
+            attached to globalForwardingRules with the loadBalancingScheme
+            set to INTERNAL_SELF_MANAGED or EXTERNAL or EXTERNAL_MANAGED.
+            For details which ServerTlsPolicy resources are accepted with
+            INTERNAL_SELF_MANAGED and which with EXTERNAL, EXTERNAL_MANAGED
+            loadBalancingScheme consult ServerTlsPolicy documentation.
+            If left blank, communications are not encrypted.
+          gvk:
+            kind: NetworkSecurityServerTLSPolicy
+            version: v1beta1
+            group: networksecurity.cnrm.cloud.google.com
+          valueTemplate: "projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}"
       containers:
         - type: project
           tfField: project

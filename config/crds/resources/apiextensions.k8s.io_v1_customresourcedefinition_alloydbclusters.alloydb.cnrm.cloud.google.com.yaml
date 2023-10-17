@@ -331,15 +331,41 @@ spec:
                       The name of the allocated IP range for the private IP AlloyDB cluster. For example: "google-managed-services-default".
                       If set, the instance IPs for this cluster will be created in the allocated range.
                     type: string
-                  network:
-                    description: |-
-                      The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster.
-                      It is specified in the form: "projects/{projectNumber}/global/networks/{network_id}".
-                    type: string
+                  networkRef:
+                    description: "Only `external` field is supported to configure
+                      the reference.\n(Required) The relative resource name of the
+                      VPC network on which \nthe instance can be accessed. It is specified
+                      in the following form: \nprojects/{projectNumber}/global/networks/{network_id}.\""
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                 type: object
               networkRef:
                 description: "Only `external` field is supported to configure the
-                  reference.\n\n(Required) The relative resource name of the VPC network
+                  reference.\n(Required) The relative resource name of the VPC network
                   on which \nthe instance can be accessed. It is specified in the
                   following form: \nprojects/{projectNumber}/global/networks/{network_id}.\""
                 oneOf:
@@ -922,15 +948,41 @@ spec:
                       The name of the allocated IP range for the private IP AlloyDB cluster. For example: "google-managed-services-default".
                       If set, the instance IPs for this cluster will be created in the allocated range.
                     type: string
-                  network:
-                    description: |-
-                      The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster.
-                      It is specified in the form: "projects/{projectNumber}/global/networks/{network_id}".
-                    type: string
+                  networkRef:
+                    description: "Only `external` field is supported to configure
+                      the reference.\n(Required) The relative resource name of the
+                      VPC network on which \nthe instance can be accessed. It is specified
+                      in the following form: \nprojects/{projectNumber}/global/networks/{network_id}.\""
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                 type: object
               networkRef:
                 description: "Only `external` field is supported to configure the
-                  reference.\n\n(Required) The relative resource name of the VPC network
+                  reference.\n(Required) The relative resource name of the VPC network
                   on which \nthe instance can be accessed. It is specified in the
                   following form: \nprojects/{projectNumber}/global/networks/{network_id}.\""
                 oneOf:
