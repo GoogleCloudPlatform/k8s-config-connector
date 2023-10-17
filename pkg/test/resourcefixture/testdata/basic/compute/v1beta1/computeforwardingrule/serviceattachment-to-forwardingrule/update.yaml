@@ -23,7 +23,7 @@ metadata:
   name: myservice-consumer-${uniqueId}
 spec:
   # The description apparently isn't set correctly for PSC rules, so don't set it
-  #description: "A ComputeForwardingRule targeting a ComputeServiceAttachment"
+  #description: "Updated description"
   target:
     targetTCPProxyRef:
       external: "projects/${projectId}/regions/us-west2/serviceAttachments/myservice-${uniqueId}"

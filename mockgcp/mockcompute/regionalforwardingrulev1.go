@@ -23,6 +23,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/googleurls"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
@@ -65,6 +66,27 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetForwardingRuleResource()).(*pb.ForwardingRule)
+
+	// Implement some (surprising) validation for PSC rules
+	if target := obj.GetTarget(); target != "" {
+		// e.g. https://compute.googleapis.com/compute/beta/projects/project-id/regions/us-west2/serviceAttachments/myservice-4jbmk3wwebzaf3fnk3rq
+		u, err := googleurls.ParseURL(target)
+		if err != nil {
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid value for field 'resource.target' %q: %v", target, err)
+		}
+
+		if u.ResourceType == "serviceAttachments" {
+			// Currently we are blocked from setting labels in create in PSC
+			if len(obj.GetLabels()) != 0 {
+				msg := "Invalid value for field 'resource.labels': ''. Invalid field set in Private Service Connect Forwarding Rule. This field should not be set."
+				return nil, status.Errorf(codes.InvalidArgument, msg)
+			}
+
+			// We also can't set the description
+			obj.Description = nil
+		}
+	}
+
 	obj.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + name.String())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
