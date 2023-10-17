@@ -281,6 +281,15 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 		return m.roundTripIAMPolicy(req)
 	}
 
+	if !strings.HasPrefix(requestPath, "/") {
+		requestPath = "/" + requestPath
+	}
+
+	// Some services (like serviceAttachments) seem to use an alias www.googleapis.com/compute => compute.googleapis.com/compute
+	if req.Host == "www.googleapis.com" && strings.HasPrefix(requestPath, "/compute/") {
+		req.Host = "compute.googleapis.com"
+	}
+
 	mux := m.hosts[req.Host]
 	if mux != nil {
 		if err := m.prefilterRequest(req); err != nil {
