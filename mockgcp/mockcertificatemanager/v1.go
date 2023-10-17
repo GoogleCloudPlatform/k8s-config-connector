@@ -212,3 +212,62 @@ func (s *CertificateManagerV1) DeleteDnsAuthorization(ctx context.Context, req *
 
 	return s.operations.NewLRO(ctx)
 }
+
+func (s *CertificateManagerV1) GetCertificateMapEntry(ctx context.Context, req *pb.GetCertificateMapEntryRequest) (*pb.CertificateMapEntry, error) {
+	name, err := s.parseCertificateMapEntryName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.CertificateMapEntry{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "certificate map entry %q not found", name)
+		} else {
+			return nil, status.Errorf(codes.Internal, "error reading certificate map entry: %v", err)
+		}
+	}
+
+	return obj, nil
+}
+
+func (s *CertificateManagerV1) CreateCertificateMapEntry(ctx context.Context, req *pb.CreateCertificateMapEntryRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/certificateMapEntries/" + req.CertificateMapEntryId
+	name, err := s.parseCertificateMapEntryName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.Clone(req.CertificateMapEntry).(*pb.CertificateMapEntry)
+	obj.Name = fqn
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.Internal, "error creating certificate map entry: %v", err)
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
+func (s *CertificateManagerV1) DeleteCertificateMapEntry(ctx context.Context, req *pb.DeleteCertificateMapEntryRequest) (*longrunning.Operation, error) {
+	name, err := s.parseCertificateMapEntryName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	kind := (&pb.CertificateMapEntry{}).ProtoReflect().Descriptor()
+	if err := s.storage.Delete(ctx, kind, fqn); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "certificate map entry %q not found", name)
+		} else {
+			return nil, status.Errorf(codes.Internal, "error deleting certificate map entry: %v", err)
+		}
+	}
+
+	return s.operations.NewLRO(ctx)
+}
