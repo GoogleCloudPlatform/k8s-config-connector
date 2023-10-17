@@ -308,6 +308,7 @@ func newSubstitutionVariables(t *testing.T, project testgcp.GCPProject) map[stri
 	subs["${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"] = testgcp.GetTestBillingAccountIDForBillingResources(t)
 	subs["${GSA_EMAIL?}"] = getKCCServiceAccountEmail(t, project)
 	subs["${DLP_TEST_BUCKET?}"] = testgcp.GetDLPTestBucket(t)
+	subs["${ATTACHED_CLUSTER_NAME?}"] = testgcp.TestAttachedClusterName.Get()
 	return subs
 }
 

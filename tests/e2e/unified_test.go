@@ -58,6 +58,7 @@ func TestAllInSeries(t *testing.T) {
 		testgcp.TestBillingAccountID.Set("123456-777777-000001")
 		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
 		testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
+		testgcp.TestAttachedClusterName.Set("xks-cluster")
 
 		crm := testHarness.GetCloudResourceManagerClient()
 		req := &cloudresourcemanager.Project{
@@ -78,6 +79,7 @@ func TestAllInSeries(t *testing.T) {
 			ProjectID:     found.ProjectId,
 			ProjectNumber: found.ProjectNumber,
 		}
+		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
 	} else {
 		project = testgcp.GetDefaultProject(t)
 	}
