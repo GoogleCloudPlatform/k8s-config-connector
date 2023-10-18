@@ -41,6 +41,10 @@ type PostActuationTransform func(original, reconciled *k8s.Resource, tfState *te
 // ConfigValidate validates the input configuration in the webhook.
 type ConfigValidate func(r *unstructured.Unstructured) error
 
+// PreTerraformApply transforms the object just before we try to apply it with terraform.
+// A typical example of a transformation is to change fields to work around terraform bugs.
+type PreTerraformApply func(ctx context.Context, op *operations.PreTerraformApply) error
+
 // PreTerraformExport transforms the exported terraform prior to writing it.
 // A typical example of a transformation is to map our internal terraform types to real types.
 type PreTerraformExport func(ctx context.Context, op *operations.TerraformExport) error
@@ -56,6 +60,7 @@ type ResourceOverride struct {
 	ConfigValidate            ConfigValidate
 	PreActuationTransform     PreActuationTransform
 	PostActuationTransform    PostActuationTransform
+	PreTerraformApply         PreTerraformApply
 	PreTerraformExport        PreTerraformExport
 	PostUpdateStatusTransform PostUpdateStatusTransform
 }
@@ -117,6 +122,21 @@ func (h *ResourceOverridesHandler) PreActuationTransform(r *k8s.Resource) error 
 	for _, o := range ro.Overrides {
 		if o.PreActuationTransform != nil {
 			if err := o.PreActuationTransform(r); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func (h *ResourceOverridesHandler) PreTerraformApply(ctx context.Context, gvk schema.GroupVersionKind, op *operations.PreTerraformApply) error {
+	ro, found := h.registration(gvk.Kind)
+	if !found {
+		return nil
+	}
+	for _, o := range ro.Overrides {
+		if o.PreTerraformApply != nil {
+			if err := o.PreTerraformApply(ctx, op); err != nil {
 				return err
 			}
 		}
@@ -208,6 +228,7 @@ func init() {
 	Handler.Register(GetComputeInstanceResourceOverrides())
 	Handler.Register(GetDNSRecordSetOverrides())
 	Handler.Register(GetComputeBackendServiceResourceOverrides())
+	Handler.Register(GetComputeForwardingRuleResourceOverrides())
 	Handler.Register(GetVPCAccessConnectorResourceOverrides())
 	Handler.Register(GetRedisInstanceResourceOverrides())
 	Handler.Register(GetRunServiceResourceOverrides())
