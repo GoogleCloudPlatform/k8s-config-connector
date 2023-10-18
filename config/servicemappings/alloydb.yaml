@@ -105,9 +105,10 @@ spec:
         - tfField: network
           description: |-
             Only `external` field is supported to configure the reference.
+
             (Required) The relative resource name of the VPC network on which 
             the instance can be accessed. It is specified in the following form: 
-            projects/{projectNumber}/global/networks/{network_id}."
+            projects/{projectNumber}/global/networks/{network_id}.
           key: networkRef
           gvk: 
             group: compute.cnrm.cloud.google.com
@@ -117,9 +118,10 @@ spec:
         - tfField: network_config.network
           description: |-
             Only `external` field is supported to configure the reference.
+
             (Required) The relative resource name of the VPC network on which 
             the instance can be accessed. It is specified in the following form: 
-            projects/{projectNumber}/global/networks/{network_id}."
+            projects/{projectNumber}/global/networks/{network_id}.
           key: networkRef
           gvk:
             group: compute.cnrm.cloud.google.com
