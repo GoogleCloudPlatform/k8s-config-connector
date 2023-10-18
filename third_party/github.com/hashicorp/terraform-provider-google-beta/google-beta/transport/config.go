@@ -237,6 +237,7 @@ type Config struct {
 	DNSBasePath                      string
 	DocumentAIBasePath               string
 	DocumentAIWarehouseBasePath      string
+	EdgenetworkBasePath              string
 	EssentialContactsBasePath        string
 	FilestoreBasePath                string
 	FirebaseBasePath                 string
@@ -291,6 +292,7 @@ type Config struct {
 	StorageTransferBasePath          string
 	TagsBasePath                     string
 	TPUBasePath                      string
+	TpuV2BasePath                    string
 	VertexAIBasePath                 string
 	VmwareengineBasePath             string
 	VPCAccessBasePath                string
@@ -371,6 +373,7 @@ const DialogflowCXBasePathKey = "DialogflowCX"
 const DNSBasePathKey = "DNS"
 const DocumentAIBasePathKey = "DocumentAI"
 const DocumentAIWarehouseBasePathKey = "DocumentAIWarehouse"
+const EdgenetworkBasePathKey = "Edgenetwork"
 const EssentialContactsBasePathKey = "EssentialContacts"
 const FilestoreBasePathKey = "Filestore"
 const FirebaseBasePathKey = "Firebase"
@@ -425,6 +428,7 @@ const StorageInsightsBasePathKey = "StorageInsights"
 const StorageTransferBasePathKey = "StorageTransfer"
 const TagsBasePathKey = "Tags"
 const TPUBasePathKey = "TPU"
+const TpuV2BasePathKey = "TpuV2"
 const VertexAIBasePathKey = "VertexAI"
 const VmwareengineBasePathKey = "Vmwareengine"
 const VPCAccessBasePathKey = "VPCAccess"
@@ -499,6 +503,7 @@ var DefaultBasePaths = map[string]string{
 	DNSBasePathKey:                      "https://dns.googleapis.com/dns/v1beta2/",
 	DocumentAIBasePathKey:               "https://{{location}}-documentai.googleapis.com/v1/",
 	DocumentAIWarehouseBasePathKey:      "https://contentwarehouse.googleapis.com/v1/",
+	EdgenetworkBasePathKey:              "https://edgenetwork.googleapis.com/v1/",
 	EssentialContactsBasePathKey:        "https://essentialcontacts.googleapis.com/v1/",
 	FilestoreBasePathKey:                "https://file.googleapis.com/v1beta1/",
 	FirebaseBasePathKey:                 "https://firebase.googleapis.com/v1beta1/",
@@ -553,6 +558,7 @@ var DefaultBasePaths = map[string]string{
 	StorageTransferBasePathKey:          "https://storagetransfer.googleapis.com/v1/",
 	TagsBasePathKey:                     "https://cloudresourcemanager.googleapis.com/v3/",
 	TPUBasePathKey:                      "https://tpu.googleapis.com/v1/",
+	TpuV2BasePathKey:                    "https://tpu.googleapis.com/v2/",
 	VertexAIBasePathKey:                 "https://{{region}}-aiplatform.googleapis.com/v1beta1/",
 	VmwareengineBasePathKey:             "https://vmwareengine.googleapis.com/v1/",
 	VPCAccessBasePathKey:                "https://vpcaccess.googleapis.com/v1beta1/",
@@ -914,6 +920,11 @@ func HandleSDKDefaults(d *schema.ResourceData) error {
 			"GOOGLE_DOCUMENT_AI_WAREHOUSE_CUSTOM_ENDPOINT",
 		}, DefaultBasePaths[DocumentAIWarehouseBasePathKey]))
 	}
+	if d.Get("edgenetwork_custom_endpoint") == "" {
+		d.Set("edgenetwork_custom_endpoint", MultiEnvDefault([]string{
+			"GOOGLE_EDGENETWORK_CUSTOM_ENDPOINT",
+		}, DefaultBasePaths[EdgenetworkBasePathKey]))
+	}
 	if d.Get("essential_contacts_custom_endpoint") == "" {
 		d.Set("essential_contacts_custom_endpoint", MultiEnvDefault([]string{
 			"GOOGLE_ESSENTIAL_CONTACTS_CUSTOM_ENDPOINT",
@@ -1183,6 +1194,11 @@ func HandleSDKDefaults(d *schema.ResourceData) error {
 		d.Set("tpu_custom_endpoint", MultiEnvDefault([]string{
 			"GOOGLE_TPU_CUSTOM_ENDPOINT",
 		}, DefaultBasePaths[TPUBasePathKey]))
+	}
+	if d.Get("tpu_v2_custom_endpoint") == "" {
+		d.Set("tpu_v2_custom_endpoint", MultiEnvDefault([]string{
+			"GOOGLE_TPU_V2_CUSTOM_ENDPOINT",
+		}, DefaultBasePaths[TpuV2BasePathKey]))
 	}
 	if d.Get("vertex_ai_custom_endpoint") == "" {
 		d.Set("vertex_ai_custom_endpoint", MultiEnvDefault([]string{
@@ -2130,6 +2146,7 @@ func ConfigureBasePaths(c *Config) {
 	c.DNSBasePath = DefaultBasePaths[DNSBasePathKey]
 	c.DocumentAIBasePath = DefaultBasePaths[DocumentAIBasePathKey]
 	c.DocumentAIWarehouseBasePath = DefaultBasePaths[DocumentAIWarehouseBasePathKey]
+	c.EdgenetworkBasePath = DefaultBasePaths[EdgenetworkBasePathKey]
 	c.EssentialContactsBasePath = DefaultBasePaths[EssentialContactsBasePathKey]
 	c.FilestoreBasePath = DefaultBasePaths[FilestoreBasePathKey]
 	c.FirebaseBasePath = DefaultBasePaths[FirebaseBasePathKey]
@@ -2184,6 +2201,7 @@ func ConfigureBasePaths(c *Config) {
 	c.StorageTransferBasePath = DefaultBasePaths[StorageTransferBasePathKey]
 	c.TagsBasePath = DefaultBasePaths[TagsBasePathKey]
 	c.TPUBasePath = DefaultBasePaths[TPUBasePathKey]
+	c.TpuV2BasePath = DefaultBasePaths[TpuV2BasePathKey]
 	c.VertexAIBasePath = DefaultBasePaths[VertexAIBasePathKey]
 	c.VmwareengineBasePath = DefaultBasePaths[VmwareengineBasePathKey]
 	c.VPCAccessBasePath = DefaultBasePaths[VPCAccessBasePathKey]

@@ -228,8 +228,7 @@ spec:
                       allowed.
                     type: integer
                   mode:
-                    description: 'Defines operating mode for this policy. Default
-                      value: "ON" Possible values: ["OFF", "ONLY_UP", "ON"].'
+                    description: Defines operating mode for this policy.
                     type: string
                   scaleDownControl:
                     description: |-

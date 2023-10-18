@@ -112,6 +112,28 @@ spec:
         kind: KMSCryptoKey
         version: v1beta1
         group: kms.cnrm.cloud.google.com
+    - tfField: template.template.vpc_access.network_interfaces.network
+      description: |-
+        The VPC network that the Cloud Run resource will be able to send traffic to. At least one of network or subnetwork must be specified. If both
+        network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be
+        looked up from the subnetwork.
+      key: networkRef
+      gvk:
+        kind: ComputeNetwork
+        version: v1beta1
+        group: compute.cnrm.cloud.google.com
+      targetField: self_link
+    - tfField: template.template.vpc_access.network_interfaces.subnetwork
+      description: |-
+        The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both
+        network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the
+        subnetwork with the same name with the network will be used.
+      key: subnetworkRef
+      gvk:
+        kind: ComputeSubnetwork
+        version: v1beta1
+        group: compute.cnrm.cloud.google.com
+      targetField: self_link
   - name: google_cloud_run_v2_service
     kind: RunService
     idTemplate: "projects/{{project}}/locations/{{location}}/services/{{name}}"
@@ -216,6 +238,28 @@ spec:
           kind: KMSCryptoKey
           version: v1beta1
           group: kms.cnrm.cloud.google.com
+      - tfField: template.vpc_access.network_interfaces.network
+        description: |-
+          The VPC network that the Cloud Run resource will be able to send traffic to. At least one of network or subnetwork must be specified. If both
+          network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be
+          looked up from the subnetwork.
+        key: networkRef
+        gvk:
+          kind: ComputeNetwork
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
+      - tfField: template.vpc_access.network_interfaces.subnetwork
+        description: |-
+          The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both
+          network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the
+          subnetwork with the same name with the network will be used.
+        key: subnetworkRef
+        gvk:
+          kind: ComputeSubnetwork
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
     hierarchicalReferences:
       - type: project
         key: projectRef

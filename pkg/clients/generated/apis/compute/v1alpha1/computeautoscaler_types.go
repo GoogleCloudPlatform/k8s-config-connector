@@ -75,7 +75,7 @@ type AutoscalerAutoscalingPolicy struct {
 	allowed. */
 	MinReplicas int `json:"minReplicas"`
 
-	/* Defines operating mode for this policy. Default value: "ON" Possible values: ["OFF", "ONLY_UP", "ON"]. */
+	/* Defines operating mode for this policy. */
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 

@@ -316,6 +316,11 @@ var services = mapOf(
         "displayName" to "Documentaiwarehouse",
         "path" to "./google-beta/services/documentaiwarehouse"
     ),
+    "edgenetwork" to mapOf(
+        "name" to "edgenetwork",
+        "displayName" to "Edgenetwork",
+        "path" to "./google-beta/services/edgenetwork"
+    ),
     "essentialcontacts" to mapOf(
         "name" to "essentialcontacts",
         "displayName" to "Essentialcontacts",
@@ -605,6 +610,11 @@ var services = mapOf(
         "name" to "tpu",
         "displayName" to "Tpu",
         "path" to "./google-beta/services/tpu"
+    ),
+    "tpuv2" to mapOf(
+        "name" to "tpuv2",
+        "displayName" to "Tpuv2",
+        "path" to "./google-beta/services/tpuv2"
     ),
     "vertexai" to mapOf(
         "name" to "vertexai",

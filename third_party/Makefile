@@ -23,7 +23,7 @@ all: clone-terraform-google-provider-beta apply-patches
 clone-terraform-google-provider-beta:
 	rm -rf github.com/hashicorp/terraform-provider-google-beta
 	mkdir -p github.com/hashicorp
-	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta --branch v4.83.0 --depth 1
+	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta --branch v4.84.0 --depth 1
 	rm -rf github.com/hashicorp/terraform-provider-google-beta/.git
 
 .PHONY: apply-patches

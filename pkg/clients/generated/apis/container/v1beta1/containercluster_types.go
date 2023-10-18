@@ -291,6 +291,11 @@ type ClusterExclusionOptions struct {
 	Scope string `json:"scope"`
 }
 
+type ClusterFastSocket struct {
+	/* Whether or not NCCL Fast Socket is enabled. */
+	Enabled bool `json:"enabled"`
+}
+
 type ClusterFilter struct {
 	/* Can be used to filter what notifications are sent. Valid values include include UPGRADE_AVAILABLE_EVENT, UPGRADE_EVENT and SECURITY_BULLETIN_EVENT. */
 	EventType []string `json:"eventType"`
@@ -616,6 +621,10 @@ type ClusterNodeConfig struct {
 	/* Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk. */
 	// +optional
 	EphemeralStorageLocalSsdConfig *ClusterEphemeralStorageLocalSsdConfig `json:"ephemeralStorageLocalSsdConfig,omitempty"`
+
+	/* Enable or disable NCCL Fast Socket in the node pool. */
+	// +optional
+	FastSocket *ClusterFastSocket `json:"fastSocket,omitempty"`
 
 	/* Immutable. GCFS configuration for this node. */
 	// +optional

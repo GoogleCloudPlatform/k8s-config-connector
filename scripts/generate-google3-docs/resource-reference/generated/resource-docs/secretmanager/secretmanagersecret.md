@@ -190,7 +190,7 @@ after the Secret has been created.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
+            <p>{% verbatim %}The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -254,7 +254,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}DEPRECATED. `automatic` is deprecated and will be removed in a future major release. Use `auto` instead. Immutable. The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. `automatic` is deprecated and will be removed in a future major release. Use `auto` instead. The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -56,17 +56,19 @@ func TestAccContainerAzureNodePool_BasicHandWritten(t *testing.T) {
 				Config: testAccContainerAzureNodePool_BasicHandWritten(context),
 			},
 			{
-				ResourceName:      "google_container_azure_node_pool.primary",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_container_azure_node_pool.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"management.#", "management.0.%", "management.0.auto_repair"},
 			},
 			{
 				Config: testAccContainerAzureNodePool_BasicHandWrittenUpdate0(context),
 			},
 			{
-				ResourceName:      "google_container_azure_node_pool.primary",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_container_azure_node_pool.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"management.#", "management.0.%", "management.0.auto_repair"},
 			},
 		},
 	})
@@ -95,17 +97,19 @@ func TestAccContainerAzureNodePool_BetaBasicHandWritten(t *testing.T) {
 				Config: testAccContainerAzureNodePool_BetaBasicHandWritten(context),
 			},
 			{
-				ResourceName:      "google_container_azure_node_pool.primary",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_container_azure_node_pool.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"management.#", "management.0.%", "management.0.auto_repair"},
 			},
 			{
 				Config: testAccContainerAzureNodePool_BetaBasicHandWrittenUpdate0(context),
 			},
 			{
-				ResourceName:      "google_container_azure_node_pool.primary",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_container_azure_node_pool.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"management.#", "management.0.%", "management.0.auto_repair"},
 			},
 		},
 	})
@@ -203,6 +207,10 @@ resource "google_container_azure_node_pool" "primary" {
 
   annotations = {
     annotation-one = "value-one"
+  }
+
+  management {
+    auto_repair = true
   }
 
   project = "%{project_name}"
@@ -307,6 +315,10 @@ resource "google_container_azure_node_pool" "primary" {
     annotation-two = "value-two"
   }
 
+  management {
+    auto_repair = false
+  }
+
   project = "%{project_name}"
 }
 
@@ -409,6 +421,10 @@ resource "google_container_azure_node_pool" "primary" {
   name      = "tf-test-node-pool-name%{random_suffix}"
   subnet_id = "/subscriptions/%{azure_sub}/resourceGroups/%{byo_prefix}-dev-byo/providers/Microsoft.Network/virtualNetworks/%{byo_prefix}-dev-vnet/subnets/default"
   version   = "${data.google_container_azure_versions.versions.valid_versions[0]}"
+
+  management {
+    auto_repair = true
+  }
 
   annotations = {
     annotation-one = "value-one"
@@ -517,6 +533,10 @@ resource "google_container_azure_node_pool" "primary" {
   name      = "tf-test-node-pool-name%{random_suffix}"
   subnet_id = "/subscriptions/%{azure_sub}/resourceGroups/%{byo_prefix}-dev-byo/providers/Microsoft.Network/virtualNetworks/%{byo_prefix}-dev-vnet/subnets/default"
   version   = "${data.google_container_azure_versions.versions.valid_versions[0]}"
+
+  management {
+    auto_repair = false
+  }
 
   annotations = {
     annotation-two = "value-two"

@@ -8006,6 +8006,11 @@ func (in *ComputeSubnetworkStatus) DeepCopyInto(out *ComputeSubnetworkStatus) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.InternalIpv6Prefix != nil {
+		in, out := &in.InternalIpv6Prefix, &out.InternalIpv6Prefix
+		*out = new(string)
+		**out = **in
+	}
 	if in.Ipv6CidrRange != nil {
 		in, out := &in.Ipv6CidrRange, &out.Ipv6CidrRange
 		*out = new(string)
@@ -8408,6 +8413,11 @@ func (in *ComputeTargetHTTPSProxySpec) DeepCopyInto(out *ComputeTargetHTTPSProxy
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
+		**out = **in
+	}
+	if in.ServerTlsPolicyRef != nil {
+		in, out := &in.ServerTlsPolicyRef, &out.ServerTlsPolicyRef
+		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.SslCertificates != nil {

@@ -110,6 +110,11 @@ type NodepoolEphemeralStorageLocalSsdConfig struct {
 	LocalSsdCount int `json:"localSsdCount"`
 }
 
+type NodepoolFastSocket struct {
+	/* Whether or not NCCL Fast Socket is enabled. */
+	Enabled bool `json:"enabled"`
+}
+
 type NodepoolGcfsConfig struct {
 	/* Immutable. Whether or not GCFS is enabled. */
 	Enabled bool `json:"enabled"`
@@ -263,6 +268,10 @@ type NodepoolNodeConfig struct {
 	/* Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk. */
 	// +optional
 	EphemeralStorageLocalSsdConfig *NodepoolEphemeralStorageLocalSsdConfig `json:"ephemeralStorageLocalSsdConfig,omitempty"`
+
+	/* Enable or disable NCCL Fast Socket in the node pool. */
+	// +optional
+	FastSocket *NodepoolFastSocket `json:"fastSocket,omitempty"`
 
 	/* Immutable. GCFS configuration for this node. */
 	// +optional

@@ -104,6 +104,20 @@ type ClusterInitialUser struct {
 	User *string `json:"user,omitempty"`
 }
 
+type ClusterNetworkConfig struct {
+	/* The name of the allocated IP range for the private IP AlloyDB cluster. For example: "google-managed-services-default".
+	If set, the instance IPs for this cluster will be created in the allocated range. */
+	// +optional
+	AllocatedIpRange *string `json:"allocatedIpRange,omitempty"`
+
+	/* Only `external` field is supported to configure the reference.
+	(Required) The relative resource name of the VPC network on which
+	the instance can be accessed. It is specified in the following form:
+	projects/{projectNumber}/global/networks/{network_id}." */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+}
+
 type ClusterPassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional
@@ -199,12 +213,16 @@ type AlloyDBClusterSpec struct {
 	/* Immutable. The location where the alloydb cluster should reside. */
 	Location string `json:"location"`
 
-	/* Only `external` field is supported to configure the reference.
+	/* Metadata related to network configuration. */
+	// +optional
+	NetworkConfig *ClusterNetworkConfig `json:"networkConfig,omitempty"`
 
+	/* Only `external` field is supported to configure the reference.
 	(Required) The relative resource name of the VPC network on which
 	the instance can be accessed. It is specified in the following form:
 	projects/{projectNumber}/global/networks/{network_id}." */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`

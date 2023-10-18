@@ -200,6 +200,24 @@ type ServiceLivenessProbe struct {
 	TimeoutSeconds *int `json:"timeoutSeconds,omitempty"`
 }
 
+type ServiceNetworkInterfaces struct {
+	/* The VPC network that the Cloud Run resource will be able to send traffic to. At least one of network or subnetwork must be specified. If both
+	network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be
+	looked up from the subnetwork. */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
+	/* The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both
+	network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the
+	subnetwork with the same name with the network will be used. */
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+
+	/* Network tags applied to this Cloud Run service. */
+	// +optional
+	Tags []string `json:"tags,omitempty"`
+}
+
 type ServicePorts struct {
 	/* Port number the container listens on. This must be a valid TCP port number, 0 < containerPort < 65536. */
 	// +optional
@@ -406,6 +424,10 @@ type ServiceVpcAccess struct {
 	/* Traffic VPC egress settings. Possible values: ["ALL_TRAFFIC", "PRIVATE_RANGES_ONLY"]. */
 	// +optional
 	Egress *string `json:"egress,omitempty"`
+
+	/* Direct VPC egress settings. Currently only single network interface is supported. */
+	// +optional
+	NetworkInterfaces []ServiceNetworkInterfaces `json:"networkInterfaces,omitempty"`
 }
 
 type RunServiceSpec struct {

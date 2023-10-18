@@ -127,6 +127,15 @@ func ResourceContainerAzureNodePool() *schema.Resource {
 				Description: "Optional. The Azure availability zone of the nodes in this nodepool. When unspecified, it defaults to `1`.",
 			},
 
+			"management": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				Description: "The Management configuration for this node pool.",
+				MaxItems:    1,
+				Elem:        ContainerAzureNodePoolManagementSchema(),
+			},
+
 			"project": {
 				Type:             schema.TypeString,
 				Computed:         true,
@@ -309,6 +318,19 @@ func ContainerAzureNodePoolMaxPodsConstraintSchema() *schema.Resource {
 	}
 }
 
+func ContainerAzureNodePoolManagementSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"auto_repair": {
+				Type:        schema.TypeBool,
+				Computed:    true,
+				Optional:    true,
+				Description: "Optional. Whether or not the nodes will be automatically repaired.",
+			},
+		},
+	}
+}
+
 func resourceContainerAzureNodePoolCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*transport_tpg.Config)
 	project, err := tpgresource.GetProject(d, config)
@@ -327,6 +349,7 @@ func resourceContainerAzureNodePoolCreate(d *schema.ResourceData, meta interface
 		Version:               dcl.String(d.Get("version").(string)),
 		Annotations:           tpgresource.CheckStringMap(d.Get("annotations")),
 		AzureAvailabilityZone: dcl.StringOrNil(d.Get("azure_availability_zone").(string)),
+		Management:            expandContainerAzureNodePoolManagement(d.Get("management")),
 		Project:               dcl.String(project),
 	}
 
@@ -385,6 +408,7 @@ func resourceContainerAzureNodePoolRead(d *schema.ResourceData, meta interface{}
 		Version:               dcl.String(d.Get("version").(string)),
 		Annotations:           tpgresource.CheckStringMap(d.Get("annotations")),
 		AzureAvailabilityZone: dcl.StringOrNil(d.Get("azure_availability_zone").(string)),
+		Management:            expandContainerAzureNodePoolManagement(d.Get("management")),
 		Project:               dcl.String(project),
 	}
 
@@ -440,6 +464,9 @@ func resourceContainerAzureNodePoolRead(d *schema.ResourceData, meta interface{}
 	if err = d.Set("azure_availability_zone", res.AzureAvailabilityZone); err != nil {
 		return fmt.Errorf("error setting azure_availability_zone in state: %s", err)
 	}
+	if err = d.Set("management", tpgresource.FlattenContainerAzureNodePoolManagement(res.Management, d, config)); err != nil {
+		return fmt.Errorf("error setting management in state: %s", err)
+	}
 	if err = d.Set("project", res.Project); err != nil {
 		return fmt.Errorf("error setting project in state: %s", err)
 	}
@@ -482,6 +509,7 @@ func resourceContainerAzureNodePoolUpdate(d *schema.ResourceData, meta interface
 		Version:               dcl.String(d.Get("version").(string)),
 		Annotations:           tpgresource.CheckStringMap(d.Get("annotations")),
 		AzureAvailabilityZone: dcl.StringOrNil(d.Get("azure_availability_zone").(string)),
+		Management:            expandContainerAzureNodePoolManagement(d.Get("management")),
 		Project:               dcl.String(project),
 	}
 	directive := tpgdclresource.UpdateDirective
@@ -535,6 +563,7 @@ func resourceContainerAzureNodePoolDelete(d *schema.ResourceData, meta interface
 		Version:               dcl.String(d.Get("version").(string)),
 		Annotations:           tpgresource.CheckStringMap(d.Get("annotations")),
 		AzureAvailabilityZone: dcl.StringOrNil(d.Get("azure_availability_zone").(string)),
+		Management:            expandContainerAzureNodePoolManagement(d.Get("management")),
 		Project:               dcl.String(project),
 	}
 
@@ -748,6 +777,32 @@ func flattenContainerAzureNodePoolMaxPodsConstraint(obj *containerazure.NodePool
 	}
 	transformed := map[string]interface{}{
 		"max_pods_per_node": obj.MaxPodsPerNode,
+	}
+
+	return []interface{}{transformed}
+
+}
+
+func expandContainerAzureNodePoolManagement(o interface{}) *containerazure.NodePoolManagement {
+	if o == nil {
+		return nil
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return nil
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &containerazure.NodePoolManagement{
+		AutoRepair: dcl.Bool(obj["auto_repair"].(bool)),
+	}
+}
+
+func flattenContainerAzureNodePoolManagement(obj *containerazure.NodePoolManagement) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"auto_repair": obj.AutoRepair,
 	}
 
 	return []interface{}{transformed}

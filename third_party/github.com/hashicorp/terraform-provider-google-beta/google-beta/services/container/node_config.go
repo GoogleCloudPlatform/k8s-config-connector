@@ -638,6 +638,21 @@ func schemaNodeConfig() *schema.Schema {
 						},
 					},
 				},
+				"fast_socket": {
+					Type:        schema.TypeList,
+					Optional:    true,
+					MaxItems:    1,
+					Description: `Enable or disable NCCL Fast Socket in the node pool.`,
+					Elem: &schema.Resource{
+						Schema: map[string]*schema.Schema{
+							"enabled": {
+								Type:        schema.TypeBool,
+								Required:    true,
+								Description: `Whether or not NCCL Fast Socket is enabled`,
+							},
+						},
+					},
+				},
 			},
 		},
 	}
@@ -767,6 +782,13 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 	if v, ok := nodeConfig["gvnic"]; ok && len(v.([]interface{})) > 0 {
 		conf := v.([]interface{})[0].(map[string]interface{})
 		nc.Gvnic = &container.VirtualNIC{
+			Enabled: conf["enabled"].(bool),
+		}
+	}
+
+	if v, ok := nodeConfig["fast_socket"]; ok && len(v.([]interface{})) > 0 {
+		conf := v.([]interface{})[0].(map[string]interface{})
+		nc.FastSocket = &container.FastSocket{
 			Enabled: conf["enabled"].(bool),
 		}
 	}
@@ -1103,6 +1125,7 @@ func flattenNodeConfig(c *container.NodeConfig) []map[string]interface{} {
 		"node_group":                         c.NodeGroup,
 		"advanced_machine_features":          flattenAdvancedMachineFeaturesConfig(c.AdvancedMachineFeatures),
 		"sole_tenant_config":                 flattenSoleTenantConfig(c.SoleTenantConfig),
+		"fast_socket":                        flattenFastSocket(c.FastSocket),
 	})
 
 	if len(c.OauthScopes) > 0 {
@@ -1427,6 +1450,16 @@ func flattenSoleTenantConfig(c *container.SoleTenantConfig) []map[string]interfa
 	return append(result, map[string]interface{}{
 		"node_affinity": affinities,
 	})
+}
+
+func flattenFastSocket(c *container.FastSocket) []map[string]interface{} {
+	result := []map[string]interface{}{}
+	if c != nil {
+		result = append(result, map[string]interface{}{
+			"enabled": c.Enabled,
+		})
+	}
+	return result
 }
 
 func flattenHostMaintenancePolicy(c *container.HostMaintenancePolicy) []map[string]interface{} {

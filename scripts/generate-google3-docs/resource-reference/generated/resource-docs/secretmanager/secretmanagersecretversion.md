@@ -79,6 +79,7 @@
 ```yaml
 deletionPolicy: string
 enabled: boolean
+isSecretDataBase64: boolean
 resourceID: string
 secretData:
   value: string
@@ -122,6 +123,16 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}The current state of the SecretVersion.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>isSecretDataBase64</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. If set to 'true', the secret data is expected to be base64-encoded string and would be sent as is.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

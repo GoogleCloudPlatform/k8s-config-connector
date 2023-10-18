@@ -65,6 +65,10 @@ type SecretManagerSecretVersionSpec struct {
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`
 
+	/* Immutable. If set to 'true', the secret data is expected to be base64-encoded string and would be sent as is. */
+	// +optional
+	IsSecretDataBase64 *bool `json:"isSecretDataBase64,omitempty"`
+
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
