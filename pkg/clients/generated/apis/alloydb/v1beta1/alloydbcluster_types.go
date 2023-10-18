@@ -111,9 +111,10 @@ type ClusterNetworkConfig struct {
 	AllocatedIpRange *string `json:"allocatedIpRange,omitempty"`
 
 	/* Only `external` field is supported to configure the reference.
+
 	(Required) The relative resource name of the VPC network on which
 	the instance can be accessed. It is specified in the following form:
-	projects/{projectNumber}/global/networks/{network_id}." */
+	projects/{projectNumber}/global/networks/{network_id}. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 }
@@ -218,9 +219,10 @@ type AlloyDBClusterSpec struct {
 	NetworkConfig *ClusterNetworkConfig `json:"networkConfig,omitempty"`
 
 	/* Only `external` field is supported to configure the reference.
+
 	(Required) The relative resource name of the VPC network on which
 	the instance can be accessed. It is specified in the following form:
-	projects/{projectNumber}/global/networks/{network_id}." */
+	projects/{projectNumber}/global/networks/{network_id}. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
