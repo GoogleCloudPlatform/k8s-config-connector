@@ -55,6 +55,8 @@ func (s *MockService) ExpectedHost() string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
+	pb.RegisterGlobalOperationsServer(grpcServer, &GlobalOperationsV1{MockService: s})
+
 	pb.RegisterAddressesServer(grpcServer, &RegionalAddressesV1{MockService: s})
 	pb.RegisterGlobalAddressesServer(grpcServer, &GlobalAddressesV1{MockService: s})
 
@@ -120,6 +122,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*r
 		return nil, err
 	}
 	if err := mux.HandlePath("PUT", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterGlobalOperationsHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
