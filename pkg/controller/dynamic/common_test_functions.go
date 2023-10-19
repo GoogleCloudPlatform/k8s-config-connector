@@ -54,20 +54,44 @@ func UnmarshalToCRD(fileName string) *apiextensions.CustomResourceDefinition {
 	return o
 }
 
-func GetConditions(t *testing.T, kccResource *unstructured.Unstructured) []condition.Condition {
+// GetStatus holds the required fields for computing if an object should be considered ready (fully reconciled).
+type ObjectStatus struct {
+	Generation         int64
+	ObservedGeneration *int64
+	Conditions         []condition.Condition
+}
+
+// GetObjectStatus extracts the required fields for computing if an object should be considered ready (fully reconciled).
+func GetObjectStatus(t *testing.T, object runtime.Object) ObjectStatus {
 	// Simple types with the fields we care about, so that we can use the libraries
 	type withConditions struct {
-		Conditions []condition.Condition `json:"conditions"`
+		ObservedGeneration *int64                `json:"observedGeneration,omitempty"`
+		Conditions         []condition.Condition `json:"conditions"`
 	}
 	type withStatusConditions struct {
 		Status withConditions `json:"status"`
 	}
-	var obj withStatusConditions
 
-	// Convert into the above simplifed types
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(kccResource.UnstructuredContent(), &obj); err != nil {
+	// Extract information by converting to withConditions
+
+	u, ok := object.(*unstructured.Unstructured)
+	if !ok {
+		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(object)
+		if err != nil {
+			t.Errorf("error from runtime.DefaultUnstructuredConverter.ToUnstructured(%T): %v", object, err)
+		}
+		u = &unstructured.Unstructured{Object: m}
+	}
+
+	generation := u.GetGeneration()
+	var statusConditionsObj withStatusConditions
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.UnstructuredContent(), &statusConditionsObj); err != nil {
 		t.Errorf("error converting to object with status.conditions: %v", err)
 	}
 
-	return obj.Status.Conditions
+	return ObjectStatus{
+		Generation:         generation,
+		ObservedGeneration: statusConditionsObj.Status.ObservedGeneration,
+		Conditions:         statusConditionsObj.Status.Conditions,
+	}
 }
