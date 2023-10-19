@@ -15,11 +15,9 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: default
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: computenetwork-${uniqueId}
 spec:
-  description: Default network for the project
+  autoCreateSubnetworks: false
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
@@ -27,11 +25,11 @@ metadata:
   name: alloydbcluster-${uniqueId}
 spec:
   initialUser:
-    password: 
+    password:
       value: alloydb-pg
   location: us-east1
-  networkRef: 
-    external: projects/${projectId}/global/networks/default
+  networkRef:
+    external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
   resourceID: alloydbcluster${uniqueId}
@@ -44,7 +42,7 @@ spec:
   location: global
   addressType: INTERNAL
   networkRef:
-    name: default
+    name: computenetwork-${uniqueId}
   prefixLength: 16
   purpose: VPC_PEERING
   resourceID: computeaddress${uniqueId}
@@ -55,7 +53,7 @@ metadata:
   name: servicenetworkingconnection-${uniqueId}
 spec:
   networkRef:
-    name: default
+    name: computenetwork-${uniqueId}
   reservedPeeringRanges:
   - name: computeaddress-${uniqueId}
   service: servicenetworking.googleapis.com
@@ -65,7 +63,7 @@ kind: AlloyDBInstance
 metadata:
   name: alloydbinstance-${uniqueId}
 spec:
-  clusterRef: 
+  clusterRef:
     name: alloydbcluster-${uniqueId}
   instanceType: PRIMARY
   machineConfig:
