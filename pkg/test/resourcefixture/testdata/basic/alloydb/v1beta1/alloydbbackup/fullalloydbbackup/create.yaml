@@ -17,7 +17,8 @@ kind: AlloyDBBackup
 metadata:
   name: alloydbbackup-${uniqueId}
 spec:
-  clusterName: "projects/${projectId}/locations/us-east1/clusters/alloydbcluster${uniqueId}"
+  clusterNameRef:
+    external: "projects/${projectId}/locations/us-east1/clusters/alloydbcluster${uniqueId}"
   location: us-east1
   encryptionConfig:
     kmsKeyNameRef: 
