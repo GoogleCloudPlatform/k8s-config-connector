@@ -22,8 +22,9 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-// AssertReadyCondition checks that the given statuc.onditions slice contains a Ready condition.
-func AssertReadyCondition(t *testing.T, object runtime.Object) {
+// AssertReadyCondition checks that the given status.conditions slice contains a Ready condition.
+// It waits for the specified observedGeneration (or later).
+func AssertReadyCondition(t *testing.T, object runtime.Object, minObservedGeneration int64) {
 	t.Helper()
 
 	gvk := object.GetObjectKind().GroupVersionKind()
@@ -38,8 +39,8 @@ func AssertReadyCondition(t *testing.T, object runtime.Object) {
 	if objectStatus.ObservedGeneration == nil {
 		t.Fatalf("resource %v does not yet have status.observedGeneration", objectID)
 	}
-	if *objectStatus.ObservedGeneration < objectStatus.Generation {
-		t.Fatalf("resource %v status.observedGeneration is behind current generation", objectID)
+	if *objectStatus.ObservedGeneration < minObservedGeneration {
+		t.Fatalf("resource %v status.observedGeneration %v is behind minObservedGeneration %v", objectID, *objectStatus.ObservedGeneration, minObservedGeneration)
 	}
 
 	if len(objectStatus.Conditions) != 1 {

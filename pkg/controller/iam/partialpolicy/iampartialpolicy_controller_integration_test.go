@@ -317,7 +317,7 @@ func testReconcileResourceLevelCreate(t *testing.T, kubeClient client.Client, k8
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 	assertPolicy(t, k8sPartialPolicy, existingPolicy, gcpPolicy, iamClient)
-	testcontroller.AssertReadyCondition(t, k8sPartialPolicy)
+	testcontroller.AssertReadyCondition(t, k8sPartialPolicy, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMPartialPolicyGVK.Kind, &k8sPartialPolicy.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sPartialPolicy, preReconcileGeneration)
 }
@@ -341,7 +341,7 @@ func testReconcileResourceLevelUpdate(t *testing.T, kubeClient client.Client, k8
 		t.Fatalf("error retrieving GCP policy: %v", err)
 	}
 	assertPolicy(t, newK8sPartialPolicy, existingPolicy, gcpPolicy, iamClient)
-	testcontroller.AssertReadyCondition(t, newK8sPartialPolicy)
+	testcontroller.AssertReadyCondition(t, newK8sPartialPolicy, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMPartialPolicyGVK.Kind, &newK8sPartialPolicy.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, newK8sPartialPolicy, preReconcileGeneration)
 }
@@ -545,7 +545,7 @@ func testReconcileResourceLevelAcquire(t *testing.T, mgr manager.Manager, k8sPar
 	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sPartialPolicy)
+	testcontroller.AssertReadyCondition(t, k8sPartialPolicy, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMPartialPolicyGVK.Kind, &k8sPartialPolicy.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sPartialPolicy, preReconcileGeneration)
 }
