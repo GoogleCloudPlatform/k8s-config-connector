@@ -119,7 +119,7 @@ func testReconcileResourceLevelCreate(t *testing.T, mgr manager.Manager, k8sAudi
 	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sAuditConfig), k8sAuditConfig); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sAuditConfig)
+	testcontroller.AssertReadyCondition(t, k8sAuditConfig, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sAuditConfig, preReconcileGeneration)
 }
@@ -212,7 +212,7 @@ func testReconcileResourceLevelUpdate(t *testing.T, mgr manager.Manager, k8sAudi
 		t.Fatalf("error retrieving GCP audit config: %v", err)
 	}
 	assertSameAuditConfigs(t, newK8sAuditConfig, gcpAuditConfig)
-	testcontroller.AssertReadyCondition(t, newK8sAuditConfig)
+	testcontroller.AssertReadyCondition(t, newK8sAuditConfig, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &newK8sAuditConfig.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, newK8sAuditConfig, preReconcileGeneration)
 }
@@ -291,7 +291,7 @@ func testReconcileResourceLevelNoChanges(t *testing.T, mgr manager.Manager, k8sA
 	if k8sAuditConfig.GetResourceVersion() != newK8sAuditConfig.GetResourceVersion() {
 		t.Errorf("reconcile that was expected to be a no-op resulted in a write to the API server")
 	}
-	testcontroller.AssertReadyCondition(t, newK8sAuditConfig)
+	testcontroller.AssertReadyCondition(t, newK8sAuditConfig, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &newK8sAuditConfig.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, newK8sAuditConfig, preReconcileGeneration)
 }
@@ -345,6 +345,7 @@ func testReconcileResourceLevelDelete(t *testing.T, mgr manager.Manager, k8sAudi
 	if err := kubeClient.Create(context.TODO(), k8sAuditConfig); err != nil {
 		t.Fatalf("error creating k8s resource: %v", err)
 	}
+	preReconcileGeneration := k8sAuditConfig.GetGeneration()
 	reconciler.ReconcileObjectMeta(k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
 	gcpAuditConfig, err := tfIamClient.GetAuditConfig(context.TODO(), k8sAuditConfig)
 	if err != nil {
@@ -354,7 +355,7 @@ func testReconcileResourceLevelDelete(t *testing.T, mgr manager.Manager, k8sAudi
 	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sAuditConfig), k8sAuditConfig); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sAuditConfig)
+	testcontroller.AssertReadyCondition(t, k8sAuditConfig, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.UpToDate)
 	if err := kubeClient.Delete(context.TODO(), k8sAuditConfig); err != nil {
 		t.Fatalf("error deleting k8s resource: %v", err)
@@ -424,6 +425,7 @@ func testReconcileResourceLevelDeleteParentFirst(t *testing.T, mgr manager.Manag
 	if err := kubeClient.Create(context.TODO(), k8sAuditConfig); err != nil {
 		t.Fatalf("error creating k8s resource: %v", err)
 	}
+	preReconcileGeneration := k8sAuditConfig.GetGeneration()
 	reconciler.ReconcileObjectMeta(k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
 	gcpAuditConfig, err := tfIamClient.GetAuditConfig(context.TODO(), k8sAuditConfig)
 	if err != nil {
@@ -433,7 +435,7 @@ func testReconcileResourceLevelDeleteParentFirst(t *testing.T, mgr manager.Manag
 	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sAuditConfig), k8sAuditConfig); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sAuditConfig)
+	testcontroller.AssertReadyCondition(t, k8sAuditConfig, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.UpToDate)
 
 	// First, delete the parent resource of the IAMAuditConfig
@@ -516,7 +518,7 @@ func testReconcileResourceLevelAcquire(t *testing.T, mgr manager.Manager, k8sAud
 	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sAuditConfig), k8sAuditConfig); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sAuditConfig)
+	testcontroller.AssertReadyCondition(t, k8sAuditConfig, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, v1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sAuditConfig, preReconcileGeneration)
 }

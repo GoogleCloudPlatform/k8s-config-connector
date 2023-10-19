@@ -181,7 +181,7 @@ func testReconcileResourceLevelCreate(t *testing.T, kubeClient client.Client, k8
 	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sPolicy), k8sPolicy); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sPolicy)
+	testcontroller.AssertReadyCondition(t, k8sPolicy, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMPolicyGVK.Kind, &k8sPolicy.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sPolicy, preReconcileGeneration)
 }
@@ -204,7 +204,7 @@ func testReconcileResourceLevelUpdate(t *testing.T, kubeClient client.Client, k8
 		t.Fatalf("error retrieving GCP policy: %v", err)
 	}
 	testiam.AssertSamePolicy(t, newK8sPolicy, gcpPolicy)
-	testcontroller.AssertReadyCondition(t, newK8sPolicy)
+	testcontroller.AssertReadyCondition(t, newK8sPolicy, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMPolicyGVK.Kind, &newK8sPolicy.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, newK8sPolicy, preReconcileGeneration)
 }
@@ -400,7 +400,7 @@ func testReconcileResourceLevelAcquire(t *testing.T, mgr manager.Manager, k8sPol
 	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sPolicy), k8sPolicy); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sPolicy)
+	testcontroller.AssertReadyCondition(t, k8sPolicy, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMPolicyGVK.Kind, &k8sPolicy.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sPolicy, preReconcileGeneration)
 }

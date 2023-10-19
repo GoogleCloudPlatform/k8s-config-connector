@@ -249,7 +249,7 @@ func validateCreate(t *testing.T, testContext testrunner.TestContext, systemCont
 
 	// Check that condition is ready and "UpToDate" event was recorded
 	// TODO: (eventually) check default fields are propagated correctly
-	testcontroller.AssertReadyCondition(t, reconciledUnstruct)
+	testcontroller.AssertReadyCondition(t, reconciledUnstruct, preReconcileGeneration)
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
 
 	verifyResourceIDIfSupported(t, systemContext, resourceContext, reconciledUnstruct, initialUnstruct)
@@ -387,7 +387,7 @@ func testUpdate(t *testing.T, testContext testrunner.TestContext, systemContext 
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
 
 	// Check if condition is ready and update event was recorded
-	testcontroller.AssertReadyCondition(t, reconciledUnstruct)
+	testcontroller.AssertReadyCondition(t, reconciledUnstruct, preReconcileGeneration)
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
 
 	// Check observedGeneration matches with the pre-reconcile generation
@@ -635,7 +635,7 @@ func testReconcileAcquire(t *testing.T, testContext testrunner.TestContext, syst
 	}
 
 	// Check that condition is ready and "UpToDate" event was recorded
-	testcontroller.AssertReadyCondition(t, reconciledUnstruct)
+	testcontroller.AssertReadyCondition(t, reconciledUnstruct, preReconcileGeneration)
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
 
 	// Check observedGeneration matches with the pre-reconcile generation
