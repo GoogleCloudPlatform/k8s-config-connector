@@ -49,6 +49,7 @@ func runTestCase(ctx context.Context, t *testing.T, fixture ResourceFixture, tes
 	}
 	t.Run(FormatTestName(fixture), func(t *testing.T) {
 		t.Parallel()
+		ctx = test.WithContext(ctx, t)
 		testCaseFunc(ctx, t, fixture)
 		// note, this function, runTestCase(...) almost always returns before testCaseFunc(...) returns
 	})
