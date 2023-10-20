@@ -16,7 +16,7 @@ configuration, and more importantly **tooling**. For example, the same
 customization or templating tool can be used to manage test vs. production
 versions of an application across both Kubernetes and GCP.
 
-This repository contains full Config Connector source code. This inlcudes
+This repository contains full Config Connector source code. This includes
 controllers, CRDs, install bundles, and sample resource configurations.
 
 ## Usage
