@@ -30,7 +30,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	dclextension "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
@@ -47,6 +50,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/contexts"
 	testrunner "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/runner"
 	testservicemapping "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemapping"
+	"google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/option"
 
 	"github.com/cenkalti/backoff"
 	"github.com/ghodss/yaml"
@@ -180,7 +185,96 @@ func TestAcquire(t *testing.T) {
 }
 
 func TestCreateNoChangeUpdateDelete(t *testing.T) {
-	ctx := context.TODO()
+	ctx := context.Background()
+
+	var kccConfig kccmanager.Config
+
+	opt := &testrunner.SystemContext{Manager: mgr}
+
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+		t.Logf("creating mock gcp")
+		mockCloud := mockgcp.NewMockRoundTripper(t, mgr.GetClient(), storage.NewInMemoryStorage())
+
+		roundTripper := http.RoundTripper(mockCloud)
+
+		ctx = context.WithValue(ctx, httpRoundTripperKey, roundTripper)
+
+		kccConfig.HTTPClient = &http.Client{Transport: roundTripper}
+
+		kccConfig.AccessToken = "dummytoken"
+
+		// Bootstrap the Google Terraform provider
+		tfCfg := tfprovider.NewConfig()
+		tfCfg.UserProjectOverride = kccConfig.UserProjectOverride
+		tfCfg.BillingProject = kccConfig.BillingProject
+		tfCfg.AccessToken = kccConfig.AccessToken
+
+		tfprovider.DefaultConfig = tfCfg
+
+		// Allow for capture of http requests during a test.
+		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+			return kccConfig.HTTPClient
+			// ret := inner
+			// if t := ctx.Value(httpRoundTripperKey); t != nil {
+			// 	ret = &http.Client{Transport: t.(http.RoundTripper)}
+			// }
+			// if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
+			// 	log := log.FromContext(ctx)
+			// 	log.Info("env var ARTIFACTS is not set; will not record http log")
+			// } else {
+			// 	outputDir := filepath.Join(artifacts, "http-logs")
+			// 	t := test.NewHTTPRecorder(ret.Transport, outputDir)
+			// 	ret = &http.Client{Transport: t}
+			// }
+			// return ret
+		}
+
+		// Log TF oauth requests
+		transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+			return kccConfig.HTTPClient
+			// ret := inner
+			// if t := ctx.Value(httpRoundTripperKey); t != nil {
+			// 	ret = &http.Client{Transport: t.(http.RoundTripper)}
+			// }
+			// if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
+			// 	log.Info("env var ARTIFACTS is not set; will not record http log")
+			// } else {
+			// 	outputDir := filepath.Join(artifacts, "http-logs")
+			// 	t := test.NewHTTPRecorder(ret.Transport, outputDir)
+			// 	ret = &http.Client{Transport: t}
+			// }
+			// return ret
+		}
+
+		opt.Project = testgcp.GCPProject{}
+		crm, err := cloudresourcemanagerv1.NewService(ctx, option.WithHTTPClient(kccConfig.HTTPClient))
+		if err != nil {
+			t.Fatalf("error building cloudresourcemanagerv1 client: %v", err)
+		}
+		req := &cloudresourcemanager.Project{
+			ProjectId: "mock-project",
+		}
+		op, err := crm.Projects.Create(req).Context(ctx).Do()
+		if err != nil {
+			t.Fatalf("error creating project: %v", err)
+		}
+		if !op.Done {
+			t.Fatalf("expected mock create project operation to be done immediately")
+		}
+		found, err := crm.Projects.Get(req.ProjectId).Context(ctx).Do()
+		if err != nil {
+			t.Fatalf("error reading created project: %v", err)
+		}
+		opt.Project = testgcp.GCPProject{
+			ProjectID:     found.ProjectId,
+			ProjectNumber: found.ProjectNumber,
+		}
+
+	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
+		t.Logf("targeting real GCP")
+	} else {
+		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
+	}
 
 	t.Parallel()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
