@@ -86,7 +86,7 @@ func RunAllWithDependenciesCreatedButNotObject(ctx context.Context, t *testing.T
 
 func RunAll(ctx context.Context, t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, testCaseFunc TestCaseFunc) {
 	shouldRun := func(resourceFixture resourcefixture.ResourceFixture) bool {
-		return shouldRunFunc(resourceFixture, mgr)
+		return shouldRunFunc(resourceFixture, c.Manager)
 	}
 	testFunc := func(ctx context.Context, t *testing.T, fixture resourcefixture.ResourceFixture) {
 		project := testgcp.GetDefaultProject(t)
@@ -161,6 +161,7 @@ func newSystemContext(ctx context.Context, t *testing.T, mgr manager.Manager) Sy
 		TFProvider:   tfProvider,
 		DCLConfig:    dclConfig,
 		DCLConverter: dclConverter,
+		Project:      project,
 	}
 }
 
