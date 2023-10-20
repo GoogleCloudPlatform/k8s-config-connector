@@ -88,7 +88,7 @@ func init() {
 			log.Info("env var ARTIFACTS is not set; will not record http log")
 		} else {
 			outputDir := filepath.Join(artifacts, "http-logs")
-			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+			t := test.NewHTTPRecorder(ret.Transport, test.NewDirectoryEventSink(outputDir))
 			ret = &http.Client{Transport: t}
 		}
 		return ret
