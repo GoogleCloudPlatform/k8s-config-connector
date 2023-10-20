@@ -192,14 +192,14 @@ func isTransientError(t *testing.T, err error) bool {
 }
 
 // RunReconcilerAssertResults asserts the expected state of the reconciler run.
-func RunReconcilerAssertResults(t *testing.T, reconciler reconcile.Reconciler, objectMeta v1.ObjectMeta,
+func RunReconcilerAssertResults(ctx context.Context, t *testing.T, reconciler reconcile.Reconciler, objectMeta v1.ObjectMeta,
 	expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
 	attempt := 0
 tryAgain:
 	attempt++
 	t.Helper()
 	reconcileRequest := reconcile.Request{NamespacedName: k8s.GetNamespacedName(objectMeta.GetObjectMeta())}
-	result, err := reconciler.Reconcile(context.Background(), reconcileRequest)
+	result, err := reconciler.Reconcile(ctx, reconcileRequest)
 
 	// Retry if we see a "transient" error (up to our retry limit)
 	if err != nil {

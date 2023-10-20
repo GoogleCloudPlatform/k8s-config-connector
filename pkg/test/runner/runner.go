@@ -57,55 +57,54 @@ type SystemContext struct {
 	TFProvider   *schema.Provider
 	DCLConfig    *mmdcl.Config
 	DCLConverter *dclconversion.Converter
+	Project      testgcp.GCPProject
 }
 
 type ShouldRunFunc func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool
-type TestCaseFunc func(t *testing.T, testContext TestContext, sysContext SystemContext)
+type TestCaseFunc func(ctx context.Context, t *testing.T, testContext TestContext, sysContext SystemContext)
 
-func RunAllWithObjectCreated(t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, testCaseFunc TestCaseFunc) {
-	testFunc := func(t *testing.T, testContext TestContext, sysContext SystemContext) {
-		if err := sysContext.Manager.GetClient().Create(context.TODO(), testContext.CreateUnstruct); err != nil {
+func RunAllWithObjectCreated(ctx context.Context, t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, testCaseFunc TestCaseFunc) {
+	testFunc := func(ctx context.Context, t *testing.T, testContext TestContext, sysContext SystemContext) {
+		if err := sysContext.Manager.GetClient().Create(ctx, testContext.CreateUnstruct); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
-		resourceCleanup := sysContext.Reconciler.BuildCleanupFunc(testContext.CreateUnstruct, testreconciler.CleanupPolicyAlways)
+		resourceCleanup := sysContext.Reconciler.BuildCleanupFunc(ctx, testContext.CreateUnstruct, testreconciler.CleanupPolicyAlways)
 		defer resourceCleanup()
-		sysContext.Reconciler.Reconcile(testContext.CreateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(sysContext.Reconciler, testContext.CreateUnstruct), nil)
-		testCaseFunc(t, testContext, sysContext)
+		sysContext.Reconciler.Reconcile(ctx, testContext.CreateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(sysContext.Reconciler, testContext.CreateUnstruct), nil)
+		testCaseFunc(ctx, t, testContext, sysContext)
 	}
-	RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRunFunc, testFunc)
-
+	RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRunFunc, testFunc)
 }
 
-func RunAllWithDependenciesCreatedButNotObject(t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, testCaseFunc TestCaseFunc) {
-	testFunc := func(t *testing.T, testContext TestContext, sysContext SystemContext) {
-		dependencyCleanup := sysContext.Reconciler.CreateAndReconcile(testContext.DependencyUnstructs, testreconciler.CleanupPolicyAlways)
+func RunAllWithDependenciesCreatedButNotObject(ctx context.Context, t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, testCaseFunc TestCaseFunc) {
+	testFunc := func(ctx context.Context, t *testing.T, testContext TestContext, sysContext SystemContext) {
+		dependencyCleanup := sysContext.Reconciler.CreateAndReconcile(ctx, testContext.DependencyUnstructs, testreconciler.CleanupPolicyAlways)
 		defer dependencyCleanup()
-		testCaseFunc(t, testContext, sysContext)
+		testCaseFunc(ctx, t, testContext, sysContext)
 	}
-	RunAll(t, mgr, shouldRunFunc, testFunc)
+	RunAll(ctx, t, mgr, shouldRunFunc, testFunc)
 }
 
-func RunAll(t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, testCaseFunc TestCaseFunc) {
-	project := testgcp.GetDefaultProject(t)
+func RunAll(ctx context.Context, t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, testCaseFunc TestCaseFunc) {
 	shouldRun := func(resourceFixture resourcefixture.ResourceFixture) bool {
 		return shouldRunFunc(resourceFixture, mgr)
 	}
-	testFunc := func(t *testing.T, fixture resourcefixture.ResourceFixture) {
+	testFunc := func(ctx context.Context, t *testing.T, fixture resourcefixture.ResourceFixture) {
 		systemContext := newSystemContext(t, mgr)
-		testContext := NewTestContext(t, fixture, project)
+		testContext := NewTestContext(t, fixture, systemContext.Project)
 		setupNamespaces(t, testContext, systemContext)
-		testCaseFunc(t, testContext, systemContext)
+		testCaseFunc(ctx, t, testContext, systemContext)
 	}
-	resourcefixture.RunTests(t, shouldRun, testFunc)
+	resourcefixture.RunTests(ctx, t, shouldRun, testFunc)
 }
 
-func RunSpecific(t *testing.T, fixture []resourcefixture.ResourceFixture, testCaseFunc func(t *testing.T, testContext TestContext)) {
+func RunSpecific(ctx context.Context, t *testing.T, fixture []resourcefixture.ResourceFixture, testCaseFunc func(ctx context.Context, t *testing.T, testContext TestContext)) {
 	project := testgcp.GetDefaultProject(t)
-	testFunc := func(t *testing.T, fixture resourcefixture.ResourceFixture) {
+	testFunc := func(ctx context.Context, t *testing.T, fixture resourcefixture.ResourceFixture) {
 		testContext := NewTestContext(t, fixture, project)
-		testCaseFunc(t, testContext)
+		testCaseFunc(ctx, t, testContext)
 	}
-	resourcefixture.RunSpecificTests(t, fixture, testFunc)
+	resourcefixture.RunSpecificTests(ctx, t, fixture, testFunc)
 }
 
 // NewTestContext takes a resource fixture and returns a filled out TestContext
@@ -167,13 +166,13 @@ func newSystemContext(t *testing.T, mgr manager.Manager) SystemContext {
 
 func setupNamespaces(t *testing.T, testContext TestContext, systemContext SystemContext) {
 	namespacesAlreadySetup := make(map[string]bool)
-	testcontroller.SetupNamespaceForDefaultProject(t, systemContext.Manager.GetClient(), testContext.CreateUnstruct.GetNamespace())
+	testcontroller.SetupNamespaceForProject(t, systemContext.Manager.GetClient(), testContext.CreateUnstruct.GetNamespace(), systemContext.Project.ProjectID)
 	namespacesAlreadySetup[testContext.CreateUnstruct.GetNamespace()] = true
 	for _, depUnstruct := range testContext.DependencyUnstructs {
 		if _, ok := namespacesAlreadySetup[depUnstruct.GetNamespace()]; ok {
 			continue
 		}
-		testcontroller.SetupNamespaceForDefaultProject(t, systemContext.Manager.GetClient(), depUnstruct.GetNamespace())
+		testcontroller.SetupNamespaceForProject(t, systemContext.Manager.GetClient(), depUnstruct.GetNamespace(), systemContext.Project.ProjectID)
 		namespacesAlreadySetup[depUnstruct.GetNamespace()] = true
 	}
 }

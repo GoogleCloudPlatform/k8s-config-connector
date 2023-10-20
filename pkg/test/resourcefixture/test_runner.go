@@ -15,6 +15,7 @@
 package resourcefixture
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
@@ -23,32 +24,32 @@ import (
 )
 
 type ShouldRunFunc func(fixture ResourceFixture) bool
-type TestCaseFunc func(t *testing.T, fixture ResourceFixture)
+type TestCaseFunc func(ctx context.Context, t *testing.T, fixture ResourceFixture)
 
-func RunTests(t *testing.T, shouldRun ShouldRunFunc, testCaseFunc TestCaseFunc) {
+func RunTests(ctx context.Context, t *testing.T, shouldRun ShouldRunFunc, testCaseFunc TestCaseFunc) {
 	testCases := Load(t)
 	for _, tc := range testCases {
 		if !shouldRun(tc) {
 			continue
 		}
-		runTestCase(t, tc, testCaseFunc)
+		runTestCase(ctx, t, tc, testCaseFunc)
 	}
 }
 
-func RunSpecificTests(t *testing.T, fixtures []ResourceFixture, testCaseFunc TestCaseFunc) {
+func RunSpecificTests(ctx context.Context, t *testing.T, fixtures []ResourceFixture, testCaseFunc TestCaseFunc) {
 	for _, f := range fixtures {
-		runTestCase(t, f, testCaseFunc)
+		runTestCase(ctx, t, f, testCaseFunc)
 	}
 }
 
-func runTestCase(t *testing.T, fixture ResourceFixture, testCaseFunc TestCaseFunc) {
+func runTestCase(ctx context.Context, t *testing.T, fixture ResourceFixture, testCaseFunc TestCaseFunc) {
 	testName := FormatTestName(fixture)
 	if test.StringMatchesRegexList(t, testconstants.TestNameRegexesToSkip, testName) {
 		return
 	}
 	t.Run(FormatTestName(fixture), func(t *testing.T) {
 		t.Parallel()
-		testCaseFunc(t, fixture)
+		testCaseFunc(ctx, t, fixture)
 		// note, this function, runTestCase(...) almost always returns before testCaseFunc(...) returns
 	})
 }

@@ -84,6 +84,8 @@ func shouldRunBasedOnRunAndSkipRegexes(parentTestName string, fixture resourcefi
 }
 
 func TestAllGetSetDeletePolicy(t *testing.T) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	serviceMetadataLoader := dclmetadata.New()
 	dclSchemaLoader, err := dclschemaloader.New()
@@ -94,17 +96,19 @@ func TestAllGetSetDeletePolicy(t *testing.T) {
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
 		iamPolicy := newPolicy(t, refResource, resourceRef, testContext.UniqueId)
-		testGetSetDeletePolicy(t, iamClient, iamPolicy, refResource.GetKind())
+		testGetSetDeletePolicy(ctx, t, iamClient, iamPolicy, refResource.GetKind())
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
 func TestAllGetSetDeletePolicyWithExternalRef(t *testing.T) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	serviceMetadataLoader := dclmetadata.New()
 	dclSchemaLoader, err := dclschemaloader.New()
@@ -115,7 +119,7 @@ func TestAllGetSetDeletePolicyWithExternalRef(t *testing.T) {
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.ShouldRunWithExternalRef(fixture) && testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef, err := testiam.NewExternalRef(refResource, sysContext.TFProvider, sysContext.SMLoader)
@@ -123,29 +127,33 @@ func TestAllGetSetDeletePolicyWithExternalRef(t *testing.T) {
 			t.Fatal(err)
 		}
 		iamPolicy := newPolicy(t, refResource, resourceRef, testContext.UniqueId)
-		testGetSetDeletePolicy(t, iamClient, iamPolicy, refResource.GetKind())
+		testGetSetDeletePolicy(ctx, t, iamClient, iamPolicy, refResource.GetKind())
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
 func TestAllGetSetDeletePolicyWithExternalOnlyRef(t *testing.T) {
+	ctx := context.TODO()
+
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.IAMExternalOnlyRef && fixture.GVK.Kind == "IAMPolicy"
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		iamPolicy := &iamv1beta1.IAMPolicy{}
 		if err := util.Marshal(testContext.CreateUnstruct, iamPolicy); err != nil {
 			t.Fatalf("error marshaling create unstruct into IAMPolicy object: %v", err)
 		}
 
-		testGetSetDeletePolicy(t, iamClient, iamPolicy, iamPolicy.Spec.ResourceReference.Kind)
+		testGetSetDeletePolicy(ctx, t, iamClient, iamPolicy, iamPolicy.Spec.ResourceReference.Kind)
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
 func TestAllGetSetDeletePolicyWithIAMCondition(t *testing.T) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	serviceMetadataLoader := dclmetadata.New()
 	dclSchemaLoader, err := dclschemaloader.New()
@@ -156,35 +164,37 @@ func TestAllGetSetDeletePolicyWithIAMCondition(t *testing.T) {
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.ShouldRunWithIAMConditions(fixture) && testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
 		iamPolicy := newPolicyWithIAMConditions(t, refResource, resourceRef, testContext.UniqueId)
-		testGetSetDeletePolicy(t, iamClient, iamPolicy, refResource.GetKind())
+		testGetSetDeletePolicy(ctx, t, iamClient, iamPolicy, refResource.GetKind())
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
 func TestAllGetSetPolicyWithAuditConfigs(t *testing.T) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	serviceMetadataLoader := dclmetadata.New()
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.FixtureSupportsIAMAuditConfigs(t, smLoader, serviceMetadataLoader, fixture)
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
 		iamPolicy := newPolicyWithAuditConfigs(t, refResource, resourceRef, testContext.UniqueId)
-		testGetSetDeletePolicy(t, iamClient, iamPolicy, refResource.GetKind())
+		testGetSetDeletePolicy(ctx, t, iamClient, iamPolicy, refResource.GetKind())
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
-func testGetSetDeletePolicy(t *testing.T, iamClient *kcciamclient.IAMClient, newPolicy *iamv1beta1.IAMPolicy, refResourceKind string) {
-	gcpPolicy, err := iamClient.GetPolicy(context.TODO(), newPolicy)
+func testGetSetDeletePolicy(ctx context.Context, t *testing.T, iamClient *kcciamclient.IAMClient, newPolicy *iamv1beta1.IAMPolicy, refResourceKind string) {
+	gcpPolicy, err := iamClient.GetPolicy(ctx, newPolicy)
 	if err != nil {
 		t.Fatalf("error getting iam policy: %v", err)
 	}
@@ -212,7 +222,7 @@ func testGetSetDeletePolicy(t *testing.T, iamClient *kcciamclient.IAMClient, new
 	if !reflect.DeepEqual(gcpPolicy.Spec.ResourceReference, newPolicy.Spec.ResourceReference) {
 		t.Errorf("resource reference mismatch: got '%v', want '%v'", gcpPolicy.Spec.ResourceReference, newPolicy.Spec.ResourceReference)
 	}
-	resultPolicy, err := iamClient.SetPolicy(context.TODO(), newPolicy)
+	resultPolicy, err := iamClient.SetPolicy(ctx, newPolicy)
 	if err != nil {
 		t.Errorf("error setting iam policy: %v", err)
 	}
@@ -225,7 +235,7 @@ func testGetSetDeletePolicy(t *testing.T, iamClient *kcciamclient.IAMClient, new
 	if !reflect.DeepEqual(resultPolicy.Spec.AuditConfigs, newPolicy.Spec.AuditConfigs) {
 		t.Errorf("mismatched audit configs: got '%v', want '%v'", resultPolicy.Spec.AuditConfigs, newPolicy.Spec.AuditConfigs)
 	}
-	gcpPolicy, err = iamClient.GetPolicy(context.TODO(), newPolicy)
+	gcpPolicy, err = iamClient.GetPolicy(ctx, newPolicy)
 	if err != nil {
 		t.Fatalf("error getting iam policy: %v", err)
 	}
@@ -246,12 +256,12 @@ func testGetSetDeletePolicy(t *testing.T, iamClient *kcciamclient.IAMClient, new
 	case "StorageBucket", "Organization", "BillingAccount":
 		return
 	}
-	if err := iamClient.DeletePolicy(context.TODO(), newPolicy); err != nil {
+	if err := iamClient.DeletePolicy(ctx, newPolicy); err != nil {
 		t.Fatalf("error deleting: %v", err)
 	}
 	// "Deleting" an IAMPolicy just means clearing it. Check that we can still
 	// GET the IAMPolicy and that it has been cleared.
-	gcpPolicy, err = iamClient.GetPolicy(context.TODO(), newPolicy)
+	gcpPolicy, err = iamClient.GetPolicy(ctx, newPolicy)
 	if err != nil {
 		t.Fatalf("error getting iam policy: %v", err)
 	}
@@ -261,21 +271,23 @@ func testGetSetDeletePolicy(t *testing.T, iamClient *kcciamclient.IAMClient, new
 }
 
 func TestResolveMemberIdentity(t *testing.T) {
+	ctx := context.TODO()
+
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, _ manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "IAMServiceAccount"
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
-		testResolveMemberIdentity(t, iamClient, testContext)
+		testResolveMemberIdentity(ctx, t, iamClient, testContext)
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
-func testResolveMemberIdentity(t *testing.T, iamClient *kcciamclient.IAMClient, testContext testrunner.TestContext) {
+func testResolveMemberIdentity(ctx context.Context, t *testing.T, iamClient *kcciamclient.IAMClient, testContext testrunner.TestContext) {
 	member := iamv1beta1.Member("user:user2@example.com")
 
-	resolvedId, err := kcciamclient.ResolveMemberIdentity(context.TODO(), member, nil, testContext.NamespacedName.Namespace, iamClient.TFIAMClient)
+	resolvedId, err := kcciamclient.ResolveMemberIdentity(ctx, member, nil, testContext.NamespacedName.Namespace, iamClient.TFIAMClient)
 	if err != nil {
 		t.Fatalf("error resolving member identity with member")
 	}
@@ -290,7 +302,7 @@ func testResolveMemberIdentity(t *testing.T, iamClient *kcciamclient.IAMClient, 
 			Name:      "cnrm-sa",
 		},
 	}
-	_, err = kcciamclient.ResolveMemberIdentity(context.TODO(), "", memberFrom, testContext.NamespacedName.Namespace, iamClient.TFIAMClient)
+	_, err = kcciamclient.ResolveMemberIdentity(ctx, "", memberFrom, testContext.NamespacedName.Namespace, iamClient.TFIAMClient)
 	if err == nil || !k8s.IsReferenceNotFoundError(err) {
 		t.Fatalf("resolving member identity with non-existent memberFrom reference: got error: %v, want ReferenceNotFoundError", err)
 	}
@@ -299,76 +311,80 @@ func testResolveMemberIdentity(t *testing.T, iamClient *kcciamclient.IAMClient, 
 	memberFrom.ServiceAccountRef.Namespace = testContext.NamespacedName.Namespace
 
 	// TODO: We want to figure out a way to verify resolved id for memberFrom
-	_, err = kcciamclient.ResolveMemberIdentity(context.TODO(), "", memberFrom, testContext.NamespacedName.Namespace, iamClient.TFIAMClient)
+	_, err = kcciamclient.ResolveMemberIdentity(ctx, "", memberFrom, testContext.NamespacedName.Namespace, iamClient.TFIAMClient)
 	if err != nil {
 		t.Fatalf("error resolving member identity with valid memberFrom")
 	}
 
-	_, err = kcciamclient.ResolveMemberIdentity(context.TODO(), member, memberFrom, testContext.NamespacedName.Namespace, iamClient.TFIAMClient)
+	_, err = kcciamclient.ResolveMemberIdentity(ctx, member, memberFrom, testContext.NamespacedName.Namespace, iamClient.TFIAMClient)
 	if err == nil {
 		t.Fatalf("got no error when ResolveMemberIdentity() was given both a valid member and memberFrom; want error")
 	}
 }
 
 func TestGetSetDeletePolicyReferenceNotFound(t *testing.T) {
+	ctx := context.TODO()
+
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, _ manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "PubSubTopic"
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
 		newPolicy := newPolicy(t, refResource, resourceRef, testContext.UniqueId)
-		testGetSetDeletePolicyReferenceNotFound(t, iamClient, newPolicy)
+		testGetSetDeletePolicyReferenceNotFound(ctx, t, iamClient, newPolicy)
 	}
-	testrunner.RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
-func testGetSetDeletePolicyReferenceNotFound(t *testing.T, iamClient *kcciamclient.IAMClient, newPolicy *iamv1beta1.IAMPolicy) {
-	_, err := iamClient.GetPolicy(context.TODO(), newPolicy)
+func testGetSetDeletePolicyReferenceNotFound(ctx context.Context, t *testing.T, iamClient *kcciamclient.IAMClient, newPolicy *iamv1beta1.IAMPolicy) {
+	_, err := iamClient.GetPolicy(ctx, newPolicy)
 	if !k8s.IsReferenceNotFoundError(err) {
 		t.Errorf("getting policy when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
-	_, err = iamClient.SetPolicy(context.TODO(), newPolicy)
+	_, err = iamClient.SetPolicy(ctx, newPolicy)
 	if !k8s.IsReferenceNotFoundError(err) {
 		t.Errorf("setting policy when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
-	err = iamClient.DeletePolicy(context.TODO(), newPolicy)
+	err = iamClient.DeletePolicy(ctx, newPolicy)
 	if !k8s.IsReferenceNotFoundError(err) {
 		t.Errorf("deleting policy when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
 }
 
 func TestProjectIdAsNamespace(t *testing.T) {
+	ctx := context.TODO()
+
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		// this test does not load dependencies and we only need to verify that this functionality works
 		// for a single resource.
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "IAMServiceAccount"
 	}
-	testCaseFunc := func(t *testing.T, tstCtx testrunner.TestContext, sysCtx testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, tstCtx testrunner.TestContext, sysCtx testrunner.SystemContext) {
 		projectId := testgcp.GetDefaultProjectID(t)
 		testcontroller.SetupNamespaceForDefaultProject(t, sysCtx.Manager.GetClient(), projectId)
 		refResource := tstCtx.CreateUnstruct
 		refResource.SetNamespace(projectId)
-		if err := sysCtx.Manager.GetClient().Create(context.TODO(), refResource); err != nil {
+		if err := sysCtx.Manager.GetClient().Create(ctx, refResource); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
-		resourceCleanup := sysCtx.Reconciler.BuildCleanupFunc(refResource, testreconciler.CleanupPolicyAlways)
+		resourceCleanup := sysCtx.Reconciler.BuildCleanupFunc(ctx, refResource, testreconciler.CleanupPolicyAlways)
 		defer resourceCleanup()
-		sysCtx.Reconciler.Reconcile(refResource, reconcile.Result{RequeueAfter: k8s.MeanReconcileReenqueuePeriod}, nil)
+		sysCtx.Reconciler.Reconcile(ctx, refResource, reconcile.Result{RequeueAfter: k8s.MeanReconcileReenqueuePeriod}, nil)
 		iamClient := testiam.NewIAMClient(sysCtx)
 		resourceRef := testiam.NewResourceRef(refResource)
 		newPolicy := newPolicy(t, refResource, resourceRef, tstCtx.UniqueId)
-		policy, err := iamClient.GetPolicy(context.TODO(), newPolicy)
+		policy, err := iamClient.GetPolicy(ctx, newPolicy)
 		if err != nil {
 			t.Fatalf("error getting iam policy: %v", err)
 		}
 		if policy.Spec.Bindings != nil {
 			t.Errorf("unexpected value for bindings: got '%v' want 'nil'", policy.Spec.Bindings)
 		}
-		resultPolicy, err := iamClient.SetPolicy(context.TODO(), newPolicy)
+		resultPolicy, err := iamClient.SetPolicy(ctx, newPolicy)
 		if err != nil {
 			t.Errorf("error setting iam policy: %v", err)
 		}
@@ -379,10 +395,12 @@ func TestProjectIdAsNamespace(t *testing.T) {
 			t.Errorf("mismatched bindings: got '%v', want '%v'", resultPolicy.Spec.Bindings, newPolicy.Spec.Bindings)
 		}
 	}
-	testrunner.RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
 func TestAllGetSetDeletePolicyMember(t *testing.T) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	serviceMetadataLoader := dclmetadata.New()
 	dclSchemaLoader, err := dclschemaloader.New()
@@ -393,17 +411,19 @@ func TestAllGetSetDeletePolicyMember(t *testing.T) {
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
 		iamPolicyMember := newPolicyMember(t, refResource, resourceRef, testContext.UniqueId)
-		testGetSetDeleteIamPolicyMember(t, iamClient, iamPolicyMember, refResource)
+		testGetSetDeleteIamPolicyMember(ctx, t, iamClient, iamPolicyMember, refResource)
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
 func TestAllGetSetDeletePolicyMemberWithExternalRef(t *testing.T) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	serviceMetadataLoader := dclmetadata.New()
 	dclSchemaLoader, err := dclschemaloader.New()
@@ -414,7 +434,7 @@ func TestAllGetSetDeletePolicyMemberWithExternalRef(t *testing.T) {
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.ShouldRunWithExternalRef(fixture) && testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef, err := testiam.NewExternalRef(refResource, sysContext.TFProvider, sysContext.SMLoader)
@@ -422,12 +442,14 @@ func TestAllGetSetDeletePolicyMemberWithExternalRef(t *testing.T) {
 			t.Fatal(err)
 		}
 		iamPolicyMember := newPolicyMember(t, refResource, resourceRef, testContext.UniqueId)
-		testGetSetDeleteIamPolicyMember(t, iamClient, iamPolicyMember, refResource)
+		testGetSetDeleteIamPolicyMember(ctx, t, iamClient, iamPolicyMember, refResource)
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
 func TestAllGetSetDeletePolicyMemberWithIAMCondition(t *testing.T) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	serviceMetadataLoader := dclmetadata.New()
 	dclSchemaLoader, err := dclschemaloader.New()
@@ -438,57 +460,61 @@ func TestAllGetSetDeletePolicyMemberWithIAMCondition(t *testing.T) {
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.ShouldRunWithIAMConditions(fixture) && testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
 		iamPolicyMember := newPolicyMemberWithIAMCondition(t, refResource, resourceRef, testContext.UniqueId)
-		testGetSetDeleteIamPolicyMember(t, iamClient, iamPolicyMember, refResource)
+		testGetSetDeleteIamPolicyMember(ctx, t, iamClient, iamPolicyMember, refResource)
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
 func TestAllGetSetDeletePolicyMemberWithExternalOnlyRef(t *testing.T) {
+	ctx := context.TODO()
+
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.IAMExternalOnlyRef && fixture.GVK.Kind == "IAMPolicyMember"
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		iamPolicyMember := &iamv1beta1.IAMPolicyMember{}
 		if err := util.Marshal(testContext.CreateUnstruct, iamPolicyMember); err != nil {
 			t.Fatalf("error marshaling create unstruct into IAMPolicyMember object: %v", err)
 		}
-		testGetSetDeleteIamPolicyMember(t, iamClient, iamPolicyMember, nil)
+		testGetSetDeleteIamPolicyMember(ctx, t, iamClient, iamPolicyMember, nil)
 	}
-	testrunner.RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
 func TestAllGetSetDeletePolicyMemberWithMemberReference(t *testing.T) {
+	ctx := context.TODO()
+
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.IAMMemberReferences
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		iamPolicyMember := &iamv1beta1.IAMPolicyMember{}
 		if err := util.Marshal(testContext.CreateUnstruct, iamPolicyMember); err != nil {
 			t.Fatalf("error marshaling create unstruct into IAMPolicyMember object: %v", err)
 		}
-		testGetSetDeleteIamPolicyMember(t, iamClient, iamPolicyMember, nil)
+		testGetSetDeleteIamPolicyMember(ctx, t, iamClient, iamPolicyMember, nil)
 	}
-	testrunner.RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
-func testGetSetDeleteIamPolicyMember(t *testing.T, iamClient *kcciamclient.IAMClient, policyMember *iamv1beta1.IAMPolicyMember, refResource *unstructured.Unstructured) {
-	_, err := iamClient.GetPolicyMember(context.TODO(), policyMember)
+func testGetSetDeleteIamPolicyMember(ctx context.Context, t *testing.T, iamClient *kcciamclient.IAMClient, policyMember *iamv1beta1.IAMPolicyMember, refResource *unstructured.Unstructured) {
+	_, err := iamClient.GetPolicyMember(ctx, policyMember)
 	if err == nil {
 		t.Fatalf("expected an error when retrieving IAMPolicyMember, instead got 'nil'")
 	}
 	if !isNotFoundError(err) {
 		t.Fatalf("unexpected error when retrieving IAMPolicyMember: got '%v', want '%v'", err, kcciamclient.NotFoundError)
 	}
-	gcpPolicyMember, err := iamClient.SetPolicyMember(context.TODO(), policyMember)
+	gcpPolicyMember, err := iamClient.SetPolicyMember(ctx, policyMember)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -508,14 +534,14 @@ func testGetSetDeleteIamPolicyMember(t *testing.T, iamClient *kcciamclient.IAMCl
 		t.Errorf("resource reference mismatch: got '%v', want '%v'",
 			gcpPolicyMember.Spec.ResourceReference, policyMember.Spec.ResourceReference)
 	}
-	_, err = iamClient.GetPolicyMember(context.TODO(), policyMember)
+	_, err = iamClient.GetPolicyMember(ctx, policyMember)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if err := iamClient.DeletePolicyMember(context.TODO(), gcpPolicyMember); err != nil {
+	if err := iamClient.DeletePolicyMember(ctx, gcpPolicyMember); err != nil {
 		t.Fatalf("error deleting: %v", err)
 	}
-	_, err = iamClient.GetPolicyMember(context.TODO(), policyMember)
+	_, err = iamClient.GetPolicyMember(ctx, policyMember)
 	if err == nil {
 		t.Fatalf("expected an error when retrieving IAMPolicyMember, instead got 'nil'")
 	}
@@ -525,60 +551,66 @@ func testGetSetDeleteIamPolicyMember(t *testing.T, iamClient *kcciamclient.IAMCl
 }
 
 func TestGetSetDeletePolicyMemberReferenceNotFound(t *testing.T) {
+	ctx := context.TODO()
+
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, _ manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "PubSubTopic"
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
 		iamPolicyMember := newPolicyMemberWithIAMCondition(t, refResource, resourceRef, testContext.UniqueId)
-		testGetSetDeletePolicyMemberReferenceNotFound(t, iamClient, iamPolicyMember)
+		testGetSetDeletePolicyMemberReferenceNotFound(ctx, t, iamClient, iamPolicyMember)
 	}
-	testrunner.RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
-func testGetSetDeletePolicyMemberReferenceNotFound(t *testing.T, iamClient *kcciamclient.IAMClient, policyMember *iamv1beta1.IAMPolicyMember) {
-	_, err := iamClient.GetPolicyMember(context.TODO(), policyMember)
+func testGetSetDeletePolicyMemberReferenceNotFound(ctx context.Context, t *testing.T, iamClient *kcciamclient.IAMClient, policyMember *iamv1beta1.IAMPolicyMember) {
+	_, err := iamClient.GetPolicyMember(ctx, policyMember)
 	if !k8s.IsReferenceNotFoundError(err) {
 		t.Errorf("getting policy member when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
-	_, err = iamClient.SetPolicyMember(context.TODO(), policyMember)
+	_, err = iamClient.SetPolicyMember(ctx, policyMember)
 	if !k8s.IsReferenceNotFoundError(err) {
 		t.Errorf("setting policy member when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
-	err = iamClient.DeletePolicyMember(context.TODO(), policyMember)
+	err = iamClient.DeletePolicyMember(ctx, policyMember)
 	if !k8s.IsReferenceNotFoundError(err) {
 		t.Errorf("deleting policy member when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
 }
 
 func TestAllGetSetDeleteAuditConfig(t *testing.T) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	serviceMetadataLoader := dclmetadata.New()
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.FixtureSupportsIAMAuditConfigs(t, smLoader, serviceMetadataLoader, fixture)
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
 		iamAuditConfig := newAuditConfig(t, refResource, resourceRef, testContext.UniqueId)
-		testGetSetDeleteIamAuditConfig(t, iamClient.TFIAMClient, iamAuditConfig, refResource)
+		testGetSetDeleteIamAuditConfig(ctx, t, iamClient.TFIAMClient, iamAuditConfig, refResource)
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
 func TestAllGetSetDeleteAuditConfigWithExternalRef(t *testing.T) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	serviceMetadataLoader := dclmetadata.New()
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.ShouldRunWithExternalRef(fixture) && testiam.FixtureSupportsIAMAuditConfigs(t, smLoader, serviceMetadataLoader, fixture)
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef, err := testiam.NewExternalRef(refResource, sysContext.TFProvider, sysContext.SMLoader)
@@ -586,20 +618,20 @@ func TestAllGetSetDeleteAuditConfigWithExternalRef(t *testing.T) {
 			t.Fatal(err)
 		}
 		iamAuditConfig := newAuditConfig(t, refResource, resourceRef, testContext.UniqueId)
-		testGetSetDeleteIamAuditConfig(t, iamClient.TFIAMClient, iamAuditConfig, refResource)
+		testGetSetDeleteIamAuditConfig(ctx, t, iamClient.TFIAMClient, iamAuditConfig, refResource)
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
-func testGetSetDeleteIamAuditConfig(t *testing.T, iamClient *kcciamclient.TFIAMClient, auditConfig *iamv1beta1.IAMAuditConfig, refResource *unstructured.Unstructured) {
-	_, err := iamClient.GetAuditConfig(context.TODO(), auditConfig)
+func testGetSetDeleteIamAuditConfig(ctx context.Context, t *testing.T, iamClient *kcciamclient.TFIAMClient, auditConfig *iamv1beta1.IAMAuditConfig, refResource *unstructured.Unstructured) {
+	_, err := iamClient.GetAuditConfig(ctx, auditConfig)
 	if err == nil {
 		t.Fatalf("expected an error when retrieving IAMAuditConfig, instead got 'nil'")
 	}
 	if !errors.Is(err, kcciamclient.NotFoundError) {
 		t.Fatalf("unexpected error when retrieving IAMAuditConfig: got '%v', want '%v'", err, kcciamclient.NotFoundError)
 	}
-	gcpAuditConfig, err := iamClient.SetAuditConfig(context.TODO(), auditConfig)
+	gcpAuditConfig, err := iamClient.SetAuditConfig(ctx, auditConfig)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -615,14 +647,14 @@ func testGetSetDeleteIamAuditConfig(t *testing.T, iamClient *kcciamclient.TFIAMC
 	if !reflect.DeepEqual(auditConfig.Spec.ResourceReference, gcpAuditConfig.Spec.ResourceReference) {
 		t.Errorf("resource reference mismatch: got '%v', want '%v'", gcpAuditConfig.Spec.ResourceReference, auditConfig.Spec.ResourceReference)
 	}
-	_, err = iamClient.GetAuditConfig(context.TODO(), auditConfig)
+	_, err = iamClient.GetAuditConfig(ctx, auditConfig)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if err := iamClient.DeleteAuditConfig(context.TODO(), gcpAuditConfig); err != nil {
+	if err := iamClient.DeleteAuditConfig(ctx, gcpAuditConfig); err != nil {
 		t.Fatalf("error deleting: %v", err)
 	}
-	_, err = iamClient.GetAuditConfig(context.TODO(), auditConfig)
+	_, err = iamClient.GetAuditConfig(ctx, auditConfig)
 	if err == nil {
 		t.Fatalf("expected an error when retrieving IAMAuditConfig, instead got 'nil'")
 	}
@@ -632,36 +664,40 @@ func testGetSetDeleteIamAuditConfig(t *testing.T, iamClient *kcciamclient.TFIAMC
 }
 
 func TestGetSetDeleteAuditConfigReferenceNotFound(t *testing.T) {
+	ctx := context.TODO()
+
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, _ manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "Project"
 	}
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
 		iamAuditConfig := newAuditConfig(t, refResource, resourceRef, testContext.UniqueId)
-		testGetSetDeleteAuditConfigReferenceNotFound(t, iamClient.TFIAMClient, iamAuditConfig)
+		testGetSetDeleteAuditConfigReferenceNotFound(ctx, t, iamClient.TFIAMClient, iamAuditConfig)
 	}
-	testrunner.RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
-func testGetSetDeleteAuditConfigReferenceNotFound(t *testing.T, iamClient *kcciamclient.TFIAMClient, auditConfig *iamv1beta1.IAMAuditConfig) {
-	_, err := iamClient.GetAuditConfig(context.TODO(), auditConfig)
+func testGetSetDeleteAuditConfigReferenceNotFound(ctx context.Context, t *testing.T, iamClient *kcciamclient.TFIAMClient, auditConfig *iamv1beta1.IAMAuditConfig) {
+	_, err := iamClient.GetAuditConfig(ctx, auditConfig)
 	if !k8s.IsReferenceNotFoundError(err) {
 		t.Errorf("getting audit config when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
-	_, err = iamClient.SetAuditConfig(context.TODO(), auditConfig)
+	_, err = iamClient.SetAuditConfig(ctx, auditConfig)
 	if !k8s.IsReferenceNotFoundError(err) {
 		t.Errorf("setting audit config when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
-	err = iamClient.DeleteAuditConfig(context.TODO(), auditConfig)
+	err = iamClient.DeleteAuditConfig(ctx, auditConfig)
 	if !k8s.IsReferenceNotFoundError(err) {
 		t.Errorf("deleting audit config when referenced resource not found: got error: %v, want ReferenceNotFoundError", err)
 	}
 }
 
 func TestConflictPreventionWithEtags(t *testing.T) {
+	ctx := context.TODO()
+
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
@@ -669,18 +705,18 @@ func TestConflictPreventionWithEtags(t *testing.T) {
 			(fixture.GVK.Kind == "PubSubTopic" || fixture.GVK.Kind == "Project" || fixture.GVK.Kind == "DataprocCluster")
 	}
 
-	testCaseFunc := func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
 		iamPolicy := newPolicy(t, refResource, resourceRef, testContext.UniqueId)
-		testConflictPreventionWithEtags(t, iamClient, iamPolicy, refResource)
+		testConflictPreventionWithEtags(ctx, t, iamClient, iamPolicy, refResource)
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testCaseFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
 }
 
-func testConflictPreventionWithEtags(t *testing.T, iamClient *kcciamclient.IAMClient, policy *iamv1beta1.IAMPolicy, refResource *unstructured.Unstructured) {
-	gcpPolicy, err := iamClient.GetPolicy(context.TODO(), policy)
+func testConflictPreventionWithEtags(ctx context.Context, t *testing.T, iamClient *kcciamclient.IAMClient, policy *iamv1beta1.IAMPolicy, refResource *unstructured.Unstructured) {
+	gcpPolicy, err := iamClient.GetPolicy(ctx, policy)
 	if err != nil {
 		t.Fatalf("error getting iam policy: %v", err)
 	}
@@ -690,7 +726,7 @@ func testConflictPreventionWithEtags(t *testing.T, iamClient *kcciamclient.IAMCl
 	}
 
 	// Issue a no-ops SetPolicy request
-	noChangePolicy, err := iamClient.SetPolicy(context.TODO(), gcpPolicy)
+	noChangePolicy, err := iamClient.SetPolicy(ctx, gcpPolicy)
 	if err != nil {
 		t.Fatalf("error setting iam policy: %v", err)
 	}
@@ -706,7 +742,7 @@ func testConflictPreventionWithEtags(t *testing.T, iamClient *kcciamclient.IAMCl
 	}
 	newPolicy := gcpPolicy.DeepCopy()
 	newPolicy.Spec.Bindings = append(newPolicy.Spec.Bindings, newBinding)
-	changedPolicy, err := iamClient.SetPolicy(context.TODO(), newPolicy)
+	changedPolicy, err := iamClient.SetPolicy(ctx, newPolicy)
 	if err != nil {
 		t.Fatalf("error setting iam policy: %v", err)
 	}
@@ -715,7 +751,7 @@ func testConflictPreventionWithEtags(t *testing.T, iamClient *kcciamclient.IAMCl
 	}
 
 	// Setting the IAM policy with old etag should fail
-	_, err = iamClient.SetPolicy(context.TODO(), gcpPolicy)
+	_, err = iamClient.SetPolicy(ctx, gcpPolicy)
 	if err == nil {
 		t.Fatalf("got no error, want an error related to concurrent policy changes")
 	}

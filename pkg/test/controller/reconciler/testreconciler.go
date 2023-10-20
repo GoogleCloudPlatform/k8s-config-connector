@@ -99,9 +99,9 @@ func NewForDCLAndTFTestReconciler(t *testing.T, mgr manager.Manager, provider *t
 	}
 }
 
-func (r *TestReconciler) ReconcileIfManagedByKCC(unstruct *unstructured.Unstructured, expectedResult reconcile.Result, expectedErrorRegexp *regexp.Regexp) {
+func (r *TestReconciler) ReconcileIfManagedByKCC(ctx context.Context, unstruct *unstructured.Unstructured, expectedResult reconcile.Result, expectedErrorRegexp *regexp.Regexp) {
 	if k8s.IsManagedByKCC(unstruct.GroupVersionKind()) {
-		r.Reconcile(unstruct, expectedResult, expectedErrorRegexp)
+		r.Reconcile(ctx, unstruct, expectedResult, expectedErrorRegexp)
 	} else {
 		// Some objects like Secrets should not be reconciled since they are
 		// not managed by KCC.
@@ -110,31 +110,31 @@ func (r *TestReconciler) ReconcileIfManagedByKCC(unstruct *unstructured.Unstruct
 	}
 }
 
-func (r *TestReconciler) Reconcile(unstruct *unstructured.Unstructured, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
+func (r *TestReconciler) Reconcile(ctx context.Context, unstruct *unstructured.Unstructured, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
 	r.t.Helper()
 	om := metav1.ObjectMeta{
 		Name:      unstruct.GetName(),
 		Namespace: unstruct.GetNamespace(),
 	}
-	r.ReconcileObjectMeta(om, unstruct.GetKind(), expectedResult, expectedErrorRegex)
+	r.ReconcileObjectMeta(ctx, om, unstruct.GetKind(), expectedResult, expectedErrorRegex)
 }
 
-func (r *TestReconciler) ReconcileObjectMeta(om metav1.ObjectMeta, kind string, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
+func (r *TestReconciler) ReconcileObjectMeta(ctx context.Context, om metav1.ObjectMeta, kind string, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
 	r.t.Helper()
 	reconciler := r.NewReconcilerForKind(kind)
-	testcontroller.RunReconcilerAssertResults(r.t, reconciler, om, expectedResult, expectedErrorRegex)
+	testcontroller.RunReconcilerAssertResults(ctx, r.t, reconciler, om, expectedResult, expectedErrorRegex)
 }
 
 // Creates and reconciles all unstructureds in the unstruct list. Returns a cleanup function that should be defered immediately after calling this function.
-func (r *TestReconciler) CreateAndReconcile(unstructs []*unstructured.Unstructured, cleanupPolicy ResourceCleanupPolicy) func() {
+func (r *TestReconciler) CreateAndReconcile(ctx context.Context, unstructs []*unstructured.Unstructured, cleanupPolicy ResourceCleanupPolicy) func() {
 	r.t.Helper()
 	cleanupFuncs := make([]func(), 0, len(unstructs))
 	for _, u := range unstructs {
-		if err := r.mgr.GetClient().Create(context.TODO(), u); err != nil {
+		if err := r.mgr.GetClient().Create(ctx, u); err != nil {
 			r.t.Fatalf("error creating resource '%v': %v", u.GetKind(), err)
 		}
-		cleanupFuncs = append(cleanupFuncs, r.BuildCleanupFunc(u, cleanupPolicy))
-		r.ReconcileIfManagedByKCC(u, ExpectedSuccessfulReconcileResultFor(r, u), nil)
+		cleanupFuncs = append(cleanupFuncs, r.BuildCleanupFunc(ctx, u, cleanupPolicy))
+		r.ReconcileIfManagedByKCC(ctx, u, ExpectedSuccessfulReconcileResultFor(r, u), nil)
 	}
 	return func() {
 		for i := len(cleanupFuncs) - 1; i >= 0; i-- {
@@ -143,7 +143,7 @@ func (r *TestReconciler) CreateAndReconcile(unstructs []*unstructured.Unstructur
 	}
 }
 
-func (r *TestReconciler) BuildCleanupFunc(unstruct *unstructured.Unstructured, cleanupPolicy ResourceCleanupPolicy) func() {
+func (r *TestReconciler) BuildCleanupFunc(ctx context.Context, unstruct *unstructured.Unstructured, cleanupPolicy ResourceCleanupPolicy) func() {
 	r.t.Helper()
 	return func() {
 		switch cleanupPolicy {
@@ -159,7 +159,7 @@ func (r *TestReconciler) BuildCleanupFunc(unstruct *unstructured.Unstructured, c
 		}
 		log.Printf("Deleting %v: %v/%v\n", unstruct.GetKind(), unstruct.GetNamespace(), unstruct.GetName())
 		testk8s.RemoveDeletionDefenderFinalizerForUnstructured(r.t, unstruct, r.mgr.GetClient())
-		err := r.mgr.GetClient().Delete(context.TODO(), unstruct)
+		err := r.mgr.GetClient().Delete(ctx, unstruct)
 		if err != nil {
 			if errors.IsNotFound(err) {
 				log.Printf("Resource already gone; no deletion required.")
@@ -167,7 +167,7 @@ func (r *TestReconciler) BuildCleanupFunc(unstruct *unstructured.Unstructured, c
 			}
 			r.t.Errorf("error deleting %v: %v", unstruct, err)
 		}
-		r.ReconcileIfManagedByKCC(unstruct, ExpectedSuccessfulReconcileResultFor(r, unstruct), nil)
+		r.ReconcileIfManagedByKCC(ctx, unstruct, ExpectedSuccessfulReconcileResultFor(r, unstruct), nil)
 	}
 }
 

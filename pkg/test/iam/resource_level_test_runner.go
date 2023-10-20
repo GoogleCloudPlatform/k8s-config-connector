@@ -15,6 +15,7 @@
 package testiam
 
 import (
+	"context"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
@@ -25,49 +26,49 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
 
-type ResourceLevelTestFunc func(t *testing.T, testId string, mgr manager.Manager, rc IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference)
+type ResourceLevelTestFunc func(ctx context.Context, t *testing.T, testId string, mgr manager.Manager, rc IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference)
 
 // Runs a resource level test against all resources.
 // testFunc will be executed once for each resource that supports IAMPolicy.
 // shouldRunFunc is optional, it can be supplied to skip tests for resources that don't support a given operation
 // (e.g. deleting the IAMPolicy on a storage bucket)
-func RunResourceLevelTest(t *testing.T, mgr manager.Manager, iamTestFunc ResourceLevelTestFunc, shouldRunFunc resourcefixture.ShouldRunFunc) {
+func RunResourceLevelTest(ctx context.Context, t *testing.T, mgr manager.Manager, iamTestFunc ResourceLevelTestFunc, shouldRunFunc resourcefixture.ShouldRunFunc) {
 	t.Parallel()
 	kindToIamPolicyResourceContext := getKindToIamPolicyResourceContextMap()
 	testFunc := buildTestFunc(kindToIamPolicyResourceContext, iamTestFunc)
 	shouldRun := buildShouldRunFunc(kindToIamPolicyResourceContext, shouldRunFunc)
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testFunc)
 }
 
 // Runs a resource level test against all resources, but creates an external
 // resource reference to point to the referenced resource instead of a regular
 // resource reference.
-func RunResourceLevelTestWithExternalRef(t *testing.T, mgr manager.Manager, iamTestFunc ResourceLevelTestFunc, shouldRunFunc resourcefixture.ShouldRunFunc) {
+func RunResourceLevelTestWithExternalRef(ctx context.Context, t *testing.T, mgr manager.Manager, iamTestFunc ResourceLevelTestFunc, shouldRunFunc resourcefixture.ShouldRunFunc) {
 	t.Parallel()
 	kindToIamPolicyResourceContext := getKindToIamPolicyResourceContextMap()
 	testFunc := buildTestFuncWithExternalRef(kindToIamPolicyResourceContext, iamTestFunc)
 	shouldRun := buildShouldRunFunc(kindToIamPolicyResourceContext, shouldRunFunc)
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testFunc)
 }
 
 func buildTestFunc(kindToIamPolicyResourceContext map[string]IAMResourceContext, testFunc ResourceLevelTestFunc) testrunner.TestCaseFunc {
-	return func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	return func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		rc := kindToIamPolicyResourceContext[testContext.ResourceFixture.GVK.Kind]
 		refResource := testContext.CreateUnstruct
 		resourceRef := NewResourceRef(refResource)
-		testFunc(t, testContext.UniqueId, sysContext.Manager, rc, refResource, resourceRef)
+		testFunc(ctx, t, testContext.UniqueId, sysContext.Manager, rc, refResource, resourceRef)
 	}
 }
 
 func buildTestFuncWithExternalRef(kindToIamPolicyResourceContext map[string]IAMResourceContext, testFunc ResourceLevelTestFunc) testrunner.TestCaseFunc {
-	return func(t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	return func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		rc := kindToIamPolicyResourceContext[testContext.ResourceFixture.GVK.Kind]
 		refResource := testContext.CreateUnstruct
 		resourceRef, err := NewExternalRef(refResource, sysContext.TFProvider, sysContext.SMLoader)
 		if err != nil {
 			t.Fatal(err)
 		}
-		testFunc(t, testContext.UniqueId, sysContext.Manager, rc, refResource, resourceRef)
+		testFunc(ctx, t, testContext.UniqueId, sysContext.Manager, rc, refResource, resourceRef)
 	}
 }
 
