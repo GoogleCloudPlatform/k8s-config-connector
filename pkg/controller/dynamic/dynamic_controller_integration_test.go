@@ -125,6 +125,8 @@ func shouldRunBasedOnRunAndSkipRegexes(parentTestName string, fixture resourcefi
 }
 
 func TestAcquire(t *testing.T) {
+	ctx := context.TODO()
+
 	t.Parallel()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		if !shouldRunBasedOnRunAndSkipRegexes("TestAcquire", fixture) {
@@ -170,14 +172,16 @@ func TestAcquire(t *testing.T) {
 		}
 		return kinds[fixture.GVK.Kind]
 	}
-	testFunc := func(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
+	testFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
 		context := contexts.GetResourceContext(testContext.ResourceFixture, systemContext.DCLConverter.MetadataLoader, systemContext.DCLConverter.SchemaLoader)
-		testReconcileAcquire(t, testContext, systemContext, context)
+		testReconcileAcquire(ctx, t, testContext, systemContext, context)
 	}
-	testrunner.RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRun, testFunc)
+	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testFunc)
 }
 
 func TestCreateNoChangeUpdateDelete(t *testing.T) {
+	ctx := context.TODO()
+
 	t.Parallel()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		switch fixture.Type {
@@ -199,24 +203,24 @@ func TestCreateNoChangeUpdateDelete(t *testing.T) {
 
 		return shouldRunBasedOnRunAndSkipRegexes("TestCreateNoChangeUpdateDelete", fixture)
 	}
-	testFunc := func(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
+	testFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
 		context := contexts.GetResourceContext(testContext.ResourceFixture, systemContext.DCLConverter.MetadataLoader, systemContext.DCLConverter.SchemaLoader)
-		testReconcileCreateNoChangeUpdateDelete(t, testContext, systemContext, context)
+		testReconcileCreateNoChangeUpdateDelete(ctx, t, testContext, systemContext, context)
 	}
-	testrunner.RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRun, testFunc)
+	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testFunc)
 }
 
 func formatTestName(parentTestName string, fixture resourcefixture.ResourceFixture) string {
 	return fmt.Sprintf("%v/%v", parentTestName, resourcefixture.FormatTestName(fixture))
 }
-func testCreate(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+func testCreate(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
 	kubeClient := systemContext.Manager.GetClient()
 	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
-	if err := kubeClient.Create(context.TODO(), initialUnstruct); err != nil {
+	if err := kubeClient.Create(ctx, initialUnstruct); err != nil {
 		t.Fatalf("error creating %v resource %v: %v", initialUnstruct.GetKind(), initialUnstruct.GetName(), err)
 	}
 	t.Logf("resource created with %v\r", initialUnstruct)
-	systemContext.Reconciler.Reconcile(initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct), nil)
+	systemContext.Reconciler.Reconcile(ctx, initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct), nil)
 	validateCreate(t, testContext, systemContext, resourceContext, initialUnstruct.GetGeneration())
 }
 
@@ -266,13 +270,13 @@ func validateCreate(t *testing.T, testContext testrunner.TestContext, systemCont
 
 // testNoChange verifies that reconciling a resource which has not changed does not result in
 // any meaningful changes.
-func testNoChange(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+func testNoChange(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
 	if resourceContext.SkipNoChange {
 		return
 	}
 	kubeClient := systemContext.Manager.GetClient()
 	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
-	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, initialUnstruct); err != nil {
+	if err := kubeClient.Get(ctx, testContext.NamespacedName, initialUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 	preReconcileGeneration := initialUnstruct.GetGeneration()
@@ -288,8 +292,8 @@ func testNoChange(t *testing.T, testContext testrunner.TestContext, systemContex
 			"apiVersion": initialUnstruct.GetAPIVersion(),
 		},
 	}
-	systemContext.Reconciler.Reconcile(initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct), nil)
-	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
+	systemContext.Reconciler.Reconcile(ctx, initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct), nil)
+	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 
@@ -312,7 +316,7 @@ func testNoChange(t *testing.T, testContext testrunner.TestContext, systemContex
 	testcontroller.AssertObservedGenerationEquals(t, reconciledUnstruct, preReconcileGeneration)
 }
 
-func testUpdate(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
 	// Tests with `SkipUpdate` explicitly set to 'true' or tests for
 	// auto-generated resources don't support update test.
 	if resourceContext.SkipUpdate || resourceContext.IsAutoGenerated(systemContext.SMLoader) {
@@ -320,7 +324,7 @@ func testUpdate(t *testing.T, testContext testrunner.TestContext, systemContext 
 	}
 	kubeClient := systemContext.Manager.GetClient()
 	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
-	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, initialUnstruct); err != nil {
+	if err := kubeClient.Get(ctx, testContext.NamespacedName, initialUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 
@@ -345,7 +349,7 @@ func testUpdate(t *testing.T, testContext testrunner.TestContext, systemContext 
 		t.Fatalf("unexpected error when updating '%v': %v", initialUnstruct.GetName(), err)
 	}
 	preReconcileGeneration := updateUnstruct.GetGeneration()
-	systemContext.Reconciler.Reconcile(updateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, updateUnstruct), nil)
+	systemContext.Reconciler.Reconcile(ctx, updateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, updateUnstruct), nil)
 
 	reconciledUnstruct := &unstructured.Unstructured{
 		Object: map[string]interface{}{
@@ -397,7 +401,7 @@ func testUpdate(t *testing.T, testContext testrunner.TestContext, systemContext 
 }
 
 // this test deletes the resource directly on GCP and then reconciles and verifies the resource was recreated correctly
-func testDriftCorrection(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+func testDriftCorrection(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
 	if shouldSkipDriftDetection(t, resourceContext, systemContext.SMLoader, systemContext.DCLConverter.MetadataLoader, testContext.CreateUnstruct) {
 		return
 	}
@@ -423,7 +427,7 @@ func testDriftCorrection(t *testing.T, testContext testrunner.TestContext, syste
 
 	// get the current state
 	t.Logf("reconcile with %v\r", testUnstruct)
-	systemContext.Reconciler.Reconcile(testUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testUnstruct), nil)
+	systemContext.Reconciler.Reconcile(ctx, testUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testUnstruct), nil)
 	t.Logf("reconciled with %v\r", testUnstruct)
 	validateCreate(t, testContext, systemContext, resourceContext, testUnstruct.GetGeneration())
 }
@@ -460,22 +464,22 @@ func hasServerGeneratedId(rc v1alpha1.ResourceConfig) bool {
 	return rc.ServerGeneratedIDField != ""
 }
 
-func testDelete(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+func testDelete(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
 	if resourceContext.SkipDelete {
 		return
 	}
 	kubeClient := systemContext.Manager.GetClient()
 	testReconciler := systemContext.Reconciler
 	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
-	if err := kubeClient.Delete(context.TODO(), initialUnstruct); err != nil {
+	if err := kubeClient.Delete(ctx, initialUnstruct); err != nil {
 		t.Fatalf("error deleting resource: %v", err)
 	}
 
 	// Test that the deletion defender finalizer causes the resource to requeue
 	// and still exist on the underlying API
 	reconciledUnstruct := testContext.CreateUnstruct.DeepCopy()
-	testReconciler.Reconcile(reconciledUnstruct, testreconciler.ExpectedRequeueReconcileStruct, nil)
-	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
+	testReconciler.Reconcile(ctx, reconciledUnstruct, testreconciler.ExpectedRequeueReconcileStruct, nil)
+	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 	if _, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
@@ -485,7 +489,7 @@ func testDelete(t *testing.T, testContext testrunner.TestContext, systemContext 
 
 	// Perform the deletion on the underlying API
 	testk8s.RemoveDeletionDefenderFinalizerForUnstructured(t, reconciledUnstruct, kubeClient)
-	testReconciler.Reconcile(reconciledUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, reconciledUnstruct), nil)
+	testReconciler.Reconcile(ctx, reconciledUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, reconciledUnstruct), nil)
 
 	if !testgcp.ResourceSupportsDeletion(testContext.ResourceFixture.GVK.Kind) {
 		_, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
@@ -520,14 +524,14 @@ func testDelete(t *testing.T, testContext testrunner.TestContext, systemContext 
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, initialUnstruct, k8s.Deleted)
 }
 
-func testReconcileCreateNoChangeUpdateDelete(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
-	resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(testContext.CreateUnstruct, getResourceCleanupPolicy())
+func testReconcileCreateNoChangeUpdateDelete(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(ctx, testContext.CreateUnstruct, getResourceCleanupPolicy())
 	defer resourceCleanup()
-	testCreate(t, testContext, systemContext, resourceContext)
-	testNoChange(t, testContext, systemContext, resourceContext)
-	testUpdate(t, testContext, systemContext, resourceContext)
-	testDriftCorrection(t, testContext, systemContext, resourceContext)
-	testDelete(t, testContext, systemContext, resourceContext)
+	testCreate(ctx, t, testContext, systemContext, resourceContext)
+	testNoChange(ctx, t, testContext, systemContext, resourceContext)
+	testUpdate(ctx, t, testContext, systemContext, resourceContext)
+	testDriftCorrection(ctx, t, testContext, systemContext, resourceContext)
+	testDelete(ctx, t, testContext, systemContext, resourceContext)
 }
 
 func checkComputeNetworkUpdate(t *testing.T, updateUnstruct *unstructured.Unstructured, gcpUnstruct *unstructured.Unstructured) {
@@ -564,7 +568,7 @@ func checkDataflowJobNoChange(t *testing.T, initialUnstruct, reconciledUnstruct 
 	}
 }
 
-func testReconcileAcquire(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
 	kubeClient := systemContext.Manager.GetClient()
 	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
 
@@ -611,9 +615,9 @@ func testReconcileAcquire(t *testing.T, testContext testrunner.TestContext, syst
 		t.Fatalf("error creating resource: %v", err)
 	}
 	preReconcileGeneration := initialUnstruct.GetGeneration()
-	resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(initialUnstruct, getResourceCleanupPolicy())
+	resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(ctx, initialUnstruct, getResourceCleanupPolicy())
 	defer resourceCleanup()
-	systemContext.Reconciler.Reconcile(initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct), nil)
+	systemContext.Reconciler.Reconcile(ctx, initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct), nil)
 
 	// Check labels match
 	if resourceContext.SupportsLabels(systemContext.SMLoader) {

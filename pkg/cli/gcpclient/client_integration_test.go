@@ -105,7 +105,7 @@ func TestCRUD(t *testing.T) {
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.Config{})
 	client := gcpclient.New(tfProvider, smLoader)
 	projectId := testgcp.GetDefaultProjectID(t)
-	testFunc := func(t *testing.T, testContext testrunner.TestContext) {
+	testFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext) {
 		var resources []*unstructured.Unstructured
 		for _, d := range testContext.DependencyUnstructs {
 			resolveAPIServerDependenciesIfKCCManaged(t, smLoader, tfProvider, resources, d)
@@ -137,7 +137,7 @@ func TestCRUD(t *testing.T) {
 		}
 	}
 	supportedFixtures := getSupportedResourcesSetCover(t, client)
-	testrunner.RunSpecific(t, supportedFixtures, testFunc)
+	testrunner.RunSpecific(ctx, t, supportedFixtures, testFunc)
 }
 
 func clientGet(t *testing.T, ctx context.Context, client gcpclient.Client, u *unstructured.Unstructured) *unstructured.Unstructured {

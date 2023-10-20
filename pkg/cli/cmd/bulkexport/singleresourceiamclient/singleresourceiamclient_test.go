@@ -36,6 +36,8 @@ import (
 var mgr manager.Manager
 
 func TestGetPolicy(t *testing.T) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	serviceMetadataLoader := dclmetadata.New()
 	dclSchemaLoader, err := dclschemaloader.New()
@@ -48,7 +50,7 @@ func TestGetPolicy(t *testing.T) {
 		}
 		return testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
 	}
-	testFunc := func(t *testing.T, tstContext testrunner.TestContext, sysContext testrunner.SystemContext) {
+	testFunc := func(ctx context.Context, t *testing.T, tstContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		singleResourceClient := singleresourceiamclient.New(sysContext.TFProvider, sysContext.SMLoader)
 		policy, err := singleResourceClient.GetPolicy(context.TODO(), tstContext.CreateUnstruct)
 		if err != nil {
@@ -61,7 +63,7 @@ func TestGetPolicy(t *testing.T) {
 			t.Fatalf("external reference is empty, expected a value")
 		}
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testFunc)
 }
 
 func TestMain(m *testing.M) {

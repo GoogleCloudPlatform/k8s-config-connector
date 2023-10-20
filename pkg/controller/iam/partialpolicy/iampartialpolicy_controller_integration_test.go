@@ -64,7 +64,7 @@ var (
 	expectedReconcileResult = reconcile.Result{RequeueAfter: k8s.MeanReconcileReenqueuePeriod}
 )
 
-var resourceLevelIAMPartialPolicyTestFunc = func(t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
+var resourceLevelIAMPartialPolicyTestFunc = func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
 	kubeClient := mgr.GetClient()
 	smLoader := testservicemappingloader.New(t)
@@ -80,12 +80,12 @@ var resourceLevelIAMPartialPolicyTestFunc = func(t *testing.T, _ string, mgr man
 
 	// Create two service accounts to construct different update cases
 	serviceAccountName1 := fmt.Sprintf("%v-%v", "sa1", rand.Intn(1000000))
-	createIAMServiceAccount(t, serviceAccountName1, refResource.GetNamespace(), kubeClient, reconciler)
-	defer deleteIAMServiceAccount(t, serviceAccountName1, refResource.GetNamespace(), kubeClient, reconciler)
+	createIAMServiceAccount(ctx, t, serviceAccountName1, refResource.GetNamespace(), kubeClient, reconciler)
+	defer deleteIAMServiceAccount(ctx, t, serviceAccountName1, refResource.GetNamespace(), kubeClient, reconciler)
 
 	serviceAccountName2 := fmt.Sprintf("%v-%v", "sa2", rand.Intn(1000000))
-	createIAMServiceAccount(t, serviceAccountName2, refResource.GetNamespace(), kubeClient, reconciler)
-	defer deleteIAMServiceAccount(t, serviceAccountName2, refResource.GetNamespace(), kubeClient, reconciler)
+	createIAMServiceAccount(ctx, t, serviceAccountName2, refResource.GetNamespace(), kubeClient, reconciler)
+	defer deleteIAMServiceAccount(ctx, t, serviceAccountName2, refResource.GetNamespace(), kubeClient, reconciler)
 
 	testMembers := []iamv1beta1.IAMPartialPolicyMember{
 		{
@@ -241,21 +241,25 @@ var resourceLevelIAMPartialPolicyTestFunc = func(t *testing.T, _ string, mgr man
 
 	k8sPartialPolicy := newIAMPartialPolicyFixture(t, refResource, resourceRef, bindings)
 	// Preset some bindings to the IAM policy.
-	existingPolicy := presetPolicy(t, iamClient, rc, k8sPartialPolicy)
-	testReconcileResourceLevelCreateNoChangesUpdateDelete(t, kubeClient, k8sPartialPolicy, updateTestCases, existingPolicy, iamClient, reconciler)
+	existingPolicy := presetPolicy(ctx, t, iamClient, rc, k8sPartialPolicy)
+	testReconcileResourceLevelCreateNoChangesUpdateDelete(ctx, t, kubeClient, k8sPartialPolicy, updateTestCases, existingPolicy, iamClient, reconciler)
 }
 
 func TestReconcileIAMPartialPolicyResourceLevelCreateNoChangesUpdateDelete(t *testing.T) {
-	testiam.RunResourceLevelTest(t, mgr, resourceLevelIAMPartialPolicyTestFunc, testiam.ShouldRunWithNoProjectKind)
+	ctx := context.TODO()
+
+	testiam.RunResourceLevelTest(ctx, t, mgr, resourceLevelIAMPartialPolicyTestFunc, testiam.ShouldRunWithNoProjectKind)
 }
 
 func TestReconcileIAMPartialPolicyResourceLevelCreateNoChangesUpdateDeleteWithExternalRef(t *testing.T) {
-	testiam.RunResourceLevelTestWithExternalRef(t, mgr, resourceLevelIAMPartialPolicyTestFunc, testiam.ShouldRunAcquire)
+	ctx := context.TODO()
+
+	testiam.RunResourceLevelTestWithExternalRef(ctx, t, mgr, resourceLevelIAMPartialPolicyTestFunc, testiam.ShouldRunAcquire)
 }
 
 // Preset some bindings and (if the test case is for Project or Folder) audit configs in the IAM policy.
 // This is to verify that IAMPartialPolicy resources can preserve the existing bindings and audit configs.
-func presetPolicy(t *testing.T, iamClient *kcciamclient.IAMClient, rc testiam.IAMResourceContext, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy) *iamv1beta1.IAMPolicy {
+func presetPolicy(ctx context.Context, t *testing.T, iamClient *kcciamclient.IAMClient, rc testiam.IAMResourceContext, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy) *iamv1beta1.IAMPolicy {
 	existingBinding := []iamv1beta1.IAMPolicyBinding{
 		{
 			Role:    rc.CreateBindingRole,
@@ -280,80 +284,80 @@ func presetPolicy(t *testing.T, iamClient *kcciamclient.IAMClient, rc testiam.IA
 			},
 		}
 	}
-	existingPolicy, err := iamClient.SetPolicy(context.TODO(), k8sPolicy)
+	existingPolicy, err := iamClient.SetPolicy(ctx, k8sPolicy)
 	if err != nil {
 		t.Fatalf("error setting policy: %v", err)
 	}
 	return existingPolicy
 }
 
-func testReconcileResourceLevelCreateNoChangesUpdateDelete(t *testing.T, kubeClient client.Client, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, updateTestCases []updateTestCase, existingPolicy *iamv1beta1.IAMPolicy, iamClient *kcciamclient.IAMClient, reconciler *testreconciler.TestReconciler) {
-	testReconcileResourceLevelCreate(t, kubeClient, k8sPartialPolicy, existingPolicy, iamClient, reconciler)
-	testReconcileResourceLevelNoChanges(t, kubeClient, k8sPartialPolicy, iamClient, reconciler)
+func testReconcileResourceLevelCreateNoChangesUpdateDelete(ctx context.Context, t *testing.T, kubeClient client.Client, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, updateTestCases []updateTestCase, existingPolicy *iamv1beta1.IAMPolicy, iamClient *kcciamclient.IAMClient, reconciler *testreconciler.TestReconciler) {
+	testReconcileResourceLevelCreate(ctx, t, kubeClient, k8sPartialPolicy, existingPolicy, iamClient, reconciler)
+	testReconcileResourceLevelNoChanges(ctx, t, kubeClient, k8sPartialPolicy, iamClient, reconciler)
 	currentPartialPolicy := k8sPartialPolicy
 	for _, tc := range updateTestCases {
 		newK8sPartialPolicy := currentPartialPolicy.DeepCopy()
 		newK8sPartialPolicy.Spec.Bindings = tc.newBindings
 		t.Run(fmt.Sprintf("TestUpdate-%v", tc.name), func(t *testing.T) {
-			testReconcileResourceLevelUpdate(t, kubeClient, currentPartialPolicy, newK8sPartialPolicy, existingPolicy, iamClient, reconciler)
+			testReconcileResourceLevelUpdate(ctx, t, kubeClient, currentPartialPolicy, newK8sPartialPolicy, existingPolicy, iamClient, reconciler)
 		})
 		currentPartialPolicy = newK8sPartialPolicy
 	}
-	testReconcileResourceLevelDelete(t, kubeClient, currentPartialPolicy, existingPolicy, iamClient, reconciler)
+	testReconcileResourceLevelDelete(ctx, t, kubeClient, currentPartialPolicy, existingPolicy, iamClient, reconciler)
 }
 
-func testReconcileResourceLevelCreate(t *testing.T, kubeClient client.Client, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, existingPolicy *iamv1beta1.IAMPolicy, iamClient *kcciamclient.IAMClient, reconciler *testreconciler.TestReconciler) {
-	if err := kubeClient.Create(context.TODO(), k8sPartialPolicy); err != nil {
+func testReconcileResourceLevelCreate(ctx context.Context, t *testing.T, kubeClient client.Client, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, existingPolicy *iamv1beta1.IAMPolicy, iamClient *kcciamclient.IAMClient, reconciler *testreconciler.TestReconciler) {
+	if err := kubeClient.Create(ctx, k8sPartialPolicy); err != nil {
 		t.Fatalf("error creating k8sPartialPolicy: %v", err)
 	}
 	preReconcileGeneration := k8sPartialPolicy.GetGeneration()
-	reconciler.ReconcileObjectMeta(k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
+	reconciler.ReconcileObjectMeta(ctx, k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
 	k8sPolicy := partialpolicy.ToIAMPolicySkeleton(k8sPartialPolicy)
-	gcpPolicy, err := iamClient.GetPolicy(context.TODO(), k8sPolicy)
+	gcpPolicy, err := iamClient.GetPolicy(ctx, k8sPolicy)
 	if err != nil {
 		t.Fatalf("error retrieving GCP policy: %v", err)
 	}
-	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err != nil {
+	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	assertPolicy(t, k8sPartialPolicy, existingPolicy, gcpPolicy, iamClient)
+	assertPolicy(ctx, t, k8sPartialPolicy, existingPolicy, gcpPolicy, iamClient)
 	testcontroller.AssertReadyCondition(t, k8sPartialPolicy, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMPartialPolicyGVK.Kind, &k8sPartialPolicy.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sPartialPolicy, preReconcileGeneration)
 }
 
-func testReconcileResourceLevelUpdate(t *testing.T, kubeClient client.Client, k8sPartialPolicy, newK8sPartialPolicy *iamv1beta1.IAMPartialPolicy, existingPolicy *iamv1beta1.IAMPolicy, iamClient *kcciamclient.IAMClient, reconciler *testreconciler.TestReconciler) {
-	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err != nil {
+func testReconcileResourceLevelUpdate(ctx context.Context, t *testing.T, kubeClient client.Client, k8sPartialPolicy, newK8sPartialPolicy *iamv1beta1.IAMPartialPolicy, existingPolicy *iamv1beta1.IAMPolicy, iamClient *kcciamclient.IAMClient, reconciler *testreconciler.TestReconciler) {
+	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 	newK8sPartialPolicy.SetResourceVersion(k8sPartialPolicy.GetResourceVersion())
-	if err := kubeClient.Update(context.TODO(), newK8sPartialPolicy); err != nil {
+	if err := kubeClient.Update(ctx, newK8sPartialPolicy); err != nil {
 		t.Fatalf("error updating k8sPartialPolicy: %v", err)
 	}
 	preReconcileGeneration := newK8sPartialPolicy.GetGeneration()
-	reconciler.ReconcileObjectMeta(newK8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
-	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(newK8sPartialPolicy), newK8sPartialPolicy); err != nil {
+	reconciler.ReconcileObjectMeta(ctx, newK8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
+	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(newK8sPartialPolicy), newK8sPartialPolicy); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 	k8sPolicy := partialpolicy.ToIAMPolicySkeleton(newK8sPartialPolicy)
-	gcpPolicy, err := iamClient.GetPolicy(context.TODO(), k8sPolicy)
+	gcpPolicy, err := iamClient.GetPolicy(ctx, k8sPolicy)
 	if err != nil {
 		t.Fatalf("error retrieving GCP policy: %v", err)
 	}
-	assertPolicy(t, newK8sPartialPolicy, existingPolicy, gcpPolicy, iamClient)
+	assertPolicy(ctx, t, newK8sPartialPolicy, existingPolicy, gcpPolicy, iamClient)
 	testcontroller.AssertReadyCondition(t, newK8sPartialPolicy, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMPartialPolicyGVK.Kind, &newK8sPartialPolicy.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, newK8sPartialPolicy, preReconcileGeneration)
 }
 
-func testReconcileResourceLevelNoChanges(t *testing.T, kubeClient client.Client, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, iamClient *kcciamclient.IAMClient, reconciler *testreconciler.TestReconciler) {
-	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err != nil {
+func testReconcileResourceLevelNoChanges(ctx context.Context, t *testing.T, kubeClient client.Client, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, iamClient *kcciamclient.IAMClient, reconciler *testreconciler.TestReconciler) {
+	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 	preReconcileGeneration := k8sPartialPolicy.GetGeneration()
-	reconciler.ReconcileObjectMeta(k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
+	reconciler.ReconcileObjectMeta(ctx, k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
 	newK8sPartialPolicy := &iamv1beta1.IAMPartialPolicy{}
-	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sPartialPolicy), newK8sPartialPolicy); err != nil {
+	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPartialPolicy), newK8sPartialPolicy); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 	if k8sPartialPolicy.GetResourceVersion() != newK8sPartialPolicy.GetResourceVersion() {
@@ -363,7 +367,9 @@ func testReconcileResourceLevelNoChanges(t *testing.T, kubeClient client.Client,
 }
 
 func TestReconcileIAMPartialPolicyResourceLevelDeleteParentFirst(t *testing.T) {
-	testFunc := func(t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
+	ctx := context.TODO()
+
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		bindings := []iamv1beta1.IAMPartialPolicyBinding{
 			{
 				Role: rc.CreateBindingRole,
@@ -375,13 +381,15 @@ func TestReconcileIAMPartialPolicyResourceLevelDeleteParentFirst(t *testing.T) {
 			},
 		}
 		k8sPartialPolicy := newIAMPartialPolicyFixture(t, refResource, resourceRef, bindings)
-		testReconcileResourceLevelDeleteParentFirst(t, mgr, k8sPartialPolicy, refResource)
+		testReconcileResourceLevelDeleteParentFirst(ctx, t, mgr, k8sPartialPolicy, refResource)
 	}
-	testiam.RunResourceLevelTest(t, mgr, testFunc, testiam.ShouldRunDeleteParentFirst)
+	testiam.RunResourceLevelTest(ctx, t, mgr, testFunc, testiam.ShouldRunDeleteParentFirst)
 }
 
 func TestReconcileIAMPartialPolicyResourceLevelDeleteParentFirstWithExternalRef(t *testing.T) {
-	testFunc := func(t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
+	ctx := context.TODO()
+
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		bindings := []iamv1beta1.IAMPartialPolicyBinding{
 			{
 				Role: rc.CreateBindingRole,
@@ -393,64 +401,64 @@ func TestReconcileIAMPartialPolicyResourceLevelDeleteParentFirstWithExternalRef(
 			},
 		}
 		k8sPartialPolicy := newIAMPartialPolicyFixture(t, refResource, resourceRef, bindings)
-		testReconcileResourceLevelDeleteParentFirst(t, mgr, k8sPartialPolicy, refResource)
+		testReconcileResourceLevelDeleteParentFirst(ctx, t, mgr, k8sPartialPolicy, refResource)
 	}
-	testiam.RunResourceLevelTestWithExternalRef(t, mgr, testFunc, testiam.ShouldRunDeleteParentFirst)
+	testiam.RunResourceLevelTestWithExternalRef(ctx, t, mgr, testFunc, testiam.ShouldRunDeleteParentFirst)
 }
 
-func testReconcileResourceLevelDelete(t *testing.T, kubeClient client.Client, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, existingPolicy *iamv1beta1.IAMPolicy, iamClient *kcciamclient.IAMClient, reconciler *testreconciler.TestReconciler) {
+func testReconcileResourceLevelDelete(ctx context.Context, t *testing.T, kubeClient client.Client, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, existingPolicy *iamv1beta1.IAMPolicy, iamClient *kcciamclient.IAMClient, reconciler *testreconciler.TestReconciler) {
 	if k8sPartialPolicy.Spec.ResourceReference.Kind == "StorageBucket" {
 		// Once removing roles/storage.admin role, the caller cannot get access to the storage bucket
 		// even if it's the owner of the project.
 		return
 	}
-	if err := kubeClient.Delete(context.TODO(), k8sPartialPolicy); err != nil {
+	if err := kubeClient.Delete(ctx, k8sPartialPolicy); err != nil {
 		t.Fatalf("error deleting k8sPartialPolicy: %v", err)
 	}
-	reconciler.ReconcileObjectMeta(k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, testreconciler.ExpectedRequeueReconcileStruct, nil)
+	reconciler.ReconcileObjectMeta(ctx, k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, testreconciler.ExpectedRequeueReconcileStruct, nil)
 	k8sPolicy := partialpolicy.ToIAMPolicySkeleton(k8sPartialPolicy)
-	gcpPolicy, err := iamClient.GetPolicy(context.TODO(), k8sPolicy)
+	gcpPolicy, err := iamClient.GetPolicy(ctx, k8sPolicy)
 	if err != nil {
 		t.Fatalf("error retrieving GCP policy: %v", err)
 	}
-	assertPolicy(t, k8sPartialPolicy, existingPolicy, gcpPolicy, iamClient)
+	assertPolicy(ctx, t, k8sPartialPolicy, existingPolicy, gcpPolicy, iamClient)
 	testk8s.RemoveDeletionDefenderFinalizer(t, k8sPartialPolicy, iamv1beta1.IAMPartialPolicyGVK, kubeClient)
-	reconciler.ReconcileObjectMeta(k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
-	gcpPolicy, err = iamClient.GetPolicy(context.TODO(), k8sPolicy)
+	reconciler.ReconcileObjectMeta(ctx, k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
+	gcpPolicy, err = iamClient.GetPolicy(ctx, k8sPolicy)
 	if err != nil {
 		t.Fatalf("error retrieving GCP policy: %v", err)
 	}
 	testiam.AssertSamePolicy(t, existingPolicy, gcpPolicy)
-	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err == nil || !errors.IsNotFound(err) {
+	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err == nil || !errors.IsNotFound(err) {
 		t.Fatalf("unexpected error value: %v", err)
 	}
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMPartialPolicyGVK.Kind, &k8sPartialPolicy.ObjectMeta, k8s.Deleted)
 }
 
-func testReconcileResourceLevelDeleteParentFirst(t *testing.T, mgr manager.Manager, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, refResource *unstructured.Unstructured) {
+func testReconcileResourceLevelDeleteParentFirst(ctx context.Context, t *testing.T, mgr manager.Manager, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, refResource *unstructured.Unstructured) {
 	kubeClient := mgr.GetClient()
-	if err := kubeClient.Create(context.TODO(), k8sPartialPolicy); err != nil {
+	if err := kubeClient.Create(ctx, k8sPartialPolicy); err != nil {
 		t.Fatalf("error creating k8sPartialPolicy: %v", err)
 	}
 	reconciler := testreconciler.New(t, mgr, tfprovider.NewOrLogFatal(tfprovider.DefaultConfig))
-	reconciler.ReconcileObjectMeta(k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
+	reconciler.ReconcileObjectMeta(ctx, k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
 
 	// First, delete the parent resource of the IAM Policy.
 	log.Printf("Deleting the parent of the IAM Policy first %v: %v/%v\n", refResource.GetKind(), refResource.GetNamespace(), refResource.GetName())
 	testk8s.RemoveDeletionDefenderFinalizerForUnstructured(t, refResource, kubeClient)
-	err := kubeClient.Delete(context.TODO(), refResource)
+	err := kubeClient.Delete(ctx, refResource)
 	if err != nil {
 		t.Errorf("error deleting %v: %v", refResource, err)
 	}
-	reconciler.Reconcile(refResource, expectedReconcileResult, nil)
+	reconciler.Reconcile(ctx, refResource, expectedReconcileResult, nil)
 
 	// Then, delete the IAM Policy.
 	testk8s.RemoveDeletionDefenderFinalizer(t, k8sPartialPolicy, iamv1beta1.IAMPartialPolicyGVK, kubeClient)
-	if err := kubeClient.Delete(context.TODO(), k8sPartialPolicy); err != nil {
+	if err := kubeClient.Delete(ctx, k8sPartialPolicy); err != nil {
 		t.Fatalf("error deleting k8sPartialPolicy: %v", err)
 	}
-	reconciler.ReconcileObjectMeta(k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
-	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err == nil || !errors.IsNotFound(err) {
+	reconciler.ReconcileObjectMeta(ctx, k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
+	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err == nil || !errors.IsNotFound(err) {
 		t.Fatalf("unexpected error value: %v", err)
 	}
 	// Wait till all the events are properly cached.
@@ -459,7 +467,9 @@ func testReconcileResourceLevelDeleteParentFirst(t *testing.T, mgr manager.Manag
 }
 
 func TestReconcileIAMPartialPolicyResourceLevelAcquire(t *testing.T) {
-	testFunc := func(t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
+	ctx := context.TODO()
+
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		bindings := []iamv1beta1.IAMPartialPolicyBinding{
 			{
 				Role: rc.CreateBindingRole,
@@ -479,13 +489,15 @@ func TestReconcileIAMPartialPolicyResourceLevelAcquire(t *testing.T) {
 			},
 		}
 		k8sPartialPolicy := newIAMPartialPolicyFixture(t, refResource, resourceRef, bindings)
-		testReconcileResourceLevelAcquire(t, mgr, k8sPartialPolicy, existingBindings)
+		testReconcileResourceLevelAcquire(ctx, t, mgr, k8sPartialPolicy, existingBindings)
 	}
-	testiam.RunResourceLevelTest(t, mgr, testFunc, testiam.ShouldRunAcquire)
+	testiam.RunResourceLevelTest(ctx, t, mgr, testFunc, testiam.ShouldRunAcquire)
 }
 
 func TestReconcileIAMPartialPolicyResourceLevelAcquireWithExternalRef(t *testing.T) {
-	testFunc := func(t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
+	ctx := context.TODO()
+
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		bindings := []iamv1beta1.IAMPartialPolicyBinding{
 			{
 				Role: rc.CreateBindingRole,
@@ -505,12 +517,12 @@ func TestReconcileIAMPartialPolicyResourceLevelAcquireWithExternalRef(t *testing
 			},
 		}
 		k8sPartialPolicy := newIAMPartialPolicyFixture(t, refResource, resourceRef, bindings)
-		testReconcileResourceLevelAcquire(t, mgr, k8sPartialPolicy, existingBindings)
+		testReconcileResourceLevelAcquire(ctx, t, mgr, k8sPartialPolicy, existingBindings)
 	}
-	testiam.RunResourceLevelTestWithExternalRef(t, mgr, testFunc, testiam.ShouldRunAcquire)
+	testiam.RunResourceLevelTestWithExternalRef(ctx, t, mgr, testFunc, testiam.ShouldRunAcquire)
 }
 
-func testReconcileResourceLevelAcquire(t *testing.T, mgr manager.Manager, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, existingBindings []iamv1beta1.IAMPolicyBinding) {
+func testReconcileResourceLevelAcquire(ctx context.Context, t *testing.T, mgr manager.Manager, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, existingBindings []iamv1beta1.IAMPolicyBinding) {
 	kubeClient := mgr.GetClient()
 	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
 	smLoader := testservicemappingloader.New(t)
@@ -527,22 +539,22 @@ func testReconcileResourceLevelAcquire(t *testing.T, mgr manager.Manager, k8sPar
 	// Create resource in GCP
 	k8sPolicy := partialpolicy.ToIAMPolicySkeleton(k8sPartialPolicy)
 	k8sPolicy.Spec.Bindings = existingBindings
-	if _, err := iamClient.SetPolicy(context.TODO(), k8sPolicy); err != nil {
+	if _, err := iamClient.SetPolicy(ctx, k8sPolicy); err != nil {
 		t.Fatalf("error creating GCP policy: %v", err)
 	}
 
 	// Acquire IAM Policy
-	if err := kubeClient.Create(context.TODO(), k8sPartialPolicy); err != nil {
+	if err := kubeClient.Create(ctx, k8sPartialPolicy); err != nil {
 		t.Fatalf("error creating k8sPartialPolicy: %v", err)
 	}
 	preReconcileGeneration := k8sPartialPolicy.GetGeneration()
-	reconciler.ReconcileObjectMeta(k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
-	gcpPolicy, err := iamClient.GetPolicy(context.TODO(), k8sPolicy)
+	reconciler.ReconcileObjectMeta(ctx, k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, expectedReconcileResult, nil)
+	gcpPolicy, err := iamClient.GetPolicy(ctx, k8sPolicy)
 	if err != nil {
 		t.Fatalf("error retrieving GCP policy: %v", err)
 	}
 	testiam.AssertSamePolicy(t, k8sPolicy, gcpPolicy)
-	if err := kubeClient.Get(context.TODO(), k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err != nil {
+	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 	testcontroller.AssertReadyCondition(t, k8sPartialPolicy, preReconcileGeneration)
@@ -571,29 +583,29 @@ func newIAMPartialPolicyFixture(t *testing.T, refResource *unstructured.Unstruct
 	}
 }
 
-func createIAMServiceAccount(t *testing.T, name, namespace string, kubeClient client.Client, reconciler *testreconciler.TestReconciler) {
+func createIAMServiceAccount(ctx context.Context, t *testing.T, name, namespace string, kubeClient client.Client, reconciler *testreconciler.TestReconciler) {
 	refServiceAccount := test.NewIAMServiceAccountUnstructured(name, namespace)
-	if err := kubeClient.Create(context.TODO(), refServiceAccount); err != nil {
+	if err := kubeClient.Create(ctx, refServiceAccount); err != nil {
 		t.Fatalf("error creating IAMServiceAccount: %v", err)
 	}
 	objectMeta := metav1.ObjectMeta{
 		Name:      name,
 		Namespace: namespace,
 	}
-	reconciler.ReconcileObjectMeta(objectMeta, kcciamclient.IAMServiceAccountGVK.Kind, expectedReconcileResult, nil)
+	reconciler.ReconcileObjectMeta(ctx, objectMeta, kcciamclient.IAMServiceAccountGVK.Kind, expectedReconcileResult, nil)
 }
 
-func deleteIAMServiceAccount(t *testing.T, name, namespace string, kubeClient client.Client, reconciler *testreconciler.TestReconciler) {
+func deleteIAMServiceAccount(ctx context.Context, t *testing.T, name, namespace string, kubeClient client.Client, reconciler *testreconciler.TestReconciler) {
 	refServiceAccount := test.NewIAMServiceAccountUnstructured(name, namespace)
 
 	testk8s.RemoveDeletionDefenderFinalizerForUnstructured(t, refServiceAccount, kubeClient)
-	if err := kubeClient.Delete(context.TODO(), refServiceAccount); err != nil {
+	if err := kubeClient.Delete(ctx, refServiceAccount); err != nil {
 		t.Fatalf("error deleting IAMServiceAccount %v: %v", refServiceAccount.GetName(), err)
 	}
-	reconciler.Reconcile(refServiceAccount, expectedReconcileResult, nil)
+	reconciler.Reconcile(ctx, refServiceAccount, expectedReconcileResult, nil)
 }
 
-func assertPolicy(t *testing.T, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, existingPolicy *iamv1beta1.IAMPolicy, gcpPolicy *iamv1beta1.IAMPolicy, iamClient *kcciamclient.IAMClient) {
+func assertPolicy(ctx context.Context, t *testing.T, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, existingPolicy *iamv1beta1.IAMPolicy, gcpPolicy *iamv1beta1.IAMPolicy, iamClient *kcciamclient.IAMClient) {
 	if !reflect.DeepEqual(k8sPartialPolicy.Spec.ResourceReference, gcpPolicy.Spec.ResourceReference) {
 		diff := cmp.Diff(k8sPartialPolicy.Spec.ResourceReference, gcpPolicy.Spec.ResourceReference)
 		t.Fatalf("GCP policy has incorrect resource reference. Diff (-want, +got):\n%v", diff)
@@ -601,7 +613,7 @@ func assertPolicy(t *testing.T, k8sPartialPolicy *iamv1beta1.IAMPartialPolicy, e
 	if !testiam.ContainsBindings(gcpPolicy.Spec.Bindings, existingPolicy.Spec.Bindings) {
 		t.Fatalf("GCP policy doesn't have all existing bindings as expected; current bindings: %v, existing bindings: %v", gcpPolicy.Spec.Bindings, existingPolicy.Spec.Bindings)
 	}
-	resolver := partialpolicy.IAMMemberIdentityResolver{Iamclient: iamClient, Ctx: context.TODO()}
+	resolver := partialpolicy.IAMMemberIdentityResolver{Iamclient: iamClient, Ctx: ctx}
 	configuredBinding, err := partialpolicy.ConvertIAMPartialBindingsToIAMPolicyBindings(k8sPartialPolicy, &resolver)
 	if err != nil {
 		t.Fatalf("ConvertIAMPartialBindingsToIAMPolicyBindings returned error: %v", err)

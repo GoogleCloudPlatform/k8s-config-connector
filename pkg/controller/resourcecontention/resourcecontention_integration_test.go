@@ -47,15 +47,17 @@ var (
 // this test creates a second 'manager', i.e. KCC installation, and then ensures that the same project
 // that is being managed by the default manager in systemContext, cannot be managed by the second manager.
 func TestResourceContentionIsPreventedForTwoNamespacesMappingToSameProjectInDifferentClusters(t *testing.T) {
+	ctx := context.TODO()
+
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		// only need to test contention for a single resource since the logic will apply to all resources
 		return fixture.GVK.Kind == "PubSubTopic"
 	}
-	testFunc := func(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
+	testFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
 		if err := systemContext.Manager.GetClient().Create(context.TODO(), testContext.CreateUnstruct); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
-		systemContext.Reconciler.Reconcile(testContext.UpdateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.UpdateUnstruct), nil)
+		systemContext.Reconciler.Reconcile(ctx, testContext.UpdateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.UpdateUnstruct), nil)
 		assertLeaseLabelsAreNotPresent(t, systemContext.Manager, testContext.CreateUnstruct)
 		projectId := testgcp.GetDefaultProjectID(t)
 		testcontroller.EnsureNamespaceExistsT(t, mgr2.GetClient(), testContext.UniqueId)
@@ -65,7 +67,7 @@ func TestResourceContentionIsPreventedForTwoNamespacesMappingToSameProjectInDiff
 		if err := mgr2.GetClient().Create(context.TODO(), testContext.UpdateUnstruct); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
-		reconciler2.Reconcile(testContext.UpdateUnstruct, testreconciler.ExpectedUnsuccessfulReconcileResult, regexp.MustCompile("error obtaining lease"))
+		reconciler2.Reconcile(ctx, testContext.UpdateUnstruct, testreconciler.ExpectedUnsuccessfulReconcileResult, regexp.MustCompile("error obtaining lease"))
 		events := testcontroller.CollectEvents(t, mgr2.GetConfig(), testContext.UpdateUnstruct.GetNamespace(), 1, 10*time.Second)
 		event := events[0]
 		expectedReason := k8s.ManagementConflict
@@ -78,7 +80,7 @@ func TestResourceContentionIsPreventedForTwoNamespacesMappingToSameProjectInDiff
 		if err := mgr2.GetClient().Delete(context.TODO(), testContext.CreateUnstruct); err != nil {
 			t.Fatalf("error deleting resource: %v", err)
 		}
-		reconciler2.Reconcile(testContext.CreateUnstruct, testreconciler.ExpectedUnsuccessfulReconcileResult, regexp.MustCompile("error obtaining lease"))
+		reconciler2.Reconcile(ctx, testContext.CreateUnstruct, testreconciler.ExpectedUnsuccessfulReconcileResult, regexp.MustCompile("error obtaining lease"))
 		events = testcontroller.CollectEvents(t, mgr2.GetConfig(), testContext.CreateUnstruct.GetNamespace(), 3, 10*time.Second)
 		nextEvent := events[2]
 		if nextEvent.Reason != expectedReason {
@@ -88,7 +90,7 @@ func TestResourceContentionIsPreventedForTwoNamespacesMappingToSameProjectInDiff
 			t.Fatalf("expected the previous event's last timestamp to be before or equal to the next event's last timestamp")
 		}
 	}
-	testrunner.RunAllWithDependenciesCreatedButNotObject(t, mgr1, shouldRun, testFunc)
+	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr1, shouldRun, testFunc)
 }
 
 func ensureFinalizer(t *testing.T, mgr manager.Manager, namespacedName types.NamespacedName, u *unstructured.Unstructured) {

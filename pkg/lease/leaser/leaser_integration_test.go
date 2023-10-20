@@ -40,6 +40,8 @@ var (
 )
 
 func TestUnsupportedResourceShouldFail(t *testing.T) {
+	ctx := context.TODO()
+
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		switch fixture.GVK.Kind {
 		case "SourceRepoRepository", // Resource with no labels field
@@ -49,7 +51,7 @@ func TestUnsupportedResourceShouldFail(t *testing.T) {
 			return false
 		}
 	}
-	testFunc := func(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
+	testFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
 		leaser := leaser.NewLeaser(systemContext.TFProvider, systemContext.SMLoader, systemContext.Manager.GetClient())
 		ok, err := leaser.UnstructuredSupportsLeasing(testContext.CreateUnstruct)
 		if err != nil {
@@ -68,10 +70,12 @@ func TestUnsupportedResourceShouldFail(t *testing.T) {
 			t.Fatalf("unexpected error message: got '%v', want '%v'", errMsg, expectedMsg)
 		}
 	}
-	testrunner.RunAllWithObjectCreated(t, mgr, shouldRun, testFunc)
+	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testFunc)
 }
 
 func TestAll(t *testing.T) {
+	ctx := context.TODO()
+
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		switch fixture.GVK.Kind {
 		case "PubSubTopic":
@@ -80,18 +84,18 @@ func TestAll(t *testing.T) {
 			return false
 		}
 	}
-	testFunc := func(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
+	testFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
 		// By default, the test framework creates resources with the management conflict policy of 'resource'. If we allow that,
 		// then the namespace will have a lease on the resource. That would interfere with the results of this test as we want to
 		// obtain and release the lease for our 'owners' that we generate below. For that reason, we set the conflict policy to
 		// 'none' and create and reconcile the resource below.
 		k8s.SetAnnotation(k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation, k8s.ManagementConflictPreventionPolicyNone, testContext.CreateUnstruct)
-		if err := systemContext.Manager.GetClient().Create(context.TODO(), testContext.CreateUnstruct); err != nil {
+		if err := systemContext.Manager.GetClient().Create(ctx, testContext.CreateUnstruct); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
-		resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(testContext.CreateUnstruct, testreconciler.CleanupPolicyAlways)
+		resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(ctx, testContext.CreateUnstruct, testreconciler.CleanupPolicyAlways)
 		defer resourceCleanup()
-		systemContext.Reconciler.Reconcile(testContext.CreateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.CreateUnstruct), nil)
+		systemContext.Reconciler.Reconcile(ctx, testContext.CreateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.CreateUnstruct), nil)
 		leaser := leaser.NewLeaser(systemContext.TFProvider, systemContext.SMLoader, systemContext.Manager.GetClient())
 		uniqueId1 := fmt.Sprintf("l1-%v", testContext.UniqueId)
 		uniqueId2 := fmt.Sprintf("l2-%v", testContext.UniqueId)
@@ -106,7 +110,7 @@ func TestAll(t *testing.T) {
 		testReleasingLockedResourceShouldFail(t, initialUnstruct, uniqueId1, uniqueId2, leaser)
 		testObtainingExpiredLeaseShouldSucceed(t, initialUnstruct, uniqueId1, uniqueId2, leaser)
 	}
-	testrunner.RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRun, testFunc)
+	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testFunc)
 }
 
 func testObtainReleaseShouldSucceed(t *testing.T, u *unstructured.Unstructured, uniqueId string, leaser *leaser.Leaser) {
