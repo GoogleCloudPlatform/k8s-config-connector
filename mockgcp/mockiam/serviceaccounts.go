@@ -16,6 +16,7 @@ package mockiam
 
 import (
 	"context"
+	"crypto/md5"
 	"regexp"
 	"strconv"
 	"time"
@@ -25,6 +26,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/iam/admin/v1"
@@ -59,7 +61,7 @@ func (s *ServerV1) GetServiceAccount(ctx context.Context, req *pb.GetServiceAcco
 		}
 
 		if found == nil {
-			return nil, status.Errorf(codes.NotFound, "serviceaccount %q not found", req.Name)
+			return nil, status.Errorf(codes.NotFound, "Service account %q not found", req.Name)
 		}
 
 		return found, nil
@@ -69,7 +71,7 @@ func (s *ServerV1) GetServiceAccount(ctx context.Context, req *pb.GetServiceAcco
 	fqn := name.String()
 	if err := s.storage.Get(ctx, fqn, sa); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "serviceaccount %q not found", req.Name)
+			return nil, status.Errorf(codes.NotFound, "Service account %q not found", req.Name)
 		}
 		return nil, status.Errorf(codes.Internal, "error reading serviceaccount: %v", err)
 	}
@@ -119,6 +121,9 @@ func (s *ServerV1) CreateServiceAccount(ctx context.Context, req *pb.CreateServi
 	sa.UniqueId = strconv.FormatInt(uniqueID, 10)
 	sa.Email = name.Email
 	sa.DisplayName = displayName
+	sa.Oauth2ClientId = sa.UniqueId
+
+	sa.Etag = computeEtag(sa)
 
 	fqn := name.String()
 	if err := s.storage.Create(ctx, fqn, sa); err != nil {
@@ -178,4 +183,14 @@ func (s *ServerV1) PatchServiceAccount(ctx context.Context, req *pb.PatchService
 		return nil, status.Errorf(codes.Internal, "error updating serviceaccount: %v", err)
 	}
 	return sa, nil
+}
+
+func computeEtag(obj proto.Message) []byte {
+	// TODO: Do we risk exposing internal fields?  Doesn't matter on a mock, I guess
+	b, err := proto.Marshal(obj)
+	if err != nil {
+		klog.Fatalf("failed to marshal proto object: %v", err)
+	}
+	hash := md5.Sum(b)
+	return hash[:]
 }
