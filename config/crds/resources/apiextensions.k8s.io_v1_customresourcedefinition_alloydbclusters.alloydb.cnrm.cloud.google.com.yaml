@@ -332,10 +332,10 @@ spec:
                       If set, the instance IPs for this cluster will be created in the allocated range.
                     type: string
                   networkRef:
-                    description: "Only `external` field is supported to configure
-                      the reference.\n\n(Required) The relative resource name of the
-                      VPC network on which \nthe instance can be accessed. It is specified
-                      in the following form: \nprojects/{projectNumber}/global/networks/{network_id}."
+                    description: |-
+                      (Required) The relative resource name of the VPC network on which
+                      the instance can be accessed. It is specified in the following form:
+                      projects/{project}/global/networks/{network_id}.
                     oneOf:
                     - not:
                         required:
@@ -352,7 +352,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
+                        description: 'Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`,
+                          where {{value}} is the `name` field of a `ComputeNetwork`
                           resource.'
                         type: string
                       name:
@@ -364,10 +365,10 @@ spec:
                     type: object
                 type: object
               networkRef:
-                description: "Only `external` field is supported to configure the
-                  reference.\n\n(Required) The relative resource name of the VPC network
-                  on which \nthe instance can be accessed. It is specified in the
-                  following form: \nprojects/{projectNumber}/global/networks/{network_id}."
+                description: |-
+                  (Required) The relative resource name of the VPC network on which
+                  the instance can be accessed. It is specified in the following form:
+                  projects/{project}/global/networks/{network_id}.
                 oneOf:
                 - not:
                     required:
@@ -384,8 +385,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
-                      resource.'
+                    description: 'Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`,
+                      where {{value}} is the `name` field of a `ComputeNetwork` resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -949,10 +950,10 @@ spec:
                       If set, the instance IPs for this cluster will be created in the allocated range.
                     type: string
                   networkRef:
-                    description: "Only `external` field is supported to configure
-                      the reference.\n\n(Required) The relative resource name of the
-                      VPC network on which \nthe instance can be accessed. It is specified
-                      in the following form: \nprojects/{projectNumber}/global/networks/{network_id}."
+                    description: |-
+                      (Required) The relative resource name of the VPC network on which
+                      the instance can be accessed. It is specified in the following form:
+                      projects/{project}/global/networks/{network_id}.
                     oneOf:
                     - not:
                         required:
@@ -969,7 +970,8 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
+                        description: 'Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`,
+                          where {{value}} is the `name` field of a `ComputeNetwork`
                           resource.'
                         type: string
                       name:
@@ -981,10 +983,10 @@ spec:
                     type: object
                 type: object
               networkRef:
-                description: "Only `external` field is supported to configure the
-                  reference.\n\n(Required) The relative resource name of the VPC network
-                  on which \nthe instance can be accessed. It is specified in the
-                  following form: \nprojects/{projectNumber}/global/networks/{network_id}."
+                description: |-
+                  (Required) The relative resource name of the VPC network on which
+                  the instance can be accessed. It is specified in the following form:
+                  projects/{project}/global/networks/{network_id}.
                 oneOf:
                 - not:
                     required:
@@ -1001,8 +1003,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
-                      resource.'
+                    description: 'Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`,
+                      where {{value}} is the `name` field of a `ComputeNetwork` resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

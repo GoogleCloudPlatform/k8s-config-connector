@@ -28,8 +28,9 @@ spec:
     password:
       value: alloydb-pg
   location: us-west1
-  networkRef:
-    external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+  networkConfig:
+    networkRef:
+      name: computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
 ---

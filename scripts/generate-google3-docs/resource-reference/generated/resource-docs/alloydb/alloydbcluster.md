@@ -655,11 +655,9 @@ If set, the instance IPs for this cluster will be created in the allocated range
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Only `external` field is supported to configure the reference.
-
-(Required) The relative resource name of the VPC network on which 
-the instance can be accessed. It is specified in the following form: 
-projects/{projectNumber}/global/networks/{network_id}.{% endverbatim %}</p>
+            <p>{% verbatim %}(Required) The relative resource name of the VPC network on which
+the instance can be accessed. It is specified in the following form:
+projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -669,7 +667,7 @@ projects/{projectNumber}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`, where {{value}} is the `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -699,11 +697,9 @@ projects/{projectNumber}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Only `external` field is supported to configure the reference.
-
-(Required) The relative resource name of the VPC network on which 
-the instance can be accessed. It is specified in the following form: 
-projects/{projectNumber}/global/networks/{network_id}.{% endverbatim %}</p>
+            <p>{% verbatim %}(Required) The relative resource name of the VPC network on which
+the instance can be accessed. It is specified in the following form:
+projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -713,7 +709,7 @@ projects/{projectNumber}/global/networks/{network_id}.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/global/networks/{{value}}`, where {{value}} is the `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
