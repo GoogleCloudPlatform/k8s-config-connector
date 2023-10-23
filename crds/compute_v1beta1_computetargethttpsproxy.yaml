@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.110.0
+    cnrm.cloud.google.com/version: 1.111.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -137,6 +137,44 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              serverTlsPolicyRef:
+                description: |-
+                  Immutable. A URL referring to a networksecurity.ServerTlsPolicy
+                  resource that describes how the proxy should authenticate inbound
+                  traffic. serverTlsPolicy only applies to a global TargetHttpsProxy
+                  attached to globalForwardingRules with the loadBalancingScheme
+                  set to INTERNAL_SELF_MANAGED or EXTERNAL or EXTERNAL_MANAGED.
+                  For details which ServerTlsPolicy resources are accepted with
+                  INTERNAL_SELF_MANAGED and which with EXTERNAL, EXTERNAL_MANAGED
+                  loadBalancingScheme consult ServerTlsPolicy documentation.
+                  If left blank, communications are not encrypted.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: string of the format `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}`,
+                      where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               sslCertificates:
                 items:
                   description: |-

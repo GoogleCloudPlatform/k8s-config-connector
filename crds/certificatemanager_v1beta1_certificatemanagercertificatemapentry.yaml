@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.110.0
+    cnrm.cloud.google.com/version: 1.111.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -115,7 +115,7 @@ spec:
                   selecting a proper certificate.
                 type: string
               mapRef:
-                description: A map entry that is inputted into the cetrificate map.
+                description: A map entry that is inputted into the certificate map.
                 oneOf:
                 - not:
                     required:
@@ -319,7 +319,7 @@ spec:
                   selecting a proper certificate.
                 type: string
               mapRef:
-                description: A map entry that is inputted into the cetrificate map.
+                description: A map entry that is inputted into the certificate map.
                 oneOf:
                 - not:
                     required:

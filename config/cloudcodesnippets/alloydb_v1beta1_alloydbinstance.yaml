@@ -1,0 +1,15 @@
+label: Config Connector AlloyDBInstance
+markdownDescription: Creates yaml for a AlloyDBInstance resource
+insertText: |
+  apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+  kind: AlloyDBInstance
+  metadata:
+    name: \${1:alloydbinstance-name}
+  spec:
+    clusterRef:
+      name: \${2:alloydbinstance-dep-primary}
+    instanceType: \${3:PRIMARY}
+    databaseFlags:
+      enable_google_adaptive_autovacuum: \${4:off}
+    machineConfig:
+      cpuCount: \${5:2}

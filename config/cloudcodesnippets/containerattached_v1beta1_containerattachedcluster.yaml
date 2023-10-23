@@ -1,0 +1,20 @@
+label: Config Connector ContainerAttachedCluster
+markdownDescription: Creates yaml for a ContainerAttachedCluster resource
+insertText: |
+  apiVersion: containerattached.cnrm.cloud.google.com/v1beta1
+  kind: ContainerAttachedCluster
+  metadata:
+    name: \${1:containerattachedcluster-name}
+  spec:
+    resourceID: \${2:[ATTACHED_CLUSTER_NAME?]}
+    location: \${3:us-west1}
+    projectRef:
+      external: \${4:[PROJECT_ID?]}
+    description: \${5:Test attached cluster basic sample}
+    distribution: \${6:[DISTRIBUTION]}
+    oidcConfig:
+      issuerUrl: \${7:[ISSUER_URL?]}
+    platformVersion: \${8:[PLATFORM_VERSION?]}
+    fleet:
+      projectRef:
+        name: \${9:containerattachedcluster-dep-basic}
