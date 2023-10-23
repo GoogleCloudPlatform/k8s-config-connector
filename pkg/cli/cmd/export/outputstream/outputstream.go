@@ -23,26 +23,21 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/gcpclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/outputsink"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/stream"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func NewResourceByteStream(params *parameters.Parameters) (stream.ByteStream, error) {
-	provider, err := tf.NewProvider(params.OAuth2Token)
-	if err != nil {
-		return nil, err
-	}
+func NewResourceByteStream(tfProvider *schema.Provider, params *parameters.Parameters) (stream.ByteStream, error) {
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
 		return nil, fmt.Errorf("error creating service mapping loader: %v", err)
 	}
-	unstructuredStream, err := NewUnstructuredStream(params, provider, smLoader)
+	unstructuredStream, err := NewUnstructuredStream(params, tfProvider, smLoader)
 	if err != nil {
 		return nil, err
 	}
-	return stream.NewByteStream(outputsink.ResourceFormat(params.ResourceFormat), unstructuredStream, smLoader, provider)
+	return stream.NewByteStream(outputsink.ResourceFormat(params.ResourceFormat), unstructuredStream, smLoader, tfProvider)
 }
 
 func NewUnstructuredStream(params *parameters.Parameters, provider *schema.Provider, smLoader *servicemappingloader.ServiceMappingLoader) (stream.UnstructuredStream, error) {

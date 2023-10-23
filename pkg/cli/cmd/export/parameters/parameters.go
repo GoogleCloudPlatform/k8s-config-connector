@@ -21,11 +21,14 @@ import (
 type Parameters struct {
 	IAMFormat               string
 	FilterDeletedIAMMembers bool
-	OAuth2Token             string
-	Output                  string
-	ResourceFormat          string
-	URI                     string
-	Verbose                 bool
+
+	// GCPAccessToken is the (optional) static authentication token to use for GCP authentication.
+	GCPAccessToken string
+
+	Output         string
+	ResourceFormat string
+	URI            string
+	Verbose        bool
 }
 
 func Validate(p *Parameters) error {

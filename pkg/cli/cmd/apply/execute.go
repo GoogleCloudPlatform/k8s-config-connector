@@ -15,6 +15,7 @@
 package apply
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -25,8 +26,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 )
 
-func Execute(params *parameters.Parameters, output io.Writer) error {
-	tfProvider, err := tf.NewProvider(params.OAuth2Token)
+func Execute(ctx context.Context, params *parameters.Parameters, output io.Writer) error {
+	tfProvider, err := tf.NewProvider(ctx, params.OAuth2Token)
 	if err != nil {
 		return err
 	}

@@ -37,7 +37,7 @@ func Execute(ctx context.Context, params *parameters.Parameters) error {
 	if err != nil {
 		return err
 	}
-	tfProvider, err := tf.NewProvider(params.OAuth2Token)
+	tfProvider, err := tf.NewProvider(ctx, params.OAuth2Token)
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func Execute(ctx context.Context, params *parameters.Parameters) error {
 		return err
 	}
 	defer assetStream.Close()
-	yamlStream, err := outputstream.NewResourceByteStream(params, assetStream)
+	yamlStream, err := outputstream.NewResourceByteStream(tfProvider, params, assetStream)
 	if err != nil {
 		return err
 	}

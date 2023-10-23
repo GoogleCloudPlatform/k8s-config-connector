@@ -26,15 +26,17 @@ import (
 )
 
 func Execute(ctx context.Context, params *parameters.Parameters) error {
-	byteStream, err := outputstream.NewResourceByteStream(params)
+	tfProvider, err := tf.NewProvider(ctx, params.GCPAccessToken)
+	if err != nil {
+		return err
+	}
+
+	byteStream, err := outputstream.NewResourceByteStream(tfProvider, params)
 	if err != nil {
 		return err
 	}
 	recoverableStream := stream.NewRecoverableByteStream(byteStream)
-	tfProvider, err := tf.NewProvider(params.OAuth2Token)
-	if err != nil {
-		return err
-	}
+
 	outputSink, err := outputsink.New(tfProvider, params.Output, outputsink.ResourceFormat(params.ResourceFormat))
 	if err != nil {
 		return err

@@ -55,9 +55,9 @@ type Config struct {
 	// Currently only used in tests.
 	HTTPClient *http.Client
 
-	// AccessToken allows configuration of a static access token.
+	// GCPAccessToken allows configuration of a static access token for accessing GCP.
 	// Currently only used in tests.
-	AccessToken string
+	GCPAccessToken string
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -88,7 +88,7 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 	tfCfg := tfprovider.NewConfig()
 	tfCfg.UserProjectOverride = config.UserProjectOverride
 	tfCfg.BillingProject = config.BillingProject
-	tfCfg.AccessToken = config.AccessToken
+	tfCfg.GCPAccessToken = config.GCPAccessToken
 
 	provider, err := tfprovider.New(ctx, tfCfg)
 	if err != nil {

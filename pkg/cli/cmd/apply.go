@@ -36,11 +36,12 @@ var (
 		Short:  "Apply a KRM resource configuration file to Google Cloud Platform backend",
 		Long:   `Apply a KRM resource configuration file to Google Cloud Platform backend`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx := cmd.Context()
 			if err := parameters.Validate(&applyParams, os.Stdin); err != nil {
 				return err
 			}
 			rootCmd.SilenceUsage = true
-			return apply.Execute(&applyParams, os.Stdout)
+			return apply.Execute(ctx, &applyParams, os.Stdout)
 		},
 		Args: cobra.NoArgs,
 	}
