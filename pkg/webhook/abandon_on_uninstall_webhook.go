@@ -17,6 +17,7 @@ package webhook
 import (
 	"context"
 
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
@@ -24,6 +25,12 @@ import (
 // managed by KCC is deleted, the accompanying controller is set to abandon any resources that are
 // attempted to be deleted.
 type abandonOnCRDUninstallWebhook struct{}
+
+func NewAbandonOnCRDUninstallWebhook() HandlerFunc {
+	return func(mgr manager.Manager) admission.Handler {
+		return &abandonOnCRDUninstallWebhook{}
+	}
+}
 
 // This webhook is now a no-op and will soon be removed as deletiondefender does not need this layer of protection any
 // longer. The reason to keep it for now is that the operator does not yet remove the old webhook registration. The

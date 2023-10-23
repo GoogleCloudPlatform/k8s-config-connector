@@ -33,6 +33,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
@@ -44,11 +45,13 @@ type iamValidatorHandler struct {
 
 func NewIAMValidatorHandler(smLoader *servicemappingloader.ServiceMappingLoader,
 	serviceMetadataLoader metadata.ServiceMetadataLoader,
-	schemaLoader dclschemaloader.DCLSchemaLoader) *iamValidatorHandler {
-	return &iamValidatorHandler{
-		smLoader:              smLoader,
-		serviceMetadataLoader: serviceMetadataLoader,
-		schemaLoader:          schemaLoader,
+	schemaLoader dclschemaloader.DCLSchemaLoader) HandlerFunc {
+	return func(mgr manager.Manager) admission.Handler {
+		return &iamValidatorHandler{
+			smLoader:              smLoader,
+			serviceMetadataLoader: serviceMetadataLoader,
+			schemaLoader:          schemaLoader,
+		}
 	}
 }
 

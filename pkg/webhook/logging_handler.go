@@ -18,9 +18,8 @@ import (
 	"context"
 
 	"k8s.io/apimachinery/pkg/types"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-	"sigs.k8s.io/controller-runtime/pkg/runtime/inject"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
@@ -31,12 +30,15 @@ type RequestLoggingHandler struct {
 	handlerName string
 }
 
-var _ inject.Client = &RequestLoggingHandler{}
+type HandlerFunc func(mgr manager.Manager) admission.Handler
 
-func NewRequestLoggingHandler(handler admission.Handler, handlerName string) *RequestLoggingHandler {
-	return &RequestLoggingHandler{
-		handler:     handler,
-		handlerName: handlerName,
+func NewRequestLoggingHandler(handlerFunc HandlerFunc, handlerName string) HandlerFunc {
+	return func(mgr manager.Manager) admission.Handler {
+		handler := handlerFunc(mgr)
+		return &RequestLoggingHandler{
+			handler:     handler,
+			handlerName: handlerName,
+		}
 	}
 }
 
@@ -64,13 +66,4 @@ func (a *RequestLoggingHandler) Handle(ctx context.Context, req admission.Reques
 			"result-reason", response.Result.Reason)
 	}
 	return response
-}
-
-// InjectClient is called by controller-runtime to inject a client into the handler
-func (a *RequestLoggingHandler) InjectClient(c client.Client) error {
-	injectClient, ok := a.handler.(inject.Client)
-	if !ok {
-		return nil
-	}
-	return injectClient.InjectClient(c)
 }

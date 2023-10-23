@@ -29,7 +29,7 @@ import (
 	apitypes "k8s.io/apimachinery/pkg/types"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/runtime/inject"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
@@ -38,19 +38,13 @@ type noUnknownFieldsValidatorHandler struct {
 	smLoader *servicemappingloader.ServiceMappingLoader
 }
 
-// noUnknownFieldsValidatorHandler implements inject.Client.
-var _ inject.Client = &noUnknownFieldsValidatorHandler{}
-
-func NewNoUnknownFieldsValidatorHandler(smLoader *servicemappingloader.ServiceMappingLoader) *noUnknownFieldsValidatorHandler {
-	return &noUnknownFieldsValidatorHandler{
-		smLoader: smLoader,
+func NewNoUnknownFieldsValidatorHandler(smLoader *servicemappingloader.ServiceMappingLoader) HandlerFunc {
+	return func(mgr manager.Manager) admission.Handler {
+		return &noUnknownFieldsValidatorHandler{
+			client:   mgr.GetClient(),
+			smLoader: smLoader,
+		}
 	}
-}
-
-// InjectClient injects the client into the noUnknownFieldsValidatorHandler
-func (a *noUnknownFieldsValidatorHandler) InjectClient(c client.Client) error {
-	a.client = c
-	return nil
 }
 
 func (a *noUnknownFieldsValidatorHandler) Handle(ctx context.Context, req admission.Request) admission.Response {

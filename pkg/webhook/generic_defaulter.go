@@ -23,6 +23,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
@@ -36,8 +37,10 @@ import (
 type genericDefaulter struct {
 }
 
-func NewGenericDefaulter() *genericDefaulter {
-	return &genericDefaulter{}
+func NewGenericDefaulter() HandlerFunc {
+	return func(mgr manager.Manager) admission.Handler {
+		return &genericDefaulter{}
+	}
 }
 
 func (a *genericDefaulter) Handle(ctx context.Context, req admission.Request) admission.Response {

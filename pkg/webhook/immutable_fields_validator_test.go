@@ -1529,7 +1529,7 @@ func TestChangesOnImmutableFieldsForDCLResource(t *testing.T) {
 	}
 }
 
-func assertImmutableFieldsValidatorResult(t *testing.T, v *immutableFieldsValidatorHandler, provider *schema.Provider, testCase TestCase) {
+func assertImmutableFieldsValidatorResult(t *testing.T, _ HandlerFunc, provider *schema.Provider, testCase TestCase) {
 	r, ok := provider.ResourcesMap[testCase.TFSchemaName]
 	if !ok {
 		t.Errorf("couldn't get the schema for %v", testCase.TFSchemaName)
@@ -1617,7 +1617,7 @@ func TestChangesOnImmutableResourceIDField(t *testing.T) {
 	}
 }
 
-func newImmutableFieldsValidatorHandler(t *testing.T) *immutableFieldsValidatorHandler {
+func newImmutableFieldsValidatorHandler(t *testing.T) HandlerFunc {
 	t.Helper()
 	smLoader, err := servicemappingloader.New()
 	if err != nil {

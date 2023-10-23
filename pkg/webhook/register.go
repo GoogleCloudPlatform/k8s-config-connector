@@ -90,7 +90,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 			Name:          "deny-immutable-field-updates.cnrm.cloud.google.com",
 			Path:          "/deny-immutable-field-updates",
 			Type:          Validating,
-			Handler:       NewRequestLoggingHandler(NewImmutableFieldsValidatorHandler(smLoader, dclSchemaLoader, serviceMetadataLoader), "immutable fields validation"),
+			HandlerFunc:   NewRequestLoggingHandler(NewImmutableFieldsValidatorHandler(smLoader, dclSchemaLoader, serviceMetadataLoader), "immutable fields validation"),
 			FailurePolicy: admissionregistration.Fail,
 			Rules: getRulesForOperationTypes(
 				allResourcesRules,
@@ -102,7 +102,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 			Name:          "deny-unknown-fields.cnrm.cloud.google.com",
 			Path:          "/deny-unknown-fields",
 			Type:          Validating,
-			Handler:       NewRequestLoggingHandler(NewNoUnknownFieldsValidatorHandler(smLoader), "unknown fields validation"),
+			HandlerFunc:   NewRequestLoggingHandler(NewNoUnknownFieldsValidatorHandler(smLoader), "unknown fields validation"),
 			FailurePolicy: admissionregistration.Fail,
 			Rules: getRulesForOperationTypes(
 				allResourcesRules,
@@ -115,7 +115,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 			Name:          "iam-validation.cnrm.cloud.google.com",
 			Path:          "/iam-validation",
 			Type:          Validating,
-			Handler:       NewRequestLoggingHandler(NewIAMValidatorHandler(smLoader, serviceMetadataLoader, dclSchemaLoader), "iam validation"),
+			HandlerFunc:   NewRequestLoggingHandler(NewIAMValidatorHandler(smLoader, serviceMetadataLoader, dclSchemaLoader), "iam validation"),
 			FailurePolicy: admissionregistration.Fail,
 			Rules: getRulesForOperationTypes(handwrittenIamResourcesRules,
 				admissionregistration.Create,
@@ -127,7 +127,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 			Name:          "iam-defaulter.cnrm.cloud.google.com",
 			Path:          "/iam-defaulter",
 			Type:          Mutating,
-			Handler:       NewRequestLoggingHandler(NewIAMDefaulter(smLoader, serviceMetadataLoader), "iam defaulter"),
+			HandlerFunc:   NewRequestLoggingHandler(NewIAMDefaulter(smLoader, serviceMetadataLoader), "iam defaulter"),
 			FailurePolicy: admissionregistration.Fail,
 			Rules: getRulesForOperationTypes(handwrittenIamResourcesRules,
 				admissionregistration.Create,
@@ -138,7 +138,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 			Name:          "container-annotation-handler.cnrm.cloud.google.com",
 			Path:          "/container-annotation-handler",
 			Type:          Mutating,
-			Handler:       NewRequestLoggingHandler(NewContainerAnnotationHandler(smLoader, dclSchemaLoader, serviceMetadataLoader), "container annotation handler"),
+			HandlerFunc:   NewRequestLoggingHandler(NewContainerAnnotationHandler(smLoader, dclSchemaLoader, serviceMetadataLoader), "container annotation handler"),
 			FailurePolicy: admissionregistration.Fail,
 			Rules: getRulesForOperationTypes(
 				dynamicResourcesRules,
@@ -150,7 +150,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 			Name:          "management-conflict-annotation-defaulter.cnrm.cloud.google.com",
 			Path:          "/management-conflict-annotation-defaulter",
 			Type:          Mutating,
-			Handler:       NewRequestLoggingHandler(NewManagementConflictAnnotationDefaulter(smLoader, dclSchemaLoader, serviceMetadataLoader), "management conflict annotation defaulter"),
+			HandlerFunc:   NewRequestLoggingHandler(NewManagementConflictAnnotationDefaulter(smLoader, dclSchemaLoader, serviceMetadataLoader), "management conflict annotation defaulter"),
 			FailurePolicy: admissionregistration.Fail,
 			Rules: getRulesForOperationTypes(
 				dynamicResourcesRules,
@@ -162,7 +162,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 			Name:          "generic-defaulter.cnrm.cloud.google.com",
 			Path:          "/generic-defaulter",
 			Type:          Mutating,
-			Handler:       NewRequestLoggingHandler(NewGenericDefaulter(), "generic defaulter"),
+			HandlerFunc:   NewRequestLoggingHandler(NewGenericDefaulter(), "generic defaulter"),
 			FailurePolicy: admissionregistration.Fail,
 			Rules: getRulesForOperationTypes(
 				dynamicResourcesRules,
@@ -174,7 +174,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 			Name:          "resource-validation.cnrm.cloud.google.com",
 			Path:          "/resource-validation",
 			Type:          Validating,
-			Handler:       NewRequestLoggingHandler(NewResourceValidatorHandler(), "resource validation"),
+			HandlerFunc:   NewRequestLoggingHandler(NewResourceValidatorHandler(), "resource validation"),
 			FailurePolicy: admissionregistration.Fail,
 			Rules: getRulesForOperationTypes(resourcesWithOverridesRules,
 				admissionregistration.Create,
@@ -189,10 +189,10 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {
 	whCfgs := []WebhookConfig{
 		{
-			Name:    "abandon-on-uninstall.cnrm.cloud.google.com",
-			Path:    "/abandon-on-uninstall",
-			Type:    Validating,
-			Handler: &abandonOnCRDUninstallWebhook{},
+			Name:        "abandon-on-uninstall.cnrm.cloud.google.com",
+			Path:        "/abandon-on-uninstall",
+			Type:        Validating,
+			HandlerFunc: NewAbandonOnCRDUninstallWebhook(),
 			ObjectSelector: &metav1.LabelSelector{
 				// The MatchLabels will not match anything with the value "no-op"
 				// specified. We want the webhook to intercept nothing before we
@@ -286,7 +286,8 @@ func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationNa
 		Port:     ServicePort,
 	}
 	for _, whCfg := range whCfgs {
-		s.Register(whCfg.Path, &admission.Webhook{Handler: whCfg.Handler})
+		handler := whCfg.HandlerFunc(mgr)
+		s.Register(whCfg.Path, &admission.Webhook{Handler: handler})
 	}
 	if err := mgr.Add(s); err != nil {
 		return fmt.Errorf("error adding webhook server to manager: %w", err)

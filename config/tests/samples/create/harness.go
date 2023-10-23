@@ -255,7 +255,8 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	if len(webhooks) > 0 {
 		server := mgr.GetWebhookServer()
 		for _, cfg := range webhooks {
-			server.Register(cfg.Path, &webhook.Admission{Handler: cfg.Handler})
+			handler := cfg.HandlerFunc(mgr)
+			server.Register(cfg.Path, &webhook.Admission{Handler: handler})
 		}
 	}
 

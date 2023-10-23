@@ -43,6 +43,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
@@ -63,12 +64,14 @@ var (
 	allowedResponse = admission.ValidationResponse(true, "admission controller passed")
 )
 
-func NewImmutableFieldsValidatorHandler(smLoader *servicemappingloader.ServiceMappingLoader, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader) *immutableFieldsValidatorHandler {
-	return &immutableFieldsValidatorHandler{
-		smLoader:              smLoader,
-		tfResourceMap:         provider.ResourceMap(),
-		dclSchemaLoader:       dclSchemaLoader,
-		serviceMetadataLoader: serviceMetadataLoader,
+func NewImmutableFieldsValidatorHandler(smLoader *servicemappingloader.ServiceMappingLoader, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader) HandlerFunc {
+	return func(mgr manager.Manager) admission.Handler {
+		return &immutableFieldsValidatorHandler{
+			smLoader:              smLoader,
+			tfResourceMap:         provider.ResourceMap(),
+			dclSchemaLoader:       dclSchemaLoader,
+			serviceMetadataLoader: serviceMetadataLoader,
+		}
 	}
 }
 
