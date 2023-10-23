@@ -57,7 +57,6 @@ type SystemContext struct {
 	TFProvider   *schema.Provider
 	DCLConfig    *mmdcl.Config
 	DCLConverter *dclconversion.Converter
-	Project      testgcp.GCPProject
 }
 
 type ShouldRunFunc func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool
@@ -90,17 +89,18 @@ func RunAll(ctx context.Context, t *testing.T, mgr manager.Manager, shouldRunFun
 		return shouldRunFunc(resourceFixture, mgr)
 	}
 	testFunc := func(ctx context.Context, t *testing.T, fixture resourcefixture.ResourceFixture) {
+		project := testgcp.GetDefaultProject(t)
 		systemContext := newSystemContext(t, mgr)
-		testContext := NewTestContext(t, fixture, systemContext.Project)
-		setupNamespaces(t, testContext, systemContext)
+		testContext := NewTestContext(t, fixture, project)
+		setupNamespaces(t, testContext, systemContext, project)
 		testCaseFunc(ctx, t, testContext, systemContext)
 	}
 	resourcefixture.RunTests(ctx, t, shouldRun, testFunc)
 }
 
 func RunSpecific(ctx context.Context, t *testing.T, fixture []resourcefixture.ResourceFixture, testCaseFunc func(ctx context.Context, t *testing.T, testContext TestContext)) {
-	project := testgcp.GetDefaultProject(t)
 	testFunc := func(ctx context.Context, t *testing.T, fixture resourcefixture.ResourceFixture) {
+		project := testgcp.GetDefaultProject(t)
 		testContext := NewTestContext(t, fixture, project)
 		testCaseFunc(ctx, t, testContext)
 	}
@@ -164,15 +164,15 @@ func newSystemContext(t *testing.T, mgr manager.Manager) SystemContext {
 	}
 }
 
-func setupNamespaces(t *testing.T, testContext TestContext, systemContext SystemContext) {
+func setupNamespaces(t *testing.T, testContext TestContext, systemContext SystemContext, project testgcp.GCPProject) {
 	namespacesAlreadySetup := make(map[string]bool)
-	testcontroller.SetupNamespaceForProject(t, systemContext.Manager.GetClient(), testContext.CreateUnstruct.GetNamespace(), systemContext.Project.ProjectID)
+	testcontroller.SetupNamespaceForProject(t, systemContext.Manager.GetClient(), testContext.CreateUnstruct.GetNamespace(), project.ProjectID)
 	namespacesAlreadySetup[testContext.CreateUnstruct.GetNamespace()] = true
 	for _, depUnstruct := range testContext.DependencyUnstructs {
 		if _, ok := namespacesAlreadySetup[depUnstruct.GetNamespace()]; ok {
 			continue
 		}
-		testcontroller.SetupNamespaceForProject(t, systemContext.Manager.GetClient(), depUnstruct.GetNamespace(), systemContext.Project.ProjectID)
+		testcontroller.SetupNamespaceForProject(t, systemContext.Manager.GetClient(), depUnstruct.GetNamespace(), project.ProjectID)
 		namespacesAlreadySetup[depUnstruct.GetNamespace()] = true
 	}
 }
