@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/testcontext"
 	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 	"golang.org/x/oauth2/google"
@@ -78,11 +79,6 @@ func (h *Harness) ForSubtest(t *testing.T) *Harness {
 	subHarness.Ctx = ctx
 	return &subHarness
 }
-
-type httpRoundTripperKeyType int
-
-// httpRoundTripperKey is the key value for http.RoundTripper in a context.Context
-var httpRoundTripperKey httpRoundTripperKeyType
 
 // NewHarnessWithManager builds a Harness for an existing manager.
 // deprecated: Prefer NewHarness, which can construct a manager and mock gcp etc.
@@ -190,6 +186,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		}
 	}
 
+	// TODO: Try to centralize and deduplicate this logic somewhere?
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
 		t.Logf("creating mock gcp")
 
@@ -197,7 +194,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 
 		roundTripper := http.RoundTripper(mockCloud)
 
-		h.Ctx = context.WithValue(h.Ctx, httpRoundTripperKey, roundTripper)
+		h.Ctx = testcontext.WithHTTPRoundTripper(h.Ctx, roundTripper)
 
 		kccConfig.HTTPClient = &http.Client{Transport: roundTripper}
 
@@ -226,8 +223,8 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	// Log TF requests
 	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
-		if t := ctx.Value(httpRoundTripperKey); t != nil {
-			ret = &http.Client{Transport: t.(http.RoundTripper)}
+		if t := testcontext.HTTPRoundTripperFromContext(ctx); t != nil {
+			ret = &http.Client{Transport: t}
 		}
 		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
 			log.Info("env var ARTIFACTS is not set; will not record http log")
@@ -242,8 +239,8 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	// Log TF oauth requests
 	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
-		if t := ctx.Value(httpRoundTripperKey); t != nil {
-			ret = &http.Client{Transport: t.(http.RoundTripper)}
+		if t := testcontext.HTTPRoundTripperFromContext(ctx); t != nil {
+			ret = &http.Client{Transport: t}
 		}
 		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
 			log.Info("env var ARTIFACTS is not set; will not record http log")

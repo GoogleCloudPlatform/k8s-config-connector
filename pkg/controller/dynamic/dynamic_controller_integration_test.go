@@ -47,6 +47,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/contexts"
 	testrunner "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/runner"
 	testservicemapping "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemapping"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/testcontext"
 
 	"github.com/cenkalti/backoff"
 	"github.com/ghodss/yaml"
@@ -57,11 +58,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
-
-type httpRoundTripperKeyType int
-
-// httpRoundTripperKey is the key value for http.RoundTripper in a context.Context
-var httpRoundTripperKey httpRoundTripperKeyType
 
 func init() {
 	// run-tests and skip-tests allows you to limit the tests that are run by
@@ -80,8 +76,8 @@ func init() {
 	// Allow for capture of http requests during a test.
 	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
-		if t := ctx.Value(httpRoundTripperKey); t != nil {
-			ret = &http.Client{Transport: t.(http.RoundTripper)}
+		if t := testcontext.HTTPRoundTripperFromContext(ctx); t != nil {
+			ret = &http.Client{Transport: t}
 		}
 		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
 			log := log.FromContext(ctx)
