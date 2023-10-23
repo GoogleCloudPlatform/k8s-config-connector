@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockcontainerattached
+package mockgkemulticloud
 
 import (
 	"context"
@@ -26,12 +26,12 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkemulticloud/v1"
 )
 
-type ContainerAttachedV1 struct {
+type GKEMulticloudV1 struct {
 	*MockService
 	pb.UnimplementedAttachedClustersServer
 }
 
-func (s *ContainerAttachedV1) GetAttachedCluster(ctx context.Context, req *pb.GetAttachedClusterRequest) (*pb.AttachedCluster, error) {
+func (s *GKEMulticloudV1) GetAttachedCluster(ctx context.Context, req *pb.GetAttachedClusterRequest) (*pb.AttachedCluster, error) {
 	name, err := s.parseAttachedClustersName(req.Name)
 	if err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func (s *ContainerAttachedV1) GetAttachedCluster(ctx context.Context, req *pb.Ge
 	return obj, nil
 }
 
-func (s *ContainerAttachedV1) CreateAttachedCluster(ctx context.Context, req *pb.CreateAttachedClusterRequest) (*longrunning.Operation, error) {
+func (s *GKEMulticloudV1) CreateAttachedCluster(ctx context.Context, req *pb.CreateAttachedClusterRequest) (*longrunning.Operation, error) {
 	reqName := req.Parent + "/attachedClusters/" + req.AttachedClusterId
 	name, err := s.parseAttachedClustersName(reqName)
 	if err != nil {
@@ -70,7 +70,7 @@ func (s *ContainerAttachedV1) CreateAttachedCluster(ctx context.Context, req *pb
 	return s.operations.NewLRO(ctx)
 }
 
-func (s *ContainerAttachedV1) DeleteAttachedCluster(ctx context.Context, req *pb.DeleteAttachedClusterRequest) (*longrunning.Operation, error) {
+func (s *GKEMulticloudV1) DeleteAttachedCluster(ctx context.Context, req *pb.DeleteAttachedClusterRequest) (*longrunning.Operation, error) {
 	name, err := s.parseAttachedClustersName(req.Name)
 	if err != nil {
 		return nil, err

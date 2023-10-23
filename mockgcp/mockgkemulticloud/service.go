@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockcontainerattached
+package mockgkemulticloud
 
 import (
 	"context"
@@ -36,7 +36,7 @@ type MockService struct {
 	projects   *projects.ProjectStore
 	operations *operations.Operations
 
-	v1 *ContainerAttachedV1
+	v1 *GKEMulticloudV1
 }
 
 // New creates a MockService.
@@ -47,7 +47,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		projects:   env.GetProjects(),
 		operations: operations.NewOperationsService(storage),
 	}
-	s.v1 = &ContainerAttachedV1{MockService: s}
+	s.v1 = &GKEMulticloudV1{MockService: s}
 	return s
 }
 
