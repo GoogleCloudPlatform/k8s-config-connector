@@ -246,7 +246,7 @@ Not guaranteed to be stable. For programmatic access use 'failure_reason' field.
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Authorizations that will be used for performing domain authorization. Either issuanceConfig or dnsAuthorizations should be specificed, but not both.{% endverbatim %}</p>
+            <p>{% verbatim %}Authorizations that will be used for performing domain authorization. Either issuanceConfig or dnsAuthorizations should be specified, but not both.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -311,7 +311,7 @@ Wildcard domains are only supported with DNS challenge resolution.{% endverbatim
 
 Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/*/locations/*/certificateIssuanceConfigs/*.
 If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
-Either issuanceConfig or dnsAuthorizations should be specificed, but not both.{% endverbatim %}</p>
+Either issuanceConfig or dnsAuthorizations should be specified, but not both.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -484,7 +484,7 @@ certificates before they expire remains the user's responsibility.{% endverbatim
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}DEPRECATED. `certificate_pem` is deprecated and will be removed in a future major release. Use `pem_certificate` instead. Immutable. The certificate chain in PEM-encoded form.
+            <p>{% verbatim %}DEPRECATED. `certificate_pem` is deprecated. Use `pem_certificate` instead. Immutable. The certificate chain in PEM-encoded form.
 
 Leaf certificate comes first, followed by intermediate ones if any.{% endverbatim %}</p>
         </td>
@@ -618,7 +618,7 @@ Leaf certificate comes first, followed by intermediate ones if any.{% endverbati
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}DEPRECATED. `private_key_pem` is deprecated and will be removed in a future major release. Use `pem_private_key` instead. Immutable. The private key of the leaf certificate in PEM-encoded form.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. `private_key_pem` is deprecated. Use `pem_private_key` instead. Immutable. The private key of the leaf certificate in PEM-encoded form.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -97,7 +97,7 @@ type HealthcareHL7V2StoreSpec struct {
 	'projects/{project}/locations/{location}/datasets/{dataset}'. */
 	Dataset string `json:"dataset"`
 
-	/* DEPRECATED. `notification_config` is deprecated and will be removed in a future major release. Use `notification_configs` instead. A nested object resource. */
+	/* DEPRECATED. `notification_config` is deprecated. Use `notification_configs` instead. A nested object resource. */
 	// +optional
 	NotificationConfig *Hl7v2storeNotificationConfig `json:"notificationConfig,omitempty"`
 

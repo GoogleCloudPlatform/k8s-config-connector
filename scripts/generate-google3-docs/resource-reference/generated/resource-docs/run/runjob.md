@@ -631,7 +631,7 @@ This field follows Kubernetes annotations' namespacing, limits, and rules.{% end
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}DEPRECATED. `liveness_probe` is deprecated and will be removed in a future major release. This field is not supported by the Cloud Run API. Periodic probe of container liveness. Container will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+            <p>{% verbatim %}DEPRECATED. `liveness_probe` is deprecated. This field is not supported by the Cloud Run API. Periodic probe of container liveness. Container will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
     </tr>
@@ -834,7 +834,7 @@ If omitted, a port number will be chosen and passed to the container through the
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}DEPRECATED. `startup_probe` is deprecated and will be removed in a future major release. This field is not supported by the Cloud Run API. Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+            <p>{% verbatim %}DEPRECATED. `startup_probe` is deprecated. This field is not supported by the Cloud Run API. Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 This field is not supported in Cloud Run Job currently.{% endverbatim %}</p>
         </td>
     </tr>
