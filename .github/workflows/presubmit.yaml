@@ -74,6 +74,25 @@ jobs:
         with:
           name: artifacts
           path: /tmp/artifacts/
+  legacy-tests-mockgcp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.21.3'
+      - name: 'Run legacy unit tests, with a mock GCP'
+        run: |
+          ./scripts/github-actions/legacy-tests-mockgcp.sh
+        env:
+          GOPATH: /home/runner/go
+          ARTIFACTS: /tmp/artifacts
+      - name: 'Upload artifacts'
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: /tmp/artifacts/
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
