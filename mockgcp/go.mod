@@ -4,10 +4,10 @@ go 1.21.3
 
 require (
 	cloud.google.com/go/iam v1.1.1
-	cloud.google.com/go/longrunning v0.5.1
+	cloud.google.com/go/longrunning v0.5.2
 	github.com/golang/protobuf v1.5.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
-	google.golang.org/api v0.126.0
+	google.golang.org/api v0.128.0
 	google.golang.org/genproto v0.0.0-20230815205213-6bfd019c3878
 	google.golang.org/genproto/googleapis/api v0.0.0-20230815205213-6bfd019c3878
 	google.golang.org/grpc v1.57.0
@@ -30,8 +30,8 @@ require (
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/google/s2a-go v0.1.4 // indirect
 	github.com/google/uuid v1.3.1 // indirect
-	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
-	github.com/googleapis/gax-go/v2 v2.11.0 // indirect
+	github.com/googleapis/enterprise-certificate-proxy v0.2.4 // indirect
+	github.com/googleapis/gax-go/v2 v2.12.0 // indirect
 	github.com/googleapis/gnostic v0.5.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
