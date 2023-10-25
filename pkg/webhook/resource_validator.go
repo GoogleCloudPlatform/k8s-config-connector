@@ -22,26 +22,17 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/runtime/inject"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
 type resourceValidatorHandler struct {
-	client client.Client
 }
 
-// resourceValidatorHandler implements inject.Client.
-var _ inject.Client = &resourceValidatorHandler{}
-
-func NewResourceValidatorHandler() *resourceValidatorHandler {
-	return &resourceValidatorHandler{}
-}
-
-// InjectClient injects the client into the noUnknownFieldsValidatorHandler
-func (a *resourceValidatorHandler) InjectClient(c client.Client) error {
-	a.client = c
-	return nil
+func NewResourceValidatorHandler() HandlerFunc {
+	return func(mgr manager.Manager) admission.Handler {
+		return &resourceValidatorHandler{}
+	}
 }
 
 func (a *resourceValidatorHandler) Handle(ctx context.Context, req admission.Request) admission.Response {

@@ -79,7 +79,8 @@ func startTestManager(env *envtest.Environment, testType test.TestType, whCfgs [
 	if testType == test.IntegrationTestType {
 		server := mgr.GetWebhookServer()
 		for _, cfg := range whCfgs {
-			server.Register(cfg.Path, &webhook.Admission{Handler: cfg.Handler})
+			handler := cfg.HandlerFunc(mgr)
+			server.Register(cfg.Path, &webhook.Admission{Handler: handler})
 		}
 	}
 	stop := startMgr(mgr, log.Fatalf)

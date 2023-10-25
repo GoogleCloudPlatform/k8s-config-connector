@@ -33,7 +33,7 @@ import (
 	apimachinerytypes "k8s.io/apimachinery/pkg/types"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/runtime/inject"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
@@ -44,21 +44,15 @@ type containerAnnotationHandler struct {
 	smLoader              *servicemappingloader.ServiceMappingLoader
 }
 
-func NewContainerAnnotationHandler(smLoader *servicemappingloader.ServiceMappingLoader, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader) *containerAnnotationHandler {
-	return &containerAnnotationHandler{
-		smLoader:              smLoader,
-		serviceMetadataLoader: serviceMetadataLoader,
-		dclSchemaLoader:       dclSchemaLoader,
+func NewContainerAnnotationHandler(smLoader *servicemappingloader.ServiceMappingLoader, dclSchemaLoader dclschemaloader.DCLSchemaLoader, serviceMetadataLoader dclmetadata.ServiceMetadataLoader) HandlerFunc {
+	return func(mgr manager.Manager) admission.Handler {
+		return &containerAnnotationHandler{
+			client:                mgr.GetClient(),
+			smLoader:              smLoader,
+			serviceMetadataLoader: serviceMetadataLoader,
+			dclSchemaLoader:       dclSchemaLoader,
+		}
 	}
-}
-
-// containerAnnotationHandler implements inject.Client.
-var _ inject.Client = &containerAnnotationHandler{}
-
-// InjectClient injects the client into the containerAnnotationHandler
-func (a *containerAnnotationHandler) InjectClient(c client.Client) error {
-	a.client = c
-	return nil
 }
 
 func (a *containerAnnotationHandler) Handle(ctx context.Context, req admission.Request) admission.Response {

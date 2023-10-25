@@ -26,6 +26,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
@@ -40,10 +41,12 @@ type iamDefaulter struct {
 }
 
 func NewIAMDefaulter(smLoader *servicemappingloader.ServiceMappingLoader,
-	serviceMetadataLoader metadata.ServiceMetadataLoader) *iamDefaulter {
-	return &iamDefaulter{
-		smLoader:              smLoader,
-		serviceMetadataLoader: serviceMetadataLoader,
+	serviceMetadataLoader metadata.ServiceMetadataLoader) HandlerFunc {
+	return func(mgr manager.Manager) admission.Handler {
+		return &iamDefaulter{
+			smLoader:              smLoader,
+			serviceMetadataLoader: serviceMetadataLoader,
+		}
 	}
 }
 
