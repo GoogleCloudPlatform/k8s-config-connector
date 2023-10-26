@@ -74,7 +74,46 @@ func (s *NetworkServicesServer) CreateMesh(ctx context.Context, req *pb.CreateMe
 }
 
 func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMeshRequest) (*longrunning.Operation, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateMesh not implemented")
+	reqName := req.GetMesh().GetName()
+
+	name, err := s.parseMeshName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Mesh{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "mesh %q not found", reqName)
+		}
+		return nil, status.Errorf(codes.Internal, "error reading mesh: %v", err)
+	}
+
+	// Field mask is used to specify the fields to be overwritten in the
+	// Mesh resource by the update.
+	// The fields specified in the update_mask are relative to the resource, not
+	// the full request. A field will be overwritten if it is in the mask. If the
+	// user does not provide a mask then all fields will be overwritten.
+	paths := req.GetUpdateMask().GetPaths()
+	// TODO: Some sort of helper for fieldmask?
+	for _, path := range paths {
+		switch path {
+		case "description":
+			obj.Description = req.GetMesh().GetDescription()
+		case "interceptionPort":
+			obj.InterceptionPort = req.GetMesh().GetInterceptionPort()
+		case "labels":
+			obj.Labels = req.GetMesh().GetLabels()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating mesh: %v", err)
+	}
+	return s.operations.NewLRO(ctx)
 }
 
 func (s *NetworkServicesServer) DeleteMesh(ctx context.Context, req *pb.DeleteMeshRequest) (*longrunning.Operation, error) {

@@ -15,7 +15,6 @@
 package create
 
 import (
-	"context"
 	"fmt"
 	"io/ioutil"
 	"path"
@@ -41,6 +40,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/wait"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
@@ -90,17 +90,42 @@ func getNamespaces(samples []Sample) []string {
 	return results
 }
 
-func RunCreateDeleteTest(t *Harness, unstructs []*unstructured.Unstructured, cleanupResources bool) {
+type CreateDeleteTestOptions struct {
+	// Create is the set of objects to create
+	Create []*unstructured.Unstructured
+
+	// Updates is the set of objects to update (after all objects have been created)
+	Updates []*unstructured.Unstructured
+
+	// CleanupResources is true if we should delete resources when we are done
+	CleanupResources bool
+}
+
+func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
+	ctx := t.Ctx
+
 	// Create and reconcile all resources & dependencies
-	for _, u := range unstructs {
-		if err := t.GetClient().Create(context.TODO(), u); err != nil {
+	for _, u := range opt.Create {
+		if err := t.GetClient().Create(ctx, u); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
 	}
-	waitForReady(t, unstructs)
-	// Clean up resources on success or if cleanupResources flag is true
-	if cleanupResources {
-		DeleteResources(t, unstructs)
+
+	waitForReady(t, opt.Create)
+
+	if len(opt.Updates) != 0 {
+		// treat as a patch
+		for _, updateUnstruct := range opt.Updates {
+			if err := t.GetClient().Patch(ctx, updateUnstruct, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
+				t.Fatalf("error updating resource: %v", err)
+			}
+		}
+		waitForReady(t, opt.Updates)
+	}
+
+	// Clean up resources on success if CleanupResources flag is true
+	if opt.CleanupResources {
+		DeleteResources(t, opt.Create)
 	}
 }
 

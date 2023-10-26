@@ -142,3 +142,40 @@ func (s *ServerV1) DeleteServiceAccount(ctx context.Context, req *pb.DeleteServi
 
 	return &emptypb.Empty{}, nil
 }
+
+func (s *ServerV1) PatchServiceAccount(ctx context.Context, req *pb.PatchServiceAccountRequest) (*pb.ServiceAccount, error) {
+	reqName := req.GetServiceAccount().GetName()
+
+	name, err := s.serverV1.parseServiceAccountName(ctx, reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	sa := &pb.ServiceAccount{}
+	if err := s.storage.Get(ctx, fqn, sa); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "serviceaccount %q not found", reqName)
+		}
+		return nil, status.Errorf(codes.Internal, "error reading serviceaccount: %v", err)
+	}
+
+	// You can patch only the `display_name` and `description` fields.
+	// You must use the `update_mask` field to specify which of these fields you want to patch.
+	paths := req.GetUpdateMask().GetPaths()
+	for _, path := range paths {
+		switch path {
+		case "display_name":
+			sa.DisplayName = req.GetServiceAccount().GetDisplayName()
+		case "description":
+			sa.Description = req.GetServiceAccount().GetDescription()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, sa); err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating serviceaccount: %v", err)
+	}
+	return sa, nil
+}
