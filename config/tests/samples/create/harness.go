@@ -177,7 +177,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 			for i := range crds {
 				crd := &crds[i]
 				wg.Add(1)
-				t.Logf("loading crd %v", crd.GetName())
+				log.V(2).Info("loading crd", "name", crd.GetName())
 				go func() {
 					defer wg.Done()
 					if err := h.client.Create(ctx, crd.DeepCopy()); err != nil {
@@ -350,7 +350,7 @@ func (t *Harness) waitForCRDReady(obj client.Object) {
 		u := &unstructured.Unstructured{}
 		u.SetAPIVersion(apiVersion)
 		u.SetKind(kind)
-		logger.Info("Testing to see if resource is ready", "kind", kind, "id", id)
+		logger.V(2).Info("Testing to see if resource is ready", "kind", kind, "id", id)
 		if err := t.GetClient().Get(t.Ctx, id, u); err != nil {
 			logger.Info("Error getting resource", "kind", kind, "id", id, "error", err)
 			return false, err

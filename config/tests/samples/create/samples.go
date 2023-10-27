@@ -145,7 +145,7 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 	defer wg.Done()
 	err := wait.PollImmediate(1*time.Second, 35*time.Minute, func() (done bool, err error) {
 		done = true
-		logger.Info("Testing to see if resource is ready", "kind", u.GetKind(), "name", u.GetName())
+		logger.V(2).Info("Testing to see if resource is ready", "kind", u.GetKind(), "name", u.GetName())
 		err = t.GetClient().Get(t.Ctx, name, u)
 		if err != nil {
 			logger.Info("Error getting resource", "kind", u.GetKind(), "name", u.GetName(), "error", err)
