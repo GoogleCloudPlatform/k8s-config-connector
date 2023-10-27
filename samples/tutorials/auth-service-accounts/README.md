@@ -1,1 +1,0 @@
-Samples for: https://cloud.google.com/kubernetes-engine/docs/tutorials/authenticating-to-cloud-platform
