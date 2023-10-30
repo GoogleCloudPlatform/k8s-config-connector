@@ -33,6 +33,3 @@ spec:
         policyDir: "config-connector"
         syncWaitSecs: "20"
         syncRev: "HEAD"
-    # binauthz is intentionally set to an empty struct, which means caller wants
-    # to install Binauthz without parameters.
-    binauthz: {}
