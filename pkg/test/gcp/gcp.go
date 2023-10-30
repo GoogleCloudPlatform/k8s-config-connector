@@ -33,18 +33,39 @@ import (
 	"google.golang.org/api/storage/v1"
 )
 
+// EnvVar is a wrapper around a value that can be set by an environment variable.
+// This approach allows the value to be changed in tests more easily.
+type EnvVar struct {
+	Key   string
+	value string
+}
+
+func (v *EnvVar) Get() string {
+	if v.value == "" {
+		v.value = os.Getenv(v.Key)
+	}
+	return v.value
+}
+
+func (v *EnvVar) Set(s string) {
+	v.value = s
+}
+
+var (
+	TestOrgID                           = EnvVar{Key: "TEST_ORG_ID"}
+	TestBillingAccountID                = EnvVar{Key: "TEST_BILLING_ACCOUNT_ID"}
+	IAMIntegrationTestsOrganizationID   = EnvVar{Key: "IAM_INTEGRATION_TESTS_ORGANIZATION_ID"}
+	IAMIntegrationTestsBillingAccountID = EnvVar{Key: "IAM_INTEGRATION_TESTS_BILLING_ACCOUNT_ID"}
+)
+
 const (
 	TestFolderId                            = "TEST_FOLDER_ID"
 	TestFolder2Id                           = "TEST_FOLDER_2_ID"
-	TestOrgId                               = "TEST_ORG_ID"
 	TestDependentOrgProjectId               = "TEST_DEPENDENT_ORG_PROJECT_ID"
 	TestDependentFolderProjectId            = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
 	TestDependentNoNetworkProjectId         = "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID" // A dependent project with default network disabled
-	IAMIntegrationTestsOrganizationId       = "IAM_INTEGRATION_TESTS_ORGANIZATION_ID"
 	IsolatedTestOrgName                     = "ISOLATED_TEST_ORG_NAME"
-	TestBillingAccountId                    = "TEST_BILLING_ACCOUNT_ID"
 	TestBillingAccountIDForBillingResources = "BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES"
-	IAMIntegrationTestsBillingAccountId     = "IAM_INTEGRATION_TESTS_BILLING_ACCOUNT_ID"
 	FirestoreTestProject                    = "FIRESTORE_TEST_PROJECT"
 	CloudFunctionsTestProject               = "CLOUD_FUNCTIONS_TEST_PROJECT"
 	IdentityPlatformTestProject             = "IDENTITY_PLATFORM_TEST_PROJECT"
@@ -58,15 +79,11 @@ const (
 var (
 	testFolderID                            = os.Getenv(TestFolderId)
 	testFolder2Id                           = os.Getenv(TestFolder2Id)
-	testOrgID                               = os.Getenv(TestOrgId)
 	testDependentOrgProjectId               = os.Getenv(TestDependentOrgProjectId)
 	testDependentFolderProjectId            = os.Getenv(TestDependentFolderProjectId)
 	testDependentNoNetworkProjectId         = os.Getenv(TestDependentNoNetworkProjectId)
 	isolatedTestOrgName                     = os.Getenv(IsolatedTestOrgName)
-	iamIntegrationTestsOrganizationId       = os.Getenv(IAMIntegrationTestsOrganizationId)
-	testBillingAccountID                    = os.Getenv(TestBillingAccountId)
 	testBillingAccountIDForBillingResources = os.Getenv(TestBillingAccountIDForBillingResources)
-	iamIntegrationTestsBillingAccountId     = os.Getenv(IAMIntegrationTestsBillingAccountId)
 	firestoreTestProject                    = os.Getenv(FirestoreTestProject)
 	cloudFunctionsTestProject               = os.Getenv(CloudFunctionsTestProject)
 	identityPlatformTestProject             = os.Getenv(IdentityPlatformTestProject)
@@ -152,16 +169,8 @@ func GetFolder2ID(t *testing.T) string {
 	return testFolder2Id
 }
 
-func GetBillingAccountID(t *testing.T) string {
-	return testBillingAccountID
-}
-
 func GetTestBillingAccountIDForBillingResources(t *testing.T) string {
 	return testBillingAccountIDForBillingResources
-}
-
-func GetOrgID(t *testing.T) string {
-	return testOrgID
 }
 
 func GetDependentOrgProjectID(t *testing.T) string {
@@ -178,14 +187,6 @@ func GetDependentNoNetworkProjectID(t *testing.T) string {
 
 func GetIsolatedTestOrgName(t *testing.T) string {
 	return isolatedTestOrgName
-}
-
-func GetIAMIntegrationTestsBillingAccountId(t *testing.T) string {
-	return iamIntegrationTestsBillingAccountId
-}
-
-func GetIAMIntegrationTestsOrganizationId(t *testing.T) string {
-	return iamIntegrationTestsOrganizationId
 }
 
 func GetFirestoreTestProject(t *testing.T) string {

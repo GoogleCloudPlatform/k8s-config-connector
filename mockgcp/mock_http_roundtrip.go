@@ -47,6 +47,7 @@ import (
 type mockRoundTripper struct {
 	services map[string]MockService
 
+	iamPolicies    *mockIAMPolicies
 	grpcConnection *grpc.ClientConn
 	grpcListener   net.Listener
 
@@ -125,6 +126,8 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 		rt.hosts[service.ExpectedHost()] = mux
 	}
 
+	rt.iamPolicies = newMockIAMPolicies()
+
 	return rt
 }
 
@@ -184,10 +187,60 @@ func (m *mockRoundTripper) modifyUpdateMask(s string) (string, error) {
 	return string(b), nil
 }
 
+// roundTripIAMPolicy serves the IAM policy verbs (e.g. :getIamPolicy)
+// These are implemented on most resources, and rather than mock them
+// per-resource, we implement them once here.
+func (m *mockRoundTripper) roundTripIAMPolicy(req *http.Request) (*http.Response, error) {
+	requestPath := req.URL.Path
+
+	lastColon := strings.LastIndex(requestPath, ":")
+	verb := requestPath[lastColon+1:]
+
+	requestPath = strings.TrimSuffix(requestPath, ":"+verb)
+
+	switch verb {
+	case "getIamPolicy":
+		if req.Method == "GET" || req.Method == "POST" {
+			resourcePath := req.URL.Host + requestPath
+			return m.iamPolicies.serveGetIAMPolicy(resourcePath)
+		} else {
+			response := &http.Response{
+				StatusCode: http.StatusMethodNotAllowed,
+				Status:     "method not supported",
+				Body:       io.NopCloser(strings.NewReader("{}")),
+			}
+			return response, nil
+		}
+
+	case "setIamPolicy":
+		if req.Method == "POST" {
+			resourcePath := req.URL.Host + requestPath
+			return m.iamPolicies.serveSetIAMPolicy(resourcePath, req)
+		} else {
+			response := &http.Response{
+				StatusCode: http.StatusMethodNotAllowed,
+				Status:     "method not supported",
+				Body:       io.NopCloser(strings.NewReader("{}")),
+			}
+			return response, nil
+		}
+
+	default:
+		return &http.Response{
+			StatusCode: http.StatusNotFound,
+			Status:     "not found",
+			Body:       io.NopCloser(strings.NewReader("{}")),
+		}, nil
+	}
+}
+
 func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	log.Printf("request: %v %v", req.Method, req.URL)
 
-	// TODO: Make this better ... iterate through a list?
+	requestPath := req.URL.Path
+	if strings.HasSuffix(requestPath, ":getIamPolicy") || strings.HasSuffix(requestPath, ":setIamPolicy") {
+		return m.roundTripIAMPolicy(req)
+	}
 
 	mux := m.hosts[req.Host]
 	if mux != nil {

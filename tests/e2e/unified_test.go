@@ -48,6 +48,12 @@ func TestAllInSeries(t *testing.T) {
 			ProjectID:     "mock-project-" + strconv.FormatInt(projectNumber, 10),
 			ProjectNumber: projectNumber,
 		}
+		// Some fixed-value fake org-ids for testing.
+		// We used fixed values so that the output is predictable (for golden testing)
+		testgcp.TestOrgID.Set("123450001")
+		testgcp.TestBillingAccountID.Set("123456-777777-000001")
+		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
+		testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
 	} else {
 		project = testgcp.GetDefaultProject(t)
 	}
