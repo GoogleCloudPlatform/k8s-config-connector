@@ -890,8 +890,6 @@ spec:
       logDeniesEnabled: true
       templateLibraryInstalled: true
       auditIntervalSeconds: "20"
-    binauthz:
-      enabled: true
     hierarchyController:
       enabled: true
       enablePodTreeLabels: true
