@@ -322,7 +322,8 @@ metadata:
 spec:
   description: "A sample edgenetwork network"
   location: us-central1
-  zone: us-central1-edge-den123
+  # Replace ${ZONE_LOCATION?} with the machine zone location
+  zone: ${ZONE_LOCATION}
   mtu: 9000
 ```
 

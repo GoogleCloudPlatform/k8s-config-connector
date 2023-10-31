@@ -83,6 +83,7 @@ var (
 		"storage":              {"storagenotification"},
 		"storagetransfer":      {"storagetransferjob"},
 		"vpcaccess":            {"subnetconnector"},
+		"edgecontainer":        {"edgecontainercluster"},
 	}
 	longRunningCRUDTests = []string{
 		"cidrconnector",
@@ -96,6 +97,7 @@ var (
 		"memcacheinstance",
 		"redisinstance",
 		"removedefaultnodepool",
+		"edgecontainercluster",
 	}
 	periodicCRUDTests = []string{
 		"cloudidentitygroup",
@@ -109,8 +111,10 @@ var (
 	}
 	// Services with special testing requirements that should be skipped in presubmit
 	skipCRUDTests = map[string]bool{
-		"containerattached": true,
-		"edgenetwork":       true,
+		"containerattached":          true,
+		"edgenetwork":                true,
+		"EdgeContainerVpnConnection": true,
+		"EdgeContainerNodePool":      true,
 	}
 	DynamicTestPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic/..."
 )

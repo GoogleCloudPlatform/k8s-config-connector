@@ -1,36 +1,36 @@
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/.teamcity/components/generated/services.kt b/third_party/github.com/hashicorp/terraform-provider-google-beta/.teamcity/components/generated/services.kt
-index 230dae052..11f714ba1 100644
+index d16be1899..7dc27d79c 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/.teamcity/components/generated/services.kt
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/.teamcity/components/generated/services.kt
-@@ -316,6 +316,11 @@ var services = mapOf(
-         "displayName" to "Documentaiwarehouse",
-         "path" to "./google-beta/services/documentaiwarehouse"
-     ),
+@@ -320,6 +320,11 @@ var services = mapOf(
+         "name" to "edgenetwork",
+         "displayName" to "Edgenetwork",
+         "path" to "./google-beta/services/edgenetwork"
++    )
 +    "edgecontainer" to mapOf(
 +        "name" to "edgecontainer",
 +        "displayName" to "Edgecontainer",
 +        "path" to "./google-beta/services/edgecontainer"
-+    ),
+     ),
      "essentialcontacts" to mapOf(
          "name" to "essentialcontacts",
-         "displayName" to "Essentialcontacts",
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwmodels/provider_model.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwmodels/provider_model.go
-index 822b9df16..f117f40e4 100644
+index 45783b9d1..08043e0c0 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwmodels/provider_model.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwmodels/provider_model.go
-@@ -78,6 +78,7 @@ type ProviderModel struct {
- 	DNSCustomEndpoint                      types.String `tfsdk:"dns_custom_endpoint"`
+@@ -79,6 +79,7 @@ type ProviderModel struct {
  	DocumentAICustomEndpoint               types.String `tfsdk:"document_ai_custom_endpoint"`
  	DocumentAIWarehouseCustomEndpoint      types.String `tfsdk:"document_ai_warehouse_custom_endpoint"`
+ 	EdgenetworkCustomEndpoint              types.String `tfsdk:"edgenetwork_custom_endpoint"`
 +	EdgecontainerCustomEndpoint            types.String `tfsdk:"edgecontainer_custom_endpoint"`
  	EssentialContactsCustomEndpoint        types.String `tfsdk:"essential_contacts_custom_endpoint"`
  	FilestoreCustomEndpoint                types.String `tfsdk:"filestore_custom_endpoint"`
  	FirebaseCustomEndpoint                 types.String `tfsdk:"firebase_custom_endpoint"`
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwprovider/framework_provider.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwprovider/framework_provider.go
-index 26e9973de..c4ff0949e 100644
+index 51c19e5ff..99104b780 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwprovider/framework_provider.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwprovider/framework_provider.go
-@@ -438,6 +438,12 @@ func (p *FrameworkProvider) Schema(_ context.Context, _ provider.SchemaRequest,
+@@ -444,6 +444,12 @@ func (p *FrameworkProvider) Schema(_ context.Context, _ provider.SchemaRequest,
  					transport_tpg.CustomEndpointValidator(),
  				},
  			},
@@ -44,27 +44,27 @@ index 26e9973de..c4ff0949e 100644
  				Optional: true,
  				Validators: []validator.String{
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/framework_config.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/framework_config.go
-index 24f23c2af..9932d0753 100644
+index b854e3805..26e6aaf12 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/framework_config.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/framework_config.go
-@@ -102,6 +102,7 @@ type FrameworkProviderConfig struct {
- 	DNSBasePath                      string
+@@ -104,6 +104,7 @@ type FrameworkProviderConfig struct {
  	DocumentAIBasePath               string
  	DocumentAIWarehouseBasePath      string
+ 	EdgenetworkBasePath              string
 +	EdgecontainerBasePath            string
  	EssentialContactsBasePath        string
  	FilestoreBasePath                string
  	FirebaseBasePath                 string
-@@ -253,6 +254,7 @@ func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context,
- 	p.DNSBasePath = data.DNSCustomEndpoint.ValueString()
+@@ -266,6 +267,7 @@ func (p *FrameworkProviderConfig) LoadAndValidateFramework(ctx context.Context,
  	p.DocumentAIBasePath = data.DocumentAICustomEndpoint.ValueString()
  	p.DocumentAIWarehouseBasePath = data.DocumentAIWarehouseCustomEndpoint.ValueString()
+ 	p.EdgenetworkBasePath = data.EdgenetworkCustomEndpoint.ValueString()
 +	p.EdgecontainerBasePath = data.EdgecontainerCustomEndpoint.ValueString()
  	p.EssentialContactsBasePath = data.EssentialContactsCustomEndpoint.ValueString()
  	p.FilestoreBasePath = data.FilestoreCustomEndpoint.ValueString()
  	p.FirebaseBasePath = data.FirebaseCustomEndpoint.ValueString()
-@@ -869,6 +871,14 @@ func (p *FrameworkProviderConfig) HandleDefaults(ctx context.Context, data *fwmo
- 			data.DocumentAIWarehouseCustomEndpoint = types.StringValue(customEndpoint.(string))
+@@ -962,6 +964,14 @@ func (p *FrameworkProviderConfig) HandleDefaults(ctx context.Context, data *fwmo
+ 			data.EdgenetworkCustomEndpoint = types.StringValue(customEndpoint.(string))
  		}
  	}
 +	if data.EdgecontainerCustomEndpoint.IsNull() {
@@ -79,18 +79,18 @@ index 24f23c2af..9932d0753 100644
  		customEndpoint := transport_tpg.MultiEnvDefault([]string{
  			"GOOGLE_ESSENTIAL_CONTACTS_CUSTOM_ENDPOINT",
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider/provider.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider/provider.go
-index 044150bed..82505608f 100644
+index 3acc6042d..2c1aa87ee 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider/provider.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider/provider.go
-@@ -66,6 +66,7 @@ import (
- 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dns"
+@@ -67,6 +67,7 @@ import (
  	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/documentai"
  	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/documentaiwarehouse"
+ 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/edgenetwork"
 +	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/edgecontainer"
  	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/essentialcontacts"
  	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/filestore"
  	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/firebase"
-@@ -510,6 +511,11 @@ func Provider() *schema.Provider {
+@@ -517,6 +518,11 @@ func Provider() *schema.Provider {
  				Optional:     true,
  				ValidateFunc: transport_tpg.ValidateCustomEndpoint,
  			},
@@ -102,16 +102,24 @@ index 044150bed..82505608f 100644
  			"essential_contacts_custom_endpoint": {
  				Type:         schema.TypeString,
  				Optional:     true,
-@@ -1470,6 +1476,9 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
- 			"google_document_ai_processor_default_version":                   documentai.ResourceDocumentAIProcessorDefaultVersion(),
- 			"google_document_ai_warehouse_document_schema":                   documentaiwarehouse.ResourceDocumentAIWarehouseDocumentSchema(),
+@@ -1491,6 +1497,9 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
  			"google_document_ai_warehouse_location":                          documentaiwarehouse.ResourceDocumentAIWarehouseLocation(),
+ 			"google_edgenetwork_network":                                     edgenetwork.ResourceEdgenetworkNetwork(),
+ 			"google_edgenetwork_subnet":                                      edgenetwork.ResourceEdgenetworkSubnet(),
 +			"google_edgecontainer_cluster":                                   edgecontainer.ResourceEdgecontainerCluster(),
 +			"google_edgecontainer_node_pool":                                 edgecontainer.ResourceEdgecontainerNodePool(),
 +			"google_edgecontainer_vpn_connection":                            edgecontainer.ResourceEdgecontainerVpnConnection(),
  			"google_essential_contacts_contact":                              essentialcontacts.ResourceEssentialContactsContact(),
  			"google_filestore_backup":                                        filestore.ResourceFilestoreBackup(),
  			"google_filestore_instance":                                      filestore.ResourceFilestoreInstance(),
+@@ -2066,6 +2075,7 @@ func ProviderConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
+ 	config.DocumentAIBasePath = d.Get("document_ai_custom_endpoint").(string)
+ 	config.DocumentAIWarehouseBasePath = d.Get("document_ai_warehouse_custom_endpoint").(string)
+ 	config.EdgenetworkBasePath = d.Get("edgenetwork_custom_endpoint").(string)
++	config.EdgecontainerBasePath = d.Get("edgecontainer_custom_endpoint").(string)
+ 	config.EssentialContactsBasePath = d.Get("essential_contacts_custom_endpoint").(string)
+ 	config.FilestoreBasePath = d.Get("filestore_custom_endpoint").(string)
+ 	config.FirebaseBasePath = d.Get("firebase_custom_endpoint").(string)
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/edgecontainer/edgecontainer_operation.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/edgecontainer/edgecontainer_operation.go
 new file mode 100644
 index 000000000..f0aceb3a3
@@ -213,10 +221,10 @@ index 000000000..f0aceb3a3
 \ No newline at end of file
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/edgecontainer/resource_edgecontainer_cluster.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/edgecontainer/resource_edgecontainer_cluster.go
 new file mode 100644
-index 000000000..1c5fe29f1
+index 000000000..813640ef0
 --- /dev/null
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/edgecontainer/resource_edgecontainer_cluster.go
-@@ -0,0 +1,2055 @@
+@@ -0,0 +1,2102 @@
 +// Copyright (c) HashiCorp, Inc.
 +// SPDX-License-Identifier: MPL-2.0
 +
@@ -240,9 +248,10 @@ index 000000000..1c5fe29f1
 +	"fmt"
 +	"log"
 +	"reflect"
++	"strings"
 +	"time"
 +
-+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
++		"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 +
 +	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 +	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
@@ -792,7 +801,7 @@ index 000000000..1c5fe29f1
 +	}
 +
 +	obj := make(map[string]interface{})
-+	labelsProp, err := expandEdgecontainerClusterLabels(d.Get("labels"), d, config)
++    labelsProp, err := expandEdgecontainerClusterLabels(d.Get("labels"), d, config)
 +	if err != nil {
 +		return err
 +	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
@@ -864,7 +873,7 @@ index 000000000..1c5fe29f1
 +	} else if v, ok := d.GetOkExists("release_channel"); !tpgresource.IsEmptyValue(reflect.ValueOf(releaseChannelProp)) && (ok || !reflect.DeepEqual(v, releaseChannelProp)) {
 +		obj["releaseChannel"] = releaseChannelProp
 +	}
-+
++	
 +	url, err := tpgresource.ReplaceVars(d, config, "{{EdgecontainerBasePath}}projects/{{project}}/locations/{{location}}/clusters?cluster_id={{name}}")
 +	if err != nil {
 +		return err
@@ -1022,7 +1031,7 @@ index 000000000..1c5fe29f1
 +	if err := d.Set("release_channel", flattenEdgecontainerClusterReleaseChannel(res["releaseChannel"], d, config)); err != nil {
 +		return fmt.Errorf("Error reading Cluster: %s", err)
 +	}
-+
++	
 +	return nil
 +}
 +
@@ -1042,7 +1051,7 @@ index 000000000..1c5fe29f1
 +	billingProject = project
 +
 +	obj := make(map[string]interface{})
-+	labelsProp, err := expandEdgecontainerClusterLabels(d.Get("labels"), d, config)
++    labelsProp, err := expandEdgecontainerClusterLabels(d.Get("labels"), d, config)
 +	if err != nil {
 +		return err
 +	} else if v, ok := d.GetOkExists("labels"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
@@ -1060,7 +1069,7 @@ index 000000000..1c5fe29f1
 +	} else if v, ok := d.GetOkExists("networking"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, networkingProp)) {
 +		obj["networking"] = networkingProp
 +	}
-+	authorizationProp, err := expandEdgecontainerClusterAuthorization(d.Get("authorization"), d, config)
++    authorizationProp, err := expandEdgecontainerClusterAuthorization(d.Get("authorization"), d, config)
 +	if err != nil {
 +		return err
 +	} else if v, ok := d.GetOkExists("authorization"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, authorizationProp)) {
@@ -1108,41 +1117,87 @@ index 000000000..1c5fe29f1
 +	} else if v, ok := d.GetOkExists("release_channel"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, releaseChannelProp)) {
 +		obj["releaseChannel"] = releaseChannelProp
 +	}
-+
++	
 +	url, err := tpgresource.ReplaceVars(d, config, "{{EdgecontainerBasePath}}projects/{{project}}/locations/{{location}}/clusters/{{name}}")
 +	if err != nil {
 +		return err
 +	}
 +
 +	log.Printf("[DEBUG] Updating Cluster %q: %#v", d.Id(), obj)
++	updateMask := []string{}
++
++	if d.HasChange("networking") {
++		updateMask = append(updateMask, "networking")
++	}
++
++	if d.HasChange("default_max_pods_per_node") {
++		updateMask = append(updateMask, "defaultMaxPodsPerNode")
++	}
++
++	if d.HasChange("maintenance_policy") {
++		updateMask = append(updateMask, "maintenancePolicy")
++	}
++
++	if d.HasChange("control_plane") {
++		updateMask = append(updateMask, "controlPlane")
++	}
++
++	if d.HasChange("system_addons_config") {
++		updateMask = append(updateMask, "systemAddonsConfig")
++	}
++
++	if d.HasChange("external_load_balancer_ipv4_address_pools") {
++		updateMask = append(updateMask, "externalLoadBalancerIpv4AddressPools")
++	}
++
++	if d.HasChange("control_plane_encryption") {
++		updateMask = append(updateMask, "controlPlaneEncryption")
++	}
++
++	if d.HasChange("release_channel") {
++		updateMask = append(updateMask, "releaseChannel")
++	}
++
++	if d.HasChange("labels") {
++		updateMask = append(updateMask, "labels")
++	}
++	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
++	// won't set it
++	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
++	if err != nil {
++		return err
++	}
 +
 +	// err == nil indicates that the billing_project value was found
 +	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 +		billingProject = bp
 +	}
 +
-+	res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
-+		Config:    config,
-+		Method:    "PUT",
-+		Project:   billingProject,
-+		RawURL:    url,
-+		UserAgent: userAgent,
-+		Body:      obj,
-+		Timeout:   d.Timeout(schema.TimeoutUpdate),
-+	})
++	// if updateMask is empty we are not updating anything so skip the post
++	if len(updateMask) > 0 {
++		res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
++			Config:    config,
++			Method:    "PATCH",
++			Project:   billingProject,
++			RawURL:    url,
++			UserAgent: userAgent,
++			Body:      obj,
++			Timeout:   d.Timeout(schema.TimeoutUpdate),
++		})
 +
-+	if err != nil {
-+		return fmt.Errorf("Error updating Cluster %q: %s", d.Id(), err)
-+	} else {
-+		log.Printf("[DEBUG] Finished updating Cluster %q: %#v", d.Id(), res)
-+	}
++		if err != nil {
++			return fmt.Errorf("Error updating Cluster %q: %s", d.Id(), err)
++		} else {
++			log.Printf("[DEBUG] Finished updating Cluster %q: %#v", d.Id(), res)
++		}
 +
-+	err = EdgecontainerOperationWaitTime(
-+		config, res, project, "Updating Cluster", userAgent,
-+		d.Timeout(schema.TimeoutUpdate))
++		err = EdgecontainerOperationWaitTime(
++			config, res, project, "Updating Cluster", userAgent,
++			d.Timeout(schema.TimeoutUpdate))
 +
-+	if err != nil {
-+		return err
++		if err != nil {
++			return err
++		}
 +	}
 +	d.Partial(true)
 +
@@ -1156,7 +1211,7 @@ index 000000000..1c5fe29f1
 +			obj["targetVersion"] = targetVersionProp
 +		}
 +
-+		url, err := tpgresource.ReplaceVars(d, config, "{{EdgecontainerBasePath}}projects/{{project}}/locations/{{region}}/instances/{{name}}:upgrade")
++		url, err := tpgresource.ReplaceVars(d, config, "{{EdgecontainerBasePath}}projects/{{project}}/locations/{{location}}/clusters/{{name}}:upgrade")
 +		if err != nil {
 +			return err
 +		}
@@ -1276,7 +1331,7 @@ index 000000000..1c5fe29f1
 +}
 +
 +func flattenEdgecontainerClusterLabels(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
-+	return v
++			return v
 +}
 +
 +func flattenEdgecontainerClusterFleet(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -1763,7 +1818,7 @@ index 000000000..1c5fe29f1
 +	}
 +	m := make(map[string]string)
 +	for k, val := range v.(map[string]interface{}) {
-+		m[k] = val.(string)
++			m[k] = val.(string)
 +	}
 +	return m, nil
 +}
@@ -2613,10 +2668,10 @@ index 000000000..21159ac6c
 \ No newline at end of file
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/edgecontainer/resource_edgecontainer_node_pool.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/edgecontainer/resource_edgecontainer_node_pool.go
 new file mode 100644
-index 000000000..3795d11fc
+index 000000000..308f7818f
 --- /dev/null
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/edgecontainer/resource_edgecontainer_node_pool.go
-@@ -0,0 +1,684 @@
+@@ -0,0 +1,716 @@
 +// Copyright (c) HashiCorp, Inc.
 +// SPDX-License-Identifier: MPL-2.0
 +
@@ -2640,6 +2695,7 @@ index 000000000..3795d11fc
 +	"fmt"
 +	"log"
 +	"reflect"
++	"strings"
 +	"time"
 +
 +	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -3011,34 +3067,65 @@ index 000000000..3795d11fc
 +	}
 +
 +	log.Printf("[DEBUG] Updating NodePool %q: %#v", d.Id(), obj)
++	updateMask := []string{}
++
++	if d.HasChange("node_count") {
++		updateMask = append(updateMask, "nodeCount")
++	}
++
++	if d.HasChange("machine_filter") {
++		updateMask = append(updateMask, "machineFilter")
++	}
++
++	if d.HasChange("local_disk_encryption") {
++		updateMask = append(updateMask, "localDiskEncryption")
++	}
++
++	if d.HasChange("node_config") {
++		updateMask = append(updateMask, "nodeConfig")
++	}
++
++	if d.HasChange("labels") {
++		updateMask = append(updateMask, "labels")
++	}
++
++	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
++	// won't set it
++	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
++	if err != nil {
++		return err
++	}
 +
 +	// err == nil indicates that the billing_project value was found
 +	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 +		billingProject = bp
 +	}
 +
-+	res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
-+		Config:    config,
-+		Method:    "PUT",
-+		Project:   billingProject,
-+		RawURL:    url,
-+		UserAgent: userAgent,
-+		Body:      obj,
-+		Timeout:   d.Timeout(schema.TimeoutUpdate),
-+	})
++	// if updateMask is empty we are not updating anything so skip the post
++	if len(updateMask) > 0 {
++		res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
++			Config:    config,
++			Method:    "PATCH",
++			Project:   billingProject,
++			RawURL:    url,
++			UserAgent: userAgent,
++			Body:      obj,
++			Timeout:   d.Timeout(schema.TimeoutUpdate),
++		})
 +
-+	if err != nil {
-+		return fmt.Errorf("Error updating NodePool %q: %s", d.Id(), err)
-+	} else {
-+		log.Printf("[DEBUG] Finished updating NodePool %q: %#v", d.Id(), res)
-+	}
++		if err != nil {
++			return fmt.Errorf("Error updating NodePool %q: %s", d.Id(), err)
++		} else {
++			log.Printf("[DEBUG] Finished updating NodePool %q: %#v", d.Id(), res)
++		}
 +
-+	err = EdgecontainerOperationWaitTime(
-+		config, res, project, "Updating NodePool", userAgent,
-+		d.Timeout(schema.TimeoutUpdate))
++		err = EdgecontainerOperationWaitTime(
++			config, res, project, "Updating NodePool", userAgent,
++			d.Timeout(schema.TimeoutUpdate))
 +
-+	if err != nil {
-+		return err
++		if err != nil {
++			return err
++		}
 +	}
 +
 +	return resourceEdgecontainerNodePoolRead(d, meta)
@@ -4448,48 +4535,48 @@ index 000000000..7212f938f
 +}
 \ No newline at end of file
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/sweeper/gcp_sweeper_test.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/sweeper/gcp_sweeper_test.go
-index 8c57e55c0..172a370a8 100644
+index 7fd1b9ffc..21b948bd1 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/sweeper/gcp_sweeper_test.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/sweeper/gcp_sweeper_test.go
-@@ -61,6 +61,7 @@ import (
- 	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/dns"
+@@ -62,6 +62,7 @@ import (
  	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/documentai"
  	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/documentaiwarehouse"
+ 	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/edgenetwork"
 +	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/edgecontainer"
  	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/essentialcontacts"
  	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/filestore"
  	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/firebase"
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/transport/config.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/transport/config.go
-index 2d28865b7..ed72061a6 100644
+index 5e8d35e37..99d877b0d 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/transport/config.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/transport/config.go
-@@ -237,6 +237,7 @@ type Config struct {
- 	DNSBasePath                      string
+@@ -238,6 +238,7 @@ type Config struct {
  	DocumentAIBasePath               string
  	DocumentAIWarehouseBasePath      string
+ 	EdgenetworkBasePath              string
 +	EdgecontainerBasePath            string
  	EssentialContactsBasePath        string
  	FilestoreBasePath                string
  	FirebaseBasePath                 string
-@@ -371,6 +372,7 @@ const DialogflowCXBasePathKey = "DialogflowCX"
- const DNSBasePathKey = "DNS"
+@@ -374,6 +375,7 @@ const DNSBasePathKey = "DNS"
  const DocumentAIBasePathKey = "DocumentAI"
  const DocumentAIWarehouseBasePathKey = "DocumentAIWarehouse"
+ const EdgenetworkBasePathKey = "Edgenetwork"
 +const EdgecontainerBasePathKey = "Edgecontainer"
  const EssentialContactsBasePathKey = "EssentialContacts"
  const FilestoreBasePathKey = "Filestore"
  const FirebaseBasePathKey = "Firebase"
-@@ -499,6 +501,7 @@ var DefaultBasePaths = map[string]string{
- 	DNSBasePathKey:                      "https://dns.googleapis.com/dns/v1beta2/",
+@@ -504,6 +506,7 @@ var DefaultBasePaths = map[string]string{
  	DocumentAIBasePathKey:               "https://{{location}}-documentai.googleapis.com/v1/",
  	DocumentAIWarehouseBasePathKey:      "https://contentwarehouse.googleapis.com/v1/",
+ 	EdgenetworkBasePathKey:              "https://edgenetwork.googleapis.com/v1/",
 +	EdgecontainerBasePathKey:            "https://edgecontainer.googleapis.com/v1/",
  	EssentialContactsBasePathKey:        "https://essentialcontacts.googleapis.com/v1/",
  	FilestoreBasePathKey:                "https://file.googleapis.com/v1beta1/",
  	FirebaseBasePathKey:                 "https://firebase.googleapis.com/v1beta1/",
-@@ -914,6 +917,11 @@ func HandleSDKDefaults(d *schema.ResourceData) error {
- 			"GOOGLE_DOCUMENT_AI_WAREHOUSE_CUSTOM_ENDPOINT",
- 		}, DefaultBasePaths[DocumentAIWarehouseBasePathKey]))
+@@ -925,6 +928,11 @@ func HandleSDKDefaults(d *schema.ResourceData) error {
+ 			"GOOGLE_EDGENETWORK_CUSTOM_ENDPOINT",
+ 		}, DefaultBasePaths[EdgenetworkBasePathKey]))
  	}
 +	if d.Get("edgecontainer_custom_endpoint") == "" {
 +		d.Set("edgecontainer_custom_endpoint", MultiEnvDefault([]string{
@@ -4499,10 +4586,10 @@ index 2d28865b7..ed72061a6 100644
  	if d.Get("essential_contacts_custom_endpoint") == "" {
  		d.Set("essential_contacts_custom_endpoint", MultiEnvDefault([]string{
  			"GOOGLE_ESSENTIAL_CONTACTS_CUSTOM_ENDPOINT",
-@@ -2130,6 +2138,7 @@ func ConfigureBasePaths(c *Config) {
- 	c.DNSBasePath = DefaultBasePaths[DNSBasePathKey]
+@@ -2147,6 +2155,7 @@ func ConfigureBasePaths(c *Config) {
  	c.DocumentAIBasePath = DefaultBasePaths[DocumentAIBasePathKey]
  	c.DocumentAIWarehouseBasePath = DefaultBasePaths[DocumentAIWarehouseBasePathKey]
+ 	c.EdgenetworkBasePath = DefaultBasePaths[EdgenetworkBasePathKey]
 +	c.EdgecontainerBasePath = DefaultBasePaths[EdgecontainerBasePathKey]
  	c.EssentialContactsBasePath = DefaultBasePaths[EssentialContactsBasePathKey]
  	c.FilestoreBasePath = DefaultBasePaths[FilestoreBasePathKey]

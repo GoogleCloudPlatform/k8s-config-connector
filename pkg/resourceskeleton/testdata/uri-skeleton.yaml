@@ -1037,3 +1037,36 @@
 - ExpectedSkeleton: null
   ResourceConfigId: EdgeNetworkSubnet
   URI: ""
+- ExpectedSkeleton:
+    apiVersion: edgecontainer.cnrm.cloud.google.com/v1beta1
+    kind: EdgeContainerCluster
+    metadata:
+      name: edgecontainercluster-test
+    spec:
+      projectRef:
+    external: kcc-test
+    location: us-central1
+  ResourceConfigId: EdgeContainerCluster
+  URI: "https://edgecontainer.googleapis.com/v1/projects/kcc-test/locations/us-central1/clusters/edgecontainercluster-test"
+- ExpectedSkeleton:
+    apiVersion: edgecontainer.cnrm.cloud.google.com/v1beta1
+    kind: EdgeContainerNodePool
+    metadata:
+      name: edgecontainernodepool-test
+    spec:
+      projectRef:
+    external: kcc-test
+    location: us-central1
+  ResourceConfigId: EdgeContainerNodePool
+  URI: "https://edgecontainer.googleapis.com/v1/projects/kcc-test/locations/us-central1/clusters/edgecontainercluster-test/nodePools/edgecontainernodepool-test"
+- ExpectedSkeleton:
+    apiVersion: edgecontainer.cnrm.cloud.google.com/v1beta1
+    kind: EdgeContainerVpnConnection
+    metadata:
+      name: edgecontainervpnconnection-test
+    spec:
+      projectRef:
+    external: kcc-test
+    location: us-central1
+  ResourceConfigId: EdgeContainerVpnConnection
+  URI: "https://edgecontainer.googleapis.com/v1/projects/kcc-test/locations/us-central1/vpnConnections/edgecontainervpnconnection-test"

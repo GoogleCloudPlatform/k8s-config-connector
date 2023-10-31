@@ -19,7 +19,8 @@ metadata:
 spec:
   description: "A sample edgenetwork subnet"
   location: us-central1
-  zone: us-central1-edge-den123
+  # Replace ${ZONE_LOCATION?} with the machine zone location
+  zone: ${ZONE_LOCATION}
   networkRef:
     name: edgenetworksubnet-dep
   ipv4Cidr:

@@ -125,6 +125,8 @@ import (
 	fakednsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1/fake"
 	documentaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/documentai/v1alpha1"
 	fakedocumentaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/documentai/v1alpha1/fake"
+	edgecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgecontainer/v1beta1"
+	fakeedgecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgecontainer/v1beta1/fake"
 	edgenetworkv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgenetwork/v1beta1"
 	fakeedgenetworkv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgenetwork/v1beta1/fake"
 	essentialcontactsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/essentialcontacts/v1alpha1"
@@ -557,6 +559,11 @@ func (c *Clientset) DnsV1beta1() dnsv1beta1.DnsV1beta1Interface {
 // DocumentaiV1alpha1 retrieves the DocumentaiV1alpha1Client
 func (c *Clientset) DocumentaiV1alpha1() documentaiv1alpha1.DocumentaiV1alpha1Interface {
 	return &fakedocumentaiv1alpha1.FakeDocumentaiV1alpha1{Fake: &c.Fake}
+}
+
+// EdgecontainerV1beta1 retrieves the EdgecontainerV1beta1Client
+func (c *Clientset) EdgecontainerV1beta1() edgecontainerv1beta1.EdgecontainerV1beta1Interface {
+	return &fakeedgecontainerv1beta1.FakeEdgecontainerV1beta1{Fake: &c.Fake}
 }
 
 // EdgenetworkV1beta1 retrieves the EdgenetworkV1beta1Client

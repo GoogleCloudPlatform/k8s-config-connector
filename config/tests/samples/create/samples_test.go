@@ -218,6 +218,11 @@ var testDisabledList = map[string]bool{
 	// b/309167136
 	"alloydbbackup":                true,
 	"restored-from-backup-cluster": true,
+	// This sample test need physical rack which is not suitable for e2e testing due to
+	// limited budget.
+	"EdgeContainerCluster":       true,
+	"EdgeContainerNodePool":      true,
+	"EdgeContainerVpnConnection": true,
 }
 
 func TestAll(t *testing.T) {
