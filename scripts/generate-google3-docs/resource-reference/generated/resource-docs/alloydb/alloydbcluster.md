@@ -1190,7 +1190,7 @@ uid: string
 
 ## Sample YAML(s)
 
-### Typical Use Case
+### Regular Cluster
 ```yaml
 # Copyright 2023 Google LLC
 #
@@ -1209,22 +1209,23 @@ uid: string
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
-  name: alloydbcluster-sample
+  name: alloydbcluster-sample-regular
 spec:
-  location: us-central1
-  networkRef: 
-    external: projects/${PROJECT_ID?}/global/networks/alloydbcluster-dep
+  location: us-east1
+  networkConfig:
+    networkRef: 
+      name: alloydbcluster-dep-regular
   projectRef:
     external: ${PROJECT_ID?}
   automatedBackupPolicy:
     backupWindow: 3600s
     encryptionConfig:
       kmsKeyNameRef: 
-        name: alloydbcluster-dep
+        name: alloydbcluster-dep-regular
     enabled: true
     labels:
       source: kcc
-    location: us-central1
+    location: us-east1
     timeBasedRetention:
       retentionPeriod: 43200s
     weeklySchedule:
@@ -1236,7 +1237,7 @@ spec:
           nanos: 0
   encryptionConfig:
     kmsKeyNameRef: 
-      name: alloydbcluster-dep
+      name: alloydbcluster-dep-regular
   initialUser:
     user: "postgres"
     password:
@@ -1245,72 +1246,165 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
-  name: alloydbcluster-dep
+  name: alloydbcluster-dep-regular
 spec:
   location: global
   addressType: INTERNAL
   networkRef:
-    name: alloydbcluster-dep
+    name: alloydbcluster-dep-regular
   prefixLength: 16
   purpose: VPC_PEERING
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: alloydbcluster-dep
+  name: alloydbcluster-dep-regular
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
 metadata:
-  name: alloydbcluster-dep
+  name: alloydbcluster-dep-regular
 spec:
   resourceRef:
     apiVersion: kms.cnrm.cloud.google.com/v1beta1
     kind: KMSCryptoKey
-    name: alloydbcluster-dep
+    name: alloydbcluster-dep-regular
   bindings:
     - role: roles/cloudkms.cryptoKeyEncrypterDecrypter
       members:
         - memberFrom:
             serviceIdentityRef:
-              name: alloydbcluster-dep
+              name: alloydbcluster-dep-regular
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
   labels:
     source: kcc-alloydbcluster-sample
-  name: alloydbcluster-dep
+  name: alloydbcluster-dep-regular
 spec:
   keyRingRef:
-    name: alloydbcluster-dep
+    name: alloydbcluster-dep-regular
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
-  name: alloydbcluster-dep
+  name: alloydbcluster-dep-regular
 spec:
   location: us-central1
 ---
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
 metadata:
-  name: alloydbcluster-dep
+  name: alloydbcluster-dep-regular
 spec:
   networkRef:
-    name: alloydbcluster-dep
+    name: alloydbcluster-dep-regular
   reservedPeeringRanges:
-  - external: alloydbcluster-dep
+  - external: alloydbcluster-dep-regular
   service: servicenetworking.googleapis.com
 ---
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: ServiceIdentity
 metadata:
-  name: alloydbcluster-dep
+  name: alloydbcluster-dep-regular
 spec:
   projectRef:
     external: ${PROJECT_ID?}
   resourceID: alloydb.googleapis.com
+```
+
+### Restored From Backup Cluster
+```yaml
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  name: alloydbcluster-dep-restoredfrombackup
+spec:
+  location: us-east1
+  networkConfig:
+    networkRef: 
+      name: alloydbcluster-dep-restoredfrombackup
+  projectRef:
+    external: ${PROJECT_ID?}
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  name: alloydbcluster-sample-restoredfrombackup
+spec:
+  location: us-east1
+  networkConfig:
+    networkRef: 
+      name: alloydbcluster-dep-restoredfrombackup
+  projectRef:
+    external: ${PROJECT_ID?}
+  restoreBackupSource:
+    backupNameRef:
+      name: alloydbcluster-dep-restoredfrombackup
+  
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBBackup
+metadata:
+  name: alloydbcluster-dep-restoredfrombackup
+spec:
+  clusterNameRef: 
+    name: alloydbcluster-dep-restoredfrombackup
+  location: us-central1
+  projectRef:
+    external: ${PROJECT_ID?}
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBInstance
+metadata:
+  name: alloydbcluster-dep-restoredfrombackup
+spec:
+  clusterRef: 
+    name: alloydbcluster-dep-restoredfrombackup
+  instanceType: PRIMARY
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: alloydbcluster-dep-restoredfrombackup
+spec:
+  location: global
+  addressType: INTERNAL
+  networkRef:
+    name: alloydbcluster-dep-restoredfrombackup
+  prefixLength: 16
+  purpose: VPC_PEERING
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: alloydbcluster-dep-restoredfrombackup
+---
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  name: alloydbcluster-dep-restoredfrombackup
+spec:
+  networkRef:
+    name: alloydbcluster-dep-restoredfrombackup
+  reservedPeeringRanges:
+  - external: alloydbcluster-dep-restoredfrombackup
+  service: servicenetworking.googleapis.com
 ```
 
 

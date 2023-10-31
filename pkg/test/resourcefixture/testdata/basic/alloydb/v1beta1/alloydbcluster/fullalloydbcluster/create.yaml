@@ -18,11 +18,17 @@ metadata:
   name: alloydbcluster-${uniqueId}
 spec:
   location: us-central1
-  networkRef: 
-    external: projects/${projectId}/global/networks/default
+  networkConfig:
+    networkRef: 
+      name: computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
 
+  initialUser:
+    user: postgres
+    password:
+      value: postgres
+      
   automatedBackupPolicy:
     backupWindow: 7200s
     enabled: true

@@ -15,10 +15,10 @@
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
 metadata:
-  name: alloydbcluster-dep
+  name: alloydbcluster-dep-restoredfrombackup
 spec:
   networkRef:
-    name: alloydbcluster-dep
+    name: alloydbcluster-dep-restoredfrombackup
   reservedPeeringRanges:
-  - external: alloydbcluster-dep
+  - external: alloydbcluster-dep-restoredfrombackup
   service: servicenetworking.googleapis.com

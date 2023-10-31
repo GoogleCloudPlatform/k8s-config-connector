@@ -18,11 +18,12 @@ metadata:
   name: alloydbcluster-${uniqueId}
 spec:
   location: us-central1
-  networkRef:
-    external: projects/${projectId}/global/networks/default
+  networkConfig:
+    networkRef:
+      name: computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
-  
+
   automatedBackupPolicy:
     backupWindow: 3600s
     enabled: true
@@ -36,3 +37,6 @@ spec:
           minutes: 0
           seconds: 0
           nanos: 0
+
+  continuousBackupConfig:
+    enabled: false

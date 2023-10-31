@@ -18,7 +18,8 @@ metadata:
   name: alloydbinstance-dep-read
 spec:
   location: us-central1
-  networkRef: 
-    external: projects/${PROJECT_ID?}/global/networks/alloydbinstance-dep-read
+  networkConfig:
+    networkRef: 
+      name: alloydbinstance-dep-read
   projectRef:
     external: ${PROJECT_ID?}
