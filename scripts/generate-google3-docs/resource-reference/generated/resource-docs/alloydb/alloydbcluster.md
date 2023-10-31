@@ -1291,7 +1291,7 @@ kind: KMSKeyRing
 metadata:
   name: alloydbcluster-dep-regular
 spec:
-  location: us-central1
+  location: us-east1
 ---
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
@@ -1365,7 +1365,7 @@ metadata:
 spec:
   clusterNameRef: 
     name: alloydbcluster-dep-restoredfrombackup
-  location: us-central1
+  location: us-east1
   projectRef:
     external: ${PROJECT_ID?}
 ---

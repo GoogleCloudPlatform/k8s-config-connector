@@ -17,4 +17,4 @@ kind: KMSKeyRing
 metadata:
   name: alloydbcluster-dep-regular
 spec:
-  location: us-central1
+  location: us-east1
