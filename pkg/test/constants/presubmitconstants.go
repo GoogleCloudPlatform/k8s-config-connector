@@ -42,6 +42,7 @@ var (
 		"cloudfunctions":       {"httpsfunction"},
 		"cloudidentity":        {"addexpirydatecloudidentitymembership"},
 		"cloudscheduler":       {"cloudschedulerjob"},
+		"composer":             {"customserviceaccountcomposerenvironment"},
 		"compute":              {"globalcomputeforwardingrule"},
 		"configcontroller":     {"configcontrollerinstance"},
 		"container":            {"containernodepool"},
