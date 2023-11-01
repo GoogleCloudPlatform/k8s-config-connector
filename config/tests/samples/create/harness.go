@@ -322,6 +322,9 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicyMember"}:
 			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccount"}:
 
+			case schema.GroupKind{Group: "edgenetwork.cnrm.cloud.google.com", Kind: "EdgenetworkNetwork"}:
+			case schema.GroupKind{Group: "edgenetwork.cnrm.cloud.google.com", Kind: "EdgenetworkSubnet"}:
+
 			case schema.GroupKind{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesMesh"}:
 
 			case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
