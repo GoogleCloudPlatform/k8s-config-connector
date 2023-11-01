@@ -1,0 +1,71 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: composer.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: Composer
+  version: v1alpha1
+  serviceHostName: "composer.googleapis.com"
+  resources:
+    - name: google_composer_environment
+      kind: ComposerEnvironment
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/locations/{{region}}/environments/{{name}}"
+      # TODO: Support export
+      idTemplateCanBeUsedToMatchResourceName: false
+      # TODO: Support bulk export
+      resourceAvailableInAssetInventory: false
+      hierarchicalReferences:
+      - type: project
+        key: projectRef
+      resourceReferences:
+      - tfField: project
+        key: projectRef
+        description: |-
+          The project that this resource belongs to.
+        gvk:
+          kind: Project
+          version: v1beta1
+          group: resourcemanager.cnrm.cloud.google.com
+      - tfField: config.node_config.service_account
+        key: serviceAccountRef
+        description: |-
+          The service account being used TODO. If absent, the Compute Engine default service account
+          is used.
+        gvk:
+          kind: IAMServiceAccount
+          version: v1beta1
+          group: iam.cnrm.cloud.google.com
+        targetField: email
+      # TODO: network ref
+      # TODO: subnetwork ref
+      # TODO: cloudComposerConnectionSubnetwork ref
+      # TODO: kmsKeyName ref
+      # TODO: Maybe snapshotLocation, but unclear
+
+      # TODO: IAM?
+      # iamConfig:
+      #   policyName: google_spanner_instance_iam_policy
+      #   policyMemberName: google_spanner_instance_iam_member
+      #   referenceField:
+      #     name: instance
+      #     type: name
