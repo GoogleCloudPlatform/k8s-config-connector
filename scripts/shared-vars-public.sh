@@ -57,6 +57,7 @@ SUPPORTED_SERVICES=(
   dataproc.googleapis.com
   dlp.googleapis.com
   dns.googleapis.com
+  edgenetwork.googleapis.com
   eventarc.googleapis.com
   file.googleapis.com
   gkehub.googleapis.com

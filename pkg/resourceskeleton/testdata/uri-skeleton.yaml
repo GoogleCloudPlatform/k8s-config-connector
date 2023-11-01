@@ -1031,3 +1031,9 @@
         external: kcc-test
   ResourceConfigId: CertificateManagerDNSAuthorization
   URI: "https://certificatemanager.googleapis.com/v1/projects/kcc-test/locations/global/dnsAuthorizations/dnsauthorization-test?alt=json"
+- ExpectedSkeleton: null
+  ResourceConfigId: EdgenetworkNetwork
+  URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: EdgenetworkSubnet
+  URI: ""

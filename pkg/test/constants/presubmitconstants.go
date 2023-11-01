@@ -107,6 +107,11 @@ var (
 		"computefirewallpolicyassociation",
 		"computefirewallpolicyrule",
 	}
+	// Services with special testing requirements that should be skipped in presubmit
+	skipCRUDTests = map[string]bool{
+		"containerattached": true,
+		"edgenetwork":       true,
+	}
 	DynamicTestPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic/..."
 )
 
