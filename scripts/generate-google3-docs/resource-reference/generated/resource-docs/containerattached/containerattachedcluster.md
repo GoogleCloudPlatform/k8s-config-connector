@@ -23,7 +23,7 @@ Note: Before using this resource, make sure you review and complete the steps in
 </tr>
 <tr>
 <td>{{gcp_name_short}} Service Documentation</td>
-<td><a href="/anthos/cluster/docs/multi-cloud/attached">/anthos/clusters/docs/multi-cloud/attached</a></td>
+<td><a href="/anthos/clusters/docs/multi-cloud/attached">/anthos/clusters/docs/multi-cloud/attached</a></td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
