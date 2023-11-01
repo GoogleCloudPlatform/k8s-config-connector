@@ -31,6 +31,8 @@ gen-proto:
 		./third_party/googleapis/mockgcp/cloud/edgenetwork/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/functions/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/networkservices/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/orchestration/airflow/service/v1beta1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/orchestration/airflow/service/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/security/privateca/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/secretmanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
