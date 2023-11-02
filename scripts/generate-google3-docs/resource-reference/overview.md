@@ -414,6 +414,14 @@ Custom Resource Definitions in the GitHub repository. For example, this
   <td><a href="/config-connector/docs/reference/resource-docs/dns/dnsrecordset.md">DNSRecordSet</a></td>
 </tr>
 <tr>
+  <td><a href="/edgenetwork/docs/">{{edgenetwork_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/edgenetwork/edgenetworknetwork.md">EdgenetworkNetwork</a></td>
+</tr>
+<tr>
+  <td><a href="/edgenetwork/docs/">{{edgenetwork_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/edgenetwork/edgenetworksubnet.md">EdgenetworkSubnet</a></td>
+</tr>
+<tr>
   <td><a href="/eventarc/docs/">{{eventarc_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/eventarc/eventarctrigger.md">EventarcTrigger</a></td>
 </tr>
