@@ -93,25 +93,19 @@ the following resources.
     <tr>
         <td><code>Folder</code></td>
         <td>
-            
             <p><code>{% verbatim %}folders/{{folder_id}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>Organization</code></td>
         <td>
-            
             <p><code>{% verbatim %}{{org_id}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>Project</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project_id}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
 </tbody>
