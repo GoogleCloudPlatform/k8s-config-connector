@@ -1468,7 +1468,7 @@ subnetwork with the same name with the network will be used.{% endverbatim %}</p
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

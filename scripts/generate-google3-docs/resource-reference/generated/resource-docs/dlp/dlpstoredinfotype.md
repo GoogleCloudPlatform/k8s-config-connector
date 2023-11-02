@@ -570,7 +570,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

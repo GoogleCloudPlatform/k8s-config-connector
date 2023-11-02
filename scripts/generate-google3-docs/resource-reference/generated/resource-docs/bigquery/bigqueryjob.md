@@ -1436,7 +1436,7 @@ Creation, truncation and append actions occur as one atomic update upon job comp
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

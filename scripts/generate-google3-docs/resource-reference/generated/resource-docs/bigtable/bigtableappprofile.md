@@ -231,7 +231,7 @@ It is unsafe to send these requests to the same table/row/column in multiple clu
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

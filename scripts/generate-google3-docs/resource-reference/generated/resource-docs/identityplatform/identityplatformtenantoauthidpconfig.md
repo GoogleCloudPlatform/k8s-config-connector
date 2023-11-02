@@ -309,7 +309,7 @@ Allowed value: The Google Cloud resource name of an `IdentityPlatformTenant` res
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status
