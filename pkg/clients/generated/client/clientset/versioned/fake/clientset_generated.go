@@ -81,6 +81,8 @@ import (
 	fakecloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1/fake"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
 	fakecloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1/fake"
+	composerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/composer/v1alpha1"
+	fakecomposerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/composer/v1alpha1/fake"
 	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1alpha1"
 	fakecomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1alpha1/fake"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/compute/v1beta1"
@@ -447,6 +449,11 @@ func (c *Clientset) CloudschedulerV1beta1() cloudschedulerv1beta1.Cloudscheduler
 // CloudtasksV1alpha1 retrieves the CloudtasksV1alpha1Client
 func (c *Clientset) CloudtasksV1alpha1() cloudtasksv1alpha1.CloudtasksV1alpha1Interface {
 	return &fakecloudtasksv1alpha1.FakeCloudtasksV1alpha1{Fake: &c.Fake}
+}
+
+// ComposerV1alpha1 retrieves the ComposerV1alpha1Client
+func (c *Clientset) ComposerV1alpha1() composerv1alpha1.ComposerV1alpha1Interface {
+	return &fakecomposerv1alpha1.FakeComposerV1alpha1{Fake: &c.Fake}
 }
 
 // ComputeV1alpha1 retrieves the ComputeV1alpha1Client

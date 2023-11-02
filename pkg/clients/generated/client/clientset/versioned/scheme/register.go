@@ -51,6 +51,7 @@ import (
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudiot/v1alpha1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudscheduler/v1beta1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudtasks/v1alpha1"
+	composerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/composer/v1alpha1"
 	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configcontroller/v1beta1"
@@ -174,6 +175,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	cloudiotv1alpha1.AddToScheme,
 	cloudschedulerv1beta1.AddToScheme,
 	cloudtasksv1alpha1.AddToScheme,
+	composerv1alpha1.AddToScheme,
 	computev1alpha1.AddToScheme,
 	computev1beta1.AddToScheme,
 	configcontrollerv1beta1.AddToScheme,
