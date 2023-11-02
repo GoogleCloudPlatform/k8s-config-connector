@@ -19,7 +19,8 @@ metadata:
   name: alloydbinstance-${uniqueId}
 spec:
   clusterRef: 
-    name: alloydbcluster-${uniqueId}   
+    name: alloydbcluster-${uniqueId}
+  availabilityType: REGIONAL
   instanceType: PRIMARY
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"

@@ -15,11 +15,9 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: default
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: computenetwork-${uniqueId}
 spec:
-  description: Default network for the project
+  autoCreateSubnetworks: false
 ---
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: ServiceIdentity

@@ -12,18 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPartialPolicy
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBInstance
 metadata:
-  name: alloydbcluster-dep
+  name: alloydbcluster-dep-restoredfrombackup
 spec:
-  resourceRef:
-    apiVersion: kms.cnrm.cloud.google.com/v1beta1
-    kind: KMSCryptoKey
-    name: alloydbcluster-dep
-  bindings:
-    - role: roles/cloudkms.cryptoKeyEncrypterDecrypter
-      members:
-        - memberFrom:
-            serviceIdentityRef:
-              name: alloydbcluster-dep
+  clusterRef: 
+    name: alloydbcluster-dep-restoredfrombackup
+  instanceType: PRIMARY

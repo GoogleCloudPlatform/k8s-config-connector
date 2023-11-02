@@ -67,6 +67,8 @@ spec:
         labels: labels
       resourceID:
         targetField: cluster_id
+      mutableButUnreadableFields:
+        - initial_user
       hierarchicalReferences:
         - type: project
           key: projectRef

@@ -15,35 +15,27 @@
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
-  name: alloydbcluster-sample
+  name: alloydbcluster-dep-restoredfrombackup
 spec:
-  location: us-central1
-  networkRef: 
-    external: projects/${PROJECT_ID?}/global/networks/alloydbcluster-dep
+  location: us-east1
+  networkConfig:
+    networkRef: 
+      name: alloydbcluster-dep-restoredfrombackup
   projectRef:
     external: ${PROJECT_ID?}
-  automatedBackupPolicy:
-    backupWindow: 3600s
-    encryptionConfig:
-      kmsKeyNameRef: 
-        name: alloydbcluster-dep
-    enabled: true
-    labels:
-      source: kcc
-    location: us-central1
-    timeBasedRetention:
-      retentionPeriod: 43200s
-    weeklySchedule:
-      daysOfWeek: [MONDAY]
-      startTimes: 
-        - hours: 4
-          minutes: 0
-          seconds: 0
-          nanos: 0
-  encryptionConfig:
-    kmsKeyNameRef: 
-      name: alloydbcluster-dep
-  initialUser:
-    user: "postgres"
-    password:
-      value: "postgres"
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  name: alloydbcluster-sample-restoredfrombackup
+spec:
+  location: us-east1
+  networkConfig:
+    networkRef: 
+      name: alloydbcluster-dep-restoredfrombackup
+  projectRef:
+    external: ${PROJECT_ID?}
+  restoreBackupSource:
+    backupNameRef:
+      name: alloydbcluster-dep-restoredfrombackup
+  

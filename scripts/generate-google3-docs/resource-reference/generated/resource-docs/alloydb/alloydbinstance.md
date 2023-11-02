@@ -434,8 +434,9 @@ metadata:
   name: alloydbinstance-dep-primary
 spec:
   location: us-central1
-  networkRef: 
-    external: projects/${PROJECT_ID?}/global/networks/alloydbinstance-dep-primary
+  networkConfig:
+    networkRef: 
+      name: alloydbinstance-dep-primary
   projectRef:
     external: ${PROJECT_ID?}
 ---
@@ -515,8 +516,9 @@ metadata:
   name: alloydbinstance-dep-read
 spec:
   location: us-central1
-  networkRef: 
-    external: projects/${PROJECT_ID?}/global/networks/alloydbinstance-dep-read
+  networkConfig:
+    networkRef: 
+      name: alloydbinstance-dep-read
   projectRef:
     external: ${PROJECT_ID?}
 ---
@@ -546,6 +548,75 @@ spec:
     name: alloydbinstance-dep-read
   reservedPeeringRanges:
   - name: alloydbinstance-dep-read
+  service: servicenetworking.googleapis.com
+```
+
+### Zonal Instance
+```yaml
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBInstance
+metadata:
+  name: alloydbinstance-sample-zonal
+spec:
+  clusterRef: 
+    name: alloydbinstance-dep-zonal
+  availabilityType: ZONAL
+  instanceType: PRIMARY
+  machineConfig:
+    cpuCount: 2
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  name: alloydbinstance-dep-zonal
+spec:
+  location: us-central1
+  networkConfig:
+    networkRef: 
+      name: alloydbinstance-dep-zonal
+  projectRef:
+    external: ${PROJECT_ID?}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: alloydbinstance-dep-zonal
+spec:
+  location: global
+  addressType: INTERNAL
+  networkRef:
+    name: alloydbinstance-dep-zonal
+  prefixLength: 16
+  purpose: VPC_PEERING
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: alloydbinstance-dep-zonal
+---
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  name: alloydbinstance-dep-zonal
+spec:
+  networkRef:
+    name: alloydbinstance-dep-zonal
+  reservedPeeringRanges:
+  - external: alloydbinstance-dep-zonal
   service: servicenetworking.googleapis.com
 ```
 

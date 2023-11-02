@@ -32,6 +32,7 @@ import (
 // generation for resources that have multiple samples. It is a map of
 // 'resource samples directory name' -> 'sample subdirectory name'.
 var preferredSampleForResource = map[string]string{
+	"alloydbcluster":                    "regular-cluster",
 	"alloydbinstance":                   "primary-instance",
 	"bigqueryjob":                       "query-bigquery-job",
 	"bigtableappprofile":                "multicluster-bigtable-app-profile",

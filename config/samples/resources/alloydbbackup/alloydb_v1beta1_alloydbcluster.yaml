@@ -18,7 +18,8 @@ metadata:
   name: alloydbbackup-dep
 spec:
   location: us-central1
-  networkRef: 
-    external: projects/${PROJECT_ID?}/global/networks/alloydbbackup-dep
+  networkConfig:
+    networkRef: 
+      name: alloydbbackup-dep
   projectRef:
     external: ${PROJECT_ID?}
