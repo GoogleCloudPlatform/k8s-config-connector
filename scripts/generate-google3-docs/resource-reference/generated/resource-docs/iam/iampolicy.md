@@ -313,307 +313,230 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
     <tr>
         <td><code>AccessContextManagerAccessPolicy</code></td>
         <td>
-            
             <p><code>{% verbatim %}{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>ApigeeEnvironment</code></td>
         <td>
-            
             <p><code>{% verbatim %}organizations/{{apigee_organization}}/environments/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>ArtifactRegistryRepository</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/repositories/{{repository_id}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>BigQueryTable</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/datasets/{{dataset_id}}/tables/{{table_id}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>BigtableInstance</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/instances/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>BigtableTable</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/instances/{{instance_name}}/tables/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>BillingAccount</code></td>
         <td>
-            
             <p><code>{% verbatim %}{{billing_account_id}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>BinaryAuthorizationPolicy</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/policy{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>CloudFunctionsFunction</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/locations/{{region}}/functions/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>ComputeBackendBucket</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/global/backendBuckets/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>ComputeDisk</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/regions/{{region}}/disks/{{name}}{% endverbatim %}</code></p>
-            
             <p><code>{% verbatim %}projects/{{project}}/zones/{{zone}}/disks/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>ComputeImage</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/global/images/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>ComputeInstance</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/zones/{{zone}}/instances/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>ComputeSnapshot</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/global/snapshots/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>ComputeSubnetwork</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>DNSManagedZone</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/managedZones/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>DataprocCluster</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/regions/{{location}}/clusters/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>Folder</code></td>
         <td>
-            
             <p><code>{% verbatim %}folders/{{folder_id}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>IAMServiceAccount</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/serviceAccounts/{{account_id}}@{{project}}.iam.gserviceaccount.com{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>IAMWorkforcePool</code></td>
         <td>
-            
             <p><code>{% verbatim %}locations/{{location}}/workforcePools/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>KMSCryptoKey</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/keyRings/{{key_ring_id}}/cryptoKeys/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>KMSKeyRing</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/keyRings/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>NetworkSecurityAuthorizationPolicy</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/authorizationPolicies/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>NetworkSecurityClientTLSPolicy</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/clientTlsPolicies/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>NetworkSecurityServerTLSPolicy</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>Organization</code></td>
         <td>
-            
             <p><code>{% verbatim %}{{org_id}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>Project</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project_id}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>PubSubSubscription</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/subscriptions/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>PubSubTopic</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/topics/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>RunJob</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/jobs/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>RunService</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/services/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>SecretManagerSecret</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/secrets/{{secret_id}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>ServiceDirectoryNamespace</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/namespaces/{{namespace_id}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>ServiceDirectoryService</code></td>
         <td>
-            
             <p><code>{% verbatim %}{{namespace}}/services/{{service_id}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>SourceRepoRepository</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/repos/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>SpannerDatabase</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/instances/{{instance}}/databases/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>SpannerInstance</code></td>
         <td>
-            
             <p><code>{% verbatim %}projects/{{project}}/instances/{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
     <tr>
         <td><code>StorageBucket</code></td>
         <td>
-            
             <p><code>{% verbatim %}{{name}}{% endverbatim %}</code></p>
-            
         </td>
     </tr>
 </tbody>
