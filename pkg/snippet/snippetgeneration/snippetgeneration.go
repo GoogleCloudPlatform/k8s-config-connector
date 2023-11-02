@@ -44,6 +44,7 @@ var preferredSampleForResource = map[string]string{
 	"cloudfunctionsfunction":            "httpstrigger",
 	"cloudidentitymembership":           "membership-with-manager-role",
 	"cloudschedulerjob":                 "scheduler-job-pubsub",
+	"composerenvironment":               "custom-serviceaccount",
 	"computehealthcheck":                "global-health-check",
 	"computeaddress":                    "global-compute-address",
 	"computebackendbucket":              "basic-backend-bucket",

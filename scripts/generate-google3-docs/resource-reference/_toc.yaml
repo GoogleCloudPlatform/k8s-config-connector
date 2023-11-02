@@ -81,6 +81,10 @@ toc:
   section:
   - title: "CloudBuildTrigger"
     path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildtrigger.md
+- title: "Cloud Composer"
+  section:
+  - title: "ComposerEnvironment"
+    path: /config-connector/docs/reference/resource-docs/composer/composerenvironment.md
 - title: "Cloud Functions"
   section:
   - title: "CloudFunctionsFunction"

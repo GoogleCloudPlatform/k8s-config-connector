@@ -141,6 +141,10 @@ Custom Resource Definitions in the GitHub repository. For example, this
   <td><a href="/config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagerdnsauthorization.md">CertificateManagerDNSAuthorization</a></td>
 </tr>
 <tr>
+  <td><a href="/composer/docs/">{{composer_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/composer/composerenvironment.md">ComposerEnvironment</a></td>
+</tr>
+<tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/compute/computeaddress.md">ComputeAddress</a></td>
 </tr>
