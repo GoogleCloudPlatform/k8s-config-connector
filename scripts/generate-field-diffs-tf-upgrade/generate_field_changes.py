@@ -27,6 +27,10 @@ def process_field_path(path, root):
 def extract_kind_name(filename):
     with open(filename, 'r') as fp:
         row = fp.readlines()[17:18]
+        kw = row[0].split(": ")[0].rstrip()
+        if not "kind" in kw:  # It can also be line #17
+          with open(filename, 'r') as fp:
+            row = fp.readlines()[16:17]
         return row[0].split(": ")[1].rstrip()
 
 # has_description_changes_only returns true if there are description changes only.
