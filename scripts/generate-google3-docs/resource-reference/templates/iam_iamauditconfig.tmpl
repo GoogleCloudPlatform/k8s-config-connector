@@ -86,9 +86,9 @@ the following resources.
     <tr>
         <td><code>{{$ref.Kind}}</code></td>
         <td>
-            {{range $format := $ref.ExternalReferenceFormats}}
+            {{- range $format := $ref.ExternalReferenceFormats}}
             <p><code>{% verbatim %}{{$format}}{% endverbatim %}</code></p>
-            {{end}}
+            {{- end}}
         </td>
     </tr>{{end}}
 </tbody>
