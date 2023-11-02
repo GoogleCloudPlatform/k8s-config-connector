@@ -1158,6 +1158,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_alloydb_backup":                                          alloydb.ResourceAlloydbBackup(),
 			"google_alloydb_cluster":                                         alloydb.ResourceAlloydbCluster(),
 			"google_alloydb_instance":                                        alloydb.ResourceAlloydbInstance(),
+			"google_alloydb_user":                                            alloydb.ResourceAlloydbUser(),
 			"google_api_gateway_api":                                         apigateway.ResourceApiGatewayApi(),
 			"google_api_gateway_api_iam_binding":                             tpgiamresource.ResourceIamBinding(apigateway.ApiGatewayApiIamSchema, apigateway.ApiGatewayApiIamUpdaterProducer, apigateway.ApiGatewayApiIdParseFunc),
 			"google_api_gateway_api_iam_member":                              tpgiamresource.ResourceIamMember(apigateway.ApiGatewayApiIamSchema, apigateway.ApiGatewayApiIamUpdaterProducer, apigateway.ApiGatewayApiIdParseFunc),
