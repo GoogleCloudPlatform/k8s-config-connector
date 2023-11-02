@@ -36,6 +36,7 @@ import (
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
 	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
+	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 
 	"github.com/google/go-cmp/cmp"
@@ -200,6 +201,9 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		h.Ctx = context.WithValue(h.Ctx, httpRoundTripperKey, roundTripper)
 
 		kccConfig.HTTPClient = &http.Client{Transport: roundTripper}
+
+		// Also hook the oauth2 library
+		h.Ctx = context.WithValue(h.Ctx, oauth2.HTTPClient, kccConfig.HTTPClient)
 
 		h.gcpAccessToken = "dummytoken"
 		kccConfig.GCPAccessToken = h.gcpAccessToken
