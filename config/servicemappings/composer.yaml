@@ -30,10 +30,8 @@ spec:
       resourceID:
         targetField: name
       idTemplate: "projects/{{project}}/locations/{{region}}/environments/{{name}}"
-      # TODO: Support export
-      idTemplateCanBeUsedToMatchResourceName: false
-      # TODO: Support bulk export
-      resourceAvailableInAssetInventory: false
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
       hierarchicalReferences:
       - type: project
         key: projectRef
