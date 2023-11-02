@@ -142,8 +142,11 @@ func PathToSampleFileUsedForSnippets(resourceDirName string) (string, error) {
 	}
 
 	fileNames, err := fileutil.FileNamesWithSuffixInDir(sampleDirPath, resourceDirName+".yaml")
-	if err != nil || len(fileNames) != 1 {
-		return "", fmt.Errorf("error getting exactly one file to use for generating snippets: %v", err)
+	if err != nil {
+		return "", fmt.Errorf("error getting files to use for generating snippets: %v", err)
+	}
+	if len(fileNames) != 1 {
+		return "", fmt.Errorf("error getting exactly one file to use for generating snippets (dir=%q, suffix=%q); expected one, got %v", sampleDirPath, resourceDirName+".yaml", fileNames)
 	}
 
 	return path.Join(sampleDirPath, fileNames[0]), nil
