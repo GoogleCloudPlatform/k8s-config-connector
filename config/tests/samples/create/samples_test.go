@@ -64,6 +64,8 @@ var testDisabledList = map[string]bool{
 	// The resources below have special test requirements
 	"computeinterconnectattachment": true,
 	"firestoreindex":                true,
+	"edgenetworknetwork":            true,
+	"edgenetworksubnet":             true,
 	// The test external cluster to be attached requires special setup.
 	// It cannot be attached to multiple projects, or be used multiple times if it's already registered.
 	"container-attached-cluster-basic":         true,

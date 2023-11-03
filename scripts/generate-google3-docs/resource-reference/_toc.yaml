@@ -123,6 +123,12 @@ toc:
     path: /config-connector/docs/reference/resource-docs/kms/kmscryptokey.md
   - title: "KMSKeyRing"
     path: /config-connector/docs/reference/resource-docs/kms/kmskeyring.md
+- title: "EdgeNetwork"
+  section:
+  - title: "EdgeNetworkNetwork"
+    path: /config-connector/docs/reference/resource-docs/edgenetwork/edgenetworknetwork.md
+  - title: "EdgeNetworkSubnet"
+    path: /config-connector/docs/reference/resource-docs/edgenetwork/edgenetworksubnet.md
 - title: "Eventarc"
   section:
   - title: "EventarcTrigger"

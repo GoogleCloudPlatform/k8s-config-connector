@@ -819,6 +819,10 @@
 # not supported by asset inventory
 - resourceConfigId: DataflowFlexTemplateJob
 # not supported by asset inventory
+- resourceConfigId: EdgeNetworkNetwork
+# not supported by asset inventory
+- resourceConfigId: EdgeNetworkSubnet
+# not supported by asset inventory
 - resourceConfigId: FirestoreIndex
 - asset:
     ancestors:
