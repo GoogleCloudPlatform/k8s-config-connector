@@ -121,8 +121,8 @@ func (s *CertificateManagerV1) DeleteCertificate(ctx context.Context, req *pb.De
 
 	fqn := name.String()
 
-	kind := (&pb.Certificate{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, kind, fqn); err != nil {
+	deletedObj := &pb.Certificate{}
+	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, status.Errorf(codes.NotFound, "certificate %q not found", name)
 		} else {
@@ -221,8 +221,8 @@ func (s *CertificateManagerV1) DeleteCertificateMap(ctx context.Context, req *pb
 
 	fqn := name.String()
 
-	kind := (&pb.CertificateMap{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, kind, fqn); err != nil {
+	oldObj := &pb.CertificateMap{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, status.Errorf(codes.NotFound, "certificate map %q not found", name)
 		} else {
@@ -322,8 +322,8 @@ func (s *CertificateManagerV1) DeleteDnsAuthorization(ctx context.Context, req *
 
 	fqn := name.String()
 
-	kind := (&pb.DnsAuthorization{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, kind, fqn); err != nil {
+	oldObj := &pb.DnsAuthorization{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, status.Errorf(codes.NotFound, "dns authorization %q not found", name)
 		} else {
@@ -422,8 +422,8 @@ func (s *CertificateManagerV1) DeleteCertificateMapEntry(ctx context.Context, re
 
 	fqn := name.String()
 
-	kind := (&pb.CertificateMapEntry{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, kind, fqn); err != nil {
+	deletedObj := &pb.CertificateMapEntry{}
+	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, status.Errorf(codes.NotFound, "certificate map entry %q not found", name)
 		} else {

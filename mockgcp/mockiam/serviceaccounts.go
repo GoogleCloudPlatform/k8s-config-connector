@@ -135,8 +135,8 @@ func (s *ServerV1) DeleteServiceAccount(ctx context.Context, req *pb.DeleteServi
 	}
 
 	fqn := name.String()
-	serviceAccountKind := (&pb.ServiceAccount{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, serviceAccountKind, fqn); err != nil {
+	deletedObj := &pb.ServiceAccount{}
+	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, status.Errorf(codes.Internal, "error deleting serviceaccount: %v", err)
 	}
 

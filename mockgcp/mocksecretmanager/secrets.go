@@ -107,8 +107,8 @@ func (s *SecretsV1) DeleteSecret(ctx context.Context, req *pb.DeleteSecretReques
 
 	fqn := name.String()
 
-	secretKind := (&pb.Secret{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, secretKind, fqn); err != nil {
+	oldObj := &pb.Secret{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, status.Errorf(codes.NotFound, "secret %q not found", name)
 		} else {
