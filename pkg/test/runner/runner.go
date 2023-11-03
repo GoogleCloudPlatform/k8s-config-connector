@@ -90,7 +90,7 @@ func RunAll(ctx context.Context, t *testing.T, mgr manager.Manager, shouldRunFun
 	}
 	testFunc := func(ctx context.Context, t *testing.T, fixture resourcefixture.ResourceFixture) {
 		project := testgcp.GetDefaultProject(t)
-		systemContext := newSystemContext(t, mgr)
+		systemContext := newSystemContext(ctx, t, mgr)
 		testContext := NewTestContext(t, fixture, project)
 		setupNamespaces(t, testContext, systemContext, project)
 		testCaseFunc(ctx, t, testContext, systemContext)
@@ -143,9 +143,9 @@ func bytesToUnstructured(t *testing.T, bytes []byte, testId string, project test
 	return test.ToUnstructWithNamespace(t, updatedBytes, testId)
 }
 
-func newSystemContext(t *testing.T, mgr manager.Manager) SystemContext {
+func newSystemContext(ctx context.Context, t *testing.T, mgr manager.Manager) SystemContext {
 	smLoader := testservicemappingloader.New(t)
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+	tfProvider := tfprovider.NewOrLogFatal(ctx, tfprovider.DefaultConfig)
 	dclConfig := clientconfig.NewForIntegrationTest()
 	reconciler := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, tfProvider, dclConfig)
 	serviceMetadataLoader := dclmetadata.New()

@@ -101,8 +101,7 @@ func New(ctx context.Context, config Config) (*tfschema.Provider, error) {
 
 // NewOrLogFatal calls New and panics on error
 // deprecated: Prefer New and handle the error
-func NewOrLogFatal(config Config) *tfschema.Provider {
-	ctx := context.TODO()
+func NewOrLogFatal(ctx context.Context, config Config) *tfschema.Provider {
 	p, err := New(ctx, config)
 	if err != nil {
 		klog.Fatal(err)
