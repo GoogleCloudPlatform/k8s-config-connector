@@ -288,3 +288,5 @@ apply-patches:
 	git apply ../hack/terraform-overrides/runservice_terminalcondition.patch
 	# Mark certificate id as readonly
 	git apply ../hack/terraform-overrides/compute_managed_ssl_certificate.patch
+	# Add support for google_alloydb_user resource (introduced in tf-5.2.0)
+	git apply ../hack/terraform-overrides/alloydb-user-tf-5.4.0.patch
