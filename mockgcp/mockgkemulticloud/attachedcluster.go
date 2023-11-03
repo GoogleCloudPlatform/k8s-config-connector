@@ -125,8 +125,8 @@ func (s *GKEMulticloudV1) DeleteAttachedCluster(ctx context.Context, req *pb.Del
 
 	fqn := name.String()
 
-	attachedClusterKind := (&pb.AttachedCluster{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, attachedClusterKind, fqn); err != nil {
+	oldObj := &pb.AttachedCluster{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, status.Errorf(codes.NotFound, "attachedCluster %q not found", name)
 		} else {

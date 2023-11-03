@@ -32,6 +32,7 @@ import (
 // generation for resources that have multiple samples. It is a map of
 // 'resource samples directory name' -> 'sample subdirectory name'.
 var preferredSampleForResource = map[string]string{
+	"alloydbcluster":                    "regular-cluster",
 	"alloydbinstance":                   "primary-instance",
 	"bigqueryjob":                       "query-bigquery-job",
 	"bigtableappprofile":                "multicluster-bigtable-app-profile",
@@ -142,8 +143,11 @@ func PathToSampleFileUsedForSnippets(resourceDirName string) (string, error) {
 	}
 
 	fileNames, err := fileutil.FileNamesWithSuffixInDir(sampleDirPath, resourceDirName+".yaml")
-	if err != nil || len(fileNames) != 1 {
-		return "", fmt.Errorf("error getting exactly one file to use for generating snippets: %v", err)
+	if err != nil {
+		return "", fmt.Errorf("error getting files to use for generating snippets: %v", err)
+	}
+	if len(fileNames) != 1 {
+		return "", fmt.Errorf("error getting exactly one file to use for generating snippets (dir=%q, suffix=%q); expected one, got %v", sampleDirPath, resourceDirName+".yaml", fileNames)
 	}
 
 	return path.Join(sampleDirPath, fileNames[0]), nil

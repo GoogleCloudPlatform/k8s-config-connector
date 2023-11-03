@@ -78,18 +78,20 @@ func (s *typeStorage) Create(ctx context.Context, fqn string, create proto.Messa
 }
 
 // Delete deletes the object, returning a not found error if it does not exist.
-func (s *InMemoryStorage) Delete(ctx context.Context, kind protoreflect.Descriptor, fqn string) error {
-	return s.getTypeStorage(kind.FullName()).Delete(ctx, fqn)
+func (s *InMemoryStorage) Delete(ctx context.Context,  fqn string, dest proto.Message) error {
+	kind := dest.ProtoReflect().Descriptor()
+	return s.getTypeStorage(kind.FullName()).Delete(ctx, fqn, dest)
 }
 
-func (s *typeStorage) Delete(ctx context.Context, fqn string) error {
+func (s *typeStorage) Delete(ctx context.Context, fqn string, dest proto.Message) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	_, found := s.byKey[fqn]
+	existing, found := s.byKey[fqn]
 	if !found {
 		return apierrors.NewNotFound(schema.GroupResource{}, fqn)
 	}
+	proto.Merge(dest, existing)
 	delete(s.byKey, fqn)
 	return nil
 }

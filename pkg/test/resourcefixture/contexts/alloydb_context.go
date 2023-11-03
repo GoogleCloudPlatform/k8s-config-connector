@@ -25,4 +25,14 @@ func init() {
 		ResourceKind: "AlloyDBBackup",
 		SkipUpdate:   true,
 	}
+
+	resourceContextMap["restorebackupalloydbcluster"] = ResourceContext{
+		ResourceKind: "AlloyDBCluster",
+		SkipUpdate:   true,
+	}
+
+	resourceContextMap["zonalalloydbinstance"] = ResourceContext{
+		ResourceKind: "AlloyDBInstance",
+		SkipUpdate:   true,
+	}
 }

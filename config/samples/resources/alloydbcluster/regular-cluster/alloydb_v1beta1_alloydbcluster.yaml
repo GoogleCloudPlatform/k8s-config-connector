@@ -15,11 +15,36 @@
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
-  name: alloydbinstance-dep-primary
+  name: alloydbcluster-sample-regular
 spec:
-  location: us-central1
+  location: us-east1
   networkConfig:
     networkRef: 
-      name: alloydbinstance-dep-primary
+      name: alloydbcluster-dep-regular
   projectRef:
     external: ${PROJECT_ID?}
+  automatedBackupPolicy:
+    backupWindow: 3600s
+    encryptionConfig:
+      kmsKeyNameRef: 
+        name: alloydbcluster-dep-regular
+    enabled: true
+    labels:
+      source: kcc
+    location: us-east1
+    timeBasedRetention:
+      retentionPeriod: 43200s
+    weeklySchedule:
+      daysOfWeek: [MONDAY]
+      startTimes: 
+        - hours: 4
+          minutes: 0
+          seconds: 0
+          nanos: 0
+  encryptionConfig:
+    kmsKeyNameRef: 
+      name: alloydbcluster-dep-regular
+  initialUser:
+    user: "postgres"
+    password:
+      value: "postgres"

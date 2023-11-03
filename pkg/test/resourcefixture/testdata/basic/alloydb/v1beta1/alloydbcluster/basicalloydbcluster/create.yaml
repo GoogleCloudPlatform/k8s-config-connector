@@ -18,8 +18,16 @@ metadata:
   name: alloydbcluster-${uniqueId}
 spec:
   location: us-central1
-  networkRef: 
-    external: projects/${projectId}/global/networks/default
+  networkConfig:
+    networkRef: 
+      name: default
+ 
   projectRef:
     external: ${projectId}
+
+  initialUser:
+    user: postgres
+    password:
+      value: postgres
+
   resourceID: alloydbcluster${uniqueId}
