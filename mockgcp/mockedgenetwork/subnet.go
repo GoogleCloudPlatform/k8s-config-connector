@@ -79,8 +79,8 @@ func (s *EdgenetworkV1) DeleteSubnet(ctx context.Context, req *pb.DeleteSubnetRe
 
 	fqn := name.String()
 
-	subnetKind := (&pb.Subnet{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, subnetKind, fqn); err != nil {
+	deletedObj := &pb.Subnet{}
+	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, status.Errorf(codes.NotFound, "subnet %q not found", name)
 		} else {

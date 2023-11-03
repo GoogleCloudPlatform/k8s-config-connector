@@ -91,8 +91,8 @@ func (s *EdgenetworkV1) DeleteNetwork(ctx context.Context, req *pb.DeleteNetwork
 		return nil, err
 	}
 
-	networkKind := (&pb.Network{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, networkKind, fqn); err != nil {
+	deletedObj := &pb.Network{}
+	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, status.Errorf(codes.NotFound, "network %q not found", name)
 		} else {
