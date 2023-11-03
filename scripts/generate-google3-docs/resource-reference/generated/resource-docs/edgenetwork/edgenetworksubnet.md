@@ -2,7 +2,7 @@
 
 {% extends "config-connector/_base.html" %}
 
-{% block page_title %}EdgenetworkSubnet{% endblock %}
+{% block page_title %}EdgeNetworkSubnet{% endblock %}
 {% block body %}
 
 
@@ -180,7 +180,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of an `EdgenetworkNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `name` field of an `EdgeNetworkNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -412,7 +412,7 @@ fractional digits. Examples: '2014-10-02T15:01:23Z' and '2014-10-02T15:01:23.045
 # limitations under the License.
 
 apiVersion: edgenetwork.cnrm.cloud.google.com/v1beta1
-kind: EdgenetworkSubnet
+kind: EdgeNetworkSubnet
 metadata:
   name: edgenetworknetwork-sample
 spec:
@@ -426,7 +426,7 @@ spec:
     - 2.2.2.2/32
 ---
 apiVersion: edgenetwork.cnrm.cloud.google.com/v1beta1
-kind: EdgenetworkNetwork
+kind: EdgeNetworkNetwork
 metadata:
   name: edgenetworknetwork-dep
 spec:

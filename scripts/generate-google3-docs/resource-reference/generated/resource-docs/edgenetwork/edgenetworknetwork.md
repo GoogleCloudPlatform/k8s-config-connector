@@ -2,7 +2,7 @@
 
 {% extends "config-connector/_base.html" %}
 
-{% block page_title %}EdgenetworkNetwork{% endblock %}
+{% block page_title %}EdgeNetworkNetwork{% endblock %}
 {% block body %}
 
 
@@ -316,7 +316,7 @@ fractional digits. Examples: '2014-10-02T15:01:23Z' and '2014-10-02T15:01:23.045
 # limitations under the License.
 
 apiVersion: edgenetwork.cnrm.cloud.google.com/v1beta1
-kind: EdgenetworkNetwork
+kind: EdgeNetworkNetwork
 metadata:
   name: edgenetworknetwork-sample
 spec:

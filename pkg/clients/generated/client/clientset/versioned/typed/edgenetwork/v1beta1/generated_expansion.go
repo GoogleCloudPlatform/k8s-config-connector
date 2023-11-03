@@ -21,6 +21,6 @@
 
 package v1beta1
 
-type EdgenetworkNetworkExpansion interface{}
+type EdgeNetworkNetworkExpansion interface{}
 
-type EdgenetworkSubnetExpansion interface{}
+type EdgeNetworkSubnetExpansion interface{}

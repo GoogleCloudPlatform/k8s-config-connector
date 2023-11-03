@@ -18,12 +18,12 @@ metadata:
   name: edgenetwork.cnrm.cloud.google.com
   namespace: cnrm-system
 spec:
-  name: Edgenetwork
+  name: EdgeNetwork
   version: v1beta1
   serviceHostName: edgenetwork.googleapis.com
   resources:
     - name: google_edgenetwork_network
-      kind: EdgenetworkNetwork
+      kind: EdgeNetworkNetwork
       idTemplate: "projects/{{project}}/locations/{{location}}/zones/{{zone}}/networks/{{network_id}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
@@ -45,7 +45,7 @@ spec:
             version: v1beta1
             group: resourcemanager.cnrm.cloud.google.com
     - name: google_edgenetwork_subnet
-      kind: EdgenetworkSubnet
+      kind: EdgeNetworkSubnet
       idTemplate: "projects/{{project}}/locations/{{location}}/zones/{{zone}}/subnets/{{subnet_id}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
@@ -69,7 +69,7 @@ spec:
         - key: networkRef
           tfField: network
           gvk:
-            kind: EdgenetworkNetwork
+            kind: EdgeNetworkNetwork
             version: v1beta1
             group: edgenetwork.cnrm.cloud.google.com
           targetField: name

@@ -33,43 +33,43 @@ import (
 	rest "k8s.io/client-go/rest"
 )
 
-// EdgenetworkNetworksGetter has a method to return a EdgenetworkNetworkInterface.
+// EdgeNetworkNetworksGetter has a method to return a EdgeNetworkNetworkInterface.
 // A group's client should implement this interface.
-type EdgenetworkNetworksGetter interface {
-	EdgenetworkNetworks(namespace string) EdgenetworkNetworkInterface
+type EdgeNetworkNetworksGetter interface {
+	EdgeNetworkNetworks(namespace string) EdgeNetworkNetworkInterface
 }
 
-// EdgenetworkNetworkInterface has methods to work with EdgenetworkNetwork resources.
-type EdgenetworkNetworkInterface interface {
-	Create(ctx context.Context, edgenetworkNetwork *v1beta1.EdgenetworkNetwork, opts v1.CreateOptions) (*v1beta1.EdgenetworkNetwork, error)
-	Update(ctx context.Context, edgenetworkNetwork *v1beta1.EdgenetworkNetwork, opts v1.UpdateOptions) (*v1beta1.EdgenetworkNetwork, error)
-	UpdateStatus(ctx context.Context, edgenetworkNetwork *v1beta1.EdgenetworkNetwork, opts v1.UpdateOptions) (*v1beta1.EdgenetworkNetwork, error)
+// EdgeNetworkNetworkInterface has methods to work with EdgeNetworkNetwork resources.
+type EdgeNetworkNetworkInterface interface {
+	Create(ctx context.Context, edgeNetworkNetwork *v1beta1.EdgeNetworkNetwork, opts v1.CreateOptions) (*v1beta1.EdgeNetworkNetwork, error)
+	Update(ctx context.Context, edgeNetworkNetwork *v1beta1.EdgeNetworkNetwork, opts v1.UpdateOptions) (*v1beta1.EdgeNetworkNetwork, error)
+	UpdateStatus(ctx context.Context, edgeNetworkNetwork *v1beta1.EdgeNetworkNetwork, opts v1.UpdateOptions) (*v1beta1.EdgeNetworkNetwork, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.EdgenetworkNetwork, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.EdgenetworkNetworkList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1beta1.EdgeNetworkNetwork, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.EdgeNetworkNetworkList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.EdgenetworkNetwork, err error)
-	EdgenetworkNetworkExpansion
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.EdgeNetworkNetwork, err error)
+	EdgeNetworkNetworkExpansion
 }
 
-// edgenetworkNetworks implements EdgenetworkNetworkInterface
-type edgenetworkNetworks struct {
+// edgeNetworkNetworks implements EdgeNetworkNetworkInterface
+type edgeNetworkNetworks struct {
 	client rest.Interface
 	ns     string
 }
 
-// newEdgenetworkNetworks returns a EdgenetworkNetworks
-func newEdgenetworkNetworks(c *EdgenetworkV1beta1Client, namespace string) *edgenetworkNetworks {
-	return &edgenetworkNetworks{
+// newEdgeNetworkNetworks returns a EdgeNetworkNetworks
+func newEdgeNetworkNetworks(c *EdgenetworkV1beta1Client, namespace string) *edgeNetworkNetworks {
+	return &edgeNetworkNetworks{
 		client: c.RESTClient(),
 		ns:     namespace,
 	}
 }
 
-// Get takes name of the edgenetworkNetwork, and returns the corresponding edgenetworkNetwork object, and an error if there is any.
-func (c *edgenetworkNetworks) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EdgenetworkNetwork, err error) {
-	result = &v1beta1.EdgenetworkNetwork{}
+// Get takes name of the edgeNetworkNetwork, and returns the corresponding edgeNetworkNetwork object, and an error if there is any.
+func (c *edgeNetworkNetworks) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EdgeNetworkNetwork, err error) {
+	result = &v1beta1.EdgeNetworkNetwork{}
 	err = c.client.Get().
 		Namespace(c.ns).
 		Resource("edgenetworknetworks").
@@ -80,13 +80,13 @@ func (c *edgenetworkNetworks) Get(ctx context.Context, name string, options v1.G
 	return
 }
 
-// List takes label and field selectors, and returns the list of EdgenetworkNetworks that match those selectors.
-func (c *edgenetworkNetworks) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.EdgenetworkNetworkList, err error) {
+// List takes label and field selectors, and returns the list of EdgeNetworkNetworks that match those selectors.
+func (c *edgeNetworkNetworks) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.EdgeNetworkNetworkList, err error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
 	}
-	result = &v1beta1.EdgenetworkNetworkList{}
+	result = &v1beta1.EdgeNetworkNetworkList{}
 	err = c.client.Get().
 		Namespace(c.ns).
 		Resource("edgenetworknetworks").
@@ -97,8 +97,8 @@ func (c *edgenetworkNetworks) List(ctx context.Context, opts v1.ListOptions) (re
 	return
 }
 
-// Watch returns a watch.Interface that watches the requested edgenetworkNetworks.
-func (c *edgenetworkNetworks) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+// Watch returns a watch.Interface that watches the requested edgeNetworkNetworks.
+func (c *edgeNetworkNetworks) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
@@ -112,28 +112,28 @@ func (c *edgenetworkNetworks) Watch(ctx context.Context, opts v1.ListOptions) (w
 		Watch(ctx)
 }
 
-// Create takes the representation of a edgenetworkNetwork and creates it.  Returns the server's representation of the edgenetworkNetwork, and an error, if there is any.
-func (c *edgenetworkNetworks) Create(ctx context.Context, edgenetworkNetwork *v1beta1.EdgenetworkNetwork, opts v1.CreateOptions) (result *v1beta1.EdgenetworkNetwork, err error) {
-	result = &v1beta1.EdgenetworkNetwork{}
+// Create takes the representation of a edgeNetworkNetwork and creates it.  Returns the server's representation of the edgeNetworkNetwork, and an error, if there is any.
+func (c *edgeNetworkNetworks) Create(ctx context.Context, edgeNetworkNetwork *v1beta1.EdgeNetworkNetwork, opts v1.CreateOptions) (result *v1beta1.EdgeNetworkNetwork, err error) {
+	result = &v1beta1.EdgeNetworkNetwork{}
 	err = c.client.Post().
 		Namespace(c.ns).
 		Resource("edgenetworknetworks").
 		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(edgenetworkNetwork).
+		Body(edgeNetworkNetwork).
 		Do(ctx).
 		Into(result)
 	return
 }
 
-// Update takes the representation of a edgenetworkNetwork and updates it. Returns the server's representation of the edgenetworkNetwork, and an error, if there is any.
-func (c *edgenetworkNetworks) Update(ctx context.Context, edgenetworkNetwork *v1beta1.EdgenetworkNetwork, opts v1.UpdateOptions) (result *v1beta1.EdgenetworkNetwork, err error) {
-	result = &v1beta1.EdgenetworkNetwork{}
+// Update takes the representation of a edgeNetworkNetwork and updates it. Returns the server's representation of the edgeNetworkNetwork, and an error, if there is any.
+func (c *edgeNetworkNetworks) Update(ctx context.Context, edgeNetworkNetwork *v1beta1.EdgeNetworkNetwork, opts v1.UpdateOptions) (result *v1beta1.EdgeNetworkNetwork, err error) {
+	result = &v1beta1.EdgeNetworkNetwork{}
 	err = c.client.Put().
 		Namespace(c.ns).
 		Resource("edgenetworknetworks").
-		Name(edgenetworkNetwork.Name).
+		Name(edgeNetworkNetwork.Name).
 		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(edgenetworkNetwork).
+		Body(edgeNetworkNetwork).
 		Do(ctx).
 		Into(result)
 	return
@@ -141,22 +141,22 @@ func (c *edgenetworkNetworks) Update(ctx context.Context, edgenetworkNetwork *v1
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *edgenetworkNetworks) UpdateStatus(ctx context.Context, edgenetworkNetwork *v1beta1.EdgenetworkNetwork, opts v1.UpdateOptions) (result *v1beta1.EdgenetworkNetwork, err error) {
-	result = &v1beta1.EdgenetworkNetwork{}
+func (c *edgeNetworkNetworks) UpdateStatus(ctx context.Context, edgeNetworkNetwork *v1beta1.EdgeNetworkNetwork, opts v1.UpdateOptions) (result *v1beta1.EdgeNetworkNetwork, err error) {
+	result = &v1beta1.EdgeNetworkNetwork{}
 	err = c.client.Put().
 		Namespace(c.ns).
 		Resource("edgenetworknetworks").
-		Name(edgenetworkNetwork.Name).
+		Name(edgeNetworkNetwork.Name).
 		SubResource("status").
 		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(edgenetworkNetwork).
+		Body(edgeNetworkNetwork).
 		Do(ctx).
 		Into(result)
 	return
 }
 
-// Delete takes name of the edgenetworkNetwork and deletes it. Returns an error if one occurs.
-func (c *edgenetworkNetworks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+// Delete takes name of the edgeNetworkNetwork and deletes it. Returns an error if one occurs.
+func (c *edgeNetworkNetworks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	return c.client.Delete().
 		Namespace(c.ns).
 		Resource("edgenetworknetworks").
@@ -167,7 +167,7 @@ func (c *edgenetworkNetworks) Delete(ctx context.Context, name string, opts v1.D
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *edgenetworkNetworks) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+func (c *edgeNetworkNetworks) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
 	var timeout time.Duration
 	if listOpts.TimeoutSeconds != nil {
 		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
@@ -182,9 +182,9 @@ func (c *edgenetworkNetworks) DeleteCollection(ctx context.Context, opts v1.Dele
 		Error()
 }
 
-// Patch applies the patch and returns the patched edgenetworkNetwork.
-func (c *edgenetworkNetworks) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.EdgenetworkNetwork, err error) {
-	result = &v1beta1.EdgenetworkNetwork{}
+// Patch applies the patch and returns the patched edgeNetworkNetwork.
+func (c *edgeNetworkNetworks) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.EdgeNetworkNetwork, err error) {
+	result = &v1beta1.EdgeNetworkNetwork{}
 	err = c.client.Patch(pt).
 		Namespace(c.ns).
 		Resource("edgenetworknetworks").

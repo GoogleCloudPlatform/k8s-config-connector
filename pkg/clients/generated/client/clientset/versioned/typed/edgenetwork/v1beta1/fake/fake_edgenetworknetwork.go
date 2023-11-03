@@ -33,31 +33,31 @@ import (
 	testing "k8s.io/client-go/testing"
 )
 
-// FakeEdgenetworkNetworks implements EdgenetworkNetworkInterface
-type FakeEdgenetworkNetworks struct {
+// FakeEdgeNetworkNetworks implements EdgeNetworkNetworkInterface
+type FakeEdgeNetworkNetworks struct {
 	Fake *FakeEdgenetworkV1beta1
 	ns   string
 }
 
 var edgenetworknetworksResource = schema.GroupVersionResource{Group: "edgenetwork.cnrm.cloud.google.com", Version: "v1beta1", Resource: "edgenetworknetworks"}
 
-var edgenetworknetworksKind = schema.GroupVersionKind{Group: "edgenetwork.cnrm.cloud.google.com", Version: "v1beta1", Kind: "EdgenetworkNetwork"}
+var edgenetworknetworksKind = schema.GroupVersionKind{Group: "edgenetwork.cnrm.cloud.google.com", Version: "v1beta1", Kind: "EdgeNetworkNetwork"}
 
-// Get takes name of the edgenetworkNetwork, and returns the corresponding edgenetworkNetwork object, and an error if there is any.
-func (c *FakeEdgenetworkNetworks) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EdgenetworkNetwork, err error) {
+// Get takes name of the edgeNetworkNetwork, and returns the corresponding edgeNetworkNetwork object, and an error if there is any.
+func (c *FakeEdgeNetworkNetworks) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EdgeNetworkNetwork, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(edgenetworknetworksResource, c.ns, name), &v1beta1.EdgenetworkNetwork{})
+		Invokes(testing.NewGetAction(edgenetworknetworksResource, c.ns, name), &v1beta1.EdgeNetworkNetwork{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1beta1.EdgenetworkNetwork), err
+	return obj.(*v1beta1.EdgeNetworkNetwork), err
 }
 
-// List takes label and field selectors, and returns the list of EdgenetworkNetworks that match those selectors.
-func (c *FakeEdgenetworkNetworks) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.EdgenetworkNetworkList, err error) {
+// List takes label and field selectors, and returns the list of EdgeNetworkNetworks that match those selectors.
+func (c *FakeEdgeNetworkNetworks) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.EdgeNetworkNetworkList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(edgenetworknetworksResource, edgenetworknetworksKind, c.ns, opts), &v1beta1.EdgenetworkNetworkList{})
+		Invokes(testing.NewListAction(edgenetworknetworksResource, edgenetworknetworksKind, c.ns, opts), &v1beta1.EdgeNetworkNetworkList{})
 
 	if obj == nil {
 		return nil, err
@@ -67,8 +67,8 @@ func (c *FakeEdgenetworkNetworks) List(ctx context.Context, opts v1.ListOptions)
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &v1beta1.EdgenetworkNetworkList{ListMeta: obj.(*v1beta1.EdgenetworkNetworkList).ListMeta}
-	for _, item := range obj.(*v1beta1.EdgenetworkNetworkList).Items {
+	list := &v1beta1.EdgeNetworkNetworkList{ListMeta: obj.(*v1beta1.EdgeNetworkNetworkList).ListMeta}
+	for _, item := range obj.(*v1beta1.EdgeNetworkNetworkList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -76,70 +76,70 @@ func (c *FakeEdgenetworkNetworks) List(ctx context.Context, opts v1.ListOptions)
 	return list, err
 }
 
-// Watch returns a watch.Interface that watches the requested edgenetworkNetworks.
-func (c *FakeEdgenetworkNetworks) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+// Watch returns a watch.Interface that watches the requested edgeNetworkNetworks.
+func (c *FakeEdgeNetworkNetworks) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(edgenetworknetworksResource, c.ns, opts))
 
 }
 
-// Create takes the representation of a edgenetworkNetwork and creates it.  Returns the server's representation of the edgenetworkNetwork, and an error, if there is any.
-func (c *FakeEdgenetworkNetworks) Create(ctx context.Context, edgenetworkNetwork *v1beta1.EdgenetworkNetwork, opts v1.CreateOptions) (result *v1beta1.EdgenetworkNetwork, err error) {
+// Create takes the representation of a edgeNetworkNetwork and creates it.  Returns the server's representation of the edgeNetworkNetwork, and an error, if there is any.
+func (c *FakeEdgeNetworkNetworks) Create(ctx context.Context, edgeNetworkNetwork *v1beta1.EdgeNetworkNetwork, opts v1.CreateOptions) (result *v1beta1.EdgeNetworkNetwork, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(edgenetworknetworksResource, c.ns, edgenetworkNetwork), &v1beta1.EdgenetworkNetwork{})
+		Invokes(testing.NewCreateAction(edgenetworknetworksResource, c.ns, edgeNetworkNetwork), &v1beta1.EdgeNetworkNetwork{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1beta1.EdgenetworkNetwork), err
+	return obj.(*v1beta1.EdgeNetworkNetwork), err
 }
 
-// Update takes the representation of a edgenetworkNetwork and updates it. Returns the server's representation of the edgenetworkNetwork, and an error, if there is any.
-func (c *FakeEdgenetworkNetworks) Update(ctx context.Context, edgenetworkNetwork *v1beta1.EdgenetworkNetwork, opts v1.UpdateOptions) (result *v1beta1.EdgenetworkNetwork, err error) {
+// Update takes the representation of a edgeNetworkNetwork and updates it. Returns the server's representation of the edgeNetworkNetwork, and an error, if there is any.
+func (c *FakeEdgeNetworkNetworks) Update(ctx context.Context, edgeNetworkNetwork *v1beta1.EdgeNetworkNetwork, opts v1.UpdateOptions) (result *v1beta1.EdgeNetworkNetwork, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(edgenetworknetworksResource, c.ns, edgenetworkNetwork), &v1beta1.EdgenetworkNetwork{})
+		Invokes(testing.NewUpdateAction(edgenetworknetworksResource, c.ns, edgeNetworkNetwork), &v1beta1.EdgeNetworkNetwork{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1beta1.EdgenetworkNetwork), err
+	return obj.(*v1beta1.EdgeNetworkNetwork), err
 }
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeEdgenetworkNetworks) UpdateStatus(ctx context.Context, edgenetworkNetwork *v1beta1.EdgenetworkNetwork, opts v1.UpdateOptions) (*v1beta1.EdgenetworkNetwork, error) {
+func (c *FakeEdgeNetworkNetworks) UpdateStatus(ctx context.Context, edgeNetworkNetwork *v1beta1.EdgeNetworkNetwork, opts v1.UpdateOptions) (*v1beta1.EdgeNetworkNetwork, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(edgenetworknetworksResource, "status", c.ns, edgenetworkNetwork), &v1beta1.EdgenetworkNetwork{})
+		Invokes(testing.NewUpdateSubresourceAction(edgenetworknetworksResource, "status", c.ns, edgeNetworkNetwork), &v1beta1.EdgeNetworkNetwork{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1beta1.EdgenetworkNetwork), err
+	return obj.(*v1beta1.EdgeNetworkNetwork), err
 }
 
-// Delete takes name of the edgenetworkNetwork and deletes it. Returns an error if one occurs.
-func (c *FakeEdgenetworkNetworks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+// Delete takes name of the edgeNetworkNetwork and deletes it. Returns an error if one occurs.
+func (c *FakeEdgeNetworkNetworks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(edgenetworknetworksResource, c.ns, name, opts), &v1beta1.EdgenetworkNetwork{})
+		Invokes(testing.NewDeleteActionWithOptions(edgenetworknetworksResource, c.ns, name, opts), &v1beta1.EdgeNetworkNetwork{})
 
 	return err
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *FakeEdgenetworkNetworks) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+func (c *FakeEdgeNetworkNetworks) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(edgenetworknetworksResource, c.ns, listOpts)
 
-	_, err := c.Fake.Invokes(action, &v1beta1.EdgenetworkNetworkList{})
+	_, err := c.Fake.Invokes(action, &v1beta1.EdgeNetworkNetworkList{})
 	return err
 }
 
-// Patch applies the patch and returns the patched edgenetworkNetwork.
-func (c *FakeEdgenetworkNetworks) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.EdgenetworkNetwork, err error) {
+// Patch applies the patch and returns the patched edgeNetworkNetwork.
+func (c *FakeEdgeNetworkNetworks) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.EdgeNetworkNetwork, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(edgenetworknetworksResource, c.ns, name, pt, data, subresources...), &v1beta1.EdgenetworkNetwork{})
+		Invokes(testing.NewPatchSubresourceAction(edgenetworknetworksResource, c.ns, name, pt, data, subresources...), &v1beta1.EdgeNetworkNetwork{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1beta1.EdgenetworkNetwork), err
+	return obj.(*v1beta1.EdgeNetworkNetwork), err
 }

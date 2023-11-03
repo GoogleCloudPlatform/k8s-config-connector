@@ -31,8 +31,8 @@ import (
 
 type EdgenetworkV1beta1Interface interface {
 	RESTClient() rest.Interface
-	EdgenetworkNetworksGetter
-	EdgenetworkSubnetsGetter
+	EdgeNetworkNetworksGetter
+	EdgeNetworkSubnetsGetter
 }
 
 // EdgenetworkV1beta1Client is used to interact with features provided by the edgenetwork.cnrm.cloud.google.com group.
@@ -40,12 +40,12 @@ type EdgenetworkV1beta1Client struct {
 	restClient rest.Interface
 }
 
-func (c *EdgenetworkV1beta1Client) EdgenetworkNetworks(namespace string) EdgenetworkNetworkInterface {
-	return newEdgenetworkNetworks(c, namespace)
+func (c *EdgenetworkV1beta1Client) EdgeNetworkNetworks(namespace string) EdgeNetworkNetworkInterface {
+	return newEdgeNetworkNetworks(c, namespace)
 }
 
-func (c *EdgenetworkV1beta1Client) EdgenetworkSubnets(namespace string) EdgenetworkSubnetInterface {
-	return newEdgenetworkSubnets(c, namespace)
+func (c *EdgenetworkV1beta1Client) EdgeNetworkSubnets(namespace string) EdgeNetworkSubnetInterface {
+	return newEdgeNetworkSubnets(c, namespace)
 }
 
 // NewForConfig creates a new EdgenetworkV1beta1Client for the given config.

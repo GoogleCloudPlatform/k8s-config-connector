@@ -35,7 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type EdgenetworkNetworkSpec struct {
+type EdgeNetworkNetworkSpec struct {
 	/* Immutable. A free-text description of the resource. Max length 1024 characters. */
 	// +optional
 	Description *string `json:"description,omitempty"`
@@ -58,9 +58,9 @@ type EdgenetworkNetworkSpec struct {
 	Zone string `json:"zone"`
 }
 
-type EdgenetworkNetworkStatus struct {
+type EdgeNetworkNetworkStatus struct {
 	/* Conditions represent the latest available observations of the
-	   EdgenetworkNetwork's current state. */
+	   EdgeNetworkNetwork's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time when the subnet was created.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine
@@ -87,25 +87,25 @@ type EdgenetworkNetworkStatus struct {
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// EdgenetworkNetwork is the Schema for the edgenetwork API
+// EdgeNetworkNetwork is the Schema for the edgenetwork API
 // +k8s:openapi-gen=true
-type EdgenetworkNetwork struct {
+type EdgeNetworkNetwork struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   EdgenetworkNetworkSpec   `json:"spec,omitempty"`
-	Status EdgenetworkNetworkStatus `json:"status,omitempty"`
+	Spec   EdgeNetworkNetworkSpec   `json:"spec,omitempty"`
+	Status EdgeNetworkNetworkStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// EdgenetworkNetworkList contains a list of EdgenetworkNetwork
-type EdgenetworkNetworkList struct {
+// EdgeNetworkNetworkList contains a list of EdgeNetworkNetwork
+type EdgeNetworkNetworkList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []EdgenetworkNetwork `json:"items"`
+	Items           []EdgeNetworkNetwork `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&EdgenetworkNetwork{}, &EdgenetworkNetworkList{})
+	SchemeBuilder.Register(&EdgeNetworkNetwork{}, &EdgeNetworkNetworkList{})
 }

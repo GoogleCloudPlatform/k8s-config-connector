@@ -15,7 +15,7 @@ spec:
   names:
     categories:
     - gcp
-    kind: EdgenetworkSubnet
+    kind: EdgeNetworkSubnet
     plural: edgenetworksubnets
     shortNames:
     - gcpedgenetworksubnet
@@ -95,7 +95,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of an `EdgenetworkNetwork`
+                    description: 'Allowed value: The `name` field of an `EdgeNetworkNetwork`
                       resource.'
                     type: string
                   name:

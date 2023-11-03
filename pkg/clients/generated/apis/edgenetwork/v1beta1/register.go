@@ -53,16 +53,16 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	EdgenetworkNetworkGVK = schema.GroupVersionKind{
+	EdgeNetworkNetworkGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(EdgenetworkNetwork{}).Name(),
+		Kind:    reflect.TypeOf(EdgeNetworkNetwork{}).Name(),
 	}
 
-	EdgenetworkSubnetGVK = schema.GroupVersionKind{
+	EdgeNetworkSubnetGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(EdgenetworkSubnet{}).Name(),
+		Kind:    reflect.TypeOf(EdgeNetworkSubnet{}).Name(),
 	}
 
 	edgenetworkAPIVersion = SchemeGroupVersion.String()

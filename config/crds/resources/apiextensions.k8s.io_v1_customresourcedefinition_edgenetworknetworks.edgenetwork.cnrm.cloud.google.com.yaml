@@ -15,7 +15,7 @@ spec:
   names:
     categories:
     - gcp
-    kind: EdgenetworkNetwork
+    kind: EdgeNetworkNetwork
     plural: edgenetworknetworks
     shortNames:
     - gcpedgenetworknetwork

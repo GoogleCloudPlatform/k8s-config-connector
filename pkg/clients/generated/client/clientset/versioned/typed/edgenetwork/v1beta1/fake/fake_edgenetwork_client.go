@@ -31,12 +31,12 @@ type FakeEdgenetworkV1beta1 struct {
 	*testing.Fake
 }
 
-func (c *FakeEdgenetworkV1beta1) EdgenetworkNetworks(namespace string) v1beta1.EdgenetworkNetworkInterface {
-	return &FakeEdgenetworkNetworks{c, namespace}
+func (c *FakeEdgenetworkV1beta1) EdgeNetworkNetworks(namespace string) v1beta1.EdgeNetworkNetworkInterface {
+	return &FakeEdgeNetworkNetworks{c, namespace}
 }
 
-func (c *FakeEdgenetworkV1beta1) EdgenetworkSubnets(namespace string) v1beta1.EdgenetworkSubnetInterface {
-	return &FakeEdgenetworkSubnets{c, namespace}
+func (c *FakeEdgenetworkV1beta1) EdgeNetworkSubnets(namespace string) v1beta1.EdgeNetworkSubnetInterface {
+	return &FakeEdgeNetworkSubnets{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
