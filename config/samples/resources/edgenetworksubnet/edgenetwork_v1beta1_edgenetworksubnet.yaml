@@ -15,13 +15,13 @@
 apiVersion: edgenetwork.cnrm.cloud.google.com/v1beta1
 kind: EdgeNetworkSubnet
 metadata:
-  name: edgenetworknetwork-sample
+  name: edgenetworksubnet-sample
 spec:
   description: "A sample edgenetwork subnet"
   location: us-central1
   zone: us-central1-edge-den123
   networkRef:
-    name: edgenetworknetwork-dep
+    name: edgenetworksubnet-dep
   ipv4Cidr:
     - 1.1.1.1/24
     - 2.2.2.2/32

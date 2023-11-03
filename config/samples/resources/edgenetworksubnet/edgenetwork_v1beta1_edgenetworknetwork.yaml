@@ -15,7 +15,7 @@
 apiVersion: edgenetwork.cnrm.cloud.google.com/v1beta1
 kind: EdgeNetworkNetwork
 metadata:
-  name: edgenetworknetwork-dep
+  name: edgenetworksubnet-dep
 spec:
   description: "A sample edgenetwork network"
   location: us-central1
