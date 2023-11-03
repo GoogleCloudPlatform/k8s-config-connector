@@ -20,7 +20,7 @@ metadata:
 spec:
   name: Edgenetwork
   version: v1beta1
-  serviceHostName: autopush-edgenetwork.sandbox.googleapis.com
+  serviceHostName: edgenetwork.googleapis.com
   resources:
     - name: google_edgenetwork_network
       kind: EdgenetworkNetwork
