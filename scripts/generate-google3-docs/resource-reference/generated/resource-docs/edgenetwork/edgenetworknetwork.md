@@ -321,8 +321,8 @@ metadata:
   name: edgenetworknetwork-sample
 spec:
   description: "A sample edgenetwork network"
-  location: sample-location
-  zone: sample-zone
+  location: us-central1
+  zone: us-central1-edge-den123
   mtu: 9000
 ```
 

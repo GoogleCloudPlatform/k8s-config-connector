@@ -414,13 +414,13 @@ fractional digits. Examples: '2014-10-02T15:01:23Z' and '2014-10-02T15:01:23.045
 apiVersion: edgenetwork.cnrm.cloud.google.com/v1beta1
 kind: EdgeNetworkSubnet
 metadata:
-  name: edgenetworknetwork-sample
+  name: edgenetworksubnet-sample
 spec:
   description: "A sample edgenetwork subnet"
-  location: sample-location
-  zone: sample-zone
+  location: us-central1
+  zone: us-central1-edge-den123
   networkRef:
-    name: edgenetworknetwork-dep
+    name: edgenetworksubnet-dep
   ipv4Cidr:
     - 1.1.1.1/24
     - 2.2.2.2/32
@@ -428,11 +428,11 @@ spec:
 apiVersion: edgenetwork.cnrm.cloud.google.com/v1beta1
 kind: EdgeNetworkNetwork
 metadata:
-  name: edgenetworknetwork-dep
+  name: edgenetworksubnet-dep
 spec:
   description: "A sample edgenetwork network"
-  location: sample-location
-  zone: sample-zone
+  location: us-central1
+  zone: us-central1-edge-den123
   mtu: 9000
 ```
 
