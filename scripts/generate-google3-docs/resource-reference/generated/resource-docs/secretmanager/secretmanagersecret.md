@@ -484,7 +484,7 @@ An object containing a list of "key": value pairs. Example:
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

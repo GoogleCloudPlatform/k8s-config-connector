@@ -1870,7 +1870,7 @@ Must be from 0 to 315,576,000,000 inclusive.{% endverbatim %}</p>
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

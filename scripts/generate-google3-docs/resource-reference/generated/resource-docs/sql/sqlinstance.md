@@ -1479,7 +1479,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

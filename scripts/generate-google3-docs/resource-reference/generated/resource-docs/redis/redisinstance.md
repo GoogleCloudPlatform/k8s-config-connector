@@ -701,7 +701,7 @@ range associated with the private service access connection, or "auto".{% endver
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

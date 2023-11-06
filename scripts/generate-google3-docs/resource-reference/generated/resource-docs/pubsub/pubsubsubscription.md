@@ -783,7 +783,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

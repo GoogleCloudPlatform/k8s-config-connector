@@ -758,7 +758,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

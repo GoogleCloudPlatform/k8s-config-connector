@@ -578,7 +578,7 @@ folderRef, or organizationRef may be specified.{% endverbatim %}</p>
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

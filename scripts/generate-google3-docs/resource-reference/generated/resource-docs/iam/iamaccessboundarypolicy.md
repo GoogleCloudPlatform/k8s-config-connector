@@ -289,7 +289,7 @@ This can be used e.g. in UIs which allow to enter the expression.{% endverbatim 
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

@@ -634,7 +634,7 @@ LOGICAL is the default if this flag isn't specified.{% endverbatim %}</p>
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

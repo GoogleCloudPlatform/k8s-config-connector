@@ -542,7 +542,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.{% endverbatim %}</p>
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

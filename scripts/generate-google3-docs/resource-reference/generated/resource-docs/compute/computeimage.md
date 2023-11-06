@@ -529,7 +529,7 @@ Reference link: https://cloud.google.com/compute/docs/reference/rest/v1/images.{
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status
