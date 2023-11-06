@@ -16,12 +16,19 @@ package testrunner
 
 import (
 	"context"
+	"net/http"
+	"os"
+	"path/filepath"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
 	dclconversion "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -31,8 +38,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/testcontext"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"golang.org/x/oauth2/google"
+	"google.golang.org/api/cloudresourcemanager/v1"
+	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/option"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -85,12 +99,57 @@ func RunAllWithDependenciesCreatedButNotObject(ctx context.Context, t *testing.T
 }
 
 func RunAll(ctx context.Context, t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, testCaseFunc TestCaseFunc) {
+	var kccConfig kccmanager.Config
+
+	var project testgcp.GCPProject
+	// TODO: Try to centralize and deduplicate this logic somewhere?
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+		t.Logf("creating mock gcp")
+
+		mockCloud := mockgcp.NewMockRoundTripper(t, mgr.GetClient(), storage.NewInMemoryStorage())
+
+		httpRoundTripper := http.RoundTripper(mockCloud)
+
+		ctx = testcontext.WithHTTPRoundTripper(ctx, httpRoundTripper)
+
+		kccConfig.HTTPClient = &http.Client{Transport: httpRoundTripper}
+		kccConfig.GCPAccessToken = "dummytoken"
+
+		// Pre-create project
+		crm, err := cloudresourcemanagerv1.NewService(ctx, option.WithHTTPClient(kccConfig.HTTPClient))
+		if err != nil {
+			t.Fatalf("error building cloudresourcemanagerv1 client: %v", err)
+		}
+		req := &cloudresourcemanager.Project{
+			ProjectId: "mock-project",
+		}
+		op, err := crm.Projects.Create(req).Context(ctx).Do()
+		if err != nil {
+			t.Fatalf("error creating project: %v", err)
+		}
+		if !op.Done {
+			t.Fatalf("expected mock create project operation to be done immediately")
+		}
+		found, err := crm.Projects.Get(req.ProjectId).Context(ctx).Do()
+		if err != nil {
+			t.Fatalf("error reading created project: %v", err)
+		}
+		project = testgcp.GCPProject{
+			ProjectID:     found.ProjectId,
+			ProjectNumber: found.ProjectNumber,
+		}
+	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" || targetGCP == "" {
+		t.Logf("targeting real GCP")
+		project = testgcp.GetDefaultProject(t)
+	} else {
+		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
+	}
+
 	shouldRun := func(resourceFixture resourcefixture.ResourceFixture) bool {
 		return shouldRunFunc(resourceFixture, mgr)
 	}
 	testFunc := func(ctx context.Context, t *testing.T, fixture resourcefixture.ResourceFixture) {
-		project := testgcp.GetDefaultProject(t)
-		systemContext := newSystemContext(t, mgr)
+		systemContext := newSystemContext(ctx, t, mgr, kccConfig)
 		testContext := NewTestContext(t, fixture, project)
 		setupNamespaces(t, testContext, systemContext, project)
 		testCaseFunc(ctx, t, testContext, systemContext)
@@ -143,10 +202,83 @@ func bytesToUnstructured(t *testing.T, bytes []byte, testId string, project test
 	return test.ToUnstructWithNamespace(t, updatedBytes, testId)
 }
 
-func newSystemContext(t *testing.T, mgr manager.Manager) SystemContext {
+func newSystemContext(ctx context.Context, t *testing.T, mgr manager.Manager, kccConfig kccmanager.Config) SystemContext {
 	smLoader := testservicemappingloader.New(t)
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
-	dclConfig := clientconfig.NewForIntegrationTest()
+
+	// Allow for capture of http requests during a test.
+	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+		ret := inner
+		if t := testcontext.HTTPRoundTripperFromContext(ctx); t != nil {
+			ret = &http.Client{Transport: t}
+		}
+		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
+			log := log.FromContext(ctx)
+			log.Info("env var ARTIFACTS is not set; will not record http log")
+		} else {
+			outputDir := filepath.Join(artifacts, "http-logs")
+			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+			ret = &http.Client{Transport: t}
+		}
+		return ret
+	}
+
+	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+		ret := inner
+		if t := testcontext.HTTPRoundTripperFromContext(ctx); t != nil {
+			ret = &http.Client{Transport: t}
+		}
+		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
+			log := log.FromContext(ctx)
+			log.Info("env var ARTIFACTS is not set; will not record http log")
+		} else {
+			outputDir := filepath.Join(artifacts, "http-logs")
+			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+			ret = &http.Client{Transport: t}
+		}
+		return ret
+	}
+
+	// Bootstrap the Google Terraform provider
+	tfCfg := tfprovider.NewConfig()
+	tfCfg.UserProjectOverride = kccConfig.UserProjectOverride
+	tfCfg.BillingProject = kccConfig.BillingProject
+	tfCfg.GCPAccessToken = kccConfig.GCPAccessToken
+
+	tfProvider, err := tfprovider.New(ctx, tfCfg)
+	if err != nil {
+		t.Fatalf("error creating TF provider: %v", err)
+	}
+
+	var dclConfig *mmdcl.Config
+	{
+		dclOptions := clientconfig.Options{
+			UserProjectOverride: kccConfig.UserProjectOverride,
+			BillingProject:      kccConfig.BillingProject,
+			HTTPClient:          kccConfig.HTTPClient,
+			UserAgent:           "kcc/dev",
+		}
+
+		// Log DCL requests
+		if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
+			outputDir := filepath.Join(artifacts, "http-logs")
+			if dclOptions.HTTPClient == nil {
+				httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
+				if err != nil {
+					t.Fatalf("error creating the http client to be used by DCL: %v", err)
+				}
+				dclOptions.HTTPClient = httpClient
+			}
+			t := test.NewHTTPRecorder(dclOptions.HTTPClient.Transport, outputDir)
+			dclOptions.HTTPClient = &http.Client{Transport: t}
+		}
+
+		dclClient, err := clientconfig.New(ctx, dclOptions)
+		if err != nil {
+			t.Fatalf("error from NewForIntegrationTest: %v", err)
+		}
+		dclConfig = dclClient
+	}
+
 	reconciler := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, tfProvider, dclConfig)
 	serviceMetadataLoader := dclmetadata.New()
 	dclSchemaLoader, err := dclschemaloader.New()
