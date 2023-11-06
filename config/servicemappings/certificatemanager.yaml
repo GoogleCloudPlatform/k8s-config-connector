@@ -49,7 +49,7 @@ spec:
         - tfField: managed.dns_authorizations
           key: dnsAuthorizationsRefs
           description: |-
-            Authorizations that will be used for performing domain authorization. Either issuanceConfig or dnsAuthorizations should be specificed, but not both.
+            Authorizations that will be used for performing domain authorization. Either issuanceConfig or dnsAuthorizations should be specified, but not both.
           gvk:
             kind: CertificateManagerDNSAuthorization
             version: v1beta1
@@ -63,7 +63,7 @@ spec:
 
             Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/*/locations/*/certificateIssuanceConfigs/*.
             If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
-            Either issuanceConfig or dnsAuthorizations should be specificed, but not both.
+            Either issuanceConfig or dnsAuthorizations should be specified, but not both.
           gvk:
             kind: CertificateManagerCertificateIssuanceConfig
             version: v1beta1

@@ -61,7 +61,7 @@ type JobContainers struct {
 	/* URL of the Container image in Google Container Registry or Google Artifact Registry. More info: https://kubernetes.io/docs/concepts/containers/images. */
 	Image string `json:"image"`
 
-	/* DEPRECATED. `liveness_probe` is deprecated and will be removed in a future major release. This field is not supported by the Cloud Run API. Periodic probe of container liveness. Container will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	/* DEPRECATED. `liveness_probe` is deprecated. This field is not supported by the Cloud Run API. Periodic probe of container liveness. Container will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 	This field is not supported in Cloud Run Job currently. */
 	// +optional
 	LivenessProbe *JobLivenessProbe `json:"livenessProbe,omitempty"`
@@ -80,7 +80,7 @@ type JobContainers struct {
 	// +optional
 	Resources *JobResources `json:"resources,omitempty"`
 
-	/* DEPRECATED. `startup_probe` is deprecated and will be removed in a future major release. This field is not supported by the Cloud Run API. Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	/* DEPRECATED. `startup_probe` is deprecated. This field is not supported by the Cloud Run API. Startup probe of application within the container. All other probes are disabled if a startup probe is provided, until it succeeds. Container will not be added to service endpoints if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 	This field is not supported in Cloud Run Job currently. */
 	// +optional
 	StartupProbe *JobStartupProbe `json:"startupProbe,omitempty"`

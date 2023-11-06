@@ -359,8 +359,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/containeranalysis/containeranalysisnote.md
 - title: "Container Attached"
   section:
-    - title: "ContainerAttachedCluster"
-      path: /config-connector/docs/reference/resource-docs/containerattached/containerattachedcluster.md
+  - title: "ContainerAttachedCluster"
+    path: /config-connector/docs/reference/resource-docs/containerattached/containerattachedcluster.md
 - title: "Dataflow"
   section:
   - title: "DataflowJob"

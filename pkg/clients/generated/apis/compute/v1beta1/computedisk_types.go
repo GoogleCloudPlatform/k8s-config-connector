@@ -194,7 +194,7 @@ type ComputeDiskSpec struct {
 	// +optional
 	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
 
-	/* DEPRECATED. `interface` is deprecated and will be removed in a future major release. This field is no longer used and can be safely removed from your configurations; disk interfaces are automatically determined on attachment. Immutable. Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. */
+	/* DEPRECATED. `interface` is deprecated. This field is no longer used and can be safely removed from your configurations; disk interfaces are automatically determined on attachment. Immutable. Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. */
 	// +optional
 	Interface *string `json:"interface,omitempty"`
 
