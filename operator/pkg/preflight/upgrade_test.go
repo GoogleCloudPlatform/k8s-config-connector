@@ -21,6 +21,7 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/manifest"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/mocks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/asserts"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -28,7 +29,6 @@ import (
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/loaders"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative"
-	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/test/mocks"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
@@ -208,9 +208,8 @@ func TestUpgradeChecker_Preflight(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			mgr := mocks.Manager{}
 			ctx := context.Background()
-			client := mgr.GetClient()
+			client := mocks.GetMockClient(t)
 			if err := client.Create(ctx, tc.cc); err != nil {
 				t.Fatalf("error creating %v %v: %v", tc.cc.Kind, tc.cc.Name, err)
 			}
