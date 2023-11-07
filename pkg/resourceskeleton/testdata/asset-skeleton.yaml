@@ -25,6 +25,8 @@
 # not supported by asset inventory
 - resourceConfigId: AlloyDBInstance
 # not supported by asset inventory
+- resourceConfigId: AlloyDBUser
+# not supported by asset inventory
 - resourceConfigId: ArtifactRegistryRepository
 - asset:
     ancestors:

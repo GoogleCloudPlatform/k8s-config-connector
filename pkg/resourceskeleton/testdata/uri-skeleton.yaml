@@ -102,6 +102,9 @@
 - ExpectedSkeleton: null
   ResourceConfigId: AlloyDBInstance
   URI: ""
+- ExpectedSkeleton: null
+  ResourceConfigId: AlloyDBUser
+  URI: ""
 - ExpectedSkeleton:
     apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
     kind: ArtifactRegistryRepository
