@@ -157,6 +157,14 @@ var (
 		// KCC no longer supports GameServicesRealm CRD as of v1.101.0.
 		"GameServicesRealm": true,
 	}
+
+	// ObservedStateAllowlist is a map containing a list of resources that
+	// should have the observed state enabled in the status.
+	// The keys in the list are Terraform resource names, and the values should
+	// be 'true'. E.g. "google_storage_bucket": true.
+	// This allowlist should be removed once all resources supports the observed
+	// state.
+	ObservedStateAllowlist = map[string]bool{}
 )
 
 func FormatAnnotation(annotationName string) string {

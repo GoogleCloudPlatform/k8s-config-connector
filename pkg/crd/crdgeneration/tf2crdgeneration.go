@@ -74,6 +74,15 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	for k, v := range statusJSONSchema.Properties {
 		openAPIV3Schema.Properties["status"].Properties[k] = v
 	}
+	if _, ok := k8s.ObservedStateAllowlist[resource]; ok {
+		trueValue := true
+		stateJSONSchema := apiextensions.JSONSchemaProps{
+			Type:                   "object",
+			Description:            "The observed state of the underlying GCP resource.",
+			XPreserveUnknownFields: &trueValue,
+		}
+		openAPIV3Schema.Properties["status"].Properties["observedState"] = stateJSONSchema
+	}
 
 	group := strings.ToLower(sm.Spec.Name) + "." + ApiDomain
 
