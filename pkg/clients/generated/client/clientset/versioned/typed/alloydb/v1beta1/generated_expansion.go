@@ -26,3 +26,5 @@ type AlloyDBBackupExpansion interface{}
 type AlloyDBClusterExpansion interface{}
 
 type AlloyDBInstanceExpansion interface{}
+
+type AlloyDBUserExpansion interface{}

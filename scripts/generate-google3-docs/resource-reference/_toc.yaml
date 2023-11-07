@@ -29,6 +29,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/alloydb/alloydbcluster.md
   - title: "AlloyDBInstance"
     path: /config-connector/docs/reference/resource-docs/alloydb/alloydbinstance.md
+  - title: "AlloyDBUser"
+    path: /config-connector/docs/reference/resource-docs/alloydb/alloydbuser.md
 - title: "Apigee"
   section:
   - title: "ApigeeEnvironment"
