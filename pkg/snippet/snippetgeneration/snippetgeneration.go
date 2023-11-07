@@ -34,6 +34,7 @@ import (
 var preferredSampleForResource = map[string]string{
 	"alloydbcluster":                    "regular-cluster",
 	"alloydbinstance":                   "primary-instance",
+	"alloydbuser":                       "database-user",
 	"bigqueryjob":                       "query-bigquery-job",
 	"bigtableappprofile":                "multicluster-bigtable-app-profile",
 	"bigtableinstance":                  "replicated-instance",
