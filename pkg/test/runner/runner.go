@@ -145,7 +145,7 @@ func bytesToUnstructured(t *testing.T, bytes []byte, testId string, project test
 
 func newSystemContext(ctx context.Context, t *testing.T, mgr manager.Manager) SystemContext {
 	smLoader := testservicemappingloader.New(t)
-	tfProvider := tfprovider.NewOrLogFatal(ctx, tfprovider.DefaultConfig)
+	tfProvider := tfprovider.NewOrLogFatalWithContext(ctx, tfprovider.DefaultConfig)
 	dclConfig := clientconfig.NewForIntegrationTest()
 	reconciler := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, tfProvider, dclConfig)
 	serviceMetadataLoader := dclmetadata.New()

@@ -611,7 +611,7 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 	if testContext.ResourceFixture.GVK.Kind == "ComputeNetwork" {
 		unstructured.RemoveNestedField(initialUnstruct.Object, "spec", "autoCreateSubnetworks")
 	}
-	if err := kubeClient.Create(context.TODO(), initialUnstruct); err != nil {
+	if err := kubeClient.Create(ctx, initialUnstruct); err != nil {
 		t.Fatalf("error creating resource: %v", err)
 	}
 	preReconcileGeneration := initialUnstruct.GetGeneration()
