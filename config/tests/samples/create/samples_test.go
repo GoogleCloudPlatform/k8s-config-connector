@@ -213,6 +213,11 @@ var testDisabledList = map[string]bool{
 	// This sample test is failing because configconnector.net GCP org is not allowlisted.
 	// Disable the test until we have fixed b/267510222.
 	"calendar-budget": true,
+	// These sample test runs try to create AlloyDB backup while Instance has not been created,
+	// as there is no way to enforce order of resource creation. Will re-enable once the API handles it
+	// b/309167136
+	"alloydbbackup":                true,
+	"restored-from-backup-cluster": true,
 }
 
 func TestAll(t *testing.T) {
