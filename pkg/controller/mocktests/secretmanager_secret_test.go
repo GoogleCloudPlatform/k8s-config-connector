@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/testcontext"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/types"
@@ -34,11 +35,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
-
-type httpRoundTripperKeyType int
-
-// httpRoundTripperKey is the key value for http.RoundTripper in a context.Context
-var httpRoundTripperKey httpRoundTripperKeyType
 
 func TestSecretManagerSecretVersion(t *testing.T) {
 	h := NewHarness(t)
@@ -66,18 +62,16 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 		roundTripper = test.NewHTTPRecorder(mockCloud, outputDir)
 	}
 
-	h.Ctx = context.WithValue(h.Ctx, httpRoundTripperKey, roundTripper)
+	h.Ctx = testcontext.WithHTTPRoundTripper(h.Ctx, roundTripper)
 
 	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
-		t := ctx.Value(httpRoundTripperKey)
-		if t != nil {
+		if t := testcontext.HTTPRoundTripperFromContext(ctx); t != nil {
 			return &http.Client{Transport: t.(http.RoundTripper)}
 		}
 		return inner
 	}
 	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
-		t := ctx.Value(httpRoundTripperKey)
-		if t != nil {
+		if t := testcontext.HTTPRoundTripperFromContext(ctx); t != nil {
 			return &http.Client{Transport: t.(http.RoundTripper)}
 		}
 		return inner
