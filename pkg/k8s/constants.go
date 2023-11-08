@@ -160,8 +160,9 @@ var (
 
 	// ObservedStateAllowlist is a map containing a list of resources that
 	// should have the observed state enabled in the status.
-	// The keys in the list are Terraform resource names, and the values should
-	// be 'true'. E.g. "google_storage_bucket": true.
+	// The keys in the list are Terraform type names for TF-based resources, or
+	// KCC kind names for DCL-based resources, and the values should be 'true'.
+	//E.g. "google_storage_bucket": true, "NetworkConnectivityHub": true.
 	// This allowlist should be removed once all resources supports the observed
 	// state.
 	ObservedStateAllowlist = map[string]bool{}

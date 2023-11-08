@@ -105,6 +105,16 @@ func (a *DCL2CRDGenerator) generateOpenAPIV3Schema(schema *openapi.Schema, resou
 			crdSchema.Properties["status"].Properties[k] = v
 		}
 	}
+	if _, ok := k8s.ObservedStateAllowlist[resource.Kind]; ok {
+		trueValue := true
+		stateJSONSchema := apiextensions.JSONSchemaProps{
+			Type:                   "object",
+			Description:            "The observed state of the underlying GCP resource.",
+			XPreserveUnknownFields: &trueValue,
+		}
+		crdSchema.Properties["status"].Properties["observedState"] = stateJSONSchema
+	}
+
 	return crdSchema, nil
 }
 
