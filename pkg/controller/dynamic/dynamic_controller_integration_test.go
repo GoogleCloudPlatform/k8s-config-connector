@@ -345,7 +345,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	}
 	patch := client.MergeFrom(testContext.CreateUnstruct)
 	t.Logf("patching %v with %v\r", updateUnstruct, patch)
-	if err := kubeClient.Patch(context.TODO(), updateUnstruct, patch); err != nil {
+	if err := kubeClient.Patch(ctx, updateUnstruct, patch); err != nil {
 		t.Fatalf("unexpected error when updating '%v': %v", initialUnstruct.GetName(), err)
 	}
 	preReconcileGeneration := updateUnstruct.GetGeneration()
@@ -357,7 +357,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 			"apiVersion": updateUnstruct.GetAPIVersion(),
 		},
 	}
-	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
+	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 
@@ -407,7 +407,7 @@ func testDriftCorrection(ctx context.Context, t *testing.T, testContext testrunn
 	}
 	kubeClient := systemContext.Manager.GetClient()
 	testUnstruct := testContext.CreateUnstruct.DeepCopy()
-	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, testUnstruct); err != nil {
+	if err := kubeClient.Get(ctx, testContext.NamespacedName, testUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 	// For test cases with `cnrm.cloud.google.com/reconcile-interval-in-seconds` annotation set to 0, we should skip drift correction test.
@@ -514,7 +514,7 @@ func testDelete(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 			t.Errorf("expected GCP client to return NotFound for '%v', instead got: %v", initialUnstruct.GetName(), err)
 		}
 
-		err = kubeClient.Get(context.TODO(), testContext.NamespacedName, initialUnstruct)
+		err = kubeClient.Get(ctx, testContext.NamespacedName, initialUnstruct)
 		if err == nil || !errors.IsNotFound(err) {
 			t.Errorf("unexpected error value: '%v'", err)
 		}
@@ -634,7 +634,7 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 			"apiVersion": initialUnstruct.GetAPIVersion(),
 		},
 	}
-	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
+	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 
