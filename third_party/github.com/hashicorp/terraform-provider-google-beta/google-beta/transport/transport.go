@@ -4,6 +4,7 @@ package transport
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -66,7 +67,11 @@ func SendRequest(opt SendRequestOptions) (map[string]interface{}, error) {
 			if err != nil {
 				return err
 			}
-			req, err := http.NewRequest(opt.Method, u, &buf)
+			ctx := opt.Config.Context
+			if ctx == nil {
+				ctx = context.Background()
+			}
+			req, err := http.NewRequestWithContext(ctx, opt.Method, u, &buf)
 			if err != nil {
 				return err
 			}
