@@ -292,3 +292,6 @@ apply-patches:
 	git apply ../hack/terraform-overrides/alloydb-user-tf-5.4.0.patch
 	# Add edgecontainer resources (TODO) Remove the patch once TF update to v5.1.0
 	git apply ../hack/terraform-overrides/edgecontainer.patch
+    # Pass non-empty golang context to http request, to get the test info from context of http request
+    # Related bug b/309633764
+	git apply ../hack/terraform-overrides/send_request_with_context.patch
