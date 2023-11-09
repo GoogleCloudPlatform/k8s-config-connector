@@ -78,7 +78,7 @@ func (s *typeStorage) Create(ctx context.Context, fqn string, create proto.Messa
 }
 
 // Delete deletes the object, returning a not found error if it does not exist.
-func (s *InMemoryStorage) Delete(ctx context.Context,  fqn string, dest proto.Message) error {
+func (s *InMemoryStorage) Delete(ctx context.Context, fqn string, dest proto.Message) error {
 	kind := dest.ProtoReflect().Descriptor()
 	return s.getTypeStorage(kind.FullName()).Delete(ctx, fqn, dest)
 }

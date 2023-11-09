@@ -26,7 +26,6 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgenetwork/v1"
 )
 
-
 func (s *EdgenetworkV1) GetSubnet(ctx context.Context, req *pb.GetSubnetRequest) (*pb.Subnet, error) {
 	name, err := s.parseSubnetName(req.Name)
 	if err != nil {

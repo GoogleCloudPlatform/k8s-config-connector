@@ -23,10 +23,9 @@ import (
 	"google.golang.org/protobuf/proto"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgenetwork/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
-
 
 func (s *EdgenetworkV1) GetNetwork(ctx context.Context, req *pb.GetNetworkRequest) (*pb.Network, error) {
 	name, err := s.parseNetworkName(req.Name)
@@ -59,7 +58,7 @@ func (s *EdgenetworkV1) CreateNetwork(ctx context.Context, req *pb.CreateNetwork
 	obj := proto.Clone(req.Network).(*pb.Network)
 	obj.Name = fqn
 
-	if obj.GetMtu() != 9000 && obj.GetMtu() != 1500{
+	if obj.GetMtu() != 9000 && obj.GetMtu() != 1500 {
 		return nil, status.Errorf(codes.InvalidArgument, "invalid network MTU: %v", obj.GetMtu())
 	}
 
@@ -80,7 +79,7 @@ func (s *EdgenetworkV1) DeleteNetwork(ctx context.Context, req *pb.DeleteNetwork
 
 	// Network must not have any subnets depending on it
 	subnetKind := (&pb.Subnet{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, subnetKind, storage.ListOptions{}, func (obj proto.Message) error {
+	if err := s.storage.List(ctx, subnetKind, storage.ListOptions{}, func(obj proto.Message) error {
 		subnet := obj.(*pb.Subnet)
 		if subnet.GetNetwork() == fqn {
 			return status.Errorf(codes.FailedPrecondition,
