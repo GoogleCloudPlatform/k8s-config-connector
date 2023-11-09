@@ -221,10 +221,10 @@ func testCreate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	}
 	t.Logf("resource created with %v\r", initialUnstruct)
 	systemContext.Reconciler.Reconcile(ctx, initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct), nil)
-	validateCreate(t, testContext, systemContext, resourceContext, initialUnstruct.GetGeneration())
+	validateCreate(ctx, t, testContext, systemContext, resourceContext, initialUnstruct.GetGeneration())
 }
 
-func validateCreate(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext,
+func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext,
 	resourceContext contexts.ResourceContext, preReconcileGeneration int64) {
 	kubeClient := systemContext.Manager.GetClient()
 	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
@@ -235,10 +235,10 @@ func validateCreate(t *testing.T, testContext testrunner.TestContext, systemCont
 			"apiVersion": initialUnstruct.GetAPIVersion(),
 		},
 	}
-	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
+	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	gcpUnstruct, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+	gcpUnstruct, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
 	if err != nil {
 		t.Fatalf("unexpected error when GETting '%v': %v", initialUnstruct.GetName(), err)
 	}
@@ -345,7 +345,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	}
 	patch := client.MergeFrom(testContext.CreateUnstruct)
 	t.Logf("patching %v with %v\r", updateUnstruct, patch)
-	if err := kubeClient.Patch(context.TODO(), updateUnstruct, patch); err != nil {
+	if err := kubeClient.Patch(ctx, updateUnstruct, patch); err != nil {
 		t.Fatalf("unexpected error when updating '%v': %v", initialUnstruct.GetName(), err)
 	}
 	preReconcileGeneration := updateUnstruct.GetGeneration()
@@ -357,7 +357,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 			"apiVersion": updateUnstruct.GetAPIVersion(),
 		},
 	}
-	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
+	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 
@@ -368,7 +368,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	}
 
 	// Check labels match on update
-	gcpUnstruct, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+	gcpUnstruct, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
 	if err != nil {
 		t.Fatalf("unexpected error when GETting '%v': %v", updateUnstruct.GetName(), err)
 	}
@@ -407,7 +407,7 @@ func testDriftCorrection(ctx context.Context, t *testing.T, testContext testrunn
 	}
 	kubeClient := systemContext.Manager.GetClient()
 	testUnstruct := testContext.CreateUnstruct.DeepCopy()
-	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, testUnstruct); err != nil {
+	if err := kubeClient.Get(ctx, testContext.NamespacedName, testUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 	// For test cases with `cnrm.cloud.google.com/reconcile-interval-in-seconds` annotation set to 0, we should skip drift correction test.
@@ -418,7 +418,7 @@ func testDriftCorrection(ctx context.Context, t *testing.T, testContext testrunn
 	// of this test that the right events are recorded.
 	testcontroller.DeleteAllEventsForUnstruct(t, kubeClient, testUnstruct)
 
-	if err := resourceContext.Delete(t, testUnstruct, systemContext.TFProvider, systemContext.Manager.GetClient(), systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
+	if err := resourceContext.Delete(ctx, t, testUnstruct, systemContext.TFProvider, systemContext.Manager.GetClient(), systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
 		t.Fatalf("error deleting: %v", err)
 	}
 	// Underlying APIs may not have strongly-consistent reads due to caching. Sleep before attempting a re-reconcile, to
@@ -429,7 +429,7 @@ func testDriftCorrection(ctx context.Context, t *testing.T, testContext testrunn
 	t.Logf("reconcile with %v\r", testUnstruct)
 	systemContext.Reconciler.Reconcile(ctx, testUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testUnstruct), nil)
 	t.Logf("reconciled with %v\r", testUnstruct)
-	validateCreate(t, testContext, systemContext, resourceContext, testUnstruct.GetGeneration())
+	validateCreate(ctx, t, testContext, systemContext, resourceContext, testUnstruct.GetGeneration())
 }
 
 func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceContext, smLoader *servicemappingloader.ServiceMappingLoader,
@@ -482,7 +482,7 @@ func testDelete(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	if _, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
+	if _, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
 		t.Errorf("expected resource %s to not be deleted with deletion defender finalizer, but got error: %s",
 			initialUnstruct.GetName(), err)
 	}
@@ -492,14 +492,14 @@ func testDelete(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	testReconciler.Reconcile(ctx, reconciledUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, reconciledUnstruct), nil)
 
 	if !testgcp.ResourceSupportsDeletion(testContext.ResourceFixture.GVK.Kind) {
-		_, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+		_, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
 		if err != nil {
 			t.Errorf("expected resource %s to exist after deletion, but got error: %s", initialUnstruct.GetName(), err)
 		}
 	} else {
 		getFunc := func() error {
 			// for some resources, Get after Delete is eventually consistent, for that reason we retry until an error is returned
-			_, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+			_, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
 			if err == nil {
 				return fmt.Errorf("expected error, instead got 'nil'")
 			}
@@ -514,7 +514,7 @@ func testDelete(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 			t.Errorf("expected GCP client to return NotFound for '%v', instead got: %v", initialUnstruct.GetName(), err)
 		}
 
-		err = kubeClient.Get(context.TODO(), testContext.NamespacedName, initialUnstruct)
+		err = kubeClient.Get(ctx, testContext.NamespacedName, initialUnstruct)
 		if err == nil || !errors.IsNotFound(err) {
 			t.Errorf("unexpected error value: '%v'", err)
 		}
@@ -583,12 +583,12 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 	}
 	var gcpUnstruct *unstructured.Unstructured
 	var err error
-	gcpUnstruct, err = resourceContext.Get(t, unstructToCreate, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+	gcpUnstruct, err = resourceContext.Get(ctx, t, unstructToCreate, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
 	if err != nil {
 		if !strings.Contains(err.Error(), "not found") {
 			t.Fatalf("unexpected error when GETting '%v': %v", unstructToCreate.GetName(), err)
 		}
-		if gcpUnstruct, err = resourceContext.Create(t, unstructToCreate, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
+		if gcpUnstruct, err = resourceContext.Create(ctx, t, unstructToCreate, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
 			t.Fatalf("unexpected error when creating GCP resource '%v': %v", unstructToCreate.GetName(), err)
 		}
 	}
@@ -611,7 +611,7 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 	if testContext.ResourceFixture.GVK.Kind == "ComputeNetwork" {
 		unstructured.RemoveNestedField(initialUnstruct.Object, "spec", "autoCreateSubnetworks")
 	}
-	if err := kubeClient.Create(context.TODO(), initialUnstruct); err != nil {
+	if err := kubeClient.Create(ctx, initialUnstruct); err != nil {
 		t.Fatalf("error creating resource: %v", err)
 	}
 	preReconcileGeneration := initialUnstruct.GetGeneration()
@@ -621,7 +621,7 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 
 	// Check labels match
 	if resourceContext.SupportsLabels(systemContext.SMLoader) {
-		gcpUnstruct, err := resourceContext.Get(t, initialUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
+		gcpUnstruct, err := resourceContext.Get(ctx, t, initialUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
 		if err != nil {
 			t.Fatalf("unexpected error when GETting '%v': %v", initialUnstruct.GetName(), err)
 		}
@@ -634,7 +634,7 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 			"apiVersion": initialUnstruct.GetAPIVersion(),
 		},
 	}
-	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
+	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 

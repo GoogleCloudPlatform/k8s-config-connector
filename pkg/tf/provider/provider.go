@@ -109,3 +109,12 @@ func NewOrLogFatal(config Config) *tfschema.Provider {
 	}
 	return p
 }
+
+// NewOrLogFatalWithContext Calls New with non-empty context
+func NewOrLogFatalWithContext(ctx context.Context, config Config) *tfschema.Provider {
+	p, err := New(ctx, config)
+	if err != nil {
+		klog.Fatal(err)
+	}
+	return p
+}
