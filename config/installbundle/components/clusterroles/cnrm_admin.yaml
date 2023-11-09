@@ -536,6 +536,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - edgecontainer.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - edgenetwork.cnrm.cloud.google.com
   resources:
   - '*'

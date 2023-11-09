@@ -73,6 +73,7 @@ import (
 	dnsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dns/v1alpha1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dns/v1beta1"
 	documentaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/documentai/v1alpha1"
+	edgecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgecontainer/v1beta1"
 	edgenetworkv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgenetwork/v1beta1"
 	essentialcontactsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/essentialcontacts/v1alpha1"
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/eventarc/v1beta1"
@@ -196,6 +197,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	dnsv1alpha1.AddToScheme,
 	dnsv1beta1.AddToScheme,
 	documentaiv1alpha1.AddToScheme,
+	edgecontainerv1beta1.AddToScheme,
 	edgenetworkv1beta1.AddToScheme,
 	essentialcontactsv1alpha1.AddToScheme,
 	eventarcv1beta1.AddToScheme,

@@ -290,3 +290,5 @@ apply-patches:
 	git apply ../hack/terraform-overrides/compute_managed_ssl_certificate.patch
 	# Add support for google_alloydb_user resource (introduced in tf-5.2.0)
 	git apply ../hack/terraform-overrides/alloydb-user-tf-5.4.0.patch
+	# Add edgecontainer resources (TODO) Remove the patch once TF update to v5.1.0
+	git apply ../hack/terraform-overrides/edgecontainer.patch

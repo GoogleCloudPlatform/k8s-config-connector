@@ -1148,3 +1148,9 @@
   resourceConfigId: VPCAccessConnector:regional
 # V2 Run Service not supported by asset inventory
 - resourceConfigId: RunService
+# not supported by asset inventory
+- resourceConfigId: EdgeContainerCluster
+# not supported by asset inventory
+- resourceConfigId: EdgeContainerNodePool
+# not supported by asset inventory
+- resourceConfigId: EdgeContainerVpnConnection

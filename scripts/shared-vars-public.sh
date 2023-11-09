@@ -32,6 +32,9 @@ KUSTOMIZE_VERSION=3.5.4
 SUPPORTED_SERVICES=(
   accesscontextmanager.googleapis.com
   alloydb.googleapis.com
+  anthos.googleapis.com
+  anthosaudit.googleapis.com
+  anthosgke.googleapis.com
   apigee.googleapis.com
   appengine.googleapis.com
   artifactregistry.googleapis.com
@@ -49,6 +52,7 @@ SUPPORTED_SERVICES=(
   cloudresourcemanager.googleapis.com
   cloudscheduler.googleapis.com
   compute.googleapis.com
+  connectgateway.googleapis.com
   container.googleapis.com
   containeranalysis.googleapis.com
   datacatalog.googleapis.com
@@ -58,11 +62,14 @@ SUPPORTED_SERVICES=(
   dlp.googleapis.com
   dns.googleapis.com
   edgenetwork.googleapis.com
+  edgecontainer.googleapis.com
   eventarc.googleapis.com
   file.googleapis.com
+  gkeconnect.googleapis.com
   gkehub.googleapis.com
   gkemulticloud.googleapis.com
   iap.googleapis.com
+  iam.googleapis.com
   identitytoolkit.googleapis.com
   krmapihosting.googleapis.com
   logging.googleapis.com
@@ -72,6 +79,7 @@ SUPPORTED_SERVICES=(
   networksecurity.googleapis.com
   networkservices.googleapis.com
   osconfig.googleapis.com
+  opsconfigmonitoring.googleapis.com
   privateca.googleapis.com
   pubsub.googleapis.com
   pubsublite.googleapis.com
@@ -81,7 +89,9 @@ SUPPORTED_SERVICES=(
   secretmanager.googleapis.com
   servicedirectory.googleapis.com
   servicenetworking.googleapis.com
+  serviceusage.googleapis.com
   sourcerepo.googleapis.com
+  stackdriver.googleapis.com
   spanner.googleapis.com
   sqladmin.googleapis.com
   storagetransfer.googleapis.com
@@ -90,4 +100,4 @@ SUPPORTED_SERVICES=(
 
 # Regex used to match long running tests cases (10m+ runtime). Any new
 # long-running tests should be added to this regex in alphabetical order.
-LONG_RUNNING_CRUD_TESTS_REGEX="alloydbbackup|alloydbinstance|cidrconnector|configcontrollerinstance|containercluster|containernodepool|datafusioninstance|filestorebackup|filestoreinstance|gkehubmembership|memcacheinstance|redisinstance|removedefaultnodepool|subnetconnector"
+LONG_RUNNING_CRUD_TESTS_REGEX="alloydbbackup|alloydbinstance|cidrconnector|configcontrollerinstance|containercluster|containernodepool|datafusioninstance|filestorebackup|filestoreinstance|gkehubmembership|memcacheinstance|redisinstance|removedefaultnodepool|subnetconnector|edgecontainer"
