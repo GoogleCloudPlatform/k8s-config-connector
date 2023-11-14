@@ -76,7 +76,7 @@ func TestIsResourceField(ot *testing.T) {
 					},
 				},
 			},
-			expected: false,
+			expected: true,
 		},
 	}
 

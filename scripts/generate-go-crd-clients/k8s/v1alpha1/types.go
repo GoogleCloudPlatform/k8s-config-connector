@@ -59,23 +59,14 @@ type Condition struct {
 type ResourceRef struct {
 	/* The external name of the referenced resource */
 	External string `json:"external,omitempty"`
+	/* APIVersion of the referenced resource */
+	APIVersion string `json:"apiVersion,omitempty"`
 	/* Kind of the referent. */
 	Kind string `json:"kind,omitempty"`
 	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
 	Name string `json:"name,omitempty"`
 	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
 	Namespace string `json:"namespace,omitempty"`
-}
-
-type IAMResourceRef struct {
-	/* Kind of the referenced resource */
-	Kind string `json:"kind"`
-	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
-	Namespace string `json:"namespace,omitempty"`
-	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
-	Name string `json:"name,omitempty"`
-	/* APIVersion of the referenced resource */
-	APIVersion string `json:"apiVersion,omitempty"`
-	/* The external name of the referenced resource */
-	External string `json:"external,omitempty"`
+	/* Key in the secret to select from */
+	Key string `json:"key,omitempty"`
 }

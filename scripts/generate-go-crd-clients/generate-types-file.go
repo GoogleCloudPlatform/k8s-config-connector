@@ -27,7 +27,6 @@ import (
 	"sort"
 	"strings"
 
-	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/fielddesc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -35,13 +34,6 @@ import (
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
-
-var handwrittenIAMTypes = []string{
-	iamv1beta1.IAMPolicyGVK.Kind,
-	iamv1beta1.IAMPartialPolicyGVK.Kind,
-	iamv1beta1.IAMPolicyMemberGVK.Kind,
-	iamv1beta1.IAMAuditConfigGVK.Kind,
-}
 
 type fieldProperties struct {
 	Name        string
@@ -325,9 +317,8 @@ func organizeSpecFieldDescriptions(descriptions []fielddesc.FieldDescription, r 
 
 // isResourceReference checks if the field is a ResourceReference, or a slice of ResourceReferences values.
 func isResourceReference(d fielddesc.FieldDescription) bool {
-	// If the field has a "Ref" suffix, and it's children exactly match the ResourceReferences struct,
-	// then it's almost definitely a ResourceReference.
-	if strings.HasSuffix(d.ShortName, "Ref") && hasOnlyRefFieldChildren(d) {
+	// If children all existed the ResourceRef struct, we can use the ResourceRef struct instead for simplicity.
+	if hasOnlyRefFieldChildren(d) {
 		return true
 	}
 
@@ -339,19 +330,22 @@ func isResourceReference(d fielddesc.FieldDescription) bool {
 	return false
 }
 
-// hasOnlyRefFieldChildren checks if the field has children that exactly match the ResourceReference struct fields.
-// refer to the v1alpha1.ResourceReference struct at pkg/apis/core/v1alpha1/krm_types.go
+var resourceReferenceFields = []string{"external", "name", "namespace", "apiVersion", "kind", "key"}
+
+var hasOnlyRefFieldChildrenRegex = regexp.MustCompile(strings.Join(resourceReferenceFields, "|"))
+
+// hasOnlyRefFieldChildren checks if the field has children that all existed the ResourceReference struct fields.
+// refer to the v1alpha1.ResourceRef struct at script/generate-go-crd-clients/k8s/v1alpha1/types.go
 func hasOnlyRefFieldChildren(d fielddesc.FieldDescription) bool {
-	if len(d.Children) != 3 {
-		// wrong number of fields, expected only 3
+	if len(d.Children) > len(resourceReferenceFields) {
+		// wrong number of fields, expected no more than len(resourceReferenceFields)
 		return false
 	}
-	r := regexp.MustCompile("external|name|namespace")
 	for _, c := range d.Children {
-		if r.MatchString(c.ShortName) {
+		if hasOnlyRefFieldChildrenRegex.MatchString(c.ShortName) {
 			continue
 		} else {
-			// field is not one of the expected 3 fields
+			// field is not one of the resourceReferenceFields
 			return false
 		}
 	}
@@ -405,19 +399,9 @@ func organizeStatusFieldDescriptions(descriptions []fielddesc.FieldDescription, 
 }
 
 func fieldDescriptionToFieldProperties(desc fielddesc.FieldDescription, isRef bool, r *resourceDefinition) *fieldProperties {
-	var isIAMRef bool
-	if isRef {
-		// Check if resource is IAMPolicy/PolicyMember/AuditConfig and modify ref to use IAMRef struct
-		for _, v := range handwrittenIAMTypes {
-			if r.Name == v {
-				isIAMRef = true
-				break
-			}
-		}
-	}
 	fp := &fieldProperties{
 		FullName:    formatName(desc),
-		Type:        formatType(desc, isRef, isIAMRef),
+		Type:        formatType(desc, isRef),
 		Description: desc.Description,
 		Name:        strings.Title(desc.ShortName),     // Field name UpperCamelCase
 		JSONName:    fmt.Sprintf("%v", desc.ShortName), // ShortName is default lowerCamelCase, exclude omitempty unless the field is optional
@@ -459,7 +443,7 @@ func formatName(desc fielddesc.FieldDescription) string {
 	return name
 }
 
-func formatType(desc fielddesc.FieldDescription, isRef, isIAMRef bool) string {
+func formatType(desc fielddesc.FieldDescription, isRef bool) string {
 	switch desc.Type {
 	case "boolean":
 		return "bool"
@@ -469,12 +453,8 @@ func formatType(desc fielddesc.FieldDescription, isRef, isIAMRef bool) string {
 		return "float64"
 	case "object":
 		if isRef {
-			if isIAMRef {
-				return "v1alpha1.IAMResourceRef"
-			}
 			return "v1alpha1.ResourceRef"
 		}
-
 		return strings.Title(desc.ShortName)
 	default:
 		if strings.HasPrefix(desc.Type, "list (") {
