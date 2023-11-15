@@ -71,6 +71,7 @@ manifests: generate
 # Format code
 .PHONY: fmt
 fmt:
+	mockgcp/dev/fix-gofmt
 	make -C operator fmt
 	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg cmd scripts config/tests
 	# 04bfe4ee9ca5764577b029acc6a1957fd1997153 includes fix to not log "Skipped" for each skipped file

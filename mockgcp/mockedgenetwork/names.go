@@ -24,10 +24,10 @@ import (
 )
 
 type networkName struct {
-	Project    *projects.ProjectData
-	Location   string
-	Zone	   string
-	NetworkId  string
+	Project   *projects.ProjectData
+	Location  string
+	Zone      string
+	NetworkId string
 }
 
 func (n *networkName) String() string {
@@ -46,10 +46,10 @@ func (s *MockService) parseNetworkName(name string) (*networkName, error) {
 		}
 
 		name := &networkName{
-			Project:    project,
-			Location:   tokens[3],
-			Zone:	    tokens[5],
-			NetworkId:  tokens[7],
+			Project:   project,
+			Location:  tokens[3],
+			Zone:      tokens[5],
+			NetworkId: tokens[7],
 		}
 
 		return name, nil
@@ -59,10 +59,10 @@ func (s *MockService) parseNetworkName(name string) (*networkName, error) {
 }
 
 type subnetName struct {
-	Project    *projects.ProjectData
-	Location   string
-	Zone	   string
-	SubnetId   string
+	Project  *projects.ProjectData
+	Location string
+	Zone     string
+	SubnetId string
 }
 
 func (n *subnetName) String() string {
@@ -81,10 +81,10 @@ func (s *MockService) parseSubnetName(name string) (*subnetName, error) {
 		}
 
 		name := &subnetName{
-			Project:    project,
-			Location:   tokens[3],
-			Zone:	    tokens[5],
-			SubnetId:   tokens[7],
+			Project:  project,
+			Location: tokens[3],
+			Zone:     tokens[5],
+			SubnetId: tokens[7],
 		}
 
 		return name, nil
