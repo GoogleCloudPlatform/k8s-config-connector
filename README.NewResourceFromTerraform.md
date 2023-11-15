@@ -616,7 +616,7 @@ update to date, we need to add the new CRDs and samples to existing doc.
     `https://cloud.google.com/spanner/docs/reference/rest/v1/projects.instances`).
     Add an additional paragraph/table if needed.
 1.  Update the URL in "Before you begin" section, points to the "Prerequisites" or 
-    "Before you begin" section in the service guide. This Make sure that the URL
+    "Before you begin" section in the service guide. Make sure that the URL
     is working by adding the partial URL to
     `https://cloud.google.com` (i.e.
     `https://cloud.google.com/spanner/docs/create-query-database-console#before`).
