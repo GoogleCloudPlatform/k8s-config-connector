@@ -295,3 +295,5 @@ apply-patches:
     # Pass non-empty golang context to http request, to get the test info from context of http request
     # Related bug b/309633764
 	git apply ../hack/terraform-overrides/send_request_with_context.patch
+	# Add standard_isolation and priority fields for request priorities
+	git apply ../hack/terraform-overrides/bigtable_request_priorities.patch
