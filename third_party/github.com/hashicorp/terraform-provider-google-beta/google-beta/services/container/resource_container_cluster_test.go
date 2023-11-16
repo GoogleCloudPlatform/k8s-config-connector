@@ -3798,30 +3798,6 @@ func TestAccContainerCluster_withGatewayApiConfig(t *testing.T) {
 	})
 }
 
-func TestAccContainerCluster_withTPUConfig(t *testing.T) {
-	t.Parallel()
-
-	clusterName := fmt.Sprintf("tf-test-cluster-%s", acctest.RandString(t, 10))
-	containerNetName := fmt.Sprintf("tf-test-container-net-%s", acctest.RandString(t, 10))
-	acctest.VcrTest(t, resource.TestCase{
-		PreCheck:                 func() { acctest.AccTestPreCheck(t) },
-		ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories(t),
-		CheckDestroy:             testAccCheckContainerClusterDestroyProducer(t),
-		Steps: []resource.TestStep{
-			{
-				Config: testAccContainerCluster_withTPUConfig(containerNetName, clusterName),
-			},
-			{
-				ResourceName:      "google_container_cluster.with_tpu_config",
-				ImportState:       true,
-				ImportStateVerify: true,
-				// TODO: remove when tpu_config can be read from the API
-				ImportStateVerifyIgnore: []string{"tpu_config"},
-			},
-		},
-	})
-}
-
 func TestAccContainerCluster_withProtectConfig(t *testing.T) {
 	t.Parallel()
 
@@ -7970,62 +7946,6 @@ resource "google_container_cluster" "primary" {
   }
 }
 `, name, name, name)
-}
-
-func testAccContainerCluster_withTPUConfig(network, cluster string) string {
-	return fmt.Sprintf(`
-resource "google_compute_network" "container_network" {
-	name                    = "%s"
-	auto_create_subnetworks = false
-}
-
-resource "google_compute_subnetwork" "container_subnetwork" {
-	name                     = google_compute_network.container_network.name
-	network                  = google_compute_network.container_network.name
-	ip_cidr_range            = "10.0.36.0/24"
-	region                   = "us-central1"
-	private_ip_google_access = true
-
-	secondary_ip_range {
-		range_name    = "pod"
-		ip_cidr_range = "10.0.0.0/19"
-	}
-
-	secondary_ip_range {
-		range_name    = "svc"
-		ip_cidr_range = "10.0.32.0/22"
-	}
-}
-
-resource "google_container_cluster" "with_tpu_config" {
-	name               = "%s"
-	location           = "us-central1-a"
-	initial_node_count = 1
-
-
-	tpu_config {
-		enabled                = true
-		use_service_networking = true
-	}
-
-	network         = google_compute_network.container_network.name
-	subnetwork      = google_compute_subnetwork.container_subnetwork.name
-	networking_mode = "VPC_NATIVE"
-
-	private_cluster_config {
-		enable_private_endpoint = true
-		enable_private_nodes    = true
-		master_ipv4_cidr_block  = "10.42.0.0/28"
-	}
-	master_authorized_networks_config {
-	}
-
-	ip_allocation_policy {
-		cluster_secondary_range_name  = google_compute_subnetwork.container_subnetwork.secondary_ip_range[0].range_name
-		services_secondary_range_name = google_compute_subnetwork.container_subnetwork.secondary_ip_range[1].range_name
-	}
-}
-`, network, cluster)
 }
 
 func testAccContainerCluster_failedCreation(cluster, project string) string {
