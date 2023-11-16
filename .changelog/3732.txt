@@ -1,0 +1,3 @@
+```release-note:bug
+container: fixes a bug where useIpAlias was not defaulting to true inside the `ip_allocation_policy` block
+```

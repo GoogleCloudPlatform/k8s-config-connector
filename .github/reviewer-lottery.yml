@@ -1,0 +1,13 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
+groups:
+  - name: devs
+    reviewers: 1
+    usernames:
+      - rileykarson
+      - slevenick
+      - c2thorn
+      - scottsuarez
+      - melinath
+      - shuyama1

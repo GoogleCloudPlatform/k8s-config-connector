@@ -1,0 +1,3 @@
+```release-note:bug
+compute: fixed a bug that would cause `google_instance_from_machine_image` to fail with a resourceInUseByAnotherResource error
+```

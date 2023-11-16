@@ -1,0 +1,3 @@
+```release-note:bug
+compute: Fixed an issue in `google_compute_managed_ssl_certificate` where multiple fully qualified domain names would cause a permadiff
+```

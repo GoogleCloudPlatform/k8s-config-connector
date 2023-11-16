@@ -1,0 +1,3 @@
+```release-note:bug
+firebasedatabase: fixed empty `database_url` output attribute
+```

@@ -1,0 +1,3 @@
+```release-note:enhancement
+compute: added suppress diff func for cos-family disk images
+```

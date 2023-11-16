@@ -1,0 +1,3 @@
+```release-note:bug
+serviceusage: fixed an issue where `google_project_service_identity` didn't handle service identities without emails correctly (beta)
+```

@@ -1,0 +1,3 @@
+```release-note:bug
+datacatalog: fixed the import failure when the `project` is different from the default on `google_data_catalog_taxonomy`
+```

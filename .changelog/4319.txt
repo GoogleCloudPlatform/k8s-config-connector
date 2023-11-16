@@ -1,0 +1,3 @@
+```release-note:bug
+bigquery: fixed a bug in `google_bigquery_connection` that caused the resource to function incorrectly when `connection_id` was unset
+```

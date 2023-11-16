@@ -1,0 +1,6 @@
+```release-note:enhancement
+compute: Fixed permadiff for `cdn_policy.serve_while_stale` and `cdn_policy.*_ttl` in `google_compute_backend_service` (beta)
+```
+```release-note:enhancement
+compute: Fixed permadiff for `cdn_policy.serve_while_stale` and `cdn_policy.*_ttl` in `google_compute_region_backend_service` (beta)
+```

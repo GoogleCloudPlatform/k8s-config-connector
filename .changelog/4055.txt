@@ -1,0 +1,3 @@
+```release-note:enhancement
+cloudbuild: Added `COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY` support to `google_cloudbuild_trigger.github.pull_request.comment_control` field
+```

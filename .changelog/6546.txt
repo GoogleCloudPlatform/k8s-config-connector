@@ -1,0 +1,3 @@
+```release-note:bug
+container: fixed a bug where upgrading provider version breaks on `node_pool_auto_config` or `node_pool_defaults` 
+```
