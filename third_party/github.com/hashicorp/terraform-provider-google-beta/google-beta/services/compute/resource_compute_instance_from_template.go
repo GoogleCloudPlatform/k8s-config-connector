@@ -23,8 +23,11 @@ func ResourceComputeInstanceFromTemplate() *schema.Resource {
 		Update: resourceComputeInstanceUpdate,
 		Delete: resourceComputeInstanceDelete,
 
-		// Import doesn't really make sense, because you could just import
-		// as a google_compute_instance.
+		// Importing this resource is the same as importing as a
+		// google_compute_instance.
+		Importer: &schema.ResourceImporter{
+			State: resourceComputeInstanceImportState,
+		},
 
 		Timeouts: ResourceComputeInstance().Timeouts,
 
