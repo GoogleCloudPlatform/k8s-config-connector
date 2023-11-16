@@ -25,6 +25,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"google.golang.org/api/googleapi"
 
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/tpgresource"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
@@ -320,6 +321,11 @@ func resourceCloudIdentityGroupRead(d *schema.ResourceData, meta interface{}) er
 		UserAgent: userAgent,
 	})
 	if err != nil {
+		if gerr, ok := err.(*googleapi.Error); ok && gerr.Code == 403 && strings.Contains(gerr.Message, "Permission denied") {
+			// Deleted or uncreated Groups will always return 403 on GET
+			d.SetId("")
+			return nil
+		}
 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("CloudIdentityGroup %q", d.Id()))
 	}
 
