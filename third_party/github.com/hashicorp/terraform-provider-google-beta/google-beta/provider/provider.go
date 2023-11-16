@@ -1833,6 +1833,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_sql_user":                               sql.ResourceSqlUser(),
 			"google_organization_iam_custom_role":           resourcemanager.ResourceGoogleOrganizationIamCustomRole(),
 			"google_organization_policy":                    resourcemanager.ResourceGoogleOrganizationPolicy(),
+			"google_org_policy":                             resourcemanager.ResourceOrgPolicy(),
 			"google_project":                                resourcemanager.ResourceGoogleProject(),
 			"google_project_default_service_accounts":       resourcemanager.ResourceGoogleProjectDefaultServiceAccounts(),
 			"google_project_service":                        resourcemanager.ResourceGoogleProjectService(),
