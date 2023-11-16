@@ -82,8 +82,9 @@ Keyed by the topic names.`,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"topic": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:             schema.TypeString,
+							Required:         true,
+							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 						},
 						"message_format": {
 							Type:         schema.TypeString,
