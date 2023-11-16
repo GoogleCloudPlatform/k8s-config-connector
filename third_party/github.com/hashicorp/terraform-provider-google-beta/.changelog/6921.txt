@@ -1,0 +1,4 @@
+```release-note:enhancement
+dataflow: added Flex Template custom options
+
+```

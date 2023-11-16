@@ -1,0 +1,3 @@
+```release-note:bug
+Compute: fixed a bug when a `source_machine_image` from a different project is used on `google_compute_instance_from_machine_image`
+```

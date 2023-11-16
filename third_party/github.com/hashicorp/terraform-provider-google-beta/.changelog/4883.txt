@@ -1,0 +1,5 @@
+```release-note:enhancement
+IAM function generation, and fixes suggested by @melinath on https://github.com/GoogleCloudPlatform/magic-modules/pull/4878
+
+
+```

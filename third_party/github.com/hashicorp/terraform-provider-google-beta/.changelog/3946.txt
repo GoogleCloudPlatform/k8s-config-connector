@@ -1,0 +1,3 @@
+```release-note:enhancement
+netblock: changed `google_netblock_ip_ranges` to read from cloud.json file rather than DNS record
+```
