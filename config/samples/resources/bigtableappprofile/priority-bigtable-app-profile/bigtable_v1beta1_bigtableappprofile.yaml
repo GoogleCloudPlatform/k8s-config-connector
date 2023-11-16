@@ -1,10 +1,10 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +15,13 @@
 apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableAppProfile
 metadata:
-  name: bigtableappprofile-${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/ignore-warnings: "true"
+  name: bigtableappprofile-sample-priority
 spec:
-  description: Automagically routs requests to the neatest viable nest in an insistance.
+  description: Sends all requests with LOW priority.
   instanceRef:
-    name: profiledep${uniqueId}
+    name: bigtableappprofile-dep-priority
   singleClusterRouting:
     allowTransactionalWrites: true
-    clusterId: cluster1-${uniqueId}
+    clusterId: bigtableappprofile-dep1-pty
   standardIsolation:
-    priority: PRIORITY_MEDIUM
+    priority: PRIORITY_LOW
