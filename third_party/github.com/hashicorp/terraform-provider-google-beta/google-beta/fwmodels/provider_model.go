@@ -79,6 +79,7 @@ type ProviderModel struct {
 	DocumentAICustomEndpoint               types.String `tfsdk:"document_ai_custom_endpoint"`
 	DocumentAIWarehouseCustomEndpoint      types.String `tfsdk:"document_ai_warehouse_custom_endpoint"`
 	EdgenetworkCustomEndpoint              types.String `tfsdk:"edgenetwork_custom_endpoint"`
+	EdgecontainerCustomEndpoint            types.String `tfsdk:"edgecontainer_custom_endpoint"`
 	EssentialContactsCustomEndpoint        types.String `tfsdk:"essential_contacts_custom_endpoint"`
 	FilestoreCustomEndpoint                types.String `tfsdk:"filestore_custom_endpoint"`
 	FirebaseCustomEndpoint                 types.String `tfsdk:"firebase_custom_endpoint"`
