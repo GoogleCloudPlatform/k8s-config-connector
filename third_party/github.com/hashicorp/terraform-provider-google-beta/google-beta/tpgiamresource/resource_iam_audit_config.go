@@ -19,6 +19,7 @@ var iamAuditConfigSchema = map[string]*schema.Schema{
 	"service": {
 		Type:        schema.TypeString,
 		Required:    true,
+		ForceNew:    true,
 		Description: `Service which will be enabled for audit logging. The special value allServices covers all services.`,
 	},
 	"audit_log_config": {
