@@ -851,6 +851,7 @@ is set to true. Defaults to ZONAL.`,
 			"server_ca_cert": {
 				Type:     schema.TypeList,
 				Computed: true,
+				MaxItems: 1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"cert": {
