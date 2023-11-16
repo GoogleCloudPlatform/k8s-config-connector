@@ -267,7 +267,9 @@ func resourceGoogleProjectRead(d *schema.ResourceData, meta interface{}) error {
 	p, err := readGoogleProject(d, config, userAgent)
 	if err != nil {
 		if gerr, ok := err.(*googleapi.Error); ok && gerr.Code == 403 && strings.Contains(gerr.Message, "caller does not have permission") {
-			return fmt.Errorf("the user does not have permission to access Project %q or it may not exist", pid)
+			// Projects that haven't been created yet will always return 403 on GET
+			d.SetId("")
+			return nil
 		}
 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Project %q", pid))
 	}
@@ -279,7 +281,10 @@ func resourceGoogleProjectRead(d *schema.ResourceData, meta interface{}) error {
 		return nil
 	}
 
-	if err := d.Set("project_id", pid); err != nil {
+	// after importing by project number, the id will be a project number, change to project-id so the rest of the logic
+	// in this file can be consistent
+	d.SetId(fmt.Sprintf("projects/%v", p.ProjectId))
+	if err := d.Set("project_id", p.ProjectId); err != nil {
 		return fmt.Errorf("Error setting project_id: %s", err)
 	}
 	if err := d.Set("number", strconv.FormatInt(p.ProjectNumber, 10)); err != nil {
@@ -487,18 +492,25 @@ func resourceGoogleProjectDelete(d *schema.ResourceData, meta interface{}) error
 func resourceProjectImportState(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	parts := strings.Split(d.Id(), "/")
 	pid := parts[len(parts)-1]
-	// Prevent importing via project number, this will cause issues later
 	matched, err := regexp.MatchString("^\\d+$", pid)
 	if err != nil {
 		return nil, fmt.Errorf("Error matching project %q: %s", pid, err)
 	}
 
 	if matched {
-		return nil, fmt.Errorf("Error importing project %q, please use project_id", pid)
+		// this is actually a project number not a project id
+		if err := d.Set("number", pid); err != nil {
+			return nil, fmt.Errorf("Error setting project number: %s", err)
+		}
+	} else {
+		if err := d.Set("project_id", pid); err != nil {
+			return nil, fmt.Errorf("Error setting project_id: %s", err)
+		}
 	}
 
 	// Ensure the id format includes projects/
-	d.SetId(fmt.Sprintf("projects/%s", pid))
+	fullProjectId := fmt.Sprintf("projects/%s", pid)
+	d.SetId(fullProjectId)
 
 	// Explicitly set to default as a workaround for `ImportStateVerify` tests, and so that users
 	// don't see a diff immediately after import.
