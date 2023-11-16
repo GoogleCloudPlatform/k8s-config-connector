@@ -1817,6 +1817,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_logging_organization_exclusion":         logging.ResourceLoggingExclusion(logging.OrganizationLoggingExclusionSchema, logging.NewOrganizationLoggingExclusionUpdater, logging.OrganizationLoggingExclusionIdParseFunc),
 			"google_logging_organization_bucket_config":     logging.ResourceLoggingOrganizationBucketConfig(),
 			"google_logging_folder_sink":                    logging.ResourceLoggingFolderSink(),
+			"google_logging_log_sink":                       logging.ResourceLoggingLogSink(),
 			"google_logging_folder_exclusion":               logging.ResourceLoggingExclusion(logging.FolderLoggingExclusionSchema, logging.NewFolderLoggingExclusionUpdater, logging.FolderLoggingExclusionIdParseFunc),
 			"google_logging_folder_bucket_config":           logging.ResourceLoggingFolderBucketConfig(),
 			"google_logging_project_sink":                   logging.ResourceLoggingProjectSink(),
