@@ -332,6 +332,8 @@ func resourceBigtableGCPolicyRead(d *schema.ResourceData, meta interface{}) erro
 
 		// No GC Policy.
 		if fi.FullGCPolicy.String() == "" {
+			log.Printf("[WARN] Removing %s because it's gone.", d.Id())
+			d.SetId("")
 			return nil
 		}
 
