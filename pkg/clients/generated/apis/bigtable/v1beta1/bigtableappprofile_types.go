@@ -45,6 +45,11 @@ type AppprofileSingleClusterRouting struct {
 	ClusterId string `json:"clusterId"`
 }
 
+type AppprofileStandardIsolation struct {
+	/* The priority of requests sent using this app profile. Possible values: ["PRIORITY_LOW", "PRIORITY_MEDIUM", "PRIORITY_HIGH"]. */
+	Priority string `json:"priority"`
+}
+
 type BigtableAppProfileSpec struct {
 	/* Long form description of the use case for this app profile. */
 	// +optional
@@ -71,6 +76,10 @@ type BigtableAppProfileSpec struct {
 	/* Use a single-cluster routing policy. */
 	// +optional
 	SingleClusterRouting *AppprofileSingleClusterRouting `json:"singleClusterRouting,omitempty"`
+
+	/* The standard options used for isolating this app profile's traffic from other use cases. */
+	// +optional
+	StandardIsolation *AppprofileStandardIsolation `json:"standardIsolation,omitempty"`
 }
 
 type BigtableAppProfileStatus struct {

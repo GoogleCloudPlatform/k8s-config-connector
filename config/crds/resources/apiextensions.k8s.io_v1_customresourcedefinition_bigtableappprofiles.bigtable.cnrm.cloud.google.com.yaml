@@ -122,6 +122,17 @@ spec:
                 required:
                 - clusterId
                 type: object
+              standardIsolation:
+                description: The standard options used for isolating this app profile's
+                  traffic from other use cases.
+                properties:
+                  priority:
+                    description: 'The priority of requests sent using this app profile.
+                      Possible values: ["PRIORITY_LOW", "PRIORITY_MEDIUM", "PRIORITY_HIGH"].'
+                    type: string
+                required:
+                - priority
+                type: object
             type: object
           status:
             properties:
