@@ -467,6 +467,14 @@ toc:
     path: /config-connector/docs/reference/resource-docs/resourcemanager/resourcemanagerlien.md
   - title: "ResourceManagerPolicy"
     path: /config-connector/docs/reference/resource-docs/resourcemanager/resourcemanagerpolicy.md
+  - title: "TagKeys"
+    path: /config-connector/docs/reference/resource-docs/resourcemanager/tagkeys.md
+  - title: "TagValues"
+    path: /config-connector/docs/reference/resource-docs/resourcemanager/tagvalues.md
+  - title: "TagBinding"
+    path: /config-connector/docs/reference/resource-docs/resourcemanager/tagbinding.md
+  - title: "LocationTagBinding"
+    path: /config-connector/docs/reference/resource-docs/resourcemanager/locationtagbinding.md
 - title: "Cloud Run"
   section:
   - title: "RunJob"

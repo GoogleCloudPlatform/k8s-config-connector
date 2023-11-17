@@ -666,6 +666,22 @@ Custom Resource Definitions in the GitHub repository. For example, this
   <td><a href="/config-connector/docs/reference/resource-docs/resourcemanager/resourcemanagerpolicy.md">ResourceManagerPolicy</a></td>
 </tr>
 <tr>
+  <td><a href="/resource-manager/docs/">{{crm_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/resourcemanager/tagkeys.md">TagKeys</a></td>
+</tr>
+<tr>
+  <td><a href="/resource-manager/docs/">{{crm_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/resourcemanager/tagvalues.md">TagValues</a></td>
+</tr>
+<tr>
+  <td><a href="/resource-manager/docs/">{{crm_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/resourcemanager/tagbinding.md">TagBinding</a></td>
+</tr>
+<tr>
+  <td><a href="/resource-manager/docs/">{{crm_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/resourcemanager/locationtagbinding.md">LocationTagBinding</a></td>
+</tr>
+<tr>
   <td><a href="/run/docs/">{{cloud_run_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/run/runjob.md">RunJob</a></td>
 </tr>
