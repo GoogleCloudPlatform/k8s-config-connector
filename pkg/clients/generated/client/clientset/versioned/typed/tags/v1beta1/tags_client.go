@@ -31,6 +31,7 @@ import (
 
 type TagsV1beta1Interface interface {
 	RESTClient() rest.Interface
+	TagsLocationTagBindingsGetter
 	TagsTagBindingsGetter
 	TagsTagKeysGetter
 	TagsTagValuesGetter
@@ -39,6 +40,10 @@ type TagsV1beta1Interface interface {
 // TagsV1beta1Client is used to interact with features provided by the tags.cnrm.cloud.google.com group.
 type TagsV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *TagsV1beta1Client) TagsLocationTagBindings(namespace string) TagsLocationTagBindingInterface {
+	return newTagsLocationTagBindings(c, namespace)
 }
 
 func (c *TagsV1beta1Client) TagsTagBindings(namespace string) TagsTagBindingInterface {
