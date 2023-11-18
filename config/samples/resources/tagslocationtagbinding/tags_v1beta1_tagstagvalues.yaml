@@ -17,7 +17,7 @@ kind: TagsTagValue
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
-  name: tag-key-sample
+  name: tag-value-sample
 spec:
   parentRef: 
     name: tag-key-sample
