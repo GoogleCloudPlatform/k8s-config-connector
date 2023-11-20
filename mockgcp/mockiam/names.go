@@ -82,3 +82,70 @@ func (s *MockService) parseServiceAccountName(ctx context.Context, name string) 
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type workloadIdentityPoolName struct {
+	Project  *projects.ProjectData
+	Location string
+	Name     string
+}
+
+func (n *workloadIdentityPoolName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/workloadIdentityPools/" + n.Name
+}
+
+func (s *MockService) parseWorkloadIdentityPoolName(name string) (*workloadIdentityPoolName, error) {
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "workloadIdentityPools" {
+		projectID := tokens[1]
+		location := tokens[3]
+		resource := tokens[5]
+
+		project, err := s.projects.GetProjectByID(projectID)
+		if err != nil {
+			return nil, err
+		}
+
+		return &workloadIdentityPoolName{
+			Project:  project,
+			Location: location,
+			Name:     resource,
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+type workloadIdentityPoolProviderName struct {
+	Project      *projects.ProjectData
+	Location     string
+	ProviderName string
+	PoolName     string
+}
+
+func (n *workloadIdentityPoolProviderName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/workloadIdentityPools/" + n.PoolName + "/providers/" + n.ProviderName
+}
+
+func (s *MockService) parseWorkloadIdentityPoolProviderName(name string) (*workloadIdentityPoolProviderName, error) {
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "workloadIdentityPools" && tokens[6] == "providers" {
+		projectID := tokens[1]
+		location := tokens[3]
+		poolName := tokens[5]
+		providerName := tokens[7]
+
+		project, err := s.projects.GetProjectByID(projectID)
+		if err != nil {
+			return nil, err
+		}
+
+		return &workloadIdentityPoolProviderName{
+			Project:      project,
+			Location:     location,
+			PoolName:     poolName,
+			ProviderName: providerName,
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
