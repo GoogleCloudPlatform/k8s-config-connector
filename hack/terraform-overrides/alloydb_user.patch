@@ -12,10 +12,10 @@ index d9af74a0f..3acc6042d 100644
  			"google_api_gateway_api_iam_member":                              tpgiamresource.ResourceIamMember(apigateway.ApiGatewayApiIamSchema, apigateway.ApiGatewayApiIamUpdaterProducer, apigateway.ApiGatewayApiIdParseFunc),
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/alloydb/resource_alloydb_user.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/alloydb/resource_alloydb_user.go
 new file mode 100644
-index 000000000..d680f39d5
+index 000000000..433eb2563
 --- /dev/null
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/services/alloydb/resource_alloydb_user.go
-@@ -0,0 +1,347 @@
+@@ -0,0 +1,348 @@
 +// Copyright (c) HashiCorp, Inc.
 +// SPDX-License-Identifier: MPL-2.0
 +
@@ -98,6 +98,7 @@ index 000000000..d680f39d5
 +			"password": {
 +				Type:        schema.TypeString,
 +				Optional:    true,
++				Sensitive:   true,
 +				Description: `Password for this database user.`,
 +			},
 +			"name": {
