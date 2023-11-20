@@ -31,6 +31,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
+type ServerV1 struct {
+	*MockService
+	pb.UnimplementedIAMServer
+}
+
 const ServiceAccountSuffix = ".iam.gserviceaccount.com"
 
 // Gets a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
