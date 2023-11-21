@@ -51,6 +51,7 @@ SUPPORTED_SERVICES=(
   cloudkms.googleapis.com
   cloudresourcemanager.googleapis.com
   cloudscheduler.googleapis.com
+  composer.googleapis.com
   compute.googleapis.com
   connectgateway.googleapis.com
   container.googleapis.com

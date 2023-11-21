@@ -51,6 +51,9 @@ func (s *ServiceUsageV1Beta1) GenerateServiceIdentity(ctx context.Context, req *
 	case "pubsub.googleapis.com":
 		identity.Email = "service-" + strconv.FormatInt(name.Project.Number, 10) + "@gcp-sa-pubsub.iam.gserviceaccount.com"
 		identity.UniqueId = "123456789002"
+	case "composer.googleapis.com":
+		identity.Email = "service-" + strconv.FormatInt(name.Project.Number, 10) + "@cloudcomposer-accounts.iam.gserviceaccount.com"
+		identity.UniqueId = "123456789003"
 	case "compute.googleapis.com":
 		// compute.googleapis.com does not send the P4SA
 	default:

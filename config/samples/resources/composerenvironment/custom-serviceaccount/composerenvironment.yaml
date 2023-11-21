@@ -1,0 +1,75 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: composer.cnrm.cloud.google.com/v1alpha1
+kind: ComposerEnvironment
+metadata:
+  name: example
+spec:
+  region: us-central1
+  resourceID: example
+  config:
+    nodeConfig:
+      serviceAccountRef:
+        name: composer
+
+---
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: composer
+spec:
+  displayName: CloudComposer Service Account
+
+---
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: composer-composerworker
+spec:
+  memberFrom:
+    serviceAccountRef:
+      name: composer
+  # Role for Public IP environments
+  role: roles/composer.worker
+  resourceRef:
+    kind: Project
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
+
+---
+
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: ServiceIdentity
+metadata:
+  name: composer
+spec:
+  resourceID: composer.googleapis.com
+
+---
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: composer-composeragent
+spec:
+  memberFrom:
+    serviceIdentityRef:
+      name: composer
+  role: roles/composer.ServiceAgentV2Ext
+  resourceRef:
+    kind: IAMServiceAccount
+    name: composer

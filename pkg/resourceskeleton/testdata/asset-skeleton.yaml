@@ -112,6 +112,22 @@
 - resourceConfigId: CloudIdentityGroup
 - asset:
     ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //composer.googleapis.com/projects/kcc-test/locations/us-central1/environments/environment-1j26msq4eebfv63n6sil
+    asset_type: composer.googleapis.com/Environment
+  expectedSkeleton:
+    apiVersion: composer.cnrm.cloud.google.com/v1alpha1
+    kind: ComposerEnvironment
+    metadata:
+      name: environment-1j26msq4eebfv63n6sil
+    spec:
+      region: us-central1
+      projectRef:
+        external: kcc-test
+  resourceConfigId: ComposerEnvironment
+- asset:
+    ancestors:
       - projects/1234567890
       - organizations/1234567890
     name: //compute.googleapis.com/projects/kcc-test/global/addresses/computeaddress1-ohl5m1f6sustgv2beqe8

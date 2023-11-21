@@ -57,6 +57,17 @@
   ResourceConfigId: KMSKeyRing
   URI: "https://cloudkms.googleapis.com/v1/projects/kcc-test/locations/us-central1/keyRings/zyakyiyida"
 - ExpectedSkeleton:
+    apiVersion: composer.cnrm.cloud.google.com/v1alpha1
+    kind: ComposerEnvironment
+    metadata:
+      name: example1
+    spec:
+      projectRef:
+        external: kcc-test
+      region: us-central1
+  ResourceConfigId: ComposerEnvironment
+  URI: "https://composer.googleapis.com/v1/projects/kcc-test/locations/us-central1/environments/example1"
+- ExpectedSkeleton:
     apiVersion: container.cnrm.cloud.google.com/v1beta1
     kind: ContainerCluster
     metadata:

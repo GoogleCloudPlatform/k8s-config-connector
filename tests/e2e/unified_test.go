@@ -101,13 +101,13 @@ func TestAllInSeries(t *testing.T) {
 			fixture := fixture
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
-			testID := testvariable.NewUniqueId()
+			uniqueID := testvariable.NewUniqueId()
 
 			s := create.Sample{
 				Name: fixture.Name,
 			}
 
-			createResource := bytesToUnstructured(t, fixture.Create, testID, project)
+			createResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
 			s.Resources = append(s.Resources, createResource)
 
 			exportResources := []*unstructured.Unstructured{createResource}
@@ -115,14 +115,14 @@ func TestAllInSeries(t *testing.T) {
 			if fixture.Dependencies != nil {
 				dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
 				for _, dependBytes := range dependencyYamls {
-					depUnstruct := bytesToUnstructured(t, dependBytes, testID, project)
+					depUnstruct := bytesToUnstructured(t, dependBytes, uniqueID, project)
 					s.Resources = append(s.Resources, depUnstruct)
 				}
 			}
 
 			opt := create.CreateDeleteTestOptions{Create: s.Resources, CleanupResources: true}
 			if fixture.Update != nil {
-				u := bytesToUnstructured(t, fixture.Update, testID, project)
+				u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
 				opt.Updates = append(opt.Updates, u)
 			}
 
@@ -137,15 +137,7 @@ func TestAllInSeries(t *testing.T) {
 				create.RunCreateDeleteTest(h, opt)
 
 				for _, exportResource := range exportResources {
-					exportURI := ""
-
-					gvk := exportResource.GroupVersionKind()
-					switch gvk.GroupKind() {
-					case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
-						name := exportResource.GetName()
-						projectID := project.ProjectID
-						exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + name
-					}
+					exportURI := buildExportURI(t, exportResource, project)
 
 					if exportURI == "" {
 						continue
@@ -165,7 +157,10 @@ func TestAllInSeries(t *testing.T) {
 
 					expectedPath := filepath.Join(fixture.SourceDir, "export.yaml")
 					output := h.MustReadFile(outputPath)
-					h.CompareGoldenFile(expectedPath, string(output), h.IgnoreComments, h.ReplaceString(project.ProjectID, "example-project-id"))
+					h.CompareGoldenFile(expectedPath, string(output),
+						h.IgnoreComments,
+						h.ReplaceString(project.ProjectID, "example-project-id"),
+						h.ReplaceString(uniqueID, "${uniqueId}"))
 				}
 
 				create.DeleteResources(h, s.Resources)
@@ -182,4 +177,30 @@ func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project test
 	t.Helper()
 	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, project)
 	return test.ToUnstructWithNamespace(t, updatedBytes, testID)
+}
+
+func buildExportURI(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject) string {
+	// Some hints here: https://cloud.google.com/asset-inventory/docs/resource-name-format
+
+	projectID := project.ProjectID
+	resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+	if resourceID == "" {
+		resourceID = u.GetName()
+	}
+
+	gvk := u.GroupVersionKind()
+	switch gvk.GroupKind() {
+	case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
+		return "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + resourceID
+
+	case schema.GroupKind{Group: "composer.cnrm.cloud.google.com", Kind: "ComposerEnvironment"}:
+		location, _, _ := unstructured.NestedString(u.Object, "spec", "region")
+		if location == "" {
+			t.Fatalf("cannot determine spec.region for %v", u)
+		}
+		return "//composer.googleapis.com/projects/" + projectID + "/locations/" + location + "/environments/" + resourceID
+
+	default:
+		return ""
+	}
 }
