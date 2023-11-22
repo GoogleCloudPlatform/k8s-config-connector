@@ -18,9 +18,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
-	"strconv"
 	"testing"
-	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
@@ -30,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
+	"google.golang.org/api/cloudresourcemanager/v1"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -41,23 +40,6 @@ func TestAllInSeries(t *testing.T) {
 		t.Skip("RUN_E2E not set; skipping")
 	}
 
-	var project testgcp.GCPProject
-	if os.Getenv("E2E_GCP_TARGET") == "mock" {
-		projectNumber := time.Now().Unix()
-		project = testgcp.GCPProject{
-			ProjectID:     "mock-project-" + strconv.FormatInt(projectNumber, 10),
-			ProjectNumber: projectNumber,
-		}
-		// Some fixed-value fake org-ids for testing.
-		// We used fixed values so that the output is predictable (for golden testing)
-		testgcp.TestOrgID.Set("123450001")
-		testgcp.TestBillingAccountID.Set("123456-777777-000001")
-		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
-		testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
-	} else {
-		project = testgcp.GetDefaultProject(t)
-	}
-
 	ctx := signals.SetupSignalHandler()
 	ctx, cancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
@@ -65,6 +47,42 @@ func TestAllInSeries(t *testing.T) {
 	})
 
 	testHarness := create.NewHarness(t, ctx)
+
+	var project testgcp.GCPProject
+	if os.Getenv("E2E_GCP_TARGET") == "mock" {
+		// Some fixed-value fake org-ids for testing.
+		// We used fixed values so that the output is predictable (for golden testing)
+		testgcp.TestFolderID.Set("123451001")
+		testgcp.TestFolder2ID.Set("123451002")
+		testgcp.TestOrgID.Set("123450001")
+		testgcp.TestBillingAccountID.Set("123456-777777-000001")
+		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
+		testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
+		testgcp.TestAttachedClusterName.Set("xks-cluster")
+
+		crm := testHarness.GetCloudResourceManagerClient()
+		req := &cloudresourcemanager.Project{
+			ProjectId: "mock-project",
+		}
+		op, err := crm.Projects.Create(req).Context(testHarness.Ctx).Do()
+		if err != nil {
+			testHarness.Fatalf("error creating project: %v", err)
+		}
+		if !op.Done {
+			testHarness.Fatalf("expected mock create project operation to be done immediately")
+		}
+		found, err := crm.Projects.Get(req.ProjectId).Context(testHarness.Ctx).Do()
+		if err != nil {
+			testHarness.Fatalf("error reading created project: %v", err)
+		}
+		project = testgcp.GCPProject{
+			ProjectID:     found.ProjectId,
+			ProjectNumber: found.ProjectNumber,
+		}
+		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
+	} else {
+		project = testgcp.GetDefaultProject(t)
+	}
 
 	t.Run("samples", func(t *testing.T) {
 		samples := create.LoadSamples(t, project)
