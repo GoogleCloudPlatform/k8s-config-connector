@@ -2,11 +2,11 @@
 // source: mockgcp/cloud/edgenetwork/v1/service.proto
 
 /*
-Package edgenetwork is a reverse proxy.
+Package edgenetworkpb is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package edgenetwork
+package edgenetworkpb
 
 import (
 	"context"
