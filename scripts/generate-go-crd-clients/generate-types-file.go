@@ -349,7 +349,17 @@ func isResourceReference(d fielddesc.FieldDescription) bool {
 }
 
 func isSecretReference(d fielddesc.FieldDescription) bool {
-	return d.ShortName == "secretKeyRef"
+	if len(d.Children) == 2 {
+		for _, c := range d.Children {
+			if c.ShortName == "name" || c.ShortName == "key" {
+				continue
+			} else {
+				return false
+			}
+		}
+		return true
+	}
+	return false
 }
 
 func getChildrenFromDescription(d fielddesc.FieldDescription, r *resourceDefinition) []*fieldProperties {
