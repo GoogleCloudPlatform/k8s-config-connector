@@ -75,6 +75,7 @@ var preferredSampleForResource = map[string]string{
 	"dlpinspecttemplate":                "custom-inspect-template",
 	"dlpjobtrigger":                     "big-query-job-trigger",
 	"dnsrecordset":                      "dns-a-record-set",
+	"edgecontainercluster":              "edgecontainercluster-remote-control-plane",
 	"folder":                            "folder-in-folder",
 	"gkehubfeature":                     "multi-cluster-ingress-feature",
 	"gkehubfeaturemembership":           "config-management-feature-membership",
