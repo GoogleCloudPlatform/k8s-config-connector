@@ -22,7 +22,16 @@ source ${REPO_ROOT}/scripts/fetch_ext_bins.sh && \
 	fetch_tools && \
 	setup_envs
 
+cd ${REPO_ROOT}/mockgcp
+echo "Running tests in mockgcp..."
+go test -test.count=1 -timeout 3600s -v ./...
+
+cd ${REPO_ROOT}/
 echo "Running mock tests..."
+go test -test.count=1 -timeout 3600s -v ./pkg/controller/mocktests/...
+
+cd ${REPO_ROOT}/
+echo "Running mock e2e tests..."
 E2E_KUBE_TARGET=envtest \
 	RUN_E2E=1 E2E_GCP_TARGET=mock \
-	go test  -test.count=1 -timeout 3600s -v ./tests/e2e
+	go test -test.count=1 -timeout 3600s -v ./tests/e2e
