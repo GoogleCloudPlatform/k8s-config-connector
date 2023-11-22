@@ -22,5 +22,4 @@ spec:
   location: us-central1
   clusterRef:
     name: edgecontainercluster-local-control-plane-dep
-    namespace: default
   enable_high_availability: true

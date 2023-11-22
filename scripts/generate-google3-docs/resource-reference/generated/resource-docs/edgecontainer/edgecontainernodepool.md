@@ -466,8 +466,7 @@ spec:
     external: ${PROJECT_ID?}
   location: us-central1
   clusterRef:
-    name: edgecontainercluster-local-control-plane-dep
-    namespace: default
+    name: edgecontainercluster-remote-control-plane-dep
   # Replace ${NODE_LOCATION?} with the machine zone location
   nodeLocation: ${NODE_LOCATION?}
   nodeCount: 1
@@ -475,7 +474,7 @@ spec:
 apiVersion: edgecontainer.cnrm.cloud.google.com/v1beta1
 kind: EdgeContainerCluster
 metadata:
-  name: edgecontainercluster-local-control-plane-dep
+  name: edgecontainercluster-remote-control-plane-dep
   labels:
     label-one: "value-one"
 spec:
@@ -493,16 +492,16 @@ spec:
   authorization:
     adminUsers:
       usernameRef:
-        # Replace ${CLUTER_ADMIN_ACCOUNT?} with your user account or service account
-        external: ${CLUTER_ADMIN_ACCOUNT?}
-  controlPlane:
-    local:
-      nodeCount: 1
-      # Replace ${NODE_LOCATION?} with the machine zone location
-      nodeLocation: ${NODE_LOCATION?}
-      sharedDeploymentPolicy: ALLOWED
-  # Replace ${EXTERNAL_LOAD_BALANCER_IPV4_CIDR?} with cluster external load balancer IPV4 CIDR
-  externalLoadBalancerIpv4AddressPools: ${EXTERNAL_LOAD_BALANCER_IPV4_CIDR?}
+        # Replace ${CLUSTER_ADMIN_ACCOUNT?} with your user account or service account
+        external: ${CLUTSER_ADMIN_ACCOUNT?}
+  maintenancePolicy:
+    window:
+      recurringWindow:
+        window:
+          startTime: "2023-01-01T08:00:00Z"
+          endTime: "2023-01-01T17:00:00Z"
+        recurrence: "FREQ=WEEKLY;BYDAY=SA"
+  
 ```
 
 

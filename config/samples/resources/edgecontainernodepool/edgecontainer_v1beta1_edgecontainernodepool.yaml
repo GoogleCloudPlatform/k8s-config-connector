@@ -21,8 +21,7 @@ spec:
     external: ${PROJECT_ID?}
   location: us-central1
   clusterRef:
-    name: edgecontainercluster-local-control-plane-dep
-    namespace: default
+    name: edgecontainercluster-remote-control-plane-dep
   # Replace ${NODE_LOCATION?} with the machine zone location
   nodeLocation: ${NODE_LOCATION?}
   nodeCount: 1

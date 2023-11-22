@@ -15,13 +15,12 @@
 apiVersion: edgecontainer.cnrm.cloud.google.com/v1beta1
 kind: EdgeContainerVpnConnection
 metadata:
-  name: edgecontainercluster-${uniqueId}
+  name: edgecontainervpnconnection-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1
   clusterRef:
     name: edgecontainercluster-${uniqueId}
-    namespace: default
   enable_high_availability: true
     
