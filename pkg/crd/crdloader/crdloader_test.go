@@ -66,6 +66,7 @@ func TestCrdLoader_GetCRD(t *testing.T) {
 	env := &envtest.Environment{
 		CRDDirectoryPaths:        []string{repo.GetCRDsPath()},
 		ControlPlaneStartTimeout: time.Minute,
+		ControlPlaneStopTimeout:  time.Minute,
 	}
 	cfg, err := env.Start()
 	if err != nil {

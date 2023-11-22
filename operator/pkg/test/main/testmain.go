@@ -60,6 +60,7 @@ func StartTestEnv() (*rest.Config, func()) {
 	testEnv := &envtest.Environment{
 		CRDDirectoryPaths:        []string{paths.GetOperatorCRDsPath()},
 		ControlPlaneStartTimeout: time.Minute,
+		ControlPlaneStopTimeout:  time.Minute,
 	}
 	var err error
 	cfg, err := testEnv.Start()

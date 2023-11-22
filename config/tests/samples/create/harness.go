@@ -137,6 +137,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 
 		env := &envtest.Environment{
 			ControlPlaneStartTimeout: time.Minute,
+			ControlPlaneStopTimeout:  time.Minute,
 		}
 
 		testenvironment.ConfigureWebhookInstallOptions(env, whCfgs)
