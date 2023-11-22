@@ -51,6 +51,7 @@ func StartTestEnvironmentOrLogFatal(testType test.TestType, crds []*apiextension
 func startTestEnvironment(testType test.TestType, crds []*apiextensions.CustomResourceDefinition, whCfgs []webhook.WebhookConfig) (*envtest.Environment, error) {
 	env := &envtest.Environment{
 		ControlPlaneStartTimeout: time.Minute,
+		ControlPlaneStopTimeout:  time.Minute,
 	}
 	switch {
 	case len(crds) > 0:

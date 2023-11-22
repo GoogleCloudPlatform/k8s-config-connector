@@ -35,6 +35,7 @@ func TestMain(m *testing.M) {
 	t := &envtest.Environment{
 		CRDDirectoryPaths:        []string{repo.GetCRDsPath()},
 		ControlPlaneStartTimeout: time.Minute,
+		ControlPlaneStopTimeout:  time.Minute,
 	}
 
 	err := SchemeBuilder.AddToScheme(scheme.Scheme)
