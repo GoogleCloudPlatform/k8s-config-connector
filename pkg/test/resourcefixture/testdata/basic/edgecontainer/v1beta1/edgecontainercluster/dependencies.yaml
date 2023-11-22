@@ -18,9 +18,6 @@ metadata:
     cnrm.cloud.google.com/project-id: "${projectId}"
   name: gsa-${uniqueId}
 ---
-# The IAMServiceAccount used by the DataflowJob must have the appropriate IAM
-# permissions to create Dataflow jobs and access referenced GCP resources (e.g.
-# the input PubSubTopic and output BigQueryTable).
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
@@ -37,7 +34,10 @@ apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
   name: project-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
 spec:
+  resourceID: ${projectId}
   organizationRef:
     external: ${TEST_ORG_ID}
-  name: project-${uniqueId}
+  name: ${projectId}
