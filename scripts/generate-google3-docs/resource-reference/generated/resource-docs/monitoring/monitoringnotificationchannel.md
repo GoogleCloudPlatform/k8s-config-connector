@@ -379,7 +379,7 @@ to a different credential configuration in the config will require an apply to u
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

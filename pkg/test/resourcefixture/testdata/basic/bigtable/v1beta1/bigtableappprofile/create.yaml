@@ -25,3 +25,5 @@ spec:
   singleClusterRouting:
     allowTransactionalWrites: true
     clusterId: cluster1-${uniqueId}
+  standardIsolation:
+    priority: PRIORITY_MEDIUM

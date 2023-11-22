@@ -874,8 +874,8 @@ spec:
   oidcConfig:
     # Replace ${ISSUER_URL?} with the OIDC issuer URL of the underlying attached cluster
     issuerUrl: ${ISSUER_URL?}
-    # Replace ${PLATFORM_VERSION?} with the platform version of the underlying attached cluster
-    platformVersion: ${PLATFORM_VERSION?}
+  # Replace ${PLATFORM_VERSION?} with the platform version of the underlying attached cluster
+  platformVersion: ${PLATFORM_VERSION?}
   fleet:
     projectRef:
       name: containerattachedcluster-dep-ignore-errors

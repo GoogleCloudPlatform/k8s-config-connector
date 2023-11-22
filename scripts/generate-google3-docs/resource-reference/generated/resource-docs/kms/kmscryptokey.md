@@ -260,7 +260,7 @@ See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

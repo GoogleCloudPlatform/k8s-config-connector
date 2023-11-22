@@ -414,6 +414,14 @@ Custom Resource Definitions in the GitHub repository. For example, this
   <td><a href="/config-connector/docs/reference/resource-docs/dns/dnsrecordset.md">DNSRecordSet</a></td>
 </tr>
 <tr>
+  <td><a href="/edgenetwork/docs/">{{edgenetwork_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/edgenetwork/edgenetworknetwork.md">EdgeNetworkNetwork</a></td>
+</tr>
+<tr>
+  <td><a href="/edgenetwork/docs/">{{edgenetwork_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/edgenetwork/edgenetworksubnet.md">EdgeNetworkSubnet</a></td>
+</tr>
+<tr>
   <td><a href="/eventarc/docs/">{{eventarc_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/eventarc/eventarctrigger.md">EventarcTrigger</a></td>
 </tr>
@@ -788,6 +796,18 @@ Custom Resource Definitions in the GitHub repository. For example, this
 <tr>
   <td><a href="/vpc/docs/">{{serverless_vpc_access_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md">VPCAccessConnector</a></td>
+</tr>
+<tr>
+  <td><a href="/distributed-cloud/edge/latest/docs">{{edgecontainer_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/edgecontainer/edgecontainercluster.md">EdgeContainerCluster</a></td>
+</tr>
+<tr>
+  <td><a href="/distributed-cloud/edge/latest/docs">{{edgecontainer_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/edgecontainer/edgecontainernodepool.md">EdgeContainerNodePool</a></td>
+</tr>
+<tr>
+  <td><a href="/distributed-cloud/edge/latest/docs">{{edgecontainer_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/edgecontainer/edgecontainervpnconnection.md">EdgeContainerVPNConnection</a></td>
 </tr>
 </tbody>
 </table>

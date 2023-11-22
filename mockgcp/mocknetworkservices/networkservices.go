@@ -124,8 +124,8 @@ func (s *NetworkServicesServer) DeleteMesh(ctx context.Context, req *pb.DeleteMe
 
 	fqn := name.String()
 
-	meshKind := (&pb.Mesh{}).ProtoReflect().Descriptor()
-	if err := s.storage.Delete(ctx, meshKind, fqn); err != nil {
+	deletedObj := &pb.Mesh{}
+	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, status.Errorf(codes.NotFound, "mesh %q not found", name)
 		} else {

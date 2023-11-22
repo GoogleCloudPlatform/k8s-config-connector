@@ -119,7 +119,7 @@ func tfObjectSchemaToJSONSchema(s map[string]*schema.Schema) *apiextensions.JSON
 		}
 		if v.Deprecated != "" {
 			deprecationMsg := ensureEndsInPeriod(fmt.Sprintf("DEPRECATED. %v", v.Deprecated))
-			description = strings.TrimSpace(fmt.Sprintf("%v %v", deprecationMsg, description))
+			description = cleanupDeprecatedFieldDescription(strings.TrimSpace(fmt.Sprintf("%v %v", deprecationMsg, description)))
 		}
 		// if the description contains "terraform", ignore the description field
 		for _, word := range []string{"terraform", "Terraform"} {
@@ -442,4 +442,10 @@ func handleHierarchicalReferences(rc *corekccv1alpha1.ResourceConfig, spec *apie
 	} else {
 		*spec = *MarkHierarchicalReferencesRequiredButMutuallyExclusive(spec, rc.HierarchicalReferences)
 	}
+}
+
+func cleanupDeprecatedFieldDescription(description string) string {
+	return strings.ReplaceAll(description,
+		"is deprecated and will be removed in a future major release",
+		"is deprecated")
 }

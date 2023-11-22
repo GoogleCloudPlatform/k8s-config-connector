@@ -25,6 +25,9 @@ import (
 	"time"
 
 	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
+	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/option"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
@@ -36,6 +39,7 @@ import (
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
 	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
+	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 
 	"github.com/google/go-cmp/cmp"
@@ -64,6 +68,7 @@ type Harness struct {
 
 	// gcpAccessToken is set to the oauth2 token to use for GCP, primarily when GCP is mocked.
 	gcpAccessToken string
+	kccConfig      kccmanager.Config
 }
 
 // ForSubtest returns a harness scoped to a subtest (created by t.Run).
@@ -201,6 +206,9 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 
 		kccConfig.HTTPClient = &http.Client{Transport: roundTripper}
 
+		// Also hook the oauth2 library
+		h.Ctx = context.WithValue(h.Ctx, oauth2.HTTPClient, kccConfig.HTTPClient)
+
 		h.gcpAccessToken = "dummytoken"
 		kccConfig.GCPAccessToken = h.gcpAccessToken
 	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
@@ -255,6 +263,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		return ret
 	}
 
+	h.kccConfig = kccConfig
 	mgr, err := kccmanager.New(h.Ctx, h.restConfig, kccConfig)
 	if err != nil {
 		t.Fatalf("error creating new manager: %v", err)
@@ -298,6 +307,14 @@ func (h *Harness) ExportParams() exportparameters.Parameters {
 	return exportParams
 }
 
+func (h *Harness) GetCloudResourceManagerClient() *cloudresourcemanagerv1.Service {
+	s, err := cloudresourcemanagerv1.NewService(h.Ctx, option.WithHTTPClient(h.kccConfig.HTTPClient))
+	if err != nil {
+		h.Fatalf("error building cloudresourcemanagerv1 client: %v", err)
+	}
+	return s
+}
+
 func (h *Harness) GetClient() client.Client {
 	return h.client
 }
@@ -322,9 +339,15 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicyMember"}:
 			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccount"}:
 
+			case schema.GroupKind{Group: "edgenetwork.cnrm.cloud.google.com", Kind: "EdgeNetworkNetwork"}:
+			case schema.GroupKind{Group: "edgenetwork.cnrm.cloud.google.com", Kind: "EdgeNetworkSubnet"}:
+
 			case schema.GroupKind{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesMesh"}:
 
 			case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
+
+			case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Project"}:
+				// ok
 
 			case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
 			case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecretVersion"}:

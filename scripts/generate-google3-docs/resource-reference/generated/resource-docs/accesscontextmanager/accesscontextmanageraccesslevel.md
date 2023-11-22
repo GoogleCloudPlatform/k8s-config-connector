@@ -639,7 +639,7 @@ custom access levels - https://cloud.google.com/access-context-manager/docs/cust
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

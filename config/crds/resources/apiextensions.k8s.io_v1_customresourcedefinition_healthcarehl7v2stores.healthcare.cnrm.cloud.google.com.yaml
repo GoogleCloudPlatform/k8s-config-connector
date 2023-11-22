@@ -64,9 +64,8 @@ spec:
                   'projects/{project}/locations/{location}/datasets/{dataset}'.
                 type: string
               notificationConfig:
-                description: DEPRECATED. `notification_config` is deprecated and will
-                  be removed in a future major release. Use `notification_configs`
-                  instead. A nested object resource.
+                description: DEPRECATED. `notification_config` is deprecated. Use
+                  `notification_configs` instead. A nested object resource.
                 properties:
                   pubsubTopic:
                     description: |-

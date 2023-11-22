@@ -249,7 +249,7 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

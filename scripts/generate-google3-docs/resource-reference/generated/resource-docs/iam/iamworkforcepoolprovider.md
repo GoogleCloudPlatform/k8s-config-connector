@@ -424,7 +424,7 @@ Allowed value: The Google Cloud resource name of an `IAMWorkforcePool` resource 
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

@@ -254,7 +254,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}DEPRECATED. `automatic` is deprecated and will be removed in a future major release. Use `auto` instead. The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. `automatic` is deprecated. Use `auto` instead. The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -484,7 +484,7 @@ An object containing a list of "key": value pairs. Example:
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status

@@ -44,9 +44,7 @@ func TestAllServicesInMap(t *testing.T) {
 			// presubmit test suite.
 			continue
 		}
-		if s == "containerattached" {
-			// containerattached service can be excluded from presubmit test suite,
-			// to avoid test failures caused by the service special requirements.
+		if skip, ok := skipCRUDTests[s]; ok && skip {
 			continue
 		}
 		if _, ok := RepresentativeCRUDTestsForAllServices[s]; !ok {

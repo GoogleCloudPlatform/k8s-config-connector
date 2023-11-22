@@ -52,15 +52,17 @@ func (v *EnvVar) Set(s string) {
 }
 
 var (
+	TestFolderID                        = EnvVar{Key: "TEST_FOLDER_ID"}
+	TestFolder2ID                       = EnvVar{Key: "TEST_FOLDER_2_ID"}
 	TestOrgID                           = EnvVar{Key: "TEST_ORG_ID"}
 	TestBillingAccountID                = EnvVar{Key: "TEST_BILLING_ACCOUNT_ID"}
 	IAMIntegrationTestsOrganizationID   = EnvVar{Key: "IAM_INTEGRATION_TESTS_ORGANIZATION_ID"}
 	IAMIntegrationTestsBillingAccountID = EnvVar{Key: "IAM_INTEGRATION_TESTS_BILLING_ACCOUNT_ID"}
+	TestAttachedClusterName             = EnvVar{Key: "TEST_ATTACHED_CLUSTER_NAME"}
+	TestKCCAttachedClusterProject       = EnvVar{Key: "KCC_ATTACHED_CLUSTER_TEST_PROJECT"}
 )
 
 const (
-	TestFolderId                            = "TEST_FOLDER_ID"
-	TestFolder2Id                           = "TEST_FOLDER_2_ID"
 	TestDependentOrgProjectId               = "TEST_DEPENDENT_ORG_PROJECT_ID"
 	TestDependentFolderProjectId            = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
 	TestDependentNoNetworkProjectId         = "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID" // A dependent project with default network disabled
@@ -73,12 +75,9 @@ const (
 	HighCPUQuotaTestProject                 = "HIGH_CPU_QUOTA_TEST_PROJECT"
 	RecaptchaEnterpriseTestProject          = "RECAPTCHA_ENTERPRISE_TEST_PROJECT"
 	DLPTestBucket                           = "DLP_TEST_BUCKET"
-	KCCAttachedClusterTestProject           = "KCC_ATTACHED_CLUSTER_TEST_PROJECT"
 )
 
 var (
-	testFolderID                            = os.Getenv(TestFolderId)
-	testFolder2Id                           = os.Getenv(TestFolder2Id)
 	testDependentOrgProjectId               = os.Getenv(TestDependentOrgProjectId)
 	testDependentFolderProjectId            = os.Getenv(TestDependentFolderProjectId)
 	testDependentNoNetworkProjectId         = os.Getenv(TestDependentNoNetworkProjectId)
@@ -91,7 +90,6 @@ var (
 	highCpuQuotaTestProject                 = os.Getenv(HighCPUQuotaTestProject)
 	recaptchaEnterpriseTestProject          = os.Getenv(RecaptchaEnterpriseTestProject)
 	dlpTestBucket                           = os.Getenv(DLPTestBucket)
-	kccAttachedClusterTestProject           = os.Getenv(KCCAttachedClusterTestProject)
 )
 
 // GetDefaultProjectID returns the ID of user's configured default GCP project.
@@ -161,14 +159,6 @@ func FindDefaultServiceAccount() (string, error) {
 	return rawCreds["client_email"], nil
 }
 
-func GetFolderID(t *testing.T) string {
-	return testFolderID
-}
-
-func GetFolder2ID(t *testing.T) string {
-	return testFolder2Id
-}
-
 func GetTestBillingAccountIDForBillingResources(t *testing.T) string {
 	return testBillingAccountIDForBillingResources
 }
@@ -215,10 +205,6 @@ func GetRecaptchaEnterpriseTestProject(t *testing.T) string {
 
 func GetDLPTestBucket(t *testing.T) string {
 	return dlpTestBucket
-}
-
-func GetKCCAttachedClusterTestProject(t *testing.T) string {
-	return kccAttachedClusterTestProject
 }
 
 // attempts to return a valid IAM policy binding for the current credential by searching for an email in the cloud credentials file and defaulting to the

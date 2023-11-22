@@ -64,6 +64,8 @@ var testDisabledList = map[string]bool{
 	// The resources below have special test requirements
 	"computeinterconnectattachment": true,
 	"firestoreindex":                true,
+	"edgenetworknetwork":            true,
+	"edgenetworksubnet":             true,
 	// The test external cluster to be attached requires special setup.
 	// It cannot be attached to multiple projects, or be used multiple times if it's already registered.
 	"container-attached-cluster-basic":         true,
@@ -211,6 +213,16 @@ var testDisabledList = map[string]bool{
 	// This sample test is failing because configconnector.net GCP org is not allowlisted.
 	// Disable the test until we have fixed b/267510222.
 	"calendar-budget": true,
+	// These sample test runs try to create AlloyDB backup while Instance has not been created,
+	// as there is no way to enforce order of resource creation. Will re-enable once the API handles it
+	// b/309167136
+	"alloydbbackup":                true,
+	"restored-from-backup-cluster": true,
+	// This sample test need physical rack which is not suitable for e2e testing due to
+	// limited budget.
+	"edgecontainercluster":       true,
+	"edgecontainernodepool":      true,
+	"edgecontainervpnconnection": true,
 }
 
 func TestAll(t *testing.T) {

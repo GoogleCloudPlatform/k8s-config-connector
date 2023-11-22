@@ -83,7 +83,7 @@ type CertificateManaged struct {
 
 	Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/* /locations/* /certificateIssuanceConfigs/*.
 	If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
-	Either issuanceConfig or dnsAuthorizations should be specificed, but not both. */
+	Either issuanceConfig or dnsAuthorizations should be specified, but not both. */
 	// +optional
 	IssuanceConfigRef *v1alpha1.ResourceRef `json:"issuanceConfigRef,omitempty"`
 
@@ -129,7 +129,7 @@ type CertificateProvisioningIssue struct {
 }
 
 type CertificateSelfManaged struct {
-	/* DEPRECATED. `certificate_pem` is deprecated and will be removed in a future major release. Use `pem_certificate` instead. Immutable. The certificate chain in PEM-encoded form.
+	/* DEPRECATED. `certificate_pem` is deprecated. Use `pem_certificate` instead. Immutable. The certificate chain in PEM-encoded form.
 
 	Leaf certificate comes first, followed by intermediate ones if any. */
 	// +optional
@@ -145,7 +145,7 @@ type CertificateSelfManaged struct {
 	// +optional
 	PemPrivateKey *CertificatePemPrivateKey `json:"pemPrivateKey,omitempty"`
 
-	/* DEPRECATED. `private_key_pem` is deprecated and will be removed in a future major release. Use `pem_private_key` instead. Immutable. The private key of the leaf certificate in PEM-encoded form. */
+	/* DEPRECATED. `private_key_pem` is deprecated. Use `pem_private_key` instead. Immutable. The private key of the leaf certificate in PEM-encoded form. */
 	// +optional
 	PrivateKeyPem *CertificatePrivateKeyPem `json:"privateKeyPem,omitempty"`
 }

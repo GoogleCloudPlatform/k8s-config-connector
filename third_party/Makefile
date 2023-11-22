@@ -290,3 +290,10 @@ apply-patches:
 	git apply ../hack/terraform-overrides/compute_managed_ssl_certificate.patch
 	# Add support for google_alloydb_user resource (introduced in tf-5.2.0)
 	git apply ../hack/terraform-overrides/alloydb_user.patch
+	# Add edgecontainer resources (TODO) Remove the patch once TF update to v5.1.0
+	git apply ../hack/terraform-overrides/edgecontainer.patch
+    # Pass non-empty golang context to http request, to get the test info from context of http request
+    # Related bug b/309633764
+	git apply ../hack/terraform-overrides/send_request_with_context.patch
+	# Add standard_isolation and priority fields for request priorities
+	git apply ../hack/terraform-overrides/bigtable_request_priorities.patch

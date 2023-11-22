@@ -26,3 +26,5 @@ spec:
   multiClusterRoutingClusterIds:
     - cluster1-${uniqueId}
     - cluster2-${uniqueId}
+  standardIsolation:
+    priority: PRIORITY_LOW

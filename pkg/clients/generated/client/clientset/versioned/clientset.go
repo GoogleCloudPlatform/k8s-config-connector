@@ -76,6 +76,8 @@ import (
 	dnsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1alpha1"
 	dnsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dns/v1beta1"
 	documentaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/documentai/v1alpha1"
+	edgecontainerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgecontainer/v1beta1"
+	edgenetworkv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/edgenetwork/v1beta1"
 	essentialcontactsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/essentialcontacts/v1alpha1"
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1"
 	filestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1alpha1"
@@ -194,6 +196,8 @@ type Interface interface {
 	DnsV1alpha1() dnsv1alpha1.DnsV1alpha1Interface
 	DnsV1beta1() dnsv1beta1.DnsV1beta1Interface
 	DocumentaiV1alpha1() documentaiv1alpha1.DocumentaiV1alpha1Interface
+	EdgecontainerV1beta1() edgecontainerv1beta1.EdgecontainerV1beta1Interface
+	EdgenetworkV1beta1() edgenetworkv1beta1.EdgenetworkV1beta1Interface
 	EssentialcontactsV1alpha1() essentialcontactsv1alpha1.EssentialcontactsV1alpha1Interface
 	EventarcV1beta1() eventarcv1beta1.EventarcV1beta1Interface
 	FilestoreV1alpha1() filestorev1alpha1.FilestoreV1alpha1Interface
@@ -311,6 +315,8 @@ type Clientset struct {
 	dnsV1alpha1                  *dnsv1alpha1.DnsV1alpha1Client
 	dnsV1beta1                   *dnsv1beta1.DnsV1beta1Client
 	documentaiV1alpha1           *documentaiv1alpha1.DocumentaiV1alpha1Client
+	edgecontainerV1beta1         *edgecontainerv1beta1.EdgecontainerV1beta1Client
+	edgenetworkV1beta1           *edgenetworkv1beta1.EdgenetworkV1beta1Client
 	essentialcontactsV1alpha1    *essentialcontactsv1alpha1.EssentialcontactsV1alpha1Client
 	eventarcV1beta1              *eventarcv1beta1.EventarcV1beta1Client
 	filestoreV1alpha1            *filestorev1alpha1.FilestoreV1alpha1Client
@@ -626,6 +632,16 @@ func (c *Clientset) DnsV1beta1() dnsv1beta1.DnsV1beta1Interface {
 // DocumentaiV1alpha1 retrieves the DocumentaiV1alpha1Client
 func (c *Clientset) DocumentaiV1alpha1() documentaiv1alpha1.DocumentaiV1alpha1Interface {
 	return c.documentaiV1alpha1
+}
+
+// EdgecontainerV1beta1 retrieves the EdgecontainerV1beta1Client
+func (c *Clientset) EdgecontainerV1beta1() edgecontainerv1beta1.EdgecontainerV1beta1Interface {
+	return c.edgecontainerV1beta1
+}
+
+// EdgenetworkV1beta1 retrieves the EdgenetworkV1beta1Client
+func (c *Clientset) EdgenetworkV1beta1() edgenetworkv1beta1.EdgenetworkV1beta1Interface {
+	return c.edgenetworkV1beta1
 }
 
 // EssentialcontactsV1alpha1 retrieves the EssentialcontactsV1alpha1Client
@@ -1176,6 +1192,14 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.edgecontainerV1beta1, err = edgecontainerv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.edgenetworkV1beta1, err = edgenetworkv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.essentialcontactsV1alpha1, err = essentialcontactsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1488,6 +1512,8 @@ func New(c rest.Interface) *Clientset {
 	cs.dnsV1alpha1 = dnsv1alpha1.New(c)
 	cs.dnsV1beta1 = dnsv1beta1.New(c)
 	cs.documentaiV1alpha1 = documentaiv1alpha1.New(c)
+	cs.edgecontainerV1beta1 = edgecontainerv1beta1.New(c)
+	cs.edgenetworkV1beta1 = edgenetworkv1beta1.New(c)
 	cs.essentialcontactsV1alpha1 = essentialcontactsv1alpha1.New(c)
 	cs.eventarcV1beta1 = eventarcv1beta1.New(c)
 	cs.filestoreV1alpha1 = filestorev1alpha1.New(c)

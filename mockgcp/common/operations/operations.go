@@ -20,9 +20,12 @@ import (
 	"time"
 
 	pb "google.golang.org/genproto/googleapis/longrunning"
+	rpcstatus "google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/anypb"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/util/uuid"
 	"k8s.io/klog/v2"
@@ -57,6 +60,57 @@ func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
 	if err := s.storage.Create(ctx, fqn, op); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating LRO: %v", err)
 	}
+	return op, nil
+}
+
+func (s *Operations) StartLRO(ctx context.Context, callback func() (proto.Message, error)) (*pb.Operation, error) {
+	now := time.Now()
+	millis := now.UnixMilli()
+	id := uuid.NewUUID()
+
+	op := &pb.Operation{}
+
+	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
+	op.Done = false
+
+	fqn := op.Name
+
+	if err := s.storage.Create(ctx, fqn, op); err != nil {
+		return nil, status.Errorf(codes.Internal, "error creating LRO: %v", err)
+	}
+
+	go func() {
+		result, err := callback()
+		finished := &pb.Operation{}
+		if err2 := s.storage.Get(ctx, fqn, finished); err2 != nil {
+			klog.Warningf("error getting LRO: %v", err2)
+			return
+		}
+
+		finished.Done = true
+		if err != nil {
+			finished.Result = &pb.Operation_Error{
+				Error: &rpcstatus.Status{
+					Message: fmt.Sprintf("error processing operation: %v", err),
+				},
+			}
+		} else {
+			resultAny, err := anypb.New(result)
+			if err != nil {
+				klog.Warningf("error building anypb for result: %v", err)
+				finished.Result = &pb.Operation_Response{}
+			} else {
+				finished.Result = &pb.Operation_Response{
+					Response: resultAny,
+				}
+			}
+		}
+		if err := s.storage.Update(ctx, fqn, finished); err != nil {
+			klog.Warningf("error updating LRO: %v", err)
+			return
+		}
+	}()
+
 	return op, nil
 }
 

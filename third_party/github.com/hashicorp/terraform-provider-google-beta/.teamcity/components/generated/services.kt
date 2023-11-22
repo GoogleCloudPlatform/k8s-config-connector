@@ -320,6 +320,11 @@ var services = mapOf(
         "name" to "edgenetwork",
         "displayName" to "Edgenetwork",
         "path" to "./google-beta/services/edgenetwork"
+    )
+    "edgecontainer" to mapOf(
+        "name" to "edgecontainer",
+        "displayName" to "Edgecontainer",
+        "path" to "./google-beta/services/edgecontainer"
     ),
     "essentialcontacts" to mapOf(
         "name" to "essentialcontacts",

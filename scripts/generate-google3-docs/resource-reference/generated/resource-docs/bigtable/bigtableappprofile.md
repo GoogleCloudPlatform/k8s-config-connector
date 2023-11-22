@@ -95,6 +95,8 @@ resourceID: string
 singleClusterRouting:
   allowTransactionalWrites: boolean
   clusterId: string
+standardIsolation:
+  priority: string
 ```
 
 <table class="properties responsive">
@@ -227,11 +229,31 @@ It is unsafe to send these requests to the same table/row/column in multiple clu
             <p>{% verbatim %}The cluster to which read/write requests should be routed.{% endverbatim %}</p>
         </td>
     </tr>
+    <tr>
+        <td>
+            <p><code>standardIsolation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The standard options used for isolating this app profile's traffic from other use cases.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>standardIsolation.priority</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The priority of requests sent using this app profile. Possible values: ["PRIORITY_LOW", "PRIORITY_MEDIUM", "PRIORITY_HIGH"].{% endverbatim %}</p>
+        </td>
+    </tr>
 </tbody>
 </table>
 
 
-<p>{% verbatim %}* Field is required when parent field is specified{% endverbatim %}</p>
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status
@@ -364,6 +386,51 @@ spec:
     zone: us-central1-a
     numNodes: 3
   - clusterId: bigtableappprofile-dep2-multi
+    zone: us-west1-a
+    numNodes: 3
+```
+
+### Priority Bigtable App Profile
+```yaml
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableAppProfile
+metadata:
+  name: bigtableappprofile-sample-priority
+spec:
+  description: Sends all requests with LOW priority.
+  instanceRef:
+    name: bigtableappprofile-dep-priority
+  singleClusterRouting:
+    allowTransactionalWrites: true
+    clusterId: bigtableappprofile-dep1-pty
+  standardIsolation:
+    priority: PRIORITY_LOW
+---
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableappprofile-dep-priority
+spec:
+  displayName: BigtableSample
+  cluster:
+  - clusterId: bigtableappprofile-dep1-pty
+    zone: us-central1-a
+    numNodes: 3
+  - clusterId: bigtableappprofile-dep2-pty
     zone: us-west1-a
     numNodes: 3
 ```

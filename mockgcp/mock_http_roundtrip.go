@@ -33,25 +33,27 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcertificatemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudfunctions"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgenetwork"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type mockRoundTripper struct {
-	services map[string]MockService
-
-	iamPolicies    *mockIAMPolicies
 	grpcConnection *grpc.ClientConn
 	grpcListener   net.Listener
 
 	hosts map[string]*runtime.ServeMux
+
+	iamPolicies *mockIAMPolicies
 }
 
 // MockService is the interface implemented by all services
@@ -69,16 +71,21 @@ type MockService interface {
 func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.Storage) *mockRoundTripper {
 	ctx := context.Background()
 
-	env := common.NewMockEnvironment(k8sClient)
+	rt := &mockRoundTripper{}
+
+	resourcemanagerService := mockresourcemanager.New(k8sClient, storage)
+	projectsInternal := resourcemanagerService.GetInternalService()
+	env := common.NewMockEnvironment(k8sClient, projectsInternal)
 
 	var serverOpts []grpc.ServerOption
 	server := grpc.NewServer(serverOpts...)
 
-	rt := &mockRoundTripper{}
 	rt.hosts = make(map[string]*runtime.ServeMux)
 
 	var services []MockService
 
+	services = append(services, resourcemanagerService)
+	services = append(services, mockbilling.New(env, storage))
 	services = append(services, mockcertificatemanager.New(env, storage))
 	services = append(services, mockgkemulticloud.New(env, storage))
 	services = append(services, mockiam.New(env, storage))
@@ -87,6 +94,7 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	services = append(services, mocknetworkservices.New(env, storage))
 	services = append(services, mockserviceusage.New(env, storage))
 	services = append(services, mockcloudfunctions.New(env, storage))
+	services = append(services, mockedgenetwork.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)
