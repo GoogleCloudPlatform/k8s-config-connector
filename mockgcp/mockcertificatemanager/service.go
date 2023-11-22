@@ -33,7 +33,7 @@ type MockService struct {
 	kube    client.Client
 	storage storage.Storage
 
-	projects   *projects.ProjectStore
+	projects   projects.ProjectStore
 	operations *operations.Operations
 
 	v1 *CertificateManagerV1

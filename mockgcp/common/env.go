@@ -21,18 +21,18 @@ import (
 )
 
 type MockEnvironment struct {
-	projects   *projects.ProjectStore
+	projects   projects.ProjectStore
 	kubeClient client.Client
 }
 
-func NewMockEnvironment(kubeClient client.Client) *MockEnvironment {
+func NewMockEnvironment(kubeClient client.Client, projects projects.ProjectStore) *MockEnvironment {
 	e := &MockEnvironment{}
-	e.projects = projects.NewProjectStore()
 	e.kubeClient = kubeClient
+	e.projects = projects
 	return e
 }
 
-func (e *MockEnvironment) GetProjects() *projects.ProjectStore {
+func (e *MockEnvironment) GetProjects() projects.ProjectStore {
 	return e.projects
 }
 
