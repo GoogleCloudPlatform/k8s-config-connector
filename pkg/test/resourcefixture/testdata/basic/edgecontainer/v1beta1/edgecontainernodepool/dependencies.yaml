@@ -37,10 +37,13 @@ apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
   name: project-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
 spec:
+  resourceID: ${projectId}
   organizationRef:
     external: ${TEST_ORG_ID}
-  name: project-${uniqueId}
+  name: ${projectId}
 ---
 apiVersion: edgecontainer.cnrm.cloud.google.com/v1beta1
 kind: EdgeContainerCluster

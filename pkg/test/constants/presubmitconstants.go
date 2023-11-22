@@ -113,8 +113,8 @@ var (
 	skipCRUDTests = map[string]bool{
 		"containerattached":          true,
 		"edgenetwork":                true,
-		"EdgeContainerVpnConnection": true,
-		"EdgeContainerNodePool":      true,
+		"edgecontainervpnconnection": true,
+		"edgecontainernodepool":      true,
 	}
 	DynamicTestPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic/..."
 )
