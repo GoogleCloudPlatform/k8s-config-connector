@@ -302,7 +302,8 @@ func organizeSpecFieldDescriptions(descriptions []fielddesc.FieldDescription, r 
 		}
 
 		isRef := isResourceReference(d)
-		if !isRef { // Field is NOT a resourceRef, add children to nested structs
+		isSec := isSecretReference(d)
+		if !isRef && !isSec { // Field is NOT a resourceRef, add children to nested structs
 			if d.Type == "object" { // Field most likely has nested fields
 				children := getChildrenFromDescription(d, r)
 				r.SpecNestedStructs[strings.Title(d.ShortName)] = children
@@ -319,11 +320,14 @@ func organizeSpecFieldDescriptions(descriptions []fielddesc.FieldDescription, r 
 		if len(d.FullName) > 2 {
 			continue //field is nested & should not be listed in first-layer spec
 		}
-		r.SpecFields = append(r.SpecFields, fieldDescriptionToFieldProperties(d, isRef, r))
+		r.SpecFields = append(r.SpecFields, fieldDescriptionToFieldProperties(d, isRef, isSec, r))
 	}
 }
 
 func isResourceReference(d fielddesc.FieldDescription) bool {
+	if d.ShortName == "secretKeyRef" {
+		return false
+	}
 	if strings.HasSuffix(d.ShortName, "Ref") {
 		return true
 	}
@@ -344,10 +348,14 @@ func isResourceReference(d fielddesc.FieldDescription) bool {
 	return false
 }
 
+func isSecretReference(d fielddesc.FieldDescription) bool {
+	return d.ShortName == "secretKeyRef"
+}
+
 func getChildrenFromDescription(d fielddesc.FieldDescription, r *resourceDefinition) []*fieldProperties {
 	children := make([]*fieldProperties, 0)
 	for _, c := range d.Children {
-		children = append(children, fieldDescriptionToFieldProperties(c, isResourceReference(c), r))
+		children = append(children, fieldDescriptionToFieldProperties(c, isResourceReference(c), isSecretReference(c), r))
 	}
 	return children
 }
@@ -355,7 +363,7 @@ func getChildrenFromDescription(d fielddesc.FieldDescription, r *resourceDefinit
 func getAdditionalPropertiesFromDescription(d fielddesc.FieldDescription, r *resourceDefinition) []*fieldProperties {
 	additionalProperties := make([]*fieldProperties, 0)
 	for _, c := range d.AdditionalProperties {
-		additionalProperties = append(additionalProperties, fieldDescriptionToFieldProperties(c, isResourceReference(c), r))
+		additionalProperties = append(additionalProperties, fieldDescriptionToFieldProperties(c, isResourceReference(c), isSecretReference(c), r))
 	}
 	return additionalProperties
 }
@@ -369,7 +377,8 @@ func organizeStatusFieldDescriptions(descriptions []fielddesc.FieldDescription, 
 			continue
 		}
 		isRef := isResourceReference(d)
-		if !isRef {
+		isSec := isSecretReference(d)
+		if !isRef && !isSec {
 			if d.Type == "object" {
 				children := getChildrenFromDescription(d, r)
 				r.StatusNestedStructs[strings.Title(d.ShortName)] = children
@@ -386,11 +395,11 @@ func organizeStatusFieldDescriptions(descriptions []fielddesc.FieldDescription, 
 		if len(d.FullName) > 2 {
 			continue // field is nested
 		}
-		r.StatusFields = append(r.StatusFields, fieldDescriptionToFieldProperties(d, isRef, r))
+		r.StatusFields = append(r.StatusFields, fieldDescriptionToFieldProperties(d, isRef, isSec, r))
 	}
 }
 
-func fieldDescriptionToFieldProperties(desc fielddesc.FieldDescription, isRef bool, r *resourceDefinition) *fieldProperties {
+func fieldDescriptionToFieldProperties(desc fielddesc.FieldDescription, isRef bool, isSec bool, r *resourceDefinition) *fieldProperties {
 	var isIAMRef bool
 	if isRef {
 		// Check if resource is IAMPolicy/PolicyMember/AuditConfig and modify ref to use IAMRef struct
@@ -403,7 +412,7 @@ func fieldDescriptionToFieldProperties(desc fielddesc.FieldDescription, isRef bo
 	}
 	fp := &fieldProperties{
 		FullName:    formatName(desc),
-		Type:        formatType(desc, isRef, isIAMRef),
+		Type:        formatType(desc, isRef, isSec, isIAMRef),
 		Description: desc.Description,
 		Name:        strings.Title(desc.ShortName),     // Field name UpperCamelCase
 		JSONName:    fmt.Sprintf("%v", desc.ShortName), // ShortName is default lowerCamelCase, exclude omitempty unless the field is optional
@@ -445,7 +454,7 @@ func formatName(desc fielddesc.FieldDescription) string {
 	return name
 }
 
-func formatType(desc fielddesc.FieldDescription, isRef, isIAMRef bool) string {
+func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) string {
 	switch desc.Type {
 	case "boolean":
 		return "bool"
@@ -454,6 +463,9 @@ func formatType(desc fielddesc.FieldDescription, isRef, isIAMRef bool) string {
 	case "float", "number":
 		return "float64"
 	case "object":
+		if isSec {
+			return "v1alpha1.SecretKeyRef"
+		}
 		if isRef {
 			if isIAMRef {
 				return "v1alpha1.IAMResourceRef"

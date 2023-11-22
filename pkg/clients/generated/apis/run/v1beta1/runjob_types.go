@@ -292,7 +292,7 @@ type JobTemplate struct {
 type JobValueSource struct {
 	/* Selects a secret and a specific version from Cloud Secret Manager. */
 	// +optional
-	SecretKeyRef *v1alpha1.ResourceRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type JobVolumeMounts struct {
