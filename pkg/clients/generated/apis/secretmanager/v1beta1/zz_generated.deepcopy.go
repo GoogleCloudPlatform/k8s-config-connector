@@ -514,7 +514,7 @@ func (in *SecretversionValueFrom) DeepCopyInto(out *SecretversionValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(v1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return

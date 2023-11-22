@@ -622,7 +622,7 @@ func (in *SecretciphertextValueFrom) DeepCopyInto(out *SecretciphertextValueFrom
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(k8sv1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return

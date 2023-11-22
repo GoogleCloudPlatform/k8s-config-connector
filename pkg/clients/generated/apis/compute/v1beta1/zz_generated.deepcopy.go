@@ -986,7 +986,7 @@ func (in *BackendserviceValueFrom) DeepCopyInto(out *BackendserviceValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(v1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -9898,7 +9898,7 @@ func (in *DiskValueFrom) DeepCopyInto(out *DiskValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(v1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -11367,7 +11367,7 @@ func (in *InstanceValueFrom) DeepCopyInto(out *InstanceValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(v1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -14554,7 +14554,7 @@ func (in *SnapshotValueFrom) DeepCopyInto(out *SnapshotValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(v1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -14627,7 +14627,7 @@ func (in *SslcertificateValueFrom) DeepCopyInto(out *SslcertificateValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(v1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return
@@ -15768,7 +15768,7 @@ func (in *VpntunnelValueFrom) DeepCopyInto(out *VpntunnelValueFrom) {
 	*out = *in
 	if in.SecretKeyRef != nil {
 		in, out := &in.SecretKeyRef, &out.SecretKeyRef
-		*out = new(v1alpha1.ResourceRef)
+		*out = new(v1alpha1.SecretKeyRef)
 		**out = **in
 	}
 	return

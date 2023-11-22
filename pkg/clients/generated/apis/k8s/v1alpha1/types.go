@@ -79,3 +79,11 @@ type IAMResourceRef struct {
 	/* The external name of the referenced resource */
 	External string `json:"external,omitempty"`
 }
+
+type SecretKeyRef struct {
+	/* Key that identifies the value to be extracted. */
+	Key string `json:"key"`
+
+	/* Name of the Secret to extract a value from. */
+	Name string `json:"name"`
+}
