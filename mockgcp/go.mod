@@ -1,6 +1,6 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
 
-go 1.21.3
+go 1.21.4
 
 require (
 	cloud.google.com/go/iam v1.1.1
