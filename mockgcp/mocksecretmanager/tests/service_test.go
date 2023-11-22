@@ -21,6 +21,7 @@ import (
 	"net/http"
 	"testing"
 
+	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/option"
 	secretmanager "google.golang.org/api/secretmanager/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -46,11 +47,25 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 		Transport: mockCloud,
 	}
 
+	t.Logf("creating project")
+	crm, err := cloudresourcemanagerv1.NewService(ctx, option.WithHTTPClient(httpClient), option.WithAPIKey("fake"))
+	if err != nil {
+		t.Fatalf("error building cloudresourcemanagerv1 client: %v", err)
+	}
+	op, err := crm.Projects.Create(&cloudresourcemanagerv1.Project{ProjectId: "mock-project"}).Context(ctx).Do()
+	if err != nil {
+		t.Fatalf("error creating project: %v", err)
+	}
+	if !op.Done {
+		t.Fatalf("expected mock create project operation to be done immediately")
+	}
+
+	t.Logf("creating secret")
 	client, err := secretmanager.NewService(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		t.Fatalf("secretmanager.NewService failed: %v", err)
 	}
-	parent := "projects/test-project"
+	parent := "projects/mock-project"
 	create := &secretmanager.Secret{}
 	secretID := "testsecret"
 	created, err := client.Projects.Secrets.Create(parent, create).SecretId(secretID).Context(ctx).Do()
