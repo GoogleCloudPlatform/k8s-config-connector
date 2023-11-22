@@ -19,6 +19,7 @@ import (
 	"net/http"
 
 	"contrib.go.opencensus.io/exporter/prometheus"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"go.opencensus.io/stats/view"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
