@@ -15,7 +15,7 @@
 apiVersion: edgecontainer.cnrm.cloud.google.com/v1beta1
 kind: EdgeContainerCluster
 metadata:
-  name: edgecontainercluster-local-control-plane-dep
+  name: edgecontainercluster-local-control-plane-sample
   labels:
     label-one: "value-one"
 spec:
@@ -33,8 +33,8 @@ spec:
   authorization:
     adminUsers:
       usernameRef:
-        # Replace ${CLUTER_ADMIN_ACCOUNT?} with your user account or service account
-        external: ${CLUTER_ADMIN_ACCOUNT?}
+        # Replace ${CLUTSER_ADMIN_ACCOUNT?} with your user account or service account
+        external: ${CLUTSER_ADMIN_ACCOUNT?}
   controlPlane:
     local:
       nodeCount: 1
@@ -42,4 +42,5 @@ spec:
       nodeLocation: ${NODE_LOCATION?}
       sharedDeploymentPolicy: ALLOWED
   # Replace ${EXTERNAL_LOAD_BALANCER_IPV4_CIDR?} with cluster external load balancer IPV4 CIDR
-  externalLoadBalancerIpv4AddressPools: ${EXTERNAL_LOAD_BALANCER_IPV4_CIDR?}
+  externalLoadBalancerIpv4AddressPools:
+    - ${EXTERNAL_LOAD_BALANCER_IPV4_CIDR?}
