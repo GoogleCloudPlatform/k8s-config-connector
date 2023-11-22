@@ -239,6 +239,11 @@ func TestTerraformFieldsAreInResourceSchema(t *testing.T) {
 				for _, c := range rc.Containers {
 					fields = append(fields, c.TFField)
 				}
+				if rc.ObservedFields != nil {
+					for _, o := range *rc.ObservedFields {
+						fields = append(fields, o)
+					}
+				}
 				// Check the fields to ensure they're in the schema
 				for _, f := range fields {
 					if f == "" {
@@ -1268,4 +1273,52 @@ func TestStorageVersionIsSetAndValidIFFV1alpha1ToV1beta1IsSet(t *testing.T) {
 			}
 		}
 	}
+}
+
+func TestObservedFields(t *testing.T) {
+	t.Parallel()
+	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
+	for _, sm := range serviceMappings {
+		sm := sm
+		t.Run(sm.Name, func(t *testing.T) {
+			t.Parallel()
+			for _, rc := range sm.Spec.Resources {
+				rc := rc
+				t.Run(rc.Kind, func(t *testing.T) {
+					t.Parallel()
+					if rc.ObservedFields == nil {
+						return
+					}
+					assertObservedFieldsSliceNotEmpty(t, rc)
+					assertNoDuplicatesInObservedFieldsSlice(t, rc)
+				})
+			}
+		})
+	}
+}
+
+func assertObservedFieldsSliceNotEmpty(t *testing.T, rc v1alpha1.ResourceConfig) {
+	t.Helper()
+	if rc.ObservedFields != nil && len(*rc.ObservedFields) == 0 {
+		t.Errorf("kind %v has an empty observed fields slice", rc.Kind)
+		return
+	}
+	return
+}
+
+func assertNoDuplicatesInObservedFieldsSlice(t *testing.T, rc v1alpha1.ResourceConfig) {
+	t.Helper()
+	if len(*rc.ObservedFields) == 0 {
+		t.Errorf("kind %v has no observed field", rc.Kind)
+		return
+	}
+	observedFieldMap := make(map[string]bool)
+	for _, field := range *rc.ObservedFields {
+		if _, ok := observedFieldMap[field]; ok {
+			t.Errorf("kind %v contains duplicated observed field %v", rc.Kind, field)
+			continue
+		}
+		observedFieldMap[field] = true
+	}
+	return
 }
