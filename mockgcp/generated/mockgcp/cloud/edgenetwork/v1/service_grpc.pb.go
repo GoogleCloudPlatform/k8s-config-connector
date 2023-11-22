@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: mockgcp/cloud/edgenetwork/v1/service.proto
 
-package edgenetwork
+package edgenetworkpb
 
 import (
 	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
