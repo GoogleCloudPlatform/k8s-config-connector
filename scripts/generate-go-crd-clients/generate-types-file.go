@@ -357,7 +357,7 @@ func isSecretReference(d fielddesc.FieldDescription) bool {
 				return false
 			}
 		}
-		return true
+		return d.ShortName == "secretKeyRef"
 	}
 	return false
 }
