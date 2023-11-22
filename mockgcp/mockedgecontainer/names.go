@@ -90,36 +90,3 @@ func (s *MockService) parseNodePoolName(name string) (*nodePoolName, error) {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
-
-type vpnConnectionName struct {
-	Project  *projects.ProjectData
-	Location string
-	Name     string
-}
-
-func (n *vpnConnectionName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/vpnConnections/" + n.Name
-}
-
-// parseVpnConnectionName parses a string into a vpnConnectionName.
-// The expected form is projects/<projectID>/locations/<region>/vpnConnections/<name>
-func (s *MockService) parseVpnConnectionName(name string) (*vpnConnectionName, error) {
-	tokens := strings.Split(name, "/")
-
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "vpnConnections" {
-		project, err := s.projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		name := &vpnConnectionName{
-			Project:  project,
-			Location: tokens[3],
-			Name:     tokens[5],
-		}
-
-		return name, nil
-	} else {
-		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
-	}
-}

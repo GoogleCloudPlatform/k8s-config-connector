@@ -22,6 +22,5 @@ spec:
   location: us-central1
   clusterRef:
     name: edgecontainercluster-${uniqueId}
-    namespace: default
   enable_high_availability: true
     

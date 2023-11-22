@@ -46,7 +46,7 @@ func (s *EdgeContainerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolRe
 }
 
 func (s *EdgeContainerV1) CreateNodePool(ctx context.Context, req *pb.CreateNodePoolRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/nodepools/" + req.NodePoolId
+	reqName := req.Parent + "/nodePools/" + req.NodePoolId
 	name, err := s.parseNodePoolName(reqName)
 	if err != nil {
 		return nil, err

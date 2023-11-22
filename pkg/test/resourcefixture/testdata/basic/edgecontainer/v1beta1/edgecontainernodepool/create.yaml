@@ -24,7 +24,6 @@ spec:
   location: us-central1
   clusterRef:
     name: edgecontainercluster-${uniqueId}
-    namespace: default
   nodeLocation: edge-site-node-123
   nodeCount: 1
     
