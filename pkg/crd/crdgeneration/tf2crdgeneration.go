@@ -71,6 +71,7 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	if err != nil {
 		return nil, fmt.Errorf("error renaming status fields with reserved names for %#v: %v", statusJSONSchema, err)
 	}
+	populateObservedState(resourceConfig, specJSONSchema, statusJSONSchema)
 	for k, v := range statusJSONSchema.Properties {
 		openAPIV3Schema.Properties["status"].Properties[k] = v
 	}
@@ -448,4 +449,55 @@ func cleanupDeprecatedFieldDescription(description string) string {
 	return strings.ReplaceAll(description,
 		"is deprecated and will be removed in a future major release",
 		"is deprecated")
+}
+
+func populateObservedState(rc *corekccv1alpha1.ResourceConfig, spec *apiextensions.JSONSchemaProps, status *apiextensions.JSONSchemaProps) {
+	if rc.ObservedFields == nil || len(*rc.ObservedFields) == 0 {
+		return
+	}
+	observedStateJSONSchema := apiextensions.JSONSchemaProps{
+		Type:        "object",
+		Description: "The observed state of the underlying GCP resource.",
+		Properties:  make(map[string]apiextensions.JSONSchemaProps),
+	}
+	for _, path := range *rc.ObservedFields {
+		populateObservedField(strings.Split(path, "."), spec, &observedStateJSONSchema)
+	}
+	status.Properties["observedState"] = observedStateJSONSchema
+}
+
+func populateObservedField(observedFieldPath []string, sourceSchema *apiextensions.JSONSchemaProps, observedFieldParent *apiextensions.JSONSchemaProps) apiextensions.JSONSchemaProps {
+	field := text.SnakeCaseToLowerCamelCase(observedFieldPath[0])
+	if len(observedFieldPath) > 1 {
+		subSchema := sourceSchema.Properties[field]
+		switch subSchema.Type {
+		case "array":
+			// TODO(b/312581557): Support the use case when the observed field is a subfield under an array.
+			panic(fmt.Errorf("observed fields under an array is not supported"))
+		case "object":
+			objSchema := apiextensions.JSONSchemaProps{
+				Type:        "object",
+				Description: subSchema.Description,
+				Properties:  make(map[string]apiextensions.JSONSchemaProps),
+			}
+			observedFieldParent.Properties[field] = populateObservedField(observedFieldPath[1:], &subSchema, &objSchema)
+			return *observedFieldParent
+		default:
+			panic(fmt.Errorf("error parsing observed field %v: cannot iterate into type that is not object or array of objects", observedFieldPath))
+		}
+	}
+
+	subSchema := sourceSchema.Properties[field]
+	switch subSchema.Type {
+	case "array":
+		// TODO(b/312581569): Support the use case when the observed field is an array.
+		panic(fmt.Errorf("observed fields of an array is not supported"))
+	case "object":
+		// TODO(b/312581569): Support the use case when the observed field is an object.
+		panic(fmt.Errorf("observed fields of an object is not supported"))
+	default:
+		observedFieldParent.Properties[field] = *subSchema.DeepCopy()
+	}
+
+	return *observedFieldParent
 }

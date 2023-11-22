@@ -181,6 +181,13 @@ type ResourceConfig struct {
 	// It must be set when V1alpha1ToV1beta1 is set to `true`. It must be
 	// `v1alpha1` when first set.
 	StorageVersion *string `json:"storageVersion,omitempty"`
+
+	// ObservedFields specifies which `spec` fields should be exposed under
+	// `status.observedState` in the CRD, and in the CR after a successful
+	// reconciliation.
+	// The fields should be snake case paths in TF. For example,
+	// `master_auth.client_certificate`.
+	ObservedFields *[]string `json:"observedFields,omitempty"`
 }
 
 type IAMConfig struct {
