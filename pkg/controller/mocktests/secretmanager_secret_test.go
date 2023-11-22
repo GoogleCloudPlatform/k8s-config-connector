@@ -27,6 +27,8 @@ import (
 	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -66,6 +68,8 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 		roundTripper = test.NewHTTPRecorder(mockCloud, outputDir)
 	}
 
+	gcpHTTPClient := &http.Client{Transport: roundTripper}
+
 	h.Ctx = context.WithValue(h.Ctx, httpRoundTripperKey, roundTripper)
 
 	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
@@ -81,6 +85,22 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 			return &http.Client{Transport: t.(http.RoundTripper)}
 		}
 		return inner
+	}
+
+	t.Logf("creating project")
+	crm, err := cloudresourcemanagerv1.NewService(h.Ctx, option.WithHTTPClient(gcpHTTPClient), option.WithAPIKey("fake"))
+	if err != nil {
+		h.Fatalf("error building cloudresourcemanagerv1 client: %v", err)
+	}
+	req := &cloudresourcemanagerv1.Project{
+		ProjectId: "mock-project",
+	}
+	op, err := crm.Projects.Create(req).Context(h.Ctx).Do()
+	if err != nil {
+		t.Fatalf("error creating project: %v", err)
+	}
+	if !op.Done {
+		t.Fatalf("expected mock create project operation to be done immediately")
 	}
 
 	t.Logf("creating controller")
@@ -101,7 +121,14 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 		t.Fatalf("error from tfprovider.New: %v", err)
 	}
 	t.Logf("creating dclconfig")
-	dclConfig := clientconfig.NewForIntegrationTest()
+	dclConfig, err := clientconfig.New(h.Ctx, clientconfig.Options{
+		UserAgent:  "kcc/dev",
+		HTTPClient: gcpHTTPClient,
+	})
+	if err != nil {
+		t.Fatalf("error from clientconfig.New: %v", err)
+	}
+
 	t.Logf("creating testreconciler")
 	testhelper := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, tfProvider, dclConfig)
 
