@@ -103,8 +103,8 @@ func main() {
 		// by the RegisterCommonWebhooks call below, and will not honor this value.
 		Port: webhook.ServicePort,
 		NewCache: func(config *rest.Config, opts cache.Options) (cache.Cache, error) {
-			opts.SelectorsByObject = cache.SelectorsByObject{
-				crdKind: cache.ObjectSelector{
+			opts.ByObject = map[client.Object]cache.ByObject{
+				crdKind: {
 					Label: labelSelector,
 				},
 			}

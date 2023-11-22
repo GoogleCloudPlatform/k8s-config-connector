@@ -35,7 +35,7 @@ var (
 )
 
 // NewUpgradeChecker provides an implementation of declarative.Preflight that
-// does version comparison between the version of the existing KCC and and the version to deploy.
+// does version comparison between the version of the existing KCC and the version to deploy.
 // If it's a major version change, it returns error and surface the error status on the DeclarativeObject.
 func NewUpgradeChecker(client client.Client, repo manifest.Repository) *UpgradeChecker {
 	return &UpgradeChecker{client: client, repo: repo}

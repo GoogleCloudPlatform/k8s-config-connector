@@ -21,6 +21,10 @@ import (
 )
 
 // NoCacheClientFunc returns a client without cache.
-var NoCacheClientFunc = func(cache cache.Cache, config *rest.Config, options client.Options, uncachedObjects ...client.Object) (client.Client, error) {
+var NoCacheClientFuncOld = func(cache cache.Cache, config *rest.Config, options client.Options, uncachedObjects ...client.Object) (client.Client, error) {
+	return client.New(config, options)
+}
+
+var NoCacheClientFunc = func(config *rest.Config, options client.Options) (client.Client, error) {
 	return client.New(config, options)
 }

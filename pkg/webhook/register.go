@@ -279,12 +279,12 @@ func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationNa
 		return err
 	}
 	// Set up the HTTP server
-	s := &webhook.Server{
+	s := webhook.NewServer(webhook.Options{
 		CertDir:  certDir,
 		CertName: writer.ServerCertName,
 		KeyName:  writer.ServerKeyName,
 		Port:     ServicePort,
-	}
+	})
 	for _, whCfg := range whCfgs {
 		handler := whCfg.HandlerFunc(mgr)
 		s.Register(whCfg.Path, &admission.Webhook{Handler: handler})

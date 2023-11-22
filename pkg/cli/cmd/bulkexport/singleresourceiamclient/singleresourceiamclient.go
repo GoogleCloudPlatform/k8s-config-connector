@@ -31,6 +31,8 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	k8sschema "k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 type iamClient struct {
@@ -159,8 +161,8 @@ func (c *singleResourceClient) Patch(_ context.Context, obj client.Object, _ cli
 	return fmt.Errorf("unexpected call to client.Patch(...) for object with kind %v", obj.GetObjectKind())
 }
 
-func (c *singleResourceClient) Status() client.StatusWriter {
-	return c
+func (c *singleResourceClient) Status() client.SubResourceWriter {
+	panic("unexpected call to client.Status(...)")
 }
 
 func (c *singleResourceClient) Scheme() *runtime.Scheme {
@@ -169,4 +171,20 @@ func (c *singleResourceClient) Scheme() *runtime.Scheme {
 
 func (c *singleResourceClient) RESTMapper() meta.RESTMapper {
 	panic("unexpected call to client.RESTMapper(...)")
+}
+
+func (c *singleResourceClient) GroupVersionKindFor(_ runtime.Object) (k8sschema.GroupVersionKind, error) {
+	panic("unexpected call to client.GroupVersionKindFor(...)")
+}
+
+func (c *singleResourceClient) IsObjectNamespaced(_ runtime.Object) (bool, error) {
+	panic("unexpected call to client.IsObjectNamespaced(...)")
+}
+
+func (c *singleResourceClient) SubResource(_ string) client.SubResourceClient {
+	panic("unexpected call to client.SubResource(...)")
+}
+
+func (e *singleResourceClient) SubResourceWriter(_ string) client.SubResourceClient {
+	panic("unexpected call to client.SubResource(...)")
 }
