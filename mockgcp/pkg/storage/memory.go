@@ -23,8 +23,6 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 // InMemoryStorage is a memory-backed (non-persistent) implementation of Storage, useful for tests.
@@ -77,7 +75,7 @@ func (s *typeStorage) Create(ctx context.Context, fqn string, create proto.Messa
 
 	_, found := s.byKey[fqn]
 	if found {
-		return apierrors.NewAlreadyExists(schema.GroupResource{}, fqn)
+		return status.Errorf(codes.AlreadyExists, "%v %q already exists", s.objectTypeName, fqn)
 	}
 	s.byKey[fqn] = proto.Clone(create)
 	return nil
