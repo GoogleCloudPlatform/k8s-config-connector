@@ -21,8 +21,6 @@
 
 package v1beta1
 
-type TagsLocationTagBindingExpansion interface{}
-
 type TagsTagBindingExpansion interface{}
 
 type TagsTagKeyExpansion interface{}
