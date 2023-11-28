@@ -59,6 +59,10 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterTargetHttpProxiesServer(grpcServer, &GlobalTargetHTTPProxiesV1{MockService: s})
 	pb.RegisterRegionTargetHttpProxiesServer(grpcServer, &RegionalTargetHTTPProxiesV1{MockService: s})
 
+	pb.RegisterTargetHttpsProxiesServer(grpcServer, &GlobalTargetHTTPSProxiesV1{MockService: s})
+	pb.RegisterRegionTargetHttpsProxiesServer(grpcServer, &RegionalTargetHTTPSProxiesV1{MockService: s})
+
+
 	pb.RegisterUrlMapsServer(grpcServer, &GlobalURLMapsV1{MockService: s})
 	pb.RegisterRegionUrlMapsServer(grpcServer, &RegionalURLMapsV1{MockService: s})
 
@@ -128,6 +132,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterRegionTargetHttpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterTargetHttpsProxiesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionTargetHttpsProxiesHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterTargetSslProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
@@ -232,5 +242,121 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		mux.ServeHTTP(w, r)
 	}
 
+<<<<<<< HEAD
 	return http.HandlerFunc(rewriteBetaToV1), nil
+=======
+	if err := mux.HandlePath("GET", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
+		return nil, err
+	}
+	if err := mux.HandlePath("POST", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
+		return nil, err
+	}
+	if err := mux.HandlePath("DELETE", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
+		return nil, err
+	}
+	if err := mux.HandlePath("PATCH", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
+		return nil, err
+	}
+	if err := mux.HandlePath("PUT", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterGlobalOperationsHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterAddressesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterGlobalAddressesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterBackendServicesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionBackendServicesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterDisksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionDisksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterForwardingRulesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterGlobalForwardingRulesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterHealthChecksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionHealthChecksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterImagesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterInstancesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterInstanceGroupsHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterNetworksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterServiceAttachmentsHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterSubnetworksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterTargetHttpProxiesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionTargetHttpProxiesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterTargetHttpsProxiesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionTargetHttpsProxiesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterTargetVpnGatewaysHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterUrlMapsHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionUrlMapsHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterVpnGatewaysHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterZonesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	return mux, nil
+>>>>>>> 0a8dd5d34 (mockgcp: implement ComputeTargetHTTPSProxy)
 }
