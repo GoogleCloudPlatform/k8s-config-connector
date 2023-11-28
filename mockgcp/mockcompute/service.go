@@ -82,6 +82,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterServiceAttachmentsServer(grpcServer, &RegionalServiceAttachmentV1{MockService: s})
 
+	pb.RegisterSslCertificatesServer(grpcServer, &GlobalSSLCertificatesV1{MockService: s})
+
 	pb.RegisterSubnetworksServer(grpcServer, &SubnetsV1{MockService: s})
 
 	pb.RegisterTargetHttpProxiesServer(grpcServer, &GlobalTargetHTTPProxiesV1{MockService: s})
@@ -184,6 +186,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*r
 	}
 
 	if err := pb.RegisterServiceAttachmentsHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterSslCertificatesHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
