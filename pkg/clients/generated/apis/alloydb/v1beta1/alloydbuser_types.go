@@ -60,11 +60,7 @@ type AlloyDBUserSpec struct {
 
 	/* Password for this database user. */
 	// +optional
-<<<<<<< HEAD
 	Password *UserPassword `json:"password,omitempty"`
-=======
-	Password *string `json:"password,omitempty"`
->>>>>>> 26867a99f11bf32252f0a4508e944cf9b07e34a6
 
 	/* Immutable. Optional. The userId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

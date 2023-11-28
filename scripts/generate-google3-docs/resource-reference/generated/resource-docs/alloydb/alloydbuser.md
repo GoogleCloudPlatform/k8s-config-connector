@@ -166,17 +166,12 @@ userType: string
             <p><i>Optional</i></p>
         </td>
         <td>
-<<<<<<< HEAD
             <p><code class="apitype">object</code></p>
-=======
-            <p><code class="apitype">string</code></p>
->>>>>>> 26867a99f11bf32252f0a4508e944cf9b07e34a6
             <p>{% verbatim %}Password for this database user.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-<<<<<<< HEAD
             <p><code>password.value</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -227,8 +222,6 @@ userType: string
     </tr>
     <tr>
         <td>
-=======
->>>>>>> 26867a99f11bf32252f0a4508e944cf9b07e34a6
             <p><code>resourceID</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -251,11 +244,8 @@ userType: string
 </table>
 
 
-<<<<<<< HEAD
 <p>* Field is required when parent field is specified</p>
 
-=======
->>>>>>> 26867a99f11bf32252f0a4508e944cf9b07e34a6
 
 ### Status
 #### Schema
@@ -372,12 +362,8 @@ spec:
     - pg_monitor
     - pg_signal_backend
   userType: ALLOYDB_BUILT_IN
-<<<<<<< HEAD
   password: 
     value: pg-built-in
-=======
-  password: pg-built-in
->>>>>>> 26867a99f11bf32252f0a4508e944cf9b07e34a6
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
