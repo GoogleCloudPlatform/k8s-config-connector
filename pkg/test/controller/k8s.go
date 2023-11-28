@@ -175,7 +175,7 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueId string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.InterconnectTestProject), testgcp.GetInterconnectTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.HighCPUQuotaTestProject), testgcp.GetHighCpuQuotaTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.RecaptchaEnterpriseTestProject), testgcp.GetRecaptchaEnterpriseTestProject(t), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAttachedClusterProject.Key), testgcp.TestAttachedClusterName.Get(), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAttachedClusterProject.Key), testgcp.TestKCCAttachedClusterProject.Get(), -1)
 	return []byte(s)
 }
 
