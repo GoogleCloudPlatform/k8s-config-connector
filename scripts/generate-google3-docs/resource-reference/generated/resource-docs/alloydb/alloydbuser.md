@@ -83,7 +83,12 @@ clusterRef:
   namespace: string
 databaseRoles:
 - string
-password: string
+password:
+  value: string
+  valueFrom:
+    secretKeyRef:
+      key: string
+      name: string
 resourceID: string
 userType: string
 ```
@@ -161,8 +166,58 @@ userType: string
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">string</code></p>
+            <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Password for this database user.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>password.value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>password.valueFrom</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>password.valueFrom.secretKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>password.valueFrom.secretKeyRef.key</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Key that identifies the value to be extracted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>password.valueFrom.secretKeyRef.name</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the Secret to extract a value from.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -188,6 +243,8 @@ userType: string
 </tbody>
 </table>
 
+
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status
@@ -305,7 +362,8 @@ spec:
     - pg_monitor
     - pg_signal_backend
   userType: ALLOYDB_BUILT_IN
-  password: pg-built-in
+  password: 
+    value: pg-built-in
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster

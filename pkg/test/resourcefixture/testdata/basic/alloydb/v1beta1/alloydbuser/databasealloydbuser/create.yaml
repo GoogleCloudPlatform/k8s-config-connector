@@ -23,4 +23,5 @@ spec:
     - pg_monitor
     - pg_signal_backend
   userType: ALLOYDB_BUILT_IN
-  password: pg-built-in
+  password: 
+    value: pg-built-in

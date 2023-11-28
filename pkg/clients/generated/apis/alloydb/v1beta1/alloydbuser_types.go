@@ -35,6 +35,22 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type UserPassword struct {
+	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+	// +optional
+	Value *string `json:"value,omitempty"`
+
+	/* Source for the field's value. Cannot be used if 'value' is specified. */
+	// +optional
+	ValueFrom *UserValueFrom `json:"valueFrom,omitempty"`
+}
+
+type UserValueFrom struct {
+	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
+	// +optional
+	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+}
+
 type AlloyDBUserSpec struct {
 	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
@@ -44,7 +60,7 @@ type AlloyDBUserSpec struct {
 
 	/* Password for this database user. */
 	// +optional
-	Password *string `json:"password,omitempty"`
+	Password *UserPassword `json:"password,omitempty"`
 
 	/* Immutable. Optional. The userId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

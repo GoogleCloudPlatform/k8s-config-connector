@@ -92,7 +92,42 @@ spec:
                 type: array
               password:
                 description: Password for this database user.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - valueFrom
+                  required:
+                  - value
+                - not:
+                    required:
+                    - value
+                  required:
+                  - valueFrom
+                properties:
+                  value:
+                    description: Value of the field. Cannot be used if 'valueFrom'
+                      is specified.
+                    type: string
+                  valueFrom:
+                    description: Source for the field's value. Cannot be used if 'value'
+                      is specified.
+                    properties:
+                      secretKeyRef:
+                        description: Reference to a value with the given key in the
+                          given Secret in the resource's namespace.
+                        properties:
+                          key:
+                            description: Key that identifies the value to be extracted.
+                            type: string
+                          name:
+                            description: Name of the Secret to extract a value from.
+                            type: string
+                        required:
+                        - name
+                        - key
+                        type: object
+                    type: object
+                type: object
               resourceID:
                 description: Immutable. Optional. The userId of the resource. Used
                   for creation and acquisition. When unset, the value of `metadata.name`

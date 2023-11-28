@@ -20,4 +20,5 @@ spec:
   clusterRef:
     name: alloydbcluster-${uniqueId}
   userType: ALLOYDB_BUILT_IN
-  password: pg-built-in-mod
+  password: 
+    value: pg-built-in-mod
