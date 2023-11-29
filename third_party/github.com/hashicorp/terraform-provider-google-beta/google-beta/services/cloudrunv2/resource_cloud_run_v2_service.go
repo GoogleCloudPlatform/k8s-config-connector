@@ -941,6 +941,7 @@ If reconciliation failed, trafficStatuses, observedGeneration, and latestReadyRe
 				Type:        schema.TypeList,
 				Computed:    true,
 				Description: `The Condition of this Service, containing its readiness status, and detailed error information in case it did not reach a serving state. See comments in reconciling for additional information on reconciliation process in Cloud Run.`,
+				MaxItems:    1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"execution_reason": {
