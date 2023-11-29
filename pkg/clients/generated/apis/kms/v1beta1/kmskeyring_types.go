@@ -79,7 +79,3 @@ type KMSKeyRingList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []KMSKeyRing `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&KMSKeyRing{}, &KMSKeyRingList{})
-}

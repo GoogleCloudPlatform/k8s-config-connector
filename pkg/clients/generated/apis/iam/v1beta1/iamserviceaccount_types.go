@@ -99,7 +99,3 @@ type IAMServiceAccountList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IAMServiceAccount `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IAMServiceAccount{}, &IAMServiceAccountList{})
-}

@@ -161,7 +161,3 @@ type ConfigControllerInstanceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ConfigControllerInstance `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ConfigControllerInstance{}, &ConfigControllerInstanceList{})
-}

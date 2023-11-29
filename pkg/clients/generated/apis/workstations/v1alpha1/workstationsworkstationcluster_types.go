@@ -162,7 +162,3 @@ type WorkstationsWorkstationClusterList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []WorkstationsWorkstationCluster `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&WorkstationsWorkstationCluster{}, &WorkstationsWorkstationClusterList{})
-}

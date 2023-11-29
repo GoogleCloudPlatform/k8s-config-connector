@@ -98,7 +98,3 @@ type BeyondCorpAppConnectorList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BeyondCorpAppConnector `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BeyondCorpAppConnector{}, &BeyondCorpAppConnectorList{})
-}

@@ -101,7 +101,3 @@ type TagsTagValueList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []TagsTagValue `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&TagsTagValue{}, &TagsTagValueList{})
-}

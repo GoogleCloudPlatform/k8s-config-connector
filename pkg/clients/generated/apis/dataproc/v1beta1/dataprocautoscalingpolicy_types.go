@@ -142,7 +142,3 @@ type DataprocAutoscalingPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DataprocAutoscalingPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DataprocAutoscalingPolicy{}, &DataprocAutoscalingPolicyList{})
-}

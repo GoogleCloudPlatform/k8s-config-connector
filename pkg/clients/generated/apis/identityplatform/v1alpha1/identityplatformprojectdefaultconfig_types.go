@@ -153,7 +153,3 @@ type IdentityPlatformProjectDefaultConfigList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IdentityPlatformProjectDefaultConfig `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IdentityPlatformProjectDefaultConfig{}, &IdentityPlatformProjectDefaultConfigList{})
-}

@@ -105,7 +105,3 @@ type IAMServiceAccountKeyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IAMServiceAccountKey `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IAMServiceAccountKey{}, &IAMServiceAccountKeyList{})
-}

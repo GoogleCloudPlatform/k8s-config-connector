@@ -105,7 +105,3 @@ type SQLSSLCertList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []SQLSSLCert `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&SQLSSLCert{}, &SQLSSLCertList{})
-}

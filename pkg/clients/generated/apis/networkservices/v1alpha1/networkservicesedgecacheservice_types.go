@@ -727,7 +727,3 @@ type NetworkServicesEdgeCacheServiceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NetworkServicesEdgeCacheService `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&NetworkServicesEdgeCacheService{}, &NetworkServicesEdgeCacheServiceList{})
-}

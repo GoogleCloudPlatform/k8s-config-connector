@@ -159,7 +159,3 @@ type DialogflowIntentList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DialogflowIntent `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DialogflowIntent{}, &DialogflowIntentList{})
-}

@@ -127,7 +127,3 @@ type SecretManagerSecretVersionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []SecretManagerSecretVersion `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&SecretManagerSecretVersion{}, &SecretManagerSecretVersionList{})
-}

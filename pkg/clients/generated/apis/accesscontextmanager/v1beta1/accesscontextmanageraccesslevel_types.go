@@ -220,7 +220,3 @@ type AccessContextManagerAccessLevelList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AccessContextManagerAccessLevel `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&AccessContextManagerAccessLevel{}, &AccessContextManagerAccessLevelList{})
-}

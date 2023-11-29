@@ -111,7 +111,3 @@ type SpannerDatabaseList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []SpannerDatabase `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&SpannerDatabase{}, &SpannerDatabaseList{})
-}

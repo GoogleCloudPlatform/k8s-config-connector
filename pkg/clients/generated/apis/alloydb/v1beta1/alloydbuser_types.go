@@ -104,7 +104,3 @@ type AlloyDBUserList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AlloyDBUser `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&AlloyDBUser{}, &AlloyDBUserList{})
-}

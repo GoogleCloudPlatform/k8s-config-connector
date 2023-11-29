@@ -453,7 +453,3 @@ type ContainerAnalysisNoteList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ContainerAnalysisNote `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ContainerAnalysisNote{}, &ContainerAnalysisNoteList{})
-}

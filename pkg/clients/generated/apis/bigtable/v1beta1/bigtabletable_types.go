@@ -94,7 +94,3 @@ type BigtableTableList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigtableTable `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BigtableTable{}, &BigtableTableList{})
-}

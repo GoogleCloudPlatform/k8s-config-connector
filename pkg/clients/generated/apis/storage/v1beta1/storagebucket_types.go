@@ -273,7 +273,3 @@ type StorageBucketList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []StorageBucket `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&StorageBucket{}, &StorageBucketList{})
-}

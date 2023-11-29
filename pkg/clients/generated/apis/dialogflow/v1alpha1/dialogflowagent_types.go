@@ -133,7 +133,3 @@ type DialogflowAgentList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DialogflowAgent `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DialogflowAgent{}, &DialogflowAgentList{})
-}

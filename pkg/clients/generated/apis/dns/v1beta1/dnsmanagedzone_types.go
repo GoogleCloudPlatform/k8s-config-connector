@@ -244,7 +244,3 @@ type DNSManagedZoneList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DNSManagedZone `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DNSManagedZone{}, &DNSManagedZoneList{})
-}

@@ -318,7 +318,3 @@ type MonitoringServiceLevelObjectiveList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []MonitoringServiceLevelObjective `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&MonitoringServiceLevelObjective{}, &MonitoringServiceLevelObjectiveList{})
-}

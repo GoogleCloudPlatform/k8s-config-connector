@@ -78,7 +78,3 @@ type FirebaseStorageBucketList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []FirebaseStorageBucket `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&FirebaseStorageBucket{}, &FirebaseStorageBucketList{})
-}

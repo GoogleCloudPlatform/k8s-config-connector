@@ -102,7 +102,3 @@ type SourceRepoRepositoryList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []SourceRepoRepository `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&SourceRepoRepository{}, &SourceRepoRepositoryList{})
-}

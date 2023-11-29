@@ -204,7 +204,3 @@ type NetworkManagementConnectivityTestList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NetworkManagementConnectivityTest `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&NetworkManagementConnectivityTest{}, &NetworkManagementConnectivityTestList{})
-}

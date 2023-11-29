@@ -108,7 +108,3 @@ type HealthcareDICOMStoreList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []HealthcareDICOMStore `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&HealthcareDICOMStore{}, &HealthcareDICOMStoreList{})
-}

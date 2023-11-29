@@ -92,7 +92,3 @@ type ComputeTargetVPNGatewayList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeTargetVPNGateway `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeTargetVPNGateway{}, &ComputeTargetVPNGatewayList{})
-}

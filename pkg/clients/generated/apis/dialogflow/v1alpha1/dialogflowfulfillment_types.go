@@ -117,7 +117,3 @@ type DialogflowFulfillmentList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DialogflowFulfillment `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DialogflowFulfillment{}, &DialogflowFulfillmentList{})
-}

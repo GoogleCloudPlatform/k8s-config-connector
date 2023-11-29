@@ -79,7 +79,3 @@ type ComputeDiskResourcePolicyAttachmentList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeDiskResourcePolicyAttachment `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeDiskResourcePolicyAttachment{}, &ComputeDiskResourcePolicyAttachmentList{})
-}

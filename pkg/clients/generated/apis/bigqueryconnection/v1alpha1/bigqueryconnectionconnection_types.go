@@ -224,7 +224,3 @@ type BigQueryConnectionConnectionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigQueryConnectionConnection `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BigQueryConnectionConnection{}, &BigQueryConnectionConnectionList{})
-}

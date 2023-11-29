@@ -344,7 +344,3 @@ type AlloyDBClusterList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AlloyDBCluster `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&AlloyDBCluster{}, &AlloyDBClusterList{})
-}

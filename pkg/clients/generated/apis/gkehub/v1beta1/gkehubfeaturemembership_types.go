@@ -249,7 +249,3 @@ type GKEHubFeatureMembershipList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []GKEHubFeatureMembership `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&GKEHubFeatureMembership{}, &GKEHubFeatureMembershipList{})
-}

@@ -105,7 +105,3 @@ type EdgeNetworkNetworkList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []EdgeNetworkNetwork `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&EdgeNetworkNetwork{}, &EdgeNetworkNetworkList{})
-}

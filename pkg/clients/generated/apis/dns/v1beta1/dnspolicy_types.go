@@ -120,7 +120,3 @@ type DNSPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DNSPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DNSPolicy{}, &DNSPolicyList{})
-}

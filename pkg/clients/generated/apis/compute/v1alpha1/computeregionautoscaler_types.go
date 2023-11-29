@@ -340,7 +340,3 @@ type ComputeRegionAutoscalerList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeRegionAutoscaler `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeRegionAutoscaler{}, &ComputeRegionAutoscalerList{})
-}

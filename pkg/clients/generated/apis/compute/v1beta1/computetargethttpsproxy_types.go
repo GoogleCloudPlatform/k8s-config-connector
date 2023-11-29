@@ -142,7 +142,3 @@ type ComputeTargetHTTPSProxyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeTargetHTTPSProxy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeTargetHTTPSProxy{}, &ComputeTargetHTTPSProxyList{})
-}

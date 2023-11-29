@@ -125,7 +125,3 @@ type NotebooksEnvironmentList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NotebooksEnvironment `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&NotebooksEnvironment{}, &NotebooksEnvironmentList{})
-}

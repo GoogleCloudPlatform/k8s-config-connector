@@ -138,7 +138,3 @@ type ApigeeAddonsConfigList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ApigeeAddonsConfig `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ApigeeAddonsConfig{}, &ApigeeAddonsConfigList{})
-}

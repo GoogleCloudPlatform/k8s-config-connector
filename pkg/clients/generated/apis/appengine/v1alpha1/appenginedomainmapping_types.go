@@ -130,7 +130,3 @@ type AppEngineDomainMappingList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AppEngineDomainMapping `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&AppEngineDomainMapping{}, &AppEngineDomainMappingList{})
-}

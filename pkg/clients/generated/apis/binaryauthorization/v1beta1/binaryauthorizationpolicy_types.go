@@ -170,7 +170,3 @@ type BinaryAuthorizationPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BinaryAuthorizationPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BinaryAuthorizationPolicy{}, &BinaryAuthorizationPolicyList{})
-}

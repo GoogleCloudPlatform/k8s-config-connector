@@ -83,7 +83,3 @@ type IAPBrandList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IAPBrand `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IAPBrand{}, &IAPBrandList{})
-}

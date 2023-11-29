@@ -70,7 +70,3 @@ type ComputeProjectMetadataList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeProjectMetadata `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeProjectMetadata{}, &ComputeProjectMetadataList{})
-}

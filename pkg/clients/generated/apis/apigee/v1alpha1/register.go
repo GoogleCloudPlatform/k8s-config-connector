@@ -37,10 +37,9 @@
 package v1alpha1
 
 import (
-	"reflect"
-
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
 var (
@@ -48,58 +47,83 @@ var (
 	SchemeGroupVersion = schema.GroupVersion{Group: "apigee.cnrm.cloud.google.com", Version: "v1beta1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
+	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)
 
 	// AddToScheme is a global function that registers this API group & version to a scheme
-	AddToScheme = SchemeBuilder.AddToScheme
+	localSchemeBuilder = &SchemeBuilder
+	AddToScheme        = localSchemeBuilder.AddToScheme
 
 	ApigeeAddonsConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeAddonsConfig{}).Name(),
+		Kind:    "ApigeeAddonsConfig",
 	}
 
 	ApigeeEndpointAttachmentGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeEndpointAttachment{}).Name(),
+		Kind:    "ApigeeEndpointAttachment",
 	}
 
 	ApigeeEnvgroupGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeEnvgroup{}).Name(),
+		Kind:    "ApigeeEnvgroup",
 	}
 
 	ApigeeEnvgroupAttachmentGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeEnvgroupAttachment{}).Name(),
+		Kind:    "ApigeeEnvgroupAttachment",
 	}
 
 	ApigeeInstanceGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeInstance{}).Name(),
+		Kind:    "ApigeeInstance",
 	}
 
 	ApigeeInstanceAttachmentGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeInstanceAttachment{}).Name(),
+		Kind:    "ApigeeInstanceAttachment",
 	}
 
 	ApigeeNATAddressGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeNATAddress{}).Name(),
+		Kind:    "ApigeeNATAddress",
 	}
 
 	ApigeeSyncAuthorizationGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(ApigeeSyncAuthorization{}).Name(),
+		Kind:    "ApigeeSyncAuthorization",
 	}
 
 	apigeeAPIVersion = SchemeGroupVersion.String()
 )
+
+// Adds the list of known types to the given scheme.
+func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&ApigeeAddonsConfig{},
+		&ApigeeAddonsConfigList{},
+		&ApigeeEndpointAttachment{},
+		&ApigeeEndpointAttachmentList{},
+		&ApigeeEnvgroup{},
+		&ApigeeEnvgroupList{},
+		&ApigeeEnvgroupAttachment{},
+		&ApigeeEnvgroupAttachmentList{},
+		&ApigeeInstance{},
+		&ApigeeInstanceList{},
+		&ApigeeInstanceAttachment{},
+		&ApigeeInstanceAttachmentList{},
+		&ApigeeNATAddress{},
+		&ApigeeNATAddressList{},
+		&ApigeeSyncAuthorization{},
+		&ApigeeSyncAuthorizationList{},
+	)
+	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
+	return nil
+}

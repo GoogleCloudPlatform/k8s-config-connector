@@ -176,7 +176,3 @@ type ComputePerInstanceConfigList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputePerInstanceConfig `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputePerInstanceConfig{}, &ComputePerInstanceConfigList{})
-}

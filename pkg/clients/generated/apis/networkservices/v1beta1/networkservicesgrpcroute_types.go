@@ -218,7 +218,3 @@ type NetworkServicesGRPCRouteList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NetworkServicesGRPCRoute `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&NetworkServicesGRPCRoute{}, &NetworkServicesGRPCRouteList{})
-}

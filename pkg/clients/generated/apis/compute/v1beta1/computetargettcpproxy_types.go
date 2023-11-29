@@ -99,7 +99,3 @@ type ComputeTargetTCPProxyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeTargetTCPProxy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeTargetTCPProxy{}, &ComputeTargetTCPProxyList{})
-}

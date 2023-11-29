@@ -104,7 +104,3 @@ type CertificateManagerDNSAuthorizationList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []CertificateManagerDNSAuthorization `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&CertificateManagerDNSAuthorization{}, &CertificateManagerDNSAuthorizationList{})
-}

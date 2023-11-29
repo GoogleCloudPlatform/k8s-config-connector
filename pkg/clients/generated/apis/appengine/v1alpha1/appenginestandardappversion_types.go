@@ -349,7 +349,3 @@ type AppEngineStandardAppVersionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AppEngineStandardAppVersion `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&AppEngineStandardAppVersion{}, &AppEngineStandardAppVersionList{})
-}

@@ -83,7 +83,3 @@ type ApigeeNATAddressList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ApigeeNATAddress `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ApigeeNATAddress{}, &ApigeeNATAddressList{})
-}

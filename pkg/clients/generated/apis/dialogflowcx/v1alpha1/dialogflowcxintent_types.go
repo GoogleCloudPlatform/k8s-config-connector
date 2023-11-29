@@ -159,7 +159,3 @@ type DialogflowCXIntentList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DialogflowCXIntent `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DialogflowCXIntent{}, &DialogflowCXIntentList{})
-}

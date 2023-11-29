@@ -191,7 +191,3 @@ type SecretManagerSecretList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []SecretManagerSecret `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&SecretManagerSecret{}, &SecretManagerSecretList{})
-}

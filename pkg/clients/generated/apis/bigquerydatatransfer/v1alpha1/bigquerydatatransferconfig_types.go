@@ -203,7 +203,3 @@ type BigQueryDataTransferConfigList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigQueryDataTransferConfig `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BigQueryDataTransferConfig{}, &BigQueryDataTransferConfigList{})
-}

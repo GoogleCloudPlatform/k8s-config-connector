@@ -726,7 +726,3 @@ type DLPDeidentifyTemplateList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DLPDeidentifyTemplate `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DLPDeidentifyTemplate{}, &DLPDeidentifyTemplateList{})
-}

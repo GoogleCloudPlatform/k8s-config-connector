@@ -37,10 +37,9 @@
 package v1beta1
 
 import (
-	"reflect"
-
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
 var (
@@ -48,82 +47,115 @@ var (
 	SchemeGroupVersion = schema.GroupVersion{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
+	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)
 
 	// AddToScheme is a global function that registers this API group & version to a scheme
-	AddToScheme = SchemeBuilder.AddToScheme
+	localSchemeBuilder = &SchemeBuilder
+	AddToScheme        = localSchemeBuilder.AddToScheme
 
 	IAMAccessBoundaryPolicyGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IAMAccessBoundaryPolicy{}).Name(),
+		Kind:    "IAMAccessBoundaryPolicy",
 	}
 
 	IAMAuditConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IAMAuditConfig{}).Name(),
+		Kind:    "IAMAuditConfig",
 	}
 
 	IAMCustomRoleGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IAMCustomRole{}).Name(),
+		Kind:    "IAMCustomRole",
 	}
 
 	IAMPartialPolicyGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IAMPartialPolicy{}).Name(),
+		Kind:    "IAMPartialPolicy",
 	}
 
 	IAMPolicyGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IAMPolicy{}).Name(),
+		Kind:    "IAMPolicy",
 	}
 
 	IAMPolicyMemberGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IAMPolicyMember{}).Name(),
+		Kind:    "IAMPolicyMember",
 	}
 
 	IAMServiceAccountGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IAMServiceAccount{}).Name(),
+		Kind:    "IAMServiceAccount",
 	}
 
 	IAMServiceAccountKeyGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IAMServiceAccountKey{}).Name(),
+		Kind:    "IAMServiceAccountKey",
 	}
 
 	IAMWorkforcePoolGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IAMWorkforcePool{}).Name(),
+		Kind:    "IAMWorkforcePool",
 	}
 
 	IAMWorkforcePoolProviderGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IAMWorkforcePoolProvider{}).Name(),
+		Kind:    "IAMWorkforcePoolProvider",
 	}
 
 	IAMWorkloadIdentityPoolGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IAMWorkloadIdentityPool{}).Name(),
+		Kind:    "IAMWorkloadIdentityPool",
 	}
 
 	IAMWorkloadIdentityPoolProviderGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IAMWorkloadIdentityPoolProvider{}).Name(),
+		Kind:    "IAMWorkloadIdentityPoolProvider",
 	}
 
 	iamAPIVersion = SchemeGroupVersion.String()
 )
+
+// Adds the list of known types to the given scheme.
+func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&IAMAccessBoundaryPolicy{},
+		&IAMAccessBoundaryPolicyList{},
+		&IAMAuditConfig{},
+		&IAMAuditConfigList{},
+		&IAMCustomRole{},
+		&IAMCustomRoleList{},
+		&IAMPartialPolicy{},
+		&IAMPartialPolicyList{},
+		&IAMPolicy{},
+		&IAMPolicyList{},
+		&IAMPolicyMember{},
+		&IAMPolicyMemberList{},
+		&IAMServiceAccount{},
+		&IAMServiceAccountList{},
+		&IAMServiceAccountKey{},
+		&IAMServiceAccountKeyList{},
+		&IAMWorkforcePool{},
+		&IAMWorkforcePoolList{},
+		&IAMWorkforcePoolProvider{},
+		&IAMWorkforcePoolProviderList{},
+		&IAMWorkloadIdentityPool{},
+		&IAMWorkloadIdentityPoolList{},
+		&IAMWorkloadIdentityPoolProvider{},
+		&IAMWorkloadIdentityPoolProviderList{},
+	)
+	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
+	return nil
+}

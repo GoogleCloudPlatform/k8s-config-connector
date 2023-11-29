@@ -766,7 +766,3 @@ type DataprocClusterList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DataprocCluster `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DataprocCluster{}, &DataprocClusterList{})
-}

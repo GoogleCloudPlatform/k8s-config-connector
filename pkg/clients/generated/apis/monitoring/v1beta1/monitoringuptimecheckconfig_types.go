@@ -203,7 +203,3 @@ type MonitoringUptimeCheckConfigList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []MonitoringUptimeCheckConfig `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&MonitoringUptimeCheckConfig{}, &MonitoringUptimeCheckConfigList{})
-}

@@ -104,7 +104,3 @@ type NetworkConnectivityHubList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NetworkConnectivityHub `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&NetworkConnectivityHub{}, &NetworkConnectivityHubList{})
-}

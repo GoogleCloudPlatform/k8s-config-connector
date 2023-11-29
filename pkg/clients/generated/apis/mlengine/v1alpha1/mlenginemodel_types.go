@@ -101,7 +101,3 @@ type MLEngineModelList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []MLEngineModel `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&MLEngineModel{}, &MLEngineModelList{})
-}

@@ -110,7 +110,3 @@ type NetworkServicesGatewayList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NetworkServicesGateway `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&NetworkServicesGateway{}, &NetworkServicesGatewayList{})
-}

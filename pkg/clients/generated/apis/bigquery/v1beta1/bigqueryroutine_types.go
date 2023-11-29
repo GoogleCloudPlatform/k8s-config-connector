@@ -160,7 +160,3 @@ type BigQueryRoutineList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigQueryRoutine `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BigQueryRoutine{}, &BigQueryRoutineList{})
-}

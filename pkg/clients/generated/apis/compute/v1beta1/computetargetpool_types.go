@@ -108,7 +108,3 @@ type ComputeTargetPoolList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeTargetPool `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeTargetPool{}, &ComputeTargetPoolList{})
-}

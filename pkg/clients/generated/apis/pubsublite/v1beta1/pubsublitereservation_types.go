@@ -82,7 +82,3 @@ type PubSubLiteReservationList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []PubSubLiteReservation `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&PubSubLiteReservation{}, &PubSubLiteReservationList{})
-}

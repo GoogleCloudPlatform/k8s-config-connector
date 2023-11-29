@@ -93,7 +93,3 @@ type APIGatewayGatewayList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []APIGatewayGateway `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&APIGatewayGateway{}, &APIGatewayGatewayList{})
-}

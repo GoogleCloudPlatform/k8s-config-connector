@@ -82,7 +82,3 @@ type ApigeeInstanceAttachmentList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ApigeeInstanceAttachment `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ApigeeInstanceAttachment{}, &ApigeeInstanceAttachmentList{})
-}

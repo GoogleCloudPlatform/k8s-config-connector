@@ -77,7 +77,3 @@ type ServiceNetworkingConnectionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ServiceNetworkingConnection `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ServiceNetworkingConnection{}, &ServiceNetworkingConnectionList{})
-}

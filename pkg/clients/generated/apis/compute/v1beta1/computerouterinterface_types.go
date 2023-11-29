@@ -96,7 +96,3 @@ type ComputeRouterInterfaceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeRouterInterface `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeRouterInterface{}, &ComputeRouterInterfaceList{})
-}

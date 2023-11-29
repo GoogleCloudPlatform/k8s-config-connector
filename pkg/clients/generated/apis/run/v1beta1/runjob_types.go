@@ -515,7 +515,3 @@ type RunJobList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []RunJob `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&RunJob{}, &RunJobList{})
-}

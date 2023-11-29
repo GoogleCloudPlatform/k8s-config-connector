@@ -167,7 +167,3 @@ type GKEHubFeatureList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []GKEHubFeature `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&GKEHubFeature{}, &GKEHubFeatureList{})
-}

@@ -413,7 +413,3 @@ type ComputeForwardingRuleList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeForwardingRule `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeForwardingRule{}, &ComputeForwardingRuleList{})
-}

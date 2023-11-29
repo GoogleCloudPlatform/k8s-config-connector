@@ -98,7 +98,3 @@ type ServiceDirectoryEndpointList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ServiceDirectoryEndpoint `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ServiceDirectoryEndpoint{}, &ServiceDirectoryEndpointList{})
-}

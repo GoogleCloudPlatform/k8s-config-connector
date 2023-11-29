@@ -338,7 +338,3 @@ type DLPInspectTemplateList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DLPInspectTemplate `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DLPInspectTemplate{}, &DLPInspectTemplateList{})
-}

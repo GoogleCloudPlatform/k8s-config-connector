@@ -251,7 +251,3 @@ type ComputeResourcePolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeResourcePolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeResourcePolicy{}, &ComputeResourcePolicyList{})
-}

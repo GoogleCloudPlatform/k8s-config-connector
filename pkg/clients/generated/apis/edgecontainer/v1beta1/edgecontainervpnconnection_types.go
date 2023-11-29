@@ -148,7 +148,3 @@ type EdgeContainerVpnConnectionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []EdgeContainerVpnConnection `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&EdgeContainerVpnConnection{}, &EdgeContainerVpnConnectionList{})
-}

@@ -74,7 +74,3 @@ type AccessContextManagerServicePerimeterResourceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AccessContextManagerServicePerimeterResource `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&AccessContextManagerServicePerimeterResource{}, &AccessContextManagerServicePerimeterResourceList{})
-}

@@ -528,7 +528,3 @@ type BigQueryJobList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigQueryJob `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BigQueryJob{}, &BigQueryJobList{})
-}

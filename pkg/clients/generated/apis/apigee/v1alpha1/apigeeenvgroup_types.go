@@ -79,7 +79,3 @@ type ApigeeEnvgroupList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ApigeeEnvgroup `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ApigeeEnvgroup{}, &ApigeeEnvgroupList{})
-}

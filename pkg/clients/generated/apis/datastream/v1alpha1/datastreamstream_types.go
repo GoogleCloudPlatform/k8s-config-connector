@@ -501,7 +501,3 @@ type DatastreamStreamList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DatastreamStream `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DatastreamStream{}, &DatastreamStreamList{})
-}

@@ -118,7 +118,3 @@ type StorageDefaultObjectAccessControlList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []StorageDefaultObjectAccessControl `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&StorageDefaultObjectAccessControl{}, &StorageDefaultObjectAccessControlList{})
-}

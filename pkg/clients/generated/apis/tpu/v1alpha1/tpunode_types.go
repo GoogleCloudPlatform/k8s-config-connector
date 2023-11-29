@@ -145,7 +145,3 @@ type TPUNodeList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []TPUNode `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&TPUNode{}, &TPUNodeList{})
-}

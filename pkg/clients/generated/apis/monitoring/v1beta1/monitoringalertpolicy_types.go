@@ -708,7 +708,3 @@ type MonitoringAlertPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []MonitoringAlertPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&MonitoringAlertPolicy{}, &MonitoringAlertPolicyList{})
-}

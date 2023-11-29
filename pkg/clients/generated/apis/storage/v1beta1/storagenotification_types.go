@@ -98,7 +98,3 @@ type StorageNotificationList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []StorageNotification `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&StorageNotification{}, &StorageNotificationList{})
-}

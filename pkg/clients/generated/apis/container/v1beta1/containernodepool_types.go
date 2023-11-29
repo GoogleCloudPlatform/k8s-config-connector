@@ -585,7 +585,3 @@ type ContainerNodePoolList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ContainerNodePool `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ContainerNodePool{}, &ContainerNodePoolList{})
-}

@@ -107,7 +107,3 @@ type FirestoreIndexList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []FirestoreIndex `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&FirestoreIndex{}, &FirestoreIndexList{})
-}

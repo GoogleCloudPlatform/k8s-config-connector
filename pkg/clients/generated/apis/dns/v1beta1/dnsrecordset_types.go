@@ -104,7 +104,3 @@ type DNSRecordSetList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DNSRecordSet `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DNSRecordSet{}, &DNSRecordSetList{})
-}

@@ -132,7 +132,3 @@ type NetworkSecurityClientTLSPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NetworkSecurityClientTLSPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&NetworkSecurityClientTLSPolicy{}, &NetworkSecurityClientTLSPolicyList{})
-}

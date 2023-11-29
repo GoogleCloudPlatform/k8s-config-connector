@@ -113,7 +113,3 @@ type BigtableGCPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigtableGCPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BigtableGCPolicy{}, &BigtableGCPolicyList{})
-}

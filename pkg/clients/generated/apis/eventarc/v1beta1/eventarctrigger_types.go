@@ -200,7 +200,3 @@ type EventarcTriggerList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []EventarcTrigger `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&EventarcTrigger{}, &EventarcTriggerList{})
-}

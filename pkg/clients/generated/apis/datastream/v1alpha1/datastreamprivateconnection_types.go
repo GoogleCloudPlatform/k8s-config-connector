@@ -115,7 +115,3 @@ type DatastreamPrivateConnectionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DatastreamPrivateConnection `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DatastreamPrivateConnection{}, &DatastreamPrivateConnectionList{})
-}

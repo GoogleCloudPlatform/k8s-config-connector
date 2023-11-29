@@ -84,7 +84,3 @@ type AccessContextManagerGCPUserAccessBindingList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AccessContextManagerGCPUserAccessBinding `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&AccessContextManagerGCPUserAccessBinding{}, &AccessContextManagerGCPUserAccessBindingList{})
-}

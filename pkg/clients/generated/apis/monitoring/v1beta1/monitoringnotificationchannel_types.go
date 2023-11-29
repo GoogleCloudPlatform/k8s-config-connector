@@ -163,7 +163,3 @@ type MonitoringNotificationChannelList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []MonitoringNotificationChannel `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&MonitoringNotificationChannel{}, &MonitoringNotificationChannelList{})
-}

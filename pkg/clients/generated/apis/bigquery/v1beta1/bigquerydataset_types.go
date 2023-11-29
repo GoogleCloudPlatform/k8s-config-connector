@@ -291,7 +291,3 @@ type BigQueryDatasetList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigQueryDataset `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BigQueryDataset{}, &BigQueryDatasetList{})
-}

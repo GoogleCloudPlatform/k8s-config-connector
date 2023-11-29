@@ -114,7 +114,3 @@ type FirebaseAndroidAppList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []FirebaseAndroidApp `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&FirebaseAndroidApp{}, &FirebaseAndroidAppList{})
-}

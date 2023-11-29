@@ -96,7 +96,3 @@ type FilestoreSnapshotList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []FilestoreSnapshot `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&FilestoreSnapshot{}, &FilestoreSnapshotList{})
-}

@@ -120,7 +120,3 @@ type ComputeHTTPSHealthCheckList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeHTTPSHealthCheck `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeHTTPSHealthCheck{}, &ComputeHTTPSHealthCheckList{})
-}

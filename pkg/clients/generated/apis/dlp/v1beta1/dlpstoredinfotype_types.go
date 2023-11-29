@@ -183,7 +183,3 @@ type DLPStoredInfoTypeList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DLPStoredInfoType `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DLPStoredInfoType{}, &DLPStoredInfoTypeList{})
-}

@@ -199,7 +199,3 @@ type ComputeSnapshotList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeSnapshot `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeSnapshot{}, &ComputeSnapshotList{})
-}

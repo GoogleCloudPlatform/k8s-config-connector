@@ -93,7 +93,3 @@ type FirebaseHostingSiteList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []FirebaseHostingSite `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&FirebaseHostingSite{}, &FirebaseHostingSiteList{})
-}

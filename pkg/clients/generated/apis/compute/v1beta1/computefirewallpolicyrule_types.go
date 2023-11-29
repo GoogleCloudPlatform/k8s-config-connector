@@ -162,7 +162,3 @@ type ComputeFirewallPolicyRuleList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeFirewallPolicyRule `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeFirewallPolicyRule{}, &ComputeFirewallPolicyRuleList{})
-}

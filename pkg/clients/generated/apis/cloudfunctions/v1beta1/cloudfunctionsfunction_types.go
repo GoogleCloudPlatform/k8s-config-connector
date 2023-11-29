@@ -238,7 +238,3 @@ type CloudFunctionsFunctionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []CloudFunctionsFunction `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&CloudFunctionsFunction{}, &CloudFunctionsFunctionList{})
-}

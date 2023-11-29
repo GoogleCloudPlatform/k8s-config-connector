@@ -136,7 +136,3 @@ type AlloyDBBackupList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AlloyDBBackup `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&AlloyDBBackup{}, &AlloyDBBackupList{})
-}

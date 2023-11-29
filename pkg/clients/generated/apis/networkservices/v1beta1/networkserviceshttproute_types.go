@@ -415,7 +415,3 @@ type NetworkServicesHTTPRouteList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NetworkServicesHTTPRoute `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&NetworkServicesHTTPRoute{}, &NetworkServicesHTTPRouteList{})
-}

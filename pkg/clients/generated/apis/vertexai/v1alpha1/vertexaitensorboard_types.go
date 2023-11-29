@@ -114,7 +114,3 @@ type VertexAITensorboardList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []VertexAITensorboard `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&VertexAITensorboard{}, &VertexAITensorboardList{})
-}

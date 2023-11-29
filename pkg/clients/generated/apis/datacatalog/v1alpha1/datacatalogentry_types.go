@@ -219,7 +219,3 @@ type DataCatalogEntryList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DataCatalogEntry `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DataCatalogEntry{}, &DataCatalogEntryList{})
-}

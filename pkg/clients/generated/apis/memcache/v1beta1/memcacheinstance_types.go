@@ -254,7 +254,3 @@ type MemcacheInstanceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []MemcacheInstance `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&MemcacheInstance{}, &MemcacheInstanceList{})
-}

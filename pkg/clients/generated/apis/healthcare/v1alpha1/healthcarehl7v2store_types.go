@@ -150,7 +150,3 @@ type HealthcareHL7V2StoreList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []HealthcareHL7V2Store `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&HealthcareHL7V2Store{}, &HealthcareHL7V2StoreList{})
-}

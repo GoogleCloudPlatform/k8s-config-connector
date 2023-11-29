@@ -124,7 +124,3 @@ type ComputeRegionSSLPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeRegionSSLPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeRegionSSLPolicy{}, &ComputeRegionSSLPolicyList{})
-}

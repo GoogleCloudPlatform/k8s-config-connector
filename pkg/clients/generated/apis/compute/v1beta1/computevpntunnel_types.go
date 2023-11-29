@@ -180,7 +180,3 @@ type ComputeVPNTunnelList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeVPNTunnel `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeVPNTunnel{}, &ComputeVPNTunnelList{})
-}

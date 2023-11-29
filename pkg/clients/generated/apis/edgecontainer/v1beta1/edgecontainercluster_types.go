@@ -382,7 +382,3 @@ type EdgeContainerClusterList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []EdgeContainerCluster `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&EdgeContainerCluster{}, &EdgeContainerClusterList{})
-}

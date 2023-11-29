@@ -224,7 +224,3 @@ type BillingBudgetsBudgetList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BillingBudgetsBudget `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BillingBudgetsBudget{}, &BillingBudgetsBudgetList{})
-}

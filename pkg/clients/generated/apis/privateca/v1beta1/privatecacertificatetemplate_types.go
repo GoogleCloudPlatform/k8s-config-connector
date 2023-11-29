@@ -278,7 +278,3 @@ type PrivateCACertificateTemplateList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []PrivateCACertificateTemplate `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&PrivateCACertificateTemplate{}, &PrivateCACertificateTemplateList{})
-}

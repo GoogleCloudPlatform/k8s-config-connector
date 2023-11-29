@@ -874,7 +874,3 @@ type CloudBuildTriggerList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []CloudBuildTrigger `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&CloudBuildTrigger{}, &CloudBuildTriggerList{})
-}

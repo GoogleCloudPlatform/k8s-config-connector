@@ -202,7 +202,3 @@ type CloudTasksQueueList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []CloudTasksQueue `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&CloudTasksQueue{}, &CloudTasksQueueList{})
-}

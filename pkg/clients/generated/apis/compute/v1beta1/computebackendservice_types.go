@@ -951,7 +951,3 @@ type ComputeBackendServiceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeBackendService `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeBackendService{}, &ComputeBackendServiceList{})
-}

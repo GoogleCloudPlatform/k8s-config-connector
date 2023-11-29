@@ -132,7 +132,3 @@ type ComputeRouteList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeRoute `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeRoute{}, &ComputeRouteList{})
-}

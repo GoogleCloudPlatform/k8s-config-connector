@@ -158,7 +158,3 @@ type ComputeReservationList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeReservation `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeReservation{}, &ComputeReservationList{})
-}

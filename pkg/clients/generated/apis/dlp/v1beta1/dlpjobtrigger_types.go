@@ -692,7 +692,3 @@ type DLPJobTriggerList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DLPJobTrigger `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DLPJobTrigger{}, &DLPJobTriggerList{})
-}

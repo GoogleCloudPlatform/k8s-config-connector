@@ -144,7 +144,3 @@ type DataflowJobList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DataflowJob `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DataflowJob{}, &DataflowJobList{})
-}

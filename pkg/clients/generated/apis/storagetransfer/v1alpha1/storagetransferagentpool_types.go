@@ -91,7 +91,3 @@ type StorageTransferAgentPoolList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []StorageTransferAgentPool `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&StorageTransferAgentPool{}, &StorageTransferAgentPoolList{})
-}

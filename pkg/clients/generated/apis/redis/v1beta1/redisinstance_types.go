@@ -419,7 +419,3 @@ type RedisInstanceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []RedisInstance `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&RedisInstance{}, &RedisInstanceList{})
-}

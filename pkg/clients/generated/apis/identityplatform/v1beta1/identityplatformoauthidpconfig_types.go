@@ -125,7 +125,3 @@ type IdentityPlatformOAuthIDPConfigList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IdentityPlatformOAuthIDPConfig `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IdentityPlatformOAuthIDPConfig{}, &IdentityPlatformOAuthIDPConfigList{})
-}
