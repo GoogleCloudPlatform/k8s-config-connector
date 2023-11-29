@@ -40,9 +40,9 @@ jobs:
         env:
           # This is introduced to make sure 'go generate' works properly
           GOPATH: /home/runner/work/k8s-config-connector/k8s-config-connector
-          COMMIT_BEFORE: ${{ github.event.before }}
-          COMMIT_HEAD: ${{ github.sha }}
+          COMMIT_HEAD: ${{ github.pull_request.head.sha }}
           GITHUB_CONTEXT: ${{ toJson(github) }}
+          COMMIT_CNT: ${{ github.pull_request.commits }}
   unit-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 60

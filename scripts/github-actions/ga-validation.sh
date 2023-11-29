@@ -26,7 +26,9 @@ echo "Running validations..."
 
 # Check if any commit has changes both within and outside the TF Git Subtree
 subtree_dir="third_party/github.com/hashicorp/terraform-provider-google-beta/"
-for commit in $(git rev-list "$COMMIT_BEFORE..$COMMIT_HEAD"); do
+
+
+for commit in $(git rev-list --topo-order --max-count=$COMMIT_CNT $COMMIT_HEAD); do
   parent_commit=$(git rev-parse $commit^)
 
   if git diff --name-only $parent_commit..$commit | grep "^$subtree_dir" > /dev/null && git diff --name-only $parent_commit..$commit | grep -v "^$subtree_dir" > /dev/null
