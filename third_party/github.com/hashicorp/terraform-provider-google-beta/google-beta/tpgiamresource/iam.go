@@ -430,10 +430,13 @@ func jsonPolicyDiffSuppress(k, old, new string, d *schema.ResourceData) bool {
 }
 
 func compareIamPolicies(a, b *cloudresourcemanager.Policy) bool {
-	if a.Etag != b.Etag {
-		log.Printf("[DEBUG] policies etag differ: %q vs %q", a.Etag, b.Etag)
-		return false
-	}
+	// There is really no need to compare etags to determine diffs on client side.
+	// It should be passed along to the API for concurrency control, or always
+	// be set to empty string if users want to overwrite the whole policy.
+	//if a.Etag != b.Etag {
+	//	log.Printf("[DEBUG] policies etag differ: %q vs %q", a.Etag, b.Etag)
+	//	return false
+	//}
 	if a.Version != b.Version {
 		log.Printf("[DEBUG] policies version differ: %q vs %q", a.Version, b.Version)
 		return false
