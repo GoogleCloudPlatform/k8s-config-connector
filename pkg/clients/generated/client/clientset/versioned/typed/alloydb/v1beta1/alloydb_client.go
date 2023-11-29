@@ -34,6 +34,7 @@ type AlloydbV1beta1Interface interface {
 	AlloyDBBackupsGetter
 	AlloyDBClustersGetter
 	AlloyDBInstancesGetter
+	AlloyDBUsersGetter
 }
 
 // AlloydbV1beta1Client is used to interact with features provided by the alloydb.cnrm.cloud.google.com group.
@@ -51,6 +52,10 @@ func (c *AlloydbV1beta1Client) AlloyDBClusters(namespace string) AlloyDBClusterI
 
 func (c *AlloydbV1beta1Client) AlloyDBInstances(namespace string) AlloyDBInstanceInterface {
 	return newAlloyDBInstances(c, namespace)
+}
+
+func (c *AlloydbV1beta1Client) AlloyDBUsers(namespace string) AlloyDBUserInterface {
+	return newAlloyDBUsers(c, namespace)
 }
 
 // NewForConfig creates a new AlloydbV1beta1Client for the given config.

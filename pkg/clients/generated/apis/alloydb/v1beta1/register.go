@@ -71,5 +71,11 @@ var (
 		Kind:    reflect.TypeOf(AlloyDBInstance{}).Name(),
 	}
 
+	AlloyDBUserGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(AlloyDBUser{}).Name(),
+	}
+
 	alloydbAPIVersion = SchemeGroupVersion.String()
 )

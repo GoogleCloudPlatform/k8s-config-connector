@@ -43,6 +43,10 @@ func (c *FakeAlloydbV1beta1) AlloyDBInstances(namespace string) v1beta1.AlloyDBI
 	return &FakeAlloyDBInstances{c, namespace}
 }
 
+func (c *FakeAlloydbV1beta1) AlloyDBUsers(namespace string) v1beta1.AlloyDBUserInterface {
+	return &FakeAlloyDBUsers{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeAlloydbV1beta1) RESTClient() rest.Interface {
