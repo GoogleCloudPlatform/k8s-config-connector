@@ -46,9 +46,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
-	"github.com/golang-collections/go-datastructures/set"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 // convenience struct for converting to the desired human readable output on the docs page from the fielddesc.FieldDescription struct
@@ -298,9 +298,9 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 }
 
 func handleAnnotationsAndIAMSettingsForDCLBasedResource(r *resource, gvk schema.GroupVersionKind) error {
-	annotationSet := set.New()
+	annotationSet := sets.NewString()
 	if k8s.ResourceSupportsStateAbsentInSpec(gvk.Kind) {
-		annotationSet.Add(k8s.StateIntoSpecAnnotation)
+		annotationSet.Insert(k8s.StateIntoSpecAnnotation)
 	}
 	resourceMetadata, found := serviceMetadataLoader.GetResourceWithGVK(gvk)
 	if !found {
@@ -314,7 +314,7 @@ func handleAnnotationsAndIAMSettingsForDCLBasedResource(r *resource, gvk schema.
 	// hierarchical references.
 	if !resourceMetadata.SupportsHierarchicalReferences {
 		for _, c := range containers {
-			annotationSet.Add(k8s.GetAnnotationForContainerType(c.Type))
+			annotationSet.Insert(k8s.GetAnnotationForContainerType(c.Type))
 		}
 	}
 	setAnnotations(r, annotationSet)
@@ -338,9 +338,9 @@ func handleAnnotationsAndIAMSettingsForDCLBasedResource(r *resource, gvk schema.
 }
 
 func handleAnnotationsAndIAMSettingsForTFBasedResource(r *resource, gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader) error {
-	annotationSet := set.New()
+	annotationSet := sets.NewString()
 	if k8s.ResourceSupportsStateAbsentInSpec(gvk.Kind) {
-		annotationSet.Add(k8s.StateIntoSpecAnnotation)
+		annotationSet.Insert(k8s.StateIntoSpecAnnotation)
 	}
 	rcs, err := smLoader.GetResourceConfigs(gvk)
 	if err != nil {
@@ -349,14 +349,14 @@ func handleAnnotationsAndIAMSettingsForTFBasedResource(r *resource, gvk schema.G
 	for _, rc := range rcs {
 		if rc.Directives != nil {
 			for _, d := range rc.Directives {
-				annotationSet.Add(k8s.FormatAnnotation(text.SnakeCaseToKebabCase(d)))
+				annotationSet.Insert(k8s.FormatAnnotation(text.SnakeCaseToKebabCase(d)))
 			}
 		}
 		if !krmtotf.SupportsHierarchicalReferences(rc) {
 			// TODO(b/193177782): Delete this if-block once all resources
 			// support hierarchical references.
 			for _, c := range rc.Containers {
-				annotationSet.Add(k8s.GetAnnotationForContainerType(c.Type))
+				annotationSet.Insert(k8s.GetAnnotationForContainerType(c.Type))
 			}
 		}
 	}
@@ -378,16 +378,12 @@ func handleAnnotationsAndIAMSettingsForTFBasedResource(r *resource, gvk schema.G
 	return nil
 }
 
-func setAnnotations(r *resource, annotationSet *set.Set) {
+func setAnnotations(r *resource, annotationSet sets.String) {
 	if annotationSet.Len() > 0 {
 		// arrange annotations alphabetically
-		i := annotationSet.Flatten()
-		strArr := make([]string, len(i))
-		for k, v := range i {
-			strArr[k] = v.(string)
-		}
-		sort.Strings(strArr)
-		r.Annotations = strArr
+		annotations := annotationSet.List()
+		sort.Strings(annotations) // Should already be sorted, but for clarity
+		r.Annotations = annotations
 	}
 }
 
