@@ -172,6 +172,7 @@ When the load balancing scheme is INTERNAL, this field is not used.`,
 			"backend": {
 				Type:        schema.TypeSet,
 				Optional:    true,
+				Computed:    true,
 				Description: `The set of backends that serve this RegionBackendService.`,
 				Elem:        computeRegionBackendServiceBackendSchema(),
 				Set:         resourceGoogleComputeBackendServiceBackendHash,
