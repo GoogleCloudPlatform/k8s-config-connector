@@ -551,7 +551,6 @@ func ResourceContainerCluster() *schema.Resource {
 									"disk_type": {
 										Type:             schema.TypeString,
 										Optional:         true,
-										Default:          "pd-standard",
 										Description:      `Type of the disk attached to each node.`,
 										DiffSuppressFunc: suppressDiffForAutopilot,
 										ValidateFunc:     validation.StringInSlice([]string{"pd-standard", "pd-ssd", "pd-balanced"}, false),
@@ -828,43 +827,11 @@ func ResourceContainerCluster() *schema.Resource {
 			},
 
 			"enable_tpu": {
-				Type:          schema.TypeBool,
-				Optional:      true,
-				ForceNew:      true,
-				Description:   `Whether to enable Cloud TPU resources in this cluster.`,
-				ConflictsWith: []string{"tpu_config"},
-				Computed:      true,
-				// TODO: deprecate when tpu_config is correctly returned by the API
-				// Deprecated: "Deprecated in favor of tpu_config",
-			},
-
-			"tpu_config": {
-				Type:        schema.TypeList,
+				Type:        schema.TypeBool,
 				Optional:    true,
-				Computed:    true,
-				MaxItems:    1,
-				Description: `TPU configuration for the cluster.`,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"enabled": {
-							Type:        schema.TypeBool,
-							Required:    true,
-							ForceNew:    true,
-							Description: `Whether Cloud TPU integration is enabled or not`,
-						},
-						"ipv4_cidr_block": {
-							Type:        schema.TypeString,
-							Computed:    true,
-							Description: `IPv4 CIDR block reserved for Cloud TPU in the VPC.`,
-						},
-						"use_service_networking": {
-							Type:        schema.TypeBool,
-							Optional:    true,
-							ForceNew:    true,
-							Description: `Whether to use service networking for Cloud TPU or not`,
-						},
-					},
-				},
+				ForceNew:    true,
+				Description: `Whether to enable Cloud TPU resources in this cluster.`,
+				Default:     false,
 			},
 
 			"enable_legacy_abac": {
@@ -1258,15 +1225,35 @@ func ResourceContainerCluster() *schema.Resource {
 				Optional:    true,
 				MaxItems:    1,
 				Computed:    true,
+				Deprecated:  `Basic authentication was removed for GKE cluster versions >= 1.19.`,
 				Description: `The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission.`,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
+						// Preserve basic authentication until GKE version 1.19 has reached end of life.
+						// https://cloud.google.com/kubernetes-engine/docs/release-schedule#schedule_for_static_no_channel_versions
+						"password": {
+							Type:         schema.TypeString,
+							Optional:     true,
+							AtLeastOneOf: []string{"master_auth.0.password", "master_auth.0.username", "master_auth.0.client_certificate_config"},
+							Sensitive:    true,
+							Description:  `The password to use for HTTP basic authentication when accessing the Kubernetes master endpoint.`,
+						},
+
+						"username": {
+							Type:         schema.TypeString,
+							Optional:     true,
+							AtLeastOneOf: []string{"master_auth.0.password", "master_auth.0.username", "master_auth.0.client_certificate_config"},
+							Description:  `The username to use for HTTP basic authentication when accessing the Kubernetes master endpoint. If not present basic auth will be disabled.`,
+						},
+
 						"client_certificate_config": {
-							Type:        schema.TypeList,
-							MaxItems:    1,
-							Required:    true,
-							ForceNew:    true,
-							Description: `Whether client certificate authorization is enabled for this cluster.`,
+							Type:         schema.TypeList,
+							MaxItems:     1,
+							Optional:     true,
+							Computed:     true,
+							AtLeastOneOf: []string{"master_auth.0.password", "master_auth.0.username", "master_auth.0.client_certificate_config"},
+							ForceNew:     true,
+							Description:  `Whether client certificate authorization is enabled for this cluster.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"issue_client_certificate": {
@@ -2253,10 +2240,6 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	if v, ok := d.GetOk("identity_service_config"); ok {
 		cluster.IdentityServiceConfig = expandIdentityServiceConfig(v)
-	}
-
-	if v, ok := d.GetOk("tpu_config"); ok {
-		cluster.TpuConfig = expandContainerClusterTpuConfig(v)
 	}
 
 	if v, ok := d.GetOk("resource_usage_export_config"); ok {
@@ -3555,6 +3538,45 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		log.Printf("[INFO] GKE cluster %s Notification Config has been updated to %#v", d.Id(), req.Update.DesiredNotificationConfig)
 	}
 
+	if d.HasChange("master_auth") {
+		var req *container.SetMasterAuthRequest
+		if ma, ok := d.GetOk("master_auth"); ok {
+			req = &container.SetMasterAuthRequest{
+				Action: "SET_USERNAME",
+				Update: expandMasterAuth(ma),
+			}
+		} else {
+			req = &container.SetMasterAuthRequest{
+				Action: "SET_USERNAME",
+				Update: &container.MasterAuth{
+					Username: "admin",
+				},
+			}
+		}
+
+		updateF := func() error {
+			name := containerClusterFullName(project, location, clusterName)
+			clusterSetMasterAuthCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.SetMasterAuth(name, req)
+			if config.UserProjectOverride {
+				clusterSetMasterAuthCall.Header().Add("X-Goog-User-Project", project)
+			}
+			op, err := clusterSetMasterAuthCall.Do()
+			if err != nil {
+				return err
+			}
+
+			// Wait until it's updated
+			return ContainerOperationWait(config, op, project, location, "updating master auth", userAgent, d.Timeout(schema.TimeoutUpdate))
+		}
+
+		// Call update serially.
+		if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s: master auth has been updated", d.Id())
+	}
+
 	if d.HasChange("vertical_pod_autoscaling") {
 		if ac, ok := d.GetOk("vertical_pod_autoscaling"); ok {
 			req := &container.UpdateClusterRequest{
@@ -4311,7 +4333,7 @@ func expandIPAllocationPolicy(configured interface{}, networkingMode string, aut
 		}
 		return &container.IPAllocationPolicy{
 			UseIpAliases:    false,
-			UseRoutes:       true,
+			UseRoutes:       networkingMode == "ROUTES",
 			StackType:       "IPV4",
 			ForceSendFields: []string{"UseIpAliases"},
 		}, nil
@@ -4772,7 +4794,10 @@ func expandMasterAuth(configured interface{}) *container.MasterAuth {
 	}
 
 	masterAuth := l[0].(map[string]interface{})
-	result := &container.MasterAuth{}
+	result := &container.MasterAuth{
+		Username: masterAuth["username"].(string),
+		Password: masterAuth["password"].(string),
+	}
 
 	if v, ok := masterAuth["client_certificate_config"]; ok {
 		if len(v.([]interface{})) > 0 {
@@ -5150,19 +5175,6 @@ func expandMonitoringConfig(configured interface{}) *container.MonitoringConfig 
 	}
 
 	return mc
-}
-
-func expandContainerClusterTpuConfig(configured interface{}) *container.TpuConfig {
-	l := configured.([]interface{})
-	if len(l) == 0 || l[0] == nil {
-		return nil
-	}
-
-	config := l[0].(map[string]interface{})
-	return &container.TpuConfig{
-		Enabled:              config["enabled"].(bool),
-		UseServiceNetworking: config["use_service_networking"].(bool),
-	}
 }
 
 func expandContainerClusterAuthenticatorGroupsConfig(configured interface{}) *container.AuthenticatorGroupsConfig {
@@ -5643,6 +5655,8 @@ func flattenMasterAuth(ma *container.MasterAuth) []map[string]interface{} {
 	}
 	masterAuth := []map[string]interface{}{
 		{
+			"username":               ma.Username,
+			"password":               ma.Password,
 			"client_certificate":     ma.ClientCertificate,
 			"client_key":             ma.ClientKey,
 			"cluster_ca_certificate": ma.ClusterCaCertificate,
@@ -5977,12 +5991,18 @@ func flattenNodePoolAutoConfigNetworkTags(c *container.NetworkTags) []map[string
 func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*transport_tpg.Config)
 
-	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
-	if err != nil {
-		return nil, err
-	}
+	//userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
+	//if err != nil {
+	//	return nil, err
+	//}
 
-	if err := tpgresource.ParseImportId([]string{"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)", "(?P<location>[^/]+)/(?P<name>[^/]+)"}, d, config); err != nil {
+	idRegexes := []string{
+		"projects/(?P<project>[^/]+)/zones/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)",
+		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)",
+		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
+		"(?P<location>[^/]+)/(?P<name>[^/]+)",
+	}
+	if err := tpgresource.ParseImportId(idRegexes, d, config); err != nil {
 		return nil, err
 	}
 	project, err := tpgresource.GetProject(d, config)
@@ -6000,9 +6020,9 @@ func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interfac
 	if err := d.Set("location", location); err != nil {
 		return nil, fmt.Errorf("Error setting location: %s", err)
 	}
-	if _, err := containerClusterAwaitRestingState(config, project, location, clusterName, userAgent, d.Timeout(schema.TimeoutCreate)); err != nil {
-		return nil, err
-	}
+	//if _, err := containerClusterAwaitRestingState(config, project, location, clusterName, userAgent, d.Timeout(schema.TimeoutCreate)); err != nil {
+	//	return nil, err
+	//}
 
 	d.SetId(containerClusterFullName(project, location, clusterName))
 
