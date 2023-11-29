@@ -142,7 +142,7 @@ func ResourceSqlDatabaseInstance() *schema.Resource {
 			},
 			"settings": {
 				Type:         schema.TypeList,
-				Optional:     true,
+				Required:     true,
 				Computed:     true,
 				AtLeastOneOf: []string{"settings", "clone"},
 				MaxItems:     1,
