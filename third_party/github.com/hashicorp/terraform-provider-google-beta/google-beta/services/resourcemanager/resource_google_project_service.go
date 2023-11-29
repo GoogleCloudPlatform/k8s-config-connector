@@ -125,17 +125,22 @@ func ResourceGoogleProjectService() *schema.Resource {
 	}
 }
 
-func resourceGoogleProjectServiceImport(d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
-	parts := strings.Split(d.Id(), "/")
-	if len(parts) != 2 {
-		return nil, fmt.Errorf("Invalid google_project_service id format for import, expecting `{project}/{service}`, found %s", d.Id())
+func resourceGoogleProjectServiceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+	config := meta.(*transport_tpg.Config)
+	if err := tpgresource.ParseImportId([]string{
+		"projects/(?P<project>[^/]+)/services/(?P<service>[^/]+)",
+		"(?P<project>[^/]+)/(?P<service>[^/]+)",
+	}, d, config); err != nil {
+		return nil, err
 	}
-	if err := d.Set("project", parts[0]); err != nil {
-		return nil, fmt.Errorf("Error setting project: %s", err)
+
+	// Replace import id for the resource id
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/services/{{name}}")
+	if err != nil {
+		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
-	if err := d.Set("service", parts[1]); err != nil {
-		return nil, fmt.Errorf("Error setting service: %s", err)
-	}
+	d.SetId(id)
+
 	return []*schema.ResourceData{d}, nil
 }
 
