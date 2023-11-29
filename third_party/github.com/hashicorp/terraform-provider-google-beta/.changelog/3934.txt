@@ -1,0 +1,3 @@
+```release-note:bug
+compute: Fixed bug with `google_netblock_ip_ranges` data source failing to read from the correct URL
+```

@@ -1,0 +1,3 @@
+```release-note:enhancement
+service-directory: marked network field immutable in `google_service_directory_endpoint`
+```

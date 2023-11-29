@@ -1,0 +1,3 @@
+```release-note: enhancement
+billing_budget: added `last_period_amount` field to `google_billing_budget` to allow setting budget amount automatically to the last billing period's spend.
+```

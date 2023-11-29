@@ -1,0 +1,3 @@
+```release-note:new-resource
+firebase: Added new `firebase_project_location` resource to finalize the firebase location.
+```

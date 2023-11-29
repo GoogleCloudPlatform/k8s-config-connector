@@ -1,0 +1,3 @@
+```release-note:bug
+compute: fixed a crash when empty is given to `all_instances_config` on `google_compute_region_instance_group_manager`
+```

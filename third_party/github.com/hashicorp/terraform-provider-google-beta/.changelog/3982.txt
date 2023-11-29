@@ -1,0 +1,3 @@
+```release-note:enhancement
+container: added support for `load_balancer_type` to `google_container_cluster` Cloud Run config addon.
+```

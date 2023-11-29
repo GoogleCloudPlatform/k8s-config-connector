@@ -1,0 +1,6 @@
+```release-note:bug
+notebooks: fixed broken `google_notebooks_instance.instance_owners` field by making it a list instead of a string
+```
+```release-note:enhancement
+notebooks: added `PD_BALANCED` as a possible disk type for `google_notebooks_instance`
+```
