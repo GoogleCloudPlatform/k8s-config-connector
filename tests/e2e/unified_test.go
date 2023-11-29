@@ -85,7 +85,7 @@ func TestAllInSeries(t *testing.T) {
 	}
 
 	t.Run("samples", func(t *testing.T) {
-		samples := create.LoadSamples(t, project)
+		samples := create.LoadAllSamples(t, project)
 
 		for _, s := range samples {
 			s := s
