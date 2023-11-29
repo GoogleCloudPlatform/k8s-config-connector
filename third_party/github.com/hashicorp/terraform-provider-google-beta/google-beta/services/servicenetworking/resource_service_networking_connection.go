@@ -66,6 +66,12 @@ func ResourceServiceNetworkingConnection() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
+			"project": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 		},
 		UseJSONNumber: true,
 	}
