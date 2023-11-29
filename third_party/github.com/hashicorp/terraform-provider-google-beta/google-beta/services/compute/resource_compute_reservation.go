@@ -179,7 +179,6 @@ for information on available CPU platforms.`,
 			},
 			"share_settings": {
 				Type:        schema.TypeList,
-				Computed:    true,
 				Optional:    true,
 				Description: `The share setting for reservations.`,
 				MaxItems:    1,
