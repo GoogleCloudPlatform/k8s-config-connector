@@ -88,8 +88,8 @@ are not available when an alternative name server is specified.`,
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: `A textual description field. Defaults to 'Managed by Terraform'.`,
-				Default:     "Managed by Terraform",
+				Description: `A textual description field. Defaults to 'Managed by Config Connector'.`,
+				Default:     "Managed by Config Connector",
 			},
 			"enable_inbound_forwarding": {
 				Type:     schema.TypeBool,
