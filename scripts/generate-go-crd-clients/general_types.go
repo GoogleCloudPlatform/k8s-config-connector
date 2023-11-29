@@ -121,10 +121,6 @@ func (g *GeneralTypes) Generate() {
 	g.Print("   metav1.ListMeta `json:\"metadata,omitempty\"`")
 	g.Print("   Items []%s `json:\"items\"`", g.Name)
 	g.Print(" }")
-
-	g.Print(" func init() {")
-	g.Print("   SchemeBuilder.Register(&%s{}, &%sList{})", g.Name, g.Name)
-	g.Print(" }")
 }
 
 func (g *GeneralTypes) structField(f *fieldProperties) {
