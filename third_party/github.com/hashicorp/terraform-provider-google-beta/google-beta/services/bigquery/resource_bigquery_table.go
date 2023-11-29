@@ -1437,7 +1437,7 @@ func resourceBigQueryTableRead(d *schema.ResourceData, meta interface{}) error {
 			return err
 		}
 
-		if v, ok := d.GetOk("external_data_configuration"); ok {
+		if v, ok := d.GetOk("external_data_configuration"); ok && v.([]interface{})[0] != nil {
 			// The API response doesn't return the `external_data_configuration.schema`
 			// used when creating the table and it cannot be queried.
 			// After creation, a computed schema is stored in the toplevel `schema`,
