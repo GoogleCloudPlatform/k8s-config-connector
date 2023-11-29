@@ -136,7 +136,7 @@ func ResourceSqlDatabaseInstance() *schema.Resource {
 			},
 			"deletion_protection": {
 				Type:        schema.TypeBool,
-				Default:     true,
+				Default:     false,
 				Optional:    true,
 				Description: `Used to block Terraform from deleting a SQL Instance. Defaults to true.`,
 			},
@@ -1976,7 +1976,7 @@ func resourceSqlDatabaseInstanceImport(d *schema.ResourceData, meta interface{})
 		return nil, err
 	}
 
-	if err := d.Set("deletion_protection", true); err != nil {
+	if err := d.Set("deletion_protection", false); err != nil {
 		return nil, fmt.Errorf("Error setting deletion_protection: %s", err)
 	}
 
