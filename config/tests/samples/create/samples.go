@@ -38,6 +38,7 @@ import (
 	"github.com/ghodss/yaml"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -64,8 +65,8 @@ func networksInSampleCount(sample Sample) int {
 	return count
 }
 
-func SetupNamespacesAndApplyDefaults(t *Harness, samples []Sample, project testgcp.GCPProject) {
-	namespaceNames := getNamespaces(samples)
+func SetupNamespacesAndApplyDefaults(t *Harness, resources []*unstructured.Unstructured, project testgcp.GCPProject) {
+	namespaceNames := getNamespaces(resources)
 	setupNamespaces(t, namespaceNames, project)
 }
 
@@ -75,18 +76,12 @@ func setupNamespaces(t *Harness, namespaces []string, project testgcp.GCPProject
 	}
 }
 
-func getNamespaces(samples []Sample) []string {
-	namespaces := make(map[string]bool)
-	for _, sample := range samples {
-		for _, unstruct := range sample.Resources {
-			namespaces[unstruct.GetNamespace()] = true
-		}
+func getNamespaces(resources []*unstructured.Unstructured) []string {
+	namespaces := sets.NewString()
+	for _, unstruct := range resources {
+		namespaces.Insert(unstruct.GetNamespace())
 	}
-	results := make([]string, 0, len(namespaces))
-	for k := range namespaces {
-		results = append(results, k)
-	}
-	return results
+	return namespaces.List()
 }
 
 type CreateDeleteTestOptions struct {
