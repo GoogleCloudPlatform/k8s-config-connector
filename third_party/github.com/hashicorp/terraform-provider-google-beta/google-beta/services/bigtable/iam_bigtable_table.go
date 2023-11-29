@@ -16,7 +16,7 @@ import (
 )
 
 var IamBigtableTableSchema = map[string]*schema.Schema{
-	"instance": {
+	"instance_name": {
 		Type:     schema.TypeString,
 		Required: true,
 		ForceNew: true,
@@ -54,7 +54,7 @@ func NewBigtableTableUpdater(d tpgresource.TerraformResourceData, config *transp
 
 	return &BigtableTableIamUpdater{
 		project:  project,
-		instance: d.Get("instance").(string),
+		instance: d.Get("instance_name").(string),
 		table:    d.Get("table").(string),
 		d:        d,
 		Config:   config,
@@ -64,7 +64,7 @@ func NewBigtableTableUpdater(d tpgresource.TerraformResourceData, config *transp
 func BigtableTableIdParseFunc(d *schema.ResourceData, config *transport_tpg.Config) error {
 	values := make(map[string]string)
 
-	m, err := tpgresource.GetImportIdQualifiers([]string{"projects/(?P<project>[^/]+)/instances/(?P<instance>[^/]+)/tables/(?P<table>[^/]+)"}, d, config, d.Id())
+	m, err := tpgresource.GetImportIdQualifiers([]string{"projects/(?P<project>[^/]+)/instances/(?P<instance_name>[^/]+)/tables/(?P<table>[^/]+)"}, d, config, d.Id())
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func BigtableTableIdParseFunc(d *schema.ResourceData, config *transport_tpg.Conf
 		return fmt.Errorf("Error setting project: %s", err)
 	}
 
-	if err := d.Set("instance", values["instance"]); err != nil {
+	if err := d.Set("instance_name", values["instance_name"]); err != nil {
 		return fmt.Errorf("Error setting instance: %s", err)
 	}
 
@@ -88,7 +88,7 @@ func BigtableTableIdParseFunc(d *schema.ResourceData, config *transport_tpg.Conf
 	}
 
 	// Explicitly set the id so imported resources have the same ID format as non-imported ones.
-	d.SetId(fmt.Sprintf("projects/%s/instances/%s/tables/%s", project, values["instance"], values["table"]))
+	d.SetId(fmt.Sprintf("projects/%s/instances/%s/tables/%s", project, values["instance_name"], values["table"]))
 	return nil
 }
 
