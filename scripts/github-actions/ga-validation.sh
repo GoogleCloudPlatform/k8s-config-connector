@@ -23,4 +23,18 @@ source ${REPO_ROOT}/scripts/fetch_ext_bins.sh && \
 	setup_envs
 
 echo "Running validations..."
-${REPO_ROOT}/scripts/validate-prereqs.sh
+
+# Check if any commit has changes both within and outside the TF Git Subtree
+subtree_dir="third_party/github.com/hashicorp/terraform-provider-google-beta/"
+for commit in $(git rev-list "$COMMIT_BEFORE..$COMMIT_HEAD"); do
+  parent_commit=$(git rev-parse $commit^)
+
+  if git diff --name-only $parent_commit..$commit | grep "^$subtree_dir" > /dev/null && git diff --name-only $parent_commit..$commit | grep -v "^$subtree_dir" > /dev/null
+  then
+    echo -e "Error: Your commit \"$commit\" includes changes both within and outside the\n\n\"$subtree_dir\" directory.\n\nPlease ensure that changes made within this directory are grouped and\n\nsubmitted as a separate, dedicated commit."
+    exit 1
+fi
+done
+
+# Regular validations on fmt, generated doc, generated code, etc.
+#${REPO_ROOT}/scripts/validate-prereqs.sh

@@ -34,11 +34,15 @@ jobs:
           go-version: "1.21.4"
       - name: "Run validations"
         run: |
+          echo "$GITHUB_CONTEXT"
           cd ./src/k8s-config-connector
           ./scripts/github-actions/ga-validation.sh
         env:
           # This is introduced to make sure 'go generate' works properly
           GOPATH: /home/runner/work/k8s-config-connector/k8s-config-connector
+          COMMIT_BEFORE: ${{ github.event.before }}
+          COMMIT_HEAD: ${{ github.sha }}
+          GITHUB_CONTEXT: ${{ toJson(github) }}
   unit-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 60
