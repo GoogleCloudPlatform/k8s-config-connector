@@ -332,7 +332,7 @@ func readFileToUnstructs(t *testing.T, fileName string, subVars map[string]strin
 	t.Helper()
 	var returnUnstructs []*unstructured.Unstructured
 
-	b := testcontroller.ReadFileToBytes(t, fileName)
+	b := test.MustReadFile(t, fileName)
 	s := string(b)
 	for k, v := range subVars {
 		s = strings.ReplaceAll(s, k, v)

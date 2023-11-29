@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -32,7 +32,7 @@ func TestLicenses(t *testing.T) {
 	samples := mapSampleNamesToFilePaths(t, matchEverythingRegex)
 	for sampleName, files := range samples {
 		for _, f := range files {
-			b := testcontroller.ReadFileToBytes(t, f)
+			b := test.MustReadFile(t, f)
 			if !beginsWithCopyrightRegex.Match(b) {
 				t.Errorf("file '%v' in sample '%v' does not contain a license header", f, sampleName)
 			}

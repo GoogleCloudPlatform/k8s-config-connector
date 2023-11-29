@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
 	"github.com/ghodss/yaml"
@@ -127,7 +127,7 @@ func LoadWithFilter(t *testing.T, lightFilterFunc LightFilter, heavyFilterFunc H
 
 func loadResourceFixture(t *testing.T, testName string, testType TestType, dir, createFile, updateFile, depFile string) ResourceFixture {
 	t.Helper()
-	createConfig := testcontroller.ReadFileToBytes(t, path.Join(dir, createFile))
+	createConfig := test.MustReadFile(t, path.Join(dir, createFile))
 	gvk, err := readGroupVersionKind(t, createConfig)
 	if err != nil {
 		t.Fatalf("unable to determine GroupVersionKind for test case named %v: %v", testName, err)
@@ -142,10 +142,10 @@ func loadResourceFixture(t *testing.T, testName string, testType TestType, dir, 
 	}
 
 	if updateFile != "" {
-		rf.Update = testcontroller.ReadFileToBytes(t, path.Join(dir, updateFile))
+		rf.Update = test.MustReadFile(t, path.Join(dir, updateFile))
 	}
 	if depFile != "" {
-		rf.Dependencies = testcontroller.ReadFileToBytes(t, path.Join(dir, depFile))
+		rf.Dependencies = test.MustReadFile(t, path.Join(dir, depFile))
 	}
 	return rf
 }

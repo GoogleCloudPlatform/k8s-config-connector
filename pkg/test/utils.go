@@ -15,6 +15,8 @@
 package test
 
 import (
+	"os"
+	"path/filepath"
 	"regexp"
 	"testing"
 )
@@ -46,4 +48,15 @@ func TrimLicenseHeaderFromYaml(yaml string) string {
 func TrimLicenseHeaderFromTF(yaml string) string {
 	r := regexp.MustCompile("(?s)/\\*\\*\n \\* Copyright.*under the License.\n \\*/\n\n")
 	return r.ReplaceAllString(yaml, "")
+}
+
+// MustReadFile reads the specified file, failing the test on error.
+func MustReadFile(t *testing.T, p string) []byte {
+	t.Helper()
+	b, err := os.ReadFile(p)
+	if err != nil {
+		absPath, _ := filepath.Abs(p)
+		t.Fatalf("error reading file '%v' (absolute path %v): %v", p, absPath, err)
+	}
+	return b
 }
