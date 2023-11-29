@@ -1,0 +1,3 @@
+```release-note:enhancement
+iam: `google_project_iam_member` and `google_project_iam_binding`'s `project` field can be specified with an optional `projects/` prefix
+```

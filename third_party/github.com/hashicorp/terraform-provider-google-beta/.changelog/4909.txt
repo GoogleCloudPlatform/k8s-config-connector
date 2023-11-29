@@ -1,0 +1,5 @@
+```release-note:enhancement
+
+Exported mapper struct within mappers.go.erb.
+
+```

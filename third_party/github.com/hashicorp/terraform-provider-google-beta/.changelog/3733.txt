@@ -1,0 +1,3 @@
+```release-note:bug
+memcache: fixed field `memcache_parameters` to work correctly on `google_memcache_instance`
+```

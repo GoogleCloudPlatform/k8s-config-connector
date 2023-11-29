@@ -1,0 +1,3 @@
+```release-note:bug
+serviceusage: fixed an issue in `google_service_usage_consumer_quota_override` where setting the `override_value` to 0 would result in a permanent diff
+```

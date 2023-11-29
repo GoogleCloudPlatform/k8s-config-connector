@@ -1,0 +1,4 @@
+```release-note:bug
+container: Fixed google_container_cluster.pod_security_policy_config not being set when disabled. (beta only)
+
+```

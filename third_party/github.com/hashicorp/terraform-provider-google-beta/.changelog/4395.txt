@@ -1,0 +1,4 @@
+```release-note:bug
+memcached: fixed an issue where `google_memcache_instance` would show a diff when authorized_network was unspecified
+
+```

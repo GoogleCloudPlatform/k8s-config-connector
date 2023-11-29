@@ -1,0 +1,3 @@
+```release-note:bug
+sql: fixed bug where permadiff of `encryption_key_name` would show on `google_sql_database_instance` for replica instances.
+```

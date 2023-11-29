@@ -1,0 +1,3 @@
+```release-note:enhancement 
+serviceusage: Allowed use of field `force` with updates to `google_service_usage_consumer_quota_override`
+```

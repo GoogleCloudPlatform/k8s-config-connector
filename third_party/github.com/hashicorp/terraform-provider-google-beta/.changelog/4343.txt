@@ -1,0 +1,3 @@
+```release-note:bug
+container: fixed an issue where setting `google_container_cluster.private_cluster_config[0].master_global_access_config.enabled` to `false` caused a permadiff.
+```

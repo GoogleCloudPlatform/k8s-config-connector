@@ -1,0 +1,3 @@
+```release-note:bug
+compute: fixed issue where `google_compute_region_disk` and `google_compute_disk` would force recreation due to the addition of `interface` property
+```
