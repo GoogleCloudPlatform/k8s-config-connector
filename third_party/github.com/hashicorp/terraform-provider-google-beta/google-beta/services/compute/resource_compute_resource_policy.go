@@ -359,7 +359,6 @@ with RFC1035.`,
 										ForceNew: true,
 										Description: `Cloud Storage bucket location to store the auto snapshot
 (regional or multi-regional)`,
-										MaxItems: 1,
 										Elem: &schema.Schema{
 											Type: schema.TypeString,
 										},
