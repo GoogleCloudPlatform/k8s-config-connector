@@ -1,0 +1,3 @@
+```release-note:bug
+Fixed upstream breakage of `google_identity_group`.
+```

@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+        # Ignore version updates
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major","version-update:semver-minor","version-update:semver-patch"]

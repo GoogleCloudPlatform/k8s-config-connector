@@ -1,0 +1,3 @@
+```release-note:bug
+notebook: fixed bug where not setting `data_disk_type` or `disk_encryption` would cause a diff on the next plan
+```

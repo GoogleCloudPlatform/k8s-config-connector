@@ -1,0 +1,3 @@
+```release-note:bug
+compute: fixed permadiff in `google_compute_instance.scheduling.provisioning_model`
+```

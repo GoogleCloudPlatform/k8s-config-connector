@@ -1,0 +1,3 @@
+```release-note:bug
+alloydb: fixed permdiff on `display_name` of `google_alloydb_instance`
+```

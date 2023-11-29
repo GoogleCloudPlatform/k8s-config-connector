@@ -1,0 +1,3 @@
+```release-note:bug
+servicedirectory: fixed an error when updating `location` on `google_service_directory_namespace`
+```
