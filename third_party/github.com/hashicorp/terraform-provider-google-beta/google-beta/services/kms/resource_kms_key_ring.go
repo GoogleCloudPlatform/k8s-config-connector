@@ -64,6 +64,13 @@ A full list of valid locations can be found by running 'gcloud kms locations lis
 				Computed: true,
 				ForceNew: true,
 			},
+			// Preserve the output-only field 'self_link' since both terraform and DCL based resources are relying on the 'self_link' field for resource reference resolution.
+			// TODO(b/200559394): we can remove this patch once KCC supports canonical 'status.id'.
+			"self_link": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The self link of the created KeyRing in the format projects/{project}/locations/{location}/keyRings/{name}.",
+			},
 		},
 		UseJSONNumber: true,
 	}
@@ -244,6 +251,11 @@ func resourceKMSKeyRingEncoder(d *schema.ResourceData, meta interface{}, obj map
 }
 
 func resourceKMSKeyRingDecoder(d *schema.ResourceData, meta interface{}, res map[string]interface{}) (map[string]interface{}, error) {
+	// Take the returned long form of the name and use it as `self_link`.
+	if err := d.Set("self_link", res["name"].(string)); err != nil {
+		return nil, fmt.Errorf("Error setting self_link: %s", err)
+	}
+
 	// Modify the name to be the user specified form.
 	// We can't just ignore_read on `name` as the linter will
 	// complain that the returned `res` is never used afterwards.
