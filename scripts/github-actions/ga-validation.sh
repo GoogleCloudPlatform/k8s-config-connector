@@ -39,4 +39,4 @@ fi
 done
 
 # Regular validations on fmt, generated doc, generated code, etc.
-#${REPO_ROOT}/scripts/validate-prereqs.sh
+${REPO_ROOT}/scripts/validate-prereqs.sh
