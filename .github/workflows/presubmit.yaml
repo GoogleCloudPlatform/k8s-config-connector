@@ -29,6 +29,9 @@ jobs:
         with:
           # This is introduced to make sure 'go generate' works properly
           path: "src/k8s-config-connector"
+          fetch-depth: 0
+          ref: ${{github.event.pull_request.head.ref}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
       - uses: actions/setup-go@v4
         with:
           go-version: "1.21.4"
