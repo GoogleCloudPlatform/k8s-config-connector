@@ -24,6 +24,7 @@ source ${REPO_ROOT}/scripts/fetch_ext_bins.sh && \
 
 echo "Running validations..."
 
+git log --pretty=format:"%H" -n $COMMIT_CNT
 # Check if any commit has changes both within and outside the TF Git Subtree
 subtree_dir="third_party/github.com/hashicorp/terraform-provider-google-beta/"
 commit_hashes=($(git rev-list --topo-order -n $COMMIT_CNT $COMMIT_HEAD))
