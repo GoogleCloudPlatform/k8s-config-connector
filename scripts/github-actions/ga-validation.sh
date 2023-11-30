@@ -24,8 +24,7 @@ source ${REPO_ROOT}/scripts/fetch_ext_bins.sh && \
 
 echo "Running validations..."
 
-git log --pretty=format:"%H" -n $COMMIT_CNT
-# Check if any commit has changes both within and outside the TF Git Subtree
+# Check if any commit contains changes both within and outside the TF Git Subtree
 subtree_dir="third_party/github.com/hashicorp/terraform-provider-google-beta/"
 commit_hashes=($(git rev-list --topo-order -n $COMMIT_CNT $COMMIT_HEAD))
 
@@ -34,7 +33,7 @@ for commit in "${commit_hashes[@]}"; do
 
   if git diff --name-only $parent_commit..$commit | grep "^$subtree_dir" > /dev/null && git diff --name-only $parent_commit..$commit | grep -v "^$subtree_dir" > /dev/null
   then
-    echo -e "Error: Your commit \"$commit\" includes changes both within and outside the\n\n\"$subtree_dir\" directory.\n\nPlease ensure that changes made within this directory are grouped and\n\nsubmitted as a separate, dedicated commit."
+    echo -e "Error: Your commit \"$commit\" includes changes both within and outside the\n\"$subtree_dir\" directory.\nPlease ensure that changes made within this directory are grouped and\nsubmitted as a separate, dedicated commit.\n"
     exit 1
 fi
 done
