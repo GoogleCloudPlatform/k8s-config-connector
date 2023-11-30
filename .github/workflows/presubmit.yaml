@@ -41,6 +41,7 @@ jobs:
         env:
           # This is introduced to make sure 'go generate' works properly
           GOPATH: /home/runner/work/k8s-config-connector/k8s-config-connector
+          EVENT_NAME: ${{ github.event_name }}
           COMMIT_HEAD: ${{ github.event.pull_request.head.sha }}
           COMMIT_CNT: ${{ github.event.pull_request.commits }}
   unit-tests:
