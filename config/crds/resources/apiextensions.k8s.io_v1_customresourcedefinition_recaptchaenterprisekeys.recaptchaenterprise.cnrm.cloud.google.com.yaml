@@ -141,6 +141,24 @@ spec:
                     format: double
                     type: number
                 type: object
+              wafSettings:
+                description: Immutable. Settings specific to keys that can be used
+                  for WAF (Web Application Firewall).
+                properties:
+                  wafFeature:
+                    description: 'Immutable. Supported WAF features. For more information,
+                      see https://cloud.google.com/recaptcha-enterprise/docs/usecase#comparison_of_features.
+                      Possible values: CHALLENGE_PAGE, SESSION_TOKEN, ACTION_TOKEN,
+                      EXPRESS'
+                    type: string
+                  wafService:
+                    description: 'Immutable. The WAF service that uses this key. Possible
+                      values: CA, FASTLY'
+                    type: string
+                required:
+                - wafFeature
+                - wafService
+                type: object
               webSettings:
                 description: Settings for keys that can be used by websites.
                 properties:

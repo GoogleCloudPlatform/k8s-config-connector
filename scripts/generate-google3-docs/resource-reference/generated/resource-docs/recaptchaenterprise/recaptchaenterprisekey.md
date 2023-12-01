@@ -94,6 +94,9 @@ resourceID: string
 testingOptions:
   testingChallenge: string
   testingScore: float
+wafSettings:
+  wafFeature: string
+  wafService: string
 webSettings:
   allowAllDomains: boolean
   allowAmpTraffic: boolean
@@ -280,6 +283,36 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         <td>
             <p><code class="apitype">float</code></p>
             <p>{% verbatim %}Immutable. All assessments for this Key will return this score. Must be between 0 (likely not legitimate) and 1 (likely legitimate) inclusive.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>wafSettings</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Settings specific to keys that can be used for WAF (Web Application Firewall).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>wafSettings.wafFeature</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Supported WAF features. For more information, see https://cloud.google.com/recaptcha-enterprise/docs/usecase#comparison_of_features. Possible values: CHALLENGE_PAGE, SESSION_TOKEN, ACTION_TOKEN, EXPRESS{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>wafSettings.wafService</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The WAF service that uses this key. Possible values: CA, FASTLY{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

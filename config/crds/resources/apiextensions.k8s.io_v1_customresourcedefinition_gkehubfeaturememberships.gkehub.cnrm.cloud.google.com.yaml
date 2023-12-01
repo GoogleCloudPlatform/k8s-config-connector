@@ -62,7 +62,8 @@ spec:
                 description: Config Management-specific spec.
                 properties:
                   binauthz:
-                    description: Binauthz configuration for the cluster.
+                    description: '**DEPRECATED** Binauthz configuration for the cluster.
+                      This field will be ignored and should not be set.'
                     properties:
                       enabled:
                         description: Whether binauthz is enabled in this cluster.
@@ -133,6 +134,35 @@ spec:
                           syncWaitSecs:
                             description: 'Period in seconds between consecutive syncs.
                               Default: 15.'
+                            type: string
+                        type: object
+                      metricsGcpServiceAccountRef:
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: |-
+                              The Email of the Google Cloud Service Account (GSA) used for exporting Config Sync metrics to Cloud Monitoring. The GSA should have the Monitoring Metric Writer(roles/monitoring.metricWriter) IAM role. The Kubernetes ServiceAccount `default` in the namespace `config-management-monitoring` should be bound to the GSA.
+
+                              Allowed value: The `email` field of an `IAMServiceAccount` resource.
+                            type: string
+                          name:
+                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            type: string
+                          namespace:
+                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                             type: string
                         type: object
                       oci:
@@ -300,6 +330,9 @@ spec:
                 type: object
               location:
                 description: Immutable. The location of the feature
+                type: string
+              membershipLocation:
+                description: Immutable. The location of the membership
                 type: string
               membershipRef:
                 description: Immutable.

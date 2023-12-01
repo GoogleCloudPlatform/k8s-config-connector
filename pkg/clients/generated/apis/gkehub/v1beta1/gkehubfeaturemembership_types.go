@@ -46,6 +46,9 @@ type FeaturemembershipConfigSync struct {
 	Git *FeaturemembershipGit `json:"git,omitempty"`
 
 	// +optional
+	MetricsGcpServiceAccountRef *v1alpha1.ResourceRef `json:"metricsGcpServiceAccountRef,omitempty"`
+
+	// +optional
 	Oci *FeaturemembershipOci `json:"oci,omitempty"`
 
 	/* Set to true to enable the Config Sync admission webhook to prevent drifts. If set to `false`, disables the Config Sync admission webhook and does not prevent drifts. */
@@ -58,7 +61,7 @@ type FeaturemembershipConfigSync struct {
 }
 
 type FeaturemembershipConfigmanagement struct {
-	/* Binauthz configuration for the cluster. */
+	/* **DEPRECATED** Binauthz configuration for the cluster. This field will be ignored and should not be set. */
 	// +optional
 	Binauthz *FeaturemembershipBinauthz `json:"binauthz,omitempty"`
 
@@ -207,6 +210,10 @@ type GKEHubFeatureMembershipSpec struct {
 
 	/* Immutable. The location of the feature */
 	Location string `json:"location"`
+
+	/* Immutable. The location of the membership */
+	// +optional
+	MembershipLocation *string `json:"membershipLocation,omitempty"`
 
 	/* Immutable. */
 	MembershipRef v1alpha1.ResourceRef `json:"membershipRef"`
