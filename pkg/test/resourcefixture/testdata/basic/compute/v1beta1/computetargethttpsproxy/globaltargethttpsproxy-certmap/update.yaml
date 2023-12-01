@@ -13,25 +13,14 @@
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeInstance
+kind: ComputeTargetHTTPSProxy
 metadata:
-  annotations:
-    cnrm.cloud.google.com/allow-stopping-for-update: "true"
-  name: computeinstance-${uniqueId}
-  labels:
-    created-from: "image-2"
-    network-type: "subnetwork-2"
+  name: computetargethttpsproxy-${uniqueId}
 spec:
-  machineType: n1-standard-1
-  zone: us-central1-a
-  bootDisk:
-    initializeParams:
-      sourceImageRef:
-        external: debian-cloud/debian-11
-  networkInterface:
-  - subnetworkRef:
-      name: default
-    networkIp: "10.128.0.9"
-    accessConfig:
-    - networkTier: "PREMIUM"
-  canIpForward: true
+  description: "test description"
+  urlMapRef:
+    name: computeurlmap-2-${uniqueId}
+  certificateMapRef:
+    name: certificatemanagercertificatemap-${uniqueId}
+  quicOverride: ENABLE
+  location: global

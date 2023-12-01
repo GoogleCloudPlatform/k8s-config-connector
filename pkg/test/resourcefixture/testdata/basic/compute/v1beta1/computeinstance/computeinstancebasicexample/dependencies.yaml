@@ -50,6 +50,7 @@ metadata:
   name: computeaddress-${uniqueId}
 spec:
   location: us-west1
+  # TODO: I think we need to specify a subnet??
   addressType: INTERNAL
   purpose: GCE_ENDPOINT
 ---

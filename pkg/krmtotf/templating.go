@@ -183,7 +183,7 @@ func expandFieldTemplate(template string, r *Resource, c client.Client, smLoader
 			return val
 		}
 		if isRequired {
-			resolutionError = fmt.Errorf("unable to resolve missing value: %v", field)
+			resolutionError = fmt.Errorf("unable to resolve missing value (path=%q, spec=%+v, status=%+v): %v", path, r.Spec, r.Status, field)
 		}
 		return ""
 	}

@@ -2402,7 +2402,7 @@ spec:
             kind: CertificateManagerCertificateMap
             version: v1beta1
             group: certificatemanager.cnrm.cloud.google.com
-          valueTemplate: "//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificateMaps/{{value}}"
+          valueTemplate: "//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}"
         - key: serverTlsPolicyRef
           tfField: server_tls_policy
           description: |-
