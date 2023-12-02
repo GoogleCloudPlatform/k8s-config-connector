@@ -1,80 +1,36 @@
 # Overview
 
-This README goes over how to make changes to our
-[Terraform library](third_party/github.com/hashicorp/terraform-provider-google-beta).
+This README provides guidance on modifying the Config Connector's [local copy](third_party/github.com/hashicorp/terraform-provider-google-beta) of the [Terraform Provider Google (TPG) Beta](https://github.com/hashicorp/terraform-provider-google-beta) library, maintained as a [Git Subtree](https://www.atlassian.com/git/tutorials/git-subtree).
 
-There are two approaches:
+Approximately 75% of Config Connector resources leverage Terraform. To verify if a Config Connector resource leverages Terraform, search for the presence of `cnrm.cloud.google.com/tf2crd: "true"` within its CRD schema. Config Connector has historically implemented numerous custom modifications (patches) on top of the standard TPG Beta library. These customizations are accessible through the Git Subtree's [commit history](https://github.com/GoogleCloudPlatform/k8s-config-connector/commits/master/third_party/github.com/hashicorp/terraform-provider-google-beta).
 
-1.  [Make your change upstream](#make-your-change-upstream)
-1.  [Make your change locally](#make-your-change-locally) first, and then
-    upstream the change.
+The current Git Subtree incorporates [v4.84.0](https://github.com/hashicorp/terraform-provider-google-beta/tree/v4.84.0) of TPG Beta with 60+ Config Connector-specific customizations. We are currently evaluating the optimal future strategy for managing Terraform as a dependency, including potential migration to the v5.* major version of TPG Beta and addressing associated breaking changes.
 
-Generally speaking:
+Until a long-term strategy is established, modifying this local Git Subtree may be necessary under specific scenarios, including:
 
-*   If your change is cheap or non-urgent (e.g. changes to field descriptions,
-    minor logic changes), prefer making the change upstream.
-*   Otherwise, make the change locally first.
-
-Either way, it is recommended that you consult someone from the
-[Terraform Provider Google](https://github.com/hashicorp/terraform-provider-google)
-project about the change you intend to make first to get
-an early signal about the likelihood of your change being accepted upstream.
-
-# Make Your Change Upstream
-
-The upstream
-[Terraform repository](https://github.com/hashicorp/terraform-provider-google-beta)
-is generated using
-[Magic Modules](https://github.com/googleCloudPlatform/magic-modules). This
-means that to actually "upstream" your change, you need to make changes to Magic
-Modules.
-
-Read Magic Modules README.md to learn how to get started.
-
-You can stop reading now if your change is expected to be accepted by
-Terraform. Once the change is accepted, it will be adopted to Config Connector
-in the next [Terraform update](README.UpdatingTerraformProvider.md).
+* Bug Fixes: Addressing identified bugs within the TPG Beta library. [Example](https://github.com/GoogleCloudPlatform/k8s-config-connector/commit/d60a04e87165d3610d37601d0c1964e28af49d5f)
+* Missing Fields: Implementing fields recently introduced in TPG v5 or the underlying GCP API but absent in the current subtree. [Example](https://github.com/GoogleCloudPlatform/k8s-config-connector/commit/1978b77d6cc9a579c2d5ff6bad1d75ba619d23de)
+* Missing Resources: Adding resources recently introduced in TPG v5 but not present in the current subtree. [Example](https://github.com/GoogleCloudPlatform/k8s-config-connector/commit/f54d7dff2047496fa874a63bbc798d0a2b97f7e6)
 
 
-# Make Your Change Locally
+# Make Your Change in the Git Subtree
 
-1.  Make your desired change locally in
-    [third_party/github.com/hashicorp/terraform-provider-google-beta](third_party/github.com/hashicorp/terraform-provider-google-beta).
+1.  Implement Your Change:
+    * Make your desired modifications directly within the [third_party/github.com/hashicorp/terraform-provider-google-beta](third_party/github.com/hashicorp/terraform-provider-google-beta) directory.
+    * Run `make vet` to check if the updated code compiles.
 
-1.  Create a patch file in [terraform-overrides](hack/terraform-overrides):
+1.  Commit Your Change:
+    Craft a clear commit message. Include a concise title and detailed description outlining the changes and their purpose. Refer to the provided examples for guidance.
 
-    ```bash
-    git diff master -- third_party/github.com > hack/terraform-overrides/my-changes.patch
-    ```
+1.  Generate Files (Optional):
+    If adding new fields to an existing resource, run `make generate manifests resource-docs generate-go-client` to update all the generated files. Then add the generated files as a separate commit.
+ 
+1.  Test Your change:
+    * [Run tests](README.NewResourceFromTerraform.md#run-tests) associated with the modified resource/CRD.
+    * [Run sample tests](README.NewResourceFromTerraform.md#rundisable-sample-tests) associated with the modified resource/CRD.
 
-    This patch file will ensure that your changes are preserved whenever we
-    update our Terraform library.
+1.  Submit a Pull Request:
+    * While your Pull Request can contain other commits, make sure you have grouped all changes within the aforementioned [directory](third_party/github.com/hashicorp/terraform-provider-google-beta) into a single, dedicated commit.
 
-    Note that if you make any more modifications to your change, then the patch
-    file needs to be updated.
-
-1.  Create an issue to track the upstreaming of your change.
-
-1.  Edit the [third_party/Makefile](third_party/Makefile). Add your patch to the
-    list of patches applied in the `apply-patches:` section. Add a link to your
-    tracking issue and comment on the purpose of the patch.
-
-1.  Update the copy of the Terraform library.
-
-    ```bash
-    make ensure
-    ```
-
-1.  (Optional) Commit all your changes and submit for review. To keep the change
-    as discrete, reviewable, and reappliable unit, the commit and review should
-    *ONLY* contain your Terraform changes and no other changes to the project.
-
-1.  (Optional) [Make your change upstream](#make-your-change-upstream)
-
-1.  (Optional) Once you have a Pull Request, update the tracking issue with a
-    link to the PR.
-
-1.  (Optional) Once the change has been submitted upstream, pull in a new
-    version of the Terraform library through [Terraform update](README.UpdatingTerraformProvider.md)
-    and remove your patch from [terraform-overrides](hack/terraform-overrides)
-    and the [third_party/Makefile](third_party/Makefile).
+1.  New Resource from Terraform (Optional):
+    For new Terraform resources, follow the steps outlined in [README.NewResourceFromTerraform.md](README.NewResourceFromTerraform.md) to create another PR and introduce a corresponding Config Connector resource.
