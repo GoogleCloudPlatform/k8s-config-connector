@@ -96,3 +96,8 @@ spec:
                 version: v1beta1
                 group: logging.cnrm.cloud.google.com
               valueTemplate: "logging.googleapis.com/projects/{{project}}/locations/{{location}}/buckets/{{value}}"
+    - name: google_logging_project_bucket_config
+      kind: LoggingProjectBucketConfig
+      metadataMapping:
+        name: name
+        labels: labels
