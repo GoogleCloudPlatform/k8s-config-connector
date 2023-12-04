@@ -65,6 +65,14 @@ type KeyTestingOptions struct {
 	TestingScore *float64 `json:"testingScore,omitempty"`
 }
 
+type KeyWafSettings struct {
+	/* Immutable. Supported WAF features. For more information, see https://cloud.google.com/recaptcha-enterprise/docs/usecase#comparison_of_features. Possible values: CHALLENGE_PAGE, SESSION_TOKEN, ACTION_TOKEN, EXPRESS */
+	WafFeature string `json:"wafFeature"`
+
+	/* Immutable. The WAF service that uses this key. Possible values: CA, FASTLY */
+	WafService string `json:"wafService"`
+}
+
 type KeyWebSettings struct {
 	/* If set to true, it means allowed_domains will not be enforced. */
 	// +optional
@@ -108,6 +116,10 @@ type RecaptchaEnterpriseKeySpec struct {
 	/* Immutable. Options for user acceptance testing. */
 	// +optional
 	TestingOptions *KeyTestingOptions `json:"testingOptions,omitempty"`
+
+	/* Immutable. Settings specific to keys that can be used for WAF (Web Application Firewall). */
+	// +optional
+	WafSettings *KeyWafSettings `json:"wafSettings,omitempty"`
 
 	/* Settings for keys that can be used by websites. */
 	// +optional

@@ -247,6 +247,11 @@ func (in *FeaturemembershipConfigSync) DeepCopyInto(out *FeaturemembershipConfig
 		*out = new(FeaturemembershipGit)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.MetricsGcpServiceAccountRef != nil {
+		in, out := &in.MetricsGcpServiceAccountRef, &out.MetricsGcpServiceAccountRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.Oci != nil {
 		in, out := &in.Oci, &out.Oci
 		*out = new(FeaturemembershipOci)
@@ -678,6 +683,11 @@ func (in *GKEHubFeatureMembershipSpec) DeepCopyInto(out *GKEHubFeatureMembership
 		(*in).DeepCopyInto(*out)
 	}
 	out.FeatureRef = in.FeatureRef
+	if in.MembershipLocation != nil {
+		in, out := &in.MembershipLocation, &out.MembershipLocation
+		*out = new(string)
+		**out = **in
+	}
 	out.MembershipRef = in.MembershipRef
 	if in.Mesh != nil {
 		in, out := &in.Mesh, &out.Mesh

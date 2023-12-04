@@ -96,6 +96,10 @@ configmanagement:
       syncRepo: string
       syncRev: string
       syncWaitSecs: string
+    metricsGcpServiceAccountRef:
+      external: string
+      name: string
+      namespace: string
     oci:
       gcpServiceAccountRef:
         external: string
@@ -129,6 +133,7 @@ featureRef:
   name: string
   namespace: string
 location: string
+membershipLocation: string
 membershipRef:
   external: string
   name: string
@@ -166,7 +171,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Binauthz configuration for the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}**DEPRECATED** Binauthz configuration for the cluster. This field will be ignored and should not be set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -309,6 +314,48 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Period in seconds between consecutive syncs. Default: 15.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>configmanagement.configSync.metricsGcpServiceAccountRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>configmanagement.configSync.metricsGcpServiceAccountRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The Email of the Google Cloud Service Account (GSA) used for exporting Config Sync metrics to Cloud Monitoring. The GSA should have the Monitoring Metric Writer(roles/monitoring.metricWriter) IAM role. The Kubernetes ServiceAccount `default` in the namespace `config-management-monitoring` should be bound to the GSA.
+
+Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>configmanagement.configSync.metricsGcpServiceAccountRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>configmanagement.configSync.metricsGcpServiceAccountRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -643,6 +690,16 @@ Allowed value: The Google Cloud resource name of a `GKEHubFeature` resource (for
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The location of the feature{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>membershipLocation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The location of the membership{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
