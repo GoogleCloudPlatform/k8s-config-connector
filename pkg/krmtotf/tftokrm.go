@@ -94,6 +94,13 @@ func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceStat
 	if observedGeneration, ok := resource.Status["observedGeneration"]; ok {
 		status["observedGeneration"] = deepcopy.DeepCopy(observedGeneration)
 	}
+	if resource.ResourceConfig.ObservedFields != nil {
+		observedState := resolveObservedState(resource, krmState)
+		if len(observedState) > 0 {
+			status["observedState"] = observedState
+		}
+	}
+
 	if len(spec) == 0 {
 		spec = nil
 	}
@@ -101,6 +108,75 @@ func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceStat
 		status = nil
 	}
 	return spec, status
+}
+
+func resolveObservedState(resource *Resource, krmState map[string]interface{}) map[string]interface{} {
+	observedState := make(map[string]interface{})
+	for _, f := range *resource.ResourceConfig.ObservedFields {
+		// TODO(b/314840974): Remove the check once the reference fields are supported.
+		if ok, _ := IsReferenceField(f, &resource.ResourceConfig); ok {
+			panic(fmt.Errorf("reference fields are not supported as observed fields"))
+		}
+		// TODO(b/314841141): Remove the check once the labels fields are supported.
+		if isMetadataMappingLabelsField(f, &resource.ResourceConfig) {
+			panic(fmt.Errorf("fields mapping to metadata.labels are not supported as observed fields"))
+		}
+		// TODO(b/314842047): Remove the check once the resource name fields are supported.
+		if isMetadataMappingNameField(f, &resource.ResourceConfig) ||
+			isServerGeneratedIDField(f, &resource.ResourceConfig) {
+			panic(fmt.Errorf("fields of resource names are not supported as observed fields"))
+		}
+		addFieldIfExists(strings.Split(f, "."), resource.TFResource.Schema, krmState, observedState)
+	}
+	return observedState
+}
+
+func addFieldIfExists(path []string, tfSchemas map[string]*tfschema.Schema, source, parent map[string]interface{}) {
+	if len(path) == 0 {
+		return
+	}
+	field := text.SnakeCaseToLowerCamelCase(path[0])
+	fieldState, ok := source[field]
+	if !ok {
+		return
+	}
+
+	fieldSchema, ok := tfSchemas[path[0]]
+	if !ok {
+		panic(fmt.Errorf("field %v not existent in the TF schema", path[0]))
+	}
+	// TODO(b/314841744): Remove after sensitive fields are supported.
+	if tfresource.IsSensitiveField(fieldSchema) {
+		panic(fmt.Errorf("sensitive fields are not supported as observed fields"))
+	}
+
+	if len(path) == 1 {
+		parent[field] = fieldState
+		return
+	}
+
+	switch fieldSchema.Type {
+	case tfschema.TypeList, tfschema.TypeSet:
+		if fieldSchema.MaxItems != 1 {
+			panic(fmt.Errorf("invalid max items size %v of schema type tfschema.TypeList / tfschema.TypeSet for a nested field %v", fieldSchema.MaxItems, path[0]))
+		}
+		subResource, ok := fieldSchema.Elem.(*tfschema.Resource)
+		if !ok {
+			panic(fmt.Errorf("type for schema elem under field %v should be *tfschema.Resource but got %T", path[0], fieldSchema.Elem))
+		}
+		subSchema := subResource.Schema
+		fieldStateMap, ok := fieldState.(map[string]interface{})
+		if !ok {
+			panic(fmt.Errorf("retrieved fieldState of nested field %v is not of type map[string]interface{}: %v", field, fieldState))
+		}
+		result := make(map[string]interface{})
+		addFieldIfExists(path[1:], subSchema, fieldStateMap, result)
+		parent[field] = result
+		return
+	default:
+		// TODO(b/312581557): Handle array types.
+		panic(fmt.Errorf("invalid schema type %v for a nested field %v", fieldSchema.Type, path[0]))
+	}
 }
 
 // ResolveSpecAndStatusWithResourceID returns the resolved spec and status with the `resourceID`
@@ -122,7 +198,6 @@ func ResolveSpecAndStatusWithResourceID(resource *Resource, state *terraform.Ins
 }
 
 // resolveDesiredStateInSpecAndObservedStateInStatus resolves spec as desired state and persists observed state in status.
-// TODO(b/193928224): persist the full observed state including both configurable fields and output-only fields in status.
 func resolveDesiredStateInSpecAndObservedStateInStatus(resource *Resource, state *terraform.InstanceState) (
 	spec map[string]interface{}, status map[string]interface{}) {
 	spec = deepcopy.MapStringInterface(resource.Spec)
