@@ -98,11 +98,12 @@ spec:
               valueTemplate: "logging.googleapis.com/projects/{{project}}/locations/{{location}}/buckets/{{value}}"
     - name: google_logging_project_bucket_config
       kind: LoggingProjectBucketConfig
-      idTemplate: "projects/{{project}}/locations/{{location}}/buckets/{{name}}"
+      idTemplate: "projects/{{project}}/locations/{{location}}/buckets/{{bucket_id}}"
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
+      locationality: regional
       metadataMapping:
-        name: name
+        name: bucket_id
         labels: labels
       resourceReferences:
         - tfField: project
