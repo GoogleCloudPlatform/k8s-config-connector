@@ -98,6 +98,23 @@ spec:
               valueTemplate: "logging.googleapis.com/projects/{{project}}/locations/{{location}}/buckets/{{value}}"
     - name: google_logging_project_bucket_config
       kind: LoggingProjectBucketConfig
+      idTemplate: "projects/{{project}}/locations/{{location}}/buckets/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
       metadataMapping:
         name: name
         labels: labels
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+          parent: true
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+
