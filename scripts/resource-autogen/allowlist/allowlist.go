@@ -157,6 +157,7 @@ var (
 		"service_usage/google_service_usage_consumer_quota_override",
 		"storage/google_storage_hmac_key",
 		"storage_transfer/google_storage_transfer_agent_pool",
+		"tags/google_tags_location_tag_binding",
 		"tpu/google_tpu_node",
 		"vertex_ai/google_vertex_ai_dataset",
 		"vertex_ai/google_vertex_ai_endpoint",
