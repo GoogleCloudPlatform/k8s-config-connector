@@ -1,0 +1,12 @@
+label: Config Connector EdgeNetworkNetwork
+markdownDescription: Creates yaml for a EdgeNetworkNetwork resource
+insertText: |
+  apiVersion: edgenetwork.cnrm.cloud.google.com/v1beta1
+  kind: EdgeNetworkNetwork
+  metadata:
+    name: \${1:edgenetworknetwork-name}
+  spec:
+    description: \${2:A sample edgenetwork network}
+    location: \${3:us-central1}
+    zone: \${4:[ZONE_LOCATION]}
+    mtu: \${5:9000}

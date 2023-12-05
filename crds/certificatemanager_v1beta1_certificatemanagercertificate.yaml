@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.111.0
+    cnrm.cloud.google.com/version: 1.112.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -113,7 +113,7 @@ spec:
                     items:
                       description: Authorizations that will be used for performing
                         domain authorization. Either issuanceConfig or dnsAuthorizations
-                        should be specificed, but not both.
+                        should be specified, but not both.
                       oneOf:
                       - not:
                           required:
@@ -155,7 +155,7 @@ spec:
 
                       Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/*/locations/*/certificateIssuanceConfigs/*.
                       If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
-                      Either issuanceConfig or dnsAuthorizations should be specificed, but not both.
+                      Either issuanceConfig or dnsAuthorizations should be specified, but not both.
                     oneOf:
                     - not:
                         required:
@@ -256,7 +256,7 @@ spec:
                 properties:
                   certificatePem:
                     description: |-
-                      DEPRECATED. `certificate_pem` is deprecated and will be removed in a future major release. Use `pem_certificate` instead. Immutable. The certificate chain in PEM-encoded form.
+                      DEPRECATED. `certificate_pem` is deprecated. Use `pem_certificate` instead. Immutable. The certificate chain in PEM-encoded form.
 
                       Leaf certificate comes first, followed by intermediate ones if any.
                     oneOf:
@@ -343,10 +343,9 @@ spec:
                         type: object
                     type: object
                   privateKeyPem:
-                    description: DEPRECATED. `private_key_pem` is deprecated and will
-                      be removed in a future major release. Use `pem_private_key`
-                      instead. Immutable. The private key of the leaf certificate
-                      in PEM-encoded form.
+                    description: DEPRECATED. `private_key_pem` is deprecated. Use
+                      `pem_private_key` instead. Immutable. The private key of the
+                      leaf certificate in PEM-encoded form.
                     oneOf:
                     - not:
                         required:
@@ -508,7 +507,7 @@ spec:
                     items:
                       description: Authorizations that will be used for performing
                         domain authorization. Either issuanceConfig or dnsAuthorizations
-                        should be specificed, but not both.
+                        should be specified, but not both.
                       oneOf:
                       - not:
                           required:
@@ -550,7 +549,7 @@ spec:
 
                       Immutable. The resource name for a CertificateIssuanceConfig used to configure private PKI certificates in the format projects/*/locations/*/certificateIssuanceConfigs/*.
                       If this field is not set, the certificates will instead be publicly signed as documented at https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.
-                      Either issuanceConfig or dnsAuthorizations should be specificed, but not both.
+                      Either issuanceConfig or dnsAuthorizations should be specified, but not both.
                     oneOf:
                     - not:
                         required:
@@ -651,7 +650,7 @@ spec:
                 properties:
                   certificatePem:
                     description: |-
-                      DEPRECATED. `certificate_pem` is deprecated and will be removed in a future major release. Use `pem_certificate` instead. Immutable. The certificate chain in PEM-encoded form.
+                      DEPRECATED. `certificate_pem` is deprecated. Use `pem_certificate` instead. Immutable. The certificate chain in PEM-encoded form.
 
                       Leaf certificate comes first, followed by intermediate ones if any.
                     oneOf:
@@ -738,10 +737,9 @@ spec:
                         type: object
                     type: object
                   privateKeyPem:
-                    description: DEPRECATED. `private_key_pem` is deprecated and will
-                      be removed in a future major release. Use `pem_private_key`
-                      instead. Immutable. The private key of the leaf certificate
-                      in PEM-encoded form.
+                    description: DEPRECATED. `private_key_pem` is deprecated. Use
+                      `pem_private_key` instead. Immutable. The private key of the
+                      leaf certificate in PEM-encoded form.
                     oneOf:
                     - not:
                         required:

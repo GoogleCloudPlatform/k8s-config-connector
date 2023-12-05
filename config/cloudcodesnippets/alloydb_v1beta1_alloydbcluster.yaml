@@ -6,20 +6,21 @@ insertText: |
   metadata:
     name: \${1:alloydbcluster-name}
   spec:
-    location: \${2:us-central1}
-    networkRef:
-      external: \${3:projects/[PROJECT_ID?]/global/networks/alloydbcluster-dep}
+    location: \${2:us-east1}
+    networkConfig:
+      networkRef:
+        name: \${3:alloydbcluster-dep-regular}
     projectRef:
       external: \${4:[PROJECT_ID?]}
     automatedBackupPolicy:
       backupWindow: \${5:3600s}
       encryptionConfig:
         kmsKeyNameRef:
-          name: \${6:alloydbcluster-dep}
+          name: \${6:alloydbcluster-dep-regular}
       enabled: \${7:true}
       labels:
         source: \${8:kcc}
-      location: \${9:us-central1}
+      location: \${9:us-east1}
       timeBasedRetention:
         retentionPeriod: \${10:43200s}
       weeklySchedule:
@@ -32,7 +33,7 @@ insertText: |
           nanos: \${15:0}
     encryptionConfig:
       kmsKeyNameRef:
-        name: \${16:alloydbcluster-dep}
+        name: \${16:alloydbcluster-dep-regular}
     initialUser:
       user: \${17:postgres}
       password:

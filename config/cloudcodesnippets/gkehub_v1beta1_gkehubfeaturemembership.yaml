@@ -31,9 +31,7 @@ insertText: |
         logDeniesEnabled: \${16:true}
         templateLibraryInstalled: \${17:true}
         auditIntervalSeconds: \${18:20}
-      binauthz:
-        enabled: \${19:true}
       hierarchyController:
-        enabled: \${20:true}
-        enablePodTreeLabels: \${21:true}
-        enableHierarchicalResourceQuota: \${22:true}
+        enabled: \${19:true}
+        enablePodTreeLabels: \${20:true}
+        enableHierarchicalResourceQuota: \${21:true}
