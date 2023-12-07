@@ -34,7 +34,7 @@ spec:
     adminUsers:
       usernameRef:
         # Replace ${CLUSTER_ADMIN_ACCOUNT?} with your user account or service account
-        external: ${CLUTSER_ADMIN_ACCOUNT?}
+        external: ${CLUSTER_ADMIN_ACCOUNT?}
   maintenancePolicy:
     window:
       recurringWindow:

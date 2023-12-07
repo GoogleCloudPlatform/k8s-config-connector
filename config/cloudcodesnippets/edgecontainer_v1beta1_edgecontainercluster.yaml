@@ -22,7 +22,7 @@ insertText: |
     authorization:
       adminUsers:
         usernameRef:
-          external: \${9:[CLUTSER_ADMIN_ACCOUNT?]}
+          external: \${9:[CLUSTER_ADMIN_ACCOUNT?]}
     maintenancePolicy:
       window:
         recurringWindow:

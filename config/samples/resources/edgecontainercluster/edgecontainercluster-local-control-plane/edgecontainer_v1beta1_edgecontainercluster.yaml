@@ -33,8 +33,8 @@ spec:
   authorization:
     adminUsers:
       usernameRef:
-        # Replace ${CLUTSER_ADMIN_ACCOUNT?} with your user account or service account
-        external: ${CLUTSER_ADMIN_ACCOUNT?}
+        # Replace ${CLUSTER_ADMIN_ACCOUNT?} with your user account or service account
+        external: ${CLUSTER_ADMIN_ACCOUNT?}
   controlPlane:
     local:
       nodeCount: 1
