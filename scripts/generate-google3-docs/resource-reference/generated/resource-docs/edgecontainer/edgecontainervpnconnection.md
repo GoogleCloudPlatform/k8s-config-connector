@@ -28,7 +28,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/distributed-cloud/edge/latest/docs/vpn-connections">/distributed-cloud/edge/latest/docs/vpn-connections</a></td>
+<td><a href="/distributed-cloud/edge/latest/docs/reference/container/rest/v1/projects.locations.vpnConnections">/distributed-cloud/edge/latest/docs/reference/container/rest/v1/projects.locations.vpnConnections</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
@@ -491,7 +491,7 @@ spec:
     adminUsers:
       usernameRef:
         # Replace ${CLUSTER_ADMIN_ACCOUNT?} with your user account or service account
-        external: ${CLUTSER_ADMIN_ACCOUNT?}
+        external: ${CLUSTER_ADMIN_ACCOUNT?}
   maintenancePolicy:
     window:
       recurringWindow:
