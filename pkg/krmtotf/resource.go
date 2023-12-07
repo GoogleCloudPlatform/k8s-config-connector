@@ -348,3 +348,15 @@ func GVKForResource(sm *corekccv1alpha1.ServiceMapping, rc *corekccv1alpha1.Reso
 func ServerGeneratedIdToTemplate(rc *corekccv1alpha1.ResourceConfig) string {
 	return fmt.Sprintf("{{%v}}", rc.ServerGeneratedIDField)
 }
+
+func isMetadataMappingLabelsField(field string, rc *corekccv1alpha1.ResourceConfig) bool {
+	return rc.MetadataMapping.Labels != "" && field == rc.MetadataMapping.Labels
+}
+
+func isMetadataMappingNameField(field string, rc *corekccv1alpha1.ResourceConfig) bool {
+	return rc.MetadataMapping.Name != "" && field == rc.MetadataMapping.Name
+}
+
+func isServerGeneratedIDField(field string, rc *corekccv1alpha1.ResourceConfig) bool {
+	return rc.ServerGeneratedIDField != "" && field == rc.ServerGeneratedIDField
+}

@@ -131,3 +131,7 @@ func ImmutableFieldsFromDiff(diff *terraform.InstanceDiff) []string {
 	}
 	return fields
 }
+
+func IsSensitiveField(tfSchema *tfschema.Schema) bool {
+	return tfSchema.Sensitive
+}
