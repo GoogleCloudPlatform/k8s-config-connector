@@ -3830,6 +3830,9 @@ endpoint: string
 labelFingerprint: string
 masterVersion: string
 observedGeneration: integer
+observedState:
+  masterAuth:
+    clientCertificate: string
 operation: string
 selfLink: string
 servicesIpv4Cidr: string
@@ -3918,6 +3921,27 @@ tpuIpv4CidrBlock: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.masterAuth</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}DEPRECATED. Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.masterAuth.clientCertificate</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Base64 encoded public certificate used by clients to authenticate to the cluster endpoint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

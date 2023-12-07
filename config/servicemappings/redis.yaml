@@ -32,6 +32,8 @@ spec:
         labels: labels
       resourceID:
         targetField: name
+      observedFields:
+        - auth_string
       resourceReferences:
         - tfField: authorized_network
           description: |-

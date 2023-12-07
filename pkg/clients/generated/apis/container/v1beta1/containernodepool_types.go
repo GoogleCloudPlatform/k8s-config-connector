@@ -544,6 +544,11 @@ type ContainerNodePoolSpec struct {
 	Version *string `json:"version,omitempty"`
 }
 
+type NodepoolObservedStateStatus struct {
+	// +optional
+	Version *string `json:"version,omitempty"`
+}
+
 type ContainerNodePoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ContainerNodePool's current state. */
@@ -559,6 +564,10 @@ type ContainerNodePoolStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *NodepoolObservedStateStatus `json:"observedState,omitempty"`
 
 	// +optional
 	Operation *string `json:"operation,omitempty"`
