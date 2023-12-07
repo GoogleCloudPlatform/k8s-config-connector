@@ -160,6 +160,7 @@ func addFieldIfExists(path []string, tfSchemas map[string]*tfschema.Schema, sour
 		if fieldSchema.MaxItems != 1 {
 			panic(fmt.Errorf("invalid max items size %v of schema type tfschema.TypeList / tfschema.TypeSet for a nested field %v", fieldSchema.MaxItems, path[0]))
 		}
+		// Support the nested object field.
 		subResource, ok := fieldSchema.Elem.(*tfschema.Resource)
 		if !ok {
 			panic(fmt.Errorf("type for schema elem under field %v should be *tfschema.Resource but got %T", path[0], fieldSchema.Elem))
