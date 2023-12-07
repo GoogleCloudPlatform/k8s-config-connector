@@ -34,7 +34,6 @@ import (
 	yamlserializer "k8s.io/apimachinery/pkg/runtime/serializer/yaml"
 	yamlutil "k8s.io/apimachinery/pkg/util/yaml"
 	"k8s.io/client-go/rest"
-	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver"
 )
@@ -56,7 +55,7 @@ func (h *Harness) RESTConfig() *rest.Config {
 	return h.restConfig
 }
 
-func (h *Harness) NewClient(cache cache.Cache, config *rest.Config, options client.Options, uncachedObjects ...client.Object) (client.Client, error) {
+func (h *Harness) NewClient(config *rest.Config, options client.Options) (client.Client, error) {
 	if h.Client == nil {
 		h.Fatalf("WithObjects must be called before NewClient")
 	}

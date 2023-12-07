@@ -16,14 +16,8 @@ package nocache
 
 import (
 	"k8s.io/client-go/rest"
-	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-// NoCacheClientFunc returns a client without cache.
-var NoCacheClientFuncOld = func(cache cache.Cache, config *rest.Config, options client.Options, uncachedObjects ...client.Object) (client.Client, error) {
-	return client.New(config, options)
-}
 
 var NoCacheClientFunc = func(config *rest.Config, options client.Options) (client.Client, error) {
 	return client.New(config, options)
