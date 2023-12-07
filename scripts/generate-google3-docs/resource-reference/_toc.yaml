@@ -391,6 +391,18 @@ toc:
     path: /config-connector/docs/reference/resource-docs/container/containercluster.md
   - title: "ContainerNodePool"
     path: /config-connector/docs/reference/resource-docs/container/containernodepool.md
+- title: "Distributed Cloud Edge"
+  section:
+  - title: "EdgeContainerCluster"
+    path: /config-connector/docs/reference/resource-docs/edgecontainer/edgecontainercluster.md
+  - title: "EdgeContainerNodePool"
+    path: /config-connector/docs/reference/resource-docs/edgecontainer/edgecontainernodepool.md
+  - title: "EdgeContainerVPNConnection"
+    path: /config-connector/docs/reference/resource-docs/edgecontainer/edgecontainervpnconnection.md
+  - title: "EdgeNetworkNetwork"
+    path: /config-connector/docs/reference/resource-docs/edgenetwork/edgenetworknetwork.md
+  - title: "EdgeNetworkSubnet"
+    path: /config-connector/docs/reference/resource-docs/edgenetwork/edgenetworksubnet.md
 - title: "GKE Hub"
   section:
   - title: "GKEHubFeature"
@@ -507,15 +519,3 @@ toc:
   section:
   - title: "VPCAccessConnector"
     path: /config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md
-- title: "Distribued Cloud Edge"
-  section:
-  - tile: "EdgeContainerCluster"
-    path: /config-connector/docs/reference/resource-docs/edgecontainer/edgecontainercluster.md
-  - tile: "EdgeContainerNodePool"
-    path: /config-connector/docs/reference/resource-docs/edgecontainer/edgecontainernodepool.md
-  - tile: "EdgeContainerVPNConnection"
-    path: /config-connector/docs/reference/resource-docs/edgecontainer/edgecontainervpnconnection.md
-  - title: "EdgeNetworkNetwork"
-    path: /config-connector/docs/reference/resource-docs/edgenetwork/edgenetworknetwork.md
-  - title: "EdgeNetworkSubnet"
-    path: /config-connector/docs/reference/resource-docs/edgenetwork/edgenetworksubnet.md

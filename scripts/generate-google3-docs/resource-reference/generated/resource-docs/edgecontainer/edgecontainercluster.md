@@ -28,7 +28,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/distributed-cloud/edge/latest/docs/clusters">/distributed-cloud/edge/latest/docs/clusters</a></td>
+<td><a href="/distributed-cloud/edge/latest/docs/reference/container/rest/v1/projects.locations.clusters">/distributed-cloud/edge/latest/docs/reference/container/rest/v1/projects.locations.clusters</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
@@ -1107,8 +1107,8 @@ spec:
   authorization:
     adminUsers:
       usernameRef:
-        # Replace ${CLUTSER_ADMIN_ACCOUNT?} with your user account or service account
-        external: ${CLUTSER_ADMIN_ACCOUNT?}
+        # Replace ${CLUSTER_ADMIN_ACCOUNT?} with your user account or service account
+        external: ${CLUSTER_ADMIN_ACCOUNT?}
   controlPlane:
     local:
       nodeCount: 1
@@ -1158,7 +1158,7 @@ spec:
     adminUsers:
       usernameRef:
         # Replace ${CLUSTER_ADMIN_ACCOUNT?} with your user account or service account
-        external: ${CLUTSER_ADMIN_ACCOUNT?}
+        external: ${CLUSTER_ADMIN_ACCOUNT?}
   maintenancePolicy:
     window:
       recurringWindow:
