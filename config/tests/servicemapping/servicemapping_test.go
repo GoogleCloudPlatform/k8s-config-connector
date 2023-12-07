@@ -1358,6 +1358,7 @@ func assertObservedFieldsNotLabels(t *testing.T, rc v1alpha1.ResourceConfig) {
 }
 
 func assertObservedFieldsNotName(t *testing.T, rc v1alpha1.ResourceConfig) {
+	t.Helper()
 	for _, field := range *rc.ObservedFields {
 		if field != "" && (field == rc.MetadataMapping.Name ||
 			field == rc.ServerGeneratedIDField) {
