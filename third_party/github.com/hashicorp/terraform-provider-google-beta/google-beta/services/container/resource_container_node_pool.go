@@ -1276,7 +1276,9 @@ func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *Node
 			// disable autoscaling if both min/max node counts are set to 0
 			minNodeCount := autoscaling["min_node_count"].(int)
 			maxNodeCount := autoscaling["max_node_count"].(int)
-			if (minNodeCount == 0) && (maxNodeCount == 0) {
+			totalMaxNodeCount := autoscaling["total_max_node_count"].(int)
+			totalMinNodeCount := autoscaling["total_min_node_count"].(int)
+			if ((minNodeCount == 0) && (maxNodeCount == 0)) && ((totalMaxNodeCount == 0) && (totalMinNodeCount == 0)) {
 				update.DesiredNodePoolAutoscaling = &container.NodePoolAutoscaling{
 					Enabled: false,
 				}
@@ -1285,8 +1287,8 @@ func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *Node
 					Enabled:           true,
 					MinNodeCount:      int64(minNodeCount),
 					MaxNodeCount:      int64(maxNodeCount),
-					TotalMinNodeCount: int64(autoscaling["total_min_node_count"].(int)),
-					TotalMaxNodeCount: int64(autoscaling["total_max_node_count"].(int)),
+					TotalMinNodeCount: int64(totalMinNodeCount),
+					TotalMaxNodeCount: int64(totalMaxNodeCount),
 					LocationPolicy:    autoscaling["location_policy"].(string),
 					ForceSendFields:   []string{"MinNodeCount", "TotalMinNodeCount"},
 				}
