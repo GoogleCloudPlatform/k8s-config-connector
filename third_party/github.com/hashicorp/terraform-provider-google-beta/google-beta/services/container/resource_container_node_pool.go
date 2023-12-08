@@ -1278,7 +1278,7 @@ func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *Node
 			maxNodeCount := autoscaling["max_node_count"].(int)
 			totalMaxNodeCount := autoscaling["total_max_node_count"].(int)
 			totalMinNodeCount := autoscaling["total_min_node_count"].(int)
-			if (minNodeCount == 0) && (maxNodeCount == 0) || (totalMaxNodeCount == 0) && (totalMinNodeCount == 0) {
+			if ((minNodeCount == 0) && (maxNodeCount == 0)) && ((totalMaxNodeCount == 0) && (totalMinNodeCount == 0)) {
 				update.DesiredNodePoolAutoscaling = &container.NodePoolAutoscaling{
 					Enabled: false,
 				}
