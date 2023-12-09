@@ -218,11 +218,6 @@ func TestUpgradeChecker_Preflight(t *testing.T) {
 			repo := FakeRepo{
 				channel: tc.channel,
 			}
-			// Adding the wait to avoid the error "the cache is not started, can
-			// not read objects".
-			if !mgr.GetCache().WaitForCacheSync(ctx) {
-				t.Fatalf("the cache in the test manager did not sync")
-			}
 			u := NewUpgradeChecker(client, &repo)
 			err := u.Preflight(ctx, tc.cc)
 			asserts.AssertErrorIsExpected(t, err, tc.err)

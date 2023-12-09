@@ -20,5 +20,6 @@ import (
 )
 
 var NoCacheClientFunc = func(config *rest.Config, options client.Options) (client.Client, error) {
+	options.Cache = nil
 	return client.New(config, options)
 }
