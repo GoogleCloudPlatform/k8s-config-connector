@@ -172,7 +172,9 @@ func addFieldIfExists(path []string, tfSchemas map[string]*tfschema.Schema, sour
 		}
 		result := make(map[string]interface{})
 		addFieldIfExists(path[1:], subSchema, fieldStateMap, result)
-		parent[field] = result
+		if len(result) > 0 {
+			parent[field] = result
+		}
 		return
 	default:
 		// TODO(b/312581557): Handle array types.
