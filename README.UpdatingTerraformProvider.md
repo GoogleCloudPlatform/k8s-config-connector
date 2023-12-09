@@ -1,25 +1,19 @@
+# Note
+This document provides an overview of how this project previously updated the Google Terraform Provider (TPG). It serves as a resource for individuals interested in understanding past update procedures and gaining insights into potential future strategies.
+
+We are actively evaluating the optimal long-term strategy for managing Terraform as a dependency. In the interim, for those requiring modifications to the Terraform provider code, please refer to the [README.ChangingTerraform.md](README.ChangingTerraform.md) document for detailed instructions.
+
+
 # Updating the Google Terraform Provider
 
 1.  Find the latest release TF provider version tag from the
     [TF provider’s GitHub release page](https://github.com/hashicorp/terraform-provider-google-beta/releases).
-    This will be of the format `v4.X.Y.` Read through the provider’s release
+    This will be of the format `v5.X.Y.` Read through the provider’s release
     notes and make note of any aspects that may cause us difficulty with
     upgrading to this version (especially breaking changes).
-2.  Update the TF version cloned by the
-    [`third_party/ Makefile`](third_party/Makefile) to this latest TF provider
-    release.
-3.  Run `make ensure` from the repo’s root. This will clone the version
-    provided into `third_party/github.com/hashicorp`, and then add our custom
-    patches. If there are any issues with the patches, see "Fixing a TF
-    Provider Patch" below.
-4.  Run `make vet` to check if the updated code compiles. If it does not, then
-    there might either be issues in the patches, or a dependency with a new
-    contract.
-    1.  If the issues are with a patch, treat this similarly to a patch
-        application issue and follow "Fixing a TF Provider Patch" below.
-    1.  If the issue is with the Terraform provider breaking its contract in
-        some way, there may be larger issues that we will need to work through.
-        Investigate and, if non-trivial, bring this up for further discussion.
+2.  Run `git subtree pull --prefix third_party/github.com/hashicorp/terraform-provider-google-beta https://github.com/hashicorp/terraform-provider-google-beta.git v5.X.Y --squash` from the repo’s root. This will update the provider code to the specified version.
+3.  Git may prompt you on merge CONFLICT, carefully review and resolve the CONFLICT to complete the git merge.
+4.  Run `make vet` to check if the updated code compiles. 
 5.  Run `make generate manifests resource-docs generate-go-client` to update all
     the generated files.
 6.  Run `python3
@@ -89,49 +83,6 @@
         in the terraform-provider-google repo as instructed above, and punt the
         TF provider upgrade. You should bring this topic as a new issue for
         further discussion.
-
-## Fixing a TF Provider Patch
-
-Patch files will fail to apply if there is a git merge conflict. We will need to
-manually resolve these conflicts before we will be able to successfully upgrade
-the TF provider. The following steps describe a strategy to help resolve
-conflicts and update our patch files:
-
-1.  Comment the affected patch files’ `git apply` calls out of
-    `third_party/Makefile` and re-run `make ensure` until it completes. This
-    will set your working directory to have the unpatched TF code for those
-    particular files.
-2.  Run `git add third_party/` && `git commit -m "Update TF provider under third_party"`.
-    This lets HEAD reflect the unpatched TF, and `git diff` will now show the
-    full difference between the unpatched and our desired patched state.
-3.  Uncomment the first affected patch application in `third_party/Makefile` and
-    run `make ensure` again. Note the line number that fails.
-4.  Open the patch file up and note what the change is. Each block starting with
-    `@@` denotes a separate patch in the patch file, as well as commonly a
-    function name and line number. Note that these could have changed between TF
-    versions, but they can serve as a useful guide.
-5.  Open the file being patched in `third_party/`, and manually update the file
-    to include the desired patch.
-6.  Remove that particular patch from the patch file, and re-run the particular
-    `git apply` for that patch file. This will attempt the other patches. If
-    there are other patch issues that fail, repeat steps 4-5 for the affected
-    patch.
-7.  Once `git apply` goes through smoothly, run `git diff
-    third_party/github.com/[PATH_TO_FILE] > /tmp/patch`. This will save the
-    required patches for the file to a temporary file `/tmp/patch`. Now open
-    both `/tmp/patch` and `hack/terraform-overrides/[PATCH_FILENAME].patch` side
-    by side and replace the patches of the target file in
-    `hack/terraform-overrides/[PATCH_FILENAME].patch` with the patches from
-    `/tmp/patch`. Note some `[PATCH_FILENAME].patch` contains patches to
-    multiple target files, and you should only replace the patches for the file
-    you are dealing with.
-8.  Run `git add hack/terraform-overrides third_party/ && git commit --amend` in
-    order to update your work-in-progress commit to include the changes for that
-    patch file.
-9.  Repeat steps 3-7 for each affected patch file.
-10. Once all patches go through smoothly, re-run `make ensure`. This will do one
-    last verification pass, and then ensure our repo is up-to-date with all the
-    changes.
 
 ## Setting up generate_field_changes tool
 
