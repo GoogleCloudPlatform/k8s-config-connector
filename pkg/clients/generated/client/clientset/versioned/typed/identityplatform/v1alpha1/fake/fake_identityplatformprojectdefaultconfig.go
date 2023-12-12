@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/identityplatform/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeIdentityPlatformProjectDefaultConfigs struct {
 	ns   string
 }
 
-var identityplatformprojectdefaultconfigsResource = schema.GroupVersionResource{Group: "identityplatform.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "identityplatformprojectdefaultconfigs"}
+var identityplatformprojectdefaultconfigsResource = v1alpha1.SchemeGroupVersion.WithResource("identityplatformprojectdefaultconfigs")
 
-var identityplatformprojectdefaultconfigsKind = schema.GroupVersionKind{Group: "identityplatform.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "IdentityPlatformProjectDefaultConfig"}
+var identityplatformprojectdefaultconfigsKind = v1alpha1.SchemeGroupVersion.WithKind("IdentityPlatformProjectDefaultConfig")
 
 // Get takes name of the identityPlatformProjectDefaultConfig, and returns the corresponding identityPlatformProjectDefaultConfig object, and an error if there is any.
 func (c *FakeIdentityPlatformProjectDefaultConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.IdentityPlatformProjectDefaultConfig, err error) {

@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeFolders struct {
 	ns   string
 }
 
-var foldersResource = schema.GroupVersionResource{Group: "resourcemanager.cnrm.cloud.google.com", Version: "v1beta1", Resource: "folders"}
+var foldersResource = v1beta1.SchemeGroupVersion.WithResource("folders")
 
-var foldersKind = schema.GroupVersionKind{Group: "resourcemanager.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Folder"}
+var foldersKind = v1beta1.SchemeGroupVersion.WithKind("Folder")
 
 // Get takes name of the folder, and returns the corresponding folder object, and an error if there is any.
 func (c *FakeFolders) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.Folder, err error) {

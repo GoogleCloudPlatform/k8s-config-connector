@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudbuild/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeCloudBuildTriggers struct {
 	ns   string
 }
 
-var cloudbuildtriggersResource = schema.GroupVersionResource{Group: "cloudbuild.cnrm.cloud.google.com", Version: "v1beta1", Resource: "cloudbuildtriggers"}
+var cloudbuildtriggersResource = v1beta1.SchemeGroupVersion.WithResource("cloudbuildtriggers")
 
-var cloudbuildtriggersKind = schema.GroupVersionKind{Group: "cloudbuild.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudBuildTrigger"}
+var cloudbuildtriggersKind = v1beta1.SchemeGroupVersion.WithKind("CloudBuildTrigger")
 
 // Get takes name of the cloudBuildTrigger, and returns the corresponding cloudBuildTrigger object, and an error if there is any.
 func (c *FakeCloudBuildTriggers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.CloudBuildTrigger, err error) {

@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeComputeFirewallPolicyRules struct {
 	ns   string
 }
 
-var computefirewallpolicyrulesResource = schema.GroupVersionResource{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Resource: "computefirewallpolicyrules"}
+var computefirewallpolicyrulesResource = v1beta1.SchemeGroupVersion.WithResource("computefirewallpolicyrules")
 
-var computefirewallpolicyrulesKind = schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeFirewallPolicyRule"}
+var computefirewallpolicyrulesKind = v1beta1.SchemeGroupVersion.WithKind("ComputeFirewallPolicyRule")
 
 // Get takes name of the computeFirewallPolicyRule, and returns the corresponding computeFirewallPolicyRule object, and an error if there is any.
 func (c *FakeComputeFirewallPolicyRules) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeFirewallPolicyRule, err error) {

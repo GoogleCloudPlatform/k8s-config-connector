@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeKMSCryptoKeys struct {
 	ns   string
 }
 
-var kmscryptokeysResource = schema.GroupVersionResource{Group: "kms.cnrm.cloud.google.com", Version: "v1beta1", Resource: "kmscryptokeys"}
+var kmscryptokeysResource = v1beta1.SchemeGroupVersion.WithResource("kmscryptokeys")
 
-var kmscryptokeysKind = schema.GroupVersionKind{Group: "kms.cnrm.cloud.google.com", Version: "v1beta1", Kind: "KMSCryptoKey"}
+var kmscryptokeysKind = v1beta1.SchemeGroupVersion.WithKind("KMSCryptoKey")
 
 // Get takes name of the kMSCryptoKey, and returns the corresponding kMSCryptoKey object, and an error if there is any.
 func (c *FakeKMSCryptoKeys) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.KMSCryptoKey, err error) {

@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeApigeeInstances struct {
 	ns   string
 }
 
-var apigeeinstancesResource = schema.GroupVersionResource{Group: "apigee.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "apigeeinstances"}
+var apigeeinstancesResource = v1alpha1.SchemeGroupVersion.WithResource("apigeeinstances")
 
-var apigeeinstancesKind = schema.GroupVersionKind{Group: "apigee.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "ApigeeInstance"}
+var apigeeinstancesKind = v1alpha1.SchemeGroupVersion.WithKind("ApigeeInstance")
 
 // Get takes name of the apigeeInstance, and returns the corresponding apigeeInstance object, and an error if there is any.
 func (c *FakeApigeeInstances) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ApigeeInstance, err error) {

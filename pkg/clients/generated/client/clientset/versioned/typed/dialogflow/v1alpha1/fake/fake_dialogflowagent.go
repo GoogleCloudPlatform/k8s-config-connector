@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflow/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDialogflowAgents struct {
 	ns   string
 }
 
-var dialogflowagentsResource = schema.GroupVersionResource{Group: "dialogflow.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "dialogflowagents"}
+var dialogflowagentsResource = v1alpha1.SchemeGroupVersion.WithResource("dialogflowagents")
 
-var dialogflowagentsKind = schema.GroupVersionKind{Group: "dialogflow.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "DialogflowAgent"}
+var dialogflowagentsKind = v1alpha1.SchemeGroupVersion.WithKind("DialogflowAgent")
 
 // Get takes name of the dialogflowAgent, and returns the corresponding dialogflowAgent object, and an error if there is any.
 func (c *FakeDialogflowAgents) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DialogflowAgent, err error) {

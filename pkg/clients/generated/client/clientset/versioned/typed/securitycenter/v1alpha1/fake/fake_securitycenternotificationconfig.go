@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securitycenter/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeSecurityCenterNotificationConfigs struct {
 	ns   string
 }
 
-var securitycenternotificationconfigsResource = schema.GroupVersionResource{Group: "securitycenter.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "securitycenternotificationconfigs"}
+var securitycenternotificationconfigsResource = v1alpha1.SchemeGroupVersion.WithResource("securitycenternotificationconfigs")
 
-var securitycenternotificationconfigsKind = schema.GroupVersionKind{Group: "securitycenter.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "SecurityCenterNotificationConfig"}
+var securitycenternotificationconfigsKind = v1alpha1.SchemeGroupVersion.WithKind("SecurityCenterNotificationConfig")
 
 // Get takes name of the securityCenterNotificationConfig, and returns the corresponding securityCenterNotificationConfig object, and an error if there is any.
 func (c *FakeSecurityCenterNotificationConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.SecurityCenterNotificationConfig, err error) {

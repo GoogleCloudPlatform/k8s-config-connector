@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkebackup/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeGKEBackupBackupPlans struct {
 	ns   string
 }
 
-var gkebackupbackupplansResource = schema.GroupVersionResource{Group: "gkebackup.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "gkebackupbackupplans"}
+var gkebackupbackupplansResource = v1alpha1.SchemeGroupVersion.WithResource("gkebackupbackupplans")
 
-var gkebackupbackupplansKind = schema.GroupVersionKind{Group: "gkebackup.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "GKEBackupBackupPlan"}
+var gkebackupbackupplansKind = v1alpha1.SchemeGroupVersion.WithKind("GKEBackupBackupPlan")
 
 // Get takes name of the gKEBackupBackupPlan, and returns the corresponding gKEBackupBackupPlan object, and an error if there is any.
 func (c *FakeGKEBackupBackupPlans) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.GKEBackupBackupPlan, err error) {

@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudasset/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeCloudAssetOrganizationFeeds struct {
 	ns   string
 }
 
-var cloudassetorganizationfeedsResource = schema.GroupVersionResource{Group: "cloudasset.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "cloudassetorganizationfeeds"}
+var cloudassetorganizationfeedsResource = v1alpha1.SchemeGroupVersion.WithResource("cloudassetorganizationfeeds")
 
-var cloudassetorganizationfeedsKind = schema.GroupVersionKind{Group: "cloudasset.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "CloudAssetOrganizationFeed"}
+var cloudassetorganizationfeedsKind = v1alpha1.SchemeGroupVersion.WithKind("CloudAssetOrganizationFeed")
 
 // Get takes name of the cloudAssetOrganizationFeed, and returns the corresponding cloudAssetOrganizationFeed object, and an error if there is any.
 func (c *FakeCloudAssetOrganizationFeeds) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudAssetOrganizationFeed, err error) {

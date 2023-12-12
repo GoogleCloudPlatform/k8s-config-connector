@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDataCatalogTaxonomies struct {
 	ns   string
 }
 
-var datacatalogtaxonomiesResource = schema.GroupVersionResource{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1beta1", Resource: "datacatalogtaxonomies"}
+var datacatalogtaxonomiesResource = v1beta1.SchemeGroupVersion.WithResource("datacatalogtaxonomies")
 
-var datacatalogtaxonomiesKind = schema.GroupVersionKind{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataCatalogTaxonomy"}
+var datacatalogtaxonomiesKind = v1beta1.SchemeGroupVersion.WithKind("DataCatalogTaxonomy")
 
 // Get takes name of the dataCatalogTaxonomy, and returns the corresponding dataCatalogTaxonomy object, and an error if there is any.
 func (c *FakeDataCatalogTaxonomies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DataCatalogTaxonomy, err error) {

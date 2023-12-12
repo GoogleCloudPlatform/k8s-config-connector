@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeNetworkServicesEndpointPolicies struct {
 	ns   string
 }
 
-var networkservicesendpointpoliciesResource = schema.GroupVersionResource{Group: "networkservices.cnrm.cloud.google.com", Version: "v1beta1", Resource: "networkservicesendpointpolicies"}
+var networkservicesendpointpoliciesResource = v1beta1.SchemeGroupVersion.WithResource("networkservicesendpointpolicies")
 
-var networkservicesendpointpoliciesKind = schema.GroupVersionKind{Group: "networkservices.cnrm.cloud.google.com", Version: "v1beta1", Kind: "NetworkServicesEndpointPolicy"}
+var networkservicesendpointpoliciesKind = v1beta1.SchemeGroupVersion.WithKind("NetworkServicesEndpointPolicy")
 
 // Get takes name of the networkServicesEndpointPolicy, and returns the corresponding networkServicesEndpointPolicy object, and an error if there is any.
 func (c *FakeNetworkServicesEndpointPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.NetworkServicesEndpointPolicy, err error) {

@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeBigtableGCPolicies struct {
 	ns   string
 }
 
-var bigtablegcpoliciesResource = schema.GroupVersionResource{Group: "bigtable.cnrm.cloud.google.com", Version: "v1beta1", Resource: "bigtablegcpolicies"}
+var bigtablegcpoliciesResource = v1beta1.SchemeGroupVersion.WithResource("bigtablegcpolicies")
 
-var bigtablegcpoliciesKind = schema.GroupVersionKind{Group: "bigtable.cnrm.cloud.google.com", Version: "v1beta1", Kind: "BigtableGCPolicy"}
+var bigtablegcpoliciesKind = v1beta1.SchemeGroupVersion.WithKind("BigtableGCPolicy")
 
 // Get takes name of the bigtableGCPolicy, and returns the corresponding bigtableGCPolicy object, and an error if there is any.
 func (c *FakeBigtableGCPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigtableGCPolicy, err error) {

@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeVertexAIIndexes struct {
 	ns   string
 }
 
-var vertexaiindexesResource = schema.GroupVersionResource{Group: "vertexai.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "vertexaiindexes"}
+var vertexaiindexesResource = v1alpha1.SchemeGroupVersion.WithResource("vertexaiindexes")
 
-var vertexaiindexesKind = schema.GroupVersionKind{Group: "vertexai.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "VertexAIIndex"}
+var vertexaiindexesKind = v1alpha1.SchemeGroupVersion.WithKind("VertexAIIndex")
 
 // Get takes name of the vertexAIIndex, and returns the corresponding vertexAIIndex object, and an error if there is any.
 func (c *FakeVertexAIIndexes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VertexAIIndex, err error) {

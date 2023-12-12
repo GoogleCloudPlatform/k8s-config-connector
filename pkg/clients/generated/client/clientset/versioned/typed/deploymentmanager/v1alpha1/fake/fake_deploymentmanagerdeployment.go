@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/deploymentmanager/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDeploymentManagerDeployments struct {
 	ns   string
 }
 
-var deploymentmanagerdeploymentsResource = schema.GroupVersionResource{Group: "deploymentmanager.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "deploymentmanagerdeployments"}
+var deploymentmanagerdeploymentsResource = v1alpha1.SchemeGroupVersion.WithResource("deploymentmanagerdeployments")
 
-var deploymentmanagerdeploymentsKind = schema.GroupVersionKind{Group: "deploymentmanager.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "DeploymentManagerDeployment"}
+var deploymentmanagerdeploymentsKind = v1alpha1.SchemeGroupVersion.WithKind("DeploymentManagerDeployment")
 
 // Get takes name of the deploymentManagerDeployment, and returns the corresponding deploymentManagerDeployment object, and an error if there is any.
 func (c *FakeDeploymentManagerDeployments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DeploymentManagerDeployment, err error) {

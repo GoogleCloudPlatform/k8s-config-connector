@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configcontroller/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeConfigControllerInstances struct {
 	ns   string
 }
 
-var configcontrollerinstancesResource = schema.GroupVersionResource{Group: "configcontroller.cnrm.cloud.google.com", Version: "v1beta1", Resource: "configcontrollerinstances"}
+var configcontrollerinstancesResource = v1beta1.SchemeGroupVersion.WithResource("configcontrollerinstances")
 
-var configcontrollerinstancesKind = schema.GroupVersionKind{Group: "configcontroller.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigControllerInstance"}
+var configcontrollerinstancesKind = v1beta1.SchemeGroupVersion.WithKind("ConfigControllerInstance")
 
 // Get takes name of the configControllerInstance, and returns the corresponding configControllerInstance object, and an error if there is any.
 func (c *FakeConfigControllerInstances) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ConfigControllerInstance, err error) {

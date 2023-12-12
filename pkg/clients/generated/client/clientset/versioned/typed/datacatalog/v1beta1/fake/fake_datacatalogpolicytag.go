@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDataCatalogPolicyTags struct {
 	ns   string
 }
 
-var datacatalogpolicytagsResource = schema.GroupVersionResource{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1beta1", Resource: "datacatalogpolicytags"}
+var datacatalogpolicytagsResource = v1beta1.SchemeGroupVersion.WithResource("datacatalogpolicytags")
 
-var datacatalogpolicytagsKind = schema.GroupVersionKind{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataCatalogPolicyTag"}
+var datacatalogpolicytagsKind = v1beta1.SchemeGroupVersion.WithKind("DataCatalogPolicyTag")
 
 // Get takes name of the dataCatalogPolicyTag, and returns the corresponding dataCatalogPolicyTag object, and an error if there is any.
 func (c *FakeDataCatalogPolicyTags) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DataCatalogPolicyTag, err error) {

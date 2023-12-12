@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudiot/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeCloudIOTDeviceRegistries struct {
 	ns   string
 }
 
-var cloudiotdeviceregistriesResource = schema.GroupVersionResource{Group: "cloudiot.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "cloudiotdeviceregistries"}
+var cloudiotdeviceregistriesResource = v1alpha1.SchemeGroupVersion.WithResource("cloudiotdeviceregistries")
 
-var cloudiotdeviceregistriesKind = schema.GroupVersionKind{Group: "cloudiot.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "CloudIOTDeviceRegistry"}
+var cloudiotdeviceregistriesKind = v1alpha1.SchemeGroupVersion.WithKind("CloudIOTDeviceRegistry")
 
 // Get takes name of the cloudIOTDeviceRegistry, and returns the corresponding cloudIOTDeviceRegistry object, and an error if there is any.
 func (c *FakeCloudIOTDeviceRegistries) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudIOTDeviceRegistry, err error) {

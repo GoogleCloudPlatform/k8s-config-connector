@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/container/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeContainerClusters struct {
 	ns   string
 }
 
-var containerclustersResource = schema.GroupVersionResource{Group: "container.cnrm.cloud.google.com", Version: "v1beta1", Resource: "containerclusters"}
+var containerclustersResource = v1beta1.SchemeGroupVersion.WithResource("containerclusters")
 
-var containerclustersKind = schema.GroupVersionKind{Group: "container.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ContainerCluster"}
+var containerclustersKind = v1beta1.SchemeGroupVersion.WithKind("ContainerCluster")
 
 // Get takes name of the containerCluster, and returns the corresponding containerCluster object, and an error if there is any.
 func (c *FakeContainerClusters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ContainerCluster, err error) {

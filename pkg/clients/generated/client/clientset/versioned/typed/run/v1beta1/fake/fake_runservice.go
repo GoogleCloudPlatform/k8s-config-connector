@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/run/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeRunServices struct {
 	ns   string
 }
 
-var runservicesResource = schema.GroupVersionResource{Group: "run.cnrm.cloud.google.com", Version: "v1beta1", Resource: "runservices"}
+var runservicesResource = v1beta1.SchemeGroupVersion.WithResource("runservices")
 
-var runservicesKind = schema.GroupVersionKind{Group: "run.cnrm.cloud.google.com", Version: "v1beta1", Kind: "RunService"}
+var runservicesKind = v1beta1.SchemeGroupVersion.WithKind("RunService")
 
 // Get takes name of the runService, and returns the corresponding runService object, and an error if there is any.
 func (c *FakeRunServices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.RunService, err error) {

@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datastream/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDatastreamStreams struct {
 	ns   string
 }
 
-var datastreamstreamsResource = schema.GroupVersionResource{Group: "datastream.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "datastreamstreams"}
+var datastreamstreamsResource = v1alpha1.SchemeGroupVersion.WithResource("datastreamstreams")
 
-var datastreamstreamsKind = schema.GroupVersionKind{Group: "datastream.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "DatastreamStream"}
+var datastreamstreamsKind = v1alpha1.SchemeGroupVersion.WithKind("DatastreamStream")
 
 // Get takes name of the datastreamStream, and returns the corresponding datastreamStream object, and an error if there is any.
 func (c *FakeDatastreamStreams) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DatastreamStream, err error) {

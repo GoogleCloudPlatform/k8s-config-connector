@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeAccessContextManagerServicePerimeterResources struct {
 	ns   string
 }
 
-var accesscontextmanagerserviceperimeterresourcesResource = schema.GroupVersionResource{Group: "accesscontextmanager.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "accesscontextmanagerserviceperimeterresources"}
+var accesscontextmanagerserviceperimeterresourcesResource = v1alpha1.SchemeGroupVersion.WithResource("accesscontextmanagerserviceperimeterresources")
 
-var accesscontextmanagerserviceperimeterresourcesKind = schema.GroupVersionKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "AccessContextManagerServicePerimeterResource"}
+var accesscontextmanagerserviceperimeterresourcesKind = v1alpha1.SchemeGroupVersion.WithKind("AccessContextManagerServicePerimeterResource")
 
 // Get takes name of the accessContextManagerServicePerimeterResource, and returns the corresponding accessContextManagerServicePerimeterResource object, and an error if there is any.
 func (c *FakeAccessContextManagerServicePerimeterResources) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.AccessContextManagerServicePerimeterResource, err error) {

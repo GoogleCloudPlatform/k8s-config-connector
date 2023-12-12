@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquery/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeBigQueryJobs struct {
 	ns   string
 }
 
-var bigqueryjobsResource = schema.GroupVersionResource{Group: "bigquery.cnrm.cloud.google.com", Version: "v1beta1", Resource: "bigqueryjobs"}
+var bigqueryjobsResource = v1beta1.SchemeGroupVersion.WithResource("bigqueryjobs")
 
-var bigqueryjobsKind = schema.GroupVersionKind{Group: "bigquery.cnrm.cloud.google.com", Version: "v1beta1", Kind: "BigQueryJob"}
+var bigqueryjobsKind = v1beta1.SchemeGroupVersion.WithKind("BigQueryJob")
 
 // Get takes name of the bigQueryJob, and returns the corresponding bigQueryJob object, and an error if there is any.
 func (c *FakeBigQueryJobs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigQueryJob, err error) {

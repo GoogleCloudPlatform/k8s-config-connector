@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeComputeTargetInstances struct {
 	ns   string
 }
 
-var computetargetinstancesResource = schema.GroupVersionResource{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Resource: "computetargetinstances"}
+var computetargetinstancesResource = v1beta1.SchemeGroupVersion.WithResource("computetargetinstances")
 
-var computetargetinstancesKind = schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeTargetInstance"}
+var computetargetinstancesKind = v1beta1.SchemeGroupVersion.WithKind("ComputeTargetInstance")
 
 // Get takes name of the computeTargetInstance, and returns the corresponding computeTargetInstance object, and an error if there is any.
 func (c *FakeComputeTargetInstances) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeTargetInstance, err error) {

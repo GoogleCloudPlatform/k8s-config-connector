@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/healthcare/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeHealthcareDatasets struct {
 	ns   string
 }
 
-var healthcaredatasetsResource = schema.GroupVersionResource{Group: "healthcare.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "healthcaredatasets"}
+var healthcaredatasetsResource = v1alpha1.SchemeGroupVersion.WithResource("healthcaredatasets")
 
-var healthcaredatasetsKind = schema.GroupVersionKind{Group: "healthcare.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "HealthcareDataset"}
+var healthcaredatasetsKind = v1alpha1.SchemeGroupVersion.WithKind("HealthcareDataset")
 
 // Get takes name of the healthcareDataset, and returns the corresponding healthcareDataset object, and an error if there is any.
 func (c *FakeHealthcareDatasets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.HealthcareDataset, err error) {

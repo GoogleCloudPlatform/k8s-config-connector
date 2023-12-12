@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigateway/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeAPIGatewayAPIs struct {
 	ns   string
 }
 
-var apigatewayapisResource = schema.GroupVersionResource{Group: "apigateway.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "apigatewayapis"}
+var apigatewayapisResource = v1alpha1.SchemeGroupVersion.WithResource("apigatewayapis")
 
-var apigatewayapisKind = schema.GroupVersionKind{Group: "apigateway.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "APIGatewayAPI"}
+var apigatewayapisKind = v1alpha1.SchemeGroupVersion.WithKind("APIGatewayAPI")
 
 // Get takes name of the aPIGatewayAPI, and returns the corresponding aPIGatewayAPI object, and an error if there is any.
 func (c *FakeAPIGatewayAPIs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.APIGatewayAPI, err error) {

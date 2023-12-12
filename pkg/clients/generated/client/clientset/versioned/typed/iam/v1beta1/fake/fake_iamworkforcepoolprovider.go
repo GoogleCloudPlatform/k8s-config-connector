@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeIAMWorkforcePoolProviders struct {
 	ns   string
 }
 
-var iamworkforcepoolprovidersResource = schema.GroupVersionResource{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1", Resource: "iamworkforcepoolproviders"}
+var iamworkforcepoolprovidersResource = v1beta1.SchemeGroupVersion.WithResource("iamworkforcepoolproviders")
 
-var iamworkforcepoolprovidersKind = schema.GroupVersionKind{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IAMWorkforcePoolProvider"}
+var iamworkforcepoolprovidersKind = v1beta1.SchemeGroupVersion.WithKind("IAMWorkforcePoolProvider")
 
 // Get takes name of the iAMWorkforcePoolProvider, and returns the corresponding iAMWorkforcePoolProvider object, and an error if there is any.
 func (c *FakeIAMWorkforcePoolProviders) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.IAMWorkforcePoolProvider, err error) {

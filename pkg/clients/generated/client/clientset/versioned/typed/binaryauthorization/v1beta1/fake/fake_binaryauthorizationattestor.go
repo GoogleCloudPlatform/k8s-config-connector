@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/binaryauthorization/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeBinaryAuthorizationAttestors struct {
 	ns   string
 }
 
-var binaryauthorizationattestorsResource = schema.GroupVersionResource{Group: "binaryauthorization.cnrm.cloud.google.com", Version: "v1beta1", Resource: "binaryauthorizationattestors"}
+var binaryauthorizationattestorsResource = v1beta1.SchemeGroupVersion.WithResource("binaryauthorizationattestors")
 
-var binaryauthorizationattestorsKind = schema.GroupVersionKind{Group: "binaryauthorization.cnrm.cloud.google.com", Version: "v1beta1", Kind: "BinaryAuthorizationAttestor"}
+var binaryauthorizationattestorsKind = v1beta1.SchemeGroupVersion.WithKind("BinaryAuthorizationAttestor")
 
 // Get takes name of the binaryAuthorizationAttestor, and returns the corresponding binaryAuthorizationAttestor object, and an error if there is any.
 func (c *FakeBinaryAuthorizationAttestors) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BinaryAuthorizationAttestor, err error) {

@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/artifactregistry/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeArtifactRegistryRepositories struct {
 	ns   string
 }
 
-var artifactregistryrepositoriesResource = schema.GroupVersionResource{Group: "artifactregistry.cnrm.cloud.google.com", Version: "v1beta1", Resource: "artifactregistryrepositories"}
+var artifactregistryrepositoriesResource = v1beta1.SchemeGroupVersion.WithResource("artifactregistryrepositories")
 
-var artifactregistryrepositoriesKind = schema.GroupVersionKind{Group: "artifactregistry.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ArtifactRegistryRepository"}
+var artifactregistryrepositoriesKind = v1beta1.SchemeGroupVersion.WithKind("ArtifactRegistryRepository")
 
 // Get takes name of the artifactRegistryRepository, and returns the corresponding artifactRegistryRepository object, and an error if there is any.
 func (c *FakeArtifactRegistryRepositories) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ArtifactRegistryRepository, err error) {

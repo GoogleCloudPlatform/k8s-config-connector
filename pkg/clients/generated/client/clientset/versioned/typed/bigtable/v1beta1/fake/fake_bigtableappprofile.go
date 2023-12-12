@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeBigtableAppProfiles struct {
 	ns   string
 }
 
-var bigtableappprofilesResource = schema.GroupVersionResource{Group: "bigtable.cnrm.cloud.google.com", Version: "v1beta1", Resource: "bigtableappprofiles"}
+var bigtableappprofilesResource = v1beta1.SchemeGroupVersion.WithResource("bigtableappprofiles")
 
-var bigtableappprofilesKind = schema.GroupVersionKind{Group: "bigtable.cnrm.cloud.google.com", Version: "v1beta1", Kind: "BigtableAppProfile"}
+var bigtableappprofilesKind = v1beta1.SchemeGroupVersion.WithKind("BigtableAppProfile")
 
 // Get takes name of the bigtableAppProfile, and returns the corresponding bigtableAppProfile object, and an error if there is any.
 func (c *FakeBigtableAppProfiles) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BigtableAppProfile, err error) {

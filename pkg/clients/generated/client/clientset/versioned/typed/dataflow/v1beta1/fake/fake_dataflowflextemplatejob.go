@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataflow/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDataflowFlexTemplateJobs struct {
 	ns   string
 }
 
-var dataflowflextemplatejobsResource = schema.GroupVersionResource{Group: "dataflow.cnrm.cloud.google.com", Version: "v1beta1", Resource: "dataflowflextemplatejobs"}
+var dataflowflextemplatejobsResource = v1beta1.SchemeGroupVersion.WithResource("dataflowflextemplatejobs")
 
-var dataflowflextemplatejobsKind = schema.GroupVersionKind{Group: "dataflow.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataflowFlexTemplateJob"}
+var dataflowflextemplatejobsKind = v1beta1.SchemeGroupVersion.WithKind("DataflowFlexTemplateJob")
 
 // Get takes name of the dataflowFlexTemplateJob, and returns the corresponding dataflowFlexTemplateJob object, and an error if there is any.
 func (c *FakeDataflowFlexTemplateJobs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DataflowFlexTemplateJob, err error) {

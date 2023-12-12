@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datastream/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDatastreamPrivateConnections struct {
 	ns   string
 }
 
-var datastreamprivateconnectionsResource = schema.GroupVersionResource{Group: "datastream.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "datastreamprivateconnections"}
+var datastreamprivateconnectionsResource = v1alpha1.SchemeGroupVersion.WithResource("datastreamprivateconnections")
 
-var datastreamprivateconnectionsKind = schema.GroupVersionKind{Group: "datastream.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "DatastreamPrivateConnection"}
+var datastreamprivateconnectionsKind = v1alpha1.SchemeGroupVersion.WithKind("DatastreamPrivateConnection")
 
 // Get takes name of the datastreamPrivateConnection, and returns the corresponding datastreamPrivateConnection object, and an error if there is any.
 func (c *FakeDatastreamPrivateConnections) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DatastreamPrivateConnection, err error) {

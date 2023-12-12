@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDataprocWorkflowTemplates struct {
 	ns   string
 }
 
-var dataprocworkflowtemplatesResource = schema.GroupVersionResource{Group: "dataproc.cnrm.cloud.google.com", Version: "v1beta1", Resource: "dataprocworkflowtemplates"}
+var dataprocworkflowtemplatesResource = v1beta1.SchemeGroupVersion.WithResource("dataprocworkflowtemplates")
 
-var dataprocworkflowtemplatesKind = schema.GroupVersionKind{Group: "dataproc.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataprocWorkflowTemplate"}
+var dataprocworkflowtemplatesKind = v1beta1.SchemeGroupVersion.WithKind("DataprocWorkflowTemplate")
 
 // Get takes name of the dataprocWorkflowTemplate, and returns the corresponding dataprocWorkflowTemplate object, and an error if there is any.
 func (c *FakeDataprocWorkflowTemplates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DataprocWorkflowTemplate, err error) {

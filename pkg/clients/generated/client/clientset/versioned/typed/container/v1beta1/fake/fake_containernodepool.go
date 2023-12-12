@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/container/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeContainerNodePools struct {
 	ns   string
 }
 
-var containernodepoolsResource = schema.GroupVersionResource{Group: "container.cnrm.cloud.google.com", Version: "v1beta1", Resource: "containernodepools"}
+var containernodepoolsResource = v1beta1.SchemeGroupVersion.WithResource("containernodepools")
 
-var containernodepoolsKind = schema.GroupVersionKind{Group: "container.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ContainerNodePool"}
+var containernodepoolsKind = v1beta1.SchemeGroupVersion.WithKind("ContainerNodePool")
 
 // Get takes name of the containerNodePool, and returns the corresponding containerNodePool object, and an error if there is any.
 func (c *FakeContainerNodePools) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ContainerNodePool, err error) {
