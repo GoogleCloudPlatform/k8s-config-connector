@@ -150,6 +150,9 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
 **Tip**: You can
 [use the auto-generated service mappings as a reference](#using-the-auto_generated-service-mappings-as-a-reference).
 
+**Tip**: The full list of available properties for a `ResourceConfig` is defined
+[here](pkg/apis/core/v1alpha1/servicemapping_types.go#L46).
+
 1.  Open the Service Mappings file from the previous section for editing. In the
     case of the `Spanner` service the file is named `spanner.yaml`.
 1.  In the file, under `resources`, paste the following:
@@ -172,15 +175,20 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
 
 1.  Edit the `metadataMapping` as appropriate. For this you will need to take a
     look at the terraform resource documentation, `ResourceConfig` examples for
-    similar resources, and the
-    [pkg/apis/core/servicemapping_types](pkg/apis/core/servicemapping_types)
-    documentation.
+    similar resources, and the comments in
+    [pkg/apis/core/v1alpha1/servicemapping_types.go](pkg/apis/core/v1alpha1/servicemapping_types.go).
+
+1.  Add `resourceID` if the resource has the resource ID. The value of
+    `targetField` should be the field name of the user-specified resource ID
+    field (value of `metadataMapping.name`) or the field name of the
+    server-generated ID field (value of `serverGeneratedIDField`).
 
 1.  Add `directives` if necessary. For reference, a "directive" is a specific term we're using to describe a special Terraform provider field that maps
     a unique behavior on top of the underlying resource, which can't be accomplished as part of a `GET` response.
     Similar to the step above, you'll need to look at Terraform resource documentation,
-    Google Cloud API documentation, and the [pkg/apis/core/servicemapping_types](pkg/apis/core/servicemapping_types)
-    documentation to determine if any fields are directives. There isn't a foolproof way to tell whether a field is
+    Google Cloud API documentation, and the comments in
+    [pkg/apis/core/v1alpha1/servicemapping_types.go](pkg/apis/core/v1alpha1/servicemapping_types.go)
+    to determine if any fields are directives. There isn't a foolproof way to tell whether a field is
     a directive , but a general rule of thumb to start with is to determine if there are any
     fields specific to Terraform and also don't appear in the Google Cloud API docs. <br/> </br>
     For example, with Container Cluster we first compare the [Terraform documentation](https://www.terraform.io/docs/providers/google/r/container_cluster.html) to the
@@ -202,8 +210,9 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
    list in the service mapping. The difference between `mutableButUnreadableFields` and `directives` is,
    The `mutableButUnreadableFields` fields will still be a part of resource CRD spec, they are unreadable but the 
    value of the fields can be modified. Similarly, you'll need to look at Terraform resource documentation,
-   Google Cloud API documentation, and the [pkg/apis/core/servicemapping_types](pkg/apis/core/servicemapping_types)
-   documentation to determine if any fields are `mutableButUnreadableFields`. An example is `password` field. It is
+   Google Cloud API documentation, and the comments in
+   [pkg/apis/core/v1alpha1/servicemapping_types.go](pkg/apis/core/v1alpha1/servicemapping_types.go)
+   to determine if any fields are `mutableButUnreadableFields`. An example is `password` field. It is
    mutable because users may update their password through the API. However, GCP resource usually will not return the
    `password` value for security considerations.
 
@@ -212,7 +221,7 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
       kind: ContainerCluster
       ...
       mutableButUnreadableFields:
-         - min_master_version
+        - min_master_version
     ```
 
 1. Add `ignoredFields` if necessary. Fields can't be supported or will result in the suboptimal UX (e.g.
@@ -225,8 +234,8 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
       kind: ContainerCluster
       ...
       ignoredFields:
-          # TODO: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/000
-          - node_pool
+        # TODO: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/000
+        - node_pool
     ```
 
 1.  Fill out the `resourceAvailableInAssetInventory`. Set to false.
@@ -269,6 +278,18 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
 1.  Follow the resource reference guidelines
     [here](README.ConfigureResourceReferences.md) to identify and configure
     potential resource reference fields.
+
+1.  Add `observedFields` if a common solution depends on the computed values
+    from unspecified fields under `spec`. The field names should be paths of the
+    Terraform field, e.g.
+
+    ```yaml
+    - name: google_container_cluster
+      kind: ContainerCluster
+      ...
+      observedField:
+        - master_auth.client_certificate
+    ```
 
 ## Generate the CRD
 
@@ -618,8 +639,8 @@ update to date, we need to add the new CRDs and samples to existing doc.
 1.  Update
     [scripts/generate-google3-docs/resource-reference/overview.md](scripts/generate-google3-docs/resource-reference/overview.md)
     by adding a row for your resource to the resource table. Note you need to
-    use a proper template variable for your new service. TODO: Provide guidance
-    on how to find the variable name.
+    reach out to the Config Connector team explicitly via the PR comments to
+    figure out a proper template variable for your new service.
 1.  Update
     [scripts/generate-google3-docs/resource-reference/_toc.yaml](scripts/generate-google3-docs/resource-reference/_toc.yaml)
     by adding an entry and path to the corresponding API section. If there is no
