@@ -2202,7 +2202,7 @@ func TestResolveSpecAndStatusContainingObservedState(t *testing.T) {
 		},
 		{
 			name: "nested observed field not exist in the returned state but " +
-				"its parent does",
+				"its parent field and sibling field do",
 			rc: &corekccv1alpha1.ResourceConfig{
 				ObservedFields: &[]string{
 					"nested_object_key.nested_float_key",
