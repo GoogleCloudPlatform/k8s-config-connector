@@ -126,6 +126,11 @@ func IsResourceReady(r *Resource) bool {
 	return found && cond.Status == corev1.ConditionTrue
 }
 
+func IsResourceReadyButDeletionFailed(r *Resource) bool {
+	cond, found := GetReadyCondition(r)
+	return found && cond.Reason == DeleteFailed
+}
+
 func GetReadyCondition(r *Resource) (condition k8sv1alpha1.Condition, found bool) {
 	if currConditionsRaw, ok := r.Status["conditions"].([]interface{}); ok {
 		if currConditions, err := MarshalAsConditionsSlice(currConditionsRaw); err == nil {

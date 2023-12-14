@@ -220,8 +220,9 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			r.logger.Info("deletion policy set to abandon; abandoning underlying resource", "resource", k8s.GetNamespacedName(krmResource))
 			return false, r.handleDeleted(ctx, krmResource)
 		}
-		if krmtotf.ShouldResolveParentForDelete(krmResource) {
-			orphaned, parent, err := r.isOrphaned(ctx, krmResource)
+		orphaned, parent, err := r.isOrphaned(ctx, krmResource)
+		// Special handling for resources that do not need the orphaned check
+		if !krmtotf.SkipOrphanedCheck(krmResource) {
 			if err != nil {
 				return false, err
 			}
@@ -229,6 +230,9 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 				r.logger.Info("resource has been orphaned; no API call necessary", "resource", k8s.GetNamespacedName(krmResource))
 				return false, r.handleDeleted(ctx, krmResource)
 			}
+		}
+		// Special handling for resources that do not need the parent ready check.
+		if !krmtotf.SkipParentReadyCheck(krmResource, parent) {
 			if parent != nil && !k8s.IsResourceReady(parent) {
 				// If this resource has a parent and is not orphaned, ensure its parent
 				// is ready before attempting deletion.

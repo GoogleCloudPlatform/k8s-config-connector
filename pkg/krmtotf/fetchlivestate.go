@@ -17,7 +17,6 @@ package krmtotf
 import (
 	"context"
 	"fmt"
-
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -56,12 +55,9 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 // Special handling for KMSCryptoKey that still lives after its parent KMSKeyRing is deleted.
 // We can import the tf state directly from itself instead of sourcing for its parent.
 // More info in b/279485255#comment14
-func shouldGetImportIDFromSelfForDelete(resource *Resource) bool {
-	return resource.Kind == "KMSCryptoKey"
-}
-
-func ShouldResolveParentForDelete(resource *Resource) bool {
-	return !shouldGetImportIDFromSelfForDelete(resource) || hasEmptySelfLink(resource)
+func SkipOrphanedCheck(resource *Resource) bool {
+	allowlist := []string{"KMSCryptoKey"}
+	return contains(allowlist, resource.Kind) || hasEmptySelfLink(resource)
 }
 
 func hasEmptySelfLink(resource *Resource) bool {
@@ -72,8 +68,26 @@ func hasEmptySelfLink(resource *Resource) bool {
 	return false
 }
 
+// SkipParentReadyCheck Skip the parent ready check for allowlist resources,
+// when parent exists but has deletion failed error.
+// Due to their API design, the resource is deletable even parent is not ready.
+// See b/306583728#comment8 for details.
+func SkipParentReadyCheck(resource *Resource, parent *k8s.Resource) bool {
+	allowlist := []string{"AlloyDBInstance", "BigtableAppProfile", "EdgeContainerNodePool"}
+	return contains(allowlist, resource.Kind) && k8s.IsResourceReadyButDeletionFailed(parent)
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
 func FetchLiveStateForDelete(ctx context.Context, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
-	if shouldGetImportIDFromSelfForDelete(resource) {
+	if SkipOrphanedCheck(resource) {
 		id, err := resource.SelfLinkAsID()
 		if err != nil {
 			return nil, err
