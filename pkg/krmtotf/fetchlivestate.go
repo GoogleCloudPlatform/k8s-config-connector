@@ -58,7 +58,7 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 // More info in b/279485255#comment14
 func SkipOrphanedCheck(resource *Resource) bool {
 	allowlist := []string{"KMSCryptoKey"}
-	return contains(allowlist, resource.Kind) || hasEmptySelfLink(resource)
+	return contains(allowlist, resource.Kind) || !hasEmptySelfLink(resource)
 }
 
 func hasEmptySelfLink(resource *Resource) bool {
