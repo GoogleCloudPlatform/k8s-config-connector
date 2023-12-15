@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/asserts"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
