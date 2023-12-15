@@ -49,10 +49,9 @@ import (
 	"flag"
 
 	"github.com/spf13/pflag"
+	generatorargs "k8s.io/code-generator/cmd/deepcopy-gen/args"
 	"k8s.io/gengo/examples/deepcopy-gen/generators"
 	"k8s.io/klog/v2"
-
-	generatorargs "k8s.io/code-generator/cmd/deepcopy-gen/args"
 )
 
 func main() {
