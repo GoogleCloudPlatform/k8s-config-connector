@@ -17,15 +17,14 @@ package k8s
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
-
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
+	"reflect"
+	"regexp"
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 )
 
@@ -126,10 +125,25 @@ func IsResourceReady(r *Resource) bool {
 	return found && cond.Status == corev1.ConditionTrue
 }
 
-func IsResourceReadyButDeletionFailed(r *Resource) bool {
-	cond, found := GetReadyCondition(r)
-	return found && cond.Reason == DeleteFailed
+func IsDeletionFailureDueToExistingDependent(r *Resource) bool {
+	if IsResourceReady(r) {
+		return false
+	}
+	cond, _ := GetReadyCondition(r)
+	errorMessageRegex := ".*Resource .* has nested resources.*"
+	match, _ := regexp.MatchString(errorMessageRegex, cond.Message)
+	return match
 }
+
+//func IsUpdateFailureDueToExistingDependent(r *Resource) bool {
+//	if IsResourceReady(r) {
+//		return false
+//	}
+//	cond, _ := GetReadyCondition(r)
+//	bigTableErrorMessageRegex := ".*This cluster cannot be deleted, as the following application profiles still route their traffic to it.*"
+//	match, _ := regexp.MatchString(bigTableErrorMessageRegex, cond.Message)
+//	return match
+//}
 
 func GetReadyCondition(r *Resource) (condition k8sv1alpha1.Condition, found bool) {
 	if currConditionsRaw, ok := r.Status["conditions"].([]interface{}); ok {

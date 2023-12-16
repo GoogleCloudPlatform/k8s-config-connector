@@ -17,7 +17,6 @@ package krmtotf
 import (
 	"context"
 	"fmt"
-
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -73,10 +72,15 @@ func hasEmptySelfLink(resource *Resource) bool {
 // when parent exists but has deletion failed error.
 // Due to their API design, the resource is deletable even parent is not ready.
 // See b/306583728#comment8 for details.
-func SkipParentReadyCheck(resource *Resource, parent *k8s.Resource) bool {
-	allowlist := []string{"AlloyDBInstance", "BigtableAppProfile", "EdgeContainerNodePool"}
-	return contains(allowlist, resource.Kind) && k8s.IsResourceReadyButDeletionFailed(parent)
+func SkipParentReadyCheckForDeletion(resource *Resource, parent *k8s.Resource) bool {
+	allowlist := []string{"AlloyDBInstance", "EdgeContainerNodePool"}
+	return contains(allowlist, resource.Kind) && k8s.IsDeletionFailureDueToExistingDependent(parent)
 }
+
+//func SkipParentReadyCheckForUpdate(resource *Resource, parent *k8s.Resource) bool {
+//	allowlist := []string{"BigtableAppProfile"}
+//	return contains(allowlist, resource.Kind) && k8s.IsUpdateFailureDueToExistingDependent(parent)
+//}
 
 func contains(s []string, e string) bool {
 	for _, a := range s {
@@ -101,7 +105,7 @@ func FetchLiveStateForDelete(ctx context.Context, resource *Resource, provider *
 }
 
 func fetchLiveStateFromId(ctx context.Context, id string, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
-	// Get the imported resource
+	//Get the imported resource
 	var state *terraform.InstanceState
 	var err error
 	if resource.ResourceConfig.SkipImport {

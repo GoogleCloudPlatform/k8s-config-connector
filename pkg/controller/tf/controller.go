@@ -198,6 +198,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 }
 
 func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (requeue bool, err error) {
+	var parent *k8s.Resource
 
 	// isolate any panics to only this function
 	defer execution.RecoverWithInternalError(&err)
@@ -232,7 +233,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			}
 		}
 		// Special handling for resources that do not need the parent ready check.
-		if !krmtotf.SkipParentReadyCheck(krmResource, parent) {
+		if !krmtotf.SkipParentReadyCheckForDeletion(krmResource, parent) {
 			if parent != nil && !k8s.IsResourceReady(parent) {
 				// If this resource has a parent and is not orphaned, ensure its parent
 				// is ready before attempting deletion.
@@ -259,6 +260,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 	}
 	liveState, err := krmtotf.FetchLiveStateForCreateAndUpdate(ctx, krmResource, r.provider, r, r.smLoader)
 	if err != nil {
+		//if err != nil && !krmtotf.SkipParentReadyCheckForUpdate(krmResource, parent) {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			r.logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(krmResource))
 			return r.handleUnresolvableDeps(ctx, &krmResource.Resource, unwrappedErr)
