@@ -198,7 +198,6 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 }
 
 func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (requeue bool, err error) {
-	var parent *k8s.Resource
 
 	// isolate any panics to only this function
 	defer execution.RecoverWithInternalError(&err)
