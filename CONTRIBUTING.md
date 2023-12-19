@@ -79,7 +79,8 @@ Once you have cloned your forked repo, you can use some helper scripts in the
 repo to quickly set up a local dev environment.
 
 1.  Make sure you have [gcloud](https://cloud.google.com/sdk/docs/install)
-    installed and configured with a default GCP project.
+    installed and configured with a default GCP project. Confirm that you
+    have the role of either an editor or owner in this project.
 
 1.  Make sure you have at least 30 GB of free disk size.
 
