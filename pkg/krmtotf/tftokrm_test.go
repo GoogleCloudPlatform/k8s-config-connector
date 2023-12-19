@@ -2063,7 +2063,7 @@ func TestResolveSpecAndStatusContainingObservedState(t *testing.T) {
 	tests := []struct {
 		name           string
 		rc             *corekccv1alpha1.ResourceConfig
-		metadataName   string
+		annotations    map[string]string
 		prevSpec       map[string]interface{}
 		prevStatus     map[string]interface{}
 		tfResource     *tfschema.Resource
@@ -2072,6 +2072,69 @@ func TestResolveSpecAndStatusContainingObservedState(t *testing.T) {
 		expectedStatus map[string]interface{}
 		shouldPanic    bool
 	}{
+		{
+			name: "with string observed fields and state-into-status absent",
+			rc: &corekccv1alpha1.ResourceConfig{
+				ObservedFields: &[]string{
+					"nested_object_key.nested_float_key",
+					"string_key",
+				},
+			},
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/state-into-spec": "absent",
+			},
+			prevSpec: map[string]interface{}{
+				"testField": "desired-value",
+			},
+			prevStatus: map[string]interface{}{},
+			tfResource: &tfschema.Resource{
+				Schema: map[string]*tfschema.Schema{
+					"test_field": {
+						Type:     tfschema.TypeString,
+						Required: true,
+					},
+					"string_key": {
+						Type:     tfschema.TypeString,
+						Optional: true,
+					},
+					"nested_object_key": {
+						Type:     tfschema.TypeList,
+						MaxItems: 1,
+						Optional: true,
+						Elem: &tfschema.Resource{
+							Schema: map[string]*tfschema.Schema{
+								"nested_float_key": {
+									Type:     tfschema.TypeFloat,
+									Optional: true,
+								},
+								"nested_string_key": {
+									Type:     tfschema.TypeString,
+									Optional: true,
+								},
+							},
+						},
+					},
+				},
+			},
+			tfAttributes: map[string]string{
+				"test_field":                            "desired-value",
+				"nested_object_key.#":                   "1",
+				"nested_object_key.0.nested_float_key":  "123",
+				"nested_object_key.0.nested_string_key": "not-in-observed-state",
+				"string_key":                            "test-observed-field",
+			},
+			expectedSpec: map[string]interface{}{
+				"testField": "desired-value",
+			},
+			expectedStatus: map[string]interface{}{
+				"observedState": map[string]interface{}{
+					"nestedObjectKey": map[string]interface{}{
+						"nestedFloatKey": float64(123),
+					},
+					"stringKey": "test-observed-field",
+				},
+			},
+		},
 		{
 			name: "with string observed fields",
 			rc: &corekccv1alpha1.ResourceConfig{
@@ -2138,7 +2201,58 @@ func TestResolveSpecAndStatusContainingObservedState(t *testing.T) {
 			},
 		},
 		{
-			name: "with partial string observed fields in observed state",
+			name: "nested observed field not exist in the returned state but " +
+				"its parent field and sibling field do",
+			rc: &corekccv1alpha1.ResourceConfig{
+				ObservedFields: &[]string{
+					"nested_object_key.nested_float_key",
+				},
+			},
+			prevSpec: map[string]interface{}{
+				"testField": "desired-value",
+			},
+			prevStatus: map[string]interface{}{},
+			tfResource: &tfschema.Resource{
+				Schema: map[string]*tfschema.Schema{
+					"test_field": {
+						Type:     tfschema.TypeString,
+						Required: true,
+					},
+					"nested_object_key": {
+						Type:     tfschema.TypeList,
+						MaxItems: 1,
+						Optional: true,
+						Elem: &tfschema.Resource{
+							Schema: map[string]*tfschema.Schema{
+								"nested_float_key": {
+									Type:     tfschema.TypeFloat,
+									Optional: true,
+								},
+								"nested_string_key": {
+									Type:     tfschema.TypeString,
+									Optional: true,
+								},
+							},
+						},
+					},
+				},
+			},
+			tfAttributes: map[string]string{
+				"test_field":                            "desired-value",
+				"nested_object_key.#":                   "1",
+				"nested_object_key.0.nested_string_key": "not-in-observed-state",
+			},
+			expectedSpec: map[string]interface{}{
+				"testField": "desired-value",
+				"nestedObjectKey": map[string]interface{}{
+					"nestedStringKey": "not-in-observed-state",
+				},
+			},
+			expectedStatus: nil,
+		},
+		{
+			name: "nested observed field and its parent not exist in the " +
+				"returned state",
 			rc: &corekccv1alpha1.ResourceConfig{
 				ObservedFields: &[]string{
 					"nested_object_key.nested_float_key",
@@ -2389,8 +2503,8 @@ func TestResolveSpecAndStatusContainingObservedState(t *testing.T) {
 			tc := tc
 			t.Parallel()
 			r := resourceSkeleton()
-			if tc.metadataName != "" {
-				r.SetName(tc.metadataName)
+			if len(tc.annotations) > 0 {
+				r.SetAnnotations(tc.annotations)
 			}
 			r.Spec = tc.prevSpec
 			r.Status = tc.prevStatus

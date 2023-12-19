@@ -1265,6 +1265,18 @@ type ContainerClusterSpec struct {
 	WorkloadIdentityConfig *ClusterWorkloadIdentityConfig `json:"workloadIdentityConfig,omitempty"`
 }
 
+type ClusterMasterAuthStatus struct {
+	/* Base64 encoded public certificate used by clients to authenticate to the cluster endpoint. */
+	// +optional
+	ClientCertificate *string `json:"clientCertificate,omitempty"`
+}
+
+type ClusterObservedStateStatus struct {
+	/* DEPRECATED. Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission. */
+	// +optional
+	MasterAuth *ClusterMasterAuthStatus `json:"masterAuth,omitempty"`
+}
+
 type ContainerClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ContainerCluster's current state. */
@@ -1284,6 +1296,10 @@ type ContainerClusterStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ClusterObservedStateStatus `json:"observedState,omitempty"`
 
 	// +optional
 	Operation *string `json:"operation,omitempty"`

@@ -724,6 +724,8 @@ nodes:
 - id: string
   zone: string
 observedGeneration: integer
+observedState:
+  authString: string
 persistenceIamIdentity: string
 port: integer
 readEndpoint: string
@@ -894,6 +896,20 @@ resolution and up to nine fractional digits.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.authString</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. AUTH String set on the instance. This field will only be populated if auth_enabled is true.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

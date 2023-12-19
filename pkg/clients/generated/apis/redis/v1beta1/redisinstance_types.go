@@ -315,6 +315,12 @@ type InstanceNodesStatus struct {
 	Zone *string `json:"zone,omitempty"`
 }
 
+type InstanceObservedStateStatus struct {
+	/* Output only. AUTH String set on the instance. This field will only be populated if auth_enabled is true. */
+	// +optional
+	AuthString *string `json:"authString,omitempty"`
+}
+
 type InstanceServerCaCertsStatus struct {
 	/* The certificate data in PEM format. */
 	// +optional
@@ -370,6 +376,10 @@ type RedisInstanceStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *InstanceObservedStateStatus `json:"observedState,omitempty"`
 
 	/* Output only. Cloud IAM identity used by import / export operations
 	to transfer data to/from Cloud Storage. Format is "serviceAccount:".

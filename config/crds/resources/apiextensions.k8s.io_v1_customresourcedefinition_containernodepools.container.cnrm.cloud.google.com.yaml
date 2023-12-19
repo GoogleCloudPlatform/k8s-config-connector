@@ -898,6 +898,12 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  version:
+                    type: string
+                type: object
               operation:
                 type: string
             type: object

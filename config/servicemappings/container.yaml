@@ -40,6 +40,8 @@ spec:
         - remove_default_node_pool
       mutableButUnreadableFields:
         - min_master_version
+      observedFields:
+        - master_auth.client_certificate
       containers:
         - type: project
           tfField: project
@@ -128,6 +130,8 @@ spec:
         name: name
       resourceID:
         targetField: name
+      observedFields:
+        - version
       resourceReferences:
         - key: clusterRef
           tfField: cluster

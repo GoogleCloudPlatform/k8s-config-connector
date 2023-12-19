@@ -451,6 +451,14 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  authString:
+                    description: Output only. AUTH String set on the instance. This
+                      field will only be populated if auth_enabled is true.
+                    type: string
+                type: object
               persistenceIamIdentity:
                 description: |-
                   Output only. Cloud IAM identity used by import / export operations
