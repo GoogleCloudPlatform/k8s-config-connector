@@ -638,9 +638,12 @@ update to date, we need to add the new CRDs and samples to existing doc.
     Add an additional paragraph/table if needed.
 1.  Update
     [scripts/generate-google3-docs/resource-reference/overview.md](scripts/generate-google3-docs/resource-reference/overview.md)
-    by adding a row for your resource to the resource table. Note you need to
-    reach out to the Config Connector team explicitly via the PR comments to
-    figure out a proper template variable for your new service.
+    by adding a row for your resource to the resource table.
+    
+    Note: you need to reach out to the repository
+    [owners](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/OWNERS)
+    explicitly via the PR comments to figure out a proper template variable for
+    your new service.
 1.  Update
     [scripts/generate-google3-docs/resource-reference/_toc.yaml](scripts/generate-google3-docs/resource-reference/_toc.yaml)
     by adding an entry and path to the corresponding API section. If there is no
