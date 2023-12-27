@@ -53,14 +53,16 @@ jobs:
           echo "Running 'make upgrade-kcc'..."
           make -C operator upgrade-kcc
           echo "Ensuring there is diff and committing the change..."
-          git diff
+          if [[ -z `git status --porcelain` ]]; then
+            echo "Exiting the workflow as there is no change to generate a PR."
+            exit 1
+          fi
           git add .
           git commit -m "Upgrade KCC operator to version ${{ env.RELEASE_VERSION }}"
       - name: "Create PR"
         run: |
           echo "Adding a remote pointing to GoogleCloudPlatform/k8s-config-connector..."
           git remote add target https://github.com/GoogleCloudPlatform/k8s-config-connector.git
-          git remote -vv
           export BRANCH=operator-upgrade-$(date +"%Y%m%d%H%M%S")
           echo "Setting up branch '${BRANCH}'..."
           git checkout -b ${BRANCH}
