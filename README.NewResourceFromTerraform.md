@@ -442,7 +442,9 @@ section under the Appendix.
 1.  Our test framework can capture raw HTTP logs, helpful for debugging Kubernetes controller and GCP API interactions. Enable this by setting the ARTIFACTS environment variable:
    
     ```bash
-       # Save HTTP logs to /path/to/log.
+       # Change '/path/to/log' to the path where you want to save HTTP logs.
+       # Change 'basicpubsubsubscription' to the folder name of the testdata.
+       # Change '900s' to the suitable timeout value as required.
        ARTIFACTS=/path/to/log go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests basicpubsubsubscription -timeout 900s
     ```
    
