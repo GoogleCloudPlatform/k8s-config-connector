@@ -41,11 +41,6 @@ RUN go mod vendor -o temp-vendor # So we can load license files
 RUN go run scripts/generate-third-party-licenses/main.go
 RUN rm -rf temp-vendor
 
-# Build a specific version of kubectl to be used by the
-# kubebuilder-declarative-pattern library.
-RUN curl -fsSL https://dl.k8s.io/v1.27.4/bin/linux/amd64/kubectl > kubectl
-RUN chmod a+rx kubectl
-
 # Prepare a directory containing the binaries and other artifacts, and
 # configure any required permissions
 FROM alpine:latest AS packager
@@ -54,7 +49,6 @@ COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/gke_addon_poststart .
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/operator/channels/ channels/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/operator/autopilot-channels/ autopilot-channels/
-COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/kubectl kubectl
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/
 
