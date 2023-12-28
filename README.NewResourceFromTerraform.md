@@ -438,7 +438,14 @@ section under the Appendix.
        # Export the environment variables needed in the dynamic tests if you haven't done it.
        TEST_FOLDER_ID=123456789 go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests cloudschedulerjob -timeout 900s
     ```
-
+    
+1.  Our test framework can capture raw HTTP logs, helpful for debugging Kubernetes controller and GCP API interactions. Enable this by setting the ARTIFACTS environment variable:
+   
+    ```bash
+       # Save HTTP logs to /path/to/log.
+       ARTIFACTS=/path/to/log go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests basicpubsubsubscription -timeout 900s
+    ```
+   
 ## Optionally Add the Resource to Test Contexts
 
 If the tests passed then skip this section.
