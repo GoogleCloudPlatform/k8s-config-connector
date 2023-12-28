@@ -44,7 +44,7 @@ jobs:
           echo "Checking the current state..."
           echo "Release version: ${{ env.RELEASE_VERSION }}"
           echo "Location: $(pwd)"
-          echo "Commit history:"
+          echo "Last 10 commits:"
           git log --oneline -10
           echo "Current branch:"
           git branch
@@ -57,7 +57,7 @@ jobs:
             echo "Exiting the workflow as there is no change to generate a PR."
             exit 1
           fi
-          git add .
+          git add -A .
           git commit -m "Upgrade KCC operator to version ${{ env.RELEASE_VERSION }}"
       - name: "Create PR"
         run: |
