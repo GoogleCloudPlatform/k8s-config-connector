@@ -255,4 +255,9 @@ func init() {
 		ResourceKind: "ComputeFirewallPolicyAssociation",
 		SkipUpdate:   true, // No update method in DCL at the moment
 	}
+
+	resourceContextMap["computenetworkfirewallpolicy"] = ResourceContext{
+		ResourceKind: "ComputeNetworkFirewallPolicy",
+		SkipUpdate:   true,
+	}
 }

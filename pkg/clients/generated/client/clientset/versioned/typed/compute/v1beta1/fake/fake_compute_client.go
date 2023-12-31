@@ -115,6 +115,10 @@ func (c *FakeComputeV1beta1) ComputeNetworkEndpointGroups(namespace string) v1be
 	return &FakeComputeNetworkEndpointGroups{c, namespace}
 }
 
+func (c *FakeComputeV1beta1) ComputeNetworkFirewallPolicies(namespace string) v1beta1.ComputeNetworkFirewallPolicyInterface {
+	return &FakeComputeNetworkFirewallPolicies{c, namespace}
+}
+
 func (c *FakeComputeV1beta1) ComputeNetworkPeerings(namespace string) v1beta1.ComputeNetworkPeeringInterface {
 	return &FakeComputeNetworkPeerings{c, namespace}
 }

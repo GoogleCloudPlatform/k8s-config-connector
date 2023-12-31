@@ -52,6 +52,7 @@ type ComputeV1beta1Interface interface {
 	ComputeInterconnectAttachmentsGetter
 	ComputeNetworksGetter
 	ComputeNetworkEndpointGroupsGetter
+	ComputeNetworkFirewallPoliciesGetter
 	ComputeNetworkPeeringsGetter
 	ComputeNodeGroupsGetter
 	ComputeNodeTemplatesGetter
@@ -173,6 +174,10 @@ func (c *ComputeV1beta1Client) ComputeNetworks(namespace string) ComputeNetworkI
 
 func (c *ComputeV1beta1Client) ComputeNetworkEndpointGroups(namespace string) ComputeNetworkEndpointGroupInterface {
 	return newComputeNetworkEndpointGroups(c, namespace)
+}
+
+func (c *ComputeV1beta1Client) ComputeNetworkFirewallPolicies(namespace string) ComputeNetworkFirewallPolicyInterface {
+	return newComputeNetworkFirewallPolicies(c, namespace)
 }
 
 func (c *ComputeV1beta1Client) ComputeNetworkPeerings(namespace string) ComputeNetworkPeeringInterface {

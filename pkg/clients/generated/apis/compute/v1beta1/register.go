@@ -179,6 +179,12 @@ var (
 		Kind:    reflect.TypeOf(ComputeNetworkEndpointGroup{}).Name(),
 	}
 
+	ComputeNetworkFirewallPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeNetworkFirewallPolicy{}).Name(),
+	}
+
 	ComputeNetworkPeeringGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
