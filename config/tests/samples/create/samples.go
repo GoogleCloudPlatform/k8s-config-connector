@@ -16,8 +16,8 @@ package create
 
 import (
 	"fmt"
-	"io/ioutil"
-	"path"
+	"io/fs"
+	"path/filepath"
 	"regexp"
 	"sort"
 	"strconv"
@@ -36,9 +36,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
 	"github.com/ghodss/yaml"
-	"github.com/golang-collections/go-datastructures/queue"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -65,8 +65,8 @@ func networksInSampleCount(sample Sample) int {
 	return count
 }
 
-func SetupNamespacesAndApplyDefaults(t *Harness, samples []Sample, project testgcp.GCPProject) {
-	namespaceNames := getNamespaces(samples)
+func SetupNamespacesAndApplyDefaults(t *Harness, resources []*unstructured.Unstructured, project testgcp.GCPProject) {
+	namespaceNames := getNamespaces(resources)
 	setupNamespaces(t, namespaceNames, project)
 }
 
@@ -76,18 +76,12 @@ func setupNamespaces(t *Harness, namespaces []string, project testgcp.GCPProject
 	}
 }
 
-func getNamespaces(samples []Sample) []string {
-	namespaces := make(map[string]bool)
-	for _, sample := range samples {
-		for _, unstruct := range sample.Resources {
-			namespaces[unstruct.GetNamespace()] = true
-		}
+func getNamespaces(resources []*unstructured.Unstructured) []string {
+	namespaces := sets.NewString()
+	for _, unstruct := range resources {
+		namespaces.Insert(unstruct.GetNamespace())
 	}
-	results := make([]string, 0, len(namespaces))
-	for k := range namespaces {
-		results = append(results, k)
-	}
-	return results
+	return namespaces.List()
 }
 
 type CreateDeleteTestOptions struct {
@@ -238,62 +232,76 @@ func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Uns
 
 // LoadSamples loads all the samples
 func LoadSamples(t *testing.T, project testgcp.GCPProject) []Sample {
-	matchEverything := regexp.MustCompile(".*")
-	return loadSamplesOntoUnstructs(t, matchEverything, project)
-}
-
-func loadSamplesOntoUnstructs(t *testing.T, regex *regexp.Regexp, project testgcp.GCPProject) []Sample {
-	t.Helper()
-
-	samples := make([]Sample, 0)
-	sampleNamesToFiles := mapSampleNamesToFilePaths(t, regex)
-	subVars := newSubstitutionVariables(t, project)
-	for sample, files := range sampleNamesToFiles {
-		resources := make([]*unstructured.Unstructured, 0)
-		for _, f := range files {
-			unstructs := readFileToUnstructs(t, f, subVars)
-			resources = append(resources, unstructs...)
-		}
-		s := Sample{
-			Name:      sample,
-			Resources: resources,
-		}
-		samples = append(samples, s)
+	sampleKeys := ListSamples(t)
+	var samples []Sample
+	for _, sampleKey := range sampleKeys {
+		sample := loadSampleOntoUnstructs(t, sampleKey, project)
+		samples = append(samples, sample)
 	}
 	return samples
 }
 
-func mapSampleNamesToFilePaths(t *testing.T, regex *regexp.Regexp) map[string][]string {
-	t.Helper()
-	samples := make(map[string][]string)
-	q := queue.New(1)
-	q.Put(repo.GetResourcesSamplesPath())
-	for !q.Empty() {
-		items, err := q.Get(1)
-		if err != nil {
-			t.Fatalf("error retrieving an item from queue: %v", err)
-		}
-		dir := items[0].(string)
-		fileInfos, err := ioutil.ReadDir(dir)
-		if err != nil {
-			t.Fatalf("error reading directory '%v': %v", dir, err)
-		}
-		for _, fi := range fileInfos {
-			if fi.IsDir() {
-				q.Put(path.Join(dir, fi.Name()))
-				continue
-			}
-			if !strings.HasSuffix(fi.Name(), ".yaml") {
-				continue
-			}
-			sampleName := path.Base(dir)
-			if !regex.MatchString(sampleName) {
-				continue
-			}
-			filePath := path.Join(dir, fi.Name())
-			samples[sampleName] = append(samples[sampleName], filePath)
-		}
+// ListSamples loads all the samples
+func ListSamples(t *testing.T) []SampleKey {
+	matchEverything := regexp.MustCompile(".*")
+	sampleKeys := listSamples(t, matchEverything)
+	var list []SampleKey
+	for _, sampleKey := range sampleKeys {
+		list = append(list, sampleKey)
 	}
+	return list
+}
+
+// LoadSample loads one sample
+func LoadSample(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) Sample {
+	return loadSampleOntoUnstructs(t, sampleKey, project)
+}
+
+// SampleKey contains the metadata for a sample.
+// This lets us defer variable substitution.
+type SampleKey struct {
+	Name  string
+	files []string
+}
+
+func loadSampleOntoUnstructs(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) Sample {
+	t.Helper()
+
+	subVars := newSubstitutionVariables(t, project)
+	resources := make([]*unstructured.Unstructured, 0)
+	for _, f := range sampleKey.files {
+		unstructs := readFileToUnstructs(t, f, subVars)
+		resources = append(resources, unstructs...)
+	}
+	s := Sample{
+		Name:      sampleKey.Name,
+		Resources: resources,
+	}
+	return s
+}
+
+func listSamples(t *testing.T, regex *regexp.Regexp) map[string]SampleKey {
+	t.Helper()
+	samples := make(map[string]SampleKey)
+	baseDir := repo.GetResourcesSamplesPath()
+	if err := filepath.WalkDir(baseDir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if strings.HasSuffix(d.Name(), ".yaml") {
+			sampleName := filepath.Base(filepath.Dir(path))
+			if regex.MatchString(sampleName) {
+				sampleKey := samples[sampleName]
+				sampleKey.Name = sampleName
+				sampleKey.files = append(sampleKey.files, path)
+				samples[sampleName] = sampleKey
+			}
+		}
+		return nil
+	}); err != nil {
+		t.Fatalf("error walking samples directory %q: %v", baseDir, err)
+	}
+
 	return samples
 }
 
