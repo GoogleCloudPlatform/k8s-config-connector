@@ -17,6 +17,8 @@ package controllers
 import (
 	"testing"
 
+	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
+
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 )
@@ -24,13 +26,13 @@ import (
 func TestValidateContainerResourceCustomizationValues(t *testing.T) {
 	tests := []struct {
 		name                           string
-		containerResourceCustomization v1.ResourceRequirements
+		containerResourceCustomization customizev1beta1.ResourceRequirements
 		containerInManifest            map[string]interface{}
 		wantErr                        string
 	}{
 		{
 			name: "valid customization - both limit and request are specified",
-			containerResourceCustomization: v1.ResourceRequirements{
+			containerResourceCustomization: customizev1beta1.ResourceRequirements{
 				Limits: v1.ResourceList{
 					v1.ResourceCPU:    resource.MustParse("400m"),
 					v1.ResourceMemory: resource.MustParse("512Mi"),
@@ -43,7 +45,7 @@ func TestValidateContainerResourceCustomizationValues(t *testing.T) {
 		},
 		{
 			name: "valid customization - only request is specified",
-			containerResourceCustomization: v1.ResourceRequirements{
+			containerResourceCustomization: customizev1beta1.ResourceRequirements{
 				Requests: v1.ResourceList{
 					v1.ResourceCPU:    resource.MustParse("200m"),
 					v1.ResourceMemory: resource.MustParse("256Mi"),
@@ -60,7 +62,7 @@ func TestValidateContainerResourceCustomizationValues(t *testing.T) {
 		},
 		{
 			name: "valid customization - only limit is specified",
-			containerResourceCustomization: v1.ResourceRequirements{
+			containerResourceCustomization: customizev1beta1.ResourceRequirements{
 				Limits: v1.ResourceList{
 					v1.ResourceCPU:    resource.MustParse("400m"),
 					v1.ResourceMemory: resource.MustParse("512Mi"),
@@ -77,7 +79,7 @@ func TestValidateContainerResourceCustomizationValues(t *testing.T) {
 		},
 		{
 			name: "valid customization - only request is specified, limit is not found in manifest",
-			containerResourceCustomization: v1.ResourceRequirements{
+			containerResourceCustomization: customizev1beta1.ResourceRequirements{
 				Requests: v1.ResourceList{
 					v1.ResourceCPU:    resource.MustParse("200m"),
 					v1.ResourceMemory: resource.MustParse("256Mi"),
@@ -87,7 +89,7 @@ func TestValidateContainerResourceCustomizationValues(t *testing.T) {
 		},
 		{
 			name: "valid customization - only limit is specified, request is not found in manifest",
-			containerResourceCustomization: v1.ResourceRequirements{
+			containerResourceCustomization: customizev1beta1.ResourceRequirements{
 				Limits: v1.ResourceList{
 					v1.ResourceCPU:    resource.MustParse("400m"),
 					v1.ResourceMemory: resource.MustParse("512Mi"),
@@ -97,7 +99,7 @@ func TestValidateContainerResourceCustomizationValues(t *testing.T) {
 		},
 		{
 			name: "invalid customization - memory limit is less than memory request",
-			containerResourceCustomization: v1.ResourceRequirements{
+			containerResourceCustomization: customizev1beta1.ResourceRequirements{
 				Limits: v1.ResourceList{
 					v1.ResourceCPU:    resource.MustParse("400m"),
 					v1.ResourceMemory: resource.MustParse("256Mi"),
@@ -111,7 +113,7 @@ func TestValidateContainerResourceCustomizationValues(t *testing.T) {
 		},
 		{
 			name: "invalid customization - memory limit is less than default memory request in manifest",
-			containerResourceCustomization: v1.ResourceRequirements{
+			containerResourceCustomization: customizev1beta1.ResourceRequirements{
 				Limits: v1.ResourceList{
 					v1.ResourceCPU:    resource.MustParse("400m"),
 					v1.ResourceMemory: resource.MustParse("256Mi"),
@@ -129,7 +131,7 @@ func TestValidateContainerResourceCustomizationValues(t *testing.T) {
 		},
 		{
 			name: "invalid customization - the default memory limit in manifest is less than memory request",
-			containerResourceCustomization: v1.ResourceRequirements{
+			containerResourceCustomization: customizev1beta1.ResourceRequirements{
 				Requests: v1.ResourceList{
 					v1.ResourceCPU:    resource.MustParse("200m"),
 					v1.ResourceMemory: resource.MustParse("1Gi"),
@@ -147,7 +149,7 @@ func TestValidateContainerResourceCustomizationValues(t *testing.T) {
 		},
 		{
 			name: "invalid customization - cpu limit is less than cpu request",
-			containerResourceCustomization: v1.ResourceRequirements{
+			containerResourceCustomization: customizev1beta1.ResourceRequirements{
 				Limits: v1.ResourceList{
 					v1.ResourceCPU:    resource.MustParse("200m"),
 					v1.ResourceMemory: resource.MustParse("512Mi"),
@@ -161,7 +163,7 @@ func TestValidateContainerResourceCustomizationValues(t *testing.T) {
 		},
 		{
 			name: "invalid customization - cpu limit is less than default cpu request in manifest",
-			containerResourceCustomization: v1.ResourceRequirements{
+			containerResourceCustomization: customizev1beta1.ResourceRequirements{
 				Limits: v1.ResourceList{
 					v1.ResourceCPU:    resource.MustParse("100m"),
 					v1.ResourceMemory: resource.MustParse("512Mi"),
@@ -179,7 +181,7 @@ func TestValidateContainerResourceCustomizationValues(t *testing.T) {
 		},
 		{
 			name: "invalid customization - the default cpu limit in manifest is less than cpu request",
-			containerResourceCustomization: v1.ResourceRequirements{
+			containerResourceCustomization: customizev1beta1.ResourceRequirements{
 				Requests: v1.ResourceList{
 					v1.ResourceCPU:    resource.MustParse("400m"),
 					v1.ResourceMemory: resource.MustParse("256Mi"),
