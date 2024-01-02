@@ -425,6 +425,8 @@
       location: us-central1-a
   resourceConfigId: ComputeNetworkEndpointGroup:zonal
 # not supported by asset inventory
+- resourceConfigId: ComputeNetworkFirewallPolicy
+# not supported by asset inventory
 - resourceConfigId: ComputeNetworkPeering
 # not supported by asset inventory
 - resourceConfigId: ComputeNodeGroup
