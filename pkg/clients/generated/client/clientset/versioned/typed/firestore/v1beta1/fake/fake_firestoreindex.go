@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firestore/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeFirestoreIndexes struct {
 	ns   string
 }
 
-var firestoreindexesResource = schema.GroupVersionResource{Group: "firestore.cnrm.cloud.google.com", Version: "v1beta1", Resource: "firestoreindexes"}
+var firestoreindexesResource = v1beta1.SchemeGroupVersion.WithResource("firestoreindexes")
 
-var firestoreindexesKind = schema.GroupVersionKind{Group: "firestore.cnrm.cloud.google.com", Version: "v1beta1", Kind: "FirestoreIndex"}
+var firestoreindexesKind = v1beta1.SchemeGroupVersion.WithKind("FirestoreIndex")
 
 // Get takes name of the firestoreIndex, and returns the corresponding firestoreIndex object, and an error if there is any.
 func (c *FakeFirestoreIndexes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.FirestoreIndex, err error) {

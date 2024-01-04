@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/serviceusage/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeServices struct {
 	ns   string
 }
 
-var servicesResource = schema.GroupVersionResource{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1", Resource: "services"}
+var servicesResource = v1beta1.SchemeGroupVersion.WithResource("services")
 
-var servicesKind = schema.GroupVersionKind{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Service"}
+var servicesKind = v1beta1.SchemeGroupVersion.WithKind("Service")
 
 // Get takes name of the service, and returns the corresponding service object, and an error if there is any.
 func (c *FakeServices) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.Service, err error) {

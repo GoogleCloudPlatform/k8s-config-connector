@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/accesscontextmanager/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeAccessContextManagerAccessLevelConditions struct {
 	ns   string
 }
 
-var accesscontextmanageraccesslevelconditionsResource = schema.GroupVersionResource{Group: "accesscontextmanager.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "accesscontextmanageraccesslevelconditions"}
+var accesscontextmanageraccesslevelconditionsResource = v1alpha1.SchemeGroupVersion.WithResource("accesscontextmanageraccesslevelconditions")
 
-var accesscontextmanageraccesslevelconditionsKind = schema.GroupVersionKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "AccessContextManagerAccessLevelCondition"}
+var accesscontextmanageraccesslevelconditionsKind = v1alpha1.SchemeGroupVersion.WithKind("AccessContextManagerAccessLevelCondition")
 
 // Get takes name of the accessContextManagerAccessLevelCondition, and returns the corresponding accessContextManagerAccessLevelCondition object, and an error if there is any.
 func (c *FakeAccessContextManagerAccessLevelConditions) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.AccessContextManagerAccessLevelCondition, err error) {

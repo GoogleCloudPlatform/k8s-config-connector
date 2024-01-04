@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dlp/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDLPDeidentifyTemplates struct {
 	ns   string
 }
 
-var dlpdeidentifytemplatesResource = schema.GroupVersionResource{Group: "dlp.cnrm.cloud.google.com", Version: "v1beta1", Resource: "dlpdeidentifytemplates"}
+var dlpdeidentifytemplatesResource = v1beta1.SchemeGroupVersion.WithResource("dlpdeidentifytemplates")
 
-var dlpdeidentifytemplatesKind = schema.GroupVersionKind{Group: "dlp.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DLPDeidentifyTemplate"}
+var dlpdeidentifytemplatesKind = v1beta1.SchemeGroupVersion.WithKind("DLPDeidentifyTemplate")
 
 // Get takes name of the dLPDeidentifyTemplate, and returns the corresponding dLPDeidentifyTemplate object, and an error if there is any.
 func (c *FakeDLPDeidentifyTemplates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DLPDeidentifyTemplate, err error) {

@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dialogflow/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDialogflowIntents struct {
 	ns   string
 }
 
-var dialogflowintentsResource = schema.GroupVersionResource{Group: "dialogflow.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "dialogflowintents"}
+var dialogflowintentsResource = v1alpha1.SchemeGroupVersion.WithResource("dialogflowintents")
 
-var dialogflowintentsKind = schema.GroupVersionKind{Group: "dialogflow.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "DialogflowIntent"}
+var dialogflowintentsKind = v1alpha1.SchemeGroupVersion.WithKind("DialogflowIntent")
 
 // Get takes name of the dialogflowIntent, and returns the corresponding dialogflowIntent object, and an error if there is any.
 func (c *FakeDialogflowIntents) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DialogflowIntent, err error) {

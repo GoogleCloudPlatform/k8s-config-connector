@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/identityplatform/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeIdentityPlatformTenants struct {
 	ns   string
 }
 
-var identityplatformtenantsResource = schema.GroupVersionResource{Group: "identityplatform.cnrm.cloud.google.com", Version: "v1beta1", Resource: "identityplatformtenants"}
+var identityplatformtenantsResource = v1beta1.SchemeGroupVersion.WithResource("identityplatformtenants")
 
-var identityplatformtenantsKind = schema.GroupVersionKind{Group: "identityplatform.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IdentityPlatformTenant"}
+var identityplatformtenantsKind = v1beta1.SchemeGroupVersion.WithKind("IdentityPlatformTenant")
 
 // Get takes name of the identityPlatformTenant, and returns the corresponding identityPlatformTenant object, and an error if there is any.
 func (c *FakeIdentityPlatformTenants) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.IdentityPlatformTenant, err error) {

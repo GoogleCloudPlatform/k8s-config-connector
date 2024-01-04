@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgenetwork/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeEdgeNetworkSubnets struct {
 	ns   string
 }
 
-var edgenetworksubnetsResource = schema.GroupVersionResource{Group: "edgenetwork.cnrm.cloud.google.com", Version: "v1beta1", Resource: "edgenetworksubnets"}
+var edgenetworksubnetsResource = v1beta1.SchemeGroupVersion.WithResource("edgenetworksubnets")
 
-var edgenetworksubnetsKind = schema.GroupVersionKind{Group: "edgenetwork.cnrm.cloud.google.com", Version: "v1beta1", Kind: "EdgeNetworkSubnet"}
+var edgenetworksubnetsKind = v1beta1.SchemeGroupVersion.WithKind("EdgeNetworkSubnet")
 
 // Get takes name of the edgeNetworkSubnet, and returns the corresponding edgeNetworkSubnet object, and an error if there is any.
 func (c *FakeEdgeNetworkSubnets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EdgeNetworkSubnet, err error) {

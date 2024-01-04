@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/servicedirectory/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeServiceDirectoryNamespaces struct {
 	ns   string
 }
 
-var servicedirectorynamespacesResource = schema.GroupVersionResource{Group: "servicedirectory.cnrm.cloud.google.com", Version: "v1beta1", Resource: "servicedirectorynamespaces"}
+var servicedirectorynamespacesResource = v1beta1.SchemeGroupVersion.WithResource("servicedirectorynamespaces")
 
-var servicedirectorynamespacesKind = schema.GroupVersionKind{Group: "servicedirectory.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ServiceDirectoryNamespace"}
+var servicedirectorynamespacesKind = v1beta1.SchemeGroupVersion.WithKind("ServiceDirectoryNamespace")
 
 // Get takes name of the serviceDirectoryNamespace, and returns the corresponding serviceDirectoryNamespace object, and an error if there is any.
 func (c *FakeServiceDirectoryNamespaces) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ServiceDirectoryNamespace, err error) {

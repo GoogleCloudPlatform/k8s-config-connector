@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgecontainer/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeEdgeContainerVpnConnections struct {
 	ns   string
 }
 
-var edgecontainervpnconnectionsResource = schema.GroupVersionResource{Group: "edgecontainer.cnrm.cloud.google.com", Version: "v1beta1", Resource: "edgecontainervpnconnections"}
+var edgecontainervpnconnectionsResource = v1beta1.SchemeGroupVersion.WithResource("edgecontainervpnconnections")
 
-var edgecontainervpnconnectionsKind = schema.GroupVersionKind{Group: "edgecontainer.cnrm.cloud.google.com", Version: "v1beta1", Kind: "EdgeContainerVpnConnection"}
+var edgecontainervpnconnectionsKind = v1beta1.SchemeGroupVersion.WithKind("EdgeContainerVpnConnection")
 
 // Get takes name of the edgeContainerVpnConnection, and returns the corresponding edgeContainerVpnConnection object, and an error if there is any.
 func (c *FakeEdgeContainerVpnConnections) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EdgeContainerVpnConnection, err error) {

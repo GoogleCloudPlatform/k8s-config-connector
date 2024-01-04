@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tpu/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeTPUNodes struct {
 	ns   string
 }
 
-var tpunodesResource = schema.GroupVersionResource{Group: "tpu.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "tpunodes"}
+var tpunodesResource = v1alpha1.SchemeGroupVersion.WithResource("tpunodes")
 
-var tpunodesKind = schema.GroupVersionKind{Group: "tpu.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "TPUNode"}
+var tpunodesKind = v1alpha1.SchemeGroupVersion.WithKind("TPUNode")
 
 // Get takes name of the tPUNode, and returns the corresponding tPUNode object, and an error if there is any.
 func (c *FakeTPUNodes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.TPUNode, err error) {

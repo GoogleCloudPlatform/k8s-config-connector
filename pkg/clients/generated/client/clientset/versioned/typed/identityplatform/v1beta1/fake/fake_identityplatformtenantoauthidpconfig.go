@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/identityplatform/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeIdentityPlatformTenantOAuthIDPConfigs struct {
 	ns   string
 }
 
-var identityplatformtenantoauthidpconfigsResource = schema.GroupVersionResource{Group: "identityplatform.cnrm.cloud.google.com", Version: "v1beta1", Resource: "identityplatformtenantoauthidpconfigs"}
+var identityplatformtenantoauthidpconfigsResource = v1beta1.SchemeGroupVersion.WithResource("identityplatformtenantoauthidpconfigs")
 
-var identityplatformtenantoauthidpconfigsKind = schema.GroupVersionKind{Group: "identityplatform.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IdentityPlatformTenantOAuthIDPConfig"}
+var identityplatformtenantoauthidpconfigsKind = v1beta1.SchemeGroupVersion.WithKind("IdentityPlatformTenantOAuthIDPConfig")
 
 // Get takes name of the identityPlatformTenantOAuthIDPConfig, and returns the corresponding identityPlatformTenantOAuthIDPConfig object, and an error if there is any.
 func (c *FakeIdentityPlatformTenantOAuthIDPConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.IdentityPlatformTenantOAuthIDPConfig, err error) {

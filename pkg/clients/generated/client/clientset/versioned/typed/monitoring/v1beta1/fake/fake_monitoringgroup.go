@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/monitoring/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeMonitoringGroups struct {
 	ns   string
 }
 
-var monitoringgroupsResource = schema.GroupVersionResource{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Resource: "monitoringgroups"}
+var monitoringgroupsResource = v1beta1.SchemeGroupVersion.WithResource("monitoringgroups")
 
-var monitoringgroupsKind = schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringGroup"}
+var monitoringgroupsKind = v1beta1.SchemeGroupVersion.WithKind("MonitoringGroup")
 
 // Get takes name of the monitoringGroup, and returns the corresponding monitoringGroup object, and an error if there is any.
 func (c *FakeMonitoringGroups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.MonitoringGroup, err error) {

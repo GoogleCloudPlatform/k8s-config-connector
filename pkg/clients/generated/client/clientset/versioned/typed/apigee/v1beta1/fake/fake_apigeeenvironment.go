@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeApigeeEnvironments struct {
 	ns   string
 }
 
-var apigeeenvironmentsResource = schema.GroupVersionResource{Group: "apigee.cnrm.cloud.google.com", Version: "v1beta1", Resource: "apigeeenvironments"}
+var apigeeenvironmentsResource = v1beta1.SchemeGroupVersion.WithResource("apigeeenvironments")
 
-var apigeeenvironmentsKind = schema.GroupVersionKind{Group: "apigee.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ApigeeEnvironment"}
+var apigeeenvironmentsKind = v1beta1.SchemeGroupVersion.WithKind("ApigeeEnvironment")
 
 // Get takes name of the apigeeEnvironment, and returns the corresponding apigeeEnvironment object, and an error if there is any.
 func (c *FakeApigeeEnvironments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ApigeeEnvironment, err error) {

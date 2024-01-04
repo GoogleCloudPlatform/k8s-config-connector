@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/identityplatform/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeIdentityPlatformInboundSAMLConfigs struct {
 	ns   string
 }
 
-var identityplatforminboundsamlconfigsResource = schema.GroupVersionResource{Group: "identityplatform.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "identityplatforminboundsamlconfigs"}
+var identityplatforminboundsamlconfigsResource = v1alpha1.SchemeGroupVersion.WithResource("identityplatforminboundsamlconfigs")
 
-var identityplatforminboundsamlconfigsKind = schema.GroupVersionKind{Group: "identityplatform.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "IdentityPlatformInboundSAMLConfig"}
+var identityplatforminboundsamlconfigsKind = v1alpha1.SchemeGroupVersion.WithKind("IdentityPlatformInboundSAMLConfig")
 
 // Get takes name of the identityPlatformInboundSAMLConfig, and returns the corresponding identityPlatformInboundSAMLConfig object, and an error if there is any.
 func (c *FakeIdentityPlatformInboundSAMLConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.IdentityPlatformInboundSAMLConfig, err error) {

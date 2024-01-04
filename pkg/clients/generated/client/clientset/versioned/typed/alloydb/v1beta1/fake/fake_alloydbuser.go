@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeAlloyDBUsers struct {
 	ns   string
 }
 
-var alloydbusersResource = schema.GroupVersionResource{Group: "alloydb.cnrm.cloud.google.com", Version: "v1beta1", Resource: "alloydbusers"}
+var alloydbusersResource = v1beta1.SchemeGroupVersion.WithResource("alloydbusers")
 
-var alloydbusersKind = schema.GroupVersionKind{Group: "alloydb.cnrm.cloud.google.com", Version: "v1beta1", Kind: "AlloyDBUser"}
+var alloydbusersKind = v1beta1.SchemeGroupVersion.WithKind("AlloyDBUser")
 
 // Get takes name of the alloyDBUser, and returns the corresponding alloyDBUser object, and an error if there is any.
 func (c *FakeAlloyDBUsers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.AlloyDBUser, err error) {

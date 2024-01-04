@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/workstations/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeWorkstationsWorkstationClusters struct {
 	ns   string
 }
 
-var workstationsworkstationclustersResource = schema.GroupVersionResource{Group: "workstations.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "workstationsworkstationclusters"}
+var workstationsworkstationclustersResource = v1alpha1.SchemeGroupVersion.WithResource("workstationsworkstationclusters")
 
-var workstationsworkstationclustersKind = schema.GroupVersionKind{Group: "workstations.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "WorkstationsWorkstationCluster"}
+var workstationsworkstationclustersKind = v1alpha1.SchemeGroupVersion.WithKind("WorkstationsWorkstationCluster")
 
 // Get takes name of the workstationsWorkstationCluster, and returns the corresponding workstationsWorkstationCluster object, and an error if there is any.
 func (c *FakeWorkstationsWorkstationClusters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.WorkstationsWorkstationCluster, err error) {

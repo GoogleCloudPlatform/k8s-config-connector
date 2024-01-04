@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryreservation/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeBigQueryReservationCapacityCommitments struct {
 	ns   string
 }
 
-var bigqueryreservationcapacitycommitmentsResource = schema.GroupVersionResource{Group: "bigqueryreservation.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "bigqueryreservationcapacitycommitments"}
+var bigqueryreservationcapacitycommitmentsResource = v1alpha1.SchemeGroupVersion.WithResource("bigqueryreservationcapacitycommitments")
 
-var bigqueryreservationcapacitycommitmentsKind = schema.GroupVersionKind{Group: "bigqueryreservation.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "BigQueryReservationCapacityCommitment"}
+var bigqueryreservationcapacitycommitmentsKind = v1alpha1.SchemeGroupVersion.WithKind("BigQueryReservationCapacityCommitment")
 
 // Get takes name of the bigQueryReservationCapacityCommitment, and returns the corresponding bigQueryReservationCapacityCommitment object, and an error if there is any.
 func (c *FakeBigQueryReservationCapacityCommitments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigQueryReservationCapacityCommitment, err error) {

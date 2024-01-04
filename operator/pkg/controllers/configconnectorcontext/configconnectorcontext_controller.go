@@ -81,7 +81,7 @@ func Add(mgr ctrl.Manager, repoPath string) error {
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: 20}).
-		Watches(&source.Channel{Source: r.customizationWatcher.Events()}, &handler.EnqueueRequestForObject{}).
+		WatchesRawSource(&source.Channel{Source: r.customizationWatcher.Events()}, &handler.EnqueueRequestForObject{}).
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {

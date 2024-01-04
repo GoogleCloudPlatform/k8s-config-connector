@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeCertificateManagerCertificateMapEntries struct {
 	ns   string
 }
 
-var certificatemanagercertificatemapentriesResource = schema.GroupVersionResource{Group: "certificatemanager.cnrm.cloud.google.com", Version: "v1beta1", Resource: "certificatemanagercertificatemapentries"}
+var certificatemanagercertificatemapentriesResource = v1beta1.SchemeGroupVersion.WithResource("certificatemanagercertificatemapentries")
 
-var certificatemanagercertificatemapentriesKind = schema.GroupVersionKind{Group: "certificatemanager.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CertificateManagerCertificateMapEntry"}
+var certificatemanagercertificatemapentriesKind = v1beta1.SchemeGroupVersion.WithKind("CertificateManagerCertificateMapEntry")
 
 // Get takes name of the certificateManagerCertificateMapEntry, and returns the corresponding certificateManagerCertificateMapEntry object, and an error if there is any.
 func (c *FakeCertificateManagerCertificateMapEntries) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.CertificateManagerCertificateMapEntry, err error) {

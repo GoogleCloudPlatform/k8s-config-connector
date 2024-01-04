@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/osconfig/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeOSConfigGuestPolicies struct {
 	ns   string
 }
 
-var osconfigguestpoliciesResource = schema.GroupVersionResource{Group: "osconfig.cnrm.cloud.google.com", Version: "v1beta1", Resource: "osconfigguestpolicies"}
+var osconfigguestpoliciesResource = v1beta1.SchemeGroupVersion.WithResource("osconfigguestpolicies")
 
-var osconfigguestpoliciesKind = schema.GroupVersionKind{Group: "osconfig.cnrm.cloud.google.com", Version: "v1beta1", Kind: "OSConfigGuestPolicy"}
+var osconfigguestpoliciesKind = v1beta1.SchemeGroupVersion.WithKind("OSConfigGuestPolicy")
 
 // Get takes name of the oSConfigGuestPolicy, and returns the corresponding oSConfigGuestPolicy object, and an error if there is any.
 func (c *FakeOSConfigGuestPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.OSConfigGuestPolicy, err error) {

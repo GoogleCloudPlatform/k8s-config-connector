@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/edgecontainer/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeEdgeContainerClusters struct {
 	ns   string
 }
 
-var edgecontainerclustersResource = schema.GroupVersionResource{Group: "edgecontainer.cnrm.cloud.google.com", Version: "v1beta1", Resource: "edgecontainerclusters"}
+var edgecontainerclustersResource = v1beta1.SchemeGroupVersion.WithResource("edgecontainerclusters")
 
-var edgecontainerclustersKind = schema.GroupVersionKind{Group: "edgecontainer.cnrm.cloud.google.com", Version: "v1beta1", Kind: "EdgeContainerCluster"}
+var edgecontainerclustersKind = v1beta1.SchemeGroupVersion.WithKind("EdgeContainerCluster")
 
 // Get takes name of the edgeContainerCluster, and returns the corresponding edgeContainerCluster object, and an error if there is any.
 func (c *FakeEdgeContainerClusters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EdgeContainerCluster, err error) {

@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebase/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeFirebaseProjects struct {
 	ns   string
 }
 
-var firebaseprojectsResource = schema.GroupVersionResource{Group: "firebase.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "firebaseprojects"}
+var firebaseprojectsResource = v1alpha1.SchemeGroupVersion.WithResource("firebaseprojects")
 
-var firebaseprojectsKind = schema.GroupVersionKind{Group: "firebase.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "FirebaseProject"}
+var firebaseprojectsKind = v1alpha1.SchemeGroupVersion.WithKind("FirebaseProject")
 
 // Get takes name of the firebaseProject, and returns the corresponding firebaseProject object, and an error if there is any.
 func (c *FakeFirebaseProjects) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.FirebaseProject, err error) {

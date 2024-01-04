@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/privateca/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakePrivateCACertificates struct {
 	ns   string
 }
 
-var privatecacertificatesResource = schema.GroupVersionResource{Group: "privateca.cnrm.cloud.google.com", Version: "v1beta1", Resource: "privatecacertificates"}
+var privatecacertificatesResource = v1beta1.SchemeGroupVersion.WithResource("privatecacertificates")
 
-var privatecacertificatesKind = schema.GroupVersionKind{Group: "privateca.cnrm.cloud.google.com", Version: "v1beta1", Kind: "PrivateCACertificate"}
+var privatecacertificatesKind = v1beta1.SchemeGroupVersion.WithKind("PrivateCACertificate")
 
 // Get takes name of the privateCACertificate, and returns the corresponding privateCACertificate object, and an error if there is any.
 func (c *FakePrivateCACertificates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.PrivateCACertificate, err error) {

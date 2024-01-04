@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networksecurity/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeNetworkSecurityClientTLSPolicies struct {
 	ns   string
 }
 
-var networksecurityclienttlspoliciesResource = schema.GroupVersionResource{Group: "networksecurity.cnrm.cloud.google.com", Version: "v1beta1", Resource: "networksecurityclienttlspolicies"}
+var networksecurityclienttlspoliciesResource = v1beta1.SchemeGroupVersion.WithResource("networksecurityclienttlspolicies")
 
-var networksecurityclienttlspoliciesKind = schema.GroupVersionKind{Group: "networksecurity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "NetworkSecurityClientTLSPolicy"}
+var networksecurityclienttlspoliciesKind = v1beta1.SchemeGroupVersion.WithKind("NetworkSecurityClientTLSPolicy")
 
 // Get takes name of the networkSecurityClientTLSPolicy, and returns the corresponding networkSecurityClientTLSPolicy object, and an error if there is any.
 func (c *FakeNetworkSecurityClientTLSPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.NetworkSecurityClientTLSPolicy, err error) {

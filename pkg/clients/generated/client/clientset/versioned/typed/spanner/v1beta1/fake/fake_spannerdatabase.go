@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/spanner/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeSpannerDatabases struct {
 	ns   string
 }
 
-var spannerdatabasesResource = schema.GroupVersionResource{Group: "spanner.cnrm.cloud.google.com", Version: "v1beta1", Resource: "spannerdatabases"}
+var spannerdatabasesResource = v1beta1.SchemeGroupVersion.WithResource("spannerdatabases")
 
-var spannerdatabasesKind = schema.GroupVersionKind{Group: "spanner.cnrm.cloud.google.com", Version: "v1beta1", Kind: "SpannerDatabase"}
+var spannerdatabasesKind = v1beta1.SchemeGroupVersion.WithKind("SpannerDatabase")
 
 // Get takes name of the spannerDatabase, and returns the corresponding spannerDatabase object, and an error if there is any.
 func (c *FakeSpannerDatabases) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SpannerDatabase, err error) {

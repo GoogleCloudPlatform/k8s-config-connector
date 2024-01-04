@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/healthcare/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeHealthcareHL7V2Stores struct {
 	ns   string
 }
 
-var healthcarehl7v2storesResource = schema.GroupVersionResource{Group: "healthcare.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "healthcarehl7v2stores"}
+var healthcarehl7v2storesResource = v1alpha1.SchemeGroupVersion.WithResource("healthcarehl7v2stores")
 
-var healthcarehl7v2storesKind = schema.GroupVersionKind{Group: "healthcare.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "HealthcareHL7V2Store"}
+var healthcarehl7v2storesKind = v1alpha1.SchemeGroupVersion.WithKind("HealthcareHL7V2Store")
 
 // Get takes name of the healthcareHL7V2Store, and returns the corresponding healthcareHL7V2Store object, and an error if there is any.
 func (c *FakeHealthcareHL7V2Stores) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.HealthcareHL7V2Store, err error) {

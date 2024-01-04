@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudfunctions2/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeCloudFunctions2Functions struct {
 	ns   string
 }
 
-var cloudfunctions2functionsResource = schema.GroupVersionResource{Group: "cloudfunctions2.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "cloudfunctions2functions"}
+var cloudfunctions2functionsResource = v1alpha1.SchemeGroupVersion.WithResource("cloudfunctions2functions")
 
-var cloudfunctions2functionsKind = schema.GroupVersionKind{Group: "cloudfunctions2.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "CloudFunctions2Function"}
+var cloudfunctions2functionsKind = v1alpha1.SchemeGroupVersion.WithKind("CloudFunctions2Function")
 
 // Get takes name of the cloudFunctions2Function, and returns the corresponding cloudFunctions2Function object, and an error if there is any.
 func (c *FakeCloudFunctions2Functions) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudFunctions2Function, err error) {

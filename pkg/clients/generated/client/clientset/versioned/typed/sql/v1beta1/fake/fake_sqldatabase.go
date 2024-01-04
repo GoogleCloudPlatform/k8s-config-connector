@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sql/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeSQLDatabases struct {
 	ns   string
 }
 
-var sqldatabasesResource = schema.GroupVersionResource{Group: "sql.cnrm.cloud.google.com", Version: "v1beta1", Resource: "sqldatabases"}
+var sqldatabasesResource = v1beta1.SchemeGroupVersion.WithResource("sqldatabases")
 
-var sqldatabasesKind = schema.GroupVersionKind{Group: "sql.cnrm.cloud.google.com", Version: "v1beta1", Kind: "SQLDatabase"}
+var sqldatabasesKind = v1beta1.SchemeGroupVersion.WithKind("SQLDatabase")
 
 // Get takes name of the sQLDatabase, and returns the corresponding sQLDatabase object, and an error if there is any.
 func (c *FakeSQLDatabases) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SQLDatabase, err error) {

@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/filestore/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeFilestoreBackups struct {
 	ns   string
 }
 
-var filestorebackupsResource = schema.GroupVersionResource{Group: "filestore.cnrm.cloud.google.com", Version: "v1beta1", Resource: "filestorebackups"}
+var filestorebackupsResource = v1beta1.SchemeGroupVersion.WithResource("filestorebackups")
 
-var filestorebackupsKind = schema.GroupVersionKind{Group: "filestore.cnrm.cloud.google.com", Version: "v1beta1", Kind: "FilestoreBackup"}
+var filestorebackupsKind = v1beta1.SchemeGroupVersion.WithKind("FilestoreBackup")
 
 // Get takes name of the filestoreBackup, and returns the corresponding filestoreBackup object, and an error if there is any.
 func (c *FakeFilestoreBackups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.FilestoreBackup, err error) {

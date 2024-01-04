@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeStorageBuckets struct {
 	ns   string
 }
 
-var storagebucketsResource = schema.GroupVersionResource{Group: "storage.cnrm.cloud.google.com", Version: "v1beta1", Resource: "storagebuckets"}
+var storagebucketsResource = v1beta1.SchemeGroupVersion.WithResource("storagebuckets")
 
-var storagebucketsKind = schema.GroupVersionKind{Group: "storage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "StorageBucket"}
+var storagebucketsKind = v1beta1.SchemeGroupVersion.WithKind("StorageBucket")
 
 // Get takes name of the storageBucket, and returns the corresponding storageBucket object, and an error if there is any.
 func (c *FakeStorageBuckets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.StorageBucket, err error) {

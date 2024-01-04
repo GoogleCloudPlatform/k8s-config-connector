@@ -663,7 +663,7 @@ func TestConfigConnectorContextControllerWatchMultipleCustomizationCR(t *testing
 				Containers: []customizev1beta1.ContainerResourceSpec{
 					{
 						Name:      "manager",
-						Resources: v1.ResourceRequirements{},
+						Resources: customizev1beta1.ResourceRequirements{},
 					},
 				},
 			},
@@ -677,7 +677,7 @@ func TestConfigConnectorContextControllerWatchMultipleCustomizationCR(t *testing
 				Containers: []customizev1beta1.ContainerResourceSpec{
 					{
 						Name:      "manager",
-						Resources: v1.ResourceRequirements{},
+						Resources: customizev1beta1.ResourceRequirements{},
 					},
 				},
 			},

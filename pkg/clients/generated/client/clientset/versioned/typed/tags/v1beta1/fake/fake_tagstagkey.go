@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeTagsTagKeys struct {
 	ns   string
 }
 
-var tagstagkeysResource = schema.GroupVersionResource{Group: "tags.cnrm.cloud.google.com", Version: "v1beta1", Resource: "tagstagkeys"}
+var tagstagkeysResource = v1beta1.SchemeGroupVersion.WithResource("tagstagkeys")
 
-var tagstagkeysKind = schema.GroupVersionKind{Group: "tags.cnrm.cloud.google.com", Version: "v1beta1", Kind: "TagsTagKey"}
+var tagstagkeysKind = v1beta1.SchemeGroupVersion.WithKind("TagsTagKey")
 
 // Get takes name of the tagsTagKey, and returns the corresponding tagsTagKey object, and an error if there is any.
 func (c *FakeTagsTagKeys) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.TagsTagKey, err error) {

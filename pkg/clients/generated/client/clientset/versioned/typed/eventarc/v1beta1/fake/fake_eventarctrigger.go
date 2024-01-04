@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/eventarc/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeEventarcTriggers struct {
 	ns   string
 }
 
-var eventarctriggersResource = schema.GroupVersionResource{Group: "eventarc.cnrm.cloud.google.com", Version: "v1beta1", Resource: "eventarctriggers"}
+var eventarctriggersResource = v1beta1.SchemeGroupVersion.WithResource("eventarctriggers")
 
-var eventarctriggersKind = schema.GroupVersionKind{Group: "eventarc.cnrm.cloud.google.com", Version: "v1beta1", Kind: "EventarcTrigger"}
+var eventarctriggersKind = v1beta1.SchemeGroupVersion.WithKind("EventarcTrigger")
 
 // Get takes name of the eventarcTrigger, and returns the corresponding eventarcTrigger object, and an error if there is any.
 func (c *FakeEventarcTriggers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.EventarcTrigger, err error) {

@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/recaptchaenterprise/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeRecaptchaEnterpriseKeys struct {
 	ns   string
 }
 
-var recaptchaenterprisekeysResource = schema.GroupVersionResource{Group: "recaptchaenterprise.cnrm.cloud.google.com", Version: "v1beta1", Resource: "recaptchaenterprisekeys"}
+var recaptchaenterprisekeysResource = v1beta1.SchemeGroupVersion.WithResource("recaptchaenterprisekeys")
 
-var recaptchaenterprisekeysKind = schema.GroupVersionKind{Group: "recaptchaenterprise.cnrm.cloud.google.com", Version: "v1beta1", Kind: "RecaptchaEnterpriseKey"}
+var recaptchaenterprisekeysKind = v1beta1.SchemeGroupVersion.WithKind("RecaptchaEnterpriseKey")
 
 // Get takes name of the recaptchaEnterpriseKey, and returns the corresponding recaptchaEnterpriseKey object, and an error if there is any.
 func (c *FakeRecaptchaEnterpriseKeys) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.RecaptchaEnterpriseKey, err error) {

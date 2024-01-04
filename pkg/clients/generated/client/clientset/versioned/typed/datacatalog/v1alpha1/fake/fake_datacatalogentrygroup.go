@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDataCatalogEntryGroups struct {
 	ns   string
 }
 
-var datacatalogentrygroupsResource = schema.GroupVersionResource{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "datacatalogentrygroups"}
+var datacatalogentrygroupsResource = v1alpha1.SchemeGroupVersion.WithResource("datacatalogentrygroups")
 
-var datacatalogentrygroupsKind = schema.GroupVersionKind{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "DataCatalogEntryGroup"}
+var datacatalogentrygroupsKind = v1alpha1.SchemeGroupVersion.WithKind("DataCatalogEntryGroup")
 
 // Get takes name of the dataCatalogEntryGroup, and returns the corresponding dataCatalogEntryGroup object, and an error if there is any.
 func (c *FakeDataCatalogEntryGroups) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DataCatalogEntryGroup, err error) {

@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeVertexAIFeaturestoreEntityTypeFeatures struct {
 	ns   string
 }
 
-var vertexaifeaturestoreentitytypefeaturesResource = schema.GroupVersionResource{Group: "vertexai.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "vertexaifeaturestoreentitytypefeatures"}
+var vertexaifeaturestoreentitytypefeaturesResource = v1alpha1.SchemeGroupVersion.WithResource("vertexaifeaturestoreentitytypefeatures")
 
-var vertexaifeaturestoreentitytypefeaturesKind = schema.GroupVersionKind{Group: "vertexai.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "VertexAIFeaturestoreEntityTypeFeature"}
+var vertexaifeaturestoreentitytypefeaturesKind = v1alpha1.SchemeGroupVersion.WithKind("VertexAIFeaturestoreEntityTypeFeature")
 
 // Get takes name of the vertexAIFeaturestoreEntityTypeFeature, and returns the corresponding vertexAIFeaturestoreEntityTypeFeature object, and an error if there is any.
 func (c *FakeVertexAIFeaturestoreEntityTypeFeatures) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VertexAIFeaturestoreEntityTypeFeature, err error) {

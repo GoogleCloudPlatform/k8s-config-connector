@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/certificatemanager/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeCertificateManagerDNSAuthorizations struct {
 	ns   string
 }
 
-var certificatemanagerdnsauthorizationsResource = schema.GroupVersionResource{Group: "certificatemanager.cnrm.cloud.google.com", Version: "v1beta1", Resource: "certificatemanagerdnsauthorizations"}
+var certificatemanagerdnsauthorizationsResource = v1beta1.SchemeGroupVersion.WithResource("certificatemanagerdnsauthorizations")
 
-var certificatemanagerdnsauthorizationsKind = schema.GroupVersionKind{Group: "certificatemanager.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CertificateManagerDNSAuthorization"}
+var certificatemanagerdnsauthorizationsKind = v1beta1.SchemeGroupVersion.WithKind("CertificateManagerDNSAuthorization")
 
 // Get takes name of the certificateManagerDNSAuthorization, and returns the corresponding certificateManagerDNSAuthorization object, and an error if there is any.
 func (c *FakeCertificateManagerDNSAuthorizations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.CertificateManagerDNSAuthorization, err error) {

@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsublite/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakePubSubLiteReservations struct {
 	ns   string
 }
 
-var pubsublitereservationsResource = schema.GroupVersionResource{Group: "pubsublite.cnrm.cloud.google.com", Version: "v1beta1", Resource: "pubsublitereservations"}
+var pubsublitereservationsResource = v1beta1.SchemeGroupVersion.WithResource("pubsublitereservations")
 
-var pubsublitereservationsKind = schema.GroupVersionKind{Group: "pubsublite.cnrm.cloud.google.com", Version: "v1beta1", Kind: "PubSubLiteReservation"}
+var pubsublitereservationsKind = v1beta1.SchemeGroupVersion.WithKind("PubSubLiteReservation")
 
 // Get takes name of the pubSubLiteReservation, and returns the corresponding pubSubLiteReservation object, and an error if there is any.
 func (c *FakePubSubLiteReservations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.PubSubLiteReservation, err error) {

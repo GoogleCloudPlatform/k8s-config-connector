@@ -19,13 +19,11 @@ package main
 
 import (
 	"flag"
-	"path/filepath"
 
 	"github.com/spf13/pflag"
 	generatorargs "k8s.io/code-generator/cmd/client-gen/args"
 	"k8s.io/code-generator/cmd/client-gen/generators"
 	"k8s.io/code-generator/pkg/util"
-	"k8s.io/gengo/args"
 	"k8s.io/klog/v2"
 )
 
@@ -34,9 +32,6 @@ func main() {
 	genericArgs, customArgs := generatorargs.NewDefaults()
 
 	// Override defaults.
-	// TODO: move this out of client-gen
-	genericArgs.GoHeaderFilePath = filepath.Join(args.DefaultSourceTree(), util.BoilerplatePath())
-
 	genericArgs.AddFlags(pflag.CommandLine)
 	customArgs.AddFlags(pflag.CommandLine, "") // TODO: move this input path out of client-gen
 	flag.Set("logtostderr", "true")

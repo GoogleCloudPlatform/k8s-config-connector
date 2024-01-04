@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebase/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeFirebaseWebApps struct {
 	ns   string
 }
 
-var firebasewebappsResource = schema.GroupVersionResource{Group: "firebase.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "firebasewebapps"}
+var firebasewebappsResource = v1alpha1.SchemeGroupVersion.WithResource("firebasewebapps")
 
-var firebasewebappsKind = schema.GroupVersionKind{Group: "firebase.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "FirebaseWebApp"}
+var firebasewebappsKind = v1alpha1.SchemeGroupVersion.WithKind("FirebaseWebApp")
 
 // Get takes name of the firebaseWebApp, and returns the corresponding firebaseWebApp object, and an error if there is any.
 func (c *FakeFirebaseWebApps) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.FirebaseWebApp, err error) {

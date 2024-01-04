@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeStorageTransferAgentPools struct {
 	ns   string
 }
 
-var storagetransferagentpoolsResource = schema.GroupVersionResource{Group: "storagetransfer.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "storagetransferagentpools"}
+var storagetransferagentpoolsResource = v1alpha1.SchemeGroupVersion.WithResource("storagetransferagentpools")
 
-var storagetransferagentpoolsKind = schema.GroupVersionKind{Group: "storagetransfer.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "StorageTransferAgentPool"}
+var storagetransferagentpoolsKind = v1alpha1.SchemeGroupVersion.WithKind("StorageTransferAgentPool")
 
 // Get takes name of the storageTransferAgentPool, and returns the corresponding storageTransferAgentPool object, and an error if there is any.
 func (c *FakeStorageTransferAgentPools) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.StorageTransferAgentPool, err error) {
