@@ -29,7 +29,6 @@ spec:
       - generation
       - observed_generation
       - labels
-      - template.template.vpc_access.connector
       - template.labels
       - template.template.volumes.cloud_sql_instance
     iamConfig:
@@ -103,6 +102,15 @@ spec:
         kind: SecretManagerSecretVersion
         version: v1beta1
         group: secretmanager.cnrm.cloud.google.com
+    - tfField: template.template.vpc_access.connector
+      description: |-
+        VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}, where {project} can be project id or number.
+      key: connectorRef
+      targetField: self_link
+      gvk:
+        kind: VPCAccessConnector
+        version: v1beta1
+        group: vpcaccess.cnrm.cloud.google.com
     - tfField: template.template.encryption_key
       description: |-
         A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. For more information, go to https://cloud.google.com/run/docs/securing/using-cmek
