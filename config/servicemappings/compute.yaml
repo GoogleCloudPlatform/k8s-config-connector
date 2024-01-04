@@ -1298,6 +1298,45 @@ spec:
             kind: Project
             version: v1beta1
             group: resourcemanager.cnrm.cloud.google.com
+    - name: google_compute_network_firewall_policy_association
+      kind: ComputeNetworkFirewallPolicyAssociation
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/firewallPolicies/{{firewall_policy}}/associations/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: false
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: attachment_target
+          key: attachmentTargetRef
+          description: |-
+            The target that the firewall policy is attached to.
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: firewall_policy
+          key: firewallPolicyRef
+          description: |-
+            The firewall policy ID of the association.
+          gvk:
+            kind: ComputeNetworkFirewallPolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: network_firewall_policy_id
     - name: google_compute_network_peering
       kind: ComputeNetworkPeering
       metadataMapping:

@@ -260,4 +260,9 @@ func init() {
 		ResourceKind: "ComputeNetworkFirewallPolicy",
 		SkipUpdate:   true,
 	}
+
+	resourceContextMap["computenetworkfirewallpolicyassociation"] = ResourceContext{
+		ResourceKind: "ComputeNetworkFirewallPolicyAssociation",
+		SkipUpdate:   true, // No input fields in this resource support update.
+	}
 }

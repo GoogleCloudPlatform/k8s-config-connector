@@ -333,6 +333,18 @@
         external: kcc-test
   ResourceConfigId: ComputeNetworkFirewallPolicy
   URI: "https://compute.googleapis.com/batch.compute/v1/compute/v1/projects/kcc-test/global/firewallPolicies/networkfirewallpolicy"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeNetworkFirewallPolicyAssociation
+    metadata:
+      name: networkfirewallpolicyassociation
+    spec:
+      firewallPolicyRef:
+        external: networkfirewallpolicy
+      projectRef:
+        external: kcc-test
+  ResourceConfigId: ComputeNetworkFirewallPolicyAssociation
+  URI: "https://compute.googleapis.com/batch.compute/v1/compute/v1/projects/kcc-test/global/firewallPolicies/networkfirewallpolicy/associations/networkfirewallpolicyassociation"
 - ExpectedSkeleton: null
   ResourceConfigId: ComputeNetworkPeering
   URI: ""
