@@ -323,6 +323,16 @@
       location: us-central1-a
   ResourceConfigId: ComputeNetworkEndpointGroup:zonal
   URI: "https://compute.googleapis.com/batch/compute/v1/compute/v1/projects/kcc-test/zones/us-central1-a/networkEndpointGroups/computeneg"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeNetworkFirewallPolicy
+    metadata:
+      name: networkfirewallpolicy
+    spec:
+      projectRef:
+        external: kcc-test
+  ResourceConfigId: ComputeNetworkFirewallPolicy
+  URI: "https://compute.googleapis.com/batch.compute/v1/compute/v1/projects/kcc-test/global/firewallPolicies/networkfirewallpolicy"
 - ExpectedSkeleton: null
   ResourceConfigId: ComputeNetworkPeering
   URI: ""
