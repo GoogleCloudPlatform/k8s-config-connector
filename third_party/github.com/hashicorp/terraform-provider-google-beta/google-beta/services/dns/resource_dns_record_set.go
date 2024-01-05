@@ -102,12 +102,13 @@ func ResourceDnsRecordSet() *schema.Resource {
 
 			"rrdatas": {
 				Type:     schema.TypeList,
-				Required: true,
+				Optional: true,
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
 				},
 				DiffSuppressFunc: rrdatasDnsDiffSuppress,
 				Description:      `The string data for the records in this record set whose meaning depends on the DNS type. For TXT record, if the string data contains spaces, add surrounding \" if you don't want your string to get split on spaces. To specify a single record value longer than 255 characters such as a TXT record for DKIM, add \"\" inside the Terraform configuration string (e.g. "first255characters\"\"morecharacters").`,
+				ExactlyOneOf:     []string{"rrdatas", "routing_policy"},
 			},
 
 			"routing_policy": {
@@ -197,6 +198,7 @@ func ResourceDnsRecordSet() *schema.Resource {
 						},
 					},
 				},
+				ExactlyOneOf: []string{"rrdatas", "routing_policy"},
 			},
 
 			"ttl": {
