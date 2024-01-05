@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package create
 
 import (
@@ -15,11 +12,12 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-var matchEverythingRegex = regexp.MustCompile(".*")
-
 func TestNames(t *testing.T) {
-	project := testgcp.GetDefaultProject(t)
-	samples := loadSamplesOntoUnstructs(t, matchEverythingRegex, project)
+	project := testgcp.GCPProject{
+		ProjectID:     "tests-testnames",
+		ProjectNumber: 1234567890,
+	}
+	samples := LoadAllSamples(t, project)
 	for _, s := range samples {
 		for _, r := range s.Resources {
 			validateResourceName(t, s.Name, r)
@@ -29,12 +27,12 @@ func TestNames(t *testing.T) {
 
 func TestLicenses(t *testing.T) {
 	beginsWithCopyrightRegex := regexp.MustCompile("^# Copyright 20[0-9]{2} Google LLC.*")
-	samples := mapSampleNamesToFilePaths(t, matchEverythingRegex)
-	for sampleName, files := range samples {
-		for _, f := range files {
+	sampleKeys := ListAllSamples(t)
+	for _, sampleKey := range sampleKeys {
+		for _, f := range sampleKey.files {
 			b := test.MustReadFile(t, f)
 			if !beginsWithCopyrightRegex.Match(b) {
-				t.Errorf("file '%v' in sample '%v' does not contain a license header", f, sampleName)
+				t.Errorf("file '%v' in sample '%v' does not contain a license header", f, sampleKey.Name)
 			}
 		}
 	}
