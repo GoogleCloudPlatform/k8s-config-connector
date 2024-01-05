@@ -53,7 +53,7 @@ func main() {
 	}
 
 	for _, file := range files {
-		licensePath := strings.TrimLeft(file, "temp-vendor/")
+		licensePath := strings.TrimPrefix(file, "temp-vendor/")
 		repo, licenseFilename := splitLicensePath(licensePath)
 		licenseURL := repoToLicenseURL(repo, licenseFilename)
 		fmt.Println(licenseURL)
@@ -198,6 +198,7 @@ var manualLicenseURLMapping = map[string]string{
 	"bitbucket.org/creachadair/stringset":                     "https://bitbucket.org/creachadair/stringset/src/master/LICENSE",
 	"cloud.google.com/go":                                     "https://github.com/googleapis/google-cloud-go/blob/master/LICENSE",
 	"contrib.go.opencensus.io/exporter/prometheus":            "https://github.com/census-ecosystem/opencensus-go-exporter-prometheus/blob/master/LICENSE",
+	"dario.cat/mergo":                                         "https://github.com/darccio/mergo/blob/master/LICENSE",
 	"go.starlark.net":                                         "https://github.com/google/starlark-go/blob/master/LICENSE",
 	"gomodules.xyz/jsonpatch/v2":                              "https://https://github.com/gomodules/jsonpatch/blob/master/LICENSE",
 	"google.golang.org/api":                                   "https://github.com/googleapis/google-api-go-client/blob/master/LICENSE",
