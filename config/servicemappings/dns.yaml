@@ -115,7 +115,7 @@ spec:
       - tfField: routing_policy.geo.rrdatas
         key: rrdatasRefs
         gvk:
-          kind: Compute Address
+          kind: ComputeAddress
           version: v1beta1
           group: compute.cnrm.cloud.google.com
         targetField: address
