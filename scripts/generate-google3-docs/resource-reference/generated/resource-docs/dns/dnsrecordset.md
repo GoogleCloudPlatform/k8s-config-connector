@@ -246,7 +246,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `address` field of a `Compute Address` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `address` field of a `ComputeAddress` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

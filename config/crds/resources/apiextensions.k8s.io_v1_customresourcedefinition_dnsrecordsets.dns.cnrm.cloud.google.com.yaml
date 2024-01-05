@@ -137,7 +137,7 @@ spec:
                             properties:
                               external:
                                 description: 'Allowed value: The `address` field of
-                                  a `Compute Address` resource.'
+                                  a `ComputeAddress` resource.'
                                 type: string
                               kind:
                                 description: 'Kind of the referent. Allowed values:
