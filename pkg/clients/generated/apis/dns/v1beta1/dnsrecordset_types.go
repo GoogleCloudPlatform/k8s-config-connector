@@ -35,6 +35,28 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type RecordsetGeo struct {
+	/* The location name defined in Google Cloud. */
+	Location string `json:"location"`
+
+	// +optional
+	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+}
+
+type RecordsetRoutingPolicy struct {
+	/* Specifies whether to enable fencing for geo queries. */
+	// +optional
+	EnableGeoFencing *bool `json:"enableGeoFencing,omitempty"`
+
+	/* The configuration for Geo location based routing policy. */
+	// +optional
+	Geo []RecordsetGeo `json:"geo,omitempty"`
+
+	/* The configuration for Weighted Round Robin based routing policy. */
+	// +optional
+	Wrr []RecordsetWrr `json:"wrr,omitempty"`
+}
+
 type RecordsetRrdatasRefs struct {
 	/* Allowed value: The `address` field of a `ComputeAddress` resource. */
 	// +optional
@@ -53,11 +75,23 @@ type RecordsetRrdatasRefs struct {
 	Namespace *string `json:"namespace,omitempty"`
 }
 
+type RecordsetWrr struct {
+	// +optional
+	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+
+	/* The ratio of traffic routed to the target. */
+	Weight float64 `json:"weight"`
+}
+
 type DNSRecordSetSpec struct {
 	ManagedZoneRef v1alpha1.ResourceRef `json:"managedZoneRef"`
 
 	/* Immutable. The DNS name this record set will apply to. */
 	Name string `json:"name"`
+
+	/* The configuration for steering traffic based on query. You can specify either Weighted Round Robin(WRR) type or Geolocation(GEO) type. */
+	// +optional
+	RoutingPolicy *RecordsetRoutingPolicy `json:"routingPolicy,omitempty"`
 
 	/* DEPRECATED. Although this field is still available, there is limited support. We recommend that you use `spec.rrdatasRefs` instead. */
 	// +optional
