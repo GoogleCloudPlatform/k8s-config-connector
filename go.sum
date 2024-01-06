@@ -797,8 +797,8 @@ github.com/remyoudompheng/bigfft v0.0.0-20170806203942-52369c62f446/go.mod h1:uY
 github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod h1:XWv6SoW27p1b0cqNHllgS5HIMJraePCO15w5zCzIWYg=
 github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6LYCDYWNEvQ=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
-github.com/rogpeppe/go-internal v1.11.0 h1:cWPaGQEPrBb5/AsnsZesgZZ9yb1OQ+GOISoDNXVBh4M=
-github.com/rogpeppe/go-internal v1.11.0/go.mod h1:ddIwULY96R17DhadqLgMfk9H9tvdUzkipdSkR5nkCZA=
+github.com/rogpeppe/go-internal v1.12.0 h1:exVL4IDcn6na9z1rAb56Vxr+CgyK3nn3O+epU5NdKM8=
+github.com/rogpeppe/go-internal v1.12.0/go.mod h1:E+RYuTGaKKdloAfM02xzb0FW3Paa99yedzYV+kq4uf4=
 github.com/russross/blackfriday v1.5.2/go.mod h1:JO/DiYxRf+HjHt06OyowR9PTA263kcR/rfWxYHBV53g=
 github.com/russross/blackfriday/v2 v2.0.1/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/russross/blackfriday/v2 v2.1.0 h1:JIOH55/0cWyOuilr9/qlrm0BSXldqnqwMsf35Ld67mk=
@@ -1500,8 +1500,8 @@ honnef.co/go/tools v0.0.1-2020.1.4/go.mod h1:X/FiERA/W4tHapMX5mGpAtMSVEeEUOyHaw9
 k8s.io/api v0.0.0-20190918155943-95b840bb6a1f/go.mod h1:uWuOHnjmNrtQomJrvEBg0c0HRNyQ+8KTEERVsK0PW48=
 k8s.io/api v0.17.0/go.mod h1:npsyOePkeP0CPwyGfXDHxvypiYMJxBWAMpQxCaJ4ZxI=
 k8s.io/api v0.21.3/go.mod h1:hUgeYHUbBp23Ue4qdX9tR8/ANi/g3ehylAqDn9NWVOg=
-k8s.io/api v0.27.2 h1:+H17AJpUMvl+clT+BPnKf0E3ksMAzoBBg7CntpSuADo=
-k8s.io/api v0.27.2/go.mod h1:ENmbocXfBT2ADujUXcBhHV55RIT31IIEvkntP6vZKS4=
+k8s.io/api v0.27.9 h1:zelL2mPSOAgcItlCwIzy75/wl4Rt9kSKLMQYhAE2tA4=
+k8s.io/api v0.27.9/go.mod h1:H6ZBAkYZ3B/BbyS6Us85MJas3OJp4xteQF4+kZHaw6g=
 k8s.io/apiextensions-apiserver v0.0.0-20190918161926-8f644eb6e783/go.mod h1:xvae1SZB3E17UpV59AWc271W/Ph25N+bjPyR63X6tPY=
 k8s.io/apiextensions-apiserver v0.21.3/go.mod h1:kl6dap3Gd45+21Jnh6utCx8Z2xxLm8LGDkprcd+KbsE=
 k8s.io/apiextensions-apiserver v0.27.2 h1:iwhyoeS4xj9Y7v8YExhUwbVuBhMr3Q4bd/laClBV6Bo=
@@ -1509,8 +1509,8 @@ k8s.io/apiextensions-apiserver v0.27.2/go.mod h1:Oz9UdvGguL3ULgRdY9QMUzL2RZImotg
 k8s.io/apimachinery v0.0.0-20190913080033-27d36303b655/go.mod h1:nL6pwRT8NgfF8TT68DBI8uEePRt89cSvoXUVqbkWHq4=
 k8s.io/apimachinery v0.17.0/go.mod h1:b9qmWdKlLuU9EBh+06BtLcSf/Mu89rWL33naRxs1uZg=
 k8s.io/apimachinery v0.21.3/go.mod h1:H/IM+5vH9kZRNJ4l3x/fXP/5bOPJaVP/guptnZPeCFI=
-k8s.io/apimachinery v0.27.2 h1:vBjGaKKieaIreI+oQwELalVG4d8f3YAMNpWLzDXkxeg=
-k8s.io/apimachinery v0.27.2/go.mod h1:XNfZ6xklnMCOGGFNqXG7bUrQCoR04dh/E7FprV6pb+E=
+k8s.io/apimachinery v0.27.9 h1:IOGjTX8IiPVpl7qOVOvXiiTQ+0G4k68/t5OMTWZkdas=
+k8s.io/apimachinery v0.27.9/go.mod h1:EIXLxLt/b1muPITiF5zlrcm7I+YnXsIgM+0GdnPTQvA=
 k8s.io/apiserver v0.0.0-20190918160949-bfa5e2e684ad/go.mod h1:XPCXEwhjaFN29a8NldXA901ElnKeKLrLtREO9ZhFyhg=
 k8s.io/apiserver v0.21.3/go.mod h1:eDPWlZG6/cCCMj/JBcEpDoK+I+6i3r9GsChYBHSbAzU=
 k8s.io/cli-runtime v0.26.3 h1:3ULe0oI28xmgeLMVXIstB+ZL5CTGvWSMVMLeHxitIuc=
