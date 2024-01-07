@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeComputeNetworkFirewallPolicyAssociations struct {
 	ns   string
 }
 
-var computenetworkfirewallpolicyassociationsResource = schema.GroupVersionResource{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Resource: "computenetworkfirewallpolicyassociations"}
+var computenetworkfirewallpolicyassociationsResource = v1beta1.SchemeGroupVersion.WithResource("computenetworkfirewallpolicyassociations")
 
-var computenetworkfirewallpolicyassociationsKind = schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeNetworkFirewallPolicyAssociation"}
+var computenetworkfirewallpolicyassociationsKind = v1beta1.SchemeGroupVersion.WithKind("ComputeNetworkFirewallPolicyAssociation")
 
 // Get takes name of the computeNetworkFirewallPolicyAssociation, and returns the corresponding computeNetworkFirewallPolicyAssociation object, and an error if there is any.
 func (c *FakeComputeNetworkFirewallPolicyAssociations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeNetworkFirewallPolicyAssociation, err error) {
