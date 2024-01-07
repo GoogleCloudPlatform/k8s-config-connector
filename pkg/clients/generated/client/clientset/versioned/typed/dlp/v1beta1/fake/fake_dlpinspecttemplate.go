@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dlp/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDLPInspectTemplates struct {
 	ns   string
 }
 
-var dlpinspecttemplatesResource = schema.GroupVersionResource{Group: "dlp.cnrm.cloud.google.com", Version: "v1beta1", Resource: "dlpinspecttemplates"}
+var dlpinspecttemplatesResource = v1beta1.SchemeGroupVersion.WithResource("dlpinspecttemplates")
 
-var dlpinspecttemplatesKind = schema.GroupVersionKind{Group: "dlp.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DLPInspectTemplate"}
+var dlpinspecttemplatesKind = v1beta1.SchemeGroupVersion.WithKind("DLPInspectTemplate")
 
 // Get takes name of the dLPInspectTemplate, and returns the corresponding dLPInspectTemplate object, and an error if there is any.
 func (c *FakeDLPInspectTemplates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DLPInspectTemplate, err error) {

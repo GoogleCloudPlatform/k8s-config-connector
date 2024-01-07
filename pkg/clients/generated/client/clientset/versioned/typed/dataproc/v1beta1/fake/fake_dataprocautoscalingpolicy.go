@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDataprocAutoscalingPolicies struct {
 	ns   string
 }
 
-var dataprocautoscalingpoliciesResource = schema.GroupVersionResource{Group: "dataproc.cnrm.cloud.google.com", Version: "v1beta1", Resource: "dataprocautoscalingpolicies"}
+var dataprocautoscalingpoliciesResource = v1beta1.SchemeGroupVersion.WithResource("dataprocautoscalingpolicies")
 
-var dataprocautoscalingpoliciesKind = schema.GroupVersionKind{Group: "dataproc.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataprocAutoscalingPolicy"}
+var dataprocautoscalingpoliciesKind = v1beta1.SchemeGroupVersion.WithKind("DataprocAutoscalingPolicy")
 
 // Get takes name of the dataprocAutoscalingPolicy, and returns the corresponding dataprocAutoscalingPolicy object, and an error if there is any.
 func (c *FakeDataprocAutoscalingPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DataprocAutoscalingPolicy, err error) {

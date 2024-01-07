@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeApigeeEnvgroupAttachments struct {
 	ns   string
 }
 
-var apigeeenvgroupattachmentsResource = schema.GroupVersionResource{Group: "apigee.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "apigeeenvgroupattachments"}
+var apigeeenvgroupattachmentsResource = v1alpha1.SchemeGroupVersion.WithResource("apigeeenvgroupattachments")
 
-var apigeeenvgroupattachmentsKind = schema.GroupVersionKind{Group: "apigee.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "ApigeeEnvgroupAttachment"}
+var apigeeenvgroupattachmentsKind = v1alpha1.SchemeGroupVersion.WithKind("ApigeeEnvgroupAttachment")
 
 // Get takes name of the apigeeEnvgroupAttachment, and returns the corresponding apigeeEnvgroupAttachment object, and an error if there is any.
 func (c *FakeApigeeEnvgroupAttachments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ApigeeEnvgroupAttachment, err error) {

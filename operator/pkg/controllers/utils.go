@@ -23,7 +23,6 @@ import (
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 
-	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -165,8 +164,8 @@ func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects,
 	if err := checkForDuplicateContainers(containers); err != nil {
 		return err
 	}
-	cMap := make(map[string]corev1.ResourceRequirements, len(containers)) // cMap is a map of container name to its corresponding resource customization.
-	cMapApplied := make(map[string]bool)                                  // cMapApplied is a map of container name to a boolean indicating whether the customization for this container is applied.
+	cMap := make(map[string]customizev1beta1.ResourceRequirements, len(containers)) // cMap is a map of container name to its corresponding resource customization.
+	cMapApplied := make(map[string]bool)                                            // cMapApplied is a map of container name to a boolean indicating whether the customization for this container is applied.
 	for _, c := range containers {
 		cMap[c.Name] = c.Resources
 		cMapApplied[c.Name] = false
@@ -233,7 +232,7 @@ func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects,
 }
 
 // customizeContainerResourcesFn returns a function to customize container resources.
-func customizeContainerResourcesFn(cMap map[string]corev1.ResourceRequirements, cMapApplied map[string]bool) func(container map[string]interface{}) error {
+func customizeContainerResourcesFn(cMap map[string]customizev1beta1.ResourceRequirements, cMapApplied map[string]bool) func(container map[string]interface{}) error {
 	return func(container map[string]interface{}) error {
 		name, _, err := unstructured.NestedString(container, "name")
 		if err != nil {
@@ -391,7 +390,7 @@ func ListMutatingWebhookConfigurationCustomizations(ctx context.Context, c clien
 // validateContainerResourceCustomizationValues validates the container resource values specified by the user.
 // If both `request` and `limit` values are specified by the user, they are checked against each other.
 // Otherwise, the specified value is checked against the default value found in the KCC manifest object.
-func validateContainerResourceCustomizationValues(r corev1.ResourceRequirements, container map[string]interface{}) error {
+func validateContainerResourceCustomizationValues(r customizev1beta1.ResourceRequirements, container map[string]interface{}) error {
 	// 1. validate CPU request and limit.
 	cpuLimitIsSet := r.Limits != nil && !r.Limits.Cpu().IsZero()
 	cpuRequestIsSet := r.Requests != nil && !r.Requests.Cpu().IsZero()

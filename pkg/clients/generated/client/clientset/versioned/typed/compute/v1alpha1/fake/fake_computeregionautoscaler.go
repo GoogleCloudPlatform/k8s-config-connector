@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeComputeRegionAutoscalers struct {
 	ns   string
 }
 
-var computeregionautoscalersResource = schema.GroupVersionResource{Group: "compute.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "computeregionautoscalers"}
+var computeregionautoscalersResource = v1alpha1.SchemeGroupVersion.WithResource("computeregionautoscalers")
 
-var computeregionautoscalersKind = schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "ComputeRegionAutoscaler"}
+var computeregionautoscalersKind = v1alpha1.SchemeGroupVersion.WithKind("ComputeRegionAutoscaler")
 
 // Get takes name of the computeRegionAutoscaler, and returns the corresponding computeRegionAutoscaler object, and an error if there is any.
 func (c *FakeComputeRegionAutoscalers) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeRegionAutoscaler, err error) {

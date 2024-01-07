@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigqueryanalyticshub/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeBigQueryAnalyticsHubListings struct {
 	ns   string
 }
 
-var bigqueryanalyticshublistingsResource = schema.GroupVersionResource{Group: "bigqueryanalyticshub.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "bigqueryanalyticshublistings"}
+var bigqueryanalyticshublistingsResource = v1alpha1.SchemeGroupVersion.WithResource("bigqueryanalyticshublistings")
 
-var bigqueryanalyticshublistingsKind = schema.GroupVersionKind{Group: "bigqueryanalyticshub.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "BigQueryAnalyticsHubListing"}
+var bigqueryanalyticshublistingsKind = v1alpha1.SchemeGroupVersion.WithKind("BigQueryAnalyticsHubListing")
 
 // Get takes name of the bigQueryAnalyticsHubListing, and returns the corresponding bigQueryAnalyticsHubListing object, and an error if there is any.
 func (c *FakeBigQueryAnalyticsHubListings) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigQueryAnalyticsHubListing, err error) {

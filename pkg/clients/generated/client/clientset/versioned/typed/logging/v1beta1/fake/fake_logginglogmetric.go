@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeLoggingLogMetrics struct {
 	ns   string
 }
 
-var logginglogmetricsResource = schema.GroupVersionResource{Group: "logging.cnrm.cloud.google.com", Version: "v1beta1", Resource: "logginglogmetrics"}
+var logginglogmetricsResource = v1beta1.SchemeGroupVersion.WithResource("logginglogmetrics")
 
-var logginglogmetricsKind = schema.GroupVersionKind{Group: "logging.cnrm.cloud.google.com", Version: "v1beta1", Kind: "LoggingLogMetric"}
+var logginglogmetricsKind = v1beta1.SchemeGroupVersion.WithKind("LoggingLogMetric")
 
 // Get takes name of the loggingLogMetric, and returns the corresponding loggingLogMetric object, and an error if there is any.
 func (c *FakeLoggingLogMetrics) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.LoggingLogMetric, err error) {

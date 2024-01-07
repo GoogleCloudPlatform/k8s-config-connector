@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeComputeVPNGateways struct {
 	ns   string
 }
 
-var computevpngatewaysResource = schema.GroupVersionResource{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Resource: "computevpngateways"}
+var computevpngatewaysResource = v1beta1.SchemeGroupVersion.WithResource("computevpngateways")
 
-var computevpngatewaysKind = schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeVPNGateway"}
+var computevpngatewaysKind = v1beta1.SchemeGroupVersion.WithKind("ComputeVPNGateway")
 
 // Get takes name of the computeVPNGateway, and returns the corresponding computeVPNGateway object, and an error if there is any.
 func (c *FakeComputeVPNGateways) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeVPNGateway, err error) {

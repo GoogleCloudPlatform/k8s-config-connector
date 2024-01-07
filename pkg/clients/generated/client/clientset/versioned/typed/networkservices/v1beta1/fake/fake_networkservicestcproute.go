@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeNetworkServicesTCPRoutes struct {
 	ns   string
 }
 
-var networkservicestcproutesResource = schema.GroupVersionResource{Group: "networkservices.cnrm.cloud.google.com", Version: "v1beta1", Resource: "networkservicestcproutes"}
+var networkservicestcproutesResource = v1beta1.SchemeGroupVersion.WithResource("networkservicestcproutes")
 
-var networkservicestcproutesKind = schema.GroupVersionKind{Group: "networkservices.cnrm.cloud.google.com", Version: "v1beta1", Kind: "NetworkServicesTCPRoute"}
+var networkservicestcproutesKind = v1beta1.SchemeGroupVersion.WithKind("NetworkServicesTCPRoute")
 
 // Get takes name of the networkServicesTCPRoute, and returns the corresponding networkServicesTCPRoute object, and an error if there is any.
 func (c *FakeNetworkServicesTCPRoutes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.NetworkServicesTCPRoute, err error) {

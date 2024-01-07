@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dlp/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDLPStoredInfoTypes struct {
 	ns   string
 }
 
-var dlpstoredinfotypesResource = schema.GroupVersionResource{Group: "dlp.cnrm.cloud.google.com", Version: "v1beta1", Resource: "dlpstoredinfotypes"}
+var dlpstoredinfotypesResource = v1beta1.SchemeGroupVersion.WithResource("dlpstoredinfotypes")
 
-var dlpstoredinfotypesKind = schema.GroupVersionKind{Group: "dlp.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DLPStoredInfoType"}
+var dlpstoredinfotypesKind = v1beta1.SchemeGroupVersion.WithKind("DLPStoredInfoType")
 
 // Get takes name of the dLPStoredInfoType, and returns the corresponding dLPStoredInfoType object, and an error if there is any.
 func (c *FakeDLPStoredInfoTypes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DLPStoredInfoType, err error) {

@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkservices/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeNetworkServicesEdgeCacheOrigins struct {
 	ns   string
 }
 
-var networkservicesedgecacheoriginsResource = schema.GroupVersionResource{Group: "networkservices.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "networkservicesedgecacheorigins"}
+var networkservicesedgecacheoriginsResource = v1alpha1.SchemeGroupVersion.WithResource("networkservicesedgecacheorigins")
 
-var networkservicesedgecacheoriginsKind = schema.GroupVersionKind{Group: "networkservices.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "NetworkServicesEdgeCacheOrigin"}
+var networkservicesedgecacheoriginsKind = v1alpha1.SchemeGroupVersion.WithKind("NetworkServicesEdgeCacheOrigin")
 
 // Get takes name of the networkServicesEdgeCacheOrigin, and returns the corresponding networkServicesEdgeCacheOrigin object, and an error if there is any.
 func (c *FakeNetworkServicesEdgeCacheOrigins) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.NetworkServicesEdgeCacheOrigin, err error) {

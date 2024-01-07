@@ -34,7 +34,7 @@ var (
 			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: "manager",
-					Resources: corev1.ResourceRequirements{
+					Resources: customizev1beta1.ResourceRequirements{
 						Limits: corev1.ResourceList{
 							corev1.ResourceCPU: resource.MustParse("400m"),
 						},
@@ -55,7 +55,7 @@ var (
 			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: "manager",
-					Resources: corev1.ResourceRequirements{
+					Resources: customizev1beta1.ResourceRequirements{
 						Limits:   corev1.ResourceList{},
 						Requests: corev1.ResourceList{},
 					},
@@ -72,7 +72,7 @@ var (
 			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: "webhook",
-					Resources: corev1.ResourceRequirements{
+					Resources: customizev1beta1.ResourceRequirements{
 						Limits: corev1.ResourceList{
 							corev1.ResourceMemory: resource.MustParse("512Mi"),
 						},
@@ -93,7 +93,7 @@ var (
 			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: "webhook",
-					Resources: corev1.ResourceRequirements{
+					Resources: customizev1beta1.ResourceRequirements{
 						Limits: corev1.ResourceList{
 							corev1.ResourceMemory: resource.MustParse("512Mi"),
 						},
@@ -114,7 +114,7 @@ var (
 			Containers: []customizev1beta1.ContainerResourceSpec{
 				{
 					Name: "manager",
-					Resources: corev1.ResourceRequirements{
+					Resources: customizev1beta1.ResourceRequirements{
 						Limits: corev1.ResourceList{
 							corev1.ResourceCPU: resource.MustParse("400m"),
 						},
@@ -211,7 +211,7 @@ var NamespacedControllerResourceCRWrongNamespace = &customizev1beta1.NamespacedC
 		Containers: []customizev1beta1.ContainerResourceSpec{
 			{
 				Name: "manager",
-				Resources: corev1.ResourceRequirements{
+				Resources: customizev1beta1.ResourceRequirements{
 					Limits: corev1.ResourceList{
 						corev1.ResourceCPU: resource.MustParse("400m"),
 					},

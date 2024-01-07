@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datastore/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDatastoreIndexes struct {
 	ns   string
 }
 
-var datastoreindexesResource = schema.GroupVersionResource{Group: "datastore.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "datastoreindexes"}
+var datastoreindexesResource = v1alpha1.SchemeGroupVersion.WithResource("datastoreindexes")
 
-var datastoreindexesKind = schema.GroupVersionKind{Group: "datastore.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "DatastoreIndex"}
+var datastoreindexesKind = v1alpha1.SchemeGroupVersion.WithKind("DatastoreIndex")
 
 // Get takes name of the datastoreIndex, and returns the corresponding datastoreIndex object, and an error if there is any.
 func (c *FakeDatastoreIndexes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DatastoreIndex, err error) {

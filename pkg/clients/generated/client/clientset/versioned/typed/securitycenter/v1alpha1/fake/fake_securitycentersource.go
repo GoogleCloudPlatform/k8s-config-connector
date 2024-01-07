@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/securitycenter/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeSecurityCenterSources struct {
 	ns   string
 }
 
-var securitycentersourcesResource = schema.GroupVersionResource{Group: "securitycenter.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "securitycentersources"}
+var securitycentersourcesResource = v1alpha1.SchemeGroupVersion.WithResource("securitycentersources")
 
-var securitycentersourcesKind = schema.GroupVersionKind{Group: "securitycenter.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "SecurityCenterSource"}
+var securitycentersourcesKind = v1alpha1.SchemeGroupVersion.WithKind("SecurityCenterSource")
 
 // Get takes name of the securityCenterSource, and returns the corresponding securityCenterSource object, and an error if there is any.
 func (c *FakeSecurityCenterSources) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.SecurityCenterSource, err error) {

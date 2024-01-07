@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeStorageHMACKeys struct {
 	ns   string
 }
 
-var storagehmackeysResource = schema.GroupVersionResource{Group: "storage.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "storagehmackeys"}
+var storagehmackeysResource = v1alpha1.SchemeGroupVersion.WithResource("storagehmackeys")
 
-var storagehmackeysKind = schema.GroupVersionKind{Group: "storage.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "StorageHMACKey"}
+var storagehmackeysKind = v1alpha1.SchemeGroupVersion.WithKind("StorageHMACKey")
 
 // Get takes name of the storageHMACKey, and returns the corresponding storageHMACKey object, and an error if there is any.
 func (c *FakeStorageHMACKeys) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.StorageHMACKey, err error) {

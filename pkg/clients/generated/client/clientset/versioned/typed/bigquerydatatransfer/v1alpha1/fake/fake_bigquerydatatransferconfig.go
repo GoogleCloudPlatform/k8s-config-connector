@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigquerydatatransfer/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeBigQueryDataTransferConfigs struct {
 	ns   string
 }
 
-var bigquerydatatransferconfigsResource = schema.GroupVersionResource{Group: "bigquerydatatransfer.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "bigquerydatatransferconfigs"}
+var bigquerydatatransferconfigsResource = v1alpha1.SchemeGroupVersion.WithResource("bigquerydatatransferconfigs")
 
-var bigquerydatatransferconfigsKind = schema.GroupVersionKind{Group: "bigquerydatatransfer.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "BigQueryDataTransferConfig"}
+var bigquerydatatransferconfigsKind = v1alpha1.SchemeGroupVersion.WithKind("BigQueryDataTransferConfig")
 
 // Get takes name of the bigQueryDataTransferConfig, and returns the corresponding bigQueryDataTransferConfig object, and an error if there is any.
 func (c *FakeBigQueryDataTransferConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BigQueryDataTransferConfig, err error) {

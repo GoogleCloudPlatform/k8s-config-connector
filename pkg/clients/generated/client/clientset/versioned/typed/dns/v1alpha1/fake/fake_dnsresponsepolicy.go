@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dns/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDNSResponsePolicies struct {
 	ns   string
 }
 
-var dnsresponsepoliciesResource = schema.GroupVersionResource{Group: "dns.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "dnsresponsepolicies"}
+var dnsresponsepoliciesResource = v1alpha1.SchemeGroupVersion.WithResource("dnsresponsepolicies")
 
-var dnsresponsepoliciesKind = schema.GroupVersionKind{Group: "dns.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "DNSResponsePolicy"}
+var dnsresponsepoliciesKind = v1alpha1.SchemeGroupVersion.WithKind("DNSResponsePolicy")
 
 // Get takes name of the dNSResponsePolicy, and returns the corresponding dNSResponsePolicy object, and an error if there is any.
 func (c *FakeDNSResponsePolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DNSResponsePolicy, err error) {

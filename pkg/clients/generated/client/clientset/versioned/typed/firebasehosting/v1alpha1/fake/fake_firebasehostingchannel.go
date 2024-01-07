@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firebasehosting/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeFirebaseHostingChannels struct {
 	ns   string
 }
 
-var firebasehostingchannelsResource = schema.GroupVersionResource{Group: "firebasehosting.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "firebasehostingchannels"}
+var firebasehostingchannelsResource = v1alpha1.SchemeGroupVersion.WithResource("firebasehostingchannels")
 
-var firebasehostingchannelsKind = schema.GroupVersionKind{Group: "firebasehosting.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "FirebaseHostingChannel"}
+var firebasehostingchannelsKind = v1alpha1.SchemeGroupVersion.WithKind("FirebaseHostingChannel")
 
 // Get takes name of the firebaseHostingChannel, and returns the corresponding firebaseHostingChannel object, and an error if there is any.
 func (c *FakeFirebaseHostingChannels) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.FirebaseHostingChannel, err error) {

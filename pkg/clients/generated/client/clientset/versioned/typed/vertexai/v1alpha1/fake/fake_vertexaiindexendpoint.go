@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeVertexAIIndexEndpoints struct {
 	ns   string
 }
 
-var vertexaiindexendpointsResource = schema.GroupVersionResource{Group: "vertexai.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "vertexaiindexendpoints"}
+var vertexaiindexendpointsResource = v1alpha1.SchemeGroupVersion.WithResource("vertexaiindexendpoints")
 
-var vertexaiindexendpointsKind = schema.GroupVersionKind{Group: "vertexai.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "VertexAIIndexEndpoint"}
+var vertexaiindexendpointsKind = v1alpha1.SchemeGroupVersion.WithKind("VertexAIIndexEndpoint")
 
 // Get takes name of the vertexAIIndexEndpoint, and returns the corresponding vertexAIIndexEndpoint object, and an error if there is any.
 func (c *FakeVertexAIIndexEndpoints) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VertexAIIndexEndpoint, err error) {

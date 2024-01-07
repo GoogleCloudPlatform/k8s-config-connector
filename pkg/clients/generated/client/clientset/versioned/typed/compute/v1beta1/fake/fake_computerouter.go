@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeComputeRouters struct {
 	ns   string
 }
 
-var computeroutersResource = schema.GroupVersionResource{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Resource: "computerouters"}
+var computeroutersResource = v1beta1.SchemeGroupVersion.WithResource("computerouters")
 
-var computeroutersKind = schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeRouter"}
+var computeroutersKind = v1beta1.SchemeGroupVersion.WithKind("ComputeRouter")
 
 // Get takes name of the computeRouter, and returns the corresponding computeRouter object, and an error if there is any.
 func (c *FakeComputeRouters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeRouter, err error) {

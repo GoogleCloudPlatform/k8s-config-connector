@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/beyondcorp/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeBeyondCorpAppConnectors struct {
 	ns   string
 }
 
-var beyondcorpappconnectorsResource = schema.GroupVersionResource{Group: "beyondcorp.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "beyondcorpappconnectors"}
+var beyondcorpappconnectorsResource = v1alpha1.SchemeGroupVersion.WithResource("beyondcorpappconnectors")
 
-var beyondcorpappconnectorsKind = schema.GroupVersionKind{Group: "beyondcorp.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "BeyondCorpAppConnector"}
+var beyondcorpappconnectorsKind = v1alpha1.SchemeGroupVersion.WithKind("BeyondCorpAppConnector")
 
 // Get takes name of the beyondCorpAppConnector, and returns the corresponding beyondCorpAppConnector object, and an error if there is any.
 func (c *FakeBeyondCorpAppConnectors) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.BeyondCorpAppConnector, err error) {

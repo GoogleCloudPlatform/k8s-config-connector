@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apigee/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeApigeeSyncAuthorizations struct {
 	ns   string
 }
 
-var apigeesyncauthorizationsResource = schema.GroupVersionResource{Group: "apigee.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "apigeesyncauthorizations"}
+var apigeesyncauthorizationsResource = v1alpha1.SchemeGroupVersion.WithResource("apigeesyncauthorizations")
 
-var apigeesyncauthorizationsKind = schema.GroupVersionKind{Group: "apigee.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "ApigeeSyncAuthorization"}
+var apigeesyncauthorizationsKind = v1alpha1.SchemeGroupVersion.WithKind("ApigeeSyncAuthorization")
 
 // Get takes name of the apigeeSyncAuthorization, and returns the corresponding apigeeSyncAuthorization object, and an error if there is any.
 func (c *FakeApigeeSyncAuthorizations) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ApigeeSyncAuthorization, err error) {

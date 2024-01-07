@@ -325,6 +325,10 @@ type JobVolumes struct {
 }
 
 type JobVpcAccess struct {
+	/* VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}, where {project} can be project id or number. */
+	// +optional
+	ConnectorRef *v1alpha1.ResourceRef `json:"connectorRef,omitempty"`
+
 	/* Traffic VPC egress settings. Possible values: ["ALL_TRAFFIC", "PRIVATE_RANGES_ONLY"]. */
 	// +optional
 	Egress *string `json:"egress,omitempty"`

@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeGKEHubMemberships struct {
 	ns   string
 }
 
-var gkehubmembershipsResource = schema.GroupVersionResource{Group: "gkehub.cnrm.cloud.google.com", Version: "v1beta1", Resource: "gkehubmemberships"}
+var gkehubmembershipsResource = v1beta1.SchemeGroupVersion.WithResource("gkehubmemberships")
 
-var gkehubmembershipsKind = schema.GroupVersionKind{Group: "gkehub.cnrm.cloud.google.com", Version: "v1beta1", Kind: "GKEHubMembership"}
+var gkehubmembershipsKind = v1beta1.SchemeGroupVersion.WithKind("GKEHubMembership")
 
 // Get takes name of the gKEHubMembership, and returns the corresponding gKEHubMembership object, and an error if there is any.
 func (c *FakeGKEHubMemberships) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.GKEHubMembership, err error) {

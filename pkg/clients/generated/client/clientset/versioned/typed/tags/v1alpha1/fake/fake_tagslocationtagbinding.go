@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeTagsLocationTagBindings struct {
 	ns   string
 }
 
-var tagslocationtagbindingsResource = schema.GroupVersionResource{Group: "tags.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "tagslocationtagbindings"}
+var tagslocationtagbindingsResource = v1alpha1.SchemeGroupVersion.WithResource("tagslocationtagbindings")
 
-var tagslocationtagbindingsKind = schema.GroupVersionKind{Group: "tags.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "TagsLocationTagBinding"}
+var tagslocationtagbindingsKind = v1alpha1.SchemeGroupVersion.WithKind("TagsLocationTagBinding")
 
 // Get takes name of the tagsLocationTagBinding, and returns the corresponding tagsLocationTagBinding object, and an error if there is any.
 func (c *FakeTagsLocationTagBindings) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.TagsLocationTagBinding, err error) {

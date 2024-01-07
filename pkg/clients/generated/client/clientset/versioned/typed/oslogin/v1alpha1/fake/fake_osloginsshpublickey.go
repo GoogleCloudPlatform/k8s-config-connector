@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/oslogin/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeOSLoginSSHPublicKeys struct {
 	ns   string
 }
 
-var osloginsshpublickeysResource = schema.GroupVersionResource{Group: "oslogin.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "osloginsshpublickeys"}
+var osloginsshpublickeysResource = v1alpha1.SchemeGroupVersion.WithResource("osloginsshpublickeys")
 
-var osloginsshpublickeysKind = schema.GroupVersionKind{Group: "oslogin.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "OSLoginSSHPublicKey"}
+var osloginsshpublickeysKind = v1alpha1.SchemeGroupVersion.WithKind("OSLoginSSHPublicKey")
 
 // Get takes name of the oSLoginSSHPublicKey, and returns the corresponding oSLoginSSHPublicKey object, and an error if there is any.
 func (c *FakeOSLoginSSHPublicKeys) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.OSLoginSSHPublicKey, err error) {

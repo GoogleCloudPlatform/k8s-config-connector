@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/secretmanager/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeSecretManagerSecretVersions struct {
 	ns   string
 }
 
-var secretmanagersecretversionsResource = schema.GroupVersionResource{Group: "secretmanager.cnrm.cloud.google.com", Version: "v1beta1", Resource: "secretmanagersecretversions"}
+var secretmanagersecretversionsResource = v1beta1.SchemeGroupVersion.WithResource("secretmanagersecretversions")
 
-var secretmanagersecretversionsKind = schema.GroupVersionKind{Group: "secretmanager.cnrm.cloud.google.com", Version: "v1beta1", Kind: "SecretManagerSecretVersion"}
+var secretmanagersecretversionsKind = v1beta1.SchemeGroupVersion.WithKind("SecretManagerSecretVersion")
 
 // Get takes name of the secretManagerSecretVersion, and returns the corresponding secretManagerSecretVersion object, and an error if there is any.
 func (c *FakeSecretManagerSecretVersions) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.SecretManagerSecretVersion, err error) {

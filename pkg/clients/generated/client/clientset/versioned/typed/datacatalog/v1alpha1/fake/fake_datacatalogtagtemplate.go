@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDataCatalogTagTemplates struct {
 	ns   string
 }
 
-var datacatalogtagtemplatesResource = schema.GroupVersionResource{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "datacatalogtagtemplates"}
+var datacatalogtagtemplatesResource = v1alpha1.SchemeGroupVersion.WithResource("datacatalogtagtemplates")
 
-var datacatalogtagtemplatesKind = schema.GroupVersionKind{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "DataCatalogTagTemplate"}
+var datacatalogtagtemplatesKind = v1alpha1.SchemeGroupVersion.WithKind("DataCatalogTagTemplate")
 
 // Get takes name of the dataCatalogTagTemplate, and returns the corresponding dataCatalogTagTemplate object, and an error if there is any.
 func (c *FakeDataCatalogTagTemplates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DataCatalogTagTemplate, err error) {

@@ -725,6 +725,36 @@ spec:
                         description: VPC Access configuration to use for this Task.
                           For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc.
                         properties:
+                          connectorRef:
+                            description: 'VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector},
+                              where {project} can be project id or number.'
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: 'Allowed value: The `selfLink` field
+                                  of a `VPCAccessConnector` resource.'
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
                           egress:
                             description: 'Traffic VPC egress settings. Possible values:
                               ["ALL_TRAFFIC", "PRIVATE_RANGES_ONLY"].'

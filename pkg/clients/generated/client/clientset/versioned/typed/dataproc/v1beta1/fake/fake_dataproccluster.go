@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDataprocClusters struct {
 	ns   string
 }
 
-var dataprocclustersResource = schema.GroupVersionResource{Group: "dataproc.cnrm.cloud.google.com", Version: "v1beta1", Resource: "dataprocclusters"}
+var dataprocclustersResource = v1beta1.SchemeGroupVersion.WithResource("dataprocclusters")
 
-var dataprocclustersKind = schema.GroupVersionKind{Group: "dataproc.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataprocCluster"}
+var dataprocclustersKind = v1beta1.SchemeGroupVersion.WithKind("DataprocCluster")
 
 // Get takes name of the dataprocCluster, and returns the corresponding dataprocCluster object, and an error if there is any.
 func (c *FakeDataprocClusters) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DataprocCluster, err error) {

@@ -55,7 +55,24 @@ type ContainerResourceSpec struct {
 	Name string `json:"name"`
 	// Resources specifies the resource customization of this container.
 	// Required
-	Resources corev1.ResourceRequirements `json:"resources"`
+	Resources ResourceRequirements `json:"resources"`
+}
+
+// ResourceRequirements describes the compute resource requirements that
+// ContainerResourceSpec can leverage.
+// It is a local copy of ResourceRequirements in k8s.io/api/core/v1 containing
+// a subset of its fields.
+type ResourceRequirements struct {
+	// Limits describes the maximum amount of compute resources allowed.
+	// More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+	// +optional
+	Limits corev1.ResourceList `json:"limits,omitempty" protobuf:"bytes,1,rep,name=limits,casttype=ResourceList,castkey=ResourceName"`
+	// Requests describes the minimum amount of compute resources required.
+	// If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+	// otherwise to an implementation-defined value. Requests cannot exceed Limits.
+	// More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+	// +optional
+	Requests corev1.ResourceList `json:"requests,omitempty" protobuf:"bytes,2,rep,name=requests,casttype=ResourceList,castkey=ResourceName"`
 }
 
 // ControllerResourceStatus defines the observed state of ControllerResource.

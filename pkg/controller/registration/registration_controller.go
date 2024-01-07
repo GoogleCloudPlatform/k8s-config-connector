@@ -75,7 +75,7 @@ func Add(mgr manager.Manager, p *tfschema.Provider, smLoader *servicemappingload
 	if err != nil {
 		return err
 	}
-	return c.Watch(&source.Kind{Type: &apiextensions.CustomResourceDefinition{}}, &handler.EnqueueRequestForObject{}, ManagedByKCCPredicate{})
+	return c.Watch(source.Kind(mgr.GetCache(), &apiextensions.CustomResourceDefinition{}), &handler.EnqueueRequestForObject{}, ManagedByKCCPredicate{})
 }
 
 var _ reconcile.Reconciler = &ReconcileRegistration{}

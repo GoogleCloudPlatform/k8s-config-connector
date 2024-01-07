@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dns/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDNSPolicies struct {
 	ns   string
 }
 
-var dnspoliciesResource = schema.GroupVersionResource{Group: "dns.cnrm.cloud.google.com", Version: "v1beta1", Resource: "dnspolicies"}
+var dnspoliciesResource = v1beta1.SchemeGroupVersion.WithResource("dnspolicies")
 
-var dnspoliciesKind = schema.GroupVersionKind{Group: "dns.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DNSPolicy"}
+var dnspoliciesKind = v1beta1.SchemeGroupVersion.WithKind("DNSPolicy")
 
 // Get takes name of the dNSPolicy, and returns the corresponding dNSPolicy object, and an error if there is any.
 func (c *FakeDNSPolicies) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.DNSPolicy, err error) {

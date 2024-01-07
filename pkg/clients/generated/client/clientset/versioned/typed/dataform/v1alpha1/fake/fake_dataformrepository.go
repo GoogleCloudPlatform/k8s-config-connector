@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataform/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeDataformRepositories struct {
 	ns   string
 }
 
-var dataformrepositoriesResource = schema.GroupVersionResource{Group: "dataform.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "dataformrepositories"}
+var dataformrepositoriesResource = v1alpha1.SchemeGroupVersion.WithResource("dataformrepositories")
 
-var dataformrepositoriesKind = schema.GroupVersionKind{Group: "dataform.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "DataformRepository"}
+var dataformrepositoriesKind = v1alpha1.SchemeGroupVersion.WithKind("DataformRepository")
 
 // Get takes name of the dataformRepository, and returns the corresponding dataformRepository object, and an error if there is any.
 func (c *FakeDataformRepositories) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.DataformRepository, err error) {

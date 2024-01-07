@@ -27,7 +27,6 @@ import (
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudids/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeCloudIDSEndpoints struct {
 	ns   string
 }
 
-var cloudidsendpointsResource = schema.GroupVersionResource{Group: "cloudids.cnrm.cloud.google.com", Version: "v1alpha1", Resource: "cloudidsendpoints"}
+var cloudidsendpointsResource = v1alpha1.SchemeGroupVersion.WithResource("cloudidsendpoints")
 
-var cloudidsendpointsKind = schema.GroupVersionKind{Group: "cloudids.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "CloudIDSEndpoint"}
+var cloudidsendpointsKind = v1alpha1.SchemeGroupVersion.WithKind("CloudIDSEndpoint")
 
 // Get takes name of the cloudIDSEndpoint, and returns the corresponding cloudIDSEndpoint object, and an error if there is any.
 func (c *FakeCloudIDSEndpoints) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudIDSEndpoint, err error) {

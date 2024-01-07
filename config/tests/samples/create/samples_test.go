@@ -230,7 +230,7 @@ func TestAll(t *testing.T) {
 	project := testgcp.GetDefaultProject(t)
 
 	setup()
-	samples := loadSamplesOntoUnstructs(t, regexp.MustCompile(runTestsRegex), project)
+	samples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
 	// Sort the samples in descending order by number of resources. This is an attempt to start the samples that use
 	// a network and have many dependencies sooner since they will likely be the longest running.
 	sortSamplesInDescendingOrderByNumberOfResources(samples)

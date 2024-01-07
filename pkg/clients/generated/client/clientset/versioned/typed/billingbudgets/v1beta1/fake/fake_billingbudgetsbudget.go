@@ -27,7 +27,6 @@ import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/billingbudgets/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
@@ -39,9 +38,9 @@ type FakeBillingBudgetsBudgets struct {
 	ns   string
 }
 
-var billingbudgetsbudgetsResource = schema.GroupVersionResource{Group: "billingbudgets.cnrm.cloud.google.com", Version: "v1beta1", Resource: "billingbudgetsbudgets"}
+var billingbudgetsbudgetsResource = v1beta1.SchemeGroupVersion.WithResource("billingbudgetsbudgets")
 
-var billingbudgetsbudgetsKind = schema.GroupVersionKind{Group: "billingbudgets.cnrm.cloud.google.com", Version: "v1beta1", Kind: "BillingBudgetsBudget"}
+var billingbudgetsbudgetsKind = v1beta1.SchemeGroupVersion.WithKind("BillingBudgetsBudget")
 
 // Get takes name of the billingBudgetsBudget, and returns the corresponding billingBudgetsBudget object, and an error if there is any.
 func (c *FakeBillingBudgetsBudgets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.BillingBudgetsBudget, err error) {
