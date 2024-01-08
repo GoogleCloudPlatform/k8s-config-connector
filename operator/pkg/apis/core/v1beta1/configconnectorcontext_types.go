@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/klog/v2"
 	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
 )
 
@@ -73,6 +74,22 @@ type ConfigConnectorContextList struct {
 
 func init() {
 	SchemeBuilder.Register(&ConfigConnectorContext{}, &ConfigConnectorContextList{})
+}
+
+var _ addonv1alpha1.CommonObject = &ConfigConnectorContext{}
+
+func (c *ConfigConnectorContext) ComponentName() string {
+	// This should not be called, but is needed to satisfy the CommonObject interface.
+	// (We only interact with the status fields)
+	klog.Fatalf("ComponentName should not be called	on ConfigConnectorContext")
+	return ""
+}
+
+func (c *ConfigConnectorContext) CommonSpec() addonv1alpha1.CommonSpec {
+	// This should not be called, but is needed to satisfy the CommonObject interface.
+	// (We only interact with the status fields)
+	klog.Fatalf("CommonSpec should not be called on ConfigConnectorContext")
+	return addonv1alpha1.CommonSpec{}
 }
 
 func (c *ConfigConnectorContext) GetCommonStatus() addonv1alpha1.CommonStatus {
