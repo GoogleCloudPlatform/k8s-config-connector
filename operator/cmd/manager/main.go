@@ -31,6 +31,8 @@ import (
 	flag "github.com/spf13/pflag"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	ctrl "sigs.k8s.io/controller-runtime"
+	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
+	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon"
 )
 
@@ -77,10 +79,12 @@ func main() {
 	scheme := controllers.BuildScheme()
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
-		Scheme:             scheme,
-		MetricsBindAddress: metricsAddr,
-		LeaderElection:     enableLeaderElection,
-		Port:               9443,
+		Scheme:         scheme,
+		Metrics:        metricsserver.Options{BindAddress: "0"},
+		LeaderElection: enableLeaderElection,
+		WebhookServer: webhook.NewServer(webhook.Options{
+			Port: 9443,
+		}),
 		// Disable the caching for the client. The cached reader will lazily list structured resources cross namespaces.
 		// The operator mostly only cares about resources in cnrm-system namespace.
 		NewClient: nocache.NoCacheClientFunc,

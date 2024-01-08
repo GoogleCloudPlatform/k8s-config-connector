@@ -42,6 +42,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 )
@@ -65,14 +66,17 @@ func StartTestManagerInstance(env *envtest.Environment, testType test.TestType, 
 
 func startTestManager(env *envtest.Environment, testType test.TestType, whCfgs []cnrmwebhook.WebhookConfig) (manager.Manager, func(), error) {
 	mgr, err := manager.New(env.Config, manager.Options{
-		Port:    env.WebhookInstallOptions.LocalServingPort,
-		Host:    env.WebhookInstallOptions.LocalServingHost,
-		CertDir: env.WebhookInstallOptions.LocalServingCertDir,
+		WebhookServer: webhook.NewServer(webhook.Options{
+			Port:    env.WebhookInstallOptions.LocalServingPort,
+			Host:    env.WebhookInstallOptions.LocalServingHost,
+			CertDir: env.WebhookInstallOptions.LocalServingCertDir,
+		}),
 		// supply a concrete client to disable the default behavior of caching
 		NewClient: nocache.NoCacheClientFunc,
 		// Disable metrics server for testing
-		MetricsBindAddress: "0",
+		Metrics: metricsserver.Options{BindAddress: "0"},
 	})
+
 	if err != nil {
 		return nil, nil, fmt.Errorf("error creating manager: %v", err)
 	}

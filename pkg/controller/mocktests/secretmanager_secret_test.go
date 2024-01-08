@@ -31,6 +31,7 @@ import (
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
+	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
@@ -105,8 +106,8 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 
 	t.Logf("creating controller")
 	mgr, err := ctrl.NewManager(h.RESTConfig(), ctrl.Options{
-		MetricsBindAddress: "0",
-		NewClient:          h.NewClient,
+		Metrics:   metricsserver.Options{BindAddress: "0"},
+		NewClient: h.NewClient,
 	})
 	if err != nil {
 		t.Fatalf("NewManager failed: %v", err)

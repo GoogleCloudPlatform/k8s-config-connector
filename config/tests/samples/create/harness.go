@@ -53,6 +53,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
@@ -117,7 +118,8 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	// Prevent manager from binding to a port to serve prometheus metrics
 	// since creating multiple managers for tests will fail if more than
 	// one manager tries to bind to the same port.
-	kccConfig.ManagerOptions.MetricsBindAddress = "0"
+	kccConfig.ManagerOptions.Metrics = metricsserver.Options{BindAddress: "0"}
+
 	// Prevent manager from binding to a port to serve health probes since
 	// creating multiple managers for tests will fail if more than one
 	// manager tries to bind to the same port.
@@ -156,9 +158,11 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 
 		h.restConfig = restConfig
 
-		kccConfig.ManagerOptions.Port = env.WebhookInstallOptions.LocalServingPort
-		kccConfig.ManagerOptions.Host = env.WebhookInstallOptions.LocalServingHost
-		kccConfig.ManagerOptions.CertDir = env.WebhookInstallOptions.LocalServingCertDir
+		kccConfig.ManagerOptions.WebhookServer = webhook.NewServer(webhook.Options{
+			Port:    env.WebhookInstallOptions.LocalServingPort,
+			Host:    env.WebhookInstallOptions.LocalServingHost,
+			CertDir: env.WebhookInstallOptions.LocalServingCertDir,
+		})
 	} else {
 		t.Fatalf("E2E_KUBE_TARGET=%q not supported", targetKube)
 	}
