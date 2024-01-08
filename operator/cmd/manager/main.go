@@ -106,7 +106,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = configconnector.Add(mgr, repoPath); err != nil {
+	if err := configconnector.Add(mgr, repoPath); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ConfigConnector")
 		os.Exit(1)
 	}
