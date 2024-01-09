@@ -6,6 +6,10 @@
 {% block body %}
 
 
+
+<code>ServiceIdentity</code> generates service identity for <a href="/iam/docs/service-agents">supported {{gcp_name_short}} services</a>.
+You can find the emails of the Google-managed service accounts in the status of a <code>ServiceIdentity</code> resource.
+
 <table>
 <thead>
 <tr>
