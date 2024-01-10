@@ -203,12 +203,14 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 
 		roundTripper := http.RoundTripper(mockCloud)
 
-		h.Ctx = context.WithValue(h.Ctx, httpRoundTripperKey, roundTripper)
+		ctx = context.WithValue(ctx, httpRoundTripperKey, roundTripper)
+		h.Ctx = ctx
 
 		kccConfig.HTTPClient = &http.Client{Transport: roundTripper}
 
 		// Also hook the oauth2 library
-		h.Ctx = context.WithValue(h.Ctx, oauth2.HTTPClient, kccConfig.HTTPClient)
+		ctx = context.WithValue(ctx, oauth2.HTTPClient, kccConfig.HTTPClient)
+		h.Ctx = ctx
 
 		h.gcpAccessToken = "dummytoken"
 		kccConfig.GCPAccessToken = h.gcpAccessToken
@@ -265,7 +267,15 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	}
 
 	h.kccConfig = kccConfig
-	mgr, err := kccmanager.New(h.Ctx, h.restConfig, kccConfig)
+	// We must cancel the manager Context before cancelling the envtest Context
+	// Create a context specifically for this, and register the test cleanup function
+	// after the envtest cleanup function (these run last-in, first-out).
+	// See https://github.com/kubernetes-sigs/controller-runtime/issues/1571#issuecomment-945535598
+	mgrContext, cancel := context.WithCancel(ctx)
+	t.Cleanup(func() {
+		cancel()
+	})
+	mgr, err := kccmanager.New(mgrContext, h.restConfig, kccConfig)
 	if err != nil {
 		t.Fatalf("error creating new manager: %v", err)
 	}
