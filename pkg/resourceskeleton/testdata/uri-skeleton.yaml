@@ -1083,3 +1083,15 @@
     location: us-central1
   ResourceConfigId: EdgeContainerVpnConnection
   URI: "https://edgecontainer.googleapis.com/v1/projects/kcc-test/locations/us-central1/vpnConnections/edgecontainervpnconnection-test"
+- ExpectedSkeleton:
+    apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+    kind: NetworkSecurityAddressGroup
+    metadata:
+      name: addressgroup-asdfghj
+    spec:
+      location: global
+      parent:
+        projectRef:
+          external: kcc-test
+  ResourceConfigId: NetworkSecurityAddressGroup
+  URI: "https://networksecurity.googleapis.com/v1beta1/projects/kcc-test/locations/global/addressGroups/addressgroup-asdfghj"
