@@ -1139,3 +1139,15 @@
     region: us-central1
   ResourceConfigId: VertexAIIndex
   URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/indexes/vertexaiindex-test"
+- ExpectedSkeleton:
+    apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+    kind: NetworkSecurityAddressGroup
+    metadata:
+      name: addressgroup-asdfghj
+    spec:
+      location: global
+      parent:
+        projectRef:
+          external: kcc-test
+  ResourceConfigId: NetworkSecurityAddressGroup
+  URI: "https://networksecurity.googleapis.com/v1beta1/projects/kcc-test/locations/global/addressGroups/addressgroup-asdfghj"

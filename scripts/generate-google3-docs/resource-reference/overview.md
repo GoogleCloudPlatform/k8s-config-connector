@@ -788,6 +788,10 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/traffic-director/docs/">{{td_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/networksecurity/networksecurityaddressgroup.md">NetworkSecurityAddressGroup</a></td>
+</tr>
+<tr>
+  <td><a href="/traffic-director/docs/">{{td_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/networksecurity/networksecurityauthorizationpolicy.md">NetworkSecurityAuthorizationPolicy</a></td>
 </tr>
 <tr>

@@ -429,6 +429,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/networkconnectivity/networkconnectivityspoke.md
 - title: "Network Security"
   section:
+  - title: "NetworkSecurityAddressGroup"
+    path: /config-connector/docs/reference/resource-docs/networksecurity/networksecurityaddressgroup.md
   - title: "NetworkSecurityAuthorizationPolicy"
     path: /config-connector/docs/reference/resource-docs/networksecurity/networksecurityauthorizationpolicy.md
   - title: "NetworkSecurityClientTLSPolicy"

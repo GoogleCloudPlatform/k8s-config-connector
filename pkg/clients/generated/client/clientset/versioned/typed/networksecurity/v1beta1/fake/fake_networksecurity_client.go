@@ -31,6 +31,10 @@ type FakeNetworksecurityV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeNetworksecurityV1beta1) NetworkSecurityAddressGroups(namespace string) v1beta1.NetworkSecurityAddressGroupInterface {
+	return &FakeNetworkSecurityAddressGroups{c, namespace}
+}
+
 func (c *FakeNetworksecurityV1beta1) NetworkSecurityAuthorizationPolicies(namespace string) v1beta1.NetworkSecurityAuthorizationPolicyInterface {
 	return &FakeNetworkSecurityAuthorizationPolicies{c, namespace}
 }

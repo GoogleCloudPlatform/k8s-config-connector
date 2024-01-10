@@ -31,6 +31,7 @@ import (
 
 type NetworksecurityV1beta1Interface interface {
 	RESTClient() rest.Interface
+	NetworkSecurityAddressGroupsGetter
 	NetworkSecurityAuthorizationPoliciesGetter
 	NetworkSecurityClientTLSPoliciesGetter
 	NetworkSecurityServerTLSPoliciesGetter
@@ -39,6 +40,10 @@ type NetworksecurityV1beta1Interface interface {
 // NetworksecurityV1beta1Client is used to interact with features provided by the networksecurity.cnrm.cloud.google.com group.
 type NetworksecurityV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *NetworksecurityV1beta1Client) NetworkSecurityAddressGroups(namespace string) NetworkSecurityAddressGroupInterface {
+	return newNetworkSecurityAddressGroups(c, namespace)
 }
 
 func (c *NetworksecurityV1beta1Client) NetworkSecurityAuthorizationPolicies(namespace string) NetworkSecurityAuthorizationPolicyInterface {

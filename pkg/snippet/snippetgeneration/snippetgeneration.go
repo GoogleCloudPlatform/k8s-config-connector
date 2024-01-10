@@ -97,6 +97,7 @@ var preferredSampleForResource = map[string]string{
 	"monitoringnotificationchannel":     "sms-monitoring-notification-channel",
 	"monitoringservicelevelobjective":   "window-based-gtr-distribution-cut",
 	"monitoringuptimecheckconfig":       "http-uptime-check-config",
+	"networksecurityaddressgroup":       "project-addressgroup",
 	"osconfigospolicyassignment":        "fixed-os-policy-assignment",
 	"privatecacertificate":              "basic-certificate",
 	"project":                           "project-in-folder",
