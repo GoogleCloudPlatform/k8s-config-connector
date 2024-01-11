@@ -15,10 +15,10 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetworkFirewallPolicyAssociation
 metadata:
-  name: networkfirewallpolicyassociation-${uniqueId}
+  name: computenetworkfirewallpolicyassociation-${uniqueId}
 spec:
   attachmentTargetRef:
     kind: ComputeNetwork
     name: default
   firewallPolicyRef:
-    name: networkfirewallpolicyassociation-dep-${uniqueId}
+    name: computenetworkfirewallpolicy-${uniqueId}

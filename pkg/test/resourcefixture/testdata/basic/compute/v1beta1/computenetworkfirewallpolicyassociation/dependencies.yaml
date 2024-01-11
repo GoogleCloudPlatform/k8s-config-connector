@@ -24,6 +24,6 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetworkFirewallPolicy
 metadata:
-  name: networkfirewallpolicyassociation-dep-${uniqueId}
+  name: computenetworkfirewallpolicy-${uniqueId}
 spec:
   description: "A sample network firewall policy"

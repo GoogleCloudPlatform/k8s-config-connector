@@ -27,7 +27,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/v1/networkFirewallPolicies/addAssociation">/compute/docs/reference/rest/v1/networkFirewallPolicies/addAssociation</a></td>
+<td><a href="/compute/docs/reference/rest/beta/networkFirewallPolicies/addAssociation">/compute/docs/reference/rest/beta/networkFirewallPolicies/addAssociation</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>

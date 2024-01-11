@@ -1305,7 +1305,7 @@ spec:
       resourceID:
         targetField: name
       idTemplate: "projects/{{project}}/global/firewallPolicies/{{firewall_policy}}/associations/{{name}}"
-      idTemplateCanBeUsedToMatchResourceName: true
+      idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
       hierarchicalReferences:
         - type: project
