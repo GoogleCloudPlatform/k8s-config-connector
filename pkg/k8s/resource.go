@@ -131,20 +131,13 @@ func IsDeletionFailureDueToExistingDependent(r *Resource) bool {
 		return false
 	}
 	cond, _ := GetReadyCondition(r)
+	// Full error message:
+	// Resource '"projects/project/locations/location/clusters/cluster"' has nested resources.
+	// If the API supports cascading delete, set 'force' to true to delete it and its nested resources.
 	errorMessageRegex := ".*Resource .* has nested resources.*"
 	match, _ := regexp.MatchString(errorMessageRegex, cond.Message)
 	return match
 }
-
-//func IsUpdateFailureDueToExistingDependent(r *Resource) bool {
-//	if IsResourceReady(r) {
-//		return false
-//	}
-//	cond, _ := GetReadyCondition(r)
-//	bigTableErrorMessageRegex := ".*This cluster cannot be deleted, as the following application profiles still route their traffic to it.*"
-//	match, _ := regexp.MatchString(bigTableErrorMessageRegex, cond.Message)
-//	return match
-//}
 
 func GetReadyCondition(r *Resource) (condition k8sv1alpha1.Condition, found bool) {
 	if currConditionsRaw, ok := r.Status["conditions"].([]interface{}); ok {

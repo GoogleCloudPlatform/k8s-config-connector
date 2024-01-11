@@ -53,7 +53,7 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 
 }
 
-// Special handling for KMSCryptoKey that still lives after its parent KMSKeyRing is deleted.
+// SkipOrphanedCheck Special handling for KMSCryptoKey that still lives after its parent KMSKeyRing is deleted.
 // We can import the tf state directly from itself instead of sourcing for its parent.
 // More info in b/279485255#comment14
 func SkipOrphanedCheck(resource *Resource) bool {
@@ -69,7 +69,7 @@ func hasEmptySelfLink(resource *Resource) bool {
 	return false
 }
 
-// SkipParentReadyCheck Skip the parent ready check for allowlist resources,
+// SkipParentReadyCheckForDeletion Skip the parent ready check for allowlist resources,
 // when parent exists but has deletion failed error.
 // Due to their API design, the resource is deletable even parent is not ready.
 // See b/306583728#comment8 for details.
@@ -77,11 +77,6 @@ func SkipParentReadyCheckForDeletion(resource *Resource, parent *k8s.Resource) b
 	allowlist := []string{"AlloyDBInstance", "EdgeContainerNodePool"}
 	return contains(allowlist, resource.Kind) && k8s.IsDeletionFailureDueToExistingDependent(parent)
 }
-
-//func SkipParentReadyCheckForUpdate(resource *Resource, parent *k8s.Resource) bool {
-//	allowlist := []string{"BigtableAppProfile"}
-//	return contains(allowlist, resource.Kind) && k8s.IsUpdateFailureDueToExistingDependent(parent)
-//}
 
 func contains(s []string, e string) bool {
 	for _, a := range s {
@@ -106,7 +101,7 @@ func FetchLiveStateForDelete(ctx context.Context, resource *Resource, provider *
 }
 
 func fetchLiveStateFromId(ctx context.Context, id string, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
-	//Get the imported resource
+	// Get the imported resource
 	var state *terraform.InstanceState
 	var err error
 	if resource.ResourceConfig.SkipImport {
