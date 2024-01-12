@@ -54,8 +54,8 @@ require (
 	k8s.io/klog/v2 v2.100.1
 	sigs.k8s.io/controller-runtime v0.15.2
 	sigs.k8s.io/controller-tools v0.6.2
-	sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.1
-	sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b
+	sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.2
+	sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20240112002909-fb5a6a40078a
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3
 	sigs.k8s.io/yaml v1.3.0
 )
@@ -208,7 +208,7 @@ require (
 	k8s.io/kubectl v0.26.3 // indirect
 	k8s.io/utils v0.0.0-20230505201702-9f6742963106 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
-	sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20230420203711-4abaa68e1923 // indirect
+	sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20240112002909-fb5a6a40078a // indirect
 	sigs.k8s.io/kustomize/api v0.12.1 // indirect
 	sigs.k8s.io/kustomize/kstatus v0.0.2-0.20200509233124-065f70705d4d // indirect
 	sigs.k8s.io/kustomize/kyaml v0.13.9 // indirect
