@@ -54,7 +54,7 @@ require (
 	k8s.io/klog/v2 v2.100.1
 	sigs.k8s.io/controller-runtime v0.15.2
 	sigs.k8s.io/controller-tools v0.6.2
-	sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.1
+	sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.2
 	sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3
 	sigs.k8s.io/yaml v1.3.0
