@@ -1570,8 +1570,8 @@ sigs.k8s.io/controller-tools v0.6.2 h1:+Y8L0UsAugDipGRw8lrkPoAi6XqlQVZuf1DQHME3P
 sigs.k8s.io/controller-tools v0.6.2/go.mod h1:oaeGpjXn6+ZSEIQkUe/+3I40PNiDYp9aeawbt3xTgJ8=
 sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd h1:EDPBXCAspyGV4jQlpZSudPeMmr1bNJefnuqLsRAsHZo=
 sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd/go.mod h1:B8JuhiUyNFVKdsE8h686QcCxMaH6HrOAZj4vswFpcB0=
-sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.1 h1:TvjGrSwHuIFNLUHf4ha/rBKePwP4D56W9+bwqI/B/3I=
-sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.1/go.mod h1:k0BHn+hXWDhdSfNTCVLABTF/xzdmvPRkcL1KKeTMqqg=
+sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.2 h1:g6VgSNpmrGDeHqw2/CRYrzYRRFE/5UCODIQJu64TBww=
+sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.2/go.mod h1:k0BHn+hXWDhdSfNTCVLABTF/xzdmvPRkcL1KKeTMqqg=
 sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20230420203711-4abaa68e1923 h1:5xT48TQEgFjPIehWDhGU76IHEe7aA8+m+3YfrSqbi+I=
 sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20230420203711-4abaa68e1923/go.mod h1:tVK41IKmejKA0fzCtV4VOXvbaGrzIadep/i1WKas99A=
 sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b h1:VcgyLj8SawHulvC24SRgI37mnhMmR3hW+ZVqZGBmkbc=
