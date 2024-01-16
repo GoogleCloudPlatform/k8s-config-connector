@@ -16,6 +16,11 @@ package krmtotf_test
 
 import (
 	"context"
+	"reflect"
+	"strings"
+	"testing"
+	"time"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -29,10 +34,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"reflect"
-	"strings"
-	"testing"
-	"time"
 )
 
 func TestResolveResourceReferenceToTFResource(t *testing.T) {
