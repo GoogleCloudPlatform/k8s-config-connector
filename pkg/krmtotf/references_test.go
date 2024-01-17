@@ -667,7 +667,7 @@ func TestResolveResourceReferenceToTFResource_deleting(t *testing.T) {
 		shouldError         bool
 	}{
 		{
-			name: "deleting",
+			name: "reference is ready",
 			config: map[string]interface{}{
 				"key1": "val1",
 				"barRef": map[string]interface{}{

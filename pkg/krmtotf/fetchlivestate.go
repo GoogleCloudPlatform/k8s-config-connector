@@ -17,6 +17,8 @@ package krmtotf
 import (
 	"context"
 	"fmt"
+	"regexp"
+	"slices"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
@@ -58,7 +60,7 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 // More info in b/279485255#comment14
 func SkipOrphanedCheck(resource *Resource) bool {
 	allowlist := []string{"KMSCryptoKey"}
-	return contains(allowlist, resource.Kind) || !hasEmptySelfLink(resource)
+	return slices.Contains(allowlist, resource.Kind) || !hasEmptySelfLink(resource)
 }
 
 func hasEmptySelfLink(resource *Resource) bool {
@@ -71,20 +73,24 @@ func hasEmptySelfLink(resource *Resource) bool {
 
 // SkipParentReadyCheckForDeletion Skip the parent ready check for allowlist resources,
 // when parent exists but has deletion failed error.
-// Due to their API design, the resource is deletable even parent is not ready.
+// Due to their API design, the allowlisted resources are deletable even if their parents are not ready.
 // See b/306583728#comment8 for details.
 func SkipParentReadyCheckForDeletion(resource *Resource, parent *k8s.Resource) bool {
 	allowlist := []string{"AlloyDBInstance", "EdgeContainerNodePool"}
-	return contains(allowlist, resource.Kind) && k8s.IsDeletionFailureDueToExistingDependent(parent)
+	return slices.Contains(allowlist, resource.Kind) && IsDeletionFailureDueToExistingDependent(parent)
 }
 
-func contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
+func IsDeletionFailureDueToExistingDependent(r *k8s.Resource) bool {
+	if k8s.IsResourceReady(r) {
+		return false
 	}
-	return false
+	cond, _ := k8s.GetReadyCondition(r)
+	// Full error message:
+	// Resource '"projects/project/locations/location/clusters/cluster"' has nested resources.
+	// If the API supports cascading delete, set 'force' to true to delete it and its nested resources.
+	errorMessageRegex := ".*Resource .* has nested resources.*"
+	match, _ := regexp.MatchString(errorMessageRegex, cond.Message)
+	return match
 }
 
 func FetchLiveStateForDelete(ctx context.Context, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {

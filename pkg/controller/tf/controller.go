@@ -221,7 +221,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			return false, r.handleDeleted(ctx, krmResource)
 		}
 		orphaned, parent, err := r.isOrphaned(ctx, krmResource)
-		// Special handling for resources that do not need the orphaned check
+		// Handle orphaned resources
 		if !krmtotf.SkipOrphanedCheck(krmResource) {
 			if err != nil {
 				return false, err
@@ -231,7 +231,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 				return false, r.handleDeleted(ctx, krmResource)
 			}
 		}
-		// Special handling for resources that do not need the parent ready check.
+		// Handle resources that have a parent
 		if !krmtotf.SkipParentReadyCheckForDeletion(krmResource, parent) {
 			if parent != nil && !k8s.IsResourceReady(parent) {
 				// If this resource has a parent and is not orphaned, ensure its parent
