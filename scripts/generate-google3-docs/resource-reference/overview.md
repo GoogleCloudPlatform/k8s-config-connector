@@ -13,9 +13,8 @@ version. If you are using a different version, you can find each version's
 Custom Resource Definitions in the GitHub repository. For example, this
 [link contains CRDs for version 1.89.0](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/v1.89.0/crds).
 
-Please review <a href="/config-connector/docs/best-practices">Best Practice for Config Connector</a> for best practices.
-
-Please review <a href="/config-connector/docs/troubleshooting">Troubleshooting Config Connector</a> for common issues.
+Note: Please review <a href="/config-connector/docs/best-practices">Best Practice for {{product_name_short}}</a> for best practices.
+And <a href="/config-connector/docs/troubleshooting">Troubleshooting {{product_name_short}}</a> for common issues.
 
 <div>
 <devsite-filter>
