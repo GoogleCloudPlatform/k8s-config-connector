@@ -61,7 +61,7 @@ func (a *noUnknownFieldsValidatorHandler) Handle(ctx context.Context, req admiss
 	if err := a.client.Get(context.Background(), nn, crd); err != nil {
 		return admission.Errored(http.StatusInternalServerError, err)
 	}
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, obj.GroupVersionKind().Version)
 	if err := validateNoUnknownFields(schema, obj.Object, ""); err != nil {
 		return admission.Errored(http.StatusForbidden, err)
 	}

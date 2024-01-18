@@ -37,13 +37,13 @@ type SchemaReferenceUpdater interface {
 func UpdateSchema(schemaRef *SchemaReference, crd *apiextensions.CustomResourceDefinition) error {
 	gvk := schema.GroupVersionKind{
 		Group:   crd.Spec.Group,
-		Version: GetVersionFromCRD(crd),
+		Version: schemaRef.GVK.Version,
 		Kind:    crd.Spec.Names.Kind,
 	}
 	if schemaRef.GVK.String() != gvk.String() {
 		return fmt.Errorf("unexpected mismatch of GVK when updating schema reference for controller, old GVK = %s, new GVK = %s", schemaRef.GVK.String(), gvk.String())
 	}
 	schemaRef.CRD = crd
-	schemaRef.JsonSchema = GetOpenAPIV3SchemaFromCRD(crd)
+	schemaRef.JsonSchema = GetOpenAPIV3SchemaFromCRD(crd, gvk.Version)
 	return nil
 }

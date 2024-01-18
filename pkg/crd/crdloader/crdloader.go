@@ -137,7 +137,13 @@ func isMatch(group, version, kind string, crd apiextensions.CustomResourceDefini
 		}
 	}
 	if version != "" {
-		if k8s.GetVersionFromCRD(&crd) != version {
+		foundVersion := false
+		for _, v := range k8s.GetAllVersionsFromCRD(&crd) {
+			if v == version {
+				foundVersion = true
+			}
+		}
+		if !foundVersion {
 			return false
 		}
 	}

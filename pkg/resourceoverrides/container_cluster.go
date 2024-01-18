@@ -43,12 +43,14 @@ func GetContainerClusterResourceOverrides() ResourceOverrides {
 func keepIdentityNamespaceField() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
-		workloadIdentityConfig := schema.Properties["spec"].Properties["workloadIdentityConfig"]
-		workloadIdentityConfig.Properties["identityNamespace"] = apiextensions.JSONSchemaProps{
-			Description: "DEPRECATED. This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.\n" +
-				"Enables workload identity.",
-			Type: "string",
+		for _, version := range k8s.GetAllVersionsFromCRD(crd) {
+			schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
+			workloadIdentityConfig := schema.Properties["spec"].Properties["workloadIdentityConfig"]
+			workloadIdentityConfig.Properties["identityNamespace"] = apiextensions.JSONSchemaProps{
+				Description: "DEPRECATED. This field will be removed in a future major release as it has been deprecated in the API. Use `workloadPool` instead; `workloadPool` field will supersede this field.\n" +
+					"Enables workload identity.",
+				Type: "string",
+			}
 		}
 		return nil
 	}

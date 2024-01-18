@@ -32,7 +32,16 @@ import (
 
 // KeepTopLevelFieldOptionalWithDefault decorates the input CRD to modify the given top field as optional with the default.
 func KeepTopLevelFieldOptionalWithDefault(crd *apiextensions.CustomResourceDefinition, defaultValue interface{}, field string) error {
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	for _, version := range k8s.GetAllVersionsFromCRD(crd) {
+		if err := keepTopLevelFieldOptionalWithDefaultForVersion(crd, version, defaultValue, field); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func keepTopLevelFieldOptionalWithDefaultForVersion(crd *apiextensions.CustomResourceDefinition, version string, defaultValue interface{}, field string) error {
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	spec := schema.Properties["spec"]
 	fieldSchema := spec.Properties[field]
 	bytes, err := json.Marshal(defaultValue)
@@ -91,12 +100,21 @@ func getSchemaForPath(schema *apiextensions.JSONSchemaProps, path []string) (*ap
 // PreserveMutuallyExclusiveNonReferenceField adds back the non-ref field to keep the
 // CRD backwards compatible.
 func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourceDefinition, parentPath []string, referenceFieldName, nonReferenceFieldName string) error {
+	for _, version := range k8s.GetAllVersionsFromCRD(crd) {
+		if err := preserveMutuallyExclusiveNonReferenceFieldForVersion(crd, version, parentPath, referenceFieldName, nonReferenceFieldName); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func preserveMutuallyExclusiveNonReferenceFieldForVersion(crd *apiextensions.CustomResourceDefinition, version string, parentPath []string, referenceFieldName, nonReferenceFieldName string) error {
 	if referenceFieldName == "" || nonReferenceFieldName == "" {
 		return fmt.Errorf("both 'referenceFieldName' and 'nonReferenceFieldName' must be specified")
 	}
 
 	// 1. Get the parent schema of the fields.
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	var err error
 	var parent *apiextensions.JSONSchemaProps
 	// Prepend the top-level 'spec' field into path.
@@ -231,12 +249,23 @@ func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourc
 // EnsureReferenceFieldIsMultiKind adds the required `kind` field under the
 // reference field if the `kind` field doesn't exist.
 func EnsureReferenceFieldIsMultiKind(crd *apiextensions.CustomResourceDefinition, parentPath []string, referenceFieldName string, supportedKinds []string) error {
+	for _, version := range k8s.GetAllVersionsFromCRD(crd) {
+		if err := ensureReferenceFieldIsMultiKindForVersion(crd, version, parentPath, referenceFieldName, supportedKinds); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// EnsureReferenceFieldIsMultiKind adds the required `kind` field under the
+// reference field if the `kind` field doesn't exist.
+func ensureReferenceFieldIsMultiKindForVersion(crd *apiextensions.CustomResourceDefinition, version string, parentPath []string, referenceFieldName string, supportedKinds []string) error {
 	if referenceFieldName == "" {
 		return fmt.Errorf("param 'referenceFieldName' must be specified")
 	}
 
 	// 1. Get the parent schema of the fields.
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	var err error
 	var parent *apiextensions.JSONSchemaProps
 	// Prepend the top-level 'spec' field into path.

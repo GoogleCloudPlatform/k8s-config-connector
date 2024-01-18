@@ -259,7 +259,7 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 	r.Kind = crd.Spec.Names.Kind
 	crd.Spec.Names.ShortNames = append(crd.Spec.Names.ShortNames, strings.ToLower(r.Kind))
 	r.ShortNames = strings.Join(crd.Spec.Names.ShortNames, "<br>")
-	specYaml, err := crdtemplate.SpecToYAML(crd)
+	specYaml, err := crdtemplate.SpecToYAML(crd, gvk.Version)
 	if err != nil {
 		return nil, fmt.Errorf("error converting spec to YAML: %v", err)
 	}
@@ -268,7 +268,7 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 	} else {
 		r.Spec = string(specYaml)
 	}
-	statusYaml, err := crdtemplate.StatusToYAML(crd)
+	statusYaml, err := crdtemplate.StatusToYAML(crd, gvk.Version)
 	if err != nil {
 		return nil, fmt.Errorf("error converting status to YAML: %v", err)
 	}

@@ -460,14 +460,10 @@ func validateTypeConfigGVK(t *testing.T, rc v1alpha1.ResourceConfig, ref v1alpha
 	if err != nil {
 		t.Fatalf("bad resource reference '%v' on resource '%v': error getting crd: %v", ref.TFField, rc.Kind, err)
 	}
-	crdGvk := k8sschema.GroupVersionKind{
-		Group:   crd.Spec.Group,
-		Version: k8s.GetVersionFromCRD(crd),
-		Kind:    crd.Spec.Names.Kind,
-	}
-	if gvk != crdGvk {
+	crdGVK := k8s.GetLatestGVKFromCRD(crd)
+	if gvk != crdGVK {
 		t.Fatalf("crd and service mappings reference mismatch for reference '%v' on resource '%v' with key '%v': service mappings '%v', crd '%v'",
-			ref.TFField, rc.Kind, tc.Key, gvk, crdGvk)
+			ref.TFField, rc.Kind, tc.Key, gvk, crdGVK)
 	}
 }
 

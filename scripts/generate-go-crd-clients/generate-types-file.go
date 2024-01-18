@@ -259,7 +259,7 @@ func checkAndCreateFolder(dir string) {
 	}
 }
 
-func constructResourceDefinition(crdsPath, crdFile string) *resourceDefinition {
+func constructResourceDefinition(crdsPath, crdFile string, version string) *resourceDefinition {
 	r := &resourceDefinition{}
 	crdFilePath, err := filepath.Abs(path.Join(crdsPath, crdFile))
 	if err != nil {
@@ -276,7 +276,7 @@ func constructResourceDefinition(crdsPath, crdFile string) *resourceDefinition {
 	}
 	r.Service = strings.TrimSuffix(crd.Spec.Group, k8s.ApiDomainSuffix)
 	r.Kind = strings.ToLower(crd.Spec.Names.Kind)
-	r.Version = k8s.GetVersionFromCRD(crd)
+	r.Version = version
 	return r
 }
 
