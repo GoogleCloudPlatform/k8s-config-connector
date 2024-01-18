@@ -7,8 +7,6 @@
 
 
 
-Note: Before using this resource, make sure you review and complete the steps in Prerequisites section.
-
 <table>
 <thead>
 <tr>
@@ -60,6 +58,7 @@ Note: Before using this resource, make sure you review and complete the steps in
 </table>
 
 ## Prerequisites
+
 Before you can use this resource, you must prepare the target cluster
 so that the multi-cloud service can connect to the target cluster.
 To prepare the cluster, follow the steps to deploy an install-agent into the target cluster:

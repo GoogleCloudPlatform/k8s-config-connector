@@ -640,11 +640,17 @@ update to date, we need to add the new CRDs and samples to existing doc.
 1.  Change the values for "Service name" (there are **two**, one for 'Google
     Cloud Service Name' and one for 'Config Connector Service Name'), "Service
     Documentation", "REST Resource Name", and "REST Resource Documentation"
-    accordingly. Make sure that the URL in "REST Resource Documentation" points
-    to a working document by adding the partial URL to
-    `https://cloud.google.com` (i.e.
-    `https://cloud.google.com/spanner/docs/reference/rest/v1/projects.instances`).
-    Add an additional paragraph/table if needed.
+    accordingly. Make sure that the partial URL in "REST Resource Documentation" points
+    to a working document when prepending `https://cloud.google.com` to the partial URL.
+    For example, if the partial URL is updated to `/spanner/docs/reference/rest/v1/projects.instances`,
+    verify if `https://cloud.google.com/spanner/docs/reference/rest/v1/projects.instances `is a working URL. 
+    Add additional paragraph/table if needed.
+1.  If additional setup is necessary before the newly added resource can be applied successfully, 
+    and the setup can't be done via the Config Connector resources or features, add a "Prerequisites" section to explain
+    the prerequisites steps,
+    E.g. [scripts/generate-google3-docs/resource-reference/generated/resource-docs/containerattached/containerattachedcluster.md](scripts/generate-google3-docs/resource-reference/generated/resource-docs/containerattached/containerattachedcluster.md)
+    and
+    [scripts/generate-google3-docs/resource-reference/generated/resource-docs/secretmanager/secretmanagersecret.md](scripts/generate-google3-docs/resource-reference/generated/resource-docs/secretmanager/secretmanagersecret.md)
 1.  Update
     [scripts/generate-google3-docs/resource-reference/overview.md](scripts/generate-google3-docs/resource-reference/overview.md)
     by adding a row for your resource to the resource table.

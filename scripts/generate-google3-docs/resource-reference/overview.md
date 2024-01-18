@@ -13,6 +13,11 @@ version. If you are using a different version, you can find each version's
 Custom Resource Definitions in the GitHub repository. For example, this
 [link contains CRDs for version 1.89.0](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/v1.89.0/crds).
 
+Note: Please review <a href="/config-connector/docs/best-practices">best
+practices</a> and
+<a href="/config-connector/docs/troubleshooting">troubleshooting</a> common
+issues for {{product_name_short}}.
+
 <div>
 <devsite-filter>
   <input type="text" placeholder="Type a keyword to filter the list of resources">
@@ -822,7 +827,8 @@ Custom Resource Definitions in the GitHub repository. For example, this
 </devsite-filter>
 </div>
 
-The following resources are not supported in {{product_name_short}} starting from the corresponding version:
+The following resources are not supported in {{product_name_short}} starting
+from the corresponding version:
 
 <div>
 <table>
