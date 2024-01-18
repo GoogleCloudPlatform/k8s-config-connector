@@ -75,8 +75,10 @@
 </table>
 
 ## Prerequisites
-Before you can use this resource, assign the Secret Manager Admin role (roles/secretmanager.admin) on the project, folder, or organization.
-The required permission ‘secretmanager.versions.access’ is included in this role.
+
+Before you can use this resource, assign the Secret Manager Admin role
+(roles/secretmanager.admin) on the project, folder, or organization. The
+required permission ‘secretmanager.versions.access’ is included in this role.
 
 ## Custom Resource Definition Properties
 
