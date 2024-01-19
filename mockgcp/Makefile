@@ -26,6 +26,7 @@ gen-proto: generate-protos-from-openapi
 		--grpc-gateway_opt paths=source_relative \
 		--experimental_allow_proto3_optional \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
+		./apis/mockgcp/cloud/dns/v1beta2/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
