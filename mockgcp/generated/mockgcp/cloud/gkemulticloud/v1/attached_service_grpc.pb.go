@@ -63,6 +63,8 @@ type AttachedClustersClient interface {
 	GetAttachedServerConfig(ctx context.Context, in *GetAttachedServerConfigRequest, opts ...grpc.CallOption) (*AttachedServerConfig, error)
 	// Generates the install manifest to be installed on the target cluster.
 	GenerateAttachedClusterInstallManifest(ctx context.Context, in *GenerateAttachedClusterInstallManifestRequest, opts ...grpc.CallOption) (*GenerateAttachedClusterInstallManifestResponse, error)
+	// Generates an access token for a cluster agent.
+	GenerateAttachedClusterAgentToken(ctx context.Context, in *GenerateAttachedClusterAgentTokenRequest, opts ...grpc.CallOption) (*GenerateAttachedClusterAgentTokenResponse, error)
 }
 
 type attachedClustersClient struct {
@@ -145,6 +147,15 @@ func (c *attachedClustersClient) GenerateAttachedClusterInstallManifest(ctx cont
 	return out, nil
 }
 
+func (c *attachedClustersClient) GenerateAttachedClusterAgentToken(ctx context.Context, in *GenerateAttachedClusterAgentTokenRequest, opts ...grpc.CallOption) (*GenerateAttachedClusterAgentTokenResponse, error) {
+	out := new(GenerateAttachedClusterAgentTokenResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AttachedClusters/GenerateAttachedClusterAgentToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AttachedClustersServer is the server API for AttachedClusters service.
 // All implementations must embed UnimplementedAttachedClustersServer
 // for forward compatibility
@@ -189,6 +200,8 @@ type AttachedClustersServer interface {
 	GetAttachedServerConfig(context.Context, *GetAttachedServerConfigRequest) (*AttachedServerConfig, error)
 	// Generates the install manifest to be installed on the target cluster.
 	GenerateAttachedClusterInstallManifest(context.Context, *GenerateAttachedClusterInstallManifestRequest) (*GenerateAttachedClusterInstallManifestResponse, error)
+	// Generates an access token for a cluster agent.
+	GenerateAttachedClusterAgentToken(context.Context, *GenerateAttachedClusterAgentTokenRequest) (*GenerateAttachedClusterAgentTokenResponse, error)
 	mustEmbedUnimplementedAttachedClustersServer()
 }
 
@@ -219,6 +232,9 @@ func (UnimplementedAttachedClustersServer) GetAttachedServerConfig(context.Conte
 }
 func (UnimplementedAttachedClustersServer) GenerateAttachedClusterInstallManifest(context.Context, *GenerateAttachedClusterInstallManifestRequest) (*GenerateAttachedClusterInstallManifestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateAttachedClusterInstallManifest not implemented")
+}
+func (UnimplementedAttachedClustersServer) GenerateAttachedClusterAgentToken(context.Context, *GenerateAttachedClusterAgentTokenRequest) (*GenerateAttachedClusterAgentTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateAttachedClusterAgentToken not implemented")
 }
 func (UnimplementedAttachedClustersServer) mustEmbedUnimplementedAttachedClustersServer() {}
 
@@ -377,6 +393,24 @@ func _AttachedClusters_GenerateAttachedClusterInstallManifest_Handler(srv interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AttachedClusters_GenerateAttachedClusterAgentToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateAttachedClusterAgentTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AttachedClustersServer).GenerateAttachedClusterAgentToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkemulticloud.v1.AttachedClusters/GenerateAttachedClusterAgentToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AttachedClustersServer).GenerateAttachedClusterAgentToken(ctx, req.(*GenerateAttachedClusterAgentTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AttachedClusters_ServiceDesc is the grpc.ServiceDesc for AttachedClusters service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -415,6 +449,10 @@ var AttachedClusters_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GenerateAttachedClusterInstallManifest",
 			Handler:    _AttachedClusters_GenerateAttachedClusterInstallManifest_Handler,
+		},
+		{
+			MethodName: "GenerateAttachedClusterAgentToken",
+			Handler:    _AttachedClusters_GenerateAttachedClusterAgentToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

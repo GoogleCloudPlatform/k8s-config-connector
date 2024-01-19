@@ -26,6 +26,7 @@ gen-proto:
 		--grpc-gateway_opt paths=source_relative \
 		--experimental_allow_proto3_optional \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
+		./apis/mockgcp/cloud/dns/v1beta2/*.proto \
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/billing/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/certificatemanager/v1/*.proto \
