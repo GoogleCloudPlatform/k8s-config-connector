@@ -2391,6 +2391,16 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: certificate_manager_certificates 
+          description: |-
+            URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer.
+            Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
+            sslCertificates and certificateManagerCertificates fields can not be defined together.
+          gvk:
+            kind: CertificateManagerCertificate
+            version: v1beta1
+            group: certificatemanager.cnrm.cloud.google.com
+          valueTemplate: projects/{{project}}/locations/{{location}}/certificates/{{value}}
         - tfField: ssl_certificates
           description: |-
             A list of ComputeSSLCertificate resources that are used to
