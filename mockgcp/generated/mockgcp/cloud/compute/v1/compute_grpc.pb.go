@@ -826,6 +826,8 @@ type BackendBucketsClient interface {
 	DeleteSignedUrlKey(ctx context.Context, in *DeleteSignedUrlKeyBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Returns the specified BackendBucket resource.
 	Get(ctx context.Context, in *GetBackendBucketRequest, opts ...grpc.CallOption) (*BackendBucket, error)
+	// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
+	GetIamPolicy(ctx context.Context, in *GetIamPolicyBackendBucketRequest, opts ...grpc.CallOption) (*Policy, error)
 	// Creates a BackendBucket resource in the specified project using the data included in the request.
 	Insert(ctx context.Context, in *InsertBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Retrieves the list of BackendBucket resources available to the specified project.
@@ -834,6 +836,10 @@ type BackendBucketsClient interface {
 	Patch(ctx context.Context, in *PatchBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Sets the edge security policy for the specified backend bucket.
 	SetEdgeSecurityPolicy(ctx context.Context, in *SetEdgeSecurityPolicyBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Sets the access control policy on the specified resource. Replaces any existing policy.
+	SetIamPolicy(ctx context.Context, in *SetIamPolicyBackendBucketRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(ctx context.Context, in *TestIamPermissionsBackendBucketRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error)
 	// Updates the specified BackendBucket resource with the data included in the request.
 	Update(ctx context.Context, in *UpdateBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error)
 }
@@ -882,6 +888,15 @@ func (c *backendBucketsClient) Get(ctx context.Context, in *GetBackendBucketRequ
 	return out, nil
 }
 
+func (c *backendBucketsClient) GetIamPolicy(ctx context.Context, in *GetIamPolicyBackendBucketRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendBuckets/GetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backendBucketsClient) Insert(ctx context.Context, in *InsertBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendBuckets/Insert", in, out, opts...)
@@ -918,6 +933,24 @@ func (c *backendBucketsClient) SetEdgeSecurityPolicy(ctx context.Context, in *Se
 	return out, nil
 }
 
+func (c *backendBucketsClient) SetIamPolicy(ctx context.Context, in *SetIamPolicyBackendBucketRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendBuckets/SetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backendBucketsClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsBackendBucketRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error) {
+	out := new(TestPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendBuckets/TestIamPermissions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backendBucketsClient) Update(ctx context.Context, in *UpdateBackendBucketRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendBuckets/Update", in, out, opts...)
@@ -939,6 +972,8 @@ type BackendBucketsServer interface {
 	DeleteSignedUrlKey(context.Context, *DeleteSignedUrlKeyBackendBucketRequest) (*Operation, error)
 	// Returns the specified BackendBucket resource.
 	Get(context.Context, *GetBackendBucketRequest) (*BackendBucket, error)
+	// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
+	GetIamPolicy(context.Context, *GetIamPolicyBackendBucketRequest) (*Policy, error)
 	// Creates a BackendBucket resource in the specified project using the data included in the request.
 	Insert(context.Context, *InsertBackendBucketRequest) (*Operation, error)
 	// Retrieves the list of BackendBucket resources available to the specified project.
@@ -947,6 +982,10 @@ type BackendBucketsServer interface {
 	Patch(context.Context, *PatchBackendBucketRequest) (*Operation, error)
 	// Sets the edge security policy for the specified backend bucket.
 	SetEdgeSecurityPolicy(context.Context, *SetEdgeSecurityPolicyBackendBucketRequest) (*Operation, error)
+	// Sets the access control policy on the specified resource. Replaces any existing policy.
+	SetIamPolicy(context.Context, *SetIamPolicyBackendBucketRequest) (*Policy, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(context.Context, *TestIamPermissionsBackendBucketRequest) (*TestPermissionsResponse, error)
 	// Updates the specified BackendBucket resource with the data included in the request.
 	Update(context.Context, *UpdateBackendBucketRequest) (*Operation, error)
 	mustEmbedUnimplementedBackendBucketsServer()
@@ -968,6 +1007,9 @@ func (UnimplementedBackendBucketsServer) DeleteSignedUrlKey(context.Context, *De
 func (UnimplementedBackendBucketsServer) Get(context.Context, *GetBackendBucketRequest) (*BackendBucket, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
+func (UnimplementedBackendBucketsServer) GetIamPolicy(context.Context, *GetIamPolicyBackendBucketRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIamPolicy not implemented")
+}
 func (UnimplementedBackendBucketsServer) Insert(context.Context, *InsertBackendBucketRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
 }
@@ -979,6 +1021,12 @@ func (UnimplementedBackendBucketsServer) Patch(context.Context, *PatchBackendBuc
 }
 func (UnimplementedBackendBucketsServer) SetEdgeSecurityPolicy(context.Context, *SetEdgeSecurityPolicyBackendBucketRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetEdgeSecurityPolicy not implemented")
+}
+func (UnimplementedBackendBucketsServer) SetIamPolicy(context.Context, *SetIamPolicyBackendBucketRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
+}
+func (UnimplementedBackendBucketsServer) TestIamPermissions(context.Context, *TestIamPermissionsBackendBucketRequest) (*TestPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
 }
 func (UnimplementedBackendBucketsServer) Update(context.Context, *UpdateBackendBucketRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
@@ -1068,6 +1116,24 @@ func _BackendBuckets_Get_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackendBuckets_GetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIamPolicyBackendBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackendBucketsServer).GetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.BackendBuckets/GetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackendBucketsServer).GetIamPolicy(ctx, req.(*GetIamPolicyBackendBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackendBuckets_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(InsertBackendBucketRequest)
 	if err := dec(in); err != nil {
@@ -1140,6 +1206,42 @@ func _BackendBuckets_SetEdgeSecurityPolicy_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackendBuckets_SetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetIamPolicyBackendBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackendBucketsServer).SetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.BackendBuckets/SetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackendBucketsServer).SetIamPolicy(ctx, req.(*SetIamPolicyBackendBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackendBuckets_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TestIamPermissionsBackendBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackendBucketsServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.BackendBuckets/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackendBucketsServer).TestIamPermissions(ctx, req.(*TestIamPermissionsBackendBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackendBuckets_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateBackendBucketRequest)
 	if err := dec(in); err != nil {
@@ -1182,6 +1284,10 @@ var BackendBuckets_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _BackendBuckets_Get_Handler,
 		},
 		{
+			MethodName: "GetIamPolicy",
+			Handler:    _BackendBuckets_GetIamPolicy_Handler,
+		},
+		{
 			MethodName: "Insert",
 			Handler:    _BackendBuckets_Insert_Handler,
 		},
@@ -1196,6 +1302,14 @@ var BackendBuckets_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetEdgeSecurityPolicy",
 			Handler:    _BackendBuckets_SetEdgeSecurityPolicy_Handler,
+		},
+		{
+			MethodName: "SetIamPolicy",
+			Handler:    _BackendBuckets_SetIamPolicy_Handler,
+		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _BackendBuckets_TestIamPermissions_Handler,
 		},
 		{
 			MethodName: "Update",
@@ -1228,6 +1342,8 @@ type BackendServicesClient interface {
 	Insert(ctx context.Context, in *InsertBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Retrieves the list of BackendService resources available to the specified project.
 	List(ctx context.Context, in *ListBackendServicesRequest, opts ...grpc.CallOption) (*BackendServiceList, error)
+	// Retrieves an aggregated list of all usable backend services in the specified project.
+	ListUsable(ctx context.Context, in *ListUsableBackendServicesRequest, opts ...grpc.CallOption) (*BackendServiceListUsable, error)
 	// Patches the specified BackendService resource with the data included in the request. For more information, see Backend services overview. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
 	Patch(ctx context.Context, in *PatchBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Sets the edge security policy for the specified backend service.
@@ -1236,6 +1352,8 @@ type BackendServicesClient interface {
 	SetIamPolicy(ctx context.Context, in *SetIamPolicyBackendServiceRequest, opts ...grpc.CallOption) (*Policy, error)
 	// Sets the Google Cloud Armor security policy for the specified backend service. For more information, see Google Cloud Armor Overview
 	SetSecurityPolicy(ctx context.Context, in *SetSecurityPolicyBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(ctx context.Context, in *TestIamPermissionsBackendServiceRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error)
 	// Updates the specified BackendService resource with the data included in the request. For more information, see Backend services overview.
 	Update(ctx context.Context, in *UpdateBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error)
 }
@@ -1329,6 +1447,15 @@ func (c *backendServicesClient) List(ctx context.Context, in *ListBackendService
 	return out, nil
 }
 
+func (c *backendServicesClient) ListUsable(ctx context.Context, in *ListUsableBackendServicesRequest, opts ...grpc.CallOption) (*BackendServiceListUsable, error) {
+	out := new(BackendServiceListUsable)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendServices/ListUsable", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backendServicesClient) Patch(ctx context.Context, in *PatchBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendServices/Patch", in, out, opts...)
@@ -1359,6 +1486,15 @@ func (c *backendServicesClient) SetIamPolicy(ctx context.Context, in *SetIamPoli
 func (c *backendServicesClient) SetSecurityPolicy(ctx context.Context, in *SetSecurityPolicyBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendServices/SetSecurityPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backendServicesClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsBackendServiceRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error) {
+	out := new(TestPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.BackendServices/TestIamPermissions", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1396,6 +1532,8 @@ type BackendServicesServer interface {
 	Insert(context.Context, *InsertBackendServiceRequest) (*Operation, error)
 	// Retrieves the list of BackendService resources available to the specified project.
 	List(context.Context, *ListBackendServicesRequest) (*BackendServiceList, error)
+	// Retrieves an aggregated list of all usable backend services in the specified project.
+	ListUsable(context.Context, *ListUsableBackendServicesRequest) (*BackendServiceListUsable, error)
 	// Patches the specified BackendService resource with the data included in the request. For more information, see Backend services overview. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
 	Patch(context.Context, *PatchBackendServiceRequest) (*Operation, error)
 	// Sets the edge security policy for the specified backend service.
@@ -1404,6 +1542,8 @@ type BackendServicesServer interface {
 	SetIamPolicy(context.Context, *SetIamPolicyBackendServiceRequest) (*Policy, error)
 	// Sets the Google Cloud Armor security policy for the specified backend service. For more information, see Google Cloud Armor Overview
 	SetSecurityPolicy(context.Context, *SetSecurityPolicyBackendServiceRequest) (*Operation, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(context.Context, *TestIamPermissionsBackendServiceRequest) (*TestPermissionsResponse, error)
 	// Updates the specified BackendService resource with the data included in the request. For more information, see Backend services overview.
 	Update(context.Context, *UpdateBackendServiceRequest) (*Operation, error)
 	mustEmbedUnimplementedBackendServicesServer()
@@ -1440,6 +1580,9 @@ func (UnimplementedBackendServicesServer) Insert(context.Context, *InsertBackend
 func (UnimplementedBackendServicesServer) List(context.Context, *ListBackendServicesRequest) (*BackendServiceList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
+func (UnimplementedBackendServicesServer) ListUsable(context.Context, *ListUsableBackendServicesRequest) (*BackendServiceListUsable, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUsable not implemented")
+}
 func (UnimplementedBackendServicesServer) Patch(context.Context, *PatchBackendServiceRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
 }
@@ -1451,6 +1594,9 @@ func (UnimplementedBackendServicesServer) SetIamPolicy(context.Context, *SetIamP
 }
 func (UnimplementedBackendServicesServer) SetSecurityPolicy(context.Context, *SetSecurityPolicyBackendServiceRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetSecurityPolicy not implemented")
+}
+func (UnimplementedBackendServicesServer) TestIamPermissions(context.Context, *TestIamPermissionsBackendServiceRequest) (*TestPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
 }
 func (UnimplementedBackendServicesServer) Update(context.Context, *UpdateBackendServiceRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
@@ -1630,6 +1776,24 @@ func _BackendServices_List_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackendServices_ListUsable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUsableBackendServicesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackendServicesServer).ListUsable(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.BackendServices/ListUsable",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackendServicesServer).ListUsable(ctx, req.(*ListUsableBackendServicesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackendServices_Patch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PatchBackendServiceRequest)
 	if err := dec(in); err != nil {
@@ -1702,6 +1866,24 @@ func _BackendServices_SetSecurityPolicy_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackendServices_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TestIamPermissionsBackendServiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackendServicesServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.BackendServices/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackendServicesServer).TestIamPermissions(ctx, req.(*TestIamPermissionsBackendServiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackendServices_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateBackendServiceRequest)
 	if err := dec(in); err != nil {
@@ -1764,6 +1946,10 @@ var BackendServices_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _BackendServices_List_Handler,
 		},
 		{
+			MethodName: "ListUsable",
+			Handler:    _BackendServices_ListUsable_Handler,
+		},
+		{
 			MethodName: "Patch",
 			Handler:    _BackendServices_Patch_Handler,
 		},
@@ -1778,6 +1964,10 @@ var BackendServices_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetSecurityPolicy",
 			Handler:    _BackendServices_SetSecurityPolicy_Handler,
+		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _BackendServices_TestIamPermissions_Handler,
 		},
 		{
 			MethodName: "Update",
@@ -8383,6 +8573,8 @@ type InstancesClient interface {
 	SetName(ctx context.Context, in *SetNameInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Sets an instance's scheduling options. You can only call this method on a stopped instance, that is, a VM instance that is in a `TERMINATED` state. See Instance Life Cycle for more information on the possible instance states. For more information about setting scheduling options for a VM, see Set VM host maintenance policy.
 	SetScheduling(ctx context.Context, in *SetSchedulingInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Sets the Google Cloud Armor security policy for the specified instance. For more information, see Google Cloud Armor Overview
+	SetSecurityPolicy(ctx context.Context, in *SetSecurityPolicyInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Sets the service account on the instance. For more information, read Changing the service account and access scopes for an instance.
 	SetServiceAccount(ctx context.Context, in *SetServiceAccountInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Sets the Shielded Instance integrity policy for an instance. You can only use this method on a running instance. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
@@ -8709,6 +8901,15 @@ func (c *instancesClient) SetScheduling(ctx context.Context, in *SetSchedulingIn
 	return out, nil
 }
 
+func (c *instancesClient) SetSecurityPolicy(ctx context.Context, in *SetSecurityPolicyInstanceRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Instances/SetSecurityPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *instancesClient) SetServiceAccount(ctx context.Context, in *SetServiceAccountInstanceRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Instances/SetServiceAccount", in, out, opts...)
@@ -8903,6 +9104,8 @@ type InstancesServer interface {
 	SetName(context.Context, *SetNameInstanceRequest) (*Operation, error)
 	// Sets an instance's scheduling options. You can only call this method on a stopped instance, that is, a VM instance that is in a `TERMINATED` state. See Instance Life Cycle for more information on the possible instance states. For more information about setting scheduling options for a VM, see Set VM host maintenance policy.
 	SetScheduling(context.Context, *SetSchedulingInstanceRequest) (*Operation, error)
+	// Sets the Google Cloud Armor security policy for the specified instance. For more information, see Google Cloud Armor Overview
+	SetSecurityPolicy(context.Context, *SetSecurityPolicyInstanceRequest) (*Operation, error)
 	// Sets the service account on the instance. For more information, read Changing the service account and access scopes for an instance.
 	SetServiceAccount(context.Context, *SetServiceAccountInstanceRequest) (*Operation, error)
 	// Sets the Shielded Instance integrity policy for an instance. You can only use this method on a running instance. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
@@ -9033,6 +9236,9 @@ func (UnimplementedInstancesServer) SetName(context.Context, *SetNameInstanceReq
 }
 func (UnimplementedInstancesServer) SetScheduling(context.Context, *SetSchedulingInstanceRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetScheduling not implemented")
+}
+func (UnimplementedInstancesServer) SetSecurityPolicy(context.Context, *SetSecurityPolicyInstanceRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetSecurityPolicy not implemented")
 }
 func (UnimplementedInstancesServer) SetServiceAccount(context.Context, *SetServiceAccountInstanceRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetServiceAccount not implemented")
@@ -9665,6 +9871,24 @@ func _Instances_SetScheduling_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Instances_SetSecurityPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetSecurityPolicyInstanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstancesServer).SetSecurityPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Instances/SetSecurityPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstancesServer).SetSecurityPolicy(ctx, req.(*SetSecurityPolicyInstanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Instances_SetServiceAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetServiceAccountInstanceRequest)
 	if err := dec(in); err != nil {
@@ -10051,6 +10275,10 @@ var Instances_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetScheduling",
 			Handler:    _Instances_SetScheduling_Handler,
+		},
+		{
+			MethodName: "SetSecurityPolicy",
+			Handler:    _Instances_SetSecurityPolicy_Handler,
 		},
 		{
 			MethodName: "SetServiceAccount",
@@ -10691,8 +10919,10 @@ type InterconnectsClient interface {
 	Delete(ctx context.Context, in *DeleteInterconnectRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Returns the specified Interconnect. Get a list of available Interconnects by making a list() request.
 	Get(ctx context.Context, in *GetInterconnectRequest, opts ...grpc.CallOption) (*Interconnect, error)
-	// Returns the interconnectDiagnostics for the specified Interconnect.
+	// Returns the interconnectDiagnostics for the specified Interconnect. In the event of a global outage, do not use this API to make decisions about where to redirect your network traffic. Unlike a VLAN attachment, which is regional, a Cloud Interconnect connection is a global resource. A global outage can prevent this API from functioning properly.
 	GetDiagnostics(ctx context.Context, in *GetDiagnosticsInterconnectRequest, opts ...grpc.CallOption) (*InterconnectsGetDiagnosticsResponse, error)
+	// Returns the interconnectMacsecConfig for the specified Interconnect.
+	GetMacsecConfig(ctx context.Context, in *GetMacsecConfigInterconnectRequest, opts ...grpc.CallOption) (*InterconnectsGetMacsecConfigResponse, error)
 	// Creates an Interconnect in the specified project using the data included in the request.
 	Insert(ctx context.Context, in *InsertInterconnectRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Retrieves the list of Interconnects available to the specified project.
@@ -10732,6 +10962,15 @@ func (c *interconnectsClient) Get(ctx context.Context, in *GetInterconnectReques
 func (c *interconnectsClient) GetDiagnostics(ctx context.Context, in *GetDiagnosticsInterconnectRequest, opts ...grpc.CallOption) (*InterconnectsGetDiagnosticsResponse, error) {
 	out := new(InterconnectsGetDiagnosticsResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Interconnects/GetDiagnostics", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interconnectsClient) GetMacsecConfig(ctx context.Context, in *GetMacsecConfigInterconnectRequest, opts ...grpc.CallOption) (*InterconnectsGetMacsecConfigResponse, error) {
+	out := new(InterconnectsGetMacsecConfigResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Interconnects/GetMacsecConfig", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -10782,8 +11021,10 @@ type InterconnectsServer interface {
 	Delete(context.Context, *DeleteInterconnectRequest) (*Operation, error)
 	// Returns the specified Interconnect. Get a list of available Interconnects by making a list() request.
 	Get(context.Context, *GetInterconnectRequest) (*Interconnect, error)
-	// Returns the interconnectDiagnostics for the specified Interconnect.
+	// Returns the interconnectDiagnostics for the specified Interconnect. In the event of a global outage, do not use this API to make decisions about where to redirect your network traffic. Unlike a VLAN attachment, which is regional, a Cloud Interconnect connection is a global resource. A global outage can prevent this API from functioning properly.
 	GetDiagnostics(context.Context, *GetDiagnosticsInterconnectRequest) (*InterconnectsGetDiagnosticsResponse, error)
+	// Returns the interconnectMacsecConfig for the specified Interconnect.
+	GetMacsecConfig(context.Context, *GetMacsecConfigInterconnectRequest) (*InterconnectsGetMacsecConfigResponse, error)
 	// Creates an Interconnect in the specified project using the data included in the request.
 	Insert(context.Context, *InsertInterconnectRequest) (*Operation, error)
 	// Retrieves the list of Interconnects available to the specified project.
@@ -10807,6 +11048,9 @@ func (UnimplementedInterconnectsServer) Get(context.Context, *GetInterconnectReq
 }
 func (UnimplementedInterconnectsServer) GetDiagnostics(context.Context, *GetDiagnosticsInterconnectRequest) (*InterconnectsGetDiagnosticsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDiagnostics not implemented")
+}
+func (UnimplementedInterconnectsServer) GetMacsecConfig(context.Context, *GetMacsecConfigInterconnectRequest) (*InterconnectsGetMacsecConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMacsecConfig not implemented")
 }
 func (UnimplementedInterconnectsServer) Insert(context.Context, *InsertInterconnectRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
@@ -10883,6 +11127,24 @@ func _Interconnects_GetDiagnostics_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InterconnectsServer).GetDiagnostics(ctx, req.(*GetDiagnosticsInterconnectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Interconnects_GetMacsecConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMacsecConfigInterconnectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterconnectsServer).GetMacsecConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Interconnects/GetMacsecConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterconnectsServer).GetMacsecConfig(ctx, req.(*GetMacsecConfigInterconnectRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -10977,6 +11239,10 @@ var Interconnects_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetDiagnostics",
 			Handler:    _Interconnects_GetDiagnostics_Handler,
+		},
+		{
+			MethodName: "GetMacsecConfig",
+			Handler:    _Interconnects_GetMacsecConfig_Handler,
 		},
 		{
 			MethodName: "Insert",
@@ -11937,6 +12203,8 @@ type NetworkAttachmentsClient interface {
 	Insert(ctx context.Context, in *InsertNetworkAttachmentRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Lists the NetworkAttachments for a project in the given scope.
 	List(ctx context.Context, in *ListNetworkAttachmentsRequest, opts ...grpc.CallOption) (*NetworkAttachmentList, error)
+	// Patches the specified NetworkAttachment resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
+	Patch(ctx context.Context, in *PatchNetworkAttachmentRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Sets the access control policy on the specified resource. Replaces any existing policy.
 	SetIamPolicy(ctx context.Context, in *SetIamPolicyNetworkAttachmentRequest, opts ...grpc.CallOption) (*Policy, error)
 	// Returns permissions that a caller has on the specified resource.
@@ -12005,6 +12273,15 @@ func (c *networkAttachmentsClient) List(ctx context.Context, in *ListNetworkAtta
 	return out, nil
 }
 
+func (c *networkAttachmentsClient) Patch(ctx context.Context, in *PatchNetworkAttachmentRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkAttachments/Patch", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *networkAttachmentsClient) SetIamPolicy(ctx context.Context, in *SetIamPolicyNetworkAttachmentRequest, opts ...grpc.CallOption) (*Policy, error) {
 	out := new(Policy)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkAttachments/SetIamPolicy", in, out, opts...)
@@ -12039,6 +12316,8 @@ type NetworkAttachmentsServer interface {
 	Insert(context.Context, *InsertNetworkAttachmentRequest) (*Operation, error)
 	// Lists the NetworkAttachments for a project in the given scope.
 	List(context.Context, *ListNetworkAttachmentsRequest) (*NetworkAttachmentList, error)
+	// Patches the specified NetworkAttachment resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
+	Patch(context.Context, *PatchNetworkAttachmentRequest) (*Operation, error)
 	// Sets the access control policy on the specified resource. Replaces any existing policy.
 	SetIamPolicy(context.Context, *SetIamPolicyNetworkAttachmentRequest) (*Policy, error)
 	// Returns permissions that a caller has on the specified resource.
@@ -12067,6 +12346,9 @@ func (UnimplementedNetworkAttachmentsServer) Insert(context.Context, *InsertNetw
 }
 func (UnimplementedNetworkAttachmentsServer) List(context.Context, *ListNetworkAttachmentsRequest) (*NetworkAttachmentList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedNetworkAttachmentsServer) Patch(context.Context, *PatchNetworkAttachmentRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
 }
 func (UnimplementedNetworkAttachmentsServer) SetIamPolicy(context.Context, *SetIamPolicyNetworkAttachmentRequest) (*Policy, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
@@ -12195,6 +12477,24 @@ func _NetworkAttachments_List_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NetworkAttachments_Patch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchNetworkAttachmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkAttachmentsServer).Patch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.NetworkAttachments/Patch",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkAttachmentsServer).Patch(ctx, req.(*PatchNetworkAttachmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NetworkAttachments_SetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetIamPolicyNetworkAttachmentRequest)
 	if err := dec(in); err != nil {
@@ -12261,6 +12561,10 @@ var NetworkAttachments_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _NetworkAttachments_List_Handler,
+		},
+		{
+			MethodName: "Patch",
+			Handler:    _NetworkAttachments_Patch_Handler,
 		},
 		{
 			MethodName: "SetIamPolicy",
@@ -15999,6 +16303,8 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PublicAdvertisedPrefixesClient interface {
+	// Announces the specified PublicAdvertisedPrefix
+	Announce(ctx context.Context, in *AnnouncePublicAdvertisedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Deletes the specified PublicAdvertisedPrefix
 	Delete(ctx context.Context, in *DeletePublicAdvertisedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Returns the specified PublicAdvertisedPrefix resource.
@@ -16009,6 +16315,8 @@ type PublicAdvertisedPrefixesClient interface {
 	List(ctx context.Context, in *ListPublicAdvertisedPrefixesRequest, opts ...grpc.CallOption) (*PublicAdvertisedPrefixList, error)
 	// Patches the specified Router resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
 	Patch(ctx context.Context, in *PatchPublicAdvertisedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Withdraws the specified PublicAdvertisedPrefix
+	Withdraw(ctx context.Context, in *WithdrawPublicAdvertisedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type publicAdvertisedPrefixesClient struct {
@@ -16017,6 +16325,15 @@ type publicAdvertisedPrefixesClient struct {
 
 func NewPublicAdvertisedPrefixesClient(cc grpc.ClientConnInterface) PublicAdvertisedPrefixesClient {
 	return &publicAdvertisedPrefixesClient{cc}
+}
+
+func (c *publicAdvertisedPrefixesClient) Announce(ctx context.Context, in *AnnouncePublicAdvertisedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.PublicAdvertisedPrefixes/Announce", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *publicAdvertisedPrefixesClient) Delete(ctx context.Context, in *DeletePublicAdvertisedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error) {
@@ -16064,10 +16381,21 @@ func (c *publicAdvertisedPrefixesClient) Patch(ctx context.Context, in *PatchPub
 	return out, nil
 }
 
+func (c *publicAdvertisedPrefixesClient) Withdraw(ctx context.Context, in *WithdrawPublicAdvertisedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.PublicAdvertisedPrefixes/Withdraw", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PublicAdvertisedPrefixesServer is the server API for PublicAdvertisedPrefixes service.
 // All implementations must embed UnimplementedPublicAdvertisedPrefixesServer
 // for forward compatibility
 type PublicAdvertisedPrefixesServer interface {
+	// Announces the specified PublicAdvertisedPrefix
+	Announce(context.Context, *AnnouncePublicAdvertisedPrefixeRequest) (*Operation, error)
 	// Deletes the specified PublicAdvertisedPrefix
 	Delete(context.Context, *DeletePublicAdvertisedPrefixeRequest) (*Operation, error)
 	// Returns the specified PublicAdvertisedPrefix resource.
@@ -16078,6 +16406,8 @@ type PublicAdvertisedPrefixesServer interface {
 	List(context.Context, *ListPublicAdvertisedPrefixesRequest) (*PublicAdvertisedPrefixList, error)
 	// Patches the specified Router resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
 	Patch(context.Context, *PatchPublicAdvertisedPrefixeRequest) (*Operation, error)
+	// Withdraws the specified PublicAdvertisedPrefix
+	Withdraw(context.Context, *WithdrawPublicAdvertisedPrefixeRequest) (*Operation, error)
 	mustEmbedUnimplementedPublicAdvertisedPrefixesServer()
 }
 
@@ -16085,6 +16415,9 @@ type PublicAdvertisedPrefixesServer interface {
 type UnimplementedPublicAdvertisedPrefixesServer struct {
 }
 
+func (UnimplementedPublicAdvertisedPrefixesServer) Announce(context.Context, *AnnouncePublicAdvertisedPrefixeRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Announce not implemented")
+}
 func (UnimplementedPublicAdvertisedPrefixesServer) Delete(context.Context, *DeletePublicAdvertisedPrefixeRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
@@ -16100,6 +16433,9 @@ func (UnimplementedPublicAdvertisedPrefixesServer) List(context.Context, *ListPu
 func (UnimplementedPublicAdvertisedPrefixesServer) Patch(context.Context, *PatchPublicAdvertisedPrefixeRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
 }
+func (UnimplementedPublicAdvertisedPrefixesServer) Withdraw(context.Context, *WithdrawPublicAdvertisedPrefixeRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Withdraw not implemented")
+}
 func (UnimplementedPublicAdvertisedPrefixesServer) mustEmbedUnimplementedPublicAdvertisedPrefixesServer() {
 }
 
@@ -16112,6 +16448,24 @@ type UnsafePublicAdvertisedPrefixesServer interface {
 
 func RegisterPublicAdvertisedPrefixesServer(s grpc.ServiceRegistrar, srv PublicAdvertisedPrefixesServer) {
 	s.RegisterService(&PublicAdvertisedPrefixes_ServiceDesc, srv)
+}
+
+func _PublicAdvertisedPrefixes_Announce_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnnouncePublicAdvertisedPrefixeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PublicAdvertisedPrefixesServer).Announce(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.PublicAdvertisedPrefixes/Announce",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PublicAdvertisedPrefixesServer).Announce(ctx, req.(*AnnouncePublicAdvertisedPrefixeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _PublicAdvertisedPrefixes_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -16204,6 +16558,24 @@ func _PublicAdvertisedPrefixes_Patch_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PublicAdvertisedPrefixes_Withdraw_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithdrawPublicAdvertisedPrefixeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PublicAdvertisedPrefixesServer).Withdraw(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.PublicAdvertisedPrefixes/Withdraw",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PublicAdvertisedPrefixesServer).Withdraw(ctx, req.(*WithdrawPublicAdvertisedPrefixeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PublicAdvertisedPrefixes_ServiceDesc is the grpc.ServiceDesc for PublicAdvertisedPrefixes service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -16211,6 +16583,10 @@ var PublicAdvertisedPrefixes_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "mockgcp.cloud.compute.v1.PublicAdvertisedPrefixes",
 	HandlerType: (*PublicAdvertisedPrefixesServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Announce",
+			Handler:    _PublicAdvertisedPrefixes_Announce_Handler,
+		},
 		{
 			MethodName: "Delete",
 			Handler:    _PublicAdvertisedPrefixes_Delete_Handler,
@@ -16231,6 +16607,10 @@ var PublicAdvertisedPrefixes_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "Patch",
 			Handler:    _PublicAdvertisedPrefixes_Patch_Handler,
 		},
+		{
+			MethodName: "Withdraw",
+			Handler:    _PublicAdvertisedPrefixes_Withdraw_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
@@ -16242,6 +16622,8 @@ var PublicAdvertisedPrefixes_ServiceDesc = grpc.ServiceDesc{
 type PublicDelegatedPrefixesClient interface {
 	// Lists all PublicDelegatedPrefix resources owned by the specific project across all scopes.
 	AggregatedList(ctx context.Context, in *AggregatedListPublicDelegatedPrefixesRequest, opts ...grpc.CallOption) (*PublicDelegatedPrefixAggregatedList, error)
+	// Announces the specified PublicDelegatedPrefix in the given region.
+	Announce(ctx context.Context, in *AnnouncePublicDelegatedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Deletes the specified PublicDelegatedPrefix in the given region.
 	Delete(ctx context.Context, in *DeletePublicDelegatedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Returns the specified PublicDelegatedPrefix resource in the given region.
@@ -16252,6 +16634,8 @@ type PublicDelegatedPrefixesClient interface {
 	List(ctx context.Context, in *ListPublicDelegatedPrefixesRequest, opts ...grpc.CallOption) (*PublicDelegatedPrefixList, error)
 	// Patches the specified PublicDelegatedPrefix resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
 	Patch(ctx context.Context, in *PatchPublicDelegatedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Withdraws the specified PublicDelegatedPrefix in the given region.
+	Withdraw(ctx context.Context, in *WithdrawPublicDelegatedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type publicDelegatedPrefixesClient struct {
@@ -16265,6 +16649,15 @@ func NewPublicDelegatedPrefixesClient(cc grpc.ClientConnInterface) PublicDelegat
 func (c *publicDelegatedPrefixesClient) AggregatedList(ctx context.Context, in *AggregatedListPublicDelegatedPrefixesRequest, opts ...grpc.CallOption) (*PublicDelegatedPrefixAggregatedList, error) {
 	out := new(PublicDelegatedPrefixAggregatedList)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.PublicDelegatedPrefixes/AggregatedList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *publicDelegatedPrefixesClient) Announce(ctx context.Context, in *AnnouncePublicDelegatedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.PublicDelegatedPrefixes/Announce", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -16316,12 +16709,23 @@ func (c *publicDelegatedPrefixesClient) Patch(ctx context.Context, in *PatchPubl
 	return out, nil
 }
 
+func (c *publicDelegatedPrefixesClient) Withdraw(ctx context.Context, in *WithdrawPublicDelegatedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.PublicDelegatedPrefixes/Withdraw", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PublicDelegatedPrefixesServer is the server API for PublicDelegatedPrefixes service.
 // All implementations must embed UnimplementedPublicDelegatedPrefixesServer
 // for forward compatibility
 type PublicDelegatedPrefixesServer interface {
 	// Lists all PublicDelegatedPrefix resources owned by the specific project across all scopes.
 	AggregatedList(context.Context, *AggregatedListPublicDelegatedPrefixesRequest) (*PublicDelegatedPrefixAggregatedList, error)
+	// Announces the specified PublicDelegatedPrefix in the given region.
+	Announce(context.Context, *AnnouncePublicDelegatedPrefixeRequest) (*Operation, error)
 	// Deletes the specified PublicDelegatedPrefix in the given region.
 	Delete(context.Context, *DeletePublicDelegatedPrefixeRequest) (*Operation, error)
 	// Returns the specified PublicDelegatedPrefix resource in the given region.
@@ -16332,6 +16736,8 @@ type PublicDelegatedPrefixesServer interface {
 	List(context.Context, *ListPublicDelegatedPrefixesRequest) (*PublicDelegatedPrefixList, error)
 	// Patches the specified PublicDelegatedPrefix resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
 	Patch(context.Context, *PatchPublicDelegatedPrefixeRequest) (*Operation, error)
+	// Withdraws the specified PublicDelegatedPrefix in the given region.
+	Withdraw(context.Context, *WithdrawPublicDelegatedPrefixeRequest) (*Operation, error)
 	mustEmbedUnimplementedPublicDelegatedPrefixesServer()
 }
 
@@ -16341,6 +16747,9 @@ type UnimplementedPublicDelegatedPrefixesServer struct {
 
 func (UnimplementedPublicDelegatedPrefixesServer) AggregatedList(context.Context, *AggregatedListPublicDelegatedPrefixesRequest) (*PublicDelegatedPrefixAggregatedList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AggregatedList not implemented")
+}
+func (UnimplementedPublicDelegatedPrefixesServer) Announce(context.Context, *AnnouncePublicDelegatedPrefixeRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Announce not implemented")
 }
 func (UnimplementedPublicDelegatedPrefixesServer) Delete(context.Context, *DeletePublicDelegatedPrefixeRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -16356,6 +16765,9 @@ func (UnimplementedPublicDelegatedPrefixesServer) List(context.Context, *ListPub
 }
 func (UnimplementedPublicDelegatedPrefixesServer) Patch(context.Context, *PatchPublicDelegatedPrefixeRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
+}
+func (UnimplementedPublicDelegatedPrefixesServer) Withdraw(context.Context, *WithdrawPublicDelegatedPrefixeRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Withdraw not implemented")
 }
 func (UnimplementedPublicDelegatedPrefixesServer) mustEmbedUnimplementedPublicDelegatedPrefixesServer() {
 }
@@ -16385,6 +16797,24 @@ func _PublicDelegatedPrefixes_AggregatedList_Handler(srv interface{}, ctx contex
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PublicDelegatedPrefixesServer).AggregatedList(ctx, req.(*AggregatedListPublicDelegatedPrefixesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PublicDelegatedPrefixes_Announce_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnnouncePublicDelegatedPrefixeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PublicDelegatedPrefixesServer).Announce(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.PublicDelegatedPrefixes/Announce",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PublicDelegatedPrefixesServer).Announce(ctx, req.(*AnnouncePublicDelegatedPrefixeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -16479,6 +16909,24 @@ func _PublicDelegatedPrefixes_Patch_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PublicDelegatedPrefixes_Withdraw_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithdrawPublicDelegatedPrefixeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PublicDelegatedPrefixesServer).Withdraw(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.PublicDelegatedPrefixes/Withdraw",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PublicDelegatedPrefixesServer).Withdraw(ctx, req.(*WithdrawPublicDelegatedPrefixeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PublicDelegatedPrefixes_ServiceDesc is the grpc.ServiceDesc for PublicDelegatedPrefixes service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -16489,6 +16937,10 @@ var PublicDelegatedPrefixes_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AggregatedList",
 			Handler:    _PublicDelegatedPrefixes_AggregatedList_Handler,
+		},
+		{
+			MethodName: "Announce",
+			Handler:    _PublicDelegatedPrefixes_Announce_Handler,
 		},
 		{
 			MethodName: "Delete",
@@ -16509,6 +16961,10 @@ var PublicDelegatedPrefixes_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Patch",
 			Handler:    _PublicDelegatedPrefixes_Patch_Handler,
+		},
+		{
+			MethodName: "Withdraw",
+			Handler:    _PublicDelegatedPrefixes_Withdraw_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -16809,10 +17265,16 @@ type RegionBackendServicesClient interface {
 	Insert(ctx context.Context, in *InsertRegionBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Retrieves the list of regional BackendService resources available to the specified project in the given region.
 	List(ctx context.Context, in *ListRegionBackendServicesRequest, opts ...grpc.CallOption) (*BackendServiceList, error)
+	// Retrieves an aggregated list of all usable backend services in the specified project in the given region.
+	ListUsable(ctx context.Context, in *ListUsableRegionBackendServicesRequest, opts ...grpc.CallOption) (*BackendServiceListUsable, error)
 	// Updates the specified regional BackendService resource with the data included in the request. For more information, see Understanding backend services This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
 	Patch(ctx context.Context, in *PatchRegionBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Sets the access control policy on the specified resource. Replaces any existing policy.
 	SetIamPolicy(ctx context.Context, in *SetIamPolicyRegionBackendServiceRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Sets the Google Cloud Armor security policy for the specified backend service. For more information, see Google Cloud Armor Overview
+	SetSecurityPolicy(ctx context.Context, in *SetSecurityPolicyRegionBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(ctx context.Context, in *TestIamPermissionsRegionBackendServiceRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error)
 	// Updates the specified regional BackendService resource with the data included in the request. For more information, see Backend services overview .
 	Update(ctx context.Context, in *UpdateRegionBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error)
 }
@@ -16879,6 +17341,15 @@ func (c *regionBackendServicesClient) List(ctx context.Context, in *ListRegionBa
 	return out, nil
 }
 
+func (c *regionBackendServicesClient) ListUsable(ctx context.Context, in *ListUsableRegionBackendServicesRequest, opts ...grpc.CallOption) (*BackendServiceListUsable, error) {
+	out := new(BackendServiceListUsable)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendServices/ListUsable", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *regionBackendServicesClient) Patch(ctx context.Context, in *PatchRegionBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendServices/Patch", in, out, opts...)
@@ -16891,6 +17362,24 @@ func (c *regionBackendServicesClient) Patch(ctx context.Context, in *PatchRegion
 func (c *regionBackendServicesClient) SetIamPolicy(ctx context.Context, in *SetIamPolicyRegionBackendServiceRequest, opts ...grpc.CallOption) (*Policy, error) {
 	out := new(Policy)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendServices/SetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionBackendServicesClient) SetSecurityPolicy(ctx context.Context, in *SetSecurityPolicyRegionBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendServices/SetSecurityPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionBackendServicesClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsRegionBackendServiceRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error) {
+	out := new(TestPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionBackendServices/TestIamPermissions", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -16922,10 +17411,16 @@ type RegionBackendServicesServer interface {
 	Insert(context.Context, *InsertRegionBackendServiceRequest) (*Operation, error)
 	// Retrieves the list of regional BackendService resources available to the specified project in the given region.
 	List(context.Context, *ListRegionBackendServicesRequest) (*BackendServiceList, error)
+	// Retrieves an aggregated list of all usable backend services in the specified project in the given region.
+	ListUsable(context.Context, *ListUsableRegionBackendServicesRequest) (*BackendServiceListUsable, error)
 	// Updates the specified regional BackendService resource with the data included in the request. For more information, see Understanding backend services This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
 	Patch(context.Context, *PatchRegionBackendServiceRequest) (*Operation, error)
 	// Sets the access control policy on the specified resource. Replaces any existing policy.
 	SetIamPolicy(context.Context, *SetIamPolicyRegionBackendServiceRequest) (*Policy, error)
+	// Sets the Google Cloud Armor security policy for the specified backend service. For more information, see Google Cloud Armor Overview
+	SetSecurityPolicy(context.Context, *SetSecurityPolicyRegionBackendServiceRequest) (*Operation, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(context.Context, *TestIamPermissionsRegionBackendServiceRequest) (*TestPermissionsResponse, error)
 	// Updates the specified regional BackendService resource with the data included in the request. For more information, see Backend services overview .
 	Update(context.Context, *UpdateRegionBackendServiceRequest) (*Operation, error)
 	mustEmbedUnimplementedRegionBackendServicesServer()
@@ -16953,11 +17448,20 @@ func (UnimplementedRegionBackendServicesServer) Insert(context.Context, *InsertR
 func (UnimplementedRegionBackendServicesServer) List(context.Context, *ListRegionBackendServicesRequest) (*BackendServiceList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
+func (UnimplementedRegionBackendServicesServer) ListUsable(context.Context, *ListUsableRegionBackendServicesRequest) (*BackendServiceListUsable, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUsable not implemented")
+}
 func (UnimplementedRegionBackendServicesServer) Patch(context.Context, *PatchRegionBackendServiceRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
 }
 func (UnimplementedRegionBackendServicesServer) SetIamPolicy(context.Context, *SetIamPolicyRegionBackendServiceRequest) (*Policy, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
+}
+func (UnimplementedRegionBackendServicesServer) SetSecurityPolicy(context.Context, *SetSecurityPolicyRegionBackendServiceRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetSecurityPolicy not implemented")
+}
+func (UnimplementedRegionBackendServicesServer) TestIamPermissions(context.Context, *TestIamPermissionsRegionBackendServiceRequest) (*TestPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
 }
 func (UnimplementedRegionBackendServicesServer) Update(context.Context, *UpdateRegionBackendServiceRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
@@ -17083,6 +17587,24 @@ func _RegionBackendServices_List_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RegionBackendServices_ListUsable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUsableRegionBackendServicesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionBackendServicesServer).ListUsable(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionBackendServices/ListUsable",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionBackendServicesServer).ListUsable(ctx, req.(*ListUsableRegionBackendServicesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _RegionBackendServices_Patch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PatchRegionBackendServiceRequest)
 	if err := dec(in); err != nil {
@@ -17115,6 +17637,42 @@ func _RegionBackendServices_SetIamPolicy_Handler(srv interface{}, ctx context.Co
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RegionBackendServicesServer).SetIamPolicy(ctx, req.(*SetIamPolicyRegionBackendServiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionBackendServices_SetSecurityPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetSecurityPolicyRegionBackendServiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionBackendServicesServer).SetSecurityPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionBackendServices/SetSecurityPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionBackendServicesServer).SetSecurityPolicy(ctx, req.(*SetSecurityPolicyRegionBackendServiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionBackendServices_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TestIamPermissionsRegionBackendServiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionBackendServicesServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionBackendServices/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionBackendServicesServer).TestIamPermissions(ctx, req.(*TestIamPermissionsRegionBackendServiceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -17169,12 +17727,24 @@ var RegionBackendServices_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _RegionBackendServices_List_Handler,
 		},
 		{
+			MethodName: "ListUsable",
+			Handler:    _RegionBackendServices_ListUsable_Handler,
+		},
+		{
 			MethodName: "Patch",
 			Handler:    _RegionBackendServices_Patch_Handler,
 		},
 		{
 			MethodName: "SetIamPolicy",
 			Handler:    _RegionBackendServices_SetIamPolicy_Handler,
+		},
+		{
+			MethodName: "SetSecurityPolicy",
+			Handler:    _RegionBackendServices_SetSecurityPolicy_Handler,
+		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _RegionBackendServices_TestIamPermissions_Handler,
 		},
 		{
 			MethodName: "Update",
@@ -20036,14 +20606,20 @@ var RegionInstances_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RegionNetworkEndpointGroupsClient interface {
+	// Attach a list of network endpoints to the specified network endpoint group.
+	AttachNetworkEndpoints(ctx context.Context, in *AttachNetworkEndpointsRegionNetworkEndpointGroupRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Deletes the specified network endpoint group. Note that the NEG cannot be deleted if it is configured as a backend of a backend service.
 	Delete(ctx context.Context, in *DeleteRegionNetworkEndpointGroupRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Detach the network endpoint from the specified network endpoint group.
+	DetachNetworkEndpoints(ctx context.Context, in *DetachNetworkEndpointsRegionNetworkEndpointGroupRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Returns the specified network endpoint group.
 	Get(ctx context.Context, in *GetRegionNetworkEndpointGroupRequest, opts ...grpc.CallOption) (*NetworkEndpointGroup, error)
 	// Creates a network endpoint group in the specified project using the parameters that are included in the request.
 	Insert(ctx context.Context, in *InsertRegionNetworkEndpointGroupRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Retrieves the list of regional network endpoint groups available to the specified project in the given region.
 	List(ctx context.Context, in *ListRegionNetworkEndpointGroupsRequest, opts ...grpc.CallOption) (*NetworkEndpointGroupList, error)
+	// Lists the network endpoints in the specified network endpoint group.
+	ListNetworkEndpoints(ctx context.Context, in *ListNetworkEndpointsRegionNetworkEndpointGroupsRequest, opts ...grpc.CallOption) (*NetworkEndpointGroupsListNetworkEndpoints, error)
 }
 
 type regionNetworkEndpointGroupsClient struct {
@@ -20054,9 +20630,27 @@ func NewRegionNetworkEndpointGroupsClient(cc grpc.ClientConnInterface) RegionNet
 	return &regionNetworkEndpointGroupsClient{cc}
 }
 
+func (c *regionNetworkEndpointGroupsClient) AttachNetworkEndpoints(ctx context.Context, in *AttachNetworkEndpointsRegionNetworkEndpointGroupRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionNetworkEndpointGroups/AttachNetworkEndpoints", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *regionNetworkEndpointGroupsClient) Delete(ctx context.Context, in *DeleteRegionNetworkEndpointGroupRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionNetworkEndpointGroups/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionNetworkEndpointGroupsClient) DetachNetworkEndpoints(ctx context.Context, in *DetachNetworkEndpointsRegionNetworkEndpointGroupRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionNetworkEndpointGroups/DetachNetworkEndpoints", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -20090,18 +20684,33 @@ func (c *regionNetworkEndpointGroupsClient) List(ctx context.Context, in *ListRe
 	return out, nil
 }
 
+func (c *regionNetworkEndpointGroupsClient) ListNetworkEndpoints(ctx context.Context, in *ListNetworkEndpointsRegionNetworkEndpointGroupsRequest, opts ...grpc.CallOption) (*NetworkEndpointGroupsListNetworkEndpoints, error) {
+	out := new(NetworkEndpointGroupsListNetworkEndpoints)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionNetworkEndpointGroups/ListNetworkEndpoints", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RegionNetworkEndpointGroupsServer is the server API for RegionNetworkEndpointGroups service.
 // All implementations must embed UnimplementedRegionNetworkEndpointGroupsServer
 // for forward compatibility
 type RegionNetworkEndpointGroupsServer interface {
+	// Attach a list of network endpoints to the specified network endpoint group.
+	AttachNetworkEndpoints(context.Context, *AttachNetworkEndpointsRegionNetworkEndpointGroupRequest) (*Operation, error)
 	// Deletes the specified network endpoint group. Note that the NEG cannot be deleted if it is configured as a backend of a backend service.
 	Delete(context.Context, *DeleteRegionNetworkEndpointGroupRequest) (*Operation, error)
+	// Detach the network endpoint from the specified network endpoint group.
+	DetachNetworkEndpoints(context.Context, *DetachNetworkEndpointsRegionNetworkEndpointGroupRequest) (*Operation, error)
 	// Returns the specified network endpoint group.
 	Get(context.Context, *GetRegionNetworkEndpointGroupRequest) (*NetworkEndpointGroup, error)
 	// Creates a network endpoint group in the specified project using the parameters that are included in the request.
 	Insert(context.Context, *InsertRegionNetworkEndpointGroupRequest) (*Operation, error)
 	// Retrieves the list of regional network endpoint groups available to the specified project in the given region.
 	List(context.Context, *ListRegionNetworkEndpointGroupsRequest) (*NetworkEndpointGroupList, error)
+	// Lists the network endpoints in the specified network endpoint group.
+	ListNetworkEndpoints(context.Context, *ListNetworkEndpointsRegionNetworkEndpointGroupsRequest) (*NetworkEndpointGroupsListNetworkEndpoints, error)
 	mustEmbedUnimplementedRegionNetworkEndpointGroupsServer()
 }
 
@@ -20109,8 +20718,14 @@ type RegionNetworkEndpointGroupsServer interface {
 type UnimplementedRegionNetworkEndpointGroupsServer struct {
 }
 
+func (UnimplementedRegionNetworkEndpointGroupsServer) AttachNetworkEndpoints(context.Context, *AttachNetworkEndpointsRegionNetworkEndpointGroupRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AttachNetworkEndpoints not implemented")
+}
 func (UnimplementedRegionNetworkEndpointGroupsServer) Delete(context.Context, *DeleteRegionNetworkEndpointGroupRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedRegionNetworkEndpointGroupsServer) DetachNetworkEndpoints(context.Context, *DetachNetworkEndpointsRegionNetworkEndpointGroupRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DetachNetworkEndpoints not implemented")
 }
 func (UnimplementedRegionNetworkEndpointGroupsServer) Get(context.Context, *GetRegionNetworkEndpointGroupRequest) (*NetworkEndpointGroup, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
@@ -20120,6 +20735,9 @@ func (UnimplementedRegionNetworkEndpointGroupsServer) Insert(context.Context, *I
 }
 func (UnimplementedRegionNetworkEndpointGroupsServer) List(context.Context, *ListRegionNetworkEndpointGroupsRequest) (*NetworkEndpointGroupList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedRegionNetworkEndpointGroupsServer) ListNetworkEndpoints(context.Context, *ListNetworkEndpointsRegionNetworkEndpointGroupsRequest) (*NetworkEndpointGroupsListNetworkEndpoints, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListNetworkEndpoints not implemented")
 }
 func (UnimplementedRegionNetworkEndpointGroupsServer) mustEmbedUnimplementedRegionNetworkEndpointGroupsServer() {
 }
@@ -20133,6 +20751,24 @@ type UnsafeRegionNetworkEndpointGroupsServer interface {
 
 func RegisterRegionNetworkEndpointGroupsServer(s grpc.ServiceRegistrar, srv RegionNetworkEndpointGroupsServer) {
 	s.RegisterService(&RegionNetworkEndpointGroups_ServiceDesc, srv)
+}
+
+func _RegionNetworkEndpointGroups_AttachNetworkEndpoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AttachNetworkEndpointsRegionNetworkEndpointGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionNetworkEndpointGroupsServer).AttachNetworkEndpoints(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionNetworkEndpointGroups/AttachNetworkEndpoints",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionNetworkEndpointGroupsServer).AttachNetworkEndpoints(ctx, req.(*AttachNetworkEndpointsRegionNetworkEndpointGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _RegionNetworkEndpointGroups_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -20149,6 +20785,24 @@ func _RegionNetworkEndpointGroups_Delete_Handler(srv interface{}, ctx context.Co
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RegionNetworkEndpointGroupsServer).Delete(ctx, req.(*DeleteRegionNetworkEndpointGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionNetworkEndpointGroups_DetachNetworkEndpoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DetachNetworkEndpointsRegionNetworkEndpointGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionNetworkEndpointGroupsServer).DetachNetworkEndpoints(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionNetworkEndpointGroups/DetachNetworkEndpoints",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionNetworkEndpointGroupsServer).DetachNetworkEndpoints(ctx, req.(*DetachNetworkEndpointsRegionNetworkEndpointGroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -20207,6 +20861,24 @@ func _RegionNetworkEndpointGroups_List_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RegionNetworkEndpointGroups_ListNetworkEndpoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListNetworkEndpointsRegionNetworkEndpointGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionNetworkEndpointGroupsServer).ListNetworkEndpoints(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionNetworkEndpointGroups/ListNetworkEndpoints",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionNetworkEndpointGroupsServer).ListNetworkEndpoints(ctx, req.(*ListNetworkEndpointsRegionNetworkEndpointGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RegionNetworkEndpointGroups_ServiceDesc is the grpc.ServiceDesc for RegionNetworkEndpointGroups service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -20215,8 +20887,16 @@ var RegionNetworkEndpointGroups_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*RegionNetworkEndpointGroupsServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "AttachNetworkEndpoints",
+			Handler:    _RegionNetworkEndpointGroups_AttachNetworkEndpoints_Handler,
+		},
+		{
 			MethodName: "Delete",
 			Handler:    _RegionNetworkEndpointGroups_Delete_Handler,
+		},
+		{
+			MethodName: "DetachNetworkEndpoints",
+			Handler:    _RegionNetworkEndpointGroups_DetachNetworkEndpoints_Handler,
 		},
 		{
 			MethodName: "Get",
@@ -20229,6 +20909,10 @@ var RegionNetworkEndpointGroups_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _RegionNetworkEndpointGroups_List_Handler,
+		},
+		{
+			MethodName: "ListNetworkEndpoints",
+			Handler:    _RegionNetworkEndpointGroups_ListNetworkEndpoints_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -21341,16 +22025,24 @@ var RegionOperations_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RegionSecurityPoliciesClient interface {
+	// Inserts a rule into a security policy.
+	AddRule(ctx context.Context, in *AddRuleRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Deletes the specified policy.
 	Delete(ctx context.Context, in *DeleteRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
 	// List all of the ordered rules present in a single specified policy.
 	Get(ctx context.Context, in *GetRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*SecurityPolicy, error)
+	// Gets a rule at the specified priority.
+	GetRule(ctx context.Context, in *GetRuleRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*SecurityPolicyRule, error)
 	// Creates a new policy in the specified project using the data included in the request.
 	Insert(ctx context.Context, in *InsertRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
 	// List all the policies that have been configured for the specified project and region.
 	List(ctx context.Context, in *ListRegionSecurityPoliciesRequest, opts ...grpc.CallOption) (*SecurityPolicyList, error)
 	// Patches the specified policy with the data included in the request. To clear fields in the policy, leave the fields empty and specify them in the updateMask. This cannot be used to be update the rules in the policy. Please use the per rule methods like addRule, patchRule, and removeRule instead.
 	Patch(ctx context.Context, in *PatchRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Patches a rule at the specified priority. To clear fields in the rule, leave the fields empty and specify them in the updateMask.
+	PatchRule(ctx context.Context, in *PatchRuleRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Deletes a rule at the specified priority.
+	RemoveRule(ctx context.Context, in *RemoveRuleRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type regionSecurityPoliciesClient struct {
@@ -21359,6 +22051,15 @@ type regionSecurityPoliciesClient struct {
 
 func NewRegionSecurityPoliciesClient(cc grpc.ClientConnInterface) RegionSecurityPoliciesClient {
 	return &regionSecurityPoliciesClient{cc}
+}
+
+func (c *regionSecurityPoliciesClient) AddRule(ctx context.Context, in *AddRuleRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSecurityPolicies/AddRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *regionSecurityPoliciesClient) Delete(ctx context.Context, in *DeleteRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
@@ -21373,6 +22074,15 @@ func (c *regionSecurityPoliciesClient) Delete(ctx context.Context, in *DeleteReg
 func (c *regionSecurityPoliciesClient) Get(ctx context.Context, in *GetRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*SecurityPolicy, error) {
 	out := new(SecurityPolicy)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSecurityPolicies/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionSecurityPoliciesClient) GetRule(ctx context.Context, in *GetRuleRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*SecurityPolicyRule, error) {
+	out := new(SecurityPolicyRule)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSecurityPolicies/GetRule", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -21406,20 +22116,46 @@ func (c *regionSecurityPoliciesClient) Patch(ctx context.Context, in *PatchRegio
 	return out, nil
 }
 
+func (c *regionSecurityPoliciesClient) PatchRule(ctx context.Context, in *PatchRuleRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSecurityPolicies/PatchRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionSecurityPoliciesClient) RemoveRule(ctx context.Context, in *RemoveRuleRegionSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionSecurityPolicies/RemoveRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RegionSecurityPoliciesServer is the server API for RegionSecurityPolicies service.
 // All implementations must embed UnimplementedRegionSecurityPoliciesServer
 // for forward compatibility
 type RegionSecurityPoliciesServer interface {
+	// Inserts a rule into a security policy.
+	AddRule(context.Context, *AddRuleRegionSecurityPolicyRequest) (*Operation, error)
 	// Deletes the specified policy.
 	Delete(context.Context, *DeleteRegionSecurityPolicyRequest) (*Operation, error)
 	// List all of the ordered rules present in a single specified policy.
 	Get(context.Context, *GetRegionSecurityPolicyRequest) (*SecurityPolicy, error)
+	// Gets a rule at the specified priority.
+	GetRule(context.Context, *GetRuleRegionSecurityPolicyRequest) (*SecurityPolicyRule, error)
 	// Creates a new policy in the specified project using the data included in the request.
 	Insert(context.Context, *InsertRegionSecurityPolicyRequest) (*Operation, error)
 	// List all the policies that have been configured for the specified project and region.
 	List(context.Context, *ListRegionSecurityPoliciesRequest) (*SecurityPolicyList, error)
 	// Patches the specified policy with the data included in the request. To clear fields in the policy, leave the fields empty and specify them in the updateMask. This cannot be used to be update the rules in the policy. Please use the per rule methods like addRule, patchRule, and removeRule instead.
 	Patch(context.Context, *PatchRegionSecurityPolicyRequest) (*Operation, error)
+	// Patches a rule at the specified priority. To clear fields in the rule, leave the fields empty and specify them in the updateMask.
+	PatchRule(context.Context, *PatchRuleRegionSecurityPolicyRequest) (*Operation, error)
+	// Deletes a rule at the specified priority.
+	RemoveRule(context.Context, *RemoveRuleRegionSecurityPolicyRequest) (*Operation, error)
 	mustEmbedUnimplementedRegionSecurityPoliciesServer()
 }
 
@@ -21427,11 +22163,17 @@ type RegionSecurityPoliciesServer interface {
 type UnimplementedRegionSecurityPoliciesServer struct {
 }
 
+func (UnimplementedRegionSecurityPoliciesServer) AddRule(context.Context, *AddRuleRegionSecurityPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddRule not implemented")
+}
 func (UnimplementedRegionSecurityPoliciesServer) Delete(context.Context, *DeleteRegionSecurityPolicyRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 func (UnimplementedRegionSecurityPoliciesServer) Get(context.Context, *GetRegionSecurityPolicyRequest) (*SecurityPolicy, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRegionSecurityPoliciesServer) GetRule(context.Context, *GetRuleRegionSecurityPolicyRequest) (*SecurityPolicyRule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRule not implemented")
 }
 func (UnimplementedRegionSecurityPoliciesServer) Insert(context.Context, *InsertRegionSecurityPolicyRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
@@ -21441,6 +22183,12 @@ func (UnimplementedRegionSecurityPoliciesServer) List(context.Context, *ListRegi
 }
 func (UnimplementedRegionSecurityPoliciesServer) Patch(context.Context, *PatchRegionSecurityPolicyRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
+}
+func (UnimplementedRegionSecurityPoliciesServer) PatchRule(context.Context, *PatchRuleRegionSecurityPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchRule not implemented")
+}
+func (UnimplementedRegionSecurityPoliciesServer) RemoveRule(context.Context, *RemoveRuleRegionSecurityPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveRule not implemented")
 }
 func (UnimplementedRegionSecurityPoliciesServer) mustEmbedUnimplementedRegionSecurityPoliciesServer() {
 }
@@ -21454,6 +22202,24 @@ type UnsafeRegionSecurityPoliciesServer interface {
 
 func RegisterRegionSecurityPoliciesServer(s grpc.ServiceRegistrar, srv RegionSecurityPoliciesServer) {
 	s.RegisterService(&RegionSecurityPolicies_ServiceDesc, srv)
+}
+
+func _RegionSecurityPolicies_AddRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddRuleRegionSecurityPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSecurityPoliciesServer).AddRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSecurityPolicies/AddRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSecurityPoliciesServer).AddRule(ctx, req.(*AddRuleRegionSecurityPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _RegionSecurityPolicies_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -21488,6 +22254,24 @@ func _RegionSecurityPolicies_Get_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RegionSecurityPoliciesServer).Get(ctx, req.(*GetRegionSecurityPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionSecurityPolicies_GetRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRuleRegionSecurityPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSecurityPoliciesServer).GetRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSecurityPolicies/GetRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSecurityPoliciesServer).GetRule(ctx, req.(*GetRuleRegionSecurityPolicyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -21546,6 +22330,42 @@ func _RegionSecurityPolicies_Patch_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RegionSecurityPolicies_PatchRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchRuleRegionSecurityPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSecurityPoliciesServer).PatchRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSecurityPolicies/PatchRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSecurityPoliciesServer).PatchRule(ctx, req.(*PatchRuleRegionSecurityPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionSecurityPolicies_RemoveRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveRuleRegionSecurityPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionSecurityPoliciesServer).RemoveRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionSecurityPolicies/RemoveRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionSecurityPoliciesServer).RemoveRule(ctx, req.(*RemoveRuleRegionSecurityPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RegionSecurityPolicies_ServiceDesc is the grpc.ServiceDesc for RegionSecurityPolicies service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -21554,12 +22374,20 @@ var RegionSecurityPolicies_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*RegionSecurityPoliciesServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "AddRule",
+			Handler:    _RegionSecurityPolicies_AddRule_Handler,
+		},
+		{
 			MethodName: "Delete",
 			Handler:    _RegionSecurityPolicies_Delete_Handler,
 		},
 		{
 			MethodName: "Get",
 			Handler:    _RegionSecurityPolicies_Get_Handler,
+		},
+		{
+			MethodName: "GetRule",
+			Handler:    _RegionSecurityPolicies_GetRule_Handler,
 		},
 		{
 			MethodName: "Insert",
@@ -21572,6 +22400,14 @@ var RegionSecurityPolicies_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Patch",
 			Handler:    _RegionSecurityPolicies_Patch_Handler,
+		},
+		{
+			MethodName: "PatchRule",
+			Handler:    _RegionSecurityPolicies_PatchRule_Handler,
+		},
+		{
+			MethodName: "RemoveRule",
+			Handler:    _RegionSecurityPolicies_RemoveRule_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -24093,6 +24929,8 @@ type RoutersClient interface {
 	Delete(ctx context.Context, in *DeleteRouterRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Returns the specified Router resource.
 	Get(ctx context.Context, in *GetRouterRequest, opts ...grpc.CallOption) (*Router, error)
+	// Retrieves runtime NAT IP information.
+	GetNatIpInfo(ctx context.Context, in *GetNatIpInfoRouterRequest, opts ...grpc.CallOption) (*NatIpInfoResponse, error)
 	// Retrieves runtime Nat mapping information of VM endpoints.
 	GetNatMappingInfo(ctx context.Context, in *GetNatMappingInfoRoutersRequest, opts ...grpc.CallOption) (*VmEndpointNatMappingsList, error)
 	// Retrieves runtime information of the specified router.
@@ -24138,6 +24976,15 @@ func (c *routersClient) Delete(ctx context.Context, in *DeleteRouterRequest, opt
 func (c *routersClient) Get(ctx context.Context, in *GetRouterRequest, opts ...grpc.CallOption) (*Router, error) {
 	out := new(Router)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Routers/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *routersClient) GetNatIpInfo(ctx context.Context, in *GetNatIpInfoRouterRequest, opts ...grpc.CallOption) (*NatIpInfoResponse, error) {
+	out := new(NatIpInfoResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Routers/GetNatIpInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -24217,6 +25064,8 @@ type RoutersServer interface {
 	Delete(context.Context, *DeleteRouterRequest) (*Operation, error)
 	// Returns the specified Router resource.
 	Get(context.Context, *GetRouterRequest) (*Router, error)
+	// Retrieves runtime NAT IP information.
+	GetNatIpInfo(context.Context, *GetNatIpInfoRouterRequest) (*NatIpInfoResponse, error)
 	// Retrieves runtime Nat mapping information of VM endpoints.
 	GetNatMappingInfo(context.Context, *GetNatMappingInfoRoutersRequest) (*VmEndpointNatMappingsList, error)
 	// Retrieves runtime information of the specified router.
@@ -24246,6 +25095,9 @@ func (UnimplementedRoutersServer) Delete(context.Context, *DeleteRouterRequest) 
 }
 func (UnimplementedRoutersServer) Get(context.Context, *GetRouterRequest) (*Router, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRoutersServer) GetNatIpInfo(context.Context, *GetNatIpInfoRouterRequest) (*NatIpInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNatIpInfo not implemented")
 }
 func (UnimplementedRoutersServer) GetNatMappingInfo(context.Context, *GetNatMappingInfoRoutersRequest) (*VmEndpointNatMappingsList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNatMappingInfo not implemented")
@@ -24331,6 +25183,24 @@ func _Routers_Get_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RoutersServer).Get(ctx, req.(*GetRouterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Routers_GetNatIpInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetNatIpInfoRouterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoutersServer).GetNatIpInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Routers/GetNatIpInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoutersServer).GetNatIpInfo(ctx, req.(*GetNatIpInfoRouterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -24479,6 +25349,10 @@ var Routers_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _Routers_Get_Handler,
+		},
+		{
+			MethodName: "GetNatIpInfo",
+			Handler:    _Routers_GetNatIpInfo_Handler,
 		},
 		{
 			MethodName: "GetNatMappingInfo",
@@ -25607,6 +26481,133 @@ var ServiceAttachments_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TestIamPermissions",
 			Handler:    _ServiceAttachments_TestIamPermissions_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
+// SnapshotSettingsServiceClient is the client API for SnapshotSettingsService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type SnapshotSettingsServiceClient interface {
+	// Get snapshot settings.
+	Get(ctx context.Context, in *GetSnapshotSettingRequest, opts ...grpc.CallOption) (*SnapshotSettings, error)
+	// Patch snapshot settings.
+	Patch(ctx context.Context, in *PatchSnapshotSettingRequest, opts ...grpc.CallOption) (*Operation, error)
+}
+
+type snapshotSettingsServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewSnapshotSettingsServiceClient(cc grpc.ClientConnInterface) SnapshotSettingsServiceClient {
+	return &snapshotSettingsServiceClient{cc}
+}
+
+func (c *snapshotSettingsServiceClient) Get(ctx context.Context, in *GetSnapshotSettingRequest, opts ...grpc.CallOption) (*SnapshotSettings, error) {
+	out := new(SnapshotSettings)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.SnapshotSettingsService/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *snapshotSettingsServiceClient) Patch(ctx context.Context, in *PatchSnapshotSettingRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.SnapshotSettingsService/Patch", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// SnapshotSettingsServiceServer is the server API for SnapshotSettingsService service.
+// All implementations must embed UnimplementedSnapshotSettingsServiceServer
+// for forward compatibility
+type SnapshotSettingsServiceServer interface {
+	// Get snapshot settings.
+	Get(context.Context, *GetSnapshotSettingRequest) (*SnapshotSettings, error)
+	// Patch snapshot settings.
+	Patch(context.Context, *PatchSnapshotSettingRequest) (*Operation, error)
+	mustEmbedUnimplementedSnapshotSettingsServiceServer()
+}
+
+// UnimplementedSnapshotSettingsServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedSnapshotSettingsServiceServer struct {
+}
+
+func (UnimplementedSnapshotSettingsServiceServer) Get(context.Context, *GetSnapshotSettingRequest) (*SnapshotSettings, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedSnapshotSettingsServiceServer) Patch(context.Context, *PatchSnapshotSettingRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
+}
+func (UnimplementedSnapshotSettingsServiceServer) mustEmbedUnimplementedSnapshotSettingsServiceServer() {
+}
+
+// UnsafeSnapshotSettingsServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SnapshotSettingsServiceServer will
+// result in compilation errors.
+type UnsafeSnapshotSettingsServiceServer interface {
+	mustEmbedUnimplementedSnapshotSettingsServiceServer()
+}
+
+func RegisterSnapshotSettingsServiceServer(s grpc.ServiceRegistrar, srv SnapshotSettingsServiceServer) {
+	s.RegisterService(&SnapshotSettingsService_ServiceDesc, srv)
+}
+
+func _SnapshotSettingsService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSnapshotSettingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SnapshotSettingsServiceServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.SnapshotSettingsService/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SnapshotSettingsServiceServer).Get(ctx, req.(*GetSnapshotSettingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SnapshotSettingsService_Patch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchSnapshotSettingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SnapshotSettingsServiceServer).Patch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.SnapshotSettingsService/Patch",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SnapshotSettingsServiceServer).Patch(ctx, req.(*PatchSnapshotSettingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// SnapshotSettingsService_ServiceDesc is the grpc.ServiceDesc for SnapshotSettingsService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var SnapshotSettingsService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.SnapshotSettingsService",
+	HandlerType: (*SnapshotSettingsServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Get",
+			Handler:    _SnapshotSettingsService_Get_Handler,
+		},
+		{
+			MethodName: "Patch",
+			Handler:    _SnapshotSettingsService_Patch_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -28067,6 +29068,8 @@ type TargetInstancesClient interface {
 	Insert(ctx context.Context, in *InsertTargetInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Retrieves a list of TargetInstance resources available to the specified project and zone.
 	List(ctx context.Context, in *ListTargetInstancesRequest, opts ...grpc.CallOption) (*TargetInstanceList, error)
+	// Sets the Google Cloud Armor security policy for the specified target instance. For more information, see Google Cloud Armor Overview
+	SetSecurityPolicy(ctx context.Context, in *SetSecurityPolicyTargetInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type targetInstancesClient struct {
@@ -28122,6 +29125,15 @@ func (c *targetInstancesClient) List(ctx context.Context, in *ListTargetInstance
 	return out, nil
 }
 
+func (c *targetInstancesClient) SetSecurityPolicy(ctx context.Context, in *SetSecurityPolicyTargetInstanceRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.TargetInstances/SetSecurityPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TargetInstancesServer is the server API for TargetInstances service.
 // All implementations must embed UnimplementedTargetInstancesServer
 // for forward compatibility
@@ -28136,6 +29148,8 @@ type TargetInstancesServer interface {
 	Insert(context.Context, *InsertTargetInstanceRequest) (*Operation, error)
 	// Retrieves a list of TargetInstance resources available to the specified project and zone.
 	List(context.Context, *ListTargetInstancesRequest) (*TargetInstanceList, error)
+	// Sets the Google Cloud Armor security policy for the specified target instance. For more information, see Google Cloud Armor Overview
+	SetSecurityPolicy(context.Context, *SetSecurityPolicyTargetInstanceRequest) (*Operation, error)
 	mustEmbedUnimplementedTargetInstancesServer()
 }
 
@@ -28157,6 +29171,9 @@ func (UnimplementedTargetInstancesServer) Insert(context.Context, *InsertTargetI
 }
 func (UnimplementedTargetInstancesServer) List(context.Context, *ListTargetInstancesRequest) (*TargetInstanceList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedTargetInstancesServer) SetSecurityPolicy(context.Context, *SetSecurityPolicyTargetInstanceRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetSecurityPolicy not implemented")
 }
 func (UnimplementedTargetInstancesServer) mustEmbedUnimplementedTargetInstancesServer() {}
 
@@ -28261,6 +29278,24 @@ func _TargetInstances_List_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TargetInstances_SetSecurityPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetSecurityPolicyTargetInstanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TargetInstancesServer).SetSecurityPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.TargetInstances/SetSecurityPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TargetInstancesServer).SetSecurityPolicy(ctx, req.(*SetSecurityPolicyTargetInstanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TargetInstances_ServiceDesc is the grpc.ServiceDesc for TargetInstances service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -28287,6 +29322,10 @@ var TargetInstances_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _TargetInstances_List_Handler,
+		},
+		{
+			MethodName: "SetSecurityPolicy",
+			Handler:    _TargetInstances_SetSecurityPolicy_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -28319,6 +29358,8 @@ type TargetPoolsClient interface {
 	RemoveInstance(ctx context.Context, in *RemoveInstanceTargetPoolRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Changes a backup target pool's configurations.
 	SetBackup(ctx context.Context, in *SetBackupTargetPoolRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Sets the Google Cloud Armor security policy for the specified target pool. For more information, see Google Cloud Armor Overview
+	SetSecurityPolicy(ctx context.Context, in *SetSecurityPolicyTargetPoolRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type targetPoolsClient struct {
@@ -28428,6 +29469,15 @@ func (c *targetPoolsClient) SetBackup(ctx context.Context, in *SetBackupTargetPo
 	return out, nil
 }
 
+func (c *targetPoolsClient) SetSecurityPolicy(ctx context.Context, in *SetSecurityPolicyTargetPoolRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.TargetPools/SetSecurityPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TargetPoolsServer is the server API for TargetPools service.
 // All implementations must embed UnimplementedTargetPoolsServer
 // for forward compatibility
@@ -28454,6 +29504,8 @@ type TargetPoolsServer interface {
 	RemoveInstance(context.Context, *RemoveInstanceTargetPoolRequest) (*Operation, error)
 	// Changes a backup target pool's configurations.
 	SetBackup(context.Context, *SetBackupTargetPoolRequest) (*Operation, error)
+	// Sets the Google Cloud Armor security policy for the specified target pool. For more information, see Google Cloud Armor Overview
+	SetSecurityPolicy(context.Context, *SetSecurityPolicyTargetPoolRequest) (*Operation, error)
 	mustEmbedUnimplementedTargetPoolsServer()
 }
 
@@ -28493,6 +29545,9 @@ func (UnimplementedTargetPoolsServer) RemoveInstance(context.Context, *RemoveIns
 }
 func (UnimplementedTargetPoolsServer) SetBackup(context.Context, *SetBackupTargetPoolRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetBackup not implemented")
+}
+func (UnimplementedTargetPoolsServer) SetSecurityPolicy(context.Context, *SetSecurityPolicyTargetPoolRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetSecurityPolicy not implemented")
 }
 func (UnimplementedTargetPoolsServer) mustEmbedUnimplementedTargetPoolsServer() {}
 
@@ -28705,6 +29760,24 @@ func _TargetPools_SetBackup_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TargetPools_SetSecurityPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetSecurityPolicyTargetPoolRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TargetPoolsServer).SetSecurityPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.TargetPools/SetSecurityPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TargetPoolsServer).SetSecurityPolicy(ctx, req.(*SetSecurityPolicyTargetPoolRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TargetPools_ServiceDesc is the grpc.ServiceDesc for TargetPools service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -28755,6 +29828,10 @@ var TargetPools_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetBackup",
 			Handler:    _TargetPools_SetBackup_Handler,
+		},
+		{
+			MethodName: "SetSecurityPolicy",
+			Handler:    _TargetPools_SetSecurityPolicy_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
