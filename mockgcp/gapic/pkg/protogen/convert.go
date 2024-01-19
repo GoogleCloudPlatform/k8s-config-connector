@@ -4,12 +4,15 @@ import (
 	"context"
 	"fmt"
 	"path"
+	"regexp"
 	"sort"
 	"strings"
 	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/gapic/pkg/openapi"
+	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/descriptorpb"
 	"k8s.io/klog/v2"
 )
@@ -180,9 +183,11 @@ func ToProtoIdentifier(s string) string {
 
 func ToProtoFieldName(s string) string {
 	var b []byte
-	for _, c := range s {
+	for i, c := range s {
 		if unicode.IsUpper(c) {
-			b = append(b, '_')
+			if i != 0 {
+				b = append(b, '_')
+			}
 			c = unicode.ToLower(c)
 		}
 		b = append(b, byte(c))
@@ -222,6 +227,41 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(resourceName string, resource
 		method := resource.Methods[methodName]
 
 		serviceMethod := &descriptorpb.MethodDescriptorProto{}
+		serviceMethod.Options = &descriptorpb.MethodOptions{}
+
+		httpPath := method.FlatPath
+		httpPath = "/" + httpPath
+
+		r := regexp.MustCompile(`{[^}]+}`)
+		httpPath = r.ReplaceAllStringFunc(httpPath, func(match string) string {
+			return ToProtoFieldName(match)
+		})
+
+		httpRule := &annotations.HttpRule{}
+		switch method.HTTPMethod {
+		case "PUT":
+			httpRule.Pattern = &annotations.HttpRule_Put{
+				Put: httpPath,
+			}
+		case "POST":
+			httpRule.Pattern = &annotations.HttpRule_Post{
+				Post: httpPath,
+			}
+		case "GET":
+			httpRule.Pattern = &annotations.HttpRule_Get{
+				Get: httpPath,
+			}
+		case "DELETE":
+			httpRule.Pattern = &annotations.HttpRule_Delete{
+				Delete: httpPath,
+			}
+		case "PATCH":
+			httpRule.Pattern = &annotations.HttpRule_Patch{
+				Patch: httpPath,
+			}
+		default:
+			klog.Fatalf("unhandled HTTPMethod %q in %+v", method.HTTPMethod, method)
+		}
 		switch methodName {
 		case "create":
 			serviceMethod.Name = PtrTo("Create" + resourceName)
@@ -241,18 +281,63 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(resourceName string, resource
 		default:
 			klog.Fatalf("unhandled methodName %q", methodName)
 		}
-		if method.Request != nil {
-			if method.Request.Ref == "" {
-				klog.Fatalf("unexpected method Request: %+v", method)
-			}
-			serviceMethod.InputType = PtrTo(method.Request.Ref)
-		} else {
+
+		{
 			requestType := *serviceMethod.Name + "Request"
 			serviceMethod.InputType = &requestType
 			desc := &descriptorpb.DescriptorProto{}
 			desc.Name = &requestType
+
+			nextTag := int32(1)
+			for parameterName, parameter := range method.Parameters {
+				switch parameter.Location {
+				case "path":
+					tag := nextTag
+					nextTag++
+
+					field := &descriptorpb.FieldDescriptorProto{}
+					field.Number = PtrTo(tag)
+					//field.JsonName = PtrTo(parameterName)
+					field.Name = PtrTo(ToProtoFieldName(parameterName))
+
+					switch parameter.Type {
+					case "string":
+						field.Type = descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
+					default:
+						klog.Fatalf("parameter type not recognized %+v", parameter)
+					}
+
+					desc.Field = append(desc.Field, field)
+				case "query":
+					klog.Warningf("ignoring parameter %+v", parameter)
+				default:
+					klog.Fatalf("parameter location not recognized %+v", parameter)
+				}
+			}
+
+			if method.Request != nil {
+				if method.Request.Ref == "" {
+					klog.Fatalf("unexpected method Request: %+v", method)
+				}
+				tag := nextTag
+				nextTag++
+
+				field := &descriptorpb.FieldDescriptorProto{}
+				field.Number = PtrTo(tag)
+				//field.JsonName = PtrTo(parameterName)
+				field.Name = PtrTo(ToProtoFieldName(resourceName))
+				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+				field.TypeName = PtrTo(method.Request.Ref)
+
+				desc.Field = append(desc.Field, field)
+
+				httpRule.Body = ToProtoFieldName(resourceName)
+				// serviceMethod.InputType = PtrTo(method.Request.Ref)
+			}
+
 			c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, desc)
 		}
+
 		if method.Response != nil {
 			if method.Response.Ref == "" {
 				klog.Fatalf("unexpected method Response: %+v", method)
@@ -266,6 +351,9 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(resourceName string, resource
 			desc.Name = &responseType
 			c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, desc)
 		}
+
+		proto.SetExtension(serviceMethod.Options, annotations.E_Http, httpRule)
+
 		service.Method = append(service.Method, serviceMethod)
 
 		klog.Infof("%s/%s => %v", resourceName, methodName, prototext.Format(serviceMethod))

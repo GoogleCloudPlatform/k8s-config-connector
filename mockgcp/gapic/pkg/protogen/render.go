@@ -5,7 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"strings"
 
+	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/descriptorpb"
 	"k8s.io/klog/v2"
@@ -106,7 +109,7 @@ func (p *ProtoWriter) renderField(fd protoreflect.FieldDescriptor) {
 	}
 
 	fmt.Fprintf(&b, "%s = %d", fd.Name(), fd.Number())
-	if fd.JSONName() != "" {
+	if fd.HasJSONName() && fd.JSONName() != "" {
 		fmt.Fprintf(&b, " [json_name=%q]", fd.JSONName())
 	}
 	fmt.Fprintf(&b, ";\n")
@@ -137,6 +140,30 @@ func (p *ProtoWriter) renderMethod(md protoreflect.MethodDescriptor) {
 	b.WriteString("(")
 	b.WriteString(string(md.Output().Name()))
 	b.WriteString(")")
+
+	options := md.Options()
+	if options != nil {
+		b.WriteString("{\n")
+		proto.RangeExtensions(options, func(xt protoreflect.ExtensionType, v interface{}) bool {
+			b.WriteString(fmt.Sprintf("  option (%s) = {\n", xt.TypeDescriptor().FullName()))
+			formatted, err := prototext.MarshalOptions{Multiline: true}.Marshal(v.(proto.Message))
+			if err != nil {
+				p.errors = append(p.errors, err)
+			}
+			for _, line := range strings.Split(string(formatted), "\n") {
+				if line == "" {
+					continue
+				}
+				b.WriteString("    ")
+				b.WriteString(line)
+				b.WriteString("\n")
+			}
+			b.WriteString("  };\n")
+			return true
+		})
+		b.WriteString("}\n")
+	}
+
 	b.WriteString(";\n")
 	p.writeString(b.String())
 
@@ -157,6 +184,8 @@ func (p *ProtoWriter) WriteFile(file protoreflect.FileDescriptor) {
 	klog.Infof("file %v", file.Name())
 	p.printf("syntax = \"proto3\";\n")
 	p.printf("package %s;\n", file.Package())
+	p.printf("import %q;\n", "google/api/annotations.proto")
+
 	fileOptions := file.Options()
 	switch fileOptions := fileOptions.(type) {
 	case nil:
