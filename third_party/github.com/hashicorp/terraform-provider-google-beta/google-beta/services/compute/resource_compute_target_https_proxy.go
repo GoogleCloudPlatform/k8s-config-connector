@@ -21,6 +21,8 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"regexp"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -66,6 +68,19 @@ character, which cannot be a dash.`,
 				DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				Description: `A reference to the UrlMap resource that defines the mapping from URL
 to the BackendService.`,
+			},
+			"certificate_manager_certificates": {
+				Type:             schema.TypeList,
+				Optional:         true,
+				DiffSuppressFunc: tpgresource.CompareResourceNames,
+				Description: `URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer.
+Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
+sslCertificates and certificateManagerCertificates fields can not be defined together.
+Accepted format is '//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificates/{resourceName}' or just the self_link 'projects/{project}/locations/{location}/certificates/{resourceName}'`,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+				ConflictsWith: []string{"ssl_certificates"},
 			},
 			"certificate_map": {
 				Type:     schema.TypeString,
@@ -127,12 +142,14 @@ If left blank, communications are not encrypted.`,
 			"ssl_certificates": {
 				Type:     schema.TypeList,
 				Optional: true,
-				Description: `A list of SslCertificate resource URLs or Certificate Manager certificate URLs that are used to authenticate
-connections between users and the load balancer. At least one resource must be specified.`,
+				Description: `URLs to SslCertificate resources that are used to authenticate connections between users and the load balancer.
+Currently, you may specify up to 15 SSL certificates. sslCertificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
+sslCertificates and certificateManagerCertificates can not be defined together.`,
 				Elem: &schema.Schema{
 					Type:             schema.TypeString,
 					DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
 				},
+				ConflictsWith: []string{"certificate_manager_certificates"},
 			},
 			"ssl_policy": {
 				Type:             schema.TypeString,
@@ -193,6 +210,12 @@ func resourceComputeTargetHttpsProxyCreate(d *schema.ResourceData, meta interfac
 	} else if v, ok := d.GetOkExists("quic_override"); !tpgresource.IsEmptyValue(reflect.ValueOf(quicOverrideProp)) && (ok || !reflect.DeepEqual(v, quicOverrideProp)) {
 		obj["quicOverride"] = quicOverrideProp
 	}
+	certificateManagerCertificatesProp, err := expandComputeTargetHttpsProxyCertificateManagerCertificates(d.Get("certificate_manager_certificates"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("certificate_manager_certificates"); !tpgresource.IsEmptyValue(reflect.ValueOf(certificateManagerCertificatesProp)) && (ok || !reflect.DeepEqual(v, certificateManagerCertificatesProp)) {
+		obj["certificateManagerCertificates"] = certificateManagerCertificatesProp
+	}
 	sslCertificatesProp, err := expandComputeTargetHttpsProxySslCertificates(d.Get("ssl_certificates"), d, config)
 	if err != nil {
 		return err
@@ -234,6 +257,11 @@ func resourceComputeTargetHttpsProxyCreate(d *schema.ResourceData, meta interfac
 		return err
 	} else if v, ok := d.GetOkExists("server_tls_policy"); !tpgresource.IsEmptyValue(reflect.ValueOf(serverTlsPolicyProp)) && (ok || !reflect.DeepEqual(v, serverTlsPolicyProp)) {
 		obj["serverTlsPolicy"] = serverTlsPolicyProp
+	}
+
+	obj, err = resourceComputeTargetHttpsProxyEncoder(d, meta, obj)
+	if err != nil {
+		return err
 	}
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/targetHttpsProxies")
@@ -326,6 +354,18 @@ func resourceComputeTargetHttpsProxyRead(d *schema.ResourceData, meta interface{
 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("ComputeTargetHttpsProxy %q", d.Id()))
 	}
 
+	res, err = resourceComputeTargetHttpsProxyDecoder(d, meta, res)
+	if err != nil {
+		return err
+	}
+
+	if res == nil {
+		// Decoding the object has resulted in it being gone. It may be marked deleted
+		log.Printf("[DEBUG] Removing ComputeTargetHttpsProxy because it no longer exists.")
+		d.SetId("")
+		return nil
+	}
+
 	if err := d.Set("project", project); err != nil {
 		return fmt.Errorf("Error reading TargetHttpsProxy: %s", err)
 	}
@@ -343,6 +383,9 @@ func resourceComputeTargetHttpsProxyRead(d *schema.ResourceData, meta interface{
 		return fmt.Errorf("Error reading TargetHttpsProxy: %s", err)
 	}
 	if err := d.Set("quic_override", flattenComputeTargetHttpsProxyQuicOverride(res["quicOverride"], d, config)); err != nil {
+		return fmt.Errorf("Error reading TargetHttpsProxy: %s", err)
+	}
+	if err := d.Set("certificate_manager_certificates", flattenComputeTargetHttpsProxyCertificateManagerCertificates(res["certificateManagerCertificates"], d, config)); err != nil {
 		return fmt.Errorf("Error reading TargetHttpsProxy: %s", err)
 	}
 	if err := d.Set("ssl_certificates", flattenComputeTargetHttpsProxySslCertificates(res["sslCertificates"], d, config)); err != nil {
@@ -432,9 +475,15 @@ func resourceComputeTargetHttpsProxyUpdate(d *schema.ResourceData, meta interfac
 			return err
 		}
 	}
-	if d.HasChange("ssl_certificates") {
+	if d.HasChange("certificate_manager_certificates") || d.HasChange("ssl_certificates") {
 		obj := make(map[string]interface{})
 
+		certificateManagerCertificatesProp, err := expandComputeTargetHttpsProxyCertificateManagerCertificates(d.Get("certificate_manager_certificates"), d, config)
+		if err != nil {
+			return err
+		} else if v, ok := d.GetOkExists("certificate_manager_certificates"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, certificateManagerCertificatesProp)) {
+			obj["certificateManagerCertificates"] = certificateManagerCertificatesProp
+		}
 		sslCertificatesProp, err := expandComputeTargetHttpsProxySslCertificates(d.Get("ssl_certificates"), d, config)
 		if err != nil {
 			return err
@@ -662,9 +711,9 @@ func resourceComputeTargetHttpsProxyDelete(d *schema.ResourceData, meta interfac
 func resourceComputeTargetHttpsProxyImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*transport_tpg.Config)
 	if err := tpgresource.ParseImportId([]string{
-		"projects/(?P<project>[^/]+)/global/targetHttpsProxies/(?P<name>[^/]+)",
-		"(?P<project>[^/]+)/(?P<name>[^/]+)",
-		"(?P<name>[^/]+)",
+		"^projects/(?P<project>[^/]+)/global/targetHttpsProxies/(?P<name>[^/]+)$",
+		"^(?P<project>[^/]+)/(?P<name>[^/]+)$",
+		"^(?P<name>[^/]+)$",
 	}, d, config); err != nil {
 		return nil, err
 	}
@@ -713,6 +762,10 @@ func flattenComputeTargetHttpsProxyQuicOverride(v interface{}, d *schema.Resourc
 		return "NONE"
 	}
 
+	return v
+}
+
+func flattenComputeTargetHttpsProxyCertificateManagerCertificates(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	return v
 }
 
@@ -781,6 +834,31 @@ func expandComputeTargetHttpsProxyQuicOverride(v interface{}, d tpgresource.Terr
 	return v, nil
 }
 
+func expandComputeTargetHttpsProxyCertificateManagerCertificates(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	if v == nil {
+		return nil, nil
+	}
+	l := v.([]interface{})
+	req := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		if raw == nil {
+			return nil, fmt.Errorf("Invalid value for certificate_manager_certificates: nil")
+		}
+		if strings.HasPrefix(raw.(string), "//") || strings.HasPrefix(raw.(string), "https://") {
+			// Any full URL will be passed to the API request (regardless of the resource type). This is to allow self_links of CertificateManagerCeritificate resources.
+			// If the full URL is an invalid reference, that should be handled by the API.
+			req = append(req, raw.(string))
+		} else if reg, _ := regexp.Compile("projects/(.*)/locations/(.*)/certificates/(.*)"); reg.MatchString(raw.(string)) {
+			// If the input is the id pattern of CertificateManagerCertificate resource, a prefix will be added to construct the full URL before constructing the API request.
+			self_link := "https://certificatemanager.googleapis.com/v1/" + raw.(string)
+			req = append(req, self_link)
+		} else {
+			return nil, fmt.Errorf("Invalid value for certificate_manager_certificates: %v is an invalid format for a certificateManagerCertificate resource", raw.(string))
+		}
+	}
+	return req, nil
+}
+
 func expandComputeTargetHttpsProxySslCertificates(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
@@ -827,4 +905,35 @@ func expandComputeTargetHttpsProxyHttpKeepAliveTimeoutSec(v interface{}, d tpgre
 
 func expandComputeTargetHttpsProxyServerTlsPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
+}
+
+func resourceComputeTargetHttpsProxyEncoder(d *schema.ResourceData, meta interface{}, obj map[string]interface{}) (map[string]interface{}, error) {
+
+	if _, ok := obj["certificateManagerCertificates"]; ok {
+		// The field certificateManagerCertificates should not be included in the API request, and it should be renamed to `sslCertificates`
+		// The API does not allow using both certificate manager certificates and sslCertificates. If that changes
+		// in the future, the encoder logic should change accordingly because this will mean that both fields are no longer mutual exclusive.
+		log.Printf("[DEBUG] converting the field CertificateManagerCertificates to sslCertificates before sending the request")
+		obj["sslCertificates"] = obj["certificateManagerCertificates"]
+		delete(obj, "certificateManagerCertificates")
+	}
+	return obj, nil
+}
+
+func resourceComputeTargetHttpsProxyDecoder(d *schema.ResourceData, meta interface{}, res map[string]interface{}) (map[string]interface{}, error) {
+	// Since both sslCertificates and certificateManagerCertificates maps to the same API field (sslCertificates), we need to check the types
+	// of certificates that exist in the array and decide whether to change the field to certificateManagerCertificate or not.
+	// The decoder logic depends on the fact that the API does not allow mixed type of certificates and it returns
+	// certificate manager certificates in the format of //certificatemanager.googleapis.com/projects/*/locations/*/certificates/*
+	if sslCertificates, ok := res["sslCertificates"].([]interface{}); ok && len(sslCertificates) > 0 {
+		regPat, _ := regexp.Compile("//certificatemanager.googleapis.com/projects/(.*)/locations/(.*)/certificates/(.*)")
+
+		if regPat.MatchString(sslCertificates[0].(string)) {
+			// It is enough to check only the type of one of the provided certificates beacuse all the certificates should be the same type.
+			log.Printf("[DEBUG] The field sslCertificates contains certificateManagerCertificates, the field name will be converted to certificateManagerCertificates")
+			res["certificateManagerCertificates"] = res["sslCertificates"]
+			delete(res, "sslCertificates")
+		}
+	}
+	return res, nil
 }
