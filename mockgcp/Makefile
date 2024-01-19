@@ -98,4 +98,8 @@ generate-protos-from-openapi:
 	mkdir -p apis/mockgcp/cloud/ids/v1/
 	cd tools/gapic; go run . --proto-version=2 ../../temp/ids-api-v1.json > ../../apis/mockgcp/cloud/ids/v1/service.proto
 
+	wget -O temp/dns-v1beta2.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/dns/v1beta2/dns-api.json
+	mkdir -p apis/mockgcp/cloud/dns/v1beta2/
+	cd tools/gapic; go run . --proto-version=2 ../../temp/dns-v1beta2.json > ../../apis/mockgcp/cloud/dns/v1beta2/service.proto
+
 	rm -r temp
