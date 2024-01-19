@@ -181,6 +181,18 @@ func ToProtoIdentifier(s string) string {
 	return string(b)
 }
 
+func StartWithUpper(s string) string {
+	var b []byte
+	for i, c := range s {
+		if i == 0 {
+			b = append(b, byte(unicode.ToUpper(c)))
+		} else {
+			b = append(b, byte(c))
+		}
+	}
+	return string(b)
+}
+
 func ToProtoFieldName(s string) string {
 	var b []byte
 	for i, c := range s {
@@ -214,12 +226,25 @@ func MapEntryName(s string) string {
 	return string(b)
 }
 
-func (c *OpenAPIConverter) buildServiceFromOpenAPI(resourceName string, resource *openapi.Resource) error {
+func (c *OpenAPIConverter) findMessageDescriptor(name string) *descriptorpb.DescriptorProto {
+	for _, md := range c.fileDescriptor.MessageType {
+		if md.GetName() == name {
+			return md
+		}
+	}
+	return nil
+}
 
-	resourceName = ToProtoIdentifier(resourceName)
+func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *openapi.Resource) error {
+	singularName := pluralName
+	if strings.HasSuffix(singularName, "ies") {
+		singularName = strings.TrimSuffix(singularName, "ies") + "y"
+	} else if strings.HasSuffix(singularName, "s") {
+		singularName = strings.TrimSuffix(singularName, "s")
+	}
 
 	service := &descriptorpb.ServiceDescriptorProto{
-		Name: PtrTo(resourceName),
+		Name: PtrTo(ToProtoIdentifier(pluralName)),
 	}
 
 	for _, methodName := range sortedKeys(resource.Methods) {
@@ -232,9 +257,18 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(resourceName string, resource
 		httpPath := method.FlatPath
 		httpPath = "/" + httpPath
 
+		parameterRenames := make(map[string]string)
+		parameterRenames[ToProtoFieldName(singularName)] = "name"
+
 		r := regexp.MustCompile(`{[^}]+}`)
 		httpPath = r.ReplaceAllStringFunc(httpPath, func(match string) string {
-			return ToProtoFieldName(match)
+			match = strings.TrimPrefix(match, "{")
+			match = strings.TrimSuffix(match, "}")
+			id := ToProtoFieldName(match)
+			if rename := parameterRenames[id]; rename != "" {
+				id = rename
+			}
+			return "{" + id + "}"
 		})
 
 		httpRule := &annotations.HttpRule{}
@@ -264,17 +298,17 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(resourceName string, resource
 		}
 		switch methodName {
 		case "create":
-			serviceMethod.Name = PtrTo("Create" + resourceName)
+			serviceMethod.Name = PtrTo("Create" + StartWithUpper(singularName))
 		case "get":
-			serviceMethod.Name = PtrTo("Get" + resourceName)
+			serviceMethod.Name = PtrTo("Get" + StartWithUpper(singularName))
 		case "list":
-			serviceMethod.Name = PtrTo("List" + resourceName)
+			serviceMethod.Name = PtrTo("List" + StartWithUpper(pluralName))
 		case "delete":
-			serviceMethod.Name = PtrTo("Delete" + resourceName)
+			serviceMethod.Name = PtrTo("Delete" + StartWithUpper(singularName))
 		case "patch":
-			serviceMethod.Name = PtrTo("Patch" + resourceName)
+			serviceMethod.Name = PtrTo("Patch" + StartWithUpper(singularName))
 		case "update":
-			serviceMethod.Name = PtrTo("Update" + resourceName)
+			serviceMethod.Name = PtrTo("Update" + StartWithUpper(singularName))
 		case "testIamPermissions", "getIamPolicy", "setIamPolicy":
 			klog.Warningf("skipping method %q", methodName)
 			continue
@@ -283,13 +317,25 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(resourceName string, resource
 		}
 
 		{
-			requestType := *serviceMethod.Name + "Request"
-			serviceMethod.InputType = &requestType
-			desc := &descriptorpb.DescriptorProto{}
-			desc.Name = &requestType
-
+			requestTypeName := *serviceMethod.Name + "Request"
 			nextTag := int32(1)
+
+			desc := c.findMessageDescriptor(requestTypeName)
+			if desc == nil {
+				desc = &descriptorpb.DescriptorProto{}
+				desc.Name = PtrTo(requestTypeName)
+				c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, desc)
+			} else {
+				for _, fd := range desc.Field {
+					if fd.GetNumber() >= nextTag {
+						nextTag++
+					}
+				}
+			}
+			serviceMethod.InputType = &requestTypeName
+
 			for parameterName, parameter := range method.Parameters {
+
 				switch parameter.Location {
 				case "path":
 					tag := nextTag
@@ -299,7 +345,9 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(resourceName string, resource
 					field.Number = PtrTo(tag)
 					//field.JsonName = PtrTo(parameterName)
 					field.Name = PtrTo(ToProtoFieldName(parameterName))
-
+					if rename := parameterRenames[field.GetName()]; rename != "" {
+						field.Name = PtrTo(rename)
+					}
 					switch parameter.Type {
 					case "string":
 						field.Type = descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
@@ -325,17 +373,15 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(resourceName string, resource
 				field := &descriptorpb.FieldDescriptorProto{}
 				field.Number = PtrTo(tag)
 				//field.JsonName = PtrTo(parameterName)
-				field.Name = PtrTo(ToProtoFieldName(resourceName))
+				field.Name = PtrTo(ToProtoFieldName(singularName))
 				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
 				field.TypeName = PtrTo(method.Request.Ref)
 
 				desc.Field = append(desc.Field, field)
 
-				httpRule.Body = ToProtoFieldName(resourceName)
+				httpRule.Body = ToProtoFieldName(singularName)
 				// serviceMethod.InputType = PtrTo(method.Request.Ref)
 			}
-
-			c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, desc)
 		}
 
 		if method.Response != nil {
@@ -356,7 +402,7 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(resourceName string, resource
 
 		service.Method = append(service.Method, serviceMethod)
 
-		klog.Infof("%s/%s => %v", resourceName, methodName, prototext.Format(serviceMethod))
+		klog.Infof("%s/%s => %v", singularName, methodName, prototext.Format(serviceMethod))
 	}
 
 	c.fileDescriptor.Service = append(c.fileDescriptor.Service, service)
