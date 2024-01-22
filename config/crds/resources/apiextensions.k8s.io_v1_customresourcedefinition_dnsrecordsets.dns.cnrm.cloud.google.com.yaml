@@ -57,10 +57,6 @@ spec:
           metadata:
             type: object
           spec:
-            not:
-              required:
-              - rrdatas
-              - rrdatasRefs
             oneOf:
             - required:
               - rrdatas

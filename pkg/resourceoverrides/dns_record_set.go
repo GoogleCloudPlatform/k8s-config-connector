@@ -56,7 +56,14 @@ func preserveRrdatasFieldAndEnsureRrdatasRefsFieldIsMultiKind() ResourceOverride
 		if err := EnsureReferenceFieldIsMultiKind(crd, nil, rrdatasRefsFieldName, []string{"ComputeAddress"}); err != nil {
 			return fmt.Errorf("error ensuring '%v' field in DNSRecordSet is a multi-kind reference field: %w", rrdatasRefsFieldName, err)
 		}
-		return nil
+		// PreserveMutuallyExclusiveNonReferenceField adds a `not` condition to
+		// prevent rrdatas and rrdatasRefs from being set together. This is
+		// redundant due to the enforceMutuallyExclusiveRrdatasAndRoutingPolicy
+		// override, so we will manually remove it.
+		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+		spec := schema.Properties["spec"]
+		crdutil.SetNotRuleForObjectOrArray(&spec, nil)
+		return crdutil.SetSchemaForFieldUnderObjectOrArray("spec", schema, &spec)
 	}
 	o.PreActuationTransform = func(r *k8s.Resource) error {
 		if err := FavorReferenceArrayFieldOverNonReferenceArrayField(r, []string{rrdatasFieldName}, []string{rrdatasRefsFieldName}); err != nil {
