@@ -174,6 +174,9 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %v", req.NamespacedName.String(), err)
 	}
+	if err := r.handleDefault(resource); err != nil {
+		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %v", k8s.GetNamespacedName(resource), err)
+	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %v", k8s.GetNamespacedName(resource), err)
 	}
@@ -393,6 +396,15 @@ func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.Namespac
 	r.immediateReconcileRequests <- genEvent
 }
 
+func (r *Reconciler) handleDefault(resource *krmtotf.Resource) error {
+	// Validate or set the default value (cluster-level or namespace-level) for
+	// the 'state-into-spec' annotation.
+	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(&resource.Resource, resource.Resource.GroupVersionKind(), k8s.StateMergeIntoSpec); err != nil {
+		return fmt.Errorf("error validating or defaulting the '%v' annotation for resource '%v': %v", k8s.StateIntoSpecAnnotation, k8s.GetNamespacedName(resource), err)
+	}
+	return nil
+}
+
 func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, resource *krmtotf.Resource) error {
 	rc := resource.ResourceConfig
 
@@ -408,13 +420,6 @@ func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, 
 	// defaulting hierarchical references was added.
 	if err := k8s.EnsureHierarchicalReference(ctx, &resource.Resource, rc.HierarchicalReferences, rc.Containers, r.Client); err != nil {
 		return fmt.Errorf("error ensuring resource '%v' has a hierarchical reference: %v", k8s.GetNamespacedName(resource), err)
-	}
-
-	// Ensure the resource has a state-into-spec annotation.
-	// This is done to be backwards compatible with resources
-	// created before the webhook for defaulting the annotation was added.
-	if err := k8s.EnsureSpecIntoSateAnnotation(&resource.Resource); err != nil {
-		return fmt.Errorf("error ensuring resource '%v' has a '%v' annotation: %v", k8s.GetNamespacedName(resource), k8s.StateIntoSpecAnnotation, err)
 	}
 	return nil
 }

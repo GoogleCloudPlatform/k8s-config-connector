@@ -139,6 +139,9 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 		}
 		return reconcile.Result{}, err
 	}
+	if err := r.handleDefault(&auditConfig); err != nil {
+		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM policy '%v': %v", k8s.GetNamespacedName(&auditConfig), err)
+	}
 	reconcileContext := &reconcileContext{
 		Reconciler:     r,
 		Ctx:            ctx,
@@ -157,6 +160,15 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	}
 	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
+}
+
+func (r *Reconciler) handleDefault(auditConfig *iamv1beta1.IAMAuditConfig) error {
+	// Validate or set the default value (cluster-level or namespace-level) for
+	// the 'state-into-spec' annotation.
+	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(auditConfig, iamv1beta1.IAMAuditConfigGVK, k8s.StateMergeIntoSpec); err != nil {
+		return fmt.Errorf("error validating or defaulting the '%v' annotation for resource '%v': %v", k8s.StateIntoSpecAnnotation, k8s.GetNamespacedName(auditConfig), err)
+	}
+	return nil
 }
 
 func (r *reconcileContext) doReconcile(auditConfig *iamv1beta1.IAMAuditConfig) (requeue bool, err error) {

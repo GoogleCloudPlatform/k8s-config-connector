@@ -52,8 +52,8 @@ func (a *genericDefaulter) Handle(ctx context.Context, req admission.Request) ad
 			fmt.Errorf("error decoding object: %v", err))
 	}
 	newObj := obj.DeepCopy()
-	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(newObj); err != nil {
-		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting '%v' annotation: %v", k8s.StateIntoSpecAnnotation, err))
+	if err := k8s.ValidateOrSetIndicatorForStateIntoSpecAnnotation(newObj); err != nil {
+		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or setting indicator for '%v' annotation: %v", k8s.StateIntoSpecAnnotation, err))
 	}
 	return constructPatchResponse(obj, newObj)
 }

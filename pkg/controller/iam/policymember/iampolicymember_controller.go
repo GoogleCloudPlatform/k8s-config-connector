@@ -149,6 +149,9 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 		}
 		return reconcile.Result{}, err
 	}
+	if err := r.handleDefault(&memberPolicy); err != nil {
+		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM policy member '%v': %v", k8s.GetNamespacedName(&memberPolicy), err)
+	}
 	reconcileContext := &reconcileContext{
 		Reconciler:     r,
 		Ctx:            ctx,
@@ -170,6 +173,15 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	requeueAfter := jitteredPeriod + requeueDelay
 	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", requeueAfter)
 	return reconcile.Result{RequeueAfter: requeueAfter}, nil
+}
+
+func (r *Reconciler) handleDefault(policyMember *iamv1beta1.IAMPolicyMember) error {
+	// Validate or set the default value (cluster-level or namespace-level) for
+	// the 'state-into-spec' annotation.
+	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(policyMember, iamv1beta1.IAMPolicyMemberGVK, k8s.StateMergeIntoSpec); err != nil {
+		return fmt.Errorf("error validating or defaulting the '%v' annotation for resource '%v': %v", k8s.StateIntoSpecAnnotation, k8s.GetNamespacedName(policyMember), err)
+	}
+	return nil
 }
 
 func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember) (requeue bool, err error) {

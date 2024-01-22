@@ -23,20 +23,52 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-func ValidateOrDefaultStateIntoSpecAnnotation(obj *unstructured.Unstructured) error {
+// ValidateOrSetIndicatorForStateIntoSpecAnnotation validates the value of the
+// 'state-into-spec' annotation if it is set, otherwise, sets 'default-state-into-spec'
+// annotation (the indicator) to 'true'.
+func ValidateOrSetIndicatorForStateIntoSpecAnnotation(obj *unstructured.Unstructured) error {
 	_, found := GetAnnotation(StateIntoSpecAnnotation, obj)
-	if !found {
-		SetAnnotation(StateIntoSpecAnnotation, StateMergeIntoSpec, obj)
+	if found {
+		return validateStateIntoSpecAnnotation(obj, obj.GroupVersionKind())
 	}
-	return validateStateIntoSpecAnnotation(obj, obj.GroupVersionKind())
+	// Ensure the indicator annotation is set if 'state-into-spec' annotation is
+	// unset.
+	_, found = GetAnnotation(DefaultStateIntoSpecIndicatorAnnotation, obj)
+	if !found {
+		SetAnnotation(DefaultStateIntoSpecIndicatorAnnotation, DefaultStateIntoSpecIndicator, obj)
+	}
+	return validateDefaultStateIntoSpecIndicatorAnnotation(obj)
 }
 
-func EnsureSpecIntoSateAnnotation(obj *Resource) error {
+// ValidateOrDefaultStateIntoSpecAnnotation defaults the 'state-into-spec'
+// annotation to the passed in defaultValue if the indicator is set.
+func ValidateOrDefaultStateIntoSpecAnnotation(obj metav1.Object, gvk schema.GroupVersionKind, defaultValue string) error {
 	_, found := GetAnnotation(StateIntoSpecAnnotation, obj)
-	if !found {
-		SetAnnotation(StateIntoSpecAnnotation, StateMergeIntoSpec, obj)
+	if found {
+		return validateStateIntoSpecAnnotation(obj, gvk)
 	}
-	return validateStateIntoSpecAnnotation(obj, obj.GroupVersionKind())
+	_, found = GetAnnotation(DefaultStateIntoSpecIndicatorAnnotation, obj)
+	if !found {
+		// This is done to be backwards compatible with resources created before
+		// the webhook for defaulting the 'state-into-spec' annotation was added.
+		// The default behavior should always be 'merge'.
+		SetAnnotation(StateIntoSpecAnnotation, StateMergeIntoSpec, obj)
+		return nil
+	}
+	if err := validateDefaultStateIntoSpecIndicatorAnnotation(obj); err != nil {
+		return err
+	}
+	defaultStateIntoSpecAnnotation(obj, gvk, defaultValue)
+	return validateStateIntoSpecAnnotation(obj, gvk)
+}
+
+func defaultStateIntoSpecAnnotation(obj metav1.Object, gvk schema.GroupVersionKind, defaultValue string) {
+	if defaultValue == StateAbsentInSpec && !ResourceSupportsStateAbsentInSpec(gvk.Kind) {
+		SetAnnotation(StateIntoSpecAnnotation, StateMergeIntoSpec, obj)
+		return
+	}
+	SetAnnotation(StateIntoSpecAnnotation, defaultValue, obj)
+	return
 }
 
 // ResourceSupportsStateAbsentInSpec returns true for resource kinds which
@@ -56,7 +88,7 @@ func validateStateIntoSpecAnnotation(obj metav1.Object, gvk schema.GroupVersionK
 		return fmt.Errorf("couldn't find the value for '%v' annotation", StateIntoSpecAnnotation)
 	}
 
-	if !isAcceptedValue(val) {
+	if !isAcceptedValue(val, StateIntoSpecAnnotationValues) {
 		return fmt.Errorf("invalid value '%v' for '%v' annotation, can be one of {%v}", val, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
 	}
 
@@ -66,8 +98,20 @@ func validateStateIntoSpecAnnotation(obj metav1.Object, gvk schema.GroupVersionK
 	return nil
 }
 
-func isAcceptedValue(val string) bool {
-	for _, v := range StateIntoSpecAnnotationValues {
+func validateDefaultStateIntoSpecIndicatorAnnotation(obj metav1.Object) error {
+	val, found := GetAnnotation(DefaultStateIntoSpecIndicatorAnnotation, obj)
+	if !found {
+		return fmt.Errorf("couldn't find the value for '%v' annotation", DefaultStateIntoSpecIndicatorAnnotation)
+	}
+
+	if !isAcceptedValue(val, DefaultStateIntoSpecIndicatorValues) {
+		return fmt.Errorf("invalid value '%v' for '%v' annotation, can be one of {%v}", val, DefaultStateIntoSpecIndicatorAnnotation, strings.Join(DefaultStateIntoSpecIndicatorValues, ", "))
+	}
+	return nil
+}
+
+func isAcceptedValue(val string, acceptedValues []string) bool {
+	for _, v := range acceptedValues {
 		if val == v {
 			return true
 		}

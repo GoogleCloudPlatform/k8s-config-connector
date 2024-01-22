@@ -80,6 +80,9 @@ const (
 	StateMergeIntoSpec = "merge"
 	StateAbsentInSpec  = "absent"
 
+	// Default state into spec indicator value
+	DefaultStateIntoSpecIndicator = "true"
+
 	// Core kubernetes constants
 	LastAppliedConfigurationAnnotation = "kubectl.kubernetes.io/last-applied-configuration"
 	ManagedFieldsTypeFieldsV1          = "FieldsV1"
@@ -137,6 +140,11 @@ var (
 		StateMergeIntoSpec,
 		StateAbsentInSpec,
 	}
+	DefaultStateIntoSpecIndicatorAnnotation = FormatAnnotation("default-state-into-spec")
+	DefaultStateIntoSpecIndicatorValues     = []string{
+		DefaultStateIntoSpecIndicator,
+	}
+
 	// TODO(kcc-eng): Adjust the timeout back down after b/237398742 is fixed.
 	WebhookTimeoutSeconds = int32(10)
 

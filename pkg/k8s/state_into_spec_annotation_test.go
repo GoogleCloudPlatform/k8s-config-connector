@@ -22,13 +22,14 @@ import (
 
 func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 	tests := []struct {
-		name        string
-		obj         *unstructured.Unstructured
-		hasError    bool
-		expectedVal string
+		name         string
+		obj          *unstructured.Unstructured
+		defaultValue string
+		hasError     bool
+		expectedVal  string
 	}{
 		{
-			name: "user specifies an accepted value",
+			name: "valid 'state-into-spec' value",
 			obj: &unstructured.Unstructured{
 				Object: map[string]interface{}{
 					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
@@ -40,10 +41,11 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 					},
 				},
 			},
-			expectedVal: "merge",
+			defaultValue: "merge",
+			expectedVal:  "merge",
 		},
 		{
-			name: "user specifies an unacceptable value",
+			name: "invalid 'state-into-spec' value",
 			obj: &unstructured.Unstructured{
 				Object: map[string]interface{}{
 					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
@@ -55,10 +57,11 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 					},
 				},
 			},
-			hasError: true,
+			defaultValue: "merge",
+			hasError:     true,
 		},
 		{
-			name: "user specifies an empty string",
+			name: "'state-into-spec' value is an empty string",
 			obj: &unstructured.Unstructured{
 				Object: map[string]interface{}{
 					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
@@ -70,10 +73,11 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 					},
 				},
 			},
-			hasError: true,
+			defaultValue: "merge",
+			hasError:     true,
 		},
 		{
-			name: "defaulting if absent",
+			name: "both 'state-into-spec' annotation and the indicator unset",
 			obj: &unstructured.Unstructured{
 				Object: map[string]interface{}{
 					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
@@ -83,7 +87,7 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 			expectedVal: "merge",
 		},
 		{
-			name: "kind that does not support 'absent' value cannot use 'absent' value",
+			name: "kind that does not support 'absent' cannot use 'absent' as the 'state-into-spec' value",
 			obj: &unstructured.Unstructured{
 				Object: map[string]interface{}{
 					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
@@ -95,10 +99,11 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 					},
 				},
 			},
-			hasError: true,
+			defaultValue: "merge",
+			hasError:     true,
 		},
 		{
-			name: "BigQueryDataset kind can use 'absent' value",
+			name: "BigQueryDataset kind can use 'absent' as the 'state-into-spec' value",
 			obj: &unstructured.Unstructured{
 				Object: map[string]interface{}{
 					"apiVersion": "bigquery.cnrm.cloud.google.com/v1beta1",
@@ -110,10 +115,11 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 					},
 				},
 			},
-			expectedVal: "absent",
+			defaultValue: "merge",
+			expectedVal:  "absent",
 		},
 		{
-			name: "BigQueryDataset kind can use 'merge' value",
+			name: "BigQueryDataset kind can use 'merge' as the 'state-into-spec' value",
 			obj: &unstructured.Unstructured{
 				Object: map[string]interface{}{
 					"apiVersion": "bigquery.cnrm.cloud.google.com/v1beta1",
@@ -125,14 +131,32 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 					},
 				},
 			},
-			expectedVal: "merge",
+			defaultValue: "merge",
+			expectedVal:  "merge",
+		},
+		{
+			name: "'state-into-spec' annotation is defaulted when it is unset" +
+				" and the indicator is set",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
+					"kind":       "Test1Bar",
+					"metadata": map[string]interface{}{
+						"annotations": map[string]interface{}{
+							DefaultStateIntoSpecIndicatorAnnotation: "true",
+						},
+					},
+				},
+			},
+			defaultValue: "absent",
+			expectedVal:  "absent",
 		},
 	}
 
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			err := ValidateOrDefaultStateIntoSpecAnnotation(tc.obj)
+			err := ValidateOrDefaultStateIntoSpecAnnotation(tc.obj, tc.obj.GroupVersionKind(), tc.defaultValue)
 			if tc.hasError {
 				if err == nil {
 					t.Fatalf("got nil, but expect an error")
