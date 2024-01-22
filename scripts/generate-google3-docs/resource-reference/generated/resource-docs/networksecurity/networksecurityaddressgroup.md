@@ -183,7 +183,7 @@ Format: organizations/{organization_id} or projects/{project_id}{% endverbatim %
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `organizations/{{value}}`, where {{value}} is the `number` field of an `Organization` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `name` field of an `Organization` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -223,7 +223,7 @@ Format: organizations/{organization_id} or projects/{project_id}{% endverbatim %
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `projects/{{value}}`, where {{value}} is the `name` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `projects/{{value}}`, where {{value}} is the `projectId` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -363,6 +363,20 @@ Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverb
 
 ### Organization Addressgroup
 ```yaml
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
 kind: NetworkSecurityAddressGroup
 metadata:
@@ -384,6 +398,20 @@ spec:
 
 ### Project Addressgroup
 ```yaml
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
 kind: NetworkSecurityAddressGroup
 metadata:

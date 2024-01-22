@@ -104,8 +104,7 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'Allowed value: string of the format `organizations/{{value}}`,
-                          where {{value}} is the `number` field of an `Organization`
+                        description: 'Allowed value: The `name` field of an `Organization`
                           resource.'
                         type: string
                       name:
@@ -133,7 +132,8 @@ spec:
                     properties:
                       external:
                         description: 'Allowed value: string of the format `projects/{{value}}`,
-                          where {{value}} is the `name` field of a `Project` resource.'
+                          where {{value}} is the `projectId` field of a `Project`
+                          resource.'
                         type: string
                       name:
                         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'

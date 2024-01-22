@@ -27,8 +27,8 @@ spec:
       metadataMapping:
         name: name
         labels: labels
-      idTemplate: "[projects/{{project?}}|organizations/{{organization?}}]/locations/{{location}}/addressGroups/{{name}}"
-      idTemplateCanBeUsedToMatchResourceName: true
+      idTemplate: "{{parent}}/locations/{{location}}/addressGroups/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
       resourceReferences:
         - tfField: parent
@@ -40,17 +40,13 @@ spec:
             Format: organizations/{organization_id} or projects/{project_id}
           types:
             - key: projectRef
-              parent: true
               valueTemplate: projects/{{value}}
-              targetField: "name"
+              targetField: "project_id"
               gvk:
                 kind: Project
                 version: v1beta1
                 group: resourcemanager.cnrm.cloud.google.com
             - key: organizationRef
-              parent: true
-              valueTemplate: organizations/{{value}}
-              targetField: "number"
               gvk:
                 kind: Organization
                 version: v1beta1
