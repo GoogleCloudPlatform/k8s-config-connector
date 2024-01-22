@@ -112,13 +112,29 @@ spec:
           version: v1beta1
           group: compute.cnrm.cloud.google.com
         targetField: address
+      - tfField: routing_policy.geo.rrdatas
+        key: rrdatasRefs
+        gvk:
+          kind: ComputeAddress
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: address
+      - tfField: routing_policy.wrr.rrdatas
+        key: rrdatasRefs
+        gvk:
+          kind: ComputeAddress
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: address
       idTemplate: "{{project}}/{{zone-name}}/{{record-name}}/{{type}}"
       # no actual URL, is a list operation for a dns managed zone
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
       # TODO(b/233267548): Ignore routing_policy because of complexity brought by rrdatas/rrdatasRefs
       ignoredFields:
-        - routing_policy
+        - routing_policy.geo.health_checked_targets
+        - routing_policy.wrr.health_checked_targets
+        - routing_policy.primary_backup
       containers:
         - type: project
           tfField: project

@@ -85,6 +85,22 @@ managedZoneRef:
   name: string
   namespace: string
 name: string
+routingPolicy:
+  enableGeoFencing: boolean
+  geo:
+  - location: string
+    rrdatasRefs:
+    - external: string
+      kind: string
+      name: string
+      namespace: string
+  wrr:
+  - rrdatasRefs:
+    - external: string
+      kind: string
+      name: string
+      namespace: string
+    weight: float
 rrdatas:
 - string
 rrdatasRefs:
@@ -151,6 +167,206 @@ type: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The DNS name this record set will apply to.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The configuration for steering traffic based on query. You can specify either Weighted Round Robin(WRR) type or Geolocation(GEO) type.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.enableGeoFencing</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Specifies whether to enable fencing for geo queries.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.geo</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}The configuration for Geo location based routing policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.geo[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.geo[].location</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The location name defined in Google Cloud.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.geo[].rrdatasRefs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.geo[].rrdatasRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.geo[].rrdatasRefs[].external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `address` field of a `ComputeAddress` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.geo[].rrdatasRefs[].kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Kind of the referent. Allowed values: ComputeAddress{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.geo[].rrdatasRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.geo[].rrdatasRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.wrr</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}The configuration for Weighted Round Robin based routing policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.wrr[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.wrr[].rrdatasRefs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.wrr[].rrdatasRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.wrr[].rrdatasRefs[].external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `address` field of a `ComputeAddress` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.wrr[].rrdatasRefs[].kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Kind of the referent. Allowed values: ComputeAddress{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.wrr[].rrdatasRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.wrr[].rrdatasRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>routingPolicy.wrr[].weight</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">float</code></p>
+            <p>{% verbatim %}The ratio of traffic routed to the target.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -256,6 +472,8 @@ type: string
 </tbody>
 </table>
 
+
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status
@@ -586,6 +804,182 @@ apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-ns
+spec:
+  dnsName: "example.com."
+```
+
+### DNS Routing Policy Geo
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-sample-rp-geo
+spec:
+  name: "www.example.com."
+  type: "A"
+  ttl: 300
+  managedZoneRef:
+    name: dnsrecordset-dep-rp
+  routingPolicy:
+    geo:
+      - location: us-central1
+        rrdatasRefs:
+          - external: "1.2.3.4"
+          - external: "1.2.3.5"
+      - location: us-west1
+        rrdatasRefs:
+          - external: "2.3.4.5"
+          - external: "2.3.4.6"
+---
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSManagedZone
+metadata:
+  name: dnsrecordset-dep-rp
+spec:
+  dnsName: "example.com."
+```
+
+### DNS Routing Policy Geo With Compute Address Reference
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-sample-rp-geo-reference
+spec:
+  name: "www.example.com."
+  type: "A"
+  ttl: 300
+  managedZoneRef:
+    name: dnsrecordset-dep-rp
+  routingPolicy:
+    geo:
+      - location: us-central1
+        rrdatasRefs:
+          - name: dnsrecordset-dep-computeaddressreference1
+            kind: ComputeAddress
+      - location: us-west1
+        rrdatasRefs:
+          - name: dnsrecordset-dep-computeaddressreference2
+            kind: ComputeAddress
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: dnsrecordset-dep-computeaddressreference1
+spec:
+  addressType: INTERNAL
+  description: a test global address
+  location: global
+  ipVersion: IPV4
+  purpose: VPC_PEERING
+  prefixLength: 16
+  networkRef:
+    name: dnsrecordset-dep-computenetworkreference
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: dnsrecordset-dep-computeaddressreference2
+spec:
+  addressType: INTERNAL
+  description: a test global address
+  location: global
+  ipVersion: IPV4
+  purpose: VPC_PEERING
+  prefixLength: 16
+  networkRef:
+    name: dnsrecordset-dep-computenetworkreference
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: dnsrecordset-dep-computenetworkreference
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSManagedZone
+metadata:
+  name: dnsrecordset-dep-rp
+spec:
+  dnsName: "example.com."
+  visibility: private
+  privateVisibilityConfig:
+  networks:
+    - networkRef:
+        name: dnsrecordset-dep-computenetworkreference
+```
+
+### DNS Routing Policy Wrr
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-sample-rp-wrr
+spec:
+  name: "www.example.com."
+  type: "A"
+  ttl: 300
+  managedZoneRef:
+    name: dnsrecordset-dep-rp
+  routingPolicy:
+    wrr:
+      - weight: 0.5
+        rrdatasRefs:
+          - external: "1.2.3.4"
+          - external: "1.2.3.5"
+      - weight: 0.5
+        rrdatasRefs:
+          - external: "2.3.4.5"
+          - external: "2.3.4.6"
+---
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSManagedZone
+metadata:
+  name: dnsrecordset-dep-rp
 spec:
   dnsName: "example.com."
 ```

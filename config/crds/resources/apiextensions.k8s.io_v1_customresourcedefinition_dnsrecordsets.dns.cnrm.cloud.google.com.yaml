@@ -62,6 +62,8 @@ spec:
               - rrdatas
             - required:
               - rrdatasRefs
+            - required:
+              - routingPolicy
             properties:
               managedZoneRef:
                 oneOf:
@@ -93,6 +95,113 @@ spec:
               name:
                 description: Immutable. The DNS name this record set will apply to.
                 type: string
+              routingPolicy:
+                description: The configuration for steering traffic based on query.
+                  You can specify either Weighted Round Robin(WRR) type or Geolocation(GEO)
+                  type.
+                properties:
+                  enableGeoFencing:
+                    description: Specifies whether to enable fencing for geo queries.
+                    type: boolean
+                  geo:
+                    description: The configuration for Geo location based routing
+                      policy.
+                    items:
+                      properties:
+                        location:
+                          description: The location name defined in Google Cloud.
+                          type: string
+                        rrdatasRefs:
+                          items:
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                              - kind
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                                - required:
+                                  - kind
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: 'Allowed value: The `address` field of
+                                  a `ComputeAddress` resource.'
+                                type: string
+                              kind:
+                                description: 'Kind of the referent. Allowed values:
+                                  ComputeAddress'
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
+                          type: array
+                      required:
+                      - location
+                      type: object
+                    type: array
+                  wrr:
+                    description: The configuration for Weighted Round Robin based
+                      routing policy.
+                    items:
+                      properties:
+                        rrdatasRefs:
+                          items:
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                              - kind
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                                - required:
+                                  - kind
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: 'Allowed value: The `address` field of
+                                  a `ComputeAddress` resource.'
+                                type: string
+                              kind:
+                                description: 'Kind of the referent. Allowed values:
+                                  ComputeAddress'
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
+                          type: array
+                        weight:
+                          description: The ratio of traffic routed to the target.
+                          type: number
+                      required:
+                      - weight
+                      type: object
+                    type: array
+                type: object
               rrdatas:
                 description: DEPRECATED. Although this field is still available, there
                   is limited support. We recommend that you use `spec.rrdatasRefs`
