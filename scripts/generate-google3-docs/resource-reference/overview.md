@@ -38,7 +38,7 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanageraccesspolicy.md">AccessContextManagerAccessPolicy</a></td>
 </tr>
 <tr>
-  <td><a href="/container-attached/docs/">{{anthos_attached_clusters_name}}</a></td>
+  <td><a href="/anthos/clusters/docs/multi-cloud/attached">{{anthos_attached_clusters_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/containerattached/containerattachedcluster.md">ContainerAttachedCluster</a></td>
 </tr>
 <tr>
