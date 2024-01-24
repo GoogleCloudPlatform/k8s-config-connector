@@ -64,6 +64,7 @@ var preferredSampleForResource = map[string]string{
 	"computesecuritypolicy":             "multirule-security-policy",
 	"computesslcertificate":             "global-compute-ssl-certificate",
 	"computesslpolicy":                  "modern-tls-1-1-ssl-policy",
+	"computetargethttpsproxy":           "target-https-proxy-with-ssl-certificates",
 	"computeurlmap":                     "global-compute-url-map",
 	"configcontrollerinstance":          "autopilot-config-controller-instance",
 	"containerattachedcluster":          "container-attached-cluster-basic",
