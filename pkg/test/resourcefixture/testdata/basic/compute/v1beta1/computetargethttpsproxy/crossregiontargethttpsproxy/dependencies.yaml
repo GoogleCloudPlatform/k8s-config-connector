@@ -121,6 +121,4 @@ spec:
           service:
             backendServiceRef:
               name: computebackendservice-${uniqueId}
-        
-    
   location: global
