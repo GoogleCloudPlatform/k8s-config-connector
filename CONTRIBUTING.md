@@ -189,7 +189,7 @@ by creating an Artifact Registry resource through Config Connector.
     ```
 
     > Troubleshooting:
-    > - if the pods are failing to pull the image, you will likely need to give the node pool's service account the necessary role to pull from GCR: `role/straoge.objectViewer`; as the node pool may be using a differnt service account from the one setup in the previous steps;
+    > - if the pods are failing to pull the image, you will likely need to give the node pool's service account the necessary role to pull from GCR: `roles/storage.objectViewer`; as the node pool may be using a differnt service account from the one setup in the previous steps;
     > - make sure that the `cnrm.cloud.google.com/project-id` annootation is replaced with your PROJECT_ID in the sample "artifactregistry_v1beta1_artifactregistryrepository.yaml";
 
 1.  Wait a few minutes and then make sure your repository exists in GCP.
