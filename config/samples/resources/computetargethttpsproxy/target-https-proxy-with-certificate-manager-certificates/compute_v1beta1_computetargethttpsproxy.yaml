@@ -15,11 +15,11 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetHTTPSProxy
 metadata:
-  name: computetargethttpsproxy-sample
+  name: computetargethttpsproxy-sample-certmgr
 spec:
   urlMapRef:
-    name: computetargethttpsproxy-dep
+    name: computetargethttpsproxy-dep-certmgr
   certificateManagerCertificates:
-    - name: computetargethttpsproxy-dep
+    - name: computetargethttpsproxy-dep-certmgr
   location: global
   quicOverride: DISABLE

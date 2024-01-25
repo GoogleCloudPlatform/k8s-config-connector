@@ -15,7 +15,7 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
-  name: computetargethttpsproxy-dep
+  name: computetargethttpsproxy-dep-certmgr
 spec:
   location: global
   portName: "http"

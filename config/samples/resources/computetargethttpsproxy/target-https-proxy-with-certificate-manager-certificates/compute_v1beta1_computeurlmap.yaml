@@ -15,11 +15,11 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeURLMap
 metadata:
-  name: computetargethttpsproxy-dep
+  name: computetargethttpsproxy-dep-certmgr
 spec:
   defaultService:
     backendServiceRef:
-      name: computetargethttpsproxy-dep
+      name: computetargethttpsproxy-dep-certmgr
   hostRule:
     - hosts:
       - "mysite.com"
@@ -28,11 +28,11 @@ spec:
     - name: "allpaths"
       defaultService:
         backendServiceRef:
-          name: computetargethttpsproxy-dep
+          name: computetargethttpsproxy-dep-certmgr
       pathRule:
         - paths:
            - "/*"
           service:
             backendServiceRef:
-              name: computetargethttpsproxy-dep
+              name: computetargethttpsproxy-dep-certmgr
   location: global

@@ -17,7 +17,7 @@ kind: CertificateManagerCertificate
 metadata:
   labels:
     label-one: "value-one"
-  name: computetargethttpsproxy-dep
+  name: computetargethttpsproxy-dep-certmgr
 spec:
   scope: "ALL_REGIONS"  
   location : "global"
@@ -49,5 +49,5 @@ spec:
     pemPrivateKey:
       valueFrom:
         secretKeyRef:
-          name: computetargethttpsproxy-dep
+          name: computetargethttpsproxy-dep-certmgr
           key: privateKey
