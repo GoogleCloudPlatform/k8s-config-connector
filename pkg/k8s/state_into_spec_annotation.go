@@ -19,23 +19,23 @@ import (
 	"strings"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-func ValidateOrDefaultStateIntoSpecAnnotation(obj *unstructured.Unstructured) error {
+// ValidateOrDefaultStateIntoSpecAnnotation validates the value of the
+// 'state-into-spec' annotation if it is set and defaults the annotation to the
+// passed in defaultValue if it is unset.
+func ValidateOrDefaultStateIntoSpecAnnotation(obj metav1.Object, defaultValue string) error {
 	_, found := GetAnnotation(StateIntoSpecAnnotation, obj)
-	if !found {
-		SetAnnotation(StateIntoSpecAnnotation, StateMergeIntoSpec, obj)
+	if found {
+		return validateStateIntoSpecAnnotation(obj)
 	}
-	return validateStateIntoSpecAnnotation(obj)
+	defaultStateIntoSpecAnnotation(obj, defaultValue)
+	return nil
 }
 
-func EnsureSpecIntoSateAnnotation(obj *Resource) error {
-	_, found := GetAnnotation(StateIntoSpecAnnotation, obj)
-	if !found {
-		SetAnnotation(StateIntoSpecAnnotation, StateMergeIntoSpec, obj)
-	}
-	return validateStateIntoSpecAnnotation(obj)
+func defaultStateIntoSpecAnnotation(obj metav1.Object, defaultValue string) {
+	SetAnnotation(StateIntoSpecAnnotation, defaultValue, obj)
+	return
 }
 
 func validateStateIntoSpecAnnotation(obj metav1.Object) error {
@@ -44,14 +44,14 @@ func validateStateIntoSpecAnnotation(obj metav1.Object) error {
 		return fmt.Errorf("couldn't find the value for '%v' annotation", StateIntoSpecAnnotation)
 	}
 
-	if !isAcceptedValue(val) {
+	if !isAcceptedValue(val, StateIntoSpecAnnotationValues) {
 		return fmt.Errorf("invalid value '%v' for '%v' annotation, can be one of {%v}", val, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
 	}
 	return nil
 }
 
-func isAcceptedValue(val string) bool {
-	for _, v := range StateIntoSpecAnnotationValues {
+func isAcceptedValue(val string, acceptedValues []string) bool {
+	for _, v := range acceptedValues {
 		if val == v {
 			return true
 		}

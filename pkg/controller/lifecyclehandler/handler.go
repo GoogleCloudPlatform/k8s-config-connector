@@ -197,20 +197,22 @@ func reasonForUnresolvableDeps(err error) (string, error) {
 
 func (r *LifecycleHandler) EnsureFinalizers(ctx context.Context, original, resource *k8s.Resource, finalizers ...string) error {
 	if !k8s.EnsureFinalizers(resource, finalizers...) {
-		u, err := original.MarshalAsUnstructured()
+		uo, err := original.MarshalAsUnstructured()
 		if err != nil {
 			return err
 		}
-		copy, err := k8s.NewResource(u)
+		originalCopy, err := k8s.NewResource(uo)
 		if err != nil {
 			return err
 		}
-		if !k8s.EnsureFinalizers(copy, finalizers...) {
-			if err := r.updateAPIServer(ctx, copy); err != nil {
+		if !k8s.EnsureFinalizers(originalCopy, finalizers...) {
+			if err := r.updateAPIServer(ctx, originalCopy); err != nil {
 				return err
 			}
-			// sync the resource up with the updated metadata.
-			resource.ObjectMeta = copy.ObjectMeta
+			// Sync the resource up with the updated metadata except for the
+			// defaulted / pre-processed annotations.
+			originalCopy.ObjectMeta.Annotations = resource.ObjectMeta.Annotations
+			resource.ObjectMeta = originalCopy.ObjectMeta
 		}
 	}
 	return nil
