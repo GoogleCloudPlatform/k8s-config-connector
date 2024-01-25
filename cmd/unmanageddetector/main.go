@@ -96,7 +96,7 @@ func main() {
 
 	// Register the registration controller, which will dynamically create
 	// controllers for all our resources.
-	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterUnmanagedDetectorController); err != nil {
+	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterUnmanagedDetectorController, nil); err != nil {
 		logging.Fatal(err, "error adding registration controller")
 	}
 

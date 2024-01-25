@@ -27,6 +27,7 @@ import (
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 
@@ -58,6 +59,14 @@ type Config struct {
 	// GCPAccessToken allows configuration of a static access token for accessing GCP.
 	// Currently only used in tests.
 	GCPAccessToken string
+
+	// StateIntoSpecDefaultValue is a required field used as the default value
+	// for 'state-into-spec' annotation if unset.
+	StateIntoSpecDefaultValue string
+
+	// StateIntoSpecUserOverride is an optional field. If specified, it is used
+	// as the default value for 'state-into-spec' annotation if unset.
+	StateIntoSpecUserOverride *string
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -117,9 +126,13 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 		return nil, fmt.Errorf("error creating a DCL client config: %w", err)
 	}
 
+	stateIntoSpecValue, err := k8s.NewStateIntoSpecValue(config.StateIntoSpecDefaultValue, config.StateIntoSpecUserOverride)
+	if err != nil {
+		return nil, fmt.Errorf("error constructing new state into spec value: %v", err)
+	}
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if err := registration.Add(mgr, provider, smLoader, dclConfig, dclConverter, registration.RegisterDefaultController); err != nil {
+	if err := registration.Add(mgr, provider, smLoader, dclConfig, dclConverter, registration.RegisterDefaultController, stateIntoSpecValue); err != nil {
 		return nil, fmt.Errorf("error adding registration controller: %w", err)
 	}
 	return mgr, nil

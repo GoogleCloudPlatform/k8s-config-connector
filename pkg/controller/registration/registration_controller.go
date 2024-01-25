@@ -56,16 +56,17 @@ var logger = klog.Log.WithName(controllerName)
 
 // Add creates a new registration Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and Start it when the Manager is Started.
-func Add(mgr manager.Manager, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, dclConfig *dcl.Config, dclConverter *conversion.Converter, regFunc registrationFunc) error {
+func Add(mgr manager.Manager, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, dclConfig *dcl.Config, dclConverter *conversion.Converter, regFunc registrationFunc, stateIntoSpecValue *k8s.StateIntoSpecValue) error {
 	r := &ReconcileRegistration{
-		Client:           mgr.GetClient(),
-		provider:         p,
-		smLoader:         smLoader,
-		dclConfig:        dclConfig,
-		dclConverter:     dclConverter,
-		mgr:              mgr,
-		controllers:      make(map[string]map[string]controllerContext),
-		registrationFunc: regFunc,
+		Client:             mgr.GetClient(),
+		provider:           p,
+		smLoader:           smLoader,
+		dclConfig:          dclConfig,
+		dclConverter:       dclConverter,
+		mgr:                mgr,
+		controllers:        make(map[string]map[string]controllerContext),
+		registrationFunc:   regFunc,
+		stateIntoSpecValue: stateIntoSpecValue,
 	}
 	c, err := controller.New(controllerName, mgr,
 		controller.Options{
@@ -83,14 +84,15 @@ var _ reconcile.Reconciler = &ReconcileRegistration{}
 // ReconcileRegistration reconciles a CRD owned by KCC
 type ReconcileRegistration struct {
 	client.Client
-	provider         *tfschema.Provider
-	smLoader         *servicemappingloader.ServiceMappingLoader
-	dclConfig        *dcl.Config
-	dclConverter     *conversion.Converter
-	mgr              manager.Manager
-	controllers      map[string]map[string]controllerContext
-	registrationFunc registrationFunc
-	mu               sync.Mutex
+	provider           *tfschema.Provider
+	smLoader           *servicemappingloader.ServiceMappingLoader
+	dclConfig          *dcl.Config
+	dclConverter       *conversion.Converter
+	mgr                manager.Manager
+	controllers        map[string]map[string]controllerContext
+	registrationFunc   registrationFunc
+	stateIntoSpecValue *k8s.StateIntoSpecValue
+	mu                 sync.Mutex
 }
 
 type controllerContext struct {
@@ -193,7 +195,7 @@ func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.Cust
 			logger.Info("unrecognized CRD; skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
 			return nil, nil
 		}
-		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader)
+		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.stateIntoSpecValue)
 		if err != nil {
 			return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %v", crd.Spec.Names.Kind, err)
 		}

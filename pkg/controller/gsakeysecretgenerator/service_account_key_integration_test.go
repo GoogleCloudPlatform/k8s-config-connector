@@ -187,7 +187,7 @@ func newTestReconciler(t *testing.T, mgr manager.Manager, crdPath string, provid
 	var immediateReconcileRequests chan event.GenericEvent = nil
 	var resourceWatcherRoutines *semaphore.Weighted = nil
 
-	reconciler, err := tf.NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines)
+	reconciler, err := tf.NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, nil)
 	if err != nil {
 		t.Fatalf("error creating reconciler: %v", err)
 	}

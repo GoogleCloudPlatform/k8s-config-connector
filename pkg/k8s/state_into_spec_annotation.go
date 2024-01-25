@@ -21,13 +21,39 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// StateIntoSpecValue contains the required 'defaultValue' field and the
+// optional 'userOverride' field.
+type StateIntoSpecValue struct {
+	defaultValue string
+	userOverride *string
+}
+
+func NewStateIntoSpecValue(defaultValue string, userOverride *string) (*StateIntoSpecValue, error) {
+	if !isAcceptedValue(defaultValue, StateIntoSpecAnnotationValues) {
+		return nil, fmt.Errorf("invalid default value '%v' for '%v' annotation, need to be one of {%v}", defaultValue, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
+	}
+	if userOverride != nil && !isAcceptedValue(*userOverride, StateIntoSpecAnnotationValues) {
+		return nil, fmt.Errorf("invalid user override value '%v' for '%v' annotation, need to be one of {%v}", userOverride, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
+	}
+	return &StateIntoSpecValue{
+		defaultValue: defaultValue,
+		userOverride: userOverride,
+	}, nil
+}
+
+func (v *StateIntoSpecValue) GetValue() string {
+	if v.userOverride == nil {
+		return v.defaultValue
+	}
+	return *v.userOverride
+}
+
 // ValidateOrDefaultStateIntoSpecAnnotation validates the value of the
 // 'state-into-spec' annotation if it is set and defaults the annotation to the
 // passed in defaultValue if it is unset.
 func ValidateOrDefaultStateIntoSpecAnnotation(obj metav1.Object, defaultValue string) error {
 	_, found := GetAnnotation(StateIntoSpecAnnotation, obj)
 	if !found {
-		// TODO(b/322836859): Ensure ComputeAddress doesn't need special handling.
 		SetAnnotation(StateIntoSpecAnnotation, defaultValue, obj)
 	}
 	return validateStateIntoSpecAnnotation(obj)

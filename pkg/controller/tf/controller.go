@@ -64,25 +64,26 @@ var logger = klog.Log
 type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
 	metrics.ReconcilerMetrics
-	resourceLeaser *leaser.ResourceLeaser
-	mgr            manager.Manager
-	schemaRef      *k8s.SchemaReference
-	schemaRefMu    sync.RWMutex
-	provider       *tfschema.Provider
-	smLoader       *servicemappingloader.ServiceMappingLoader
-	logger         logr.Logger
+	resourceLeaser     *leaser.ResourceLeaser
+	stateIntoSpecValue *k8s.StateIntoSpecValue
+	mgr                manager.Manager
+	schemaRef          *k8s.SchemaReference
+	schemaRefMu        sync.RWMutex
+	provider           *tfschema.Provider
+	smLoader           *servicemappingloader.ServiceMappingLoader
+	logger             logr.Logger
 	// Fields used for triggering reconciliations when dependencies are ready
 	immediateReconcileRequests chan event.GenericEvent
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 }
 
-func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader) (k8s.SchemaReferenceUpdater, error) {
+func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, stateIntoSpecValue *k8s.StateIntoSpecValue) (k8s.SchemaReferenceUpdater, error) {
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	r, err := NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines)
+	r, err := NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, stateIntoSpecValue)
 	if err != nil {
 		return nil, err
 	}
@@ -106,15 +107,16 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 	return r, nil
 }
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, stateIntoSpecValue *k8s.StateIntoSpecValue) (*Reconciler, error) {
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
 	return &Reconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
 			mgr.GetEventRecorderFor(controllerName),
 		),
-		resourceLeaser: leaser.NewResourceLeaser(p, smLoader, mgr.GetClient()),
-		mgr:            mgr,
+		resourceLeaser:     leaser.NewResourceLeaser(p, smLoader, mgr.GetClient()),
+		stateIntoSpecValue: stateIntoSpecValue,
+		mgr:                mgr,
 		schemaRef: &k8s.SchemaReference{
 			CRD:        crd,
 			JsonSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
@@ -404,7 +406,7 @@ func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.Namespac
 func (r *Reconciler) handleDefaultStateIntoSpecValue(resource *krmtotf.Resource) error {
 	// Validate or set the default value (cluster-level or namespace-level) for
 	// the 'state-into-spec' annotation.
-	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(&resource.Resource, k8s.StateMergeIntoSpec); err != nil {
+	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(&resource.Resource, r.stateIntoSpecValue.GetValue()); err != nil {
 		return fmt.Errorf("error validating or defaulting the '%v' annotation for resource '%v': %w", k8s.StateIntoSpecAnnotation, k8s.GetNamespacedName(resource), err)
 	}
 	return nil
