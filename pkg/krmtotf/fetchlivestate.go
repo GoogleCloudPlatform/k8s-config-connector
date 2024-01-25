@@ -55,12 +55,13 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 
 }
 
-// SkipOrphanedCheck Special handling for KMSCryptoKey that still lives after its parent KMSKeyRing is deleted.
-// We can import the tf state directly from itself instead of sourcing for its parent.
+// ShouldResolveParentForDelete
+// Special handling for KMSCryptoKey that still lives after its parent KMSKeyRing is deleted.
+// We can import the tf state directly from its selfLink instead of sourcing for its parent.
 // More info in b/279485255#comment14
-func SkipOrphanedCheck(resource *Resource) bool {
+func ShouldResolveParentForDelete(resource *Resource) bool {
 	allowlist := []string{"KMSCryptoKey"}
-	return slices.Contains(allowlist, resource.Kind) || !hasEmptySelfLink(resource)
+	return !slices.Contains(allowlist, resource.Kind) || hasEmptySelfLink(resource)
 }
 
 func hasEmptySelfLink(resource *Resource) bool {
@@ -71,16 +72,16 @@ func hasEmptySelfLink(resource *Resource) bool {
 	return false
 }
 
-// SkipParentReadyCheckForDeletion Skip the parent ready check for allowlist resources,
-// when parent exists but has deletion failed error.
+// ShouldCheckParentReadyForDelete
+// Special handling for allowlist resources, when parent exists but has deletion failed error.
 // Due to their API design, the allowlisted resources are deletable even if their parents are not ready.
 // See b/306583728#comment8 for details.
-func SkipParentReadyCheckForDeletion(resource *Resource, parent *k8s.Resource) bool {
+func ShouldCheckParentReadyForDelete(resource *Resource, parent *k8s.Resource) bool {
 	allowlist := []string{"AlloyDBInstance", "EdgeContainerNodePool"}
-	return slices.Contains(allowlist, resource.Kind) && IsDeletionFailureDueToExistingDependent(parent)
+	return !slices.Contains(allowlist, resource.Kind) || !isDeletionFailureDueToExistingDependent(parent)
 }
 
-func IsDeletionFailureDueToExistingDependent(r *k8s.Resource) bool {
+func isDeletionFailureDueToExistingDependent(r *k8s.Resource) bool {
 	if k8s.IsResourceReady(r) {
 		return false
 	}
@@ -94,7 +95,7 @@ func IsDeletionFailureDueToExistingDependent(r *k8s.Resource) bool {
 }
 
 func FetchLiveStateForDelete(ctx context.Context, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
-	if SkipOrphanedCheck(resource) {
+	if !ShouldResolveParentForDelete(resource) {
 		id, err := resource.SelfLinkAsID()
 		if err != nil {
 			return nil, err

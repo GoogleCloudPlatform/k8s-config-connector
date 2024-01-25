@@ -388,7 +388,7 @@ func TestResolveResourceReferenceToTFResource(t *testing.T) {
 			},
 			expectedFinalConfig: map[string]interface{}{
 				"key1":     "val1",
-				"barField": "my-bar-not-ready-deleting",
+				"barField": "my-bar-not-ready",
 			},
 			shouldError: true,
 		},
@@ -667,7 +667,7 @@ func TestResolveResourceReferenceToTFResource_deleting(t *testing.T) {
 		shouldError         bool
 	}{
 		{
-			name: "reference is ready",
+			name: "deleting a resource when its reference is ready",
 			config: map[string]interface{}{
 				"key1": "val1",
 				"barRef": map[string]interface{}{
@@ -695,7 +695,7 @@ func TestResolveResourceReferenceToTFResource_deleting(t *testing.T) {
 			shouldError: false,
 		},
 		{
-			name: "reference not ready",
+			name: "deleting a resource when its reference not ready",
 			config: map[string]interface{}{
 				"key1": "val1",
 				"barRef": map[string]interface{}{
