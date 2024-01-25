@@ -18,7 +18,6 @@ metadata:
   name: computenetworkfirewallpolicyassociation-${uniqueId}
 spec:
   attachmentTargetRef:
-    kind: ComputeNetwork
     name: default
   firewallPolicyRef:
     name: computenetworkfirewallpolicy-${uniqueId}
