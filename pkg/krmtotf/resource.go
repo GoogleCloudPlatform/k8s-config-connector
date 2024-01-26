@@ -99,6 +99,7 @@ func getServerGeneratedIDFromStatus(rc *corekccv1alpha1.ResourceConfig, status m
 	return unstructured.NestedString(status, splitPath...)
 }
 
+// DeepCopyObject is needed to implement the interface of client.Object.
 func (r *Resource) DeepCopyObject() runtime.Object {
 	panic("unexpected call to resource.DeepCopyObject(...)")
 }

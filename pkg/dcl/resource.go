@@ -17,6 +17,8 @@ package dcl
 import (
 	"fmt"
 
+	"k8s.io/apimachinery/pkg/runtime"
+
 	dclextension "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
@@ -57,6 +59,11 @@ func NewResource(u *unstructured.Unstructured, schema *openapi.Schema) (*Resourc
 		return nil, err
 	}
 	return resource, nil
+}
+
+// DeepCopyObject is needed to implement the interface of client.Object.
+func (r *Resource) DeepCopyObject() runtime.Object {
+	panic("unexpected call to resource.DeepCopyObject(...)")
 }
 
 func (r *Resource) ValidateResourceIDIfSupported() error {
