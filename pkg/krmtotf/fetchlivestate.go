@@ -17,6 +17,8 @@ package krmtotf
 import (
 	"context"
 	"fmt"
+	"regexp"
+	"slices"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
@@ -53,15 +55,13 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 
 }
 
+// ShouldResolveParentForDelete
 // Special handling for KMSCryptoKey that still lives after its parent KMSKeyRing is deleted.
-// We can import the tf state directly from itself instead of sourcing for its parent.
+// For KMSCryptoKey resource, we can import the tf state directly from its selfLink instead of sourcing for its parent.
 // More info in b/279485255#comment14
-func shouldGetImportIDFromSelfForDelete(resource *Resource) bool {
-	return resource.Kind == "KMSCryptoKey"
-}
-
 func ShouldResolveParentForDelete(resource *Resource) bool {
-	return !shouldGetImportIDFromSelfForDelete(resource) || hasEmptySelfLink(resource)
+	allowlist := []string{"KMSCryptoKey"}
+	return !slices.Contains(allowlist, resource.Kind) || hasEmptySelfLink(resource)
 }
 
 func hasEmptySelfLink(resource *Resource) bool {
@@ -72,8 +72,30 @@ func hasEmptySelfLink(resource *Resource) bool {
 	return false
 }
 
+// ShouldCheckParentReadyForDelete
+// Special handling for allowlist resources, when parent exists but has deletion failed error.
+// Due to their API design, the allowlisted resources are deletable even if their parents are not ready.
+// See b/306583728#comment8 for details.
+func ShouldCheckParentReadyForDelete(resource *Resource, parent *k8s.Resource) bool {
+	allowlist := []string{"AlloyDBInstance", "EdgeContainerNodePool"}
+	return !slices.Contains(allowlist, resource.Kind) || !isDeletionFailureDueToExistingDependent(parent)
+}
+
+func isDeletionFailureDueToExistingDependent(r *k8s.Resource) bool {
+	if k8s.IsResourceReady(r) {
+		return false
+	}
+	cond, _ := k8s.GetReadyCondition(r)
+	// Full error message:
+	// Resource '"projects/project/locations/location/clusters/cluster"' has nested resources.
+	// If the API supports cascading delete, set 'force' to true to delete it and its nested resources.
+	errorMessageRegex := ".*Resource .* has nested resources.*"
+	match, _ := regexp.MatchString(errorMessageRegex, cond.Message)
+	return match
+}
+
 func FetchLiveStateForDelete(ctx context.Context, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
-	if shouldGetImportIDFromSelfForDelete(resource) {
+	if !ShouldResolveParentForDelete(resource) {
 		id, err := resource.SelfLinkAsID()
 		if err != nil {
 			return nil, err
