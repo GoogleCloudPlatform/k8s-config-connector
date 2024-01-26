@@ -57,7 +57,7 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 
 // ShouldResolveParentForDelete
 // Special handling for KMSCryptoKey that still lives after its parent KMSKeyRing is deleted.
-// We can import the tf state directly from its selfLink instead of sourcing for its parent.
+// For KMSCryptoKey resource, we can import the tf state directly from its selfLink instead of sourcing for its parent.
 // More info in b/279485255#comment14
 func ShouldResolveParentForDelete(resource *Resource) bool {
 	allowlist := []string{"KMSCryptoKey"}
