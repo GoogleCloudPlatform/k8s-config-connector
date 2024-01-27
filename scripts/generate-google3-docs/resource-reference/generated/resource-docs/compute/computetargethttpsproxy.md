@@ -594,12 +594,12 @@ selfLink: string
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetHTTPSProxy
 metadata:
-  name: computetargethttpsproxy-sample
+  name: computetargethttpsproxy-sample-certmgr
 spec:
   urlMapRef:
-    name: computetargethttpsproxy-dep
+    name: computetargethttpsproxy-dep-certmgr
   certificateManagerCertificates:
-    - name: computetargethttpsproxy-dep
+    - name: computetargethttpsproxy-dep-certmgr
   location: global
   quicOverride: DISABLE
 ---
@@ -608,7 +608,7 @@ kind: CertificateManagerCertificate
 metadata:
   labels:
     label-one: "value-one"
-  name: computetargethttpsproxy-dep
+  name: computetargethttpsproxy-dep-certmgr
 spec:
   scope: "ALL_REGIONS"  
   location : "global"
@@ -640,13 +640,13 @@ spec:
     pemPrivateKey:
       valueFrom:
         secretKeyRef:
-          name: computetargethttpsproxy-dep
+          name: computetargethttpsproxy-dep-certmgr
           key: privateKey
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
-  name: computetargethttpsproxy-dep
+  name: computetargethttpsproxy-dep-certmgr
 spec:
   location: global
   portName: "http"
@@ -657,11 +657,11 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeURLMap
 metadata:
-  name: computetargethttpsproxy-dep
+  name: computetargethttpsproxy-dep-certmgr
 spec:
   defaultService:
     backendServiceRef:
-      name: computetargethttpsproxy-dep
+      name: computetargethttpsproxy-dep-certmgr
   hostRule:
     - hosts:
       - "mysite.com"
@@ -670,19 +670,19 @@ spec:
     - name: "allpaths"
       defaultService:
         backendServiceRef:
-          name: computetargethttpsproxy-dep
+          name: computetargethttpsproxy-dep-certmgr
       pathRule:
         - paths:
            - "/*"
           service:
             backendServiceRef:
-              name: computetargethttpsproxy-dep
+              name: computetargethttpsproxy-dep-certmgr
   location: global
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: computetargethttpsproxy-dep
+  name: computetargethttpsproxy-dep-certmgr
 stringData:
  privateKey: |
     -----BEGIN PRIVATE KEY-----
