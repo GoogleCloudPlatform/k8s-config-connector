@@ -120,16 +120,15 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 			expectedVal:  "merge",
 		},
 		{
-			name: "ComputeAddress has 'state-into-spec' annotation defaulted " +
-				"to 'merge' even if defaultValue is 'absent'",
+			name: "error out if defaultValue is invalid",
 			obj: &unstructured.Unstructured{
 				Object: map[string]interface{}{
 					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
-					"kind":       "ComputeAddress",
+					"kind":       "Test1Bar",
 				},
 			},
-			defaultValue: "absent",
-			expectedVal:  "merge",
+			defaultValue: "invalid",
+			hasError:     true,
 		},
 	}
 

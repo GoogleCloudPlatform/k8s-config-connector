@@ -26,16 +26,11 @@ import (
 // passed in defaultValue if it is unset.
 func ValidateOrDefaultStateIntoSpecAnnotation(obj metav1.Object, defaultValue string) error {
 	_, found := GetAnnotation(StateIntoSpecAnnotation, obj)
-	if found {
-		return validateStateIntoSpecAnnotation(obj)
+	if !found {
+		// TODO(b/322836859): Ensure ComputeAddress doesn't need special handling.
+		SetAnnotation(StateIntoSpecAnnotation, defaultValue, obj)
 	}
-	defaultStateIntoSpecAnnotation(obj, defaultValue)
-	return nil
-}
-
-func defaultStateIntoSpecAnnotation(obj metav1.Object, defaultValue string) {
-	SetAnnotation(StateIntoSpecAnnotation, defaultValue, obj)
-	return
+	return validateStateIntoSpecAnnotation(obj)
 }
 
 func validateStateIntoSpecAnnotation(obj metav1.Object) error {

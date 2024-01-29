@@ -197,7 +197,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %w", req.NamespacedName.String(), err)
 	}
-	if err := r.handleDefault(resource); err != nil {
+	if err := r.handleDefaultStateIntoSpecValue(resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %v", k8s.GetNamespacedName(resource), err)
 	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
@@ -417,7 +417,7 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resourc
 	return nil
 }
 
-func (r *Reconciler) handleDefault(resource *dcl.Resource) error {
+func (r *Reconciler) handleDefaultStateIntoSpecValue(resource *dcl.Resource) error {
 	// Validate or set the default value (cluster-level or namespace-level) for
 	// the 'state-into-spec' annotation.
 	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(&resource.Resource, k8s.StateMergeIntoSpec); err != nil {
