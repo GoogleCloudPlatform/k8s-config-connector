@@ -15,6 +15,6 @@
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
-  name: dnsrecordset-dep-rp
+  name: dnsrecordset-dep-rp-wrr
 spec:
-  dnsName: "example.com."
+  dnsName: "kcc-sample-dnsrecordset-rp-wrr.com."
