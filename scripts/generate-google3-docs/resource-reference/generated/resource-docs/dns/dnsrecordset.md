@@ -829,11 +829,11 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-rp-geo
 spec:
-  name: "www.example.com."
+  name: "www.kcc-sample-dnsrecordset-rp-geo.com."
   type: "A"
   ttl: 300
   managedZoneRef:
-    name: dnsrecordset-dep-rp
+    name: dnsrecordset-dep-rp-geo
   routingPolicy:
     geo:
       - location: us-central1
@@ -848,9 +848,9 @@ spec:
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
-  name: dnsrecordset-dep-rp
+  name: dnsrecordset-dep-rp-geo
 spec:
-  dnsName: "example.com."
+  dnsName: "kcc-sample-dnsrecordset-rp-geo.com."
 ```
 
 ### DNS Routing Policy Geo With Compute Address Reference
@@ -960,11 +960,11 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-rp-wrr
 spec:
-  name: "www.example.com."
+  name: "www.kcc-sample-dnsrecordset-rp-wrr.com."
   type: "A"
   ttl: 300
   managedZoneRef:
-    name: dnsrecordset-dep-rp
+    name: dnsrecordset-dep-rp-wrr
   routingPolicy:
     wrr:
       - weight: 0.5
@@ -979,9 +979,9 @@ spec:
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
-  name: dnsrecordset-dep-rp
+  name: dnsrecordset-dep-rp-wrr
 spec:
-  dnsName: "example.com."
+  dnsName: "kcc-sample-dnsrecordset-rp-wrr.com."
 ```
 
 ### DNS Srv Record Set

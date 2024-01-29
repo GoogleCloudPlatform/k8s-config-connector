@@ -17,11 +17,11 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-rp-wrr
 spec:
-  name: "www.example.com."
+  name: "www.kcc-sample-dnsrecordset-rp-wrr.com."
   type: "A"
   ttl: 300
   managedZoneRef:
-    name: dnsrecordset-dep-rp
+    name: dnsrecordset-dep-rp-wrr
   routingPolicy:
     wrr:
       - weight: 0.5

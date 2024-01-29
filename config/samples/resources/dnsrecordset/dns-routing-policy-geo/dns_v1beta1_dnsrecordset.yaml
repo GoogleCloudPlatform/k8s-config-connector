@@ -17,11 +17,11 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-rp-geo
 spec:
-  name: "www.example.com."
+  name: "www.kcc-sample-dnsrecordset-rp-geo.com."
   type: "A"
   ttl: 300
   managedZoneRef:
-    name: dnsrecordset-dep-rp
+    name: dnsrecordset-dep-rp-geo
   routingPolicy:
     geo:
       - location: us-central1
