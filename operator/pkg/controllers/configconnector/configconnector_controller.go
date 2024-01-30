@@ -158,7 +158,7 @@ func (r *ConfigConnectorReconciler) Reconcile(ctx context.Context, req reconcile
 		// return reconcile.Result{}, err
 	}
 
-	r.log.Info("successfully finished reconcile", "ConfigConnector", req.Name)
+	r.log.Info("successfully finished reconcile", "ConfigConnector", req.NamespacedName)
 	return reconcile.Result{RequeueAfter: corekcck8s.MeanReconcileReenqueuePeriod}, r.handleReconcileSucceeded(ctx, req.NamespacedName)
 }
 
