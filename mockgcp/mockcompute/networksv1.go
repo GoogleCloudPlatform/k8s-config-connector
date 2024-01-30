@@ -17,12 +17,14 @@ package mockcompute
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
@@ -126,4 +128,35 @@ func (s *NetworksV1) Delete(ctx context.Context, req *pb.DeleteNetworkRequest) (
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
+}
+
+type networkName struct {
+	Project *projects.ProjectData
+	Name    string
+}
+
+func (n *networkName) String() string {
+	return "projects/" + n.Project.ID + "/global" + "/networks/" + n.Name
+}
+
+// parseNetworkName parses a string into a networkName.
+// The expected form is `projects/*/global/networks/*`.
+func (s *MockService) parseNetworkName(name string) (*networkName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
+		project, err := s.projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &networkName{
+			Project: project,
+			Name:    tokens[4],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
 }
