@@ -34,7 +34,7 @@ type NetworksV1 struct {
 }
 
 func (s *NetworksV1) Get(ctx context.Context, req *pb.GetNetworkRequest) (*pb.Network, error) {
-	name, err := s.parseNetworkName("projects/" + req.GetProject() + "/global" + "/networks/" + req.GetNetwork())
+	name, err := s.newNetworkName(req.GetProject(), req.GetNetwork())
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (s *NetworksV1) Get(ctx context.Context, req *pb.GetNetworkRequest) (*pb.Ne
 }
 
 func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (*pb.Operation, error) {
-	name, err := s.parseNetworkName("projects/" + req.GetProject() + "/global" + "/networks/" + req.GetNetworkResource().GetName())
+	name, err := s.newNetworkName(req.GetProject(), req.GetNetworkResource().GetName())
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 // Patches the specified network with the data included in the request.
 // Only the following fields can be modified: routingConfig.routingMode.
 func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*pb.Operation, error) {
-	name, err := s.parseNetworkName("projects/" + req.GetProject() + "/global" + "/networks/" + req.GetNetwork())
+	name, err := s.newNetworkName(req.GetProject(), req.GetNetwork())
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +111,7 @@ func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*p
 }
 
 func (s *NetworksV1) Delete(ctx context.Context, req *pb.DeleteNetworkRequest) (*pb.Operation, error) {
-	name, err := s.parseNetworkName("projects/" + req.GetProject() + "/global" + "/networks/" + req.GetNetwork())
+	name, err := s.newNetworkName(req.GetProject(), req.GetNetwork())
 	if err != nil {
 		return nil, err
 	}
@@ -145,18 +145,21 @@ func (s *MockService) parseNetworkName(name string) (*networkName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
-		project, err := s.projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		name := &networkName{
-			Project: project,
-			Name:    tokens[4],
-		}
-
-		return name, nil
+		return s.newNetworkName(tokens[1], tokens[4])
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+// newNetworkName builds a normalized networkName from the constituent parts.
+func (s *MockService) newNetworkName(project string, name string) (*networkName, error) {
+	projectObj, err := s.projects.GetProjectByID(project)
+	if err != nil {
+		return nil, err
+	}
+
+	return &networkName{
+		Project: projectObj,
+		Name:    name,
+	}, nil
 }

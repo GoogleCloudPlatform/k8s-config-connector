@@ -33,7 +33,7 @@ type SubnetsV1 struct {
 }
 
 func (s *SubnetsV1) Get(ctx context.Context, req *pb.GetSubnetworkRequest) (*pb.Subnetwork, error) {
-	name, err := s.parseSubnetName("projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/subnetworks/" + req.GetSubnetwork())
+	name, err := s.newSubnetName(req.GetProject(), req.GetRegion(), req.GetSubnetwork())
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func (s *SubnetsV1) Get(ctx context.Context, req *pb.GetSubnetworkRequest) (*pb.
 }
 
 func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest) (*pb.Operation, error) {
-	name, err := s.parseSubnetName("projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/subnetworks/" + req.GetSubnetworkResource().GetName())
+	name, err := s.newSubnetName(req.GetProject(), req.GetRegion(), req.GetSubnetworkResource().GetName())
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 }
 
 func (s *SubnetsV1) Delete(ctx context.Context, req *pb.DeleteSubnetworkRequest) (*pb.Operation, error) {
-	name, err := s.parseSubnetName("projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/subnetworks/" + req.GetSubnetwork())
+	name, err := s.newSubnetName(req.GetProject(), req.GetRegion(), req.GetSubnetwork())
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +96,7 @@ func (s *SubnetsV1) Delete(ctx context.Context, req *pb.DeleteSubnetworkRequest)
 }
 
 func (s *SubnetsV1) SetPrivateIpGoogleAccess(ctx context.Context, req *pb.SetPrivateIpGoogleAccessSubnetworkRequest) (*pb.Operation, error) {
-	name, err := s.parseSubnetName("projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/subnetworks/" + req.GetSubnetwork())
+	name, err := s.newSubnetName(req.GetProject(), req.GetRegion(), req.GetSubnetwork())
 	if err != nil {
 		return nil, err
 	}
@@ -135,19 +135,22 @@ func (s *MockService) parseSubnetName(name string) (*subnetName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "subnetworks" {
-		project, err := s.projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		name := &subnetName{
-			Project: project,
-			Region:  tokens[3],
-			Name:    tokens[5],
-		}
-
-		return name, nil
+		return s.newSubnetName(tokens[1], tokens[3], tokens[5])
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+// newSubnetName builds a normalized subnetName from the constituent parts.
+func (s *MockService) newSubnetName(project string, region string, name string) (*subnetName, error) {
+	projectObj, err := s.projects.GetProjectByID(project)
+	if err != nil {
+		return nil, err
+	}
+
+	return &subnetName{
+		Project: projectObj,
+		Region:  region,
+		Name:    name,
+	}, nil
 }
