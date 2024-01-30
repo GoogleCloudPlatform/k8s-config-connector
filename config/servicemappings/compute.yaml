@@ -33,6 +33,8 @@ spec:
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
       locationality: regional
+      observedFields:
+        - address
       resourceReferences:
         - key: networkRef
           tfField: network
@@ -546,6 +548,8 @@ spec:
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
       locationality: global
+      observedFields:
+        - address
       resourceReferences:
         - key: networkRef
           tfField: network

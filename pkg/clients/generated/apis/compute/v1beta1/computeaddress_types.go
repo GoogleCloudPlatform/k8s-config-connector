@@ -117,6 +117,14 @@ type ComputeAddressSpec struct {
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
+type AddressObservedStateStatus struct {
+	/* Immutable. The static external IP address represented by this resource.
+	The IP address must be inside the specified subnetwork,
+	if any. Set by the API if undefined. */
+	// +optional
+	Address *string `json:"address,omitempty"`
+}
+
 type ComputeAddressStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeAddress's current state. */
@@ -133,6 +141,10 @@ type ComputeAddressStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *AddressObservedStateStatus `json:"observedState,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
