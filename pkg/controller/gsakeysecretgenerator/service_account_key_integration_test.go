@@ -187,7 +187,11 @@ func newTestReconciler(t *testing.T, mgr manager.Manager, crdPath string, provid
 	var immediateReconcileRequests chan event.GenericEvent = nil
 	var resourceWatcherRoutines *semaphore.Weighted = nil
 
-	reconciler, err := tf.NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, nil)
+	stateIntoSpecDefaulter, err := k8s.NewStateIntoSpecDefaulter(k8s.StateIntoSpecDefaultValueV1Beta1, nil)
+	if err != nil {
+		t.Fatalf("error constructing new state into spec value: %v", err)
+	}
+	reconciler, err := tf.NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, stateIntoSpecDefaulter)
 	if err != nil {
 		t.Fatalf("error creating reconciler: %v", err)
 	}

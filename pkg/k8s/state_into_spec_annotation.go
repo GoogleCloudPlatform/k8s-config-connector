@@ -21,31 +21,17 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// StateIntoSpecValue contains the required 'defaultValue' field and the
-// optional 'userOverride' field.
-type StateIntoSpecValue struct {
-	defaultValue string
-	userOverride *string
-}
-
-func NewStateIntoSpecValue(defaultValue string, userOverride *string) (*StateIntoSpecValue, error) {
+func NewStateIntoSpecDefaulter(defaultValue string, userOverride *string) (Defaulter, error) {
 	if !isAcceptedValue(defaultValue, StateIntoSpecAnnotationValues) {
 		return nil, fmt.Errorf("invalid default value '%v' for '%v' annotation, need to be one of {%v}", defaultValue, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
 	}
 	if userOverride != nil && !isAcceptedValue(*userOverride, StateIntoSpecAnnotationValues) {
 		return nil, fmt.Errorf("invalid user override value '%v' for '%v' annotation, need to be one of {%v}", userOverride, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
 	}
-	return &StateIntoSpecValue{
+	return &StateIntoSpecDefaulter{
 		defaultValue: defaultValue,
 		userOverride: userOverride,
 	}, nil
-}
-
-func (v *StateIntoSpecValue) GetValue() string {
-	if v.userOverride == nil {
-		return v.defaultValue
-	}
-	return *v.userOverride
 }
 
 // ValidateOrDefaultStateIntoSpecAnnotation validates the value of the

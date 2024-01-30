@@ -126,13 +126,13 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 		return nil, fmt.Errorf("error creating a DCL client config: %w", err)
 	}
 
-	stateIntoSpecValue, err := k8s.NewStateIntoSpecValue(config.StateIntoSpecDefaultValue, config.StateIntoSpecUserOverride)
+	stateIntoSpecDefaulter, err := k8s.NewStateIntoSpecDefaulter(config.StateIntoSpecDefaultValue, config.StateIntoSpecUserOverride)
 	if err != nil {
 		return nil, fmt.Errorf("error constructing new state into spec value: %v", err)
 	}
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if err := registration.Add(mgr, provider, smLoader, dclConfig, dclConverter, registration.RegisterDefaultController, stateIntoSpecValue); err != nil {
+	if err := registration.Add(mgr, provider, smLoader, dclConfig, dclConverter, registration.RegisterDefaultController, stateIntoSpecDefaulter); err != nil {
 		return nil, fmt.Errorf("error adding registration controller: %w", err)
 	}
 	return mgr, nil
