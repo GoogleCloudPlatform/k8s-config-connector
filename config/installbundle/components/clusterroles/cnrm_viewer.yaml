@@ -39,6 +39,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - apikeys.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - appengine.cnrm.cloud.google.com
   resources:
   - '*'
