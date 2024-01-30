@@ -393,7 +393,7 @@ func jsonSchemaToAtom(jsonSchema *apiextensions.JSONSchemaProps) schema.Atom {
 		// has no schema available for map elements. We must include some
 		// sort of schema value, as map validation fails otherwise. Merges
 		// on custom scalar types are supported by the SMD library.
-		scalarUnknown = schema.Scalar("unknown")
+		scalarUnknown = schema.Untyped
 	)
 	switch jsonSchema.Type {
 	case "object":
