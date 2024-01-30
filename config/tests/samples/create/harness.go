@@ -54,6 +54,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
+	"sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -159,6 +160,33 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		kccConfig.ManagerOptions.Port = env.WebhookInstallOptions.LocalServingPort
 		kccConfig.ManagerOptions.Host = env.WebhookInstallOptions.LocalServingHost
 		kccConfig.ManagerOptions.CertDir = env.WebhookInstallOptions.LocalServingCertDir
+	} else if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "mock" {
+		k8s, err := mockkubeapiserver.NewMockKubeAPIServer(":0")
+		if err != nil {
+			h.Fatalf("error building mock kube-apiserver: %v", err)
+		}
+
+		addr, err := k8s.StartServing()
+		if err != nil {
+			h.Errorf("error starting mock kube-apiserver: %v", err)
+		}
+
+		t.Cleanup(func() {
+			if err := k8s.Stop(); err != nil {
+				h.Errorf("error stopping envtest environment: %v", err)
+			}
+		})
+
+		h.restConfig = &rest.Config{
+			Host: addr.String(),
+			ContentConfig: rest.ContentConfig{
+				ContentType: "application/json",
+			},
+			// gotta go fast during tests -- we don't really care about overwhelming our test API server
+			QPS:   1000.0,
+			Burst: 2000.0,
+		}
+
 	} else {
 		t.Fatalf("E2E_KUBE_TARGET=%q not supported", targetKube)
 	}
