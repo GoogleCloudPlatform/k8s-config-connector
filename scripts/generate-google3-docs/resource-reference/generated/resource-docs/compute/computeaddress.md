@@ -343,6 +343,8 @@ conditions:
 creationTimestamp: string
 labelFingerprint: string
 observedGeneration: integer
+observedState:
+  address: string
 selfLink: string
 users:
 - string
@@ -424,6 +426,22 @@ internally during updates.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.address</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The static external IP address represented by this resource.
+The IP address must be inside the specified subnetwork,
+if any. Set by the API if undefined.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
