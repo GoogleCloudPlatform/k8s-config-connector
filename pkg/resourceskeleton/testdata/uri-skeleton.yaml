@@ -106,6 +106,16 @@
   ResourceConfigId: AlloyDBUser
   URI: ""
 - ExpectedSkeleton:
+    apiVersion: apikeys.cnrm.cloud.google.com/v1alpha1
+    kind: APIKeysKey
+    metadata:
+      name: keyname
+    spec:
+      projectRef:
+        external: kcc-test-project
+  ResourceConfigId: APIKeysKey
+  URI: "https://apikeys.googleapis.com/v2/projects/kcc-test-project/locations/global/keys/keyname"
+- ExpectedSkeleton:
     apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
     kind: ArtifactRegistryRepository
     metadata:

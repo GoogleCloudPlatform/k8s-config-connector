@@ -27,6 +27,8 @@
 # not supported by asset inventory
 - resourceConfigId: AlloyDBUser
 # not supported by asset inventory
+- resourceConfigId: APIKeysKey
+# not supported by asset inventory
 - resourceConfigId: ArtifactRegistryRepository
 - asset:
     ancestors:
