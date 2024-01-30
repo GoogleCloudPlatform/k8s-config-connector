@@ -17,7 +17,7 @@
 ```hcl
 
 resource "google_pubsub_topic" "mytopic" {
-  name = "mytopic"
+  name = "my-topic"
 }
 
 resource "google_cloudbuild_trigger" "pubsub-config-trigger" {

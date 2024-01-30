@@ -16,15 +16,13 @@
 
 ```hcl
 resource "google_project" "project" {
-  provider        = google-beta
-  project_id      = "tf-test%{random_suffix}"
-  name            = "tf-test%{random_suffix}"
+  project_id      = "my-project"
+  name            = "my-project"
   org_id          = "123456789"
   billing_account = "000000-0000000-0000000-000000"
 }
 
 resource "google_iam_deny_policy" "example" {
-  provider = google-beta
   parent   = urlencode("cloudresourcemanager.googleapis.com/projects/${google_project.project.project_id}")
   name     = "my-deny-policy"
   display_name = "A deny rule"
@@ -54,7 +52,6 @@ resource "google_iam_deny_policy" "example" {
 }
 
 resource "google_service_account" "test-account" {
-  provider = google-beta
   account_id   = "svc-acc"
   display_name = "Test Service Account"
   project      = google_project.project.project_id

@@ -30,7 +30,7 @@ resource "google_compute_subnetwork" "proxy_subnet" {
   provider      = google-beta
   ip_cidr_range = "10.0.0.0/24"
   region        = "europe-west1"
-  purpose       = "INTERNAL_HTTPS_LOAD_BALANCER"
+  purpose       = "REGIONAL_MANAGED_PROXY"
   role          = "ACTIVE"
   network       = google_compute_network.ilb_network.id
 }

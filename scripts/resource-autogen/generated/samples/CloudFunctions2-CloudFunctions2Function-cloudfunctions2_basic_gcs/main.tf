@@ -15,8 +15,6 @@
  */
 
 ```hcl
-# [START functions_v2_basic_gcs]
-
 resource "google_storage_bucket" "source-bucket" {
   name     = "gcf-source-bucket"
   location = "US"
@@ -120,5 +118,4 @@ resource "google_cloudfunctions2_function" "function" {
     }
   }
 }
-# [END functions_v2_basic_gcs]
 ```

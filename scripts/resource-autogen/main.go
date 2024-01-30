@@ -720,7 +720,7 @@ func insertTestData(createConfig map[string]interface{}, dependenciesConfig []ma
 	if err != nil {
 		return fmt.Errorf("err marshaling createConfig to yaml: %w", err)
 	}
-	if err := os.WriteFile(createFilePath, createConfigInBytes, 0644); err != nil {
+	if err := writeHeaderAndConfig(createFilePath, createConfigInBytes); err != nil {
 		return fmt.Errorf("error writing to file %v: %w", createFilePath, err)
 	}
 
@@ -739,9 +739,28 @@ func insertTestData(createConfig map[string]interface{}, dependenciesConfig []ma
 			}
 			dependenciesConfigInBytes = append(dependenciesConfigInBytes, resourceConfigInBytes...)
 		}
-		if err := os.WriteFile(dependenciesFilePath, dependenciesConfigInBytes, 0644); err != nil {
+		if err := writeHeaderAndConfig(dependenciesFilePath, dependenciesConfigInBytes); err != nil {
 			return fmt.Errorf("error writing to file %v: %w", dependenciesFilePath, err)
 		}
+	}
+	return nil
+}
+
+func writeHeaderAndConfig(filePath string, configInBytes []byte) error {
+	headerInBytes, err := os.ReadFile(filepath.Join(repo.GetRootOrLogFatal(), "scripts", "resource-autogen", "header.txt"))
+	if err != nil {
+		return fmt.Errorf("err reading header file: %w", err)
+	}
+	if err := os.WriteFile(filePath, headerInBytes, 0644); err != nil {
+		return fmt.Errorf("error writing header to file %v: %w", filePath, err)
+	}
+	f, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return fmt.Errorf("error opening file %v: %w", filePath, err)
+	}
+	defer f.Close()
+	if _, err := f.Write(configInBytes); err != nil {
+		return fmt.Errorf("error appending config to file %v: %w", filePath, err)
 	}
 	return nil
 }

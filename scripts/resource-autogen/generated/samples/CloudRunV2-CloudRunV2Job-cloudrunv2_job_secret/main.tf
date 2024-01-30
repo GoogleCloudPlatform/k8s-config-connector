@@ -18,7 +18,6 @@
 resource "google_cloud_run_v2_job" "default" {
   name     = "cloudrun-job"
   location = "us-central1"
-  launch_stage = "BETA"
 
   template {
     template {
@@ -49,6 +48,11 @@ resource "google_cloud_run_v2_job" "default" {
       launch_stage,
     ]
   }
+
+  depends_on = [
+    google_secret_manager_secret_version.secret-version-data,
+    google_secret_manager_secret_iam_member.secret-access,
+  ]
 }
 
 data "google_project" "project" {
@@ -57,7 +61,7 @@ data "google_project" "project" {
 resource "google_secret_manager_secret" "secret" {
   secret_id = "secret"
   replication {
-    automatic = true
+    auto {}
   }
 }
 

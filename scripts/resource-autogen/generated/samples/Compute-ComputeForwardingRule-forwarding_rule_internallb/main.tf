@@ -25,6 +25,7 @@ resource "google_compute_forwarding_rule" "default" {
   all_ports             = true
   network               = google_compute_network.default.name
   subnetwork            = google_compute_subnetwork.default.name
+  ip_version            = "IPV4"
 }
 
 resource "google_compute_region_backend_service" "backend" {

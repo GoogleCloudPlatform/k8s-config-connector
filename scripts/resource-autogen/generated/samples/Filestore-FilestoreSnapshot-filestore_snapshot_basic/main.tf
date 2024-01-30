@@ -18,12 +18,12 @@
 resource "google_filestore_snapshot" "snapshot" {
   name     = "test-snapshot"
   instance = google_filestore_instance.instance.name
-  location = "us-central1"
+  location = "us-east1"
 }
 
 resource "google_filestore_instance" "instance" {
   name     = "test-instance-for-snapshot"
-  location = "us-central1"
+  location = "us-east1"
   tier     = "ENTERPRISE"
 
   file_shares {

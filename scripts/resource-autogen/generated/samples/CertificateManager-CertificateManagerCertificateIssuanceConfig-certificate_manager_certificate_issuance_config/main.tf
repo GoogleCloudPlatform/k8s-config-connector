@@ -16,7 +16,7 @@
 
 ```hcl
 resource "google_certificate_manager_certificate_issuance_config" "default" {
-  name    = "issuanceconfigtestterraform"
+  name    = "issuance-config"
   description = "sample description for the certificate issuanceConfigs"
   certificate_authority_config {
     certificate_authority_service_config {
@@ -32,7 +32,7 @@ resource "google_certificate_manager_certificate_issuance_config" "default" {
 }
   
 resource "google_privateca_ca_pool" "pool" {
-  name     = "my-ca-pool"
+  name     = "ca-pool"
   location = "us-central1"
   tier     = "ENTERPRISE"
 }
@@ -40,7 +40,7 @@ resource "google_privateca_ca_pool" "pool" {
 resource "google_privateca_certificate_authority" "ca_authority" {
   location = "us-central1"
   pool = google_privateca_ca_pool.pool.name
-  certificate_authority_id = "my-ca"
+  certificate_authority_id = "ca-authority"
   config {
     subject_config {
       subject {

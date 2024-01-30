@@ -25,7 +25,7 @@ resource "google_secret_manager_secret" "secret" {
   secret_id = "secret"
 
   replication {
-    automatic = true
+    auto {}
   }
 }
 
@@ -44,6 +44,12 @@ resource "google_dataform_repository" "dataform_respository" {
       url = google_sourcerepo_repository.git_repository.url
       default_branch = "main"
       authentication_token_secret_version = google_secret_manager_secret_version.secret_version.id
+  }
+
+  workspace_compilation_overrides {
+    default_database = "database"
+    schema_suffix = "_suffix"
+    table_prefix = "prefix_"
   }
 }
 ```

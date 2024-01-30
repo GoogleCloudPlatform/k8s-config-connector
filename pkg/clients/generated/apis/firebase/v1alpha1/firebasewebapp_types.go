@@ -52,7 +52,7 @@ type FirebaseWebAppSpec struct {
 	// +optional
 	Project *string `json:"project,omitempty"`
 
-	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
+	/* Immutable. Optional. The service-generated appId of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }

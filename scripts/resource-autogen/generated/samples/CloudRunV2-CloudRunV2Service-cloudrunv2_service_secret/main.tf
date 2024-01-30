@@ -29,7 +29,6 @@ resource "google_cloud_run_v2_service" "default" {
         items {
           version = "1"
           path = "my-secret"
-          mode = 256 # 0400
         }
       }
     }
@@ -50,7 +49,7 @@ data "google_project" "project" {
 resource "google_secret_manager_secret" "secret" {
   secret_id = "secret-1"
   replication {
-    automatic = true
+    auto {}
   }
 }
 

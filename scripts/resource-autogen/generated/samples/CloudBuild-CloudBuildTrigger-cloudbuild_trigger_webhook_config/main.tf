@@ -17,7 +17,7 @@
 ```hcl
 
 resource "google_secret_manager_secret" "webhook_trigger_secret_key" {
-  secret_id = "webhook_trigger-secret-key-1"
+  secret_id = "webhook-trigger-secret-key"
 
   replication {
     user_managed {

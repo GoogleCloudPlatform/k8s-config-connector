@@ -16,7 +16,6 @@
 
 ```hcl
 resource "google_cloudbuildv2_connection" "my-connection" {
-  provider = google-beta
   location = "us-central1"
   name = "my-connection"
 
@@ -29,14 +28,12 @@ resource "google_cloudbuildv2_connection" "my-connection" {
 }
 
 resource "google_cloudbuildv2_repository" "my-repository" {
-  provider = google-beta
   name = "my-repo"
   parent_connection = google_cloudbuildv2_connection.my-connection.id
   remote_uri = "https://github.com/myuser/my-repo.git"
 }
 
 resource "google_cloudbuild_trigger" "repo-trigger" {
-  provider = google-beta
   location = "us-central1"
 
   repository_event_config {

@@ -16,7 +16,7 @@
 
 ```hcl
 resource "google_cloudbuild_trigger" "bbs-pull-request-trigger" {
-  name        = "terraform-bbs-pull-request-trigger"
+  name        = "ghe-trigger"
   location    = "us-central1"
 
   bitbucket_server_trigger_config {

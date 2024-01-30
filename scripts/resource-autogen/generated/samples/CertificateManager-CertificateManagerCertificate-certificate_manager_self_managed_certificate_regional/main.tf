@@ -20,8 +20,8 @@ resource "google_certificate_manager_certificate" "default" {
   description = "Regional cert"
   location    = "us-central1"
   self_managed {
-    pem_certificate = file("test-fixtures/certificatemanager/cert.pem")
-    pem_private_key = file("test-fixtures/certificatemanager/private-key.pem")
+    pem_certificate = file("test-fixtures/cert.pem")
+    pem_private_key = file("test-fixtures/private-key.pem")
   }
 }
 ```

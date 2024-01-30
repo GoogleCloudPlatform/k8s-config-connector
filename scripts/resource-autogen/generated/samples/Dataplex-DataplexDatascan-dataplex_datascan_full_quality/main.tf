@@ -18,7 +18,7 @@
 resource "google_dataplex_datascan" "full_quality" {
   location = "us-central1"
   display_name = "Full Datascan Quality"
-  data_scan_id = "tf-test-datascan%{random_suffix}"
+  data_scan_id = "dataquality-full"
   description = "Example resource - Full Datascan Quality"
   labels = {
     author = "billing"

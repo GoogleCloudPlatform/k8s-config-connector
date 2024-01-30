@@ -16,12 +16,12 @@
 
 ```hcl
 resource "google_filestore_instance" "instance" {
-  name = "test-instance"
+  name     = "test-instance"
   location = "us-central1"
-  tier = "ENTERPRISE"
+  tier     = "ENTERPRISE"
 
   file_shares {
-    capacity_gb = 2560
+    capacity_gb = 1024
     name        = "share1"
   }
 
@@ -29,6 +29,7 @@ resource "google_filestore_instance" "instance" {
     network = "default"
     modes   = ["MODE_IPV4"]
   }
+
   kms_key_name = google_kms_crypto_key.filestore_key.id
 }
 

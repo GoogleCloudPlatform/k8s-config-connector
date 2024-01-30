@@ -43,7 +43,7 @@ resource "google_service_networking_connection" "default" {
 }
 
 resource "google_cloudbuild_bitbucket_server_config" "bbs-config-with-peered-network" {
-    config_id = "mybbsconfig"
+    config_id = "bbs-config"
     location = "us-central1"
     host_uri = "https://bbs.com"
     secrets {

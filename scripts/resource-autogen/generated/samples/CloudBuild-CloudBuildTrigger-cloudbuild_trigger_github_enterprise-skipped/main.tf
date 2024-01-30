@@ -16,7 +16,7 @@
 
 ```hcl
 resource "google_cloudbuild_trigger" "ghe-trigger" {
-  name        = "terraform-ghe-trigger"
+  name        = "ghe-trigger"
   location    = "us-central1"
 
   github {

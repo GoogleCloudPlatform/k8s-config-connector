@@ -15,6 +15,7 @@
  */
 
 ```hcl
+
 resource "google_privateca_ca_pool" "default" {
   location = "us-central1"
   name = "my-pool"

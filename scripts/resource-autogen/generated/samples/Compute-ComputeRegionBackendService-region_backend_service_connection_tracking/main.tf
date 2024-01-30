@@ -28,6 +28,7 @@ resource "google_compute_region_backend_service" "default" {
     tracking_mode                                = "PER_SESSION"
     connection_persistence_on_unhealthy_backends = "NEVER_PERSIST"
     idle_timeout_sec                             = 60
+    enable_strong_affinity                       = true
   }
 }
 

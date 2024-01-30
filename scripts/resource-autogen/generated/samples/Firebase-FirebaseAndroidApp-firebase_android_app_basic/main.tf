@@ -19,7 +19,7 @@ resource "google_firebase_android_app" "basic" {
   provider = google-beta
   project = "my-project-name"
   display_name = "Display Name Basic"
-  package_name = ""
+  package_name = "android.package.app"
   sha1_hashes = ["2145bdf698b8715039bd0e83f2069bed435ac21c"]
   sha256_hashes = ["2145bdf698b8715039bd0e83f2069bed435ac21ca1b2c3d4e5f6123456789abc"]
 }

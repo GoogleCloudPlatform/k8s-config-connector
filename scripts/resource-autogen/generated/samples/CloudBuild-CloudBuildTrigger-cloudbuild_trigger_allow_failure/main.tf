@@ -16,6 +16,7 @@
 
 ```hcl
 resource "google_cloudbuild_trigger" "allow-failure-trigger" {
+  name = "my-trigger"
   location = "global"
 
   trigger_template {

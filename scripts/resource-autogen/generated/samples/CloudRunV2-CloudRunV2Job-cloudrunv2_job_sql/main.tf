@@ -18,7 +18,6 @@
 resource "google_cloud_run_v2_job" "default" {
   name     = "cloudrun-job"
   location = "us-central1"
-  launch_stage = "BETA"
   
   template {
     template{
@@ -66,7 +65,7 @@ data "google_project" "project" {
 resource "google_secret_manager_secret" "secret" {
   secret_id = "secret"
   replication {
-    automatic = true
+    auto {}
   }
 }
 
