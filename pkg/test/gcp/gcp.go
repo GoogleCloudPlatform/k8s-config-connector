@@ -65,6 +65,7 @@ var (
 const (
 	TestDependentOrgProjectId               = "TEST_DEPENDENT_ORG_PROJECT_ID"
 	TestDependentFolderProjectId            = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
+	TestDependentFolder2ProjectId           = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
 	TestDependentNoNetworkProjectId         = "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID" // A dependent project with default network disabled
 	IsolatedTestOrgName                     = "ISOLATED_TEST_ORG_NAME"
 	TestBillingAccountIDForBillingResources = "BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES"
@@ -80,6 +81,7 @@ const (
 var (
 	testDependentOrgProjectId               = os.Getenv(TestDependentOrgProjectId)
 	testDependentFolderProjectId            = os.Getenv(TestDependentFolderProjectId)
+	testDependentFolder2ProjectId           = os.Getenv(TestDependentFolder2ProjectId)
 	testDependentNoNetworkProjectId         = os.Getenv(TestDependentNoNetworkProjectId)
 	isolatedTestOrgName                     = os.Getenv(IsolatedTestOrgName)
 	testBillingAccountIDForBillingResources = os.Getenv(TestBillingAccountIDForBillingResources)
@@ -169,6 +171,10 @@ func GetDependentOrgProjectID(t *testing.T) string {
 
 func GetDependentFolderProjectID(t *testing.T) string {
 	return testDependentFolderProjectId
+}
+
+func GetDependentFolder2ProjectID(t *testing.T) string {
+	return testDependentFolder2ProjectId
 }
 
 func GetDependentNoNetworkProjectID(t *testing.T) string {

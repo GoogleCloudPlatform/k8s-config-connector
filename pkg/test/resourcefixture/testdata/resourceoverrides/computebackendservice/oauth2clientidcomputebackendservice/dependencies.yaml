@@ -67,8 +67,6 @@ spec:
   name: ComputeProjectMetadata
   organizationRef:
     external: ${TEST_ORG_ID}
-  billingAccountRef:
-    external: ${TEST_BILLING_ACCOUNT_ID}
 ---
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
