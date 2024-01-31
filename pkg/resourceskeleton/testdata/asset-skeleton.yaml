@@ -26,10 +26,28 @@
 - resourceConfigId: AlloyDBInstance
 # not supported by asset inventory
 - resourceConfigId: AlloyDBUser
-# not supported by asset inventory
+
+# Service: apikeys.googleapis.com
 - resourceConfigId: APIKeysKey
-# not supported by asset inventory
-- resourceConfigId: ArtifactRegistryRepository
+  asset:
+    ancestors:
+    - projects/1234567890
+    - organizations/1234567890
+    name: //apikeys.googleapis.com/projects/1234567890/locations/global/keys/examplekey
+    asset_type: apikeys.googleapis.com/Key
+  expectedSkeleton:
+    apiVersion: apikeys.cnrm.cloud.google.com/v1alpha1
+    kind: APIKeysKey
+    metadata:
+      name: examplekey
+    spec:
+      projectRef:
+        external: "1234567890"
+
+# Service: artifactregistry.googleapis.com
+- resourceConfigId: ArtifactRegistryRepository # not supported by asset inventory
+
+# Service: bigquery.googleapis.com
 - asset:
     ancestors:
     - projects/1234567890

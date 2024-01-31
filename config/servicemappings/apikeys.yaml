@@ -28,7 +28,7 @@ spec:
         name: name
       resourceID:
         targetField: name
-      resourceAvailableInAssetInventory: false
+      resourceAvailableInAssetInventory: true
       idTemplate: "projects/{{project}}/locations/global/keys/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: true
       hierarchicalReferences:
