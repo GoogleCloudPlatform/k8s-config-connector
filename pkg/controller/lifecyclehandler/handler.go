@@ -195,6 +195,19 @@ func reasonForUnresolvableDeps(err error) (string, error) {
 	}
 }
 
+func (r *LifecycleHandler) EnsureFinalizersInUnstructured(ctx context.Context, resource *unstructured.Unstructured, finalizers ...string) error {
+	if !k8s.EnsureFinalizers(resource, finalizers...) {
+		copy, err := k8s.NewResource(resource)
+		if err != nil {
+			return err
+		}
+		if err := r.updateAPIServer(ctx, copy); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (r *LifecycleHandler) EnsureFinalizers(ctx context.Context, original, resource *k8s.Resource, finalizers ...string) error {
 	if !k8s.EnsureFinalizers(resource, finalizers...) {
 		u, err := original.MarshalAsUnstructured()
