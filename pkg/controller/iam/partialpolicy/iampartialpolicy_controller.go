@@ -152,7 +152,7 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 		return reconcile.Result{}, err
 	}
 	if err := r.handleDefaultStateIntoSpecValue(policy); err != nil {
-		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM parital policy '%v': %v", k8s.GetNamespacedName(policy), err)
+		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM partial policy '%v': %w", k8s.GetNamespacedName(policy), err)
 	}
 	runCtx := &reconcileContext{
 		Reconciler:     r,
@@ -178,7 +178,7 @@ func (r *ReconcileIAMPartialPolicy) handleDefaultStateIntoSpecValue(pp *iamv1bet
 	// Validate or set the default value (cluster-level or namespace-level) for
 	// the 'state-into-spec' annotation.
 	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(pp, k8s.StateMergeIntoSpec); err != nil {
-		return fmt.Errorf("error validating or defaulting the '%v' annotation for resource '%v': %v", k8s.StateIntoSpecAnnotation, k8s.GetNamespacedName(pp), err)
+		return fmt.Errorf("error validating or defaulting the '%v' annotation for resource '%v': %w", k8s.StateIntoSpecAnnotation, k8s.GetNamespacedName(pp), err)
 	}
 	return nil
 }

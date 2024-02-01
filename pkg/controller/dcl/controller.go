@@ -198,7 +198,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %w", req.NamespacedName.String(), err)
 	}
 	if err := r.handleDefaultStateIntoSpecValue(resource); err != nil {
-		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %v", k8s.GetNamespacedName(resource), err)
+		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(resource), err)
 	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %v", k8s.GetNamespacedName(resource), err)
@@ -421,7 +421,7 @@ func (r *Reconciler) handleDefaultStateIntoSpecValue(resource *dcl.Resource) err
 	// Validate or set the default value (cluster-level or namespace-level) for
 	// the 'state-into-spec' annotation.
 	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(&resource.Resource, k8s.StateMergeIntoSpec); err != nil {
-		return fmt.Errorf("error validating or defaulting the '%v' annotation for resource '%v': %v", k8s.StateIntoSpecAnnotation, k8s.GetNamespacedName(resource), err)
+		return fmt.Errorf("error validating or defaulting the '%v' annotation for resource '%v': %w", k8s.StateIntoSpecAnnotation, k8s.GetNamespacedName(resource), err)
 	}
 	return nil
 }
