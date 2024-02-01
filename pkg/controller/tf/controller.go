@@ -154,11 +154,6 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		}
 		return reconcile.Result{}, err
 	}
-	if u.GetDeletionTimestamp().IsZero() {
-		if err := r.EnsureFinalizersInUnstructured(ctx, u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
-			return reconcile.Result{}, err
-		}
-	}
 	skip, err := resourceactuation.ShouldSkip(u)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -175,9 +170,19 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("error triggering Server-Side Apply (SSA) metadata: %w", err)
 	}
+	//if u.GetDeletionTimestamp().IsZero() {
+	//	if err := r.EnsureFinalizersInUnstructured(ctx, u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
+	//		return reconcile.Result{}, err
+	//	}
+	//}
 	resource, err := krmtotf.NewResource(u, sm, r.provider)
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %v", req.NamespacedName.String(), err)
+	}
+	if resource.GetDeletionTimestamp().IsZero() {
+		if err := r.EnsureFinalizersInResource(ctx, &resource.Resource, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
+			return reconcile.Result{}, err
+		}
 	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %v", k8s.GetNamespacedName(resource), err)
