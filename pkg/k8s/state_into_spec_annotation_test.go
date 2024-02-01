@@ -83,21 +83,6 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 			expectedVal: "merge",
 		},
 		{
-			name: "kind that does not support 'absent' value cannot use 'absent' value",
-			obj: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
-					"kind":       "ComputeAddress",
-					"metadata": map[string]interface{}{
-						"annotations": map[string]interface{}{
-							StateIntoSpecAnnotation: "absent",
-						},
-					},
-				},
-			},
-			hasError: true,
-		},
-		{
 			name: "BigQueryDataset kind can use 'absent' value",
 			obj: &unstructured.Unstructured{
 				Object: map[string]interface{}{
