@@ -54,6 +54,11 @@ func GetBasicTypeSetCover(t *testing.T) []ResourceFixture {
 		return testType == Basic
 	}
 	heavyFilter := func(fixture ResourceFixture) bool {
+		// We do have some where we want to test an alpha resource, because it's all we have
+		// (Needed to get TestGetBasicTypeSetCover to pass)
+		if fixture.GVK.Kind == "APIKeysKey" {
+			return true
+		}
 		// Skip v1alpha1 CRDs when testing set cover as they may not yet be
 		// correctly supported.
 		return fixture.GVK.Version == k8s.KCCAPIVersion

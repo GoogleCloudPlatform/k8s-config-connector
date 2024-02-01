@@ -61,11 +61,11 @@ require (
 
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
-	cloud.google.com/go v0.110.7 // indirect
+	cloud.google.com/go v0.110.8 // indirect
 	cloud.google.com/go/bigtable v1.19.0 // indirect
 	cloud.google.com/go/compute v1.23.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
-	cloud.google.com/go/iam v1.1.1 // indirect
+	cloud.google.com/go/iam v1.1.2 // indirect
 	cloud.google.com/go/longrunning v0.5.1 // indirect
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
