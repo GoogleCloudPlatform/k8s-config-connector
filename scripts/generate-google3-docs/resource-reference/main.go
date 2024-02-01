@@ -299,9 +299,7 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 
 func handleAnnotationsAndIAMSettingsForDCLBasedResource(r *resource, gvk schema.GroupVersionKind) error {
 	annotationSet := sets.NewString()
-	if k8s.ResourceSupportsStateAbsentInSpec(gvk.Kind) {
-		annotationSet.Insert(k8s.StateIntoSpecAnnotation)
-	}
+	annotationSet.Insert(k8s.StateIntoSpecAnnotation)
 	resourceMetadata, found := serviceMetadataLoader.GetResourceWithGVK(gvk)
 	if !found {
 		return fmt.Errorf("ServiceMetadata for resource with GroupVersionKind %v not found", gvk)
@@ -339,9 +337,7 @@ func handleAnnotationsAndIAMSettingsForDCLBasedResource(r *resource, gvk schema.
 
 func handleAnnotationsAndIAMSettingsForTFBasedResource(r *resource, gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader) error {
 	annotationSet := sets.NewString()
-	if k8s.ResourceSupportsStateAbsentInSpec(gvk.Kind) {
-		annotationSet.Insert(k8s.StateIntoSpecAnnotation)
-	}
+	annotationSet.Insert(k8s.StateIntoSpecAnnotation)
 	rcs, err := smLoader.GetResourceConfigs(gvk)
 	if err != nil {
 		return fmt.Errorf("error getting resource configs: %v", err)

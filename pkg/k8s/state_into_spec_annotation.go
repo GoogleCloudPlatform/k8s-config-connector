@@ -20,7 +20,6 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 func ValidateOrDefaultStateIntoSpecAnnotation(obj *unstructured.Unstructured) error {
@@ -28,7 +27,7 @@ func ValidateOrDefaultStateIntoSpecAnnotation(obj *unstructured.Unstructured) er
 	if !found {
 		SetAnnotation(StateIntoSpecAnnotation, StateMergeIntoSpec, obj)
 	}
-	return validateStateIntoSpecAnnotation(obj, obj.GroupVersionKind())
+	return validateStateIntoSpecAnnotation(obj)
 }
 
 func EnsureSpecIntoSateAnnotation(obj *Resource) error {
@@ -36,21 +35,10 @@ func EnsureSpecIntoSateAnnotation(obj *Resource) error {
 	if !found {
 		SetAnnotation(StateIntoSpecAnnotation, StateMergeIntoSpec, obj)
 	}
-	return validateStateIntoSpecAnnotation(obj, obj.GroupVersionKind())
+	return validateStateIntoSpecAnnotation(obj)
 }
 
-// ResourceSupportsStateAbsentInSpec returns true for resource kinds which
-// allow the 'state-into-spec' annotation to be set to 'absent'.
-func ResourceSupportsStateAbsentInSpec(kind string) bool {
-	switch kind {
-	// Setting 'state-into-spec' to 'absent' for ComputeAddress may hide 'spec.address' field from users and cause breaking change.
-	case "ComputeAddress":
-		return false
-	}
-	return true
-}
-
-func validateStateIntoSpecAnnotation(obj metav1.Object, gvk schema.GroupVersionKind) error {
+func validateStateIntoSpecAnnotation(obj metav1.Object) error {
 	val, found := GetAnnotation(StateIntoSpecAnnotation, obj)
 	if !found {
 		return fmt.Errorf("couldn't find the value for '%v' annotation", StateIntoSpecAnnotation)
@@ -58,10 +46,6 @@ func validateStateIntoSpecAnnotation(obj metav1.Object, gvk schema.GroupVersionK
 
 	if !isAcceptedValue(val) {
 		return fmt.Errorf("invalid value '%v' for '%v' annotation, can be one of {%v}", val, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
-	}
-
-	if val == StateAbsentInSpec && !ResourceSupportsStateAbsentInSpec(gvk.Kind) {
-		return fmt.Errorf("kind '%v' does not support having annotation '%v' set to value '%v'", gvk.Kind, StateIntoSpecAnnotation, val)
 	}
 	return nil
 }
