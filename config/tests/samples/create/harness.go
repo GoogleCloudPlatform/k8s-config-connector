@@ -168,12 +168,12 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 
 		addr, err := k8s.StartServing()
 		if err != nil {
-			h.Errorf("error starting mock kube-apiserver: %v", err)
+			h.Fatalf("error starting mock kube-apiserver: %v", err)
 		}
 
 		t.Cleanup(func() {
 			if err := k8s.Stop(); err != nil {
-				h.Errorf("error stopping envtest environment: %v", err)
+				h.Errorf("error stopping mock kube-apiserver: %v", err)
 			}
 		})
 
