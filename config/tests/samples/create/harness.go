@@ -25,6 +25,7 @@ import (
 	"time"
 
 	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
+	"google.golang.org/api/cloudresourcemanager/v1"
 	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/option"
 
@@ -37,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 	"golang.org/x/oauth2"
@@ -63,6 +65,8 @@ import (
 type Harness struct {
 	*testing.T
 	Ctx context.Context
+
+	Project testgcp.GCPProject
 
 	client     client.Client
 	restConfig *rest.Config
@@ -248,6 +252,42 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
 	}
 
+	if os.Getenv("E2E_GCP_TARGET") == "mock" {
+		// Some fixed-value fake org-ids for testing.
+		// We used fixed values so that the output is predictable (for golden testing)
+		testgcp.TestFolderID.Set("123451001")
+		testgcp.TestFolder2ID.Set("123451002")
+		testgcp.TestOrgID.Set("123450001")
+		testgcp.TestBillingAccountID.Set("123456-777777-000001")
+		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
+		testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
+		testgcp.TestAttachedClusterName.Set("xks-cluster")
+
+		crm := h.getCloudResourceManagerClient(kccConfig.HTTPClient)
+		req := &cloudresourcemanager.Project{
+			ProjectId: "mock-project",
+		}
+		op, err := crm.Projects.Create(req).Context(ctx).Do()
+		if err != nil {
+			t.Fatalf("error creating project: %v", err)
+		}
+		if !op.Done {
+			t.Fatalf("expected mock create project operation to be done immediately")
+		}
+		found, err := crm.Projects.Get(req.ProjectId).Context(ctx).Do()
+		if err != nil {
+			t.Fatalf("error reading created project: %v", err)
+		}
+		project := testgcp.GCPProject{
+			ProjectID:     found.ProjectId,
+			ProjectNumber: found.ProjectNumber,
+		}
+		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
+		h.Project = project
+	} else {
+		h.Project = testgcp.GetDefaultProject(t)
+	}
+
 	// Log DCL requests
 	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
 		outputDir := filepath.Join(artifacts, "http-logs")
@@ -346,8 +386,8 @@ func (h *Harness) ExportParams() exportparameters.Parameters {
 	return exportParams
 }
 
-func (h *Harness) GetCloudResourceManagerClient() *cloudresourcemanagerv1.Service {
-	s, err := cloudresourcemanagerv1.NewService(h.Ctx, option.WithHTTPClient(h.kccConfig.HTTPClient))
+func (h *Harness) getCloudResourceManagerClient(httpClient *http.Client) *cloudresourcemanagerv1.Service {
+	s, err := cloudresourcemanagerv1.NewService(h.Ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		h.Fatalf("error building cloudresourcemanagerv1 client: %v", err)
 	}

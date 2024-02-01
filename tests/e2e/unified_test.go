@@ -28,7 +28,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
-	"google.golang.org/api/cloudresourcemanager/v1"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -46,57 +45,25 @@ func TestAllInSeries(t *testing.T) {
 		cancel()
 	})
 
-	testHarness := create.NewHarness(t, ctx)
-
-	var project testgcp.GCPProject
-	if os.Getenv("E2E_GCP_TARGET") == "mock" {
-		// Some fixed-value fake org-ids for testing.
-		// We used fixed values so that the output is predictable (for golden testing)
-		testgcp.TestFolderID.Set("123451001")
-		testgcp.TestFolder2ID.Set("123451002")
-		testgcp.TestOrgID.Set("123450001")
-		testgcp.TestBillingAccountID.Set("123456-777777-000001")
-		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
-		testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
-		testgcp.TestAttachedClusterName.Set("xks-cluster")
-
-		crm := testHarness.GetCloudResourceManagerClient()
-		req := &cloudresourcemanager.Project{
-			ProjectId: "mock-project",
-		}
-		op, err := crm.Projects.Create(req).Context(testHarness.Ctx).Do()
-		if err != nil {
-			testHarness.Fatalf("error creating project: %v", err)
-		}
-		if !op.Done {
-			testHarness.Fatalf("expected mock create project operation to be done immediately")
-		}
-		found, err := crm.Projects.Get(req.ProjectId).Context(testHarness.Ctx).Do()
-		if err != nil {
-			testHarness.Fatalf("error reading created project: %v", err)
-		}
-		project = testgcp.GCPProject{
-			ProjectID:     found.ProjectId,
-			ProjectNumber: found.ProjectNumber,
-		}
-		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
-	} else {
-		project = testgcp.GetDefaultProject(t)
-	}
-
 	t.Run("samples", func(t *testing.T) {
-		samples := create.LoadAllSamples(t, project)
+		samples := create.ListAllSamples(t)
 
-		for _, s := range samples {
-			s := s
+		for _, sampleKey := range samples {
+			sampleKey := sampleKey
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
-			t.Run(s.Name, func(t *testing.T) {
-				create.MaybeSkip(t, s.Name, s.Resources)
+			t.Run(sampleKey.Name, func(t *testing.T) {
+				// Quickly load the sample with a dummy project, just to see if we should skip it
+				{
+					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
+					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
+				}
 
-				h := testHarness.ForSubtest(t)
+				h := create.NewHarness(t, ctx)
+				project := h.Project
+				s := create.LoadSample(t, sampleKey, project)
 
-				create.SetupNamespacesAndApplyDefaults(h, []create.Sample{s}, project)
+				create.SetupNamespacesAndApplyDefaults(h, s.Resources, project)
 
 				// Hack: set project-id because mockkubeapiserver does not support webhooks
 				for _, u := range s.Resources {
@@ -119,37 +86,44 @@ func TestAllInSeries(t *testing.T) {
 			fixture := fixture
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
-			testID := testvariable.NewUniqueId()
+			t.Run(fixture.Name, func(t *testing.T) {
+				uniqueID := testvariable.NewUniqueId()
 
-			s := create.Sample{
-				Name: fixture.Name,
-			}
+				loadFixture := func(project testgcp.GCPProject) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
+					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
 
-			createResource := bytesToUnstructured(t, fixture.Create, testID, project)
-			s.Resources = append(s.Resources, createResource)
+					opt := create.CreateDeleteTestOptions{CleanupResources: true}
+					opt.Create = append(opt.Create, primaryResource)
 
-			exportResources := []*unstructured.Unstructured{createResource}
+					if fixture.Dependencies != nil {
+						dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
+						for _, dependBytes := range dependencyYamls {
+							depUnstruct := bytesToUnstructured(t, dependBytes, uniqueID, project)
+							opt.Create = append(opt.Create, depUnstruct)
+						}
+					}
 
-			if fixture.Dependencies != nil {
-				dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
-				for _, dependBytes := range dependencyYamls {
-					depUnstruct := bytesToUnstructured(t, dependBytes, testID, project)
-					s.Resources = append(s.Resources, depUnstruct)
+					if fixture.Update != nil {
+						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
+						opt.Updates = append(opt.Updates, u)
+					}
+					return primaryResource, opt
 				}
-			}
 
-			opt := create.CreateDeleteTestOptions{Create: s.Resources, CleanupResources: true}
-			if fixture.Update != nil {
-				u := bytesToUnstructured(t, fixture.Update, testID, project)
-				opt.Updates = append(opt.Updates, u)
-			}
+				// Quickly load the fixture with a dummy project, just to see if we should skip it
+				{
+					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
+					create.MaybeSkip(t, fixture.Name, opt.Create)
+				}
 
-			t.Run(s.Name, func(t *testing.T) {
-				create.MaybeSkip(t, s.Name, s.Resources)
+				h := create.NewHarness(t, ctx)
+				project := h.Project
 
-				h := testHarness.ForSubtest(t)
+				primaryResource, opt := loadFixture(project)
 
-				create.SetupNamespacesAndApplyDefaults(h, []create.Sample{s}, project)
+				exportResources := []*unstructured.Unstructured{primaryResource}
+
+				create.SetupNamespacesAndApplyDefaults(h, opt.Create, project)
 
 				opt.CleanupResources = false // We delete explicitly below
 				create.RunCreateDeleteTest(h, opt)
@@ -186,7 +160,7 @@ func TestAllInSeries(t *testing.T) {
 					h.CompareGoldenFile(expectedPath, string(output), h.IgnoreComments, h.ReplaceString(project.ProjectID, "example-project-id"))
 				}
 
-				create.DeleteResources(h, s.Resources)
+				create.DeleteResources(h, opt.Create)
 			})
 		}
 	})
