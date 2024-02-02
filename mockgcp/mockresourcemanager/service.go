@@ -66,6 +66,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb_v1.RegisterProjectsServer(grpcServer, s.projectsV1)
 	pb_v3.RegisterProjectsServer(grpcServer, s.projectsV3)
 	pb_v3.RegisterTagKeysServer(grpcServer, &TagKeys{MockService: s})
+	pb_v3.RegisterTagValuesServer(grpcServer, &TagValues{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -73,6 +74,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb_v1.RegisterProjectsHandler,
 		pb_v3.RegisterProjectsHandler,
 		pb_v3.RegisterTagKeysHandler,
+		pb_v3.RegisterTagValuesHandler,
 		s.operations.RegisterOperationsPath("/v3/operations/{name}"))
 	if err != nil {
 		return nil, err
