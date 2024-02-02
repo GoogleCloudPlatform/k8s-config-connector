@@ -28,8 +28,6 @@ import (
 	"strings"
 	"testing"
 
-	"k8s.io/klog/v2"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -43,6 +41,7 @@ import (
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -315,6 +314,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							switch kind {
 							case "tensorboards":
 								pathIDs[id] = "${tensorboardID}"
+							case "tagKeys":
+								pathIDs[id] = "${tagKeyID}"
+							case "tagValues":
+								pathIDs[id] = "${tagValueID}"
 							case "operations":
 								operationIDs[id] = true
 								pathIDs[id] = "${operationID}"
@@ -357,6 +360,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						name, _, _ := unstructured.NestedString(responseBody, "response", "name")
 						if strings.HasPrefix(name, "tagKeys/") {
 							pathIDs[name] = "tagKeys/${tagKeyID}"
+						}
+						if strings.HasPrefix(name, "tagValues/") {
+							pathIDs[name] = "tagValues/${tagValueId}"
 						}
 					}
 
