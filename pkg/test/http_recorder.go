@@ -238,3 +238,24 @@ func (r *Response) RemoveHeader(key string) {
 func (r *Request) RemoveHeader(key string) {
 	r.Header.Del(key)
 }
+
+func (r *Response) ParseBody() map[string]any {
+	return parseBody(r.Body)
+}
+
+func (r *Request) ParseBody() map[string]any {
+	return parseBody(r.Body)
+}
+
+func parseBody(s string) map[string]any {
+	if s == "" {
+		return nil
+	}
+	obj := make(map[string]any)
+	if err := json.Unmarshal([]byte(s), &obj); err != nil {
+		klog.Fatalf("error from json.Unmarshal(%q): %v", s, err)
+		return nil
+	}
+
+	return obj
+}
