@@ -20,5 +20,3 @@ metadata:
   name: project-${uniqueId}
 spec:
   name: KCC ${uniqueId}
-  billingAccountRef:
-    external: ${TEST_BILLING_ACCOUNT_ID}

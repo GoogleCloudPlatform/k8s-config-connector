@@ -28,7 +28,7 @@ spec:
   location: global
   iap:
     oauth2ClientIdRef:
-      external: iapidentityawareproxyclient-${uniqueId}
+      name: iapidentityawareproxyclient-${uniqueId}
     oauth2ClientSecret:
       valueFrom:
         secretKeyRef:
