@@ -49,6 +49,7 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog/v2"
 )
 
 // convenience struct for converting to the desired human readable output on the docs page from the fielddesc.FieldDescription struct
@@ -156,6 +157,10 @@ func main() {
 	}
 	serviceMetadataLoader = dclmetadata.New()
 	for _, gvk := range supportedgvks.ManualResources(smLoader, serviceMetadataLoader) {
+		if strings.HasPrefix(gvk.Version, "v1alpha") {
+			klog.Infof("skipping alpha resource %v", gvk)
+			continue
+		}
 		if err := generateDocForGVK(gvk, smLoader); err != nil {
 			log.Fatalf("error generating doc for GVK %v: %v", gvk, err)
 		}
