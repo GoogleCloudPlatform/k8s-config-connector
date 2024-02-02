@@ -31,7 +31,6 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 )
 
 func TestAllInSeries(t *testing.T) {
@@ -39,7 +38,7 @@ func TestAllInSeries(t *testing.T) {
 		t.Skip("RUN_E2E not set; skipping")
 	}
 
-	ctx := signals.SetupSignalHandler()
+	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
 		cancel()
