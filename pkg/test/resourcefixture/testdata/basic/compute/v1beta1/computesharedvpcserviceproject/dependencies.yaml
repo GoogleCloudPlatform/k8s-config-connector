@@ -54,8 +54,8 @@ metadata:
   name: vpcsvc-${uniqueId}
 spec:
   resourceID: ${TEST_DEPENDENT_FOLDER_2_PROJECT_ID}
-  # Dependent project name for VPC SVC project
-  name: "VPC SVC Dependent Project"
+  # Dependent project name for VPC service project
+  name: "VPC Service Dependent Project"
   folderRef:
     external: ${TEST_FOLDER_ID}
   billingAccountRef:

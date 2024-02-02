@@ -30,6 +30,8 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   name: cloudkms.googleapis.com
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
     name: "project-${uniqueId}"

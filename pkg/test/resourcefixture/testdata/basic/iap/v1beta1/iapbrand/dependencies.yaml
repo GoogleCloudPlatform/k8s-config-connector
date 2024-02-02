@@ -32,4 +32,5 @@ kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: iap.googleapis.com
