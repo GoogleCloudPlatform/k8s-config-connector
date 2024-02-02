@@ -76,19 +76,6 @@ type Harness struct {
 	kccConfig      kccmanager.Config
 }
 
-// ForSubtest returns a harness scoped to a subtest (created by t.Run).
-func (h *Harness) ForSubtest(t *testing.T) *Harness {
-	ctx, cancel := context.WithCancel(h.Ctx)
-	t.Cleanup(func() {
-		cancel()
-	})
-
-	subHarness := *h
-	subHarness.T = t
-	subHarness.Ctx = ctx
-	return &subHarness
-}
-
 type httpRoundTripperKeyType int
 
 // httpRoundTripperKey is the key value for http.RoundTripper in a context.Context
@@ -106,9 +93,9 @@ func NewHarnessWithManager(t *testing.T, ctx context.Context, mgr manager.Manage
 }
 
 func NewHarness(t *testing.T, ctx context.Context) *Harness {
-	ctx, cancel := context.WithCancel(ctx)
+	ctx, ctxCancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
-		cancel()
+		ctxCancel()
 	})
 
 	log := log.FromContext(ctx)
@@ -339,9 +326,9 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	// Create a context specifically for this, and register the test cleanup function
 	// after the envtest cleanup function (these run last-in, first-out).
 	// See https://github.com/kubernetes-sigs/controller-runtime/issues/1571#issuecomment-945535598
-	mgrContext, cancel := context.WithCancel(ctx)
+	mgrContext, mgrContextCancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
-		cancel()
+		mgrContextCancel()
 	})
 	mgr, err := kccmanager.New(mgrContext, h.restConfig, kccConfig)
 	if err != nil {
@@ -360,21 +347,12 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		t.Fatalf("error adding registration controller for deletion defender controllers: %v", err)
 	}
 	// Start the manager, Start(...) is a blocking operation so it needs to be done asynchronously.
-	errors := make(chan error)
 	go func() {
-		err := mgr.Start(ctx)
+		err := mgr.Start(mgrContext)
 		if err != nil {
 			t.Errorf("error from mgr.Start: %v", err)
 		}
-		errors <- err
 	}()
-
-	t.Cleanup(func() {
-		cancel() // because cleanups run last-in-first-out, we need to cancel again
-		if err := <-errors; err != nil {
-			t.Errorf("error from mgr.Start: %v", err)
-		}
-	})
 
 	return h
 }
