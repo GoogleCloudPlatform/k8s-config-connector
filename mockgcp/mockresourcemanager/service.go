@@ -71,7 +71,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb_v3.RegisterProjectsServer(grpcServer, s.projectsV3)
 }
 
-func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
+func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux := runtime.NewServeMux(runtime.WithErrorHandler(customErrorHandler))
 
 	if err := pb_v1.RegisterProjectsHandler(ctx, mux, conn); err != nil {

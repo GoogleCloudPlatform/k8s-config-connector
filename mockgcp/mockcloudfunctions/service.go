@@ -16,6 +16,7 @@ package mockcloudfunctions
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -59,7 +60,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterCloudFunctionsServiceServer(grpcServer, s.v1)
 }
 
-func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
+func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux := runtime.NewServeMux()
 
 	if err := pb.RegisterCloudFunctionsServiceHandler(ctx, mux, conn); err != nil {

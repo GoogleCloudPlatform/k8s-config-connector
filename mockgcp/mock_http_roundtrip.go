@@ -27,7 +27,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -53,7 +52,7 @@ type mockRoundTripper struct {
 	grpcConnection *grpc.ClientConn
 	grpcListener   net.Listener
 
-	hosts map[string]*runtime.ServeMux
+	hosts map[string]http.Handler
 
 	iamPolicies *mockIAMPolicies
 }
@@ -64,7 +63,7 @@ type MockService interface {
 	Register(grpcServer *grpc.Server)
 
 	// NewHTTPMux creates an HTTP mux for serving http traffic
-	NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error)
+	NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error)
 
 	// ExpectedHost is the hostname we serve on e.g. foo.googleapis.com
 	ExpectedHost() string
@@ -82,7 +81,7 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	var serverOpts []grpc.ServerOption
 	server := grpc.NewServer(serverOpts...)
 
-	rt.hosts = make(map[string]*runtime.ServeMux)
+	rt.hosts = make(map[string]http.Handler)
 
 	var services []MockService
 
