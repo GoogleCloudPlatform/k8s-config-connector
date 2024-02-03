@@ -20,6 +20,11 @@ RECORDER_IMG ?= gcr.io/${PROJECT_ID}/recorder:${SHORT_SHA}
 WEBHOOK_IMG ?= gcr.io/${PROJECT_ID}/webhook:${SHORT_SHA}
 DELETION_DEFENDER_IMG ?= gcr.io/${PROJECT_ID}/deletiondefender:${SHORT_SHA}
 UNMANAGED_DETECTOR_IMG ?= gcr.io/${PROJECT_ID}/unmanageddetector:${SHORT_SHA}
+# Detects the location of the user golangci-lint cache.
+GOLANGCI_LINT_CACHE := $(shell pwd)/.tmp/golangci-lint
+# When updating this, make sure to update the corresponding action in
+# ./github/workflows/lint.yaml
+GOLANGCI_LINT_VERSION := v1.54.1
 
 # Use Docker BuildKit when building images to allow usage of 'setcap' in
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
@@ -90,7 +95,10 @@ fmt:
 
 .PHONY: lint
 lint:
-	for f in `find pkg cmd -name "*.go"`; do golint -set_exit_status $$f || exit $?; done
+	docker run --rm -v $(shell pwd):/app \
+		-v ${GOLANGCI_LINT_CACHE}:/root/.cache/golangci-lint \
+		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
+		golangci-lint run -v
 
 # Run go vet against code
 .PHONY: vet
