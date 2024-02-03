@@ -326,9 +326,16 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	// Create a context specifically for this, and register the test cleanup function
 	// after the envtest cleanup function (these run last-in, first-out).
 	// See https://github.com/kubernetes-sigs/controller-runtime/issues/1571#issuecomment-945535598
+	var ctrlManagerShutdown sync.WaitGroup
 	mgrContext, mgrContextCancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
 		mgrContextCancel()
+		// Wait for the manager to exit, cancel doesn't wait for the exist.
+		// Otherwise the manager may still connect to kube-apiserver
+		// during its shutdown, blocking the shutdown of kube-apiserver.
+		t.Log("waiting for controller-runtime manager shutdown")
+		ctrlManagerShutdown.Wait()
+		t.Log("controller-runtime manager is shutdown")
 	})
 	mgr, err := kccmanager.New(mgrContext, h.restConfig, kccConfig)
 	if err != nil {
@@ -347,7 +354,10 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		t.Fatalf("error adding registration controller for deletion defender controllers: %v", err)
 	}
 	// Start the manager, Start(...) is a blocking operation so it needs to be done asynchronously.
+	ctrlManagerShutdown.Add(1)
 	go func() {
+		defer ctrlManagerShutdown.Done()
+
 		err := mgr.Start(mgrContext)
 		if err != nil {
 			t.Errorf("error from mgr.Start: %v", err)
