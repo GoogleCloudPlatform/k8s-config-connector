@@ -33,11 +33,6 @@ type MockService struct {
 	storage storage.Storage
 
 	*computeOperations
-
-	networksv1      *NetworksV1
-	nodegroupsv1    *NodeGroupsV1
-	nodetemplatesv1 *NodeTemplatesV1
-	subnetsv1       *SubnetsV1
 }
 
 // New creates a MockService.

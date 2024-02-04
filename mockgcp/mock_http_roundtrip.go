@@ -32,6 +32,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/workflows"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaiplatform"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
@@ -76,9 +77,18 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	ctx := context.Background()
 
 	mockRoundTripper := &mockRoundTripper{}
+	mockHTTPClient := &http.Client{
+		Transport: mockRoundTripper,
+	}
 	env := &common.MockEnvironment{
 		KubeClient: k8sClient,
 	}
+
+	workflowEngine, err := workflows.NewEngine(mockHTTPClient)
+	if err != nil {
+		t.Fatalf("building workflow engine: %v", err)
+	}
+	env.Workflows = workflowEngine
 
 	resourcemanagerService := mockresourcemanager.New(env, storage)
 	env.Projects = resourcemanagerService.GetProjectStore()

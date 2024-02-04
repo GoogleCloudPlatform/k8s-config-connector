@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,17 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package common
+package workflows
 
-import (
-	"sigs.k8s.io/controller-runtime/pkg/client"
+func PtrTo[T any](t T) *T {
+	return &t
+}
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/workflows"
-)
-
-type MockEnvironment struct {
-	Projects   projects.ProjectStore
-	KubeClient client.Client
-	Workflows  *workflows.Engine
+func ValueOf[T any](t *T) T {
+	var zeroVal T
+	if t == nil {
+		return zeroVal
+	}
+	return *t
 }
