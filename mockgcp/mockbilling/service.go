@@ -20,21 +20,18 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/billing/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 // MockService represents a mocked certificatemanager service.
 type MockService struct {
-	kube    client.Client
+	*common.MockEnvironment
 	storage storage.Storage
 
-	projects   projects.ProjectStore
 	operations *operations.Operations
 
 	v1 *BillingV1
@@ -43,10 +40,9 @@ type MockService struct {
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:       env.GetKubeClient(),
-		storage:    storage,
-		projects:   env.GetProjects(),
-		operations: operations.NewOperationsService(storage),
+		MockEnvironment: env,
+		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
 	}
 	s.v1 = &BillingV1{MockService: s}
 	return s

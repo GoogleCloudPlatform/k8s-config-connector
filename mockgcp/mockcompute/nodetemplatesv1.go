@@ -95,7 +95,7 @@ func (n *nodeTemplateName) String() string {
 // newNodeTemplateName builds a normalized nodeTemplateName from the constituent parts.
 // The expected form is `projects/{project}/regions/{region}/nodeTemplates/{nodeTemplate}`.
 func (s *MockService) newNodeTemplateName(project string, region string, name string) (*nodeTemplateName, error) {
-	projectObj, err := s.projects.GetProjectByID(project)
+	projectObj, err := s.Projects.GetProjectByID(project)
 	if err != nil {
 		return nil, err
 	}

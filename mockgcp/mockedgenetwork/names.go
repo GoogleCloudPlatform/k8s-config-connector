@@ -40,7 +40,7 @@ func (s *MockService) parseNetworkName(name string) (*networkName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "zones" && tokens[6] == "networks" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
@@ -75,7 +75,7 @@ func (s *MockService) parseSubnetName(name string) (*subnetName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "zones" && tokens[6] == "subnets" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}

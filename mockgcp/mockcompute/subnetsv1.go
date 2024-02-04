@@ -131,7 +131,7 @@ func (s *MockService) parseSubnetName(name string) (*subnetName, error) {
 
 // newSubnetName builds a normalized subnetName from the constituent parts.
 func (s *MockService) newSubnetName(project string, region string, name string) (*subnetName, error) {
-	projectObj, err := s.projects.GetProjectByID(project)
+	projectObj, err := s.Projects.GetProjectByID(project)
 	if err != nil {
 		return nil, err
 	}

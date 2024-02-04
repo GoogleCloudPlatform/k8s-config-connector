@@ -75,16 +75,18 @@ type MockService interface {
 func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.Storage) *mockRoundTripper {
 	ctx := context.Background()
 
-	rt := &mockRoundTripper{}
+	mockRoundTripper := &mockRoundTripper{}
+	env := &common.MockEnvironment{
+		KubeClient: k8sClient,
+	}
 
-	resourcemanagerService := mockresourcemanager.New(k8sClient, storage)
-	projectsInternal := resourcemanagerService.GetInternalService()
-	env := common.NewMockEnvironment(k8sClient, projectsInternal)
+	resourcemanagerService := mockresourcemanager.New(env, storage)
+	env.Projects = resourcemanagerService.GetProjectStore()
 
 	var serverOpts []grpc.ServerOption
 	server := grpc.NewServer(serverOpts...)
 
-	rt.hosts = make(map[string]http.Handler)
+	mockRoundTripper.hosts = make(map[string]http.Handler)
 
 	var services []MockService
 
@@ -113,7 +115,7 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	if err != nil {
 		t.Fatalf("net.Listen failed: %v", err)
 	}
-	rt.grpcListener = listener
+	mockRoundTripper.grpcListener = listener
 
 	go func() {
 		if err := server.Serve(listener); err != nil {
@@ -133,19 +135,19 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	if err != nil {
 		t.Fatalf("error dialing grpc endpoint %q: %v", endpoint, err)
 	}
-	rt.grpcConnection = conn
+	mockRoundTripper.grpcConnection = conn
 
 	for _, service := range services {
 		mux, err := service.NewHTTPMux(ctx, conn)
 		if err != nil {
 			t.Fatalf("error building mux: %v", err)
 		}
-		rt.hosts[service.ExpectedHost()] = mux
+		mockRoundTripper.hosts[service.ExpectedHost()] = mux
 	}
 
-	rt.iamPolicies = newMockIAMPolicies()
+	mockRoundTripper.iamPolicies = newMockIAMPolicies()
 
-	return rt
+	return mockRoundTripper
 }
 
 func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {

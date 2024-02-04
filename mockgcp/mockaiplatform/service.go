@@ -21,30 +21,27 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
 )
 
 // MockService represents a mocked aiplatform service.
 type MockService struct {
-	kube    client.Client
+	*common.MockEnvironment
+
 	storage storage.Storage
 
-	projects   projects.ProjectStore
 	operations *operations.Operations
 }
 
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:       env.GetKubeClient(),
-		storage:    storage,
-		projects:   env.GetProjects(),
-		operations: operations.NewOperationsService(storage),
+		MockEnvironment: env,
+		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
 	}
 	return s
 }

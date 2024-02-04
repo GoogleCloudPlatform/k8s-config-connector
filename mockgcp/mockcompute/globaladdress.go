@@ -128,7 +128,7 @@ func (s *MockService) parseGlobalAddressName(name string) (*globalAddressName, e
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "addresses" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}

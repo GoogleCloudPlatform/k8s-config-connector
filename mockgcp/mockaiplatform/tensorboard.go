@@ -187,7 +187,7 @@ func (s *MockService) parseTensorboardName(name string) (*TensorboardName, error
 		if err != nil {
 			return nil, err
 		}
-		project, err := s.projects.GetProject(projectName)
+		project, err := s.Projects.GetProject(projectName)
 		if err != nil {
 			return nil, err
 		}

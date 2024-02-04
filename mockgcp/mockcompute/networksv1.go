@@ -160,7 +160,7 @@ func (s *MockService) parseNetworkName(name string) (*networkName, error) {
 
 // newNetworkName builds a normalized networkName from the constituent parts.
 func (s *MockService) newNetworkName(project string, name string) (*networkName, error) {
-	projectObj, err := s.projects.GetProjectByID(project)
+	projectObj, err := s.Projects.GetProjectByID(project)
 	if err != nil {
 		return nil, err
 	}
