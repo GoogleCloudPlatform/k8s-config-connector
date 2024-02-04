@@ -93,6 +93,10 @@ func (s *ProjectsV3) CreateProject(ctx context.Context, req *pb.CreateProjectReq
 		return nil, err
 	}
 
+	if err := s.Workflows.PopulateNewProject(ctx, project.ProjectId); err != nil {
+		return nil, err
+	}
+
 	response := &longrunningpb.Operation_Response{}
 	response.Response = any
 
