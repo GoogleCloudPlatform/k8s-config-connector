@@ -69,7 +69,14 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 		return nil, status.Errorf(codes.Internal, "error creating network: %v", err)
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLinkWithId,
+		OperationType: PtrTo("insert"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Patches the specified network with the data included in the request.
@@ -99,7 +106,14 @@ func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*p
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLinkWithId,
+		OperationType: PtrTo("compute.networks.patch"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *NetworksV1) Delete(ctx context.Context, req *pb.DeleteNetworkRequest) (*pb.Operation, error) {
@@ -115,7 +129,12 @@ func (s *NetworksV1) Delete(ctx context.Context, req *pb.DeleteNetworkRequest) (
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		OperationType: PtrTo("delete"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type networkName struct {

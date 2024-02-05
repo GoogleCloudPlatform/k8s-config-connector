@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -35,8 +34,9 @@ type MockService struct {
 	kube    client.Client
 	storage storage.Storage
 
-	projects   projects.ProjectStore
-	operations *operations.Operations
+	projects projects.ProjectStore
+
+	*computeOperations
 
 	networksv1      *NetworksV1
 	nodegroupsv1    *NodeGroupsV1
@@ -47,10 +47,10 @@ type MockService struct {
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:       env.GetKubeClient(),
-		storage:    storage,
-		projects:   env.GetProjects(),
-		operations: operations.NewOperationsService(storage),
+		kube:              env.GetKubeClient(),
+		storage:           storage,
+		projects:          env.GetProjects(),
+		computeOperations: newComputeOperationsService(storage),
 	}
 	s.networksv1 = &NetworksV1{MockService: s}
 	s.nodegroupsv1 = &NodeGroupsV1{MockService: s}
@@ -71,6 +71,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterDisksServer(grpcServer, &DisksV1{MockService: s})
 	pb.RegisterRegionDisksServer(grpcServer, &RegionalDisksV1{MockService: s})
+
+	pb.RegisterRegionOperationsServer(grpcServer, &RegionalOperationsV1{MockService: s})
+	pb.RegisterGlobalOperationsServer(grpcServer, &GlobalOperationsV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -119,6 +122,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterRegionDisksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterRegionOperationsHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterGlobalOperationsHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
