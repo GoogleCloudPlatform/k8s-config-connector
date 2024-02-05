@@ -145,5 +145,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	if err := pb.RegisterRegionOperationsHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterGlobalOperationsHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
 	return mux, nil
 }
