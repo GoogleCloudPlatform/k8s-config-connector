@@ -84,7 +84,7 @@ func init() {
 			return inner
 		}
 		outputDir := filepath.Join(artifacts, "http-logs")
-		t := test.NewHTTPRecorder(inner.Transport, outputDir)
+		t := test.NewHTTPRecorder(inner.Transport, test.NewDirectoryEventSink(outputDir))
 		return &http.Client{Transport: t}
 	}
 	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
@@ -93,7 +93,7 @@ func init() {
 			return inner
 		}
 		outputDir := filepath.Join(artifacts, "http-logs")
-		t := test.NewHTTPRecorder(inner.Transport, outputDir)
+		t := test.NewHTTPRecorder(inner.Transport, test.NewDirectoryEventSink(outputDir))
 		return &http.Client{Transport: t}
 	}
 }

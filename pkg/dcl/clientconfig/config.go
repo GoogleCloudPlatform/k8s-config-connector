@@ -96,13 +96,20 @@ func New(ctx context.Context, opt Options) (*dcl.Config, error) {
 // Deprecated: Prefer using a harness.
 func NewForIntegrationTest() *dcl.Config {
 	ctx := context.TODO()
+	eventSinks := test.EventSinksFromContext(ctx)
+
+	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
+		outputDir := filepath.Join(artifacts, "http-logs")
+
+		eventSinks = append(eventSinks, test.NewDirectoryEventSink(outputDir))
+	}
+
 	opt := Options{
 		UserAgent: "kcc/dev",
 	}
 
 	// Log DCL requests
-	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
-		outputDir := filepath.Join(artifacts, "http-logs")
+	if len(eventSinks) != 0 {
 		if opt.HTTPClient == nil {
 			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
 			if err != nil {
@@ -110,7 +117,7 @@ func NewForIntegrationTest() *dcl.Config {
 			}
 			opt.HTTPClient = httpClient
 		}
-		t := test.NewHTTPRecorder(opt.HTTPClient.Transport, outputDir)
+		t := test.NewHTTPRecorder(opt.HTTPClient.Transport, eventSinks...)
 		opt.HTTPClient = &http.Client{Transport: t}
 	}
 

@@ -267,6 +267,10 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 		response := &http.Response{}
 		response.Body = ioutil.NopCloser(&body)
 		response.Header = w.header
+		if w.statusCode == 0 {
+			w.statusCode = 200
+		}
+		response.Status = fmt.Sprintf("%d %s", w.statusCode, http.StatusText(w.statusCode))
 		response.StatusCode = w.statusCode
 		return response, nil
 	}

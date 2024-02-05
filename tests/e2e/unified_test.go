@@ -160,6 +160,57 @@ func TestAllInSeries(t *testing.T) {
 				}
 
 				create.DeleteResources(h, opt.Create)
+
+				// Verify events against golden file
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+					events := h.Events
+
+					// TODO: Fix how we poll / wait for objects being ready.
+					events.RemoveRequests(func(e *test.LogEntry) bool {
+						if e.Response.StatusCode == 404 && e.Request.Method == "GET" {
+							return true
+						}
+						return false
+					})
+
+					jsonMutators := []test.JSONMutator{}
+
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						_, found, _ := unstructured.NestedString(obj, "uniqueId")
+						if found {
+							unstructured.SetNestedField(obj, "111111111111111111111", "uniqueId")
+						}
+					})
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						_, found, _ := unstructured.NestedString(obj, "oauth2ClientId")
+						if found {
+							unstructured.SetNestedField(obj, "888888888888888888888", "oauth2ClientId")
+						}
+					})
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						_, found, _ := unstructured.NestedString(obj, "etag")
+						if found {
+							unstructured.SetNestedField(obj, "abcdef0123A=", "etag")
+						}
+					})
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						_, found, _ := unstructured.NestedString(obj, "serviceAccount", "etag")
+						if found {
+							unstructured.SetNestedField(obj, "abcdef0123A=", "serviceAccount", "etag")
+						}
+					})
+					events.PrettifyJSON(jsonMutators...)
+
+					events.RemoveHTTPResponseHeader("Date")
+					events.RemoveHTTPResponseHeader("Alt-Svc")
+					got := events.FormatHTTP()
+					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
+					normalizers := []func(string) string{}
+					normalizers = append(normalizers, h.IgnoreComments)
+					normalizers = append(normalizers, h.ReplaceString(uniqueID, "${uniqueId}"))
+					normalizers = append(normalizers, h.ReplaceString(project.ProjectID, "${projectId}"))
+					h.CompareGoldenFile(expectedPath, got, normalizers...)
+				}
 			})
 		}
 	})

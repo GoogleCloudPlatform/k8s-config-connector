@@ -66,6 +66,7 @@ type Harness struct {
 	*testing.T
 	Ctx context.Context
 
+	Events  *test.MemoryEventSink
 	Project testgcp.GCPProject
 
 	client     client.Client
@@ -275,9 +276,24 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		h.Project = testgcp.GetDefaultProject(t)
 	}
 
-	// Log DCL requests
+	eventSink := test.NewMemoryEventSink()
+	ctx = test.AddSinkToContext(ctx, eventSink)
+	h.Ctx = ctx
+
+	h.Events = eventSink
+
+	eventSinks := test.EventSinksFromContext(ctx)
+
+	// Set up event sink for logging to a file, if ARTIFACTS env var is set
 	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
 		outputDir := filepath.Join(artifacts, "http-logs")
+		eventSinks = append(eventSinks, test.NewDirectoryEventSink(outputDir))
+	} else {
+		log.Info("env var ARTIFACTS is not set; will not record http log")
+	}
+
+	// Intercept (and log) DCL requests
+	if len(eventSinks) != 0 {
 		if kccConfig.HTTPClient == nil {
 			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
 			if err != nil {
@@ -285,37 +301,31 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 			}
 			kccConfig.HTTPClient = httpClient
 		}
-		t := test.NewHTTPRecorder(kccConfig.HTTPClient.Transport, outputDir)
+		t := test.NewHTTPRecorder(kccConfig.HTTPClient.Transport, eventSinks...)
 		kccConfig.HTTPClient = &http.Client{Transport: t}
 	}
 
-	// Log TF requests
+	// Intercept (and log) TF requests
 	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
 		if t := ctx.Value(httpRoundTripperKey); t != nil {
 			ret = &http.Client{Transport: t.(http.RoundTripper)}
 		}
-		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
-			log.Info("env var ARTIFACTS is not set; will not record http log")
-		} else {
-			outputDir := filepath.Join(artifacts, "http-logs")
-			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+		if len(eventSinks) != 0 {
+			t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
 			ret = &http.Client{Transport: t}
 		}
 		return ret
 	}
 
-	// Log TF oauth requests
+	// Intercept (and log) TF oauth requests
 	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
 		if t := ctx.Value(httpRoundTripperKey); t != nil {
 			ret = &http.Client{Transport: t.(http.RoundTripper)}
 		}
-		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
-			log.Info("env var ARTIFACTS is not set; will not record http log")
-		} else {
-			outputDir := filepath.Join(artifacts, "http-logs")
-			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+		if len(eventSinks) != 0 {
+			t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
 			ret = &http.Client{Transport: t}
 		}
 		return ret
