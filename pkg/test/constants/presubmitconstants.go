@@ -32,6 +32,7 @@ var (
 		"accesscontextmanager": {"accesscontextmanagerserviceperimeter"},
 		"alloydb":              {"fullalloydbcluster"},
 		"apigee":               {"apigeeenvironment"},
+		"apikeys":              {"apikeyskeybasic"},
 		"artifactregistry":     {"artifactregistryrepository"},
 		"bigquery":             {"bigqueryjob"},
 		"bigtable":             {"bigtablegcpolicy"},

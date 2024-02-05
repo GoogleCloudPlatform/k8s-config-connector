@@ -31,6 +31,7 @@ import (
 	apigatewayv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigateway/v1alpha1"
 	apigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
+	apikeysv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apikeys/v1alpha1"
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
 	beyondcorpv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/beyondcorp/v1alpha1"
@@ -152,6 +153,7 @@ type Interface interface {
 	ApigatewayV1alpha1() apigatewayv1alpha1.ApigatewayV1alpha1Interface
 	ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface
 	ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface
+	ApikeysV1alpha1() apikeysv1alpha1.ApikeysV1alpha1Interface
 	AppengineV1alpha1() appenginev1alpha1.AppengineV1alpha1Interface
 	ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface
 	BeyondcorpV1alpha1() beyondcorpv1alpha1.BeyondcorpV1alpha1Interface
@@ -271,6 +273,7 @@ type Clientset struct {
 	apigatewayV1alpha1           *apigatewayv1alpha1.ApigatewayV1alpha1Client
 	apigeeV1alpha1               *apigeev1alpha1.ApigeeV1alpha1Client
 	apigeeV1beta1                *apigeev1beta1.ApigeeV1beta1Client
+	apikeysV1alpha1              *apikeysv1alpha1.ApikeysV1alpha1Client
 	appengineV1alpha1            *appenginev1alpha1.AppengineV1alpha1Client
 	artifactregistryV1beta1      *artifactregistryv1beta1.ArtifactregistryV1beta1Client
 	beyondcorpV1alpha1           *beyondcorpv1alpha1.BeyondcorpV1alpha1Client
@@ -409,6 +412,11 @@ func (c *Clientset) ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface {
 // ApigeeV1beta1 retrieves the ApigeeV1beta1Client
 func (c *Clientset) ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface {
 	return c.apigeeV1beta1
+}
+
+// ApikeysV1alpha1 retrieves the ApikeysV1alpha1Client
+func (c *Clientset) ApikeysV1alpha1() apikeysv1alpha1.ApikeysV1alpha1Interface {
+	return c.apikeysV1alpha1
 }
 
 // AppengineV1alpha1 retrieves the AppengineV1alpha1Client
@@ -1019,6 +1027,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.apikeysV1alpha1, err = apikeysv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.appengineV1alpha1, err = appenginev1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1478,6 +1490,7 @@ func New(c rest.Interface) *Clientset {
 	cs.apigatewayV1alpha1 = apigatewayv1alpha1.New(c)
 	cs.apigeeV1alpha1 = apigeev1alpha1.New(c)
 	cs.apigeeV1beta1 = apigeev1beta1.New(c)
+	cs.apikeysV1alpha1 = apikeysv1alpha1.New(c)
 	cs.appengineV1alpha1 = appenginev1alpha1.New(c)
 	cs.artifactregistryV1beta1 = artifactregistryv1beta1.New(c)
 	cs.beyondcorpV1alpha1 = beyondcorpv1alpha1.New(c)

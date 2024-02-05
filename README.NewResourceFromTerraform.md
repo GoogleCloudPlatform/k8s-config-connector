@@ -1,12 +1,8 @@
-## Before You Start
-
-This README entails instructions to implement a new resource CRD through
-[Terraform Provider Google](https://github.com/hashicorp/terraform-provider-google).
-
 # Add a New Resource
 
-The instructions will help you add a new resource to Config Connector. A
-resource is a K8s representation of a GCP resource.
+The instructions will help you add a new resource to Config Connector through
+[Terraform Provider Google](https://github.com/hashicorp/terraform-provider-google).
+A Config Connector resource is the kubernetes representation of a GCP resource.
 
 # Overview
 
@@ -257,7 +253,7 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
         key: projectRef  // one of 'projectRef', 'folderRef', 'organizationRef' and 'billingAccountRef'
     resourceReferences:
       - tfField: project
-        key: projectRef. // must match the key defined in hierarchicalReferences list
+        key: projectRef // must match the key defined in hierarchicalReferences list
         description: |-
           The project that this resource belongs to.
         gvk:
