@@ -64,7 +64,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSubnetworksServer(grpcServer, s.subnetsv1)
 }
 
-func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
+func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux := runtime.NewServeMux()
 
 	// Terraform uses the /beta/ endpoints, but we have protos only for v1.
