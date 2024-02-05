@@ -6,6 +6,7 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
 	cloud.google.com/go/profiler v0.1.0
+	cloud.google.com/go/pubsub v1.33.0
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.58.0
 	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-00010101000000-000000000000
