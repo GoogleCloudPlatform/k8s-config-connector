@@ -16,6 +16,7 @@ package mockapikeys
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -59,7 +60,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterApiKeysServer(grpcServer, s.v2)
 }
 
-func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
+func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux := runtime.NewServeMux()
 
 	if err := pb.RegisterApiKeysHandler(ctx, mux, conn); err != nil {
