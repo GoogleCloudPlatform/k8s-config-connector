@@ -418,6 +418,7 @@ func testDriftCorrection(ctx context.Context, t *testing.T, testContext testrunn
 	// of this test that the right events are recorded.
 	testcontroller.DeleteAllEventsForUnstruct(t, kubeClient, testUnstruct)
 
+	t.Logf("testDriftCorrection: deleting kube object %v", testUnstruct)
 	if err := resourceContext.Delete(ctx, t, testUnstruct, systemContext.TFProvider, systemContext.Manager.GetClient(), systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
 		t.Fatalf("error deleting: %v", err)
 	}

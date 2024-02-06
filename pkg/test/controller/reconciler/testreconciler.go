@@ -122,7 +122,7 @@ func (r *TestReconciler) Reconcile(ctx context.Context, unstruct *unstructured.U
 func (r *TestReconciler) ReconcileObjectMeta(ctx context.Context, om metav1.ObjectMeta, kind string, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
 	r.t.Helper()
 	reconciler := r.NewReconcilerForKind(kind)
-	testcontroller.RunReconcilerAssertResults(ctx, r.t, reconciler, om, expectedResult, expectedErrorRegex)
+	testcontroller.RunReconcilerAssertResults(ctx, r.t, reconciler, kind, om, expectedResult, expectedErrorRegex)
 }
 
 // Creates and reconciles all unstructureds in the unstruct list. Returns a cleanup function that should be defered immediately after calling this function.
