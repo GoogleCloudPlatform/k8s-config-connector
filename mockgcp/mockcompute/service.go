@@ -38,8 +38,10 @@ type MockService struct {
 	projects   projects.ProjectStore
 	operations *operations.Operations
 
-	networksv1 *NetworksV1
-	subnetsv1  *SubnetsV1
+	networksv1      *NetworksV1
+	nodegroupsv1    *NodeGroupsV1
+	nodetemplatesv1 *NodeTemplatesV1
+	subnetsv1       *SubnetsV1
 }
 
 // New creates a MockService.
@@ -51,6 +53,8 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		operations: operations.NewOperationsService(storage),
 	}
 	s.networksv1 = &NetworksV1{MockService: s}
+	s.nodegroupsv1 = &NodeGroupsV1{MockService: s}
+	s.nodetemplatesv1 = &NodeTemplatesV1{MockService: s}
 	s.subnetsv1 = &SubnetsV1{MockService: s}
 	return s
 }
@@ -61,6 +65,8 @@ func (s *MockService) ExpectedHost() string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworksServer(grpcServer, s.networksv1)
+	pb.RegisterNodeGroupsServer(grpcServer, s.nodegroupsv1)
+	pb.RegisterNodeTemplatesServer(grpcServer, s.nodetemplatesv1)
 	pb.RegisterSubnetworksServer(grpcServer, s.subnetsv1)
 }
 
@@ -94,6 +100,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterNetworksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterNodeGroupsHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterNodeTemplatesHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterSubnetworksHandler(ctx, mux, conn); err != nil {
