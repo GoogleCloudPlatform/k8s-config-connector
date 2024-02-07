@@ -48,6 +48,8 @@ type AwsClustersClient interface {
 	// [Operation][google.longrunning.Operation] resource that can be
 	// described to track the status of the operation.
 	DeleteAwsCluster(ctx context.Context, in *DeleteAwsClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Generates an access token for a cluster agent.
+	GenerateAwsClusterAgentToken(ctx context.Context, in *GenerateAwsClusterAgentTokenRequest, opts ...grpc.CallOption) (*GenerateAwsClusterAgentTokenResponse, error)
 	// Generates a short-lived access token to authenticate to a given
 	// [AwsCluster][mockgcp.cloud.gkemulticloud.v1.AwsCluster] resource.
 	GenerateAwsAccessToken(ctx context.Context, in *GenerateAwsAccessTokenRequest, opts ...grpc.CallOption) (*GenerateAwsAccessTokenResponse, error)
@@ -60,6 +62,13 @@ type AwsClustersClient interface {
 	CreateAwsNodePool(ctx context.Context, in *CreateAwsNodePoolRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Updates an [AwsNodePool][mockgcp.cloud.gkemulticloud.v1.AwsNodePool].
 	UpdateAwsNodePool(ctx context.Context, in *UpdateAwsNodePoolRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Rolls back a previously aborted or failed
+	// [AwsNodePool][mockgcp.cloud.gkemulticloud.v1.AwsNodePool] update request.
+	// Makes no changes if the last update request successfully finished.
+	// If an update request is in progress, you cannot rollback the update.
+	// You must first cancel or let it finish unsuccessfully before you can
+	// rollback.
+	RollbackAwsNodePoolUpdate(ctx context.Context, in *RollbackAwsNodePoolUpdateRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Describes a specific
 	// [AwsNodePool][mockgcp.cloud.gkemulticloud.v1.AwsNodePool] resource.
 	GetAwsNodePool(ctx context.Context, in *GetAwsNodePoolRequest, opts ...grpc.CallOption) (*AwsNodePool, error)
@@ -74,6 +83,15 @@ type AwsClustersClient interface {
 	// [Operation][google.longrunning.Operation] resource that can be
 	// described to track the status of the operation.
 	DeleteAwsNodePool(ctx context.Context, in *DeleteAwsNodePoolRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Gets the OIDC discovery document for the cluster.
+	// See the
+	// [OpenID Connect Discovery 1.0
+	// specification](https://openid.net/specs/openid-connect-discovery-1_0.html)
+	// for details.
+	GetAwsOpenIdConfig(ctx context.Context, in *GetAwsOpenIdConfigRequest, opts ...grpc.CallOption) (*AwsOpenIdConfig, error)
+	// Gets the public component of the cluster signing keys in
+	// JSON Web Key format.
+	GetAwsJsonWebKeys(ctx context.Context, in *GetAwsJsonWebKeysRequest, opts ...grpc.CallOption) (*AwsJsonWebKeys, error)
 	// Returns information, such as supported AWS regions and Kubernetes
 	// versions, on a given Google Cloud location.
 	GetAwsServerConfig(ctx context.Context, in *GetAwsServerConfigRequest, opts ...grpc.CallOption) (*AwsServerConfig, error)
@@ -132,6 +150,15 @@ func (c *awsClustersClient) DeleteAwsCluster(ctx context.Context, in *DeleteAwsC
 	return out, nil
 }
 
+func (c *awsClustersClient) GenerateAwsClusterAgentToken(ctx context.Context, in *GenerateAwsClusterAgentTokenRequest, opts ...grpc.CallOption) (*GenerateAwsClusterAgentTokenResponse, error) {
+	out := new(GenerateAwsClusterAgentTokenResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AwsClusters/GenerateAwsClusterAgentToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *awsClustersClient) GenerateAwsAccessToken(ctx context.Context, in *GenerateAwsAccessTokenRequest, opts ...grpc.CallOption) (*GenerateAwsAccessTokenResponse, error) {
 	out := new(GenerateAwsAccessTokenResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AwsClusters/GenerateAwsAccessToken", in, out, opts...)
@@ -159,6 +186,15 @@ func (c *awsClustersClient) UpdateAwsNodePool(ctx context.Context, in *UpdateAws
 	return out, nil
 }
 
+func (c *awsClustersClient) RollbackAwsNodePoolUpdate(ctx context.Context, in *RollbackAwsNodePoolUpdateRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AwsClusters/RollbackAwsNodePoolUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *awsClustersClient) GetAwsNodePool(ctx context.Context, in *GetAwsNodePoolRequest, opts ...grpc.CallOption) (*AwsNodePool, error) {
 	out := new(AwsNodePool)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AwsClusters/GetAwsNodePool", in, out, opts...)
@@ -180,6 +216,24 @@ func (c *awsClustersClient) ListAwsNodePools(ctx context.Context, in *ListAwsNod
 func (c *awsClustersClient) DeleteAwsNodePool(ctx context.Context, in *DeleteAwsNodePoolRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AwsClusters/DeleteAwsNodePool", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *awsClustersClient) GetAwsOpenIdConfig(ctx context.Context, in *GetAwsOpenIdConfigRequest, opts ...grpc.CallOption) (*AwsOpenIdConfig, error) {
+	out := new(AwsOpenIdConfig)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AwsClusters/GetAwsOpenIdConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *awsClustersClient) GetAwsJsonWebKeys(ctx context.Context, in *GetAwsJsonWebKeysRequest, opts ...grpc.CallOption) (*AwsJsonWebKeys, error) {
+	out := new(AwsJsonWebKeys)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AwsClusters/GetAwsJsonWebKeys", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -224,6 +278,8 @@ type AwsClustersServer interface {
 	// [Operation][google.longrunning.Operation] resource that can be
 	// described to track the status of the operation.
 	DeleteAwsCluster(context.Context, *DeleteAwsClusterRequest) (*longrunningpb.Operation, error)
+	// Generates an access token for a cluster agent.
+	GenerateAwsClusterAgentToken(context.Context, *GenerateAwsClusterAgentTokenRequest) (*GenerateAwsClusterAgentTokenResponse, error)
 	// Generates a short-lived access token to authenticate to a given
 	// [AwsCluster][mockgcp.cloud.gkemulticloud.v1.AwsCluster] resource.
 	GenerateAwsAccessToken(context.Context, *GenerateAwsAccessTokenRequest) (*GenerateAwsAccessTokenResponse, error)
@@ -236,6 +292,13 @@ type AwsClustersServer interface {
 	CreateAwsNodePool(context.Context, *CreateAwsNodePoolRequest) (*longrunningpb.Operation, error)
 	// Updates an [AwsNodePool][mockgcp.cloud.gkemulticloud.v1.AwsNodePool].
 	UpdateAwsNodePool(context.Context, *UpdateAwsNodePoolRequest) (*longrunningpb.Operation, error)
+	// Rolls back a previously aborted or failed
+	// [AwsNodePool][mockgcp.cloud.gkemulticloud.v1.AwsNodePool] update request.
+	// Makes no changes if the last update request successfully finished.
+	// If an update request is in progress, you cannot rollback the update.
+	// You must first cancel or let it finish unsuccessfully before you can
+	// rollback.
+	RollbackAwsNodePoolUpdate(context.Context, *RollbackAwsNodePoolUpdateRequest) (*longrunningpb.Operation, error)
 	// Describes a specific
 	// [AwsNodePool][mockgcp.cloud.gkemulticloud.v1.AwsNodePool] resource.
 	GetAwsNodePool(context.Context, *GetAwsNodePoolRequest) (*AwsNodePool, error)
@@ -250,6 +313,15 @@ type AwsClustersServer interface {
 	// [Operation][google.longrunning.Operation] resource that can be
 	// described to track the status of the operation.
 	DeleteAwsNodePool(context.Context, *DeleteAwsNodePoolRequest) (*longrunningpb.Operation, error)
+	// Gets the OIDC discovery document for the cluster.
+	// See the
+	// [OpenID Connect Discovery 1.0
+	// specification](https://openid.net/specs/openid-connect-discovery-1_0.html)
+	// for details.
+	GetAwsOpenIdConfig(context.Context, *GetAwsOpenIdConfigRequest) (*AwsOpenIdConfig, error)
+	// Gets the public component of the cluster signing keys in
+	// JSON Web Key format.
+	GetAwsJsonWebKeys(context.Context, *GetAwsJsonWebKeysRequest) (*AwsJsonWebKeys, error)
 	// Returns information, such as supported AWS regions and Kubernetes
 	// versions, on a given Google Cloud location.
 	GetAwsServerConfig(context.Context, *GetAwsServerConfigRequest) (*AwsServerConfig, error)
@@ -275,6 +347,9 @@ func (UnimplementedAwsClustersServer) ListAwsClusters(context.Context, *ListAwsC
 func (UnimplementedAwsClustersServer) DeleteAwsCluster(context.Context, *DeleteAwsClusterRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAwsCluster not implemented")
 }
+func (UnimplementedAwsClustersServer) GenerateAwsClusterAgentToken(context.Context, *GenerateAwsClusterAgentTokenRequest) (*GenerateAwsClusterAgentTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateAwsClusterAgentToken not implemented")
+}
 func (UnimplementedAwsClustersServer) GenerateAwsAccessToken(context.Context, *GenerateAwsAccessTokenRequest) (*GenerateAwsAccessTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateAwsAccessToken not implemented")
 }
@@ -284,6 +359,9 @@ func (UnimplementedAwsClustersServer) CreateAwsNodePool(context.Context, *Create
 func (UnimplementedAwsClustersServer) UpdateAwsNodePool(context.Context, *UpdateAwsNodePoolRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateAwsNodePool not implemented")
 }
+func (UnimplementedAwsClustersServer) RollbackAwsNodePoolUpdate(context.Context, *RollbackAwsNodePoolUpdateRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RollbackAwsNodePoolUpdate not implemented")
+}
 func (UnimplementedAwsClustersServer) GetAwsNodePool(context.Context, *GetAwsNodePoolRequest) (*AwsNodePool, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAwsNodePool not implemented")
 }
@@ -292,6 +370,12 @@ func (UnimplementedAwsClustersServer) ListAwsNodePools(context.Context, *ListAws
 }
 func (UnimplementedAwsClustersServer) DeleteAwsNodePool(context.Context, *DeleteAwsNodePoolRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAwsNodePool not implemented")
+}
+func (UnimplementedAwsClustersServer) GetAwsOpenIdConfig(context.Context, *GetAwsOpenIdConfigRequest) (*AwsOpenIdConfig, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAwsOpenIdConfig not implemented")
+}
+func (UnimplementedAwsClustersServer) GetAwsJsonWebKeys(context.Context, *GetAwsJsonWebKeysRequest) (*AwsJsonWebKeys, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAwsJsonWebKeys not implemented")
 }
 func (UnimplementedAwsClustersServer) GetAwsServerConfig(context.Context, *GetAwsServerConfigRequest) (*AwsServerConfig, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAwsServerConfig not implemented")
@@ -399,6 +483,24 @@ func _AwsClusters_DeleteAwsCluster_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AwsClusters_GenerateAwsClusterAgentToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateAwsClusterAgentTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AwsClustersServer).GenerateAwsClusterAgentToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkemulticloud.v1.AwsClusters/GenerateAwsClusterAgentToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AwsClustersServer).GenerateAwsClusterAgentToken(ctx, req.(*GenerateAwsClusterAgentTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AwsClusters_GenerateAwsAccessToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GenerateAwsAccessTokenRequest)
 	if err := dec(in); err != nil {
@@ -449,6 +551,24 @@ func _AwsClusters_UpdateAwsNodePool_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AwsClustersServer).UpdateAwsNodePool(ctx, req.(*UpdateAwsNodePoolRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AwsClusters_RollbackAwsNodePoolUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RollbackAwsNodePoolUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AwsClustersServer).RollbackAwsNodePoolUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkemulticloud.v1.AwsClusters/RollbackAwsNodePoolUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AwsClustersServer).RollbackAwsNodePoolUpdate(ctx, req.(*RollbackAwsNodePoolUpdateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -507,6 +627,42 @@ func _AwsClusters_DeleteAwsNodePool_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AwsClusters_GetAwsOpenIdConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAwsOpenIdConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AwsClustersServer).GetAwsOpenIdConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkemulticloud.v1.AwsClusters/GetAwsOpenIdConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AwsClustersServer).GetAwsOpenIdConfig(ctx, req.(*GetAwsOpenIdConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AwsClusters_GetAwsJsonWebKeys_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAwsJsonWebKeysRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AwsClustersServer).GetAwsJsonWebKeys(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkemulticloud.v1.AwsClusters/GetAwsJsonWebKeys",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AwsClustersServer).GetAwsJsonWebKeys(ctx, req.(*GetAwsJsonWebKeysRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AwsClusters_GetAwsServerConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAwsServerConfigRequest)
 	if err := dec(in); err != nil {
@@ -553,6 +709,10 @@ var AwsClusters_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AwsClusters_DeleteAwsCluster_Handler,
 		},
 		{
+			MethodName: "GenerateAwsClusterAgentToken",
+			Handler:    _AwsClusters_GenerateAwsClusterAgentToken_Handler,
+		},
+		{
 			MethodName: "GenerateAwsAccessToken",
 			Handler:    _AwsClusters_GenerateAwsAccessToken_Handler,
 		},
@@ -565,6 +725,10 @@ var AwsClusters_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AwsClusters_UpdateAwsNodePool_Handler,
 		},
 		{
+			MethodName: "RollbackAwsNodePoolUpdate",
+			Handler:    _AwsClusters_RollbackAwsNodePoolUpdate_Handler,
+		},
+		{
 			MethodName: "GetAwsNodePool",
 			Handler:    _AwsClusters_GetAwsNodePool_Handler,
 		},
@@ -575,6 +739,14 @@ var AwsClusters_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteAwsNodePool",
 			Handler:    _AwsClusters_DeleteAwsNodePool_Handler,
+		},
+		{
+			MethodName: "GetAwsOpenIdConfig",
+			Handler:    _AwsClusters_GetAwsOpenIdConfig_Handler,
+		},
+		{
+			MethodName: "GetAwsJsonWebKeys",
+			Handler:    _AwsClusters_GetAwsJsonWebKeys_Handler,
 		},
 		{
 			MethodName: "GetAwsServerConfig",
