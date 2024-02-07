@@ -188,7 +188,7 @@ func (s *MockService) parseDashboardName(name string) (*dashboardName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "dashboards" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}

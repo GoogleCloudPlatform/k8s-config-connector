@@ -452,6 +452,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					// Remove headers that just aren't very relevant to testing
 					events.RemoveHTTPResponseHeader("Date")
 					events.RemoveHTTPResponseHeader("Alt-Svc")
+					events.RemoveHTTPResponseHeader("Server-Timing")
 
 					got := events.FormatHTTP()
 					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")

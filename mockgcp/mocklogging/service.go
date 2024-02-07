@@ -12,31 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockmonitoring
+package mocklogging
 
 import (
 	"context"
 	"net/http"
 
+	"google.golang.org/grpc"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/logging/v2"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"google.golang.org/grpc"
-
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
 )
 
-// MockService represents a mocked apikeys service.
+// MockService represents a mocked networkservices service.
 type MockService struct {
 	*common.MockEnvironment
 	storage    storage.Storage
 	operations *operations.Operations
-}
-
-type DashboardsService struct {
-	*MockService
-	pb.UnimplementedDashboardsServiceServer
 }
 
 // New creates a MockService.
@@ -50,17 +45,19 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 }
 
 func (s *MockService) ExpectedHost() string {
-	return "monitoring.googleapis.com"
+	return "logging.googleapis.com"
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterDashboardsServiceServer(grpcServer, &DashboardsService{MockService: s})
+	pb.RegisterMetricsServiceV2Server(grpcServer, &metricsService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, pb.RegisterDashboardsServiceHandler)
+	mux, err := httpmux.NewServeMux(ctx, conn,
+		pb.RegisterMetricsServiceV2Handler)
 	if err != nil {
 		return nil, err
 	}
+
 	return mux, nil
 }
