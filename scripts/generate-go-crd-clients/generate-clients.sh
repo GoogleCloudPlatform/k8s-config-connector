@@ -62,4 +62,4 @@ go run ${GOPATH_REPO_ROOT}/scripts/client-gen/main.go --clientset-name versioned
 # generated files out into a cleared pkg/client/ folder
 rm -rf client/
 mv ../github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client .
-rm -rf ../cnrm.googlesource.com
+rm -rf ../github.com
