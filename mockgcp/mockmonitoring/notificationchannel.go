@@ -28,6 +28,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/golang/protobuf/ptypes/empty"
 )
 
@@ -139,6 +140,31 @@ func (s *NotificationsChannelService) DeleteNotificationChannel(ctx context.Cont
 	}
 
 	fqn := name.String()
+
+	existing := &pb.NotificationChannel{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "alertPolicy %q not found", name)
+		} else {
+			return nil, status.Errorf(codes.Internal, "error deleting alertPolicy: %v", err)
+		}
+	}
+
+	// NotificationChannel must not have any AlertPolicies depending on it
+	alertPolicyKind := (&pb.AlertPolicy{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, alertPolicyKind, storage.ListOptions{}, func(obj proto.Message) error {
+		alertPolicy := obj.(*pb.AlertPolicy)
+		for _, nc := range alertPolicy.GetNotificationChannels() {
+			if nc == existing.GetName() {
+				return status.Errorf(codes.FailedPrecondition,
+					"Could not delete %q because it is still being referenced by: %q",
+					existing.GetName(), alertPolicy.GetName())
+			}
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
 
 	deleted := &pb.NotificationChannel{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {

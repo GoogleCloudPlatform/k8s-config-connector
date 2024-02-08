@@ -179,6 +179,9 @@ func TestAllInSeries(t *testing.T) {
 							if tokens[n-2] == "notificationChannels" {
 								replacements[tokens[n-1]] = "${notificationChannelId}"
 							}
+							if tokens[n-2] == "alertPolicies" {
+								replacements[tokens[n-1]] = "${alertPolicyId}"
+							}
 						}
 					}
 
@@ -330,6 +333,11 @@ func TestAllInSeries(t *testing.T) {
 							ReplaceValue: "2024-01-01T...",
 						}
 						r.Walk(obj)
+						r2 := &objectReplacer{
+							Field:        "mutatedBy",
+							ReplaceValue: "user@example.com",
+						}
+						r2.Walk(obj)
 					})
 
 					events.PrettifyJSON(jsonMutators...)
@@ -382,7 +390,7 @@ func (r *objectReplacer) walkAny(o any) any {
 			o[i] = r.walkAny(o[i])
 		}
 		return o
-	case string, int, bool, float32:
+	case string, int, bool, float32, float64:
 		// leaf type, no changes
 		return o
 	default:
