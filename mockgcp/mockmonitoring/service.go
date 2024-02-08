@@ -26,7 +26,8 @@ import (
 	"google.golang.org/grpc"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
+	dashboardpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
+	monitoringpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
 )
 
 // MockService represents a mocked apikeys service.
@@ -40,7 +41,7 @@ type MockService struct {
 
 type DashboardsService struct {
 	*MockService
-	pb.UnimplementedDashboardsServiceServer
+	dashboardpb.UnimplementedDashboardsServiceServer
 }
 
 // New creates a MockService.
@@ -59,11 +60,14 @@ func (s *MockService) ExpectedHost() string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterDashboardsServiceServer(grpcServer, &DashboardsService{MockService: s})
+	dashboardpb.RegisterDashboardsServiceServer(grpcServer, &DashboardsService{MockService: s})
+	monitoringpb.RegisterNotificationChannelServiceServer(grpcServer, &NotificationsChannelService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, pb.RegisterDashboardsServiceHandler)
+	mux, err := httpmux.NewServeMux(ctx, conn,
+		monitoringpb.RegisterNotificationChannelServiceHandler,
+		dashboardpb.RegisterDashboardsServiceHandler)
 	if err != nil {
 		return nil, err
 	}
