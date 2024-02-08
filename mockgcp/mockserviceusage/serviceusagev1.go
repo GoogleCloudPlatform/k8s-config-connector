@@ -76,7 +76,7 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 
 	service.State = pb.State_ENABLED
 	if err := s.storage.Update(ctx, fqn, service); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating service: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -110,7 +110,7 @@ func (s *ServiceUsageV1) DisableService(ctx context.Context, req *pb.DisableServ
 	} else {
 		service.State = pb.State_DISABLED
 		if err := s.storage.Update(ctx, fqn, service); err != nil {
-			return nil, status.Errorf(codes.Internal, "error updating service: %v", err)
+			return nil, err
 		}
 	}
 

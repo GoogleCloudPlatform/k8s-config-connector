@@ -243,7 +243,7 @@ func (s *SecretsV1) EnableSecretVersion(ctx context.Context, req *pb.EnableSecre
 	secretVersion.State = pb.SecretVersion_ENABLED
 	fqn := secretVersion.Name
 	if err := s.storage.Update(ctx, fqn, secretVersion); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating secret version: %v", err)
+		return nil, err
 	}
 
 	return secretVersion, nil
@@ -263,7 +263,7 @@ func (s *SecretsV1) DisableSecretVersion(ctx context.Context, req *pb.DisableSec
 	secretVersion.State = pb.SecretVersion_DISABLED
 	fqn := secretVersion.Name
 	if err := s.storage.Update(ctx, fqn, secretVersion); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating secret version: %v", err)
+		return nil, err
 	}
 
 	return secretVersion, nil
@@ -291,7 +291,7 @@ func (s *SecretsV1) DestroySecretVersion(ctx context.Context, req *pb.DestroySec
 	secretVersion.State = pb.SecretVersion_DESTROYED
 	fqn := secretVersion.Name
 	if err := s.storage.Update(ctx, fqn, secretVersion); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating secret version: %v", err)
+		return nil, err
 	}
 
 	return secretVersion, nil

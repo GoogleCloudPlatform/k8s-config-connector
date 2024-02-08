@@ -101,7 +101,7 @@ func (s *CloudFunctionsV1) UpdateFunction(ctx context.Context, req *pb.UpdateFun
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating cloudFunction: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

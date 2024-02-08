@@ -100,7 +100,7 @@ func (s *CertificateManagerV1) UpdateCertificate(ctx context.Context, req *pb.Up
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating certificate: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -193,7 +193,7 @@ func (s *CertificateManagerV1) UpdateCertificateMap(ctx context.Context, req *pb
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating certificateMap: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -287,7 +287,7 @@ func (s *CertificateManagerV1) UpdateDnsAuthorization(ctx context.Context, req *
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating dnsAuthorization: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -380,7 +380,7 @@ func (s *CertificateManagerV1) UpdateCertificateMapEntry(ctx context.Context, re
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating certificateMapEntry: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

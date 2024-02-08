@@ -151,7 +151,7 @@ func (s *APIKeysV2) UpdateKey(ctx context.Context, req *pb.UpdateKeyRequest) (*l
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating key: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

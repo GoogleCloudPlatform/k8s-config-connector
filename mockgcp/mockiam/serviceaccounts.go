@@ -173,7 +173,7 @@ func (s *ServerV1) PatchServiceAccount(ctx context.Context, req *pb.PatchService
 	}
 
 	if err := s.storage.Update(ctx, fqn, sa); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating serviceaccount: %v", err)
+		return nil, err
 	}
 	return sa, nil
 }

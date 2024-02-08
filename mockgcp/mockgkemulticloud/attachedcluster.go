@@ -105,7 +105,7 @@ func (s *GKEMulticloudV1) UpdateAttachedCluster(ctx context.Context, req *pb.Upd
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating attachedCluster: %v", err)
+		return nil, err
 	}
 	return s.operations.NewLRO(ctx)
 }

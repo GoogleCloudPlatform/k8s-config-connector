@@ -104,7 +104,7 @@ func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMe
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating mesh: %v", err)
+		return nil, err
 	}
 	return s.operations.NewLRO(ctx)
 }

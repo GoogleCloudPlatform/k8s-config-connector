@@ -114,7 +114,7 @@ func (s *typeStorage) Update(ctx context.Context, fqn string, update proto.Messa
 
 	_, found := s.byKey[fqn]
 	if !found {
-		return apierrors.NewNotFound(schema.GroupResource{}, fqn)
+		return status.Errorf(codes.NotFound, "%v %q not found", s.objectTypeName, fqn)
 	}
 	s.byKey[fqn] = proto.Clone(update)
 	return nil

@@ -98,7 +98,7 @@ func (s *PrivateCAV1) UpdateCaPool(ctx context.Context, req *pb.UpdateCaPoolRequ
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating caPool: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

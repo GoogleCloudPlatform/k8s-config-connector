@@ -218,7 +218,7 @@ func (s *ProjectsInternal) mutateProject(ctx context.Context, name string, mutat
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating project: %v", err)
+		return nil, err
 	}
 
 	return obj, nil

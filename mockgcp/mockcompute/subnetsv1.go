@@ -106,7 +106,7 @@ func (s *SubnetsV1) SetPrivateIpGoogleAccess(ctx context.Context, req *pb.SetPri
 	obj.PrivateIpGoogleAccess = PtrTo(req.GetSubnetworksSetPrivateIpGoogleAccessRequestResource().GetPrivateIpGoogleAccess())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating subnet: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)

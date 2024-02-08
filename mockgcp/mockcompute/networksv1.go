@@ -97,7 +97,7 @@ func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*p
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating network: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
