@@ -43,6 +43,9 @@ func (s *DashboardsService) GetDashboard(ctx context.Context, req *pb.GetDashboa
 
 	obj := &pb.Dashboard{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
 		return nil, err
 	}
 
