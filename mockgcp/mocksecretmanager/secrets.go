@@ -88,11 +88,7 @@ func (s *SecretsV1) GetSecret(ctx context.Context, req *pb.GetSecretRequest) (*p
 	var secret pb.Secret
 	fqn := name.String()
 	if err := s.storage.Get(ctx, fqn, &secret); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "secret %q not found", req.Name)
-
-		}
-		return nil, status.Errorf(codes.Internal, "error reading secret: %v", err)
+		return nil, err
 	}
 
 	return &secret, nil

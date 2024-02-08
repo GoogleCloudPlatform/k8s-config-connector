@@ -45,11 +45,7 @@ func (s *NetworkServicesServer) GetMesh(ctx context.Context, req *pb.GetMeshRequ
 
 	obj := &pb.Mesh{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "mesh %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading mesh: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -84,10 +80,7 @@ func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMe
 	fqn := name.String()
 	obj := &pb.Mesh{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "mesh %q not found", reqName)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading mesh: %v", err)
+		return nil, err
 	}
 
 	// Field mask is used to specify the fields to be overwritten in the

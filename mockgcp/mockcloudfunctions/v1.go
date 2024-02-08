@@ -42,11 +42,7 @@ func (s *CloudFunctionsV1) GetFunction(ctx context.Context, req *pb.GetFunctionR
 
 	obj := &pb.CloudFunction{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "function %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading function: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -81,10 +77,7 @@ func (s *CloudFunctionsV1) UpdateFunction(ctx context.Context, req *pb.UpdateFun
 	fqn := name.String()
 	obj := &pb.CloudFunction{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "cloudFunction %q not found", reqName)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading cloudFunction: %v", err)
+		return nil, err
 	}
 
 	// Required. The update mask applies to the resource.

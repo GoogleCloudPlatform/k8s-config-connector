@@ -23,10 +23,8 @@ import (
 	rpcstatus "google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/util/uuid"
 	"k8s.io/klog/v2"
 
@@ -122,11 +120,7 @@ func (s *Operations) GetOperation(ctx context.Context, req *pb.GetOperationReque
 
 	op := &pb.Operation{}
 	if err := s.storage.Get(ctx, fqn, op); err != nil {
-		if apierrors.IsNotFound(err) {
-			klog.Infof("LRO not found for %v", prototext.Format(req))
-			return nil, status.Errorf(codes.NotFound, "LRO %q not found", req.Name)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading LRO: %v", err)
+		return nil, err
 	}
 
 	return op, nil

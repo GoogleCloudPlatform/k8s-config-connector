@@ -41,11 +41,7 @@ func (s *GKEMulticloudV1) GetAttachedCluster(ctx context.Context, req *pb.GetAtt
 
 	obj := &pb.AttachedCluster{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "attachedCluster %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading attachedCluster: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -79,10 +75,7 @@ func (s *GKEMulticloudV1) UpdateAttachedCluster(ctx context.Context, req *pb.Upd
 	fqn := name.String()
 	obj := &pb.AttachedCluster{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "attachedCluster %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading attachedCluster: %v", err)
+		return nil, err
 	}
 	// Mask of fields to update. At least one path must be supplied in
 	// this field. The elements of the repeated paths field can only include these

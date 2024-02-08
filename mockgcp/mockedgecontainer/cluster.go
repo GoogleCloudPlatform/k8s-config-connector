@@ -35,11 +35,7 @@ func (s *EdgeContainerV1) GetCluster(ctx context.Context, req *pb.GetClusterRequ
 	fqn := name.String()
 	obj := &pb.Cluster{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "cluster %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading cluster: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil

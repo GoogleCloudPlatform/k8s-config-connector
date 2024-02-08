@@ -41,11 +41,7 @@ func (s *PrivateCAV1) GetCaPool(ctx context.Context, req *pb.GetCaPoolRequest) (
 
 	obj := &pb.CaPool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "caPool %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading caPool: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -81,10 +77,7 @@ func (s *PrivateCAV1) UpdateCaPool(ctx context.Context, req *pb.UpdateCaPoolRequ
 	fqn := name.String()
 	obj := &pb.CaPool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "caPool %q not found", reqName)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading caPool: %v", err)
+		return nil, err
 	}
 
 	// Required. A list of fields to be updated in this request.

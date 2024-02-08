@@ -35,11 +35,7 @@ func (s *EdgenetworkV1) GetSubnet(ctx context.Context, req *pb.GetSubnetRequest)
 	fqn := name.String()
 	obj := &pb.Subnet{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "subnet %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading subnet: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil

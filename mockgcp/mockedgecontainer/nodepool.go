@@ -35,11 +35,7 @@ func (s *EdgeContainerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolRe
 	fqn := name.String()
 	obj := &pb.NodePool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "nodePool %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading nodePool: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil

@@ -36,11 +36,7 @@ func (s *EdgenetworkV1) GetNetwork(ctx context.Context, req *pb.GetNetworkReques
 	fqn := name.String()
 	obj := &pb.Network{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "network %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading network: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil

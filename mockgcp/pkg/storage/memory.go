@@ -19,6 +19,8 @@ import (
 	"strings"
 	"sync"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -33,8 +35,9 @@ type InMemoryStorage struct {
 
 // typeStorage stores objects of a given type
 type typeStorage struct {
-	mutex sync.Mutex
-	byKey map[string]proto.Message
+	mutex          sync.Mutex
+	objectTypeName string
+	byKey          map[string]proto.Message
 }
 
 var _ Storage = &InMemoryStorage{}
@@ -52,8 +55,11 @@ func (s *InMemoryStorage) getTypeStorage(name protoreflect.FullName) *typeStorag
 
 	ts := s.byType[name]
 	if ts == nil {
+		objectTypeName := string(name.Name())
+		objectTypeName = strings.ToLower(string(objectTypeName[0])) + objectTypeName[1:]
 		ts = &typeStorage{
-			byKey: make(map[string]protoreflect.ProtoMessage),
+			objectTypeName: objectTypeName,
+			byKey:          make(map[string]protoreflect.ProtoMessage),
 		}
 		s.byType[name] = ts
 	}
@@ -125,7 +131,7 @@ func (s *typeStorage) Get(ctx context.Context, fqn string, dest proto.Message) e
 
 	existing, found := s.byKey[fqn]
 	if !found {
-		return apierrors.NewNotFound(schema.GroupResource{}, fqn)
+		return status.Errorf(codes.NotFound, "%v %q not found", s.objectTypeName, fqn)
 	}
 	proto.Merge(dest, existing)
 	return nil
