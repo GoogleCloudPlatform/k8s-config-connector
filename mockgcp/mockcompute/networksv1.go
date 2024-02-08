@@ -22,7 +22,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
@@ -113,11 +112,7 @@ func (s *NetworksV1) Delete(ctx context.Context, req *pb.DeleteNetworkRequest) (
 
 	deleted := &pb.Network{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "network %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting network: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)

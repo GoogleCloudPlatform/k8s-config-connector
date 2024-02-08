@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/security/privateca/v1"
 )
@@ -114,11 +113,7 @@ func (s *PrivateCAV1) DeleteCaPool(ctx context.Context, req *pb.DeleteCaPoolRequ
 
 	oldObj := &pb.CaPool{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "caPool %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting caPool: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

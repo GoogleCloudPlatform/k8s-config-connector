@@ -95,7 +95,7 @@ func (s *typeStorage) Delete(ctx context.Context, fqn string, dest proto.Message
 
 	existing, found := s.byKey[fqn]
 	if !found {
-		return apierrors.NewNotFound(schema.GroupResource{}, fqn)
+		return status.Errorf(codes.NotFound, "%v %q not found", s.objectTypeName, fqn)
 	}
 	proto.Merge(dest, existing)
 	delete(s.byKey, fqn)

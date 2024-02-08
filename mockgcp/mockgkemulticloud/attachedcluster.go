@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkemulticloud/v1"
 )
@@ -120,11 +119,7 @@ func (s *GKEMulticloudV1) DeleteAttachedCluster(ctx context.Context, req *pb.Del
 
 	oldObj := &pb.AttachedCluster{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "attachedCluster %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting attachedCluster: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

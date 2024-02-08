@@ -24,7 +24,6 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/apikeys/v2"
 )
@@ -167,11 +166,7 @@ func (s *APIKeysV2) DeleteKey(ctx context.Context, req *pb.DeleteKeyRequest) (*l
 
 	deleted := &pb.Key{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "key %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting key: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

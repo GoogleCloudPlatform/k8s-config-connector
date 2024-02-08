@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/klog/v2"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/certificatemanager/v1"
@@ -116,11 +115,7 @@ func (s *CertificateManagerV1) DeleteCertificate(ctx context.Context, req *pb.De
 
 	deletedObj := &pb.Certificate{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "certificate %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting certificate: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -209,11 +204,7 @@ func (s *CertificateManagerV1) DeleteCertificateMap(ctx context.Context, req *pb
 
 	oldObj := &pb.CertificateMap{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "certificate map %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting certificate map: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -303,11 +294,7 @@ func (s *CertificateManagerV1) DeleteDnsAuthorization(ctx context.Context, req *
 
 	oldObj := &pb.DnsAuthorization{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "dns authorization %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting dns authorization: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -396,11 +383,7 @@ func (s *CertificateManagerV1) DeleteCertificateMapEntry(ctx context.Context, re
 
 	deletedObj := &pb.CertificateMapEntry{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "certificate map entry %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting certificate map entry: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
