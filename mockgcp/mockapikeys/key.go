@@ -44,11 +44,7 @@ func (s *APIKeysV2) GetKey(ctx context.Context, req *pb.GetKeyRequest) (*pb.Key,
 
 	obj := &pb.Key{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "key %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading key: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -64,11 +60,7 @@ func (s *APIKeysV2) GetKeyString(ctx context.Context, req *pb.GetKeyStringReques
 
 	obj := &pb.Key{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "key %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading key: %v", err)
-		}
+		return nil, err
 	}
 
 	keyString := "dummy-encrypted-value"
@@ -112,11 +104,7 @@ func (s *APIKeysV2) UpdateKey(ctx context.Context, req *pb.UpdateKeyRequest) (*l
 
 	obj := &pb.Key{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "key %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading key: %v", err)
-		}
+		return nil, err
 	}
 
 	// From the proto:

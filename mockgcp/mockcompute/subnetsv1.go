@@ -42,11 +42,7 @@ func (s *SubnetsV1) Get(ctx context.Context, req *pb.GetSubnetworkRequest) (*pb.
 
 	obj := &pb.Subnetwork{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "subnet %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading subnet: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -104,10 +100,7 @@ func (s *SubnetsV1) SetPrivateIpGoogleAccess(ctx context.Context, req *pb.SetPri
 	fqn := name.String()
 	obj := &pb.Subnetwork{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "subnet %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading subnet: %v", err)
+		return nil, err
 	}
 
 	obj.PrivateIpGoogleAccess = PtrTo(req.GetSubnetworksSetPrivateIpGoogleAccessRequestResource().GetPrivateIpGoogleAccess())

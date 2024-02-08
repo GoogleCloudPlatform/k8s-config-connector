@@ -43,11 +43,7 @@ func (s *NetworksV1) Get(ctx context.Context, req *pb.GetNetworkRequest) (*pb.Ne
 
 	obj := &pb.Network{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "network %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading network: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -88,10 +84,7 @@ func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*p
 	fqn := name.String()
 	obj := &pb.Network{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "network %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading network: %v", err)
+		return nil, err
 	}
 
 	if req.GetNetworkResource().RoutingConfig != nil {

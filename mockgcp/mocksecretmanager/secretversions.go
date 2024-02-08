@@ -45,11 +45,7 @@ func (s *SecretsV1) AddSecretVersion(ctx context.Context, req *pb.AddSecretVersi
 	var secret pb.Secret
 
 	if err := s.storage.Get(ctx, secretName.String(), &secret); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "secret %q not found", req.Parent)
-
-		}
-		return nil, status.Errorf(codes.Internal, "error reading secret: %v", err)
+		return nil, err
 	}
 
 	secretVersionKind := (&pb.SecretVersion{}).ProtoReflect().Descriptor()
@@ -168,7 +164,7 @@ func (s *MockService) getSecretVersion(ctx context.Context, name *secretVersionN
 	if err := s.storage.Get(ctx, fqn, secretVersionObj); err != nil {
 		// TODO: Delete secret data?
 		// TODO: Owner ref?
-		return nil, status.Errorf(codes.Internal, "error creating secret version: %v", err)
+		return nil, err
 	}
 	return secretVersionObj, nil
 }
