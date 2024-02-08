@@ -33,6 +33,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/klog/v2"
 )
 
 func TestAllInSeries(t *testing.T) {
@@ -167,14 +168,24 @@ func TestAllInSeries(t *testing.T) {
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
 					events := h.Events
 
-					operationIDs := map[string]bool{}
-					pathIDs := map[string]string{}
+					replacements := map[string]string{}
 
-					// Find "easy" operations and resources by looking for fully-qualified methods
-					for _, event := range events.HTTPEvents {
-						u := event.Request.URL
-						if index := strings.Index(u, "?"); index != -1 {
-							u = u[:index]
+					for _, httpEvent := range events.HTTPEvents {
+						url := httpEvent.Request.URL
+						url = strings.TrimSuffix(url, "?alt=json")
+						tokens := strings.Split(url, "/")
+						n := len(tokens)
+						if n > 2 {
+							if tokens[n-2] == "notificationChannels" {
+								replacements[tokens[n-1]] = "${notificationChannelId}"
+							}
+						}
+					}
+
+					// TODO: Fix how we poll / wait for objects being ready.
+					events.RemoveRequests(func(e *test.LogEntry) bool {
+						if e.Response.StatusCode == 404 && e.Request.Method == "GET" {
+							return true
 						}
 						tokens := strings.Split(u, "/")
 						n := len(tokens)
@@ -307,6 +318,20 @@ func TestAllInSeries(t *testing.T) {
 						}
 					})
 
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						_, found, _ := unstructured.NestedString(obj, "creationRecord", "mutateTime")
+						if found {
+							unstructured.SetNestedField(obj, "2024-01-01T...", "creationRecord", "mutateTime")
+						}
+					})
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						r := &objectReplacer{
+							Field:        "mutateTime",
+							ReplaceValue: "2024-01-01T...",
+						}
+						r.Walk(obj)
+					})
+
 					events.PrettifyJSON(jsonMutators...)
 
 					// Remove headers that just aren't very relevant to testing
@@ -320,11 +345,11 @@ func TestAllInSeries(t *testing.T) {
 					normalizers = append(normalizers, h.ReplaceString(uniqueID, "${uniqueId}"))
 					normalizers = append(normalizers, h.ReplaceString(project.ProjectID, "${projectId}"))
 					normalizers = append(normalizers, h.ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
-					for k, v := range pathIDs {
-						normalizers = append(normalizers, h.ReplaceString(k, v))
-					}
 					for k := range operationIDs {
 						normalizers = append(normalizers, h.ReplaceString(k, "${operationID}"))
+					}
+					for k, v := range replacements {
+						normalizers = append(normalizers, h.ReplaceString(k, v))
 					}
 					h.CompareGoldenFile(expectedPath, got, normalizers...)
 				}
@@ -341,4 +366,37 @@ func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project test
 	t.Helper()
 	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, project)
 	return test.ToUnstructWithNamespace(t, updatedBytes, testID)
+}
+
+type objectReplacer struct {
+	Field        string
+	ReplaceValue string
+}
+
+func (r *objectReplacer) walkAny(o any) any {
+	switch o := o.(type) {
+	case map[string]any:
+		return r.Walk(o)
+	case []any:
+		for i := range o {
+			o[i] = r.walkAny(o[i])
+		}
+		return o
+	case string, int, bool, float32:
+		// leaf type, no changes
+		return o
+	default:
+		klog.Fatalf("unhandled type in objectReplacer: %T", o)
+		return o
+	}
+}
+func (r *objectReplacer) Walk(obj map[string]any) any {
+	for k, v := range obj {
+		if k == r.Field {
+			obj[k] = r.ReplaceValue
+		} else {
+			obj[k] = r.walkAny(v)
+		}
+	}
+	return obj
 }
