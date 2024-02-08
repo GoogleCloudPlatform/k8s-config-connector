@@ -277,6 +277,10 @@ func NewIAMClient(t *testing.T) *iam.Service {
 
 func ResourceSupportsDeletion(resourceKind string) bool {
 	switch resourceKind {
+	case "APIKeysKey":
+		// APIKeysKey has a delete method, but the key is only marked for deletion.
+		return false
+
 	case "BigQueryJob",
 		"BinaryAuthorizationPolicy",
 		"ComputeProjectMetadata",
