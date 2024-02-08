@@ -524,6 +524,7 @@ spec:
             kind: ComputeSubnetwork
             version: v1beta1
             group: compute.cnrm.cloud.google.com
+          targetField: self_link
         - key: backendServiceRef
           tfField: backend_service
           description: |-
@@ -672,6 +673,7 @@ spec:
             kind: ComputeSubnetwork
             version: v1beta1
             group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project

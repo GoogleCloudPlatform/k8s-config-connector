@@ -465,7 +465,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `ComputeSubnetwork`
+                    description: 'Allowed value: The `selfLink` field of a `ComputeSubnetwork`
                       resource.'
                     type: string
                   name:
