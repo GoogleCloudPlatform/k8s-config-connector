@@ -108,8 +108,8 @@ func getCRDAssertResult(t *testing.T, tc CRDTestCase, getCRDFunc func(string, st
 	if tc.Group != "" && crd.Spec.Group != tc.Group {
 		t.Errorf("mismatched value for 'group': got '%v', want '%v'", crd.Spec.Group, tc.Group)
 	}
-	version := k8s.GetVersionFromCRD(crd)
-	if tc.Version != "" && version != tc.Version {
-		t.Errorf("mismatched value for 'version': got '%v', want '%v'", version, tc.Version)
+	crdGVK := k8s.GetLatestGVKFromCRD(crd)
+	if tc.Version != "" && crdGVK.Version != tc.Version {
+		t.Errorf("mismatched value for 'version': got '%v', want '%v'", crdGVK.Version, tc.Version)
 	}
 }

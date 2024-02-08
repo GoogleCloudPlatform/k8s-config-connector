@@ -42,9 +42,9 @@ func FileNameForCRD(crd *apiextensions.CustomResourceDefinition) (string, error)
 	if err != nil {
 		return "", err
 	}
-	version := k8s.GetVersionFromCRD(crd)
-	kind := getKind(crd)
-	fileName := strings.Join([]string{group, version, kind}, "_") + ".yaml"
+	gvk := k8s.GetLatestGVKFromCRD(crd)
+	fileName := strings.Join([]string{group, gvk.Version, gvk.Kind}, "_") + ".yaml"
+	fileName = strings.ToLower(fileName)
 	return fileName, nil
 }
 
@@ -54,10 +54,6 @@ func getGroup(crd *apiextensions.CustomResourceDefinition) (string, error) {
 		return "", fmt.Errorf("unable to parse group %v", crd.Spec.Group)
 	}
 	return groupSplit[0], nil
-}
-
-func getKind(crd *apiextensions.CustomResourceDefinition) string {
-	return strings.ToLower(crd.Spec.Names.Kind)
 }
 
 func GenerateShortNames(kind string) []string {

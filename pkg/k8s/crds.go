@@ -18,24 +18,62 @@ import (
 	"fmt"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-func GetAPIVersionFromCRD(crd *apiextensions.CustomResourceDefinition) string {
+// GetLatestGVKFromCRD returns the GVK the CRD is for.
+// One CRD can describe multiple versions; we choose the latest.
+func GetLatestGVKFromCRD(crd *apiextensions.CustomResourceDefinition) schema.GroupVersionKind {
 	panicIfNoVersionPresent(crd)
-	// Currently KCC CRDs only support one version.
-	return fmt.Sprintf("%v/%v", crd.Spec.Group, crd.Spec.Versions[0].Name)
+	latestVersion := getLatestVersion(crd)
+	return schema.GroupVersionKind{
+		Group:   crd.Spec.Group,
+		Version: latestVersion,
+		Kind:    crd.Spec.Names.Kind,
+	}
 }
 
-func GetVersionFromCRD(crd *apiextensions.CustomResourceDefinition) string {
-	panicIfNoVersionPresent(crd)
-	// Currently KCC CRDs only support one version.
-	return crd.Spec.Versions[0].Name
+var scoreForVersion = map[string]int{
+	"v1alpha1": 111,
+	"v1beta1":  121,
+	"v1":       131,
 }
 
-func GetOpenAPIV3SchemaFromCRD(crd *apiextensions.CustomResourceDefinition) *apiextensions.JSONSchemaProps {
+func getLatestVersion(crd *apiextensions.CustomResourceDefinition) string {
+	versions := crd.Spec.Versions
+	bestScore := -1
+	bestVersion := ""
+	for _, version := range versions {
+		score, found := scoreForVersion[version.Name]
+		if !found {
+			panic(fmt.Sprintf("version %q is not known in getLatestVersion", version.Name))
+		}
+		if score > bestScore {
+			bestVersion = version.Name
+			bestScore = score
+		}
+	}
+	return bestVersion
+}
+
+func GetAllVersionsFromCRD(crd *apiextensions.CustomResourceDefinition) []string {
 	panicIfNoVersionPresent(crd)
+	var versions []string
+	for _, version := range crd.Spec.Versions {
+		versions = append(versions, version.Name)
+	}
+	return versions
+}
+
+func GetOpenAPIV3SchemaFromCRD(crd *apiextensions.CustomResourceDefinition, version string) *apiextensions.JSONSchemaProps {
 	// Currently KCC CRDs only support one version.
-	return crd.Spec.Versions[0].Schema.OpenAPIV3Schema
+	for i := range crd.Spec.Versions {
+		v := &crd.Spec.Versions[i]
+		if v.Name == version {
+			return v.Schema.OpenAPIV3Schema
+		}
+	}
+	panic(fmt.Sprintf("version %q is not known in GetOpenAPIV3SchemaFromCRD", version))
 }
 
 func panicIfNoVersionPresent(crd *apiextensions.CustomResourceDefinition) {

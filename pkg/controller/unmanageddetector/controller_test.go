@@ -143,16 +143,12 @@ func newTestKindCRD() *apiextensions.CustomResourceDefinition {
 }
 
 func newTestKindUnstructured(nn types.NamespacedName) *unstructured.Unstructured {
-	return &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"apiVersion": fmt.Sprintf("%v/%v", fakeCRD.Spec.Group, k8s.GetVersionFromCRD(fakeCRD)),
-			"kind":       fakeCRD.Spec.Names.Kind,
-			"metadata": map[string]interface{}{
-				"namespace": nn.Namespace,
-				"name":      nn.Name,
-			},
-		},
-	}
+	gvk := k8s.GetLatestGVKFromCRD(fakeCRD)
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(gvk)
+	u.SetNamespace(nn.Namespace)
+	u.SetName(nn.Name)
+	return u
 }
 
 func newControllerUnstructuredForNamespace(namespace string) *unstructured.Unstructured {

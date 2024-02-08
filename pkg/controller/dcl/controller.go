@@ -54,7 +54,6 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
@@ -95,21 +94,16 @@ type Reconciler struct {
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter,
 	dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader) (k8s.SchemaReferenceUpdater, error) {
-	kind := crd.Spec.Names.Kind
-	apiVersion := k8s.GetAPIVersionFromCRD(crd)
-	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
+	gvk := k8s.GetLatestGVKFromCRD(crd)
+	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(gvk.Kind))
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
 	r, err := NewReconciler(mgr, crd, converter, dclConfig, serviceMappingLoader, immediateReconcileRequests, resourceWatcherRoutines)
 	if err != nil {
 		return nil, err
 	}
-	obj := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"kind":       kind,
-			"apiVersion": apiVersion,
-		},
-	}
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(gvk)
 	_, err = builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
@@ -120,17 +114,13 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 	if err != nil {
 		return nil, fmt.Errorf("error creating new controller: %v", err)
 	}
-	logger.V(2).Info("Registered dcl controller", "kind", kind, "apiVersion", apiVersion)
+	logger.V(2).Info("Registered dcl controller", "kind", gvk.Kind, "apiVersion", gvk.GroupVersion().String())
 	return r, nil
 }
 
 func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter, dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted) (*Reconciler, error) {
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
-	gvk := schema.GroupVersionKind{
-		Group:   crd.Spec.Group,
-		Version: k8s.GetVersionFromCRD(crd),
-		Kind:    crd.Spec.Names.Kind,
-	}
+	gvk := k8s.GetLatestGVKFromCRD(crd)
 	dclSchema, err := dclschemaloader.GetDCLSchemaForGVK(gvk, converter.MetadataLoader, converter.SchemaLoader)
 	if err != nil {
 		return nil, err
@@ -147,7 +137,7 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		mgr: mgr,
 		schemaRef: &k8s.SchemaReference{
 			CRD:        crd,
-			JsonSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
+			JsonSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd, gvk.Version),
 			GVK:        gvk,
 		},
 		resourceLeaser:             leaser.NewResourceLeaser(nil, nil, mgr.GetClient()),

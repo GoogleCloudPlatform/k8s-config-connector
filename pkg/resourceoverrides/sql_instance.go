@@ -42,10 +42,12 @@ func GetSQLInstanceResourceOverrides() ResourceOverrides {
 func copyInstanceTypeFieldToStatus() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
-		spec := schema.Properties["spec"]
-		status := schema.Properties["status"]
-		status.Properties["instanceType"] = spec.Properties["instanceType"]
+		for _, version := range k8s.GetAllVersionsFromCRD(crd) {
+			schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
+			spec := schema.Properties["spec"]
+			status := schema.Properties["status"]
+			status.Properties["instanceType"] = spec.Properties["instanceType"]
+		}
 
 		return nil
 	}
@@ -69,8 +71,8 @@ func keepDatabaseVersionFieldOptionalWithDefault() ResourceOverride {
 
 func keepFirstGenerationFields() ResourceOverride {
 	o := ResourceOverride{}
-	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	decorateVersion := func(crd *apiextensions.CustomResourceDefinition, version string) {
+		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 		settings := schema.Properties["spec"].Properties["settings"]
 		settings.Properties["authorizedGaeApplications"] = apiextensions.JSONSchemaProps{
 			Description: "DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.\n" +
@@ -91,6 +93,11 @@ func keepFirstGenerationFields() ResourceOverride {
 			Description: "DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.\n" +
 				"Specifying this field has no-ops; it's recommended to remove this field from your configuration.",
 			Type: "string",
+		}
+	}
+	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
+		for _, version := range k8s.GetAllVersionsFromCRD(crd) {
+			decorateVersion(crd, version)
 		}
 		return nil
 	}

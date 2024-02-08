@@ -50,12 +50,14 @@ func (h *LoggingLogSink) CRDDecorate(crd *apiextensions.CustomResourceDefinition
 	// Add description to mention only external field is supported for loggingLogBucketRef.
 	// See b/221957221 for context.
 	// TODO(b/227524735): Remove this ResourceOverride when b/200585845 is implemented
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
-	spec := schema.Properties["spec"]
-	destination := spec.Properties["destination"]
-	loggingLogBucketRef := destination.Properties["loggingLogBucketRef"]
-	loggingLogBucketRef.Description = "Only `external` field is supported to configure the reference."
-	destination.Properties["loggingLogBucketRef"] = loggingLogBucketRef
+	for _, version := range k8s.GetAllVersionsFromCRD(crd) {
+		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
+		spec := schema.Properties["spec"]
+		destination := spec.Properties["destination"]
+		loggingLogBucketRef := destination.Properties["loggingLogBucketRef"]
+		loggingLogBucketRef.Description = "Only `external` field is supported to configure the reference."
+		destination.Properties["loggingLogBucketRef"] = loggingLogBucketRef
+	}
 	return nil
 }
 

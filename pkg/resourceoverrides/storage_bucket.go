@@ -46,14 +46,16 @@ func GetStorageBucketResourceOverrides() ResourceOverrides {
 func preserveBucketPolicyOnlyField() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
-		spec := schema.Properties["spec"]
-		spec.Properties["bucketPolicyOnly"] = apiextensions.JSONSchemaProps{
-			Type: "boolean",
-			Description: "DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.\n" +
-				"Enables Bucket PolicyOnly access to a bucket.",
+		for _, version := range k8s.GetAllVersionsFromCRD(crd) {
+			schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
+			spec := schema.Properties["spec"]
+			spec.Properties["bucketPolicyOnly"] = apiextensions.JSONSchemaProps{
+				Type: "boolean",
+				Description: "DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.\n" +
+					"Enables Bucket PolicyOnly access to a bucket.",
+			}
+			schema.Properties["spec"] = spec
 		}
-		schema.Properties["spec"] = spec
 		return nil
 	}
 	o.PreActuationTransform = func(r *k8s.Resource) error {
