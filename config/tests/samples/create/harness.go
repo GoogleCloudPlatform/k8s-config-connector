@@ -484,45 +484,33 @@ func (t *Harness) waitForCRDReady(obj client.Object) {
 	}
 }
 
-func (h *Harness) CompareGoldenFile(p string, got string, normalizers ...func(s string) string) {
-	if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-		// Short-circuit when the output is correct
-		b, err := os.ReadFile(p)
-		if err == nil {
-			want := string(b)
-			for _, normalizer := range normalizers {
-				got = normalizer(got)
-				want = normalizer(want)
-			}
-			if want == got {
-				return
-			}
-		}
-
-		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
-			h.Fatalf("failed to write golden output %s: %v", p, err)
-		}
-		h.Errorf("wrote output to %s", p)
-	} else {
-		want := string(h.MustReadFile(p))
-
-		for _, normalizer := range normalizers {
-			got = normalizer(got)
-			want = normalizer(want)
-		}
-
+func (h *Harness) CompareGoldenFile(p string, got string) {
+	b, err := os.ReadFile(p)
+	if err == nil {
+		h.Logf("golden file %s exist, comparing with it", p)
+		want := string(b)
 		if diff := cmp.Diff(want, got); diff != "" {
 			h.Errorf("unexpected diff in %s: %s", p, diff)
 		}
+	} else if os.IsNotExist(err) {
+		if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+			// golden http log does not exist, write golden file
+			if err := os.WriteFile(p, []byte(got), 0644); err != nil {
+				h.Fatalf("failed to write http output %s: %v", p, err)
+			}
+			h.Logf("wrote output to %s", p)
+		} else {
+			h.Fatalf("golden file does not exist, please specify WRITE_GOLDEN_OUTPUT")
+		}
+	} else {
+		h.Fatalf("error reading golden file(%q): %v", p, err)
 	}
 }
 
-func (h *Harness) MustReadFile(p string) []byte {
-	b, err := os.ReadFile(p)
-	if err != nil {
-		h.Fatalf("error from ReadFile(%q): %v", p, err)
+func (h *Harness) NormalizeLog(input string, normalizers ...func(s string) string) {
+	for _, normalizer := range normalizers {
+		input = normalizer(input)
 	}
-	return b
 }
 
 // IgnoreComments is a normalization function that strips comments.

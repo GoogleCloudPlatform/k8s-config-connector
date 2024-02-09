@@ -155,8 +155,12 @@ func TestAllInSeries(t *testing.T) {
 					}
 
 					expectedPath := filepath.Join(fixture.SourceDir, "export.yaml")
-					output := h.MustReadFile(outputPath)
-					h.CompareGoldenFile(expectedPath, string(output), h.IgnoreComments, h.ReplaceString(project.ProjectID, "example-project-id"))
+					output, err := os.ReadFile(outputPath)
+					if err != nil {
+						h.Fatalf("error from ReadFile(%q): %v", outputPath, err)
+					}
+					h.NormalizeLog(string(output), h.IgnoreComments, h.ReplaceString(project.ProjectID, "example-project-id"))
+					h.CompareGoldenFile(expectedPath, string(output))
 				}
 
 				create.DeleteResources(h, opt.Create)
@@ -164,57 +168,21 @@ func TestAllInSeries(t *testing.T) {
 				// Verify events against golden file
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
 					events := h.Events
+					got := formatEvents(events)
 
-					// TODO: Fix how we poll / wait for objects being ready.
-					events.RemoveRequests(func(e *test.LogEntry) bool {
-						if e.Response.StatusCode == 404 && e.Request.Method == "GET" {
-							return true
-						}
-						return false
-					})
-
-					jsonMutators := []test.JSONMutator{}
-
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						_, found, _ := unstructured.NestedString(obj, "uniqueId")
-						if found {
-							unstructured.SetNestedField(obj, "111111111111111111111", "uniqueId")
-						}
-					})
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						_, found, _ := unstructured.NestedString(obj, "oauth2ClientId")
-						if found {
-							unstructured.SetNestedField(obj, "888888888888888888888", "oauth2ClientId")
-						}
-					})
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						_, found, _ := unstructured.NestedString(obj, "etag")
-						if found {
-							unstructured.SetNestedField(obj, "abcdef0123A=", "etag")
-						}
-					})
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						_, found, _ := unstructured.NestedString(obj, "serviceAccount", "etag")
-						if found {
-							unstructured.SetNestedField(obj, "abcdef0123A=", "serviceAccount", "etag")
-						}
-					})
-					events.PrettifyJSON(jsonMutators...)
-
-					events.RemoveHTTPResponseHeader("Date")
-					events.RemoveHTTPResponseHeader("Alt-Svc")
-					got := events.FormatHTTP()
 					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
-					normalizers := []func(string) string{}
+					// Normalize http output
+					var normalizers []func(string) string
 					normalizers = append(normalizers, h.IgnoreComments)
 					normalizers = append(normalizers, h.ReplaceString(uniqueID, "${uniqueId}"))
 					normalizers = append(normalizers, h.ReplaceString(project.ProjectID, "${projectId}"))
-					h.CompareGoldenFile(expectedPath, got, normalizers...)
+					h.NormalizeLog(got, normalizers...)
+					// Compare http output with golden
+					h.CompareGoldenFile(expectedPath, got)
 				}
 			})
 		}
 	})
-
 	// Do a cleanup while we can still handle the error.
 	t.Logf("shutting down manager")
 	cancel()
@@ -224,4 +192,45 @@ func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project test
 	t.Helper()
 	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, project)
 	return test.ToUnstructWithNamespace(t, updatedBytes, testID)
+}
+
+func formatEvents(events *test.MemoryEventSink) string {
+	// TODO: Fix how we poll / wait for objects being ready.
+	events.RemoveRequests(func(e *test.LogEntry) bool {
+		if e.Response.StatusCode == 404 && e.Request.Method == "GET" {
+			return true
+		}
+		return false
+	})
+
+	jsonMutators := []test.JSONMutator{}
+
+	jsonMutators = append(jsonMutators, func(obj map[string]any) {
+		_, found, _ := unstructured.NestedString(obj, "uniqueId")
+		if found {
+			unstructured.SetNestedField(obj, "111111111111111111111", "uniqueId")
+		}
+	})
+	jsonMutators = append(jsonMutators, func(obj map[string]any) {
+		_, found, _ := unstructured.NestedString(obj, "oauth2ClientId")
+		if found {
+			unstructured.SetNestedField(obj, "888888888888888888888", "oauth2ClientId")
+		}
+	})
+	jsonMutators = append(jsonMutators, func(obj map[string]any) {
+		_, found, _ := unstructured.NestedString(obj, "etag")
+		if found {
+			unstructured.SetNestedField(obj, "abcdef0123A=", "etag")
+		}
+	})
+	jsonMutators = append(jsonMutators, func(obj map[string]any) {
+		_, found, _ := unstructured.NestedString(obj, "serviceAccount", "etag")
+		if found {
+			unstructured.SetNestedField(obj, "abcdef0123A=", "serviceAccount", "etag")
+		}
+	})
+	events.PrettifyJSON(jsonMutators...)
+	events.RemoveHTTPResponseHeader("Date")
+	events.RemoveHTTPResponseHeader("Alt-Svc")
+	return events.FormatHTTP()
 }
