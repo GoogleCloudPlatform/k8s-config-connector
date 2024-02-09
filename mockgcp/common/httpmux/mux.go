@@ -27,13 +27,16 @@ import (
 
 // NewServeMux constructs an http server with our error handling etc
 func NewServeMux(ctx context.Context, conn *grpc.ClientConn, handlers ...func(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error) (*runtime.ServeMux, error) {
+	resolver := &protoResolver{}
 	marshaler := &runtime.HTTPBodyMarshaler{
 		Marshaler: &runtime.JSONPb{
 			MarshalOptions: protojson.MarshalOptions{
 				EmitUnpopulated: false,
+				Resolver:        resolver,
 			},
 			UnmarshalOptions: protojson.UnmarshalOptions{
 				DiscardUnknown: true,
+				Resolver:       resolver,
 			},
 		},
 	}

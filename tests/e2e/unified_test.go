@@ -16,8 +16,10 @@ package e2e
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
@@ -165,6 +167,53 @@ func TestAllInSeries(t *testing.T) {
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
 					events := h.Events
 
+					operationIDs := map[string]bool{}
+					for _, req := range events.HTTPEvents {
+						url := req.Request.URL
+						id := ""
+						if index := strings.Index(url, "/v3/operations/"); index != -1 {
+							id = strings.TrimPrefix(url[index:], "/v3/operations/")
+						}
+						id = strings.TrimSuffix(id, "?alt=json")
+						if id != "" {
+							operationIDs[id] = true
+						}
+					}
+
+					for _, req := range events.HTTPEvents {
+						url := req.Request.URL
+						for id := range operationIDs {
+							if strings.Contains(url, "/operations/"+id) {
+								url = strings.ReplaceAll(url, "/operations/"+id, "/operations/${operationID}")
+							}
+						}
+						req.Request.URL = url
+					}
+
+					pathIDs := map[string]string{}
+					for _, req := range events.HTTPEvents {
+						if !strings.Contains(req.Request.URL, "/operations/${operationID}") {
+							continue
+						}
+						responseBody := req.Response.ParseBody()
+						if responseBody == nil {
+							continue
+						}
+						name, _, _ := unstructured.NestedString(responseBody, "response", "name")
+						if strings.HasPrefix(name, "tagKeys/") {
+							pathIDs[name] = "tagKeys/${tagKeyId}"
+						}
+					}
+
+					// Replace any dynamic IDs that appear in URLs
+					for _, req := range events.HTTPEvents {
+						url := req.Request.URL
+						for k, v := range pathIDs {
+							url = strings.ReplaceAll(url, "/"+k, "/"+v)
+						}
+						req.Request.URL = url
+					}
+
 					// TODO: Fix how we poll / wait for objects being ready.
 					events.RemoveRequests(func(e *test.LogEntry) bool {
 						if e.Response.StatusCode == 404 && e.Request.Method == "GET" {
@@ -173,42 +222,61 @@ func TestAllInSeries(t *testing.T) {
 						return false
 					})
 
-					jsonMutators := []test.JSONMutator{}
+					// Remove operation polling requests (ones where the operation is not ready)
+					events.RemoveRequests(func(e *test.LogEntry) bool {
+						if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
+							return false
+						}
+						responseBody := e.Response.ParseBody()
+						if responseBody == nil {
+							return false
+						}
+						done, _, _ := unstructured.NestedBool(responseBody, "done")
+						return !done // remove if not done
+					})
 
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						_, found, _ := unstructured.NestedString(obj, "uniqueId")
-						if found {
-							unstructured.SetNestedField(obj, "111111111111111111111", "uniqueId")
-						}
-					})
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						_, found, _ := unstructured.NestedString(obj, "oauth2ClientId")
-						if found {
-							unstructured.SetNestedField(obj, "888888888888888888888", "oauth2ClientId")
-						}
-					})
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						_, found, _ := unstructured.NestedString(obj, "etag")
-						if found {
-							unstructured.SetNestedField(obj, "abcdef0123A=", "etag")
-						}
-					})
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						_, found, _ := unstructured.NestedString(obj, "serviceAccount", "etag")
-						if found {
-							unstructured.SetNestedField(obj, "abcdef0123A=", "serviceAccount", "etag")
-						}
-					})
+					jsonMutators := []test.JSONMutator{}
+					addReplacement := func(path string, newValue string) {
+						tokens := strings.Split(path, ".")
+						jsonMutators = append(jsonMutators, func(obj map[string]any) {
+							_, found, _ := unstructured.NestedString(obj, tokens...)
+							if found {
+								unstructured.SetNestedField(obj, newValue, tokens...)
+							}
+						})
+					}
+
+					addReplacement("uniqueId", "111111111111111111111")
+					addReplacement("oauth2ClientId", "888888888888888888888")
+
+					addReplacement("etag", "abcdef0123A=")
+					addReplacement("serviceAccount.etag", "abcdef0123A=")
+					addReplacement("response.etag", "abcdef0123A=")
+
+					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
+
 					events.PrettifyJSON(jsonMutators...)
 
+					// Remove headers that just aren't very relevant to testing
 					events.RemoveHTTPResponseHeader("Date")
 					events.RemoveHTTPResponseHeader("Alt-Svc")
+
 					got := events.FormatHTTP()
 					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
 					normalizers := []func(string) string{}
 					normalizers = append(normalizers, h.IgnoreComments)
 					normalizers = append(normalizers, h.ReplaceString(uniqueID, "${uniqueId}"))
 					normalizers = append(normalizers, h.ReplaceString(project.ProjectID, "${projectId}"))
+					normalizers = append(normalizers, h.ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
+					for k, v := range pathIDs {
+						normalizers = append(normalizers, h.ReplaceString(k, v))
+					}
+					for k := range operationIDs {
+						normalizers = append(normalizers, h.ReplaceString("operations/"+k, "operations/${operationId}"))
+					}
 					h.CompareGoldenFile(expectedPath, got, normalizers...)
 				}
 			})
