@@ -182,6 +182,9 @@ func TestAllInSeries(t *testing.T) {
 							if tokens[n-2] == "alertPolicies" {
 								replacements[tokens[n-1]] = "${alertPolicyId}"
 							}
+							if tokens[n-2] == "uptimeCheckConfigs" {
+								replacements[tokens[n-1]] = "${uptimeCheckConfigId}"
+							}
 						}
 					}
 

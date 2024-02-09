@@ -63,12 +63,14 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	dashboardpb.RegisterDashboardsServiceServer(grpcServer, &DashboardsService{MockService: s})
 	monitoringpb.RegisterAlertPolicyServiceServer(grpcServer, &AlertPolicyService{MockService: s})
 	monitoringpb.RegisterNotificationChannelServiceServer(grpcServer, &NotificationsChannelService{MockService: s})
+	monitoringpb.RegisterUptimeCheckServiceServer(grpcServer, &UptimeCheckService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn,
 		monitoringpb.RegisterAlertPolicyServiceHandler,
 		monitoringpb.RegisterNotificationChannelServiceHandler,
+		monitoringpb.RegisterUptimeCheckServiceHandler,
 		dashboardpb.RegisterDashboardsServiceHandler,
 	)
 	if err != nil {
