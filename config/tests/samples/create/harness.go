@@ -24,28 +24,12 @@ import (
 	"testing"
 	"time"
 
-	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
-	"google.golang.org/api/cloudresourcemanager/v1"
-	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
-	"google.golang.org/api/option"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
-	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
-	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
-	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
-	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
-
 	"github.com/google/go-cmp/cmp"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
+	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -58,6 +42,19 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver"
 
+	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
+	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
+	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -252,7 +249,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		testgcp.TestAttachedClusterName.Set("xks-cluster")
 
 		crm := h.getCloudResourceManagerClient(kccConfig.HTTPClient)
-		req := &cloudresourcemanager.Project{
+		req := &cloudresourcemanagerv1.Project{
 			ProjectId: "mock-project",
 		}
 		op, err := crm.Projects.Create(req).Context(ctx).Do()
