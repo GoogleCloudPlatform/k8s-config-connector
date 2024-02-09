@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/security/privateca/v1"
 )
@@ -41,11 +40,7 @@ func (s *PrivateCAV1) GetCaPool(ctx context.Context, req *pb.GetCaPoolRequest) (
 
 	obj := &pb.CaPool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "caPool %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading caPool: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -81,10 +76,7 @@ func (s *PrivateCAV1) UpdateCaPool(ctx context.Context, req *pb.UpdateCaPoolRequ
 	fqn := name.String()
 	obj := &pb.CaPool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "caPool %q not found", reqName)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading caPool: %v", err)
+		return nil, err
 	}
 
 	// Required. A list of fields to be updated in this request.
@@ -105,7 +97,7 @@ func (s *PrivateCAV1) UpdateCaPool(ctx context.Context, req *pb.UpdateCaPoolRequ
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating caPool: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -121,11 +113,7 @@ func (s *PrivateCAV1) DeleteCaPool(ctx context.Context, req *pb.DeleteCaPoolRequ
 
 	oldObj := &pb.CaPool{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "caPool %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting caPool: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

@@ -25,7 +25,6 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -70,10 +69,7 @@ func (s *ServerV1) GetServiceAccount(ctx context.Context, req *pb.GetServiceAcco
 	sa := &pb.ServiceAccount{}
 	fqn := name.String()
 	if err := s.storage.Get(ctx, fqn, sa); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "Service account %q not found", req.Name)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading serviceaccount: %v", err)
+		return nil, err
 	}
 
 	return sa, nil
@@ -142,7 +138,7 @@ func (s *ServerV1) DeleteServiceAccount(ctx context.Context, req *pb.DeleteServi
 	fqn := name.String()
 	deletedObj := &pb.ServiceAccount{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error deleting serviceaccount: %v", err)
+		return nil, err
 	}
 
 	return &emptypb.Empty{}, nil
@@ -159,10 +155,7 @@ func (s *ServerV1) PatchServiceAccount(ctx context.Context, req *pb.PatchService
 	fqn := name.String()
 	sa := &pb.ServiceAccount{}
 	if err := s.storage.Get(ctx, fqn, sa); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "serviceaccount %q not found", reqName)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading serviceaccount: %v", err)
+		return nil, err
 	}
 
 	// You can patch only the `display_name` and `description` fields.
@@ -180,7 +173,7 @@ func (s *ServerV1) PatchServiceAccount(ctx context.Context, req *pb.PatchService
 	}
 
 	if err := s.storage.Update(ctx, fqn, sa); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating serviceaccount: %v", err)
+		return nil, err
 	}
 	return sa, nil
 }

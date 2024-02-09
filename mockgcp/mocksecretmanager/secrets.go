@@ -24,7 +24,6 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/secretmanager/v1"
@@ -88,11 +87,7 @@ func (s *SecretsV1) GetSecret(ctx context.Context, req *pb.GetSecretRequest) (*p
 	var secret pb.Secret
 	fqn := name.String()
 	if err := s.storage.Get(ctx, fqn, &secret); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "secret %q not found", req.Name)
-
-		}
-		return nil, status.Errorf(codes.Internal, "error reading secret: %v", err)
+		return nil, err
 	}
 
 	return &secret, nil
@@ -109,11 +104,7 @@ func (s *SecretsV1) DeleteSecret(ctx context.Context, req *pb.DeleteSecretReques
 
 	oldObj := &pb.Secret{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "secret %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting secret: %v", err)
-		}
+		return nil, err
 	}
 
 	// TODO: Delete secret versions?

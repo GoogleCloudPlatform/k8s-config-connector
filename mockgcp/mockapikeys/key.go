@@ -24,7 +24,6 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/apikeys/v2"
 )
@@ -44,11 +43,7 @@ func (s *APIKeysV2) GetKey(ctx context.Context, req *pb.GetKeyRequest) (*pb.Key,
 
 	obj := &pb.Key{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "key %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading key: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -64,11 +59,7 @@ func (s *APIKeysV2) GetKeyString(ctx context.Context, req *pb.GetKeyStringReques
 
 	obj := &pb.Key{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "key %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading key: %v", err)
-		}
+		return nil, err
 	}
 
 	keyString := "dummy-encrypted-value"
@@ -112,11 +103,7 @@ func (s *APIKeysV2) UpdateKey(ctx context.Context, req *pb.UpdateKeyRequest) (*l
 
 	obj := &pb.Key{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "key %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading key: %v", err)
-		}
+		return nil, err
 	}
 
 	// From the proto:
@@ -163,7 +150,7 @@ func (s *APIKeysV2) UpdateKey(ctx context.Context, req *pb.UpdateKeyRequest) (*l
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating key: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -179,11 +166,7 @@ func (s *APIKeysV2) DeleteKey(ctx context.Context, req *pb.DeleteKeyRequest) (*l
 
 	deleted := &pb.Key{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "key %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting key: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

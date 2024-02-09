@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgenetwork/v1"
 )
@@ -35,11 +34,7 @@ func (s *EdgenetworkV1) GetSubnet(ctx context.Context, req *pb.GetSubnetRequest)
 	fqn := name.String()
 	obj := &pb.Subnet{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "subnet %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading subnet: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -80,11 +75,7 @@ func (s *EdgenetworkV1) DeleteSubnet(ctx context.Context, req *pb.DeleteSubnetRe
 
 	deletedObj := &pb.Subnet{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "subnet %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting subnet: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

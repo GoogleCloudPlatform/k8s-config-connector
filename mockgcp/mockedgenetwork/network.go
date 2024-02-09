@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgenetwork/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -36,11 +35,7 @@ func (s *EdgenetworkV1) GetNetwork(ctx context.Context, req *pb.GetNetworkReques
 	fqn := name.String()
 	obj := &pb.Network{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "network %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading network: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -92,11 +87,7 @@ func (s *EdgenetworkV1) DeleteNetwork(ctx context.Context, req *pb.DeleteNetwork
 
 	deletedObj := &pb.Network{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "network %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting network: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

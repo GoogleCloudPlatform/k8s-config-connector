@@ -45,11 +45,7 @@ func (s *SecretsV1) AddSecretVersion(ctx context.Context, req *pb.AddSecretVersi
 	var secret pb.Secret
 
 	if err := s.storage.Get(ctx, secretName.String(), &secret); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "secret %q not found", req.Parent)
-
-		}
-		return nil, status.Errorf(codes.Internal, "error reading secret: %v", err)
+		return nil, err
 	}
 
 	secretVersionKind := (&pb.SecretVersion{}).ProtoReflect().Descriptor()
@@ -168,7 +164,7 @@ func (s *MockService) getSecretVersion(ctx context.Context, name *secretVersionN
 	if err := s.storage.Get(ctx, fqn, secretVersionObj); err != nil {
 		// TODO: Delete secret data?
 		// TODO: Owner ref?
-		return nil, status.Errorf(codes.Internal, "error creating secret version: %v", err)
+		return nil, err
 	}
 	return secretVersionObj, nil
 }
@@ -247,7 +243,7 @@ func (s *SecretsV1) EnableSecretVersion(ctx context.Context, req *pb.EnableSecre
 	secretVersion.State = pb.SecretVersion_ENABLED
 	fqn := secretVersion.Name
 	if err := s.storage.Update(ctx, fqn, secretVersion); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating secret version: %v", err)
+		return nil, err
 	}
 
 	return secretVersion, nil
@@ -267,7 +263,7 @@ func (s *SecretsV1) DisableSecretVersion(ctx context.Context, req *pb.DisableSec
 	secretVersion.State = pb.SecretVersion_DISABLED
 	fqn := secretVersion.Name
 	if err := s.storage.Update(ctx, fqn, secretVersion); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating secret version: %v", err)
+		return nil, err
 	}
 
 	return secretVersion, nil
@@ -295,7 +291,7 @@ func (s *SecretsV1) DestroySecretVersion(ctx context.Context, req *pb.DestroySec
 	secretVersion.State = pb.SecretVersion_DESTROYED
 	fqn := secretVersion.Name
 	if err := s.storage.Update(ctx, fqn, secretVersion); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating secret version: %v", err)
+		return nil, err
 	}
 
 	return secretVersion, nil
