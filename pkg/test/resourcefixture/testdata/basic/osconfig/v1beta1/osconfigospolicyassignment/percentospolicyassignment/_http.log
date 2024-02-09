@@ -1,0 +1,4605 @@
+POST https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments?alt=json&osPolicyAssignmentId=osconfigospolicyassignment-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "description": "A test os policy assignment",
+  "instanceFilter": {
+    "all": true
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "components": [
+                    "doc"
+                  ],
+                  "distribution": "debian",
+                  "gpgKey": ".gnupg/pubring.kbx",
+                  "uri": "https://atl.mirrors.clouvider.net/debian"
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://centos.s.uw.edu/centos/",
+                  "displayName": "yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-7"
+                  ],
+                  "id": "yum"
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.dal10.us.leaseweb.net/opensuse",
+                  "displayName": "zypper",
+                  "gpgKeys": [
+                    "sample-key-uri"
+                  ],
+                  "id": "zypper"
+                }
+              }
+            },
+            {
+              "id": "goo",
+              "repository": {
+                "goo": {
+                  "name": "goo",
+                  "url": "https://foo.com/googet/bar"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                },
+                "validate": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": 1,
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": 1,
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                }
+              },
+              "id": "exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/file"
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "allowInsecure": true,
+                  "remote": {
+                    "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                    "uri": "https://www.example.com/file"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "test-bucket",
+                    "generation": 1,
+                    "object": "test-object"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file3"
+            },
+            {
+              "file": {
+                "content": "sample-content",
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.5s"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/operation-1707405197775-06b0f127-f136-4029-893f-7f5aa62a37e0"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "all": true
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "components": [
+                    "doc"
+                  ],
+                  "distribution": "debian",
+                  "gpgKey": ".gnupg/pubring.kbx",
+                  "uri": "https://atl.mirrors.clouvider.net/debian"
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://centos.s.uw.edu/centos/",
+                  "displayName": "yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-7"
+                  ],
+                  "id": "yum"
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.dal10.us.leaseweb.net/opensuse",
+                  "displayName": "zypper",
+                  "gpgKeys": [
+                    "sample-key-uri"
+                  ],
+                  "id": "zypper"
+                }
+              }
+            },
+            {
+              "id": "goo",
+              "repository": {
+                "goo": {
+                  "name": "goo",
+                  "url": "https://foo.com/googet/bar"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                },
+                "validate": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                }
+              },
+              "id": "exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/file"
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "allowInsecure": true,
+                  "remote": {
+                    "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                    "uri": "https://www.example.com/file"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "test-bucket",
+                    "generation": "1",
+                    "object": "test-object"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file3"
+            },
+            {
+              "file": {
+                "content": "sample-content",
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "all": true
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "components": [
+                    "doc"
+                  ],
+                  "distribution": "debian",
+                  "gpgKey": ".gnupg/pubring.kbx",
+                  "uri": "https://atl.mirrors.clouvider.net/debian"
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://centos.s.uw.edu/centos/",
+                  "displayName": "yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-7"
+                  ],
+                  "id": "yum"
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.dal10.us.leaseweb.net/opensuse",
+                  "displayName": "zypper",
+                  "gpgKeys": [
+                    "sample-key-uri"
+                  ],
+                  "id": "zypper"
+                }
+              }
+            },
+            {
+              "id": "goo",
+              "repository": {
+                "goo": {
+                  "name": "goo",
+                  "url": "https://foo.com/googet/bar"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                },
+                "validate": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                }
+              },
+              "id": "exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/file"
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "allowInsecure": true,
+                  "remote": {
+                    "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                    "uri": "https://www.example.com/file"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "test-bucket",
+                    "generation": "1",
+                    "object": "test-object"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file3"
+            },
+            {
+              "file": {
+                "content": "sample-content",
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "all": true
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "components": [
+                    "doc"
+                  ],
+                  "distribution": "debian",
+                  "gpgKey": ".gnupg/pubring.kbx",
+                  "uri": "https://atl.mirrors.clouvider.net/debian"
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://centos.s.uw.edu/centos/",
+                  "displayName": "yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-7"
+                  ],
+                  "id": "yum"
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.dal10.us.leaseweb.net/opensuse",
+                  "displayName": "zypper",
+                  "gpgKeys": [
+                    "sample-key-uri"
+                  ],
+                  "id": "zypper"
+                }
+              }
+            },
+            {
+              "id": "goo",
+              "repository": {
+                "goo": {
+                  "name": "goo",
+                  "url": "https://foo.com/googet/bar"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                },
+                "validate": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                }
+              },
+              "id": "exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/file"
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "allowInsecure": true,
+                  "remote": {
+                    "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                    "uri": "https://www.example.com/file"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "test-bucket",
+                    "generation": "1",
+                    "object": "test-object"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file3"
+            },
+            {
+              "file": {
+                "content": "sample-content",
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "all": true
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "components": [
+                    "doc"
+                  ],
+                  "distribution": "debian",
+                  "gpgKey": ".gnupg/pubring.kbx",
+                  "uri": "https://atl.mirrors.clouvider.net/debian"
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://centos.s.uw.edu/centos/",
+                  "displayName": "yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-7"
+                  ],
+                  "id": "yum"
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.dal10.us.leaseweb.net/opensuse",
+                  "displayName": "zypper",
+                  "gpgKeys": [
+                    "sample-key-uri"
+                  ],
+                  "id": "zypper"
+                }
+              }
+            },
+            {
+              "id": "goo",
+              "repository": {
+                "goo": {
+                  "name": "goo",
+                  "url": "https://foo.com/googet/bar"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                },
+                "validate": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                }
+              },
+              "id": "exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/file"
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "allowInsecure": true,
+                  "remote": {
+                    "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                    "uri": "https://www.example.com/file"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "test-bucket",
+                    "generation": "1",
+                    "object": "test-object"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file3"
+            },
+            {
+              "file": {
+                "content": "sample-content",
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "all": true
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "components": [
+                    "doc"
+                  ],
+                  "distribution": "debian",
+                  "gpgKey": ".gnupg/pubring.kbx",
+                  "uri": "https://atl.mirrors.clouvider.net/debian"
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://centos.s.uw.edu/centos/",
+                  "displayName": "yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-7"
+                  ],
+                  "id": "yum"
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.dal10.us.leaseweb.net/opensuse",
+                  "displayName": "zypper",
+                  "gpgKeys": [
+                    "sample-key-uri"
+                  ],
+                  "id": "zypper"
+                }
+              }
+            },
+            {
+              "id": "goo",
+              "repository": {
+                "goo": {
+                  "name": "goo",
+                  "url": "https://foo.com/googet/bar"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                },
+                "validate": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                }
+              },
+              "id": "exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/file"
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "allowInsecure": true,
+                  "remote": {
+                    "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                    "uri": "https://www.example.com/file"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "test-bucket",
+                    "generation": "1",
+                    "object": "test-object"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file3"
+            },
+            {
+              "file": {
+                "content": "sample-content",
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "all": true
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "components": [
+                    "doc"
+                  ],
+                  "distribution": "debian",
+                  "gpgKey": ".gnupg/pubring.kbx",
+                  "uri": "https://atl.mirrors.clouvider.net/debian"
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://centos.s.uw.edu/centos/",
+                  "displayName": "yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-7"
+                  ],
+                  "id": "yum"
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.dal10.us.leaseweb.net/opensuse",
+                  "displayName": "zypper",
+                  "gpgKeys": [
+                    "sample-key-uri"
+                  ],
+                  "id": "zypper"
+                }
+              }
+            },
+            {
+              "id": "goo",
+              "repository": {
+                "goo": {
+                  "name": "goo",
+                  "url": "https://foo.com/googet/bar"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                },
+                "validate": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                }
+              },
+              "id": "exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/file"
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "allowInsecure": true,
+                  "remote": {
+                    "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                    "uri": "https://www.example.com/file"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "test-bucket",
+                    "generation": "1",
+                    "object": "test-object"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file3"
+            },
+            {
+              "file": {
+                "content": "sample-content",
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "all": true
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "components": [
+                    "doc"
+                  ],
+                  "distribution": "debian",
+                  "gpgKey": ".gnupg/pubring.kbx",
+                  "uri": "https://atl.mirrors.clouvider.net/debian"
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://centos.s.uw.edu/centos/",
+                  "displayName": "yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-7"
+                  ],
+                  "id": "yum"
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.dal10.us.leaseweb.net/opensuse",
+                  "displayName": "zypper",
+                  "gpgKeys": [
+                    "sample-key-uri"
+                  ],
+                  "id": "zypper"
+                }
+              }
+            },
+            {
+              "id": "goo",
+              "repository": {
+                "goo": {
+                  "name": "goo",
+                  "url": "https://foo.com/googet/bar"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                },
+                "validate": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                }
+              },
+              "id": "exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/file"
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "allowInsecure": true,
+                  "remote": {
+                    "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                    "uri": "https://www.example.com/file"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "test-bucket",
+                    "generation": "1",
+                    "object": "test-object"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file3"
+            },
+            {
+              "file": {
+                "content": "sample-content",
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "all": true
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "components": [
+                    "doc"
+                  ],
+                  "distribution": "debian",
+                  "gpgKey": ".gnupg/pubring.kbx",
+                  "uri": "https://atl.mirrors.clouvider.net/debian"
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://centos.s.uw.edu/centos/",
+                  "displayName": "yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-7"
+                  ],
+                  "id": "yum"
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.dal10.us.leaseweb.net/opensuse",
+                  "displayName": "zypper",
+                  "gpgKeys": [
+                    "sample-key-uri"
+                  ],
+                  "id": "zypper"
+                }
+              }
+            },
+            {
+              "id": "goo",
+              "repository": {
+                "goo": {
+                  "name": "goo",
+                  "url": "https://foo.com/googet/bar"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                },
+                "validate": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                }
+              },
+              "id": "exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/file"
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "allowInsecure": true,
+                  "remote": {
+                    "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                    "uri": "https://www.example.com/file"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "test-bucket",
+                    "generation": "1",
+                    "object": "test-object"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file3"
+            },
+            {
+              "file": {
+                "content": "sample-content",
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "all": true
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "components": [
+                    "doc"
+                  ],
+                  "distribution": "debian",
+                  "gpgKey": ".gnupg/pubring.kbx",
+                  "uri": "https://atl.mirrors.clouvider.net/debian"
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://centos.s.uw.edu/centos/",
+                  "displayName": "yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-7"
+                  ],
+                  "id": "yum"
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.dal10.us.leaseweb.net/opensuse",
+                  "displayName": "zypper",
+                  "gpgKeys": [
+                    "sample-key-uri"
+                  ],
+                  "id": "zypper"
+                }
+              }
+            },
+            {
+              "id": "goo",
+              "repository": {
+                "goo": {
+                  "name": "goo",
+                  "url": "https://foo.com/googet/bar"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                },
+                "validate": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                }
+              },
+              "id": "exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/file"
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "allowInsecure": true,
+                  "remote": {
+                    "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                    "uri": "https://www.example.com/file"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "test-bucket",
+                    "generation": "1",
+                    "object": "test-object"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file3"
+            },
+            {
+              "file": {
+                "content": "sample-content",
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "all": true
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "components": [
+                    "doc"
+                  ],
+                  "distribution": "debian",
+                  "gpgKey": ".gnupg/pubring.kbx",
+                  "uri": "https://atl.mirrors.clouvider.net/debian"
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://centos.s.uw.edu/centos/",
+                  "displayName": "yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-7"
+                  ],
+                  "id": "yum"
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.dal10.us.leaseweb.net/opensuse",
+                  "displayName": "zypper",
+                  "gpgKeys": [
+                    "sample-key-uri"
+                  ],
+                  "id": "zypper"
+                }
+              }
+            },
+            {
+              "id": "goo",
+              "repository": {
+                "goo": {
+                  "name": "goo",
+                  "url": "https://foo.com/googet/bar"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg1"
+                  ],
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                      "uri": "https://www.example.com/script.sh"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                },
+                "validate": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "generation": "1",
+                      "object": "test-object"
+                    }
+                  },
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                }
+              },
+              "id": "exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/file"
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "allowInsecure": true,
+                  "remote": {
+                    "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063",
+                    "uri": "https://www.example.com/file"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "test-bucket",
+                    "generation": "1",
+                    "object": "test-object"
+                  }
+                },
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file3"
+            },
+            {
+              "file": {
+                "content": "sample-content",
+                "path": "$HOME/file",
+                "state": "PRESENT"
+              },
+              "id": "file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+PATCH https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json&updateMask=instanceFilter%2CosPolicies%2Crollout
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "description": "A test os policy assignment",
+  "instanceFilter": {
+    "all": false,
+    "exclusionLabels": [
+      {
+        "labels": {
+          "label-two": "value-two"
+        }
+      }
+    ],
+    "inclusionLabels": [
+      {
+        "labels": {
+          "label-one": "value-one"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "osShortName": "centos"
+      }
+    ]
+  },
+  "osPolicies": [
+    {
+      "id": "new-policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "inventoryFilters": [],
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.vtti.vt.edu/opensuse/",
+                  "displayName": "new-zypper",
+                  "gpgKeys": [
+                    "new-sample-key-uri"
+                  ],
+                  "id": "new-zypper"
+                }
+              }
+            },
+            {
+              "id": "new-goo",
+              "repository": {
+                "goo": {
+                  "name": "new-goo",
+                  "url": "https://foo.com/googet/baz"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "allowInsecure": false,
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "allowInsecure": false,
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                },
+                "validate": {
+                  "file": {
+                    "allowInsecure": false,
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": 2,
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "allowInsecure": false,
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": 2,
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                }
+              },
+              "id": "new-exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/new-file"
+                },
+                "path": "$HOME/new-file",
+                "state": "PRESENT"
+              },
+              "id": "new-file1"
+            }
+          ]
+        },
+        {
+          "inventoryFilters": [],
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "allowInsecure": false,
+                  "remote": {
+                    "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                    "uri": "https://www.example.com/new-file"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "new-test-bucket",
+                    "generation": 2,
+                    "object": "new-test-object"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file3"
+            },
+            {
+              "file": {
+                "content": "new-sample-content",
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 2
+    },
+    "minWaitDuration": "3.5s"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/operation-1707405200526-9b62235f-067d-406d-90f9-b0e33d841914"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "exclusionLabels": [
+      {
+        "labels": {
+          "label-two": "value-two"
+        }
+      }
+    ],
+    "inclusionLabels": [
+      {
+        "labels": {
+          "label-one": "value-one"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "osShortName": "centos"
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "new-policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.vtti.vt.edu/opensuse/",
+                  "displayName": "new-zypper",
+                  "gpgKeys": [
+                    "new-sample-key-uri"
+                  ],
+                  "id": "new-zypper"
+                }
+              }
+            },
+            {
+              "id": "new-goo",
+              "repository": {
+                "goo": {
+                  "name": "new-goo",
+                  "url": "https://foo.com/googet/baz"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                },
+                "validate": {
+                  "file": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": "2",
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": "2",
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                }
+              },
+              "id": "new-exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/new-file"
+                },
+                "path": "$HOME/new-file",
+                "state": "PRESENT"
+              },
+              "id": "new-file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "remote": {
+                    "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                    "uri": "https://www.example.com/new-file"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "new-test-bucket",
+                    "generation": "2",
+                    "object": "new-test-object"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file3"
+            },
+            {
+              "file": {
+                "content": "new-sample-content",
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 2
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "exclusionLabels": [
+      {
+        "labels": {
+          "label-two": "value-two"
+        }
+      }
+    ],
+    "inclusionLabels": [
+      {
+        "labels": {
+          "label-one": "value-one"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "osShortName": "centos"
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "new-policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.vtti.vt.edu/opensuse/",
+                  "displayName": "new-zypper",
+                  "gpgKeys": [
+                    "new-sample-key-uri"
+                  ],
+                  "id": "new-zypper"
+                }
+              }
+            },
+            {
+              "id": "new-goo",
+              "repository": {
+                "goo": {
+                  "name": "new-goo",
+                  "url": "https://foo.com/googet/baz"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                },
+                "validate": {
+                  "file": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": "2",
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": "2",
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                }
+              },
+              "id": "new-exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/new-file"
+                },
+                "path": "$HOME/new-file",
+                "state": "PRESENT"
+              },
+              "id": "new-file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "remote": {
+                    "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                    "uri": "https://www.example.com/new-file"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "new-test-bucket",
+                    "generation": "2",
+                    "object": "new-test-object"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file3"
+            },
+            {
+              "file": {
+                "content": "new-sample-content",
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 2
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "exclusionLabels": [
+      {
+        "labels": {
+          "label-two": "value-two"
+        }
+      }
+    ],
+    "inclusionLabels": [
+      {
+        "labels": {
+          "label-one": "value-one"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "osShortName": "centos"
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "new-policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.vtti.vt.edu/opensuse/",
+                  "displayName": "new-zypper",
+                  "gpgKeys": [
+                    "new-sample-key-uri"
+                  ],
+                  "id": "new-zypper"
+                }
+              }
+            },
+            {
+              "id": "new-goo",
+              "repository": {
+                "goo": {
+                  "name": "new-goo",
+                  "url": "https://foo.com/googet/baz"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                },
+                "validate": {
+                  "file": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": "2",
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": "2",
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                }
+              },
+              "id": "new-exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/new-file"
+                },
+                "path": "$HOME/new-file",
+                "state": "PRESENT"
+              },
+              "id": "new-file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "remote": {
+                    "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                    "uri": "https://www.example.com/new-file"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "new-test-bucket",
+                    "generation": "2",
+                    "object": "new-test-object"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file3"
+            },
+            {
+              "file": {
+                "content": "new-sample-content",
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 2
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "exclusionLabels": [
+      {
+        "labels": {
+          "label-two": "value-two"
+        }
+      }
+    ],
+    "inclusionLabels": [
+      {
+        "labels": {
+          "label-one": "value-one"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "osShortName": "centos"
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "new-policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.vtti.vt.edu/opensuse/",
+                  "displayName": "new-zypper",
+                  "gpgKeys": [
+                    "new-sample-key-uri"
+                  ],
+                  "id": "new-zypper"
+                }
+              }
+            },
+            {
+              "id": "new-goo",
+              "repository": {
+                "goo": {
+                  "name": "new-goo",
+                  "url": "https://foo.com/googet/baz"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                },
+                "validate": {
+                  "file": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": "2",
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": "2",
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                }
+              },
+              "id": "new-exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/new-file"
+                },
+                "path": "$HOME/new-file",
+                "state": "PRESENT"
+              },
+              "id": "new-file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "remote": {
+                    "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                    "uri": "https://www.example.com/new-file"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "new-test-bucket",
+                    "generation": "2",
+                    "object": "new-test-object"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file3"
+            },
+            {
+              "file": {
+                "content": "new-sample-content",
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 2
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "exclusionLabels": [
+      {
+        "labels": {
+          "label-two": "value-two"
+        }
+      }
+    ],
+    "inclusionLabels": [
+      {
+        "labels": {
+          "label-one": "value-one"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "osShortName": "centos"
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "new-policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.vtti.vt.edu/opensuse/",
+                  "displayName": "new-zypper",
+                  "gpgKeys": [
+                    "new-sample-key-uri"
+                  ],
+                  "id": "new-zypper"
+                }
+              }
+            },
+            {
+              "id": "new-goo",
+              "repository": {
+                "goo": {
+                  "name": "new-goo",
+                  "url": "https://foo.com/googet/baz"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                },
+                "validate": {
+                  "file": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": "2",
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": "2",
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                }
+              },
+              "id": "new-exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/new-file"
+                },
+                "path": "$HOME/new-file",
+                "state": "PRESENT"
+              },
+              "id": "new-file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "remote": {
+                    "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                    "uri": "https://www.example.com/new-file"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "new-test-bucket",
+                    "generation": "2",
+                    "object": "new-test-object"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file3"
+            },
+            {
+              "file": {
+                "content": "new-sample-content",
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 2
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+GET https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseline": true,
+  "description": "A test os policy assignment",
+  "etag": "abcdef0123A=",
+  "instanceFilter": {
+    "exclusionLabels": [
+      {
+        "labels": {
+          "label-two": "value-two"
+        }
+      }
+    ],
+    "inclusionLabels": [
+      {
+        "labels": {
+          "label-one": "value-one"
+        }
+      }
+    ],
+    "inventories": [
+      {
+        "osShortName": "centos"
+      }
+    ]
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}",
+  "osPolicies": [
+    {
+      "id": "new-policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-yum",
+              "repository": {
+                "yum": {
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "displayName": "new-yum",
+                  "gpgKeys": [
+                    "RPM-GPG-KEY-CentOS-Debug-7"
+                  ],
+                  "id": "new-yum"
+                }
+              }
+            },
+            {
+              "id": "new-zypper",
+              "repository": {
+                "zypper": {
+                  "baseUrl": "http://mirror.vtti.vt.edu/opensuse/",
+                  "displayName": "new-zypper",
+                  "gpgKeys": [
+                    "new-sample-key-uri"
+                  ],
+                  "id": "new-zypper"
+                }
+              }
+            },
+            {
+              "id": "new-goo",
+              "repository": {
+                "goo": {
+                  "name": "new-goo",
+                  "url": "https://foo.com/googet/baz"
+                }
+              }
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec1"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "args": [
+                    "arg2"
+                  ],
+                  "file": {
+                    "remote": {
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                      "uri": "https://www.example.com/script.bat"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec2"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                },
+                "validate": {
+                  "file": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": "2",
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                }
+              },
+              "id": "new-exec3"
+            },
+            {
+              "exec": {
+                "enforce": {
+                  "file": {
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "generation": "2",
+                      "object": "new-test-object"
+                    }
+                  },
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out"
+                },
+                "validate": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                }
+              },
+              "id": "new-exec4"
+            },
+            {
+              "file": {
+                "file": {
+                  "localPath": "$HOME/new-file"
+                },
+                "path": "$HOME/new-file",
+                "state": "PRESENT"
+              },
+              "id": "new-file1"
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "file": {
+                "file": {
+                  "remote": {
+                    "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54",
+                    "uri": "https://www.example.com/new-file"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file2"
+            },
+            {
+              "file": {
+                "file": {
+                  "gcs": {
+                    "bucket": "new-test-bucket",
+                    "generation": "2",
+                    "object": "new-test-object"
+                  }
+                },
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file3"
+            },
+            {
+              "file": {
+                "content": "new-sample-content",
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH"
+              },
+              "id": "new-file4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "revisionCreateTime": "111111111111111111111",
+  "revisionId": "111111111111111111111",
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 2
+    },
+    "minWaitDuration": "3.500s"
+  },
+  "rolloutState": "SUCCEEDED",
+  "uid": "111111111111111111111"
+}
+
+---
+
+DELETE https://osconfig.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/osPolicyAssignments/osconfigospolicyassignment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/operation-1707405203562-1f7f90a4-823c-4634-9b09-27e73bcb5a8b"
+}

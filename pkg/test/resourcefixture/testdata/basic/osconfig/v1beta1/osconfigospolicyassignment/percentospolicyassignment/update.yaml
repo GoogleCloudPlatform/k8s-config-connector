@@ -154,8 +154,8 @@ spec:
           content: "new-sample-content"
   instanceFilter:
     all: false
-    osShortNames:
-    - "centos"
+    inventories:
+    - osShortName: "centos"
     inclusionLabels:
     - labels:
         label-one: "value-one"

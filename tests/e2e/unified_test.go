@@ -182,6 +182,24 @@ func TestAllInSeries(t *testing.T) {
 						}
 					})
 					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						_, found, _ := unstructured.NestedString(obj, "uid")
+						if found {
+							unstructured.SetNestedField(obj, "111111111111111111111", "uid")
+						}
+					})
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						_, found, _ := unstructured.NestedString(obj, "revisionId")
+						if found {
+							unstructured.SetNestedField(obj, "111111111111111111111", "revisionId")
+						}
+					})
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						_, found, _ := unstructured.NestedString(obj, "revisionCreateTime")
+						if found {
+							unstructured.SetNestedField(obj, "111111111111111111111", "revisionCreateTime")
+						}
+					})
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
 						_, found, _ := unstructured.NestedString(obj, "oauth2ClientId")
 						if found {
 							unstructured.SetNestedField(obj, "888888888888888888888", "oauth2ClientId")
