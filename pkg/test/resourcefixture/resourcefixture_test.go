@@ -103,10 +103,10 @@ func TestNamesAreUniqueWithinTheSameTestType(t *testing.T) {
 			namesPerTestType[f.Type] = make(map[string]bool)
 		}
 		names := namesPerTestType[f.Type]
-		if _, ok := names[f.Name]; ok {
-			t.Fatalf("cannot have two fixtures with the same type '%v' and name '%v'", f.Type, f.Name)
+		if _, ok := names[f.ShortName]; ok {
+			t.Fatalf("cannot have two fixtures with the same type '%v' and name '%v'", f.Type, f.ShortName)
 		}
-		names[f.Name] = true
+		names[f.ShortName] = true
 	}
 }
 
@@ -134,11 +134,11 @@ func testCreateAndUpdateUnstructShouldMatchNameAndNamespace(t *testing.T, fixtur
 	createUnstruct, updateUnstruct *unstructured.Unstructured) {
 	if createUnstruct.GetName() != updateUnstruct.GetName() {
 		t.Errorf("name mismatch between create and update for fixture '%v': create(%v), update(%v)",
-			fixture.Name, createUnstruct.GetName(), updateUnstruct.GetName())
+			fixture.ShortName, createUnstruct.GetName(), updateUnstruct.GetName())
 	}
 	if createUnstruct.GetNamespace() != updateUnstruct.GetNamespace() {
 		t.Errorf("namespace mismatch between create and update for fixture '%v': create(%v), update(%v)",
-			fixture.Name, createUnstruct.GetNamespace(), updateUnstruct.GetNamespace())
+			fixture.ShortName, createUnstruct.GetNamespace(), updateUnstruct.GetNamespace())
 	}
 }
 
@@ -146,7 +146,7 @@ func testCreateAndUpdateUnstructShouldHaveTheSameGVK(t *testing.T, fixture resou
 	createUnstruct, updateUnstruct *unstructured.Unstructured) {
 	if createUnstruct.GroupVersionKind() != updateUnstruct.GroupVersionKind() {
 		t.Errorf("gvk mismatch between create and update for fixture '%v': create(%v), update(%v)",
-			fixture.Name, createUnstruct.GroupVersionKind(), updateUnstruct.GroupVersionKind())
+			fixture.ShortName, createUnstruct.GroupVersionKind(), updateUnstruct.GroupVersionKind())
 	}
 }
 
@@ -155,7 +155,7 @@ func testAllNamesAreUnique(t *testing.T, fixture resourcefixture.ResourceFixture
 	for _, r := range resources {
 		if _, ok := names[r.GetName()]; ok {
 			t.Errorf("fixture '%v' has more than one resource with name '%v': all resource names within a fixture must be unique",
-				fixture.Name, r.GetName())
+				fixture.ShortName, r.GetName())
 		}
 		names[r.GetName()] = r
 	}

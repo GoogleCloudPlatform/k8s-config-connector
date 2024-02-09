@@ -45,7 +45,13 @@ import (
 )
 
 type Sample struct {
-	Name      string
+	// ShortName holds the last path-component of the test.
+	// Note that this is not necessarily unique.
+	ShortName string
+
+	// FullName holds the full name of the test (the relative path)
+	FullName string
+
 	Resources []*unstructured.Unstructured
 }
 
@@ -261,7 +267,13 @@ func LoadSample(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) S
 // SampleKey contains the metadata for a sample.
 // This lets us defer variable substitution.
 type SampleKey struct {
-	Name  string
+	// ShortName holds the last path-component of the test.
+	// Note that this is not necessarily unique.
+	ShortName string
+
+	// FullName holds the full name of the test (the relative path)
+	FullName string
+
 	files []string
 }
 
@@ -275,7 +287,8 @@ func loadSampleOntoUnstructs(t *testing.T, sampleKey SampleKey, project testgcp.
 		resources = append(resources, unstructs...)
 	}
 	s := Sample{
-		Name:      sampleKey.Name,
+		ShortName: sampleKey.ShortName,
+		FullName:  sampleKey.FullName,
 		Resources: resources,
 	}
 	return s
@@ -291,12 +304,17 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 			return err
 		}
 		if strings.HasSuffix(d.Name(), ".yaml") {
-			sampleName := filepath.Base(filepath.Dir(path))
-			if regex.MatchString(sampleName) {
-				sampleKey := samples[sampleName]
-				sampleKey.Name = sampleName
+			shortName := filepath.Base(filepath.Dir(path))
+			fullName, err := filepath.Rel(baseDir, filepath.Dir(path))
+			if err != nil {
+				t.Fatalf("unexpected error from filepath.Rel: %v", err)
+			}
+			if regex.MatchString(shortName) {
+				sampleKey := samples[fullName]
+				sampleKey.FullName = fullName
+				sampleKey.ShortName = shortName
 				sampleKey.files = append(sampleKey.files, path)
-				samples[sampleName] = sampleKey
+				samples[fullName] = sampleKey
 			}
 		}
 		return nil

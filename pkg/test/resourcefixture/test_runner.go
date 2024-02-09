@@ -80,5 +80,5 @@ func runTestCase(ctx context.Context, t *testing.T, fixture ResourceFixture, tes
 }
 
 func FormatTestName(tc ResourceFixture) string {
-	return fmt.Sprintf("%v-%v", string(tc.Type), tc.Name)
+	return fmt.Sprintf("%v-%v", string(tc.Type), tc.ShortName)
 }

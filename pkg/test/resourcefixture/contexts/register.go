@@ -63,7 +63,7 @@ var (
 )
 
 func GetResourceContext(fixture resourcefixture.ResourceFixture, serviceMetadataLoader dclmetadata.ServiceMetadataLoader, dclSchemaLoader dclschemaloader.DCLSchemaLoader) ResourceContext {
-	rc, ok := resourceContextMap[fixture.Name]
+	rc, ok := resourceContextMap[fixture.ShortName]
 	if !ok {
 		rc = ResourceContext{
 			ResourceGVK:  fixture.GVK,

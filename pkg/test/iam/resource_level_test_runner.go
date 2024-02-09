@@ -92,7 +92,7 @@ func buildShouldRunFunc(kindToIamPolicyResourceContext map[string]IAMResourceCon
 		if rc.Name == "" {
 			return true
 		}
-		return rc.Name == fixture.Name
+		return rc.Name == fixture.ShortName
 	}
 }
 
