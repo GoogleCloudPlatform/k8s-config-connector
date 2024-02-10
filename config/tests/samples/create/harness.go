@@ -24,6 +24,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/go-logr/logr"
 	"github.com/google/go-cmp/cmp"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"golang.org/x/oauth2"
@@ -33,6 +34,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -344,6 +346,8 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		ctrlManagerShutdown.Wait()
 		t.Log("controller-runtime manager is shutdown")
 	})
+	kccConfig.ManagerOptions.Logger = filterLogs(log)
+
 	mgr, err := kccmanager.New(mgrContext, h.restConfig, kccConfig)
 	if err != nil {
 		t.Fatalf("error creating new manager: %v", err)
@@ -544,4 +548,54 @@ func (h *Harness) ReplaceString(from, to string) func(string) string {
 	return func(s string) string {
 		return strings.ReplaceAll(s, from, to)
 	}
+}
+
+func filterLogs(log logr.Logger) logr.Logger {
+	f := &filterSink{sink: log.GetSink()}
+	f.IgnoreMessages = sets.New[string]()
+	f.IgnoreMessages.Insert("Registered controller")
+	f.IgnoreMessages.Insert("Starting Controller")
+	f.IgnoreMessages.Insert("Starting EventSource")
+	f.IgnoreMessages.Insert("Starting workers")
+	f.IgnoreMessages.Insert("Shutdown signal received, waiting for all workers to finish")
+	f.IgnoreMessages.Insert("All workers finished")
+	return log.WithSink(f)
+}
+
+type filterSink struct {
+	IgnoreMessages sets.Set[string]
+	sink           logr.LogSink
+}
+
+// Init implements logr.LogSink
+func (s *filterSink) Init(info logr.RuntimeInfo) {
+	s.sink.Init(info)
+}
+
+// Enabled implements logr.LogSink
+func (s *filterSink) Enabled(level int) bool {
+	return s.sink.Enabled(level)
+}
+
+// Info implements logr.LogSink
+func (s *filterSink) Info(level int, msg string, args ...any) {
+	if s.IgnoreMessages.Has(msg) {
+		return
+	}
+	s.sink.Info(level, msg, args...)
+}
+
+// WithValues implements logr.LogSink
+func (s *filterSink) WithValues(keysAndValues ...any) logr.LogSink {
+	return &filterSink{IgnoreMessages: s.IgnoreMessages, sink: s.sink.WithValues(keysAndValues...)}
+}
+
+// WithName implements logr.LogSink
+func (s *filterSink) WithName(name string) logr.LogSink {
+	return &filterSink{IgnoreMessages: s.IgnoreMessages, sink: s.sink.WithName(name)}
+}
+
+// Error implements logr.LogSink
+func (s *filterSink) Error(err error, msg string, args ...any) {
+	s.sink.Error(err, msg, args...)
 }
