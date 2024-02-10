@@ -108,6 +108,159 @@ spec:
                       policy.
                     items:
                       properties:
+                        healthCheckedTargets:
+                          description: For A and AAAA types only. The list of targets
+                            to be health checked. These can be specified along with
+                            `rrdatas` within this item.
+                          properties:
+                            internalLoadBalancers:
+                              description: The list of internal load balancers to
+                                health check.
+                              items:
+                                properties:
+                                  ipAddressRef:
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: 'Allowed value: The `address`
+                                          field of a `ComputeAddress` resource.'
+                                        type: string
+                                      name:
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      namespace:
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        type: string
+                                    type: object
+                                  ipProtocol:
+                                    description: 'The configured IP protocol of the
+                                      load balancer. This value is case-sensitive.
+                                      Possible values: ["tcp", "udp"].'
+                                    type: string
+                                  loadBalancerType:
+                                    description: 'The type of load balancer. This
+                                      value is case-sensitive. Possible values: ["regionalL4ilb",
+                                      "regionalL7ilb", "globalL7ilb"].'
+                                    type: string
+                                  networkUrlRef:
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: 'Allowed value: The `selfLink`
+                                          field of a `ComputeNetwork` resource.'
+                                        type: string
+                                      name:
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      namespace:
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        type: string
+                                    type: object
+                                  port:
+                                    description: The configured port of the load balancer.
+                                    type: string
+                                  projectRef:
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: 'Allowed value: The `name` field
+                                          of a `Project` resource.'
+                                        type: string
+                                      name:
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      namespace:
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        type: string
+                                    type: object
+                                  regionRef:
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: 'Allowed value: string of the
+                                          format `{{region}}`, where {{value}} is
+                                          the `name` field of a `ComputeForwardingRule`
+                                          resource.'
+                                        type: string
+                                      name:
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      namespace:
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        type: string
+                                    type: object
+                                required:
+                                - ipAddressRef
+                                - ipProtocol
+                                - loadBalancerType
+                                - networkUrlRef
+                                - port
+                                - projectRef
+                                type: object
+                              type: array
+                          required:
+                          - internalLoadBalancers
+                          type: object
                         location:
                           description: The location name defined in Google Cloud.
                           type: string
@@ -152,11 +305,530 @@ spec:
                       - location
                       type: object
                     type: array
+                  primaryBackup:
+                    description: The configuration for a primary-backup policy with
+                      global to regional failover. Queries are responded to with the
+                      global primary targets, but if none of the primary targets are
+                      healthy, then we fallback to a regional failover policy.
+                    properties:
+                      backupGeo:
+                        description: The backup geo targets, which provide a regional
+                          failover policy for the otherwise global primary targets.
+                        items:
+                          properties:
+                            healthCheckedTargets:
+                              description: For A and AAAA types only. The list of
+                                targets to be health checked. These can be specified
+                                along with `rrdatas` within this item.
+                              properties:
+                                internalLoadBalancers:
+                                  description: The list of internal load balancers
+                                    to health check.
+                                  items:
+                                    properties:
+                                      ipAddressRef:
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: 'Allowed value: The `address`
+                                              field of a `ComputeAddress` resource.'
+                                            type: string
+                                          name:
+                                            description: 'Name of the referent. More
+                                              info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                            type: string
+                                          namespace:
+                                            description: 'Namespace of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                            type: string
+                                        type: object
+                                      ipProtocol:
+                                        description: 'The configured IP protocol of
+                                          the load balancer. This value is case-sensitive.
+                                          Possible values: ["tcp", "udp"].'
+                                        type: string
+                                      loadBalancerType:
+                                        description: 'The type of load balancer. This
+                                          value is case-sensitive. Possible values:
+                                          ["regionalL4ilb", "regionalL7ilb", "globalL7ilb"].'
+                                        type: string
+                                      networkUrlRef:
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: 'Allowed value: The `selfLink`
+                                              field of a `ComputeNetwork` resource.'
+                                            type: string
+                                          name:
+                                            description: 'Name of the referent. More
+                                              info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                            type: string
+                                          namespace:
+                                            description: 'Namespace of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                            type: string
+                                        type: object
+                                      port:
+                                        description: The configured port of the load
+                                          balancer.
+                                        type: string
+                                      projectRef:
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: 'Allowed value: The `name`
+                                              field of a `Project` resource.'
+                                            type: string
+                                          name:
+                                            description: 'Name of the referent. More
+                                              info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                            type: string
+                                          namespace:
+                                            description: 'Namespace of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                            type: string
+                                        type: object
+                                      regionRef:
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: 'Allowed value: string of
+                                              the format `{{region}}`, where {{value}}
+                                              is the `name` field of a `ComputeForwardingRule`
+                                              resource.'
+                                            type: string
+                                          name:
+                                            description: 'Name of the referent. More
+                                              info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                            type: string
+                                          namespace:
+                                            description: 'Namespace of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                            type: string
+                                        type: object
+                                    required:
+                                    - ipAddressRef
+                                    - ipProtocol
+                                    - loadBalancerType
+                                    - networkUrlRef
+                                    - port
+                                    - projectRef
+                                    type: object
+                                  type: array
+                              required:
+                              - internalLoadBalancers
+                              type: object
+                            location:
+                              description: The location name defined in Google Cloud.
+                              type: string
+                            rrdatasRefs:
+                              items:
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: 'Allowed value: The `address` field
+                                      of a `ComputeAddress` resource.'
+                                    type: string
+                                  name:
+                                    description: 'Name of the referent. More info:
+                                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                    type: string
+                                  namespace:
+                                    description: 'Namespace of the referent. More
+                                      info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                    type: string
+                                type: object
+                              type: array
+                          required:
+                          - location
+                          type: object
+                        type: array
+                      enableGeoFencingForBackups:
+                        description: Specifies whether to enable fencing for backup
+                          geo queries.
+                        type: boolean
+                      primary:
+                        description: The list of global primary targets to be health
+                          checked.
+                        properties:
+                          internalLoadBalancers:
+                            description: The list of internal load balancers to health
+                              check.
+                            items:
+                              properties:
+                                ipAddressRef:
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: 'Allowed value: The `address` field
+                                        of a `ComputeAddress` resource.'
+                                      type: string
+                                    name:
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                      type: string
+                                    namespace:
+                                      description: 'Namespace of the referent. More
+                                        info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                      type: string
+                                  type: object
+                                ipProtocol:
+                                  description: 'The configured IP protocol of the
+                                    load balancer. This value is case-sensitive. Possible
+                                    values: ["tcp", "udp"].'
+                                  type: string
+                                loadBalancerType:
+                                  description: 'The type of load balancer. This value
+                                    is case-sensitive. Possible values: ["regionalL4ilb",
+                                    "regionalL7ilb", "globalL7ilb"].'
+                                  type: string
+                                networkUrlRef:
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: 'Allowed value: The `selfLink`
+                                        field of a `ComputeNetwork` resource.'
+                                      type: string
+                                    name:
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                      type: string
+                                    namespace:
+                                      description: 'Namespace of the referent. More
+                                        info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                      type: string
+                                  type: object
+                                port:
+                                  description: The configured port of the load balancer.
+                                  type: string
+                                projectRef:
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: 'Allowed value: The `name` field
+                                        of a `Project` resource.'
+                                      type: string
+                                    name:
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                      type: string
+                                    namespace:
+                                      description: 'Namespace of the referent. More
+                                        info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                      type: string
+                                  type: object
+                                regionRef:
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: 'Allowed value: string of the format
+                                        `{{region}}`, where {{value}} is the `name`
+                                        field of a `ComputeForwardingRule` resource.'
+                                      type: string
+                                    name:
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                      type: string
+                                    namespace:
+                                      description: 'Namespace of the referent. More
+                                        info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                      type: string
+                                  type: object
+                              required:
+                              - ipAddressRef
+                              - ipProtocol
+                              - loadBalancerType
+                              - networkUrlRef
+                              - port
+                              - projectRef
+                              type: object
+                            type: array
+                        required:
+                        - internalLoadBalancers
+                        type: object
+                      trickleRatio:
+                        description: Specifies the percentage of traffic to send to
+                          the backup targets even when the primary targets are healthy.
+                        type: number
+                    required:
+                    - backupGeo
+                    - primary
+                    type: object
                   wrr:
                     description: The configuration for Weighted Round Robin based
                       routing policy.
                     items:
                       properties:
+                        healthCheckedTargets:
+                          description: The list of targets to be health checked. Note
+                            that if DNSSEC is enabled for this zone, only one of `rrdatas`
+                            or `health_checked_targets` can be set.
+                          properties:
+                            internalLoadBalancers:
+                              description: The list of internal load balancers to
+                                health check.
+                              items:
+                                properties:
+                                  ipAddressRef:
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: 'Allowed value: The `address`
+                                          field of a `ComputeAddress` resource.'
+                                        type: string
+                                      name:
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      namespace:
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        type: string
+                                    type: object
+                                  ipProtocol:
+                                    description: 'The configured IP protocol of the
+                                      load balancer. This value is case-sensitive.
+                                      Possible values: ["tcp", "udp"].'
+                                    type: string
+                                  loadBalancerType:
+                                    description: 'The type of load balancer. This
+                                      value is case-sensitive. Possible values: ["regionalL4ilb",
+                                      "regionalL7ilb", "globalL7ilb"].'
+                                    type: string
+                                  networkUrlRef:
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: 'Allowed value: The `selfLink`
+                                          field of a `ComputeNetwork` resource.'
+                                        type: string
+                                      name:
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      namespace:
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        type: string
+                                    type: object
+                                  port:
+                                    description: The configured port of the load balancer.
+                                    type: string
+                                  projectRef:
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: 'Allowed value: The `name` field
+                                          of a `Project` resource.'
+                                        type: string
+                                      name:
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      namespace:
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        type: string
+                                    type: object
+                                  regionRef:
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: 'Allowed value: string of the
+                                          format `{{region}}`, where {{value}} is
+                                          the `name` field of a `ComputeForwardingRule`
+                                          resource.'
+                                        type: string
+                                      name:
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      namespace:
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        type: string
+                                    type: object
+                                required:
+                                - ipAddressRef
+                                - ipProtocol
+                                - loadBalancerType
+                                - networkUrlRef
+                                - port
+                                - projectRef
+                                type: object
+                              type: array
+                          required:
+                          - internalLoadBalancers
+                          type: object
                         rrdatasRefs:
                           items:
                             oneOf:
