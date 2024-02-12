@@ -58,6 +58,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -90,14 +91,12 @@ type Harness struct {
 	// goldenFiles tracks the golden files we checked, so we can look for "extra" golden files.
 	goldenFiles []string
 
-	options *HarnessOptions
-
 	// MockGCP holds our mockgcp instance, if we are running against mockgcp
 	MockGCP mockgcp.Interface
-}
 
-type HarnessOptions struct {
-	VCRPath string
+	// some fields that can be set by options
+	vcrPath    string
+	filterCRDs func(gk schema.GroupKind) bool
 }
 
 type httpRoundTripperKeyType int
@@ -116,14 +115,20 @@ func NewHarnessWithManager(ctx context.Context, t *testing.T, mgr manager.Manage
 	return h
 }
 
-func NewHarness(ctx context.Context, t *testing.T) *Harness {
-	opts := &HarnessOptions{
-		VCRPath: "",
+type HarnessOption func(*Harness)
+
+func FilterCRDs(filterCRDs func(gk schema.GroupKind) bool) HarnessOption {
+	return func(h *Harness) {
+		h.filterCRDs = filterCRDs
 	}
-	return NewHarnessWithOptions(ctx, t, opts)
 }
 
-func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptions) *Harness {
+func WithVCRPath(vcrPath string) HarnessOption {
+	return func(h *Harness) {
+		h.vcrPath = vcrPath
+	}
+}
+func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harness {
 	ctx, ctxCancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
 		ctxCancel()
@@ -131,9 +136,12 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 	log := log.FromContext(ctx)
 
 	h := &Harness{
-		T:       t,
-		Ctx:     ctx,
-		options: opts,
+		T:   t,
+		Ctx: ctx,
+	}
+
+	for _, opt := range opts {
+		opt(h)
 	}
 
 	kccConfig := kccmanager.Config{}
@@ -250,6 +258,12 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 
 			for i := range crds {
 				crd := &crds[i]
+				if h.filterCRDs != nil {
+					gk := k8s.GetGroupKindFromCRD(crd)
+					if !h.filterCRDs(gk) {
+						continue
+					}
+				}
 				wg.Add(1)
 				log.V(2).Info("loading crd", "name", crd.GetName())
 
@@ -399,7 +413,7 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		} else {
 			t.Fatalf("[VCR] VCR_MODE should be set to record or replay; value %q is not known", inputMode)
 		}
-		path := filepath.Join(h.options.VCRPath, "_vcr_cassettes")
+		path := filepath.Join(h.vcrPath, "_vcr_cassettes")
 		// In replay mode, RealTransport is unnecessary because we simply replay existing cassettes.
 		opts := &recorder.Options{
 			CassetteName: filepath.Join(path, "nontf"),
