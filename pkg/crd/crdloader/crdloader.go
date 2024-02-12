@@ -136,6 +136,7 @@ func isMatch(group, version, kind string, crd apiextensions.CustomResourceDefini
 			return false
 		}
 	}
+
 	if version != "" {
 		foundVersion := false
 		for i := range crd.Spec.Versions {
