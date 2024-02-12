@@ -148,18 +148,27 @@ func (o *objectWalker) visitMap(m map[string]any, path string) error {
 }
 
 func sortSlice(s []any) error {
-	var jsons []string
+	type entry struct {
+		o       any
+		sortKey string
+	}
+
+	var entries []entry
 	for i := range s {
 		j, err := json.Marshal(s[i])
 		if err != nil {
 			return fmt.Errorf("error converting to json: %w", err)
 		}
-		jsons = append(jsons, string(j))
+		entries = append(entries, entry{o: s[i], sortKey: string(j)})
 	}
 
-	sort.Slice(s, func(i, j int) bool {
-		return jsons[i] < jsons[j]
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[i].sortKey < entries[j].sortKey
 	})
+
+	for i := range s {
+		s[i] = entries[i].o
+	}
 
 	return nil
 }

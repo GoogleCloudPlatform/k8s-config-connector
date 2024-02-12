@@ -25,6 +25,7 @@ gen-proto:
 		--grpc-gateway_opt logtostderr=true \
 		--grpc-gateway_opt paths=source_relative \
 		--experimental_allow_proto3_optional \
+		./apis/mockgcp/cloud/bigquery/v2/*.proto \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
@@ -68,7 +69,7 @@ gen-proto:
 generate-protos-from-openapi:
 	wget -O bigquery-v2.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/bigquery/v2/bigquery-api.json
 	mkdir -p apis/mockgcp/cloud/bigquery/v2/
-	cd tools/gapic; go run . ../../bigquery-v2.json > ../../apis/mockgcp/cloud/bigquery/v2/api.proto
+	cd tools/gapic; go run . --proto-version=2 ../../bigquery-v2.json > ../../apis/mockgcp/cloud/bigquery/v2/api.proto
 
 	wget -O servicenetworking-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/servicenetworking/v1/servicenetworking-api.json
 	mkdir -p apis/mockgcp/cloud/servicenetworking/v1/
