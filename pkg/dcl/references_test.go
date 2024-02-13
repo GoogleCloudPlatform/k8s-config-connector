@@ -829,18 +829,18 @@ func TestGetHierarchicalRefFromConfigForMultiParentResource(t *testing.T) {
 
 func dclSchemaMap() map[string]*openapi.Schema {
 	return map[string]*openapi.Schema{
-		"test5_beta_nohierarchicalref": &openapi.Schema{
+		"test5_beta_nohierarchicalref": {
 			Type: "object",
 			Properties: map[string]*openapi.Schema{
-				"name": &openapi.Schema{
+				"name": {
 					Type: "string",
 				},
 			},
 		},
-		"test5_beta_projectref": &openapi.Schema{
+		"test5_beta_projectref": {
 			Type: "object",
 			Properties: map[string]*openapi.Schema{
-				"project": &openapi.Schema{
+				"project": {
 					Type: "string",
 					Extension: map[string]interface{}{
 						"x-dcl-references": []interface{}{
@@ -854,10 +854,10 @@ func dclSchemaMap() map[string]*openapi.Schema {
 				},
 			},
 		},
-		"test5_beta_folderref": &openapi.Schema{
+		"test5_beta_folderref": {
 			Type: "object",
 			Properties: map[string]*openapi.Schema{
-				"folder": &openapi.Schema{
+				"folder": {
 					Type: "string",
 					Extension: map[string]interface{}{
 						"x-dcl-references": []interface{}{
@@ -871,10 +871,10 @@ func dclSchemaMap() map[string]*openapi.Schema {
 				},
 			},
 		},
-		"test5_beta_organizationref": &openapi.Schema{
+		"test5_beta_organizationref": {
 			Type: "object",
 			Properties: map[string]*openapi.Schema{
-				"organization": &openapi.Schema{
+				"organization": {
 					Type: "string",
 					Extension: map[string]interface{}{
 						"x-dcl-references": []interface{}{
@@ -888,10 +888,10 @@ func dclSchemaMap() map[string]*openapi.Schema {
 				},
 			},
 		},
-		"test5_beta_multiplerefs": &openapi.Schema{
+		"test5_beta_multiplerefs": {
 			Type: "object",
 			Properties: map[string]*openapi.Schema{
-				"parent": &openapi.Schema{
+				"parent": {
 					Type: "string",
 					Extension: map[string]interface{}{
 						"x-dcl-references": []interface{}{
@@ -915,10 +915,10 @@ func dclSchemaMap() map[string]*openapi.Schema {
 				},
 			},
 		},
-		"test5_beta_tworefs": &openapi.Schema{
+		"test5_beta_tworefs": {
 			Type: "object",
 			Properties: map[string]*openapi.Schema{
-				"parent": &openapi.Schema{
+				"parent": {
 					Type: "string",
 					Extension: map[string]interface{}{
 						"x-dcl-references": []interface{}{
@@ -941,7 +941,7 @@ func dclSchemaMap() map[string]*openapi.Schema {
 		// Add the following to the list of fake DCL schemas to allow for our
 		// test to test resources that reference hierarchical resources
 		// (e.g. "Cloudresourcemanager/Project").
-		"cloudresourcemanager_ga_project": &openapi.Schema{},
+		"cloudresourcemanager_ga_project": {},
 		"cloudresourcemanager_ga_folder":  &openapi.Schema{},
 	}
 }

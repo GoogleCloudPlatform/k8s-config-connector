@@ -1266,12 +1266,12 @@ func TestDCLSchemaToJSONSchema(t *testing.T) {
 
 func dclSchemaMap() map[string]*openapi.Schema {
 	return map[string]*openapi.Schema{
-		"test1_beta_foo": &openapi.Schema{
+		"test1_beta_foo": {
 			Extension: map[string]interface{}{
 				"x-dcl-id": "projects/{{project}}/foo/{{name}}",
 			},
 		},
-		"test1_beta_bar": &openapi.Schema{
+		"test1_beta_bar": {
 			Extension: map[string]interface{}{
 				"x-dcl-id": "projects/{{project}}/bar/{{name}}",
 			},
@@ -1280,12 +1280,12 @@ func dclSchemaMap() map[string]*openapi.Schema {
 		// Add the following to the list of fake DCL schemas to allow for our
 		// test to test resources that reference hierarchical resources
 		// (e.g. "Cloudresourcemanager/Project").
-		"cloudresourcemanager_ga_project": &openapi.Schema{
+		"cloudresourcemanager_ga_project": {
 			Extension: map[string]interface{}{
 				"x-dcl-id": "projects/{{name}}",
 			},
 		},
-		"cloudresourcemanager_ga_folder": &openapi.Schema{
+		"cloudresourcemanager_ga_folder": {
 			Extension: map[string]interface{}{
 				"x-dcl-id": "folders/{{name}}",
 			},

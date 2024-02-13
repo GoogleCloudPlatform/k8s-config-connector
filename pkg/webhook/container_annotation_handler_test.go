@@ -333,7 +333,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -393,7 +393,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -447,7 +447,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -501,7 +501,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -558,7 +558,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -623,7 +623,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -680,7 +680,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -737,7 +737,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -791,7 +791,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -858,7 +858,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -902,7 +902,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -951,7 +951,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1010,7 +1010,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1049,7 +1049,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 				// Add the following to the list of fake DCL schemas to allow for our
 				// test to test resources that reference hierarchical resources
 				// (e.g. "Cloudresourcemanager/Project").
-				"cloudresourcemanager_ga_project": &openapi.Schema{},
+				"cloudresourcemanager_ga_project": {},
 				"cloudresourcemanager_ga_folder":  &openapi.Schema{},
 			}
 			dclSchemaLoader := testdclschemaloader.New(dclSchemaMap)

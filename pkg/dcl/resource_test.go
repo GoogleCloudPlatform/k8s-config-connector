@@ -56,7 +56,7 @@ func TestValidateResourceIDIfSupported(t *testing.T) {
 				},
 				Schema: &openapi.Schema{
 					Properties: map[string]*openapi.Schema{
-						"name": &openapi.Schema{
+						"name": {
 							Type: "string",
 						},
 					},
@@ -75,7 +75,7 @@ func TestValidateResourceIDIfSupported(t *testing.T) {
 				},
 				Schema: &openapi.Schema{
 					Properties: map[string]*openapi.Schema{
-						"name": &openapi.Schema{
+						"name": {
 							Type: "string",
 						},
 					},
@@ -94,7 +94,7 @@ func TestValidateResourceIDIfSupported(t *testing.T) {
 				},
 				Schema: &openapi.Schema{
 					Properties: map[string]*openapi.Schema{
-						"name": &openapi.Schema{
+						"name": {
 							Type: "string",
 						},
 					},
@@ -113,7 +113,7 @@ func TestValidateResourceIDIfSupported(t *testing.T) {
 				},
 				Schema: &openapi.Schema{
 					Properties: map[string]*openapi.Schema{
-						"name": &openapi.Schema{
+						"name": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-server-generated-parameter": true,
@@ -135,7 +135,7 @@ func TestValidateResourceIDIfSupported(t *testing.T) {
 				},
 				Schema: &openapi.Schema{
 					Properties: map[string]*openapi.Schema{
-						"name": &openapi.Schema{
+						"name": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-server-generated-parameter": true,
@@ -185,7 +185,7 @@ func TestHasServerGeneratedIDButNotConfigured(t *testing.T) {
 				},
 				Schema: &openapi.Schema{
 					Properties: map[string]*openapi.Schema{
-						"name": &openapi.Schema{
+						"name": {
 							Type: "string",
 						},
 					},
@@ -204,7 +204,7 @@ func TestHasServerGeneratedIDButNotConfigured(t *testing.T) {
 				},
 				Schema: &openapi.Schema{
 					Properties: map[string]*openapi.Schema{
-						"name": &openapi.Schema{
+						"name": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-server-generated-parameter": true,
@@ -222,7 +222,7 @@ func TestHasServerGeneratedIDButNotConfigured(t *testing.T) {
 				Resource: k8s.Resource{},
 				Schema: &openapi.Schema{
 					Properties: map[string]*openapi.Schema{
-						"name": &openapi.Schema{
+						"name": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-server-generated-parameter": true,
@@ -267,7 +267,7 @@ func TestHasServerGeneratedIDAndConfigured(t *testing.T) {
 				},
 				Schema: &openapi.Schema{
 					Properties: map[string]*openapi.Schema{
-						"name": &openapi.Schema{
+						"name": {
 							Type: "string",
 						},
 					},
@@ -286,7 +286,7 @@ func TestHasServerGeneratedIDAndConfigured(t *testing.T) {
 				},
 				Schema: &openapi.Schema{
 					Properties: map[string]*openapi.Schema{
-						"name": &openapi.Schema{
+						"name": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-server-generated-parameter": true,
@@ -304,7 +304,7 @@ func TestHasServerGeneratedIDAndConfigured(t *testing.T) {
 				Resource: k8s.Resource{},
 				Schema: &openapi.Schema{
 					Properties: map[string]*openapi.Schema{
-						"name": &openapi.Schema{
+						"name": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-server-generated-parameter": true,

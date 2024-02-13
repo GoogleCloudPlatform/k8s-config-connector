@@ -121,13 +121,13 @@ func TestGetContainersForGVK(t *testing.T) {
 }
 
 var dclSchemaMap = map[string]*openapi.Schema{
-	"test4_beta_projectcontainer": &openapi.Schema{
+	"test4_beta_projectcontainer": {
 		Type: "object",
 		Properties: map[string]*openapi.Schema{
-			"project": &openapi.Schema{
+			"project": {
 				Type: "string",
 			},
-			"name": &openapi.Schema{
+			"name": {
 				Type: "string",
 			},
 		},
@@ -135,13 +135,13 @@ var dclSchemaMap = map[string]*openapi.Schema{
 			"x-dcl-parent-container": "project",
 		},
 	},
-	"test4_beta_organizationcontainer": &openapi.Schema{
+	"test4_beta_organizationcontainer": {
 		Type: "object",
 		Properties: map[string]*openapi.Schema{
-			"organization": &openapi.Schema{
+			"organization": {
 				Type: "string",
 			},
-			"name": &openapi.Schema{
+			"name": {
 				Type: "string",
 			},
 		},
@@ -149,32 +149,32 @@ var dclSchemaMap = map[string]*openapi.Schema{
 			"x-dcl-parent-container": "organization",
 		},
 	},
-	"test4_beta_nocontainer": &openapi.Schema{
+	"test4_beta_nocontainer": {
 		Type: "object",
 		Properties: map[string]*openapi.Schema{
-			"project": &openapi.Schema{
+			"project": {
 				Type: "string",
 			},
-			"name": &openapi.Schema{
+			"name": {
 				Type: "string",
 			},
 		},
 	},
-	"test4_beta_nocontainerextensionbutsupportscontainers": &openapi.Schema{
+	"test4_beta_nocontainerextensionbutsupportscontainers": {
 		Type: "object",
 		Properties: map[string]*openapi.Schema{
-			"project": &openapi.Schema{
+			"project": {
 				Type: "string",
 			},
-			"name": &openapi.Schema{
+			"name": {
 				Type: "string",
 			},
 		},
 	},
-	"test4_beta_nocontainerextensionandsupportscontainersbuthasnohierarchicalrefs": &openapi.Schema{
+	"test4_beta_nocontainerextensionandsupportscontainersbuthasnohierarchicalrefs": {
 		Type: "object",
 		Properties: map[string]*openapi.Schema{
-			"name": &openapi.Schema{
+			"name": {
 				Type: "string",
 			},
 		},

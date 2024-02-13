@@ -695,7 +695,7 @@ func TestConverter_KRMObjectToDCLObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -739,7 +739,7 @@ func TestConverter_KRMObjectToDCLObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -798,7 +798,7 @@ func TestConverter_KRMObjectToDCLObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -857,7 +857,7 @@ func TestConverter_KRMObjectToDCLObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -916,7 +916,7 @@ func TestConverter_KRMObjectToDCLObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -975,7 +975,7 @@ func TestConverter_KRMObjectToDCLObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1570,7 +1570,7 @@ func TestConverter_DCLObjectToKRMObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1611,7 +1611,7 @@ func TestConverter_DCLObjectToKRMObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1662,7 +1662,7 @@ func TestConverter_DCLObjectToKRMObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1713,7 +1713,7 @@ func TestConverter_DCLObjectToKRMObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1764,7 +1764,7 @@ func TestConverter_DCLObjectToKRMObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1820,7 +1820,7 @@ func TestConverter_DCLObjectToKRMObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1867,7 +1867,7 @@ func TestConverter_DCLObjectToKRMObjectForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -2434,13 +2434,13 @@ func compareUnstructuredObjects(t *testing.T, actual, expected *unstructured.Uns
 }
 
 var dclSchemaMap = map[string]*openapi.Schema{
-	"test1_beta_foo": &openapi.Schema{
+	"test1_beta_foo": {
 		Type: "object",
 		Properties: map[string]*openapi.Schema{
-			"project": &openapi.Schema{
+			"project": {
 				Type: "string",
 			},
-			"name": &openapi.Schema{
+			"name": {
 				Type: "string",
 			},
 			"stringKey": {
@@ -2474,10 +2474,10 @@ var dclSchemaMap = map[string]*openapi.Schema{
 					Type:     "object",
 					ReadOnly: true,
 					Properties: map[string]*openapi.Schema{
-						"nestedStatusField1": &openapi.Schema{
+						"nestedStatusField1": {
 							Type: "boolean",
 						},
-						"nestedStatusField2": &openapi.Schema{
+						"nestedStatusField2": {
 							Type: "string",
 						},
 					},
@@ -2489,10 +2489,10 @@ var dclSchemaMap = map[string]*openapi.Schema{
 				AdditionalProperties: &openapi.Schema{
 					Type: "object",
 					Properties: map[string]*openapi.Schema{
-						"nestedStatusField1": &openapi.Schema{
+						"nestedStatusField1": {
 							Type: "boolean",
 						},
-						"nestedStatusField2": &openapi.Schema{
+						"nestedStatusField2": {
 							Type: "string",
 						},
 					},
@@ -2689,16 +2689,16 @@ var dclSchemaMap = map[string]*openapi.Schema{
 			"x-dcl-parent-container": "project",
 		},
 	},
-	"test1_beta_bar": &openapi.Schema{
+	"test1_beta_bar": {
 		Type: "object",
 		Properties: map[string]*openapi.Schema{
-			"project": &openapi.Schema{
+			"project": {
 				Type: "string",
 			},
-			"name": &openapi.Schema{
+			"name": {
 				Type: "string",
 			},
-			"labels": &openapi.Schema{
+			"labels": {
 				Type: "object",
 				AdditionalProperties: &openapi.Schema{
 					Type: "string",
@@ -2710,13 +2710,13 @@ var dclSchemaMap = map[string]*openapi.Schema{
 			"x-dcl-labels":           "labels",
 		},
 	},
-	"test2_beta_baz": &openapi.Schema{
+	"test2_beta_baz": {
 		Type: "object",
 		Properties: map[string]*openapi.Schema{
-			"project": &openapi.Schema{
+			"project": {
 				Type: "string",
 			},
-			"name": &openapi.Schema{
+			"name": {
 				Type: "string",
 				Extension: map[string]interface{}{
 					"x-dcl-server-generated-parameter": true,
@@ -2727,10 +2727,10 @@ var dclSchemaMap = map[string]*openapi.Schema{
 			"x-dcl-parent-container": "project",
 		},
 	},
-	"test2_beta_noname": &openapi.Schema{
+	"test2_beta_noname": {
 		Type: "object",
 		Properties: map[string]*openapi.Schema{
-			"project": &openapi.Schema{
+			"project": {
 				Type: "string",
 			},
 		},
@@ -2738,16 +2738,16 @@ var dclSchemaMap = map[string]*openapi.Schema{
 			"x-dcl-parent-container": "project",
 		},
 	},
-	"test1_beta_nolabelsextension": &openapi.Schema{
+	"test1_beta_nolabelsextension": {
 		Type: "object",
 		Properties: map[string]*openapi.Schema{
-			"project": &openapi.Schema{
+			"project": {
 				Type: "string",
 			},
-			"name": &openapi.Schema{
+			"name": {
 				Type: "string",
 			},
-			"labels": &openapi.Schema{
+			"labels": {
 				Type: "object",
 				AdditionalProperties: &openapi.Schema{
 					Type: "string",
