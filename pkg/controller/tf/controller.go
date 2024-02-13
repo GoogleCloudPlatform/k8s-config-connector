@@ -64,26 +64,26 @@ var logger = klog.Log
 type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
 	metrics.ReconcilerMetrics
-	resourceLeaser         *leaser.ResourceLeaser
-	stateIntoSpecDefaulter k8s.Defaulter
-	mgr                    manager.Manager
-	schemaRef              *k8s.SchemaReference
-	schemaRefMu            sync.RWMutex
-	provider               *tfschema.Provider
-	smLoader               *servicemappingloader.ServiceMappingLoader
-	logger                 logr.Logger
+	resourceLeaser *leaser.ResourceLeaser
+	defaulters     []k8s.Defaulter
+	mgr            manager.Manager
+	schemaRef      *k8s.SchemaReference
+	schemaRefMu    sync.RWMutex
+	provider       *tfschema.Provider
+	smLoader       *servicemappingloader.ServiceMappingLoader
+	logger         logr.Logger
 	// Fields used for triggering reconciliations when dependencies are ready
 	immediateReconcileRequests chan event.GenericEvent
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 }
 
-func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, stateIntoSpecDefaulter k8s.Defaulter) (k8s.SchemaReferenceUpdater, error) {
+func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter) (k8s.SchemaReferenceUpdater, error) {
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	r, err := NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, stateIntoSpecDefaulter)
+	r, err := NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	if err != nil {
 		return nil, err
 	}
@@ -107,16 +107,16 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 	return r, nil
 }
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, stateIntoSpecDefaulter k8s.Defaulter) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter) (*Reconciler, error) {
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
 	return &Reconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
 			mgr.GetEventRecorderFor(controllerName),
 		),
-		resourceLeaser:         leaser.NewResourceLeaser(p, smLoader, mgr.GetClient()),
-		stateIntoSpecDefaulter: stateIntoSpecDefaulter,
-		mgr:                    mgr,
+		resourceLeaser: leaser.NewResourceLeaser(p, smLoader, mgr.GetClient()),
+		defaulters:     defaulters,
+		mgr:            mgr,
 		schemaRef: &k8s.SchemaReference{
 			CRD:        crd,
 			JsonSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
@@ -176,7 +176,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %v", req.NamespacedName.String(), err)
 	}
-	if err := r.handleDefaultStateIntoSpecValue(resource); err != nil {
+	if err := r.handleDefaults(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(resource), err)
 	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
@@ -403,11 +403,11 @@ func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.Namespac
 	r.immediateReconcileRequests <- genEvent
 }
 
-func (r *Reconciler) handleDefaultStateIntoSpecValue(resource *krmtotf.Resource) error {
-	// Validate or set the default value (cluster-level or namespace-level) for
-	// the 'state-into-spec' annotation.
-	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(&resource.Resource, r.stateIntoSpecDefaulter.GetValue()); err != nil {
-		return fmt.Errorf("error validating or defaulting the '%v' annotation for resource '%v': %w", k8s.StateIntoSpecAnnotation, k8s.GetNamespacedName(resource), err)
+func (r *Reconciler) handleDefaults(ctx context.Context, resource *krmtotf.Resource) error {
+	for _, defaulter := range r.defaulters {
+		if _, err := defaulter.ApplyDefaults(ctx, resource); err != nil {
+			return err
+		}
 	}
 	return nil
 }

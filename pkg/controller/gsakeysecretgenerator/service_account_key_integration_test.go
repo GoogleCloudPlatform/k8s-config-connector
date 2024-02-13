@@ -191,7 +191,7 @@ func newTestReconciler(t *testing.T, mgr manager.Manager, crdPath string, provid
 	if err != nil {
 		t.Fatalf("error constructing new state into spec value: %v", err)
 	}
-	reconciler, err := tf.NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, stateIntoSpecDefaulter)
+	reconciler, err := tf.NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, []k8s.Defaulter{stateIntoSpecDefaulter})
 	if err != nil {
 		t.Fatalf("error creating reconciler: %v", err)
 	}

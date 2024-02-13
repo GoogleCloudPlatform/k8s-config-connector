@@ -21,19 +21,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func NewStateIntoSpecDefaulter(defaultValue string, userOverride *string) (Defaulter, error) {
-	if !isAcceptedValue(defaultValue, StateIntoSpecAnnotationValues) {
-		return nil, fmt.Errorf("invalid default value '%v' for '%v' annotation, need to be one of {%v}", defaultValue, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
-	}
-	if userOverride != nil && !isAcceptedValue(*userOverride, StateIntoSpecAnnotationValues) {
-		return nil, fmt.Errorf("invalid user override value '%v' for '%v' annotation, need to be one of {%v}", userOverride, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
-	}
-	return &StateIntoSpecDefaulter{
-		defaultValue: defaultValue,
-		userOverride: userOverride,
-	}, nil
-}
-
 // ValidateOrDefaultStateIntoSpecAnnotation validates the value of the
 // 'state-into-spec' annotation if it is set and defaults the annotation to the
 // passed in defaultValue if it is unset.
