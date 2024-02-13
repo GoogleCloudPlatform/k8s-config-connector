@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -41,10 +42,11 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
@@ -54,7 +56,7 @@ const controllerName = "registration-controller"
 const serviceAccountKeyAPIGroup = "iam.cnrm.cloud.google.com"
 const serviceAccountKeyKind = "IAMServiceAccountKey"
 
-var logger = klog.Log.WithName(controllerName)
+var logger = crlog.Log.WithName(controllerName)
 
 // Add creates a new registration Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and Start it when the Manager is Started.
@@ -170,8 +172,22 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
-	// Depending on which resource it is, we need to register a different controller.
+
 	var schemaUpdater k8s.SchemaReferenceUpdater
+
+	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
+		switch gvk.GroupKind() {
+		case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
+			if err := apikeys.AddKeyReconciler(r.mgr, config); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+		default:
+			klog.Warningf("requested direct reconciler for %v, but it is not supported", gvk.GroupKind())
+		}
+	}
+
+	// Depending on which resource it is, we need to register a different controller.
 	switch gvk.Kind {
 	case "IAMPolicy":
 		if err := policy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
@@ -189,10 +205,7 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 		if err := auditconfig.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
 			return nil, err
 		}
-	case "APIKeysKey":
-		if err := apikeys.AddKeyReconciler(r.mgr, config); err != nil {
-			return nil, err
-		}
+
 	default:
 		// register controllers for dcl-based CRDs
 		if val, ok := crd.Labels[k8s.DCL2CRDLabel]; ok && val == "true" {
