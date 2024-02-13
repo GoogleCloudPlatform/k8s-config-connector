@@ -62,6 +62,9 @@ func (s *MockService) ExpectedHost() string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworksServer(grpcServer, s.networksv1)
 	pb.RegisterSubnetworksServer(grpcServer, s.subnetsv1)
+
+	pb.RegisterDisksServer(grpcServer, &DisksV1{MockService: s})
+	pb.RegisterRegionDisksServer(grpcServer, &RegionalDisksV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -97,6 +100,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterSubnetworksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterDisksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionDisksHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
