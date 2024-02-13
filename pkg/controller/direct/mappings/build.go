@@ -75,7 +75,18 @@ func Status(id string) FieldMapping {
 	return &statusField{ID: id}
 }
 
-// statusField describes a mapping from a proto top-level field into a KRM spec field.
+func TODO(id string) FieldMapping {
+	return &ignoreField{ID: toFieldID(id)}
+}
+
+type resourceID struct {
+	ID string
+}
+
+func ResourceID(id string) FieldMapping {
+	return &resourceID{ID: id}
+}
+
 type specField struct {
 	ID string
 }
@@ -251,3 +262,42 @@ func (b *MappingBuilder) addCloudToKRMMappin(inType *reflectType, outType *refle
 
 	return b
 }
+
+// func (b *MappingBuilder) MapEnum(enum protoreflect.EnumType) *MappingBuilder {
+// 	enumDescriptor := enum.Descriptor()
+// 	cloudObj := enum.New(0)
+// 	cloudVal := reflect.ValueOf(cloudObj)
+// 	// krmVal := reflect.ValueOf(krmObj)
+// 	// cloudType := typeOf(cloudVal.Type())
+// 	// resourceKRMType := typeOf(krmVal.Type())
+// 	enumType := typeOf(reflect.PtrTo(cloudVal.Type()))
+// 	// klog.Fatalf("enumType is %v", enumType)
+
+// 	var krmObj string
+// 	krmVal := reflect.ValueOf(krmObj)
+// 	stringType := typeOf(krmVal.Type())
+
+// 	{
+// 		createMapping := &enumToStringTypeMapping{
+// 			// scope:         b.mapping,
+// 			enumType:       enumType,
+// 			enumDescriptor: enumDescriptor,
+// 			stringType:     stringType,
+// 			// hasSpecStatus: false,
+// 		}
+// 		b.mapping.Mappings = append(b.mapping.Mappings, createMapping)
+// 	}
+
+// 	{
+// 		createMapping := &stringToEnumTypeMapping{
+// 			// scope:         b.mapping,
+// 			enumType:       enumType,
+// 			enumDescriptor: enumDescriptor,
+// 			stringType:     stringType,
+// 			// hasSpecStatus: false,
+// 		}
+// 		b.mapping.Mappings = append(b.mapping.Mappings, createMapping)
+// 	}
+
+// 	return b
+// }
