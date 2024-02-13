@@ -17,8 +17,11 @@ package monitoring
 import (
 	"context"
 	"fmt"
+	"reflect"
+	"time"
 
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"k8s.io/klog/v2"
 
 	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
@@ -73,10 +76,11 @@ var dashboardMapping = NewMapping(&pb.Dashboard{}, &krm.MonitoringDashboard{},
 	MapNested(&pb.Widget{}, &krm.DashboardWidgets{}, "title", "xyChart", "scorecard", "text", "blank",
 		TODO("timeSeriesTable"), TODO("alertChart"), TODO("timeSeriesTable"), TODO("collapsibleGroup"), "logsPanel").
 	MapNested(&pb.LogsPanel{}, &krm.DashboardLogsPanel{},
-		"filter", "resourceNames").
+		"filter",
+		ResourceRef("resourceNames", &refMapProjects{})).
 	MapNested(&pb.XyChart{}, &krm.DashboardXyChart{},
 		"dataSets",
-		"timeshiftDuration",
+		Transformed("timeshiftDuration", &durationTransform{}),
 		"thresholds",
 		"xAxis",
 		"yAxis",
@@ -132,10 +136,65 @@ var dashboardMapping = NewMapping(&pb.Dashboard{}, &krm.MonitoringDashboard{},
 		"perSeriesAligner",
 		"crossSeriesReducer",
 		"groupByFields").
-
-TODO: Need to fix how we map resourceRef - we can't push it down, it is context sensitive (although arguably we could do it with external)
-
 	MustBuild()
+
+type durationTransform struct {
+}
+
+var _ Mapper = &durationTransform{}
+
+func (*durationTransform) CloudToKRM(in reflect.Value) (reflect.Value, error) {
+	var d *durationpb.Duration
+
+	switch in.Kind() {
+	case reflect.Ptr:
+		if in.IsNil() {
+			return reflect.ValueOf(d), nil
+		}
+		in = in.Elem()
+	}
+
+	switch in.Kind() {
+	case reflect.Struct:
+		switch v := in.Interface().(type) {
+		case durationpb.Duration:
+			s := v.AsDuration().String()
+			return reflect.ValueOf(s), nil
+		default:
+			return reflect.Value{}, fmt.Errorf("unhandled kind in durationTransform::KRMToCloud: %T", v)
+		}
+	default:
+		return reflect.Value{}, fmt.Errorf("unhandled kind in durationTransform::KRMToCloud: %v", in.Kind())
+	}
+
+}
+
+func (*durationTransform) KRMToCloud(in reflect.Value) (reflect.Value, error) {
+	var d *durationpb.Duration
+
+	s := ""
+	if in.Kind() == reflect.Ptr {
+		if in.IsNil() {
+			return reflect.ValueOf(d), nil
+		}
+		in = in.Elem()
+	}
+	switch in.Kind() {
+	case reflect.String:
+		s = in.String()
+	default:
+		return reflect.Value{}, fmt.Errorf("unhandled kind in durationTransform::CloudToKRM: %v", in.Kind())
+	}
+	if s == "" {
+		return reflect.ValueOf(d), nil
+	}
+	duration, err := time.ParseDuration(s)
+	if err != nil {
+		return reflect.Value{}, fmt.Errorf("invalid duration %q", s)
+	}
+	d = durationpb.New(duration)
+	return reflect.ValueOf(d), nil
+}
 
 type dashboardAdapter struct {
 	projectID   string

@@ -63,8 +63,9 @@ func (m *structTypeMapping) ToType() reflect.Type {
 // fieldMapping describes the field we should read in the input, and write in the output.
 // In future, we could add value transformations here, but we haven't needed one yet.
 type fieldMapping struct {
-	InPath  *fieldPath
-	OutPath *fieldPath
+	InPath    *fieldPath
+	OutPath   *fieldPath
+	Transform func(in reflect.Value) (reflect.Value, error)
 }
 
 // Map implements typeMapping
@@ -73,6 +74,13 @@ func (m *structTypeMapping) Map(in *point, out *point) error {
 		inPoint := mapping.InPath.FindPoint(in)
 
 		srcVal := inPoint.GetValue()
+		if mapping.Transform != nil {
+			xformed, err := mapping.Transform(srcVal)
+			if err != nil {
+				return err
+			}
+			srcVal = xformed
+		}
 
 		if err := mapping.OutPath.SetValue(out, srcVal); err != nil {
 			return err

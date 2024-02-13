@@ -17,15 +17,17 @@ package mappings
 import (
 	"fmt"
 	"reflect"
-	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	"google.golang.org/protobuf/types/known/durationpb"
 	"k8s.io/klog/v2"
 )
 
 // convert will convert from the value src to destType, supporting assignment to a field of destType.
 func (m *Mapping) convert(src reflect.Value, destType reflect.Type) (reflect.Value, error) {
+	if src.Type() == destType {
+		// Nothing to do
+		return src, nil
+	}
+
 	if src.Kind() == reflect.Pointer {
 		if src.IsNil() {
 			// Nothing to set
@@ -67,49 +69,49 @@ func (m *Mapping) convert(src reflect.Value, destType reflect.Type) (reflect.Val
 				return reflect.Value{}, nil
 			}
 			return reflect.ValueOf(&v), nil
-		case "*durationpb.Duration":
-			// TODO: Register some well-known conversion functions and use them?
-			duration, err := time.ParseDuration(v)
-			if err != nil {
-				return reflect.Value{}, fmt.Errorf("invalid duration %q", duration)
-			}
-			durationProto := durationpb.New(duration)
-			return reflect.ValueOf(durationProto), nil
-		case "*v1alpha1.ResourceRef":
-			// TODO: Register some well-known conversion functions and use them?
-			ref := &v1alpha1.ResourceRef{External: v}
-			return reflect.ValueOf(ref), nil
-		case "v1alpha1.ResourceRef":
-			// TODO: Register some well-known conversion functions and use them?
-			ref := &v1alpha1.ResourceRef{External: v}
-			return reflect.ValueOf(ref).Elem(), nil
+		// case "*durationpb.Duration":
+		// 	// TODO: Register some well-known conversion functions and use them?
+		// 	duration, err := time.ParseDuration(v)
+		// 	if err != nil {
+		// 		return reflect.Value{}, fmt.Errorf("invalid duration %q", duration)
+		// 	}
+		// 	durationProto := durationpb.New(duration)
+		// 	return reflect.ValueOf(durationProto), nil
+		// case "*v1alpha1.ResourceRef":
+		// 	// TODO: Register some well-known conversion functions and use them?
+		// 	ref := &v1alpha1.ResourceRef{External: v}
+		// 	return reflect.ValueOf(ref), nil
+		// case "v1alpha1.ResourceRef":
+		// 	// TODO: Register some well-known conversion functions and use them?
+		// 	ref := &v1alpha1.ResourceRef{External: v}
+		// 	return reflect.ValueOf(ref).Elem(), nil
 		default:
 			return reflect.Value{}, fmt.Errorf("string conversion to %v not implemented", destType.String())
 		}
-	case "durationpb.Duration":
-		v := src.Addr().Interface().(*durationpb.Duration)
-		switch destType.String() {
-		case "string":
-			s := v.AsDuration().String()
-			return reflect.ValueOf(s), nil
-		case "*string":
-			s := v.AsDuration().String()
-			return reflect.ValueOf(&s), nil
-		default:
-			return reflect.Value{}, fmt.Errorf("duration conversion to %v not implemented", destType.String())
-		}
-	case "v1alpha1.ResourceRef":
-		v := src.Addr().Interface().(*v1alpha1.ResourceRef)
-		switch destType.String() {
-		case "string":
-			s := v.External
-			return reflect.ValueOf(s), nil
-		case "*string":
-			s := v.External
-			return reflect.ValueOf(&s), nil
-		default:
-			return reflect.Value{}, fmt.Errorf("v1alpha1.ResourceRef conversion to %v not implemented", destType.String())
-		}
+	// case "durationpb.Duration":
+	// 	v := src.Addr().Interface().(*durationpb.Duration)
+	// 	switch destType.String() {
+	// 	case "string":
+	// 		s := v.AsDuration().String()
+	// 		return reflect.ValueOf(s), nil
+	// 	case "*string":
+	// 		s := v.AsDuration().String()
+	// 		return reflect.ValueOf(&s), nil
+	// 	default:
+	// 		return reflect.Value{}, fmt.Errorf("duration conversion to %v not implemented", destType.String())
+	// 	}
+	// case "v1alpha1.ResourceRef":
+	// 	v := src.Addr().Interface().(*v1alpha1.ResourceRef)
+	// 	switch destType.String() {
+	// 	case "string":
+	// 		s := v.External
+	// 		return reflect.ValueOf(s), nil
+	// 	case "*string":
+	// 		s := v.External
+	// 		return reflect.ValueOf(&s), nil
+	// 	default:
+	// 		return reflect.Value{}, fmt.Errorf("v1alpha1.ResourceRef conversion to %v not implemented", destType.String())
+	// 	}
 	case "int":
 		v64 := src.Int()
 		switch destType.String() {
