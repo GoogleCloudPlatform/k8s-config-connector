@@ -47,8 +47,9 @@ func (m *structTypeMapping) ToType() reflect.Type {
 }
 
 type fieldMapping struct {
-	InPath  *fieldPath
-	OutPath *fieldPath
+	InPath    *fieldPath
+	OutPath   *fieldPath
+	Transform func(in reflect.Value) (reflect.Value, error)
 }
 
 func (m *structTypeMapping) Map(in *point, out *point) error {
@@ -56,6 +57,13 @@ func (m *structTypeMapping) Map(in *point, out *point) error {
 		inPoint := mapping.InPath.FindPoint(in)
 
 		srcVal := inPoint.GetValue()
+		if mapping.Transform != nil {
+			xformed, err := mapping.Transform(srcVal)
+			if err != nil {
+				return err
+			}
+			srcVal = xformed
+		}
 
 		if err := mapping.OutPath.SetValue(out, srcVal); err != nil {
 			return err

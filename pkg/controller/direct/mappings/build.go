@@ -121,6 +121,31 @@ func Spec(id string) FieldMapping {
 	return &specField{ID: id}
 }
 
+type resourceRef struct {
+	ID     string
+	Mapper ResourceRefMapper
+}
+
+type ResourceRefMapper = Mapper
+
+func ResourceRef(id string, mapper ResourceRefMapper) FieldMapping {
+	return &resourceRef{ID: id, Mapper: mapper}
+}
+
+type transformedFieldMapping struct {
+	ID     string
+	Mapper ResourceRefMapper
+}
+
+type Mapper interface {
+	KRMToCloud(in reflect.Value) (reflect.Value, error)
+	CloudToKRM(in reflect.Value) (reflect.Value, error)
+}
+
+func Transformed(id string, mapper Mapper) FieldMapping {
+	return &transformedFieldMapping{ID: id, Mapper: mapper}
+}
+
 type MappingBuilder struct {
 	mapping *Mapping
 	errors  []error
@@ -213,6 +238,20 @@ func (b *MappingBuilder) mapKRMToCloud(inType *reflectType, outType *reflectType
 				OutPath: ParseFieldPath(field.ID),
 			})
 
+		case *resourceRef:
+			createMapping.fields = append(createMapping.fields, &fieldMapping{
+				InPath:    ParseFieldPath(field.ID),
+				OutPath:   ParseFieldPath(field.ID),
+				Transform: field.Mapper.KRMToCloud,
+			})
+
+		case *transformedFieldMapping:
+			createMapping.fields = append(createMapping.fields, &fieldMapping{
+				InPath:    ParseFieldPath(field.ID),
+				OutPath:   ParseFieldPath(field.ID),
+				Transform: field.Mapper.KRMToCloud,
+			})
+
 		case *statusField:
 			createMapping.fields = append(createMapping.fields, &fieldMapping{
 				InPath:  ParseFieldPath("status." + field.ID),
@@ -258,6 +297,20 @@ func (b *MappingBuilder) mapCloudToKRM(inType *reflectType, outType *reflectType
 			createMapping.fields = append(createMapping.fields, &fieldMapping{
 				InPath:  ParseFieldPath(field.ID),
 				OutPath: ParseFieldPath("spec." + field.ID),
+			})
+
+		case *resourceRef:
+			createMapping.fields = append(createMapping.fields, &fieldMapping{
+				InPath:    ParseFieldPath(field.ID),
+				OutPath:   ParseFieldPath(field.ID),
+				Transform: field.Mapper.CloudToKRM,
+			})
+
+		case *transformedFieldMapping:
+			createMapping.fields = append(createMapping.fields, &fieldMapping{
+				InPath:    ParseFieldPath(field.ID),
+				OutPath:   ParseFieldPath(field.ID),
+				Transform: field.Mapper.CloudToKRM,
 			})
 
 		case *statusField:
