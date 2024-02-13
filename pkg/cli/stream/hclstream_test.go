@@ -17,7 +17,7 @@ package stream_test
 import (
 	"context"
 	"io"
-	"io/ioutil"
+	"os"
 	"reflect"
 	"testing"
 
@@ -54,11 +54,11 @@ func hclStreamToBytes(t *testing.T, stream *stream.HCLStream) []byte {
 
 func validateHCLBytesMatchesExpectedFile(t *testing.T, bytes []byte) {
 	if *update {
-		if err := ioutil.WriteFile(hclStreamFile, bytes, 0644); err != nil {
+		if err := os.WriteFile(hclStreamFile, bytes, 0644); err != nil {
 			t.Fatalf("error writing file '%v': %v", hclStreamFile, err)
 		}
 	}
-	expectedBytes, err := ioutil.ReadFile(hclStreamFile)
+	expectedBytes, err := os.ReadFile(hclStreamFile)
 	if err != nil {
 		t.Fatalf("error reading file: %v", err)
 	}

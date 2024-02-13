@@ -17,8 +17,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"path"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -87,7 +87,7 @@ func writeManifestObjectToFile(object *manifest.Object, outputPath string) error
 	if err != nil {
 		return fmt.Errorf("error serializing %v '%v' to yaml", object.Kind, object.GetName())
 	}
-	if err := ioutil.WriteFile(outputPath, bytes, fileMode); err != nil {
+	if err := os.WriteFile(outputPath, bytes, fileMode); err != nil {
 		return fmt.Errorf("error writing unstructured %v '%v' to file", object.Kind, object.GetName())
 	}
 	return nil

@@ -19,7 +19,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -141,7 +140,7 @@ func (ds *DirectorySink) receive(ctx context.Context, bytes []byte, unstructured
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return fmt.Errorf("error ensuring parent path '%v' exists: %w", dir, err)
 	}
-	if err := ioutil.WriteFile(filePath, bytes, 0644); err != nil {
+	if err := os.WriteFile(filePath, bytes, 0644); err != nil {
 		return fmt.Errorf("error writing bytes to '%v': %v", filePath, err)
 	}
 	return nil

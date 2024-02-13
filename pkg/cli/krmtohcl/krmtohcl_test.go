@@ -18,7 +18,7 @@ import (
 	"context"
 	"flag"
 	"io/fs"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -69,11 +69,11 @@ func testUnstructuredToHCL(t *testing.T, krmFile, goldenHCLFile string, smLoader
 		t.Fatalf("error converting unstructured to HCL: %v", err)
 	}
 	if *update {
-		if err := ioutil.WriteFile(goldenHCLFile, []byte(hcl), 0644); err != nil {
+		if err := os.WriteFile(goldenHCLFile, []byte(hcl), 0644); err != nil {
 			t.Fatalf("error writing file '%v': %v", goldenHCLFile, err)
 		}
 	}
-	bytes, err := ioutil.ReadFile(goldenHCLFile)
+	bytes, err := os.ReadFile(goldenHCLFile)
 	if err != nil {
 		t.Fatalf("error reading file '%v': %v", goldenHCLFile, err)
 	}

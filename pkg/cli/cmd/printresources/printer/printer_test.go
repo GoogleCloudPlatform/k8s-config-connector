@@ -18,7 +18,7 @@ import (
 	"bytes"
 	"flag"
 	"io"
-	"io/ioutil"
+	"os"
 	"reflect"
 	"testing"
 
@@ -55,11 +55,11 @@ func testPrinter(t *testing.T, printFunc PrintFunc, expectedOutputFile string) {
 	}
 	bytes := buf.Bytes()
 	if *update {
-		if err := ioutil.WriteFile(expectedOutputFile, bytes, 0644); err != nil {
+		if err := os.WriteFile(expectedOutputFile, bytes, 0644); err != nil {
 			t.Fatalf("error writing file '%v': %v", expectedOutputFile, err)
 		}
 	}
-	expectedBytes, err := ioutil.ReadFile(expectedOutputFile)
+	expectedBytes, err := os.ReadFile(expectedOutputFile)
 	if err != nil {
 		t.Fatalf("error reading file: %v", err)
 	}

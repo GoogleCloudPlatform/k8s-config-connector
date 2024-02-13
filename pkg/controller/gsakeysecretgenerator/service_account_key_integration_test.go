@@ -20,8 +20,8 @@ package gsakeysecretgenerator
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -206,7 +206,7 @@ func newSecretGenerator(t *testing.T, mgr manager.Manager, crdPath string) recon
 }
 
 func convertToUnstructAndReplaceName(t *testing.T, testId, testNamespace, sa string, fileName string) *unstructured.Unstructured {
-	b, err := ioutil.ReadFile(fileName)
+	b, err := os.ReadFile(fileName)
 	if err != nil {
 		log.Fatalf("error reading file '%v': %v", fileName, err)
 	}

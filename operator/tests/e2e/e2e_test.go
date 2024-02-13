@@ -746,7 +746,7 @@ func getConfigConnectorSample(operatorReleaseAssetsDir, serviceAccountID, projec
 	}
 	yamlPaths = []string{sample.configConnectorClusterModeWorkloadIdentityYAMLPath, sample.configConnectorNamespacedModeYAMLPath, sample.configConnectorContextYAMLPath}
 	for _, yamlPath := range yamlPaths {
-		content, err := ioutil.ReadFile(yamlPath)
+		content, err := os.ReadFile(yamlPath)
 		if err != nil {
 			return emptySample, fmt.Errorf("error reading YAML: %v", err)
 		}
@@ -774,7 +774,7 @@ func getConfigConnectorSample(operatorReleaseAssetsDir, serviceAccountID, projec
 }
 
 func (c *cluster) installKCC(configConnectorYAMLPath string) error {
-	content, err := ioutil.ReadFile(configConnectorYAMLPath)
+	content, err := os.ReadFile(configConnectorYAMLPath)
 	if err != nil {
 		return fmt.Errorf("error reading ConfigConnector YAML: %v", err)
 	}
@@ -797,7 +797,7 @@ func (c *cluster) enableKCCForNamespace(namespace, configConnectorContextYAMLPat
 		return fmt.Errorf("error setting up Workload Identity binding for namespace '%v': %v", namespace, err)
 	}
 
-	content, err := ioutil.ReadFile(configConnectorContextYAMLPath)
+	content, err := os.ReadFile(configConnectorContextYAMLPath)
 	if err != nil {
 		return fmt.Errorf("error reading ConfigConnectorContext YAML for namespace '%v': %v", namespace, err)
 	}
@@ -934,7 +934,7 @@ func getArtifactRegistryRepositorySample(kccReleaseAssetsDir, uniqueId string) (
 		return "", "", fmt.Errorf("error getting paths to YAML files in ArtifactRegistryRepository sample directory '%v': %v", repoYAMLDir, err)
 	}
 	for _, yamlPath := range yamlPaths {
-		b, err := ioutil.ReadFile(yamlPath)
+		b, err := os.ReadFile(yamlPath)
 		if err != nil {
 			return "", "", fmt.Errorf("error reading file '%v': %v", yamlPath, err)
 		}
@@ -1649,12 +1649,12 @@ func downloadAndExtractKCCReleaseTarball(version, outputDir string) error {
 func createTempDir(namePrefix string) (path string, err error) {
 	// Creates a directory in /tmp whose name starts with
 	// the given namePrefix.
-	return ioutil.TempDir("", namePrefix)
+	return os.MkdirTemp("", namePrefix)
 }
 
 func writeToFile(content string, filePath string) error {
 	fileMode := os.FileMode(0644) // -rw-r--r--
-	return ioutil.WriteFile(filePath, []byte(content), fileMode)
+	return os.WriteFile(filePath, []byte(content), fileMode)
 }
 
 func (c *cluster) createNamespace(namespace string) error {

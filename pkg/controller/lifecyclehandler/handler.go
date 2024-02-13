@@ -221,7 +221,10 @@ func (r *LifecycleHandler) HandleUpToDate(ctx context.Context, resource *k8s.Res
 	if err := r.updateAPIServer(ctx, resource); err != nil {
 		return err
 	}
-	r.recordEvent(resource, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
+	if err := r.recordEvent(resource, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -253,7 +256,10 @@ func (r *LifecycleHandler) HandleObtainLeaseFailed(ctx context.Context, resource
 			return err
 		}
 	}
-	r.recordEvent(resource, corev1.EventTypeWarning, k8s.ManagementConflict, msg)
+	if err := r.recordEvent(resource, corev1.EventTypeWarning, k8s.ManagementConflict, msg); err != nil {
+		return err
+	}
+
 	return err
 }
 

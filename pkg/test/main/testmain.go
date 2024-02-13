@@ -15,7 +15,7 @@
 package testmain
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"testing"
@@ -37,7 +37,7 @@ func TestMainForIntegrationTests(m *testing.M, mgr *manager.Manager) {
 	// Since Terraform logging defers to the Go standard logger,
 	// here we discard everything logged onto the Go standard logger to
 	// disable logging from Terraform Google provider in integration tests.
-	log.SetOutput(ioutil.Discard)
+	log.SetOutput(io.Discard)
 	TestMain(m, test.IntegrationTestType, nil, mgr)
 }
 

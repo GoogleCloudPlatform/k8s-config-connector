@@ -18,7 +18,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -141,7 +140,7 @@ func testDirectorySink(t *testing.T, dirSink outputsink.OutputSink, outputDir, t
 	if !strings.HasSuffix(newFile, expectedFilePath) {
 		t.Errorf("new filename: got '%v', want suffix to be '%v'", newFile, expectedFilePath)
 	}
-	newBytes, err := ioutil.ReadFile(newFile)
+	newBytes, err := os.ReadFile(newFile)
 	if err != nil {
 		t.Fatalf("error reading file '%v': %v", newFile, err)
 	}
@@ -365,7 +364,7 @@ func assertTypeMatches(t *testing.T, sink outputsink.OutputSink, instanceOfExpec
 }
 
 func newTmpFile(t *testing.T) (*os.File, func()) {
-	f, err := ioutil.TempFile("", "")
+	f, err := os.CreateTemp("", "")
 	if err != nil {
 		t.Fatalf("error creating temp file: %v", err)
 	}
@@ -382,7 +381,7 @@ func deleteFile(t *testing.T, f *os.File) {
 }
 
 func newTmpDir(t *testing.T) (string, func()) {
-	tmpDir, err := ioutil.TempDir("", "")
+	tmpDir, err := os.MkdirTemp("", "")
 	if err != nil {
 		t.Fatalf("error creating temp directory: %v", err)
 	}
@@ -406,7 +405,7 @@ func testFileToBytes(t *testing.T, testFileName string) []byte {
 
 func fileToBytes(t *testing.T, fileName string) []byte {
 	t.Helper()
-	bytes, err := ioutil.ReadFile(fileName)
+	bytes, err := os.ReadFile(fileName)
 	if err != nil {
 		t.Fatalf("error reading file '%v': %v", fileName, err)
 	}
@@ -429,7 +428,7 @@ func newInstanceOfExpectedDirectorySinkType(t *testing.T, resourceFormat outputs
 // struct from a yaml file.
 func unstructuredFromYamlFile(t *testing.T, filePath string) *unstructured.Unstructured {
 	pathWithPrefix := fmt.Sprintf("testdata/%v", filePath)
-	bytes, err := ioutil.ReadFile(pathWithPrefix)
+	bytes, err := os.ReadFile(pathWithPrefix)
 	if err != nil {
 		t.Fatalf("error reading file %v: %v", filePath, err)
 	}

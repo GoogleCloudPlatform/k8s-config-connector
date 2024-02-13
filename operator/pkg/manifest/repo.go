@@ -17,7 +17,7 @@ package manifest
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -52,7 +52,7 @@ func (r *LocalRepository) LoadChannel(ctx context.Context, name string) (*loader
 	rlog.Info("loading channel", "base", r.basedir, "name", name)
 
 	p := filepath.Join(r.basedir, name)
-	b, err := ioutil.ReadFile(p)
+	b, err := os.ReadFile(p)
 	if err != nil {
 		rlog.Error(err, "error reading channel", "path", p)
 		return nil, fmt.Errorf("error reading channel %s: %v", p, err)
@@ -74,7 +74,7 @@ func (r *LocalRepository) LoadManifest(ctx context.Context, componentName string
 	mode := cc.GetMode()
 
 	p := filepath.Join(r.basedir, "packages", componentName, version, crdFileName)
-	b, err := ioutil.ReadFile(p)
+	b, err := os.ReadFile(p)
 	if err != nil {
 		return nil, fmt.Errorf("error reading file %s: %v", p, err)
 	}
@@ -90,7 +90,7 @@ func (r *LocalRepository) LoadManifest(ctx context.Context, componentName string
 		}
 		rlog.Info("loading manifest", "component", componentName, "version", version, "mode", mode, "identity", authIdentity)
 		p := filepath.Join(r.basedir, "packages", componentName, version, mode, authIdentity, cnrmSystemFileName)
-		b, err := ioutil.ReadFile(p)
+		b, err := os.ReadFile(p)
 		if err != nil {
 			return nil, fmt.Errorf("error reading file %s: %v", p, err)
 		}
@@ -100,7 +100,7 @@ func (r *LocalRepository) LoadManifest(ctx context.Context, componentName string
 	} else {
 		rlog.Info("loading manifest", "component", componentName, "version", version, "mode", mode)
 		p := filepath.Join(r.basedir, "packages", componentName, version, "namespaced", cnrmSystemFileName)
-		b, err := ioutil.ReadFile(p)
+		b, err := os.ReadFile(p)
 		if err != nil {
 			return nil, fmt.Errorf("error reading file %s: %v", p, err)
 		}
@@ -112,7 +112,7 @@ func (r *LocalRepository) LoadManifest(ctx context.Context, componentName string
 
 func (r *LocalRepository) LoadNamespacedComponents(ctx context.Context, componentName string, version string) (map[string]string, error) {
 	p := filepath.Join(r.basedir, "packages", componentName, version, "namespaced", perNamespaceComponentsFileName)
-	b, err := ioutil.ReadFile(p)
+	b, err := os.ReadFile(p)
 	if err != nil {
 		return nil, fmt.Errorf("error reading file %s: %v", p, err)
 	}

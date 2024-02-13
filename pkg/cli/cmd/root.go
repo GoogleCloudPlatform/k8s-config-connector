@@ -16,7 +16,7 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	golog "log"
 	"os"
 	"strings"
@@ -160,5 +160,5 @@ func setTerraformUserAgent() {
 
 func disableGoDefaultLogging() {
 	// disable the go logger as the terraform library prints through that log which is undesired
-	golog.SetOutput(ioutil.Discard)
+	golog.SetOutput(io.Discard)
 }

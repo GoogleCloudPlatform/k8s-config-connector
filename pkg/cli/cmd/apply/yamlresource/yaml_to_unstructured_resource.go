@@ -18,7 +18,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"os"
 
 	"github.com/ghodss/yaml"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -27,7 +27,7 @@ import (
 // unstructuredFromYamlFile returns a unstructured.Unstructured
 // struct from a yaml file.
 func UnstructuredFromYamlFile(filePath string) (*unstructured.Unstructured, error) {
-	bytes, err := ioutil.ReadFile(filePath)
+	bytes, err := os.ReadFile(filePath)
 	if err != nil {
 		return nil, err
 	}

@@ -21,7 +21,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
@@ -44,7 +43,7 @@ const (
 )
 
 func TestNewAssetStreamFromStdin(t *testing.T) {
-	bytes, err := ioutil.ReadFile(exportJsonFile)
+	bytes, err := os.ReadFile(exportJsonFile)
 	if err != nil {
 		t.Fatalf("error reading '%v': %v'", exportJsonFile, err)
 	}

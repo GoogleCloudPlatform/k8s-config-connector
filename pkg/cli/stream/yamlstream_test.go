@@ -17,7 +17,7 @@ package stream_test
 import (
 	"context"
 	"io"
-	"io/ioutil"
+	"os"
 	"reflect"
 	"strings"
 	"testing"
@@ -40,7 +40,7 @@ func TestYAMLStream(t *testing.T) {
 }
 
 func TestEmptyStream(t *testing.T) {
-	testFile, err := ioutil.TempFile("", "empty-stream")
+	testFile, err := os.CreateTemp("", "empty-stream")
 	if err != nil {
 		t.Fatalf("error creating temp file: %v", err)
 	}
@@ -202,7 +202,7 @@ func validateYAMLBytesMatchesExpectedFile(t *testing.T, bytes []byte) {
 	if *update {
 		testyaml.WriteFile(t, bytes, yamlStreamFile)
 	}
-	expectedBytes, err := ioutil.ReadFile(yamlStreamFile)
+	expectedBytes, err := os.ReadFile(yamlStreamFile)
 	if err != nil {
 		t.Fatalf("error reading file: %v", err)
 	}

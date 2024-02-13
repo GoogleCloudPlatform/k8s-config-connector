@@ -19,7 +19,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -60,7 +59,7 @@ func main() {
 
 		outputFilename := thirdPartyNoticeDir + "/" + licensePath
 		outputFileDir := thirdPartyNoticeDir + "/" + repo
-		input, err := ioutil.ReadFile(file)
+		input, err := os.ReadFile(file)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -71,7 +70,7 @@ func main() {
 		}
 
 		// copy the license
-		if err := ioutil.WriteFile(outputFilename, input, fileMode); err != nil {
+		if err := os.WriteFile(outputFilename, input, fileMode); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}

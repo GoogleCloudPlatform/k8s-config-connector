@@ -17,7 +17,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -76,7 +75,7 @@ func outputClusterRoleToFile(outputDirPath, outputFileName string, r *rbacv1.Clu
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(outputPath, b, outputFileMode)
+	err = os.WriteFile(outputPath, b, outputFileMode)
 	if err != nil {
 		return err
 	}

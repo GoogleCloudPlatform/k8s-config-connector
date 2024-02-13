@@ -15,7 +15,6 @@
 package testos
 
 import (
-	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -25,7 +24,7 @@ func GetStdin(t *testing.T, content string) (func(), *os.File) {
 	if content == "" {
 		return func() {}, os.Stdin
 	}
-	tmpFile, err := ioutil.TempFile("", "example")
+	tmpFile, err := os.CreateTemp("", "example")
 	if err != nil {
 		t.Fatalf("error creating temporary file: %v", err)
 	}

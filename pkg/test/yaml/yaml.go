@@ -15,7 +15,7 @@
 package testyaml
 
 import (
-	"io/ioutil"
+	"os"
 	"reflect"
 	"testing"
 
@@ -45,14 +45,14 @@ func WriteValueToFile(t *testing.T, value interface{}, filePath string) {
 
 func WriteFile(t *testing.T, yamlBytes []byte, filePath string) {
 	t.Helper()
-	if err := ioutil.WriteFile(filePath, yamlBytes, 0644); err != nil {
+	if err := os.WriteFile(filePath, yamlBytes, 0644); err != nil {
 		t.Fatalf("error writing file '%v': %v", filePath, err)
 	}
 }
 
 func UnmarshalFile(t *testing.T, filePath string, value interface{}) {
 	t.Helper()
-	bytes, err := ioutil.ReadFile(filePath)
+	bytes, err := os.ReadFile(filePath)
 	if err != nil {
 		t.Fatalf("error reading file '%v': %v", filePath, err)
 	}

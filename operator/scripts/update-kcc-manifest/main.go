@@ -18,7 +18,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -207,28 +206,28 @@ func main() {
 
 	// update the operator version for default kustomization
 	kustomizationFilePath := path.Join(operatorSrcRoot, "config", "default", "kustomization.yaml")
-	b, err := ioutil.ReadFile(kustomizationFilePath)
+	b, err := os.ReadFile(kustomizationFilePath)
 	if err != nil {
 		log.Fatalf("error reading %v: %v", kustomizationFilePath, err)
 	}
 	kustomization := string(b)
 	m := regexp.MustCompile("cnrm.cloud.google.com/operator-version: (\".*\")")
 	kustomization = m.ReplaceAllString(kustomization, fmt.Sprintf("cnrm.cloud.google.com/operator-version: \"%v\"", version))
-	if err := ioutil.WriteFile(kustomizationFilePath, []byte(kustomization), fileMode); err != nil {
+	if err := os.WriteFile(kustomizationFilePath, []byte(kustomization), fileMode); err != nil {
 		log.Fatalf("error updating file %v", kustomizationFilePath)
 	}
 	log.Printf("successfully updated the version annotation in %v for default kustomization\n", kustomizationFilePath)
 
 	// update the operator version for autopilot kustomization
 	kustomizationFilePath = path.Join(operatorSrcRoot, "config", "autopilot", "kustomization.yaml")
-	b, err = ioutil.ReadFile(kustomizationFilePath)
+	b, err = os.ReadFile(kustomizationFilePath)
 	if err != nil {
 		log.Fatalf("error reading %v: %v", kustomizationFilePath, err)
 	}
 	kustomization = string(b)
 	m = regexp.MustCompile("cnrm.cloud.google.com/operator-version: (\".*\")")
 	kustomization = m.ReplaceAllString(kustomization, fmt.Sprintf("cnrm.cloud.google.com/operator-version: \"%v\"", version))
-	if err := ioutil.WriteFile(kustomizationFilePath, []byte(kustomization), fileMode); err != nil {
+	if err := os.WriteFile(kustomizationFilePath, []byte(kustomization), fileMode); err != nil {
 		log.Fatalf("error updating file %v", kustomizationFilePath)
 	}
 	log.Printf("successfully updated the version annotation in %v for autopilot kustomization\n", kustomizationFilePath)
@@ -248,23 +247,23 @@ func main() {
 		return
 	}
 	stableFilePath := path.Join(operatorSrcRoot, "channels", "stable")
-	b, err = ioutil.ReadFile(stableFilePath)
+	b, err = os.ReadFile(stableFilePath)
 	if err != nil {
 		log.Fatalf("error reading %v: %v", stableFilePath, err)
 	}
 	stable := string(b)
 	stable = strings.ReplaceAll(stable, fmt.Sprintf("- version: %v", currentVersion.Version), fmt.Sprintf("- version: %v", version))
-	if err := ioutil.WriteFile(stableFilePath, []byte(stable), fileMode); err != nil {
+	if err := os.WriteFile(stableFilePath, []byte(stable), fileMode); err != nil {
 		log.Fatalf("error updating file %v", stableFilePath)
 	}
 	stableFilePath = path.Join(operatorSrcRoot, "autopilot-channels", "stable")
-	b, err = ioutil.ReadFile(stableFilePath)
+	b, err = os.ReadFile(stableFilePath)
 	if err != nil {
 		log.Fatalf("error reading %v: %v", stableFilePath, err)
 	}
 	stable = string(b)
 	stable = strings.ReplaceAll(stable, fmt.Sprintf("- version: %v", currentVersion.Version), fmt.Sprintf("- version: %v", version))
-	if err := ioutil.WriteFile(stableFilePath, []byte(stable), fileMode); err != nil {
+	if err := os.WriteFile(stableFilePath, []byte(stable), fileMode); err != nil {
 		log.Fatalf("error updating file %v", stableFilePath)
 	}
 
@@ -378,14 +377,14 @@ func buildNamespacedMode(operatorSrcRoot, buildPath, output string, autopilot bo
 
 // This step can be removed once we switch KCC core to also use gcr.io/gke-release container registry
 func swapContainerRegistry(manifestPath string) error {
-	content, err := ioutil.ReadFile(manifestPath)
+	content, err := os.ReadFile(manifestPath)
 	if err != nil {
 		return fmt.Errorf("error reading manifestPath: %v", err)
 	}
 	manifest := string(content)
 	updatedManifest := strings.ReplaceAll(manifest, "gcr.io/cnrm-eap/", "gcr.io/gke-release/cnrm/")
 	fileMode := os.FileMode(0644) // -rw-r--r--
-	return ioutil.WriteFile(manifestPath, []byte(updatedManifest), fileMode)
+	return os.WriteFile(manifestPath, []byte(updatedManifest), fileMode)
 }
 
 func extractVersionFromManifest(filePath string) (string, error) {

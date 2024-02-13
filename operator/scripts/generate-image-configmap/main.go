@@ -22,8 +22,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"path"
 	"strings"
 
@@ -210,7 +210,7 @@ func outputConfigMapToFile(crd *corev1.ConfigMap, outputFilepath string) error {
 	if err != nil {
 		return err
 	}
-	if err := ioutil.WriteFile(outputFilepath, crdBytes, fileMode); err != nil {
+	if err := os.WriteFile(outputFilepath, crdBytes, fileMode); err != nil {
 		return err
 	}
 	return nil

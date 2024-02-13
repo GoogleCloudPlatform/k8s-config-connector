@@ -16,7 +16,6 @@ package webhook
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"strings"
@@ -324,11 +323,11 @@ func writeCertificates(artifacts *generator.Artifacts, dir, certName, keyName st
 	}
 	perms := os.FileMode(0644)
 	certPath := path.Join(dir, certName)
-	if err := ioutil.WriteFile(certPath, artifacts.Cert, perms); err != nil {
+	if err := os.WriteFile(certPath, artifacts.Cert, perms); err != nil {
 		return fmt.Errorf("error writing certificate to '%v': %v", certPath, err)
 	}
 	keyPath := path.Join(dir, keyName)
-	if err := ioutil.WriteFile(keyPath, artifacts.Key, perms); err != nil {
+	if err := os.WriteFile(keyPath, artifacts.Key, perms); err != nil {
 		return fmt.Errorf("error writing key to '%v': %v", keyPath, err)
 	}
 	return nil

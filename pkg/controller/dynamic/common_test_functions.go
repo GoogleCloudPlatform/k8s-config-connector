@@ -15,8 +15,8 @@
 package dynamic
 
 import (
-	"io/ioutil"
 	"log"
+	"os"
 	"testing"
 
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -29,7 +29,7 @@ import (
 
 func UnmarshalFileToCRD(t *testing.T, fileName string) *apiextensions.CustomResourceDefinition {
 	t.Helper()
-	bytes, err := ioutil.ReadFile(fileName)
+	bytes, err := os.ReadFile(fileName)
 	if err != nil {
 		t.Fatalf("error reading file '%v': %v", fileName, err)
 	}
@@ -42,7 +42,7 @@ func UnmarshalFileToCRD(t *testing.T, fileName string) *apiextensions.CustomReso
 }
 
 func UnmarshalToCRD(fileName string) *apiextensions.CustomResourceDefinition {
-	bytes, err := ioutil.ReadFile(fileName)
+	bytes, err := os.ReadFile(fileName)
 	if err != nil {
 		log.Fatalf("error reading file '%v': %v", fileName, err)
 	}

@@ -20,7 +20,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -264,7 +263,7 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 		w := &bufferedResponseWriter{body: &body, header: make(http.Header)}
 		mux.ServeHTTP(w, req)
 		response := &http.Response{}
-		response.Body = ioutil.NopCloser(&body)
+		response.Body = io.NopCloser(&body)
 		response.Header = w.header
 		response.StatusCode = w.statusCode
 		return response, nil
@@ -294,7 +293,7 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 
 		log.Printf("response: %d %s", response.StatusCode, string(j))
 
-		response.Body = ioutil.NopCloser(bytes.NewReader(j))
+		response.Body = io.NopCloser(bytes.NewReader(j))
 	} else {
 		log.Printf("response: %d %s", response.StatusCode, "-")
 	}

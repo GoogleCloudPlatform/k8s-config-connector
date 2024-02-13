@@ -172,7 +172,7 @@ func generateDCLBasedCRDs() []*apiextensions.CustomResourceDefinition {
 
 func generateCRDsForTypesFiles() []*apiextensions.CustomResourceDefinition {
 	crds := make([]*apiextensions.CustomResourceDefinition, 0)
-	tempDir, err := ioutil.TempDir("", "crds_for_types")
+	tempDir, err := os.MkdirTemp("", "crds_for_types")
 	if err != nil {
 		log.Fatalf("error creating temporary directory: %v", err)
 	}
@@ -196,7 +196,7 @@ func generateCRDsForTypesFiles() []*apiextensions.CustomResourceDefinition {
 	}
 	for _, f := range files {
 		p := path.Join(tempDir, f.Name())
-		b, err := ioutil.ReadFile(p)
+		b, err := os.ReadFile(p)
 		if err != nil {
 			log.Fatalf("error reading file %v: %v", p, err)
 		}
@@ -563,7 +563,7 @@ func outputCRDToFile(crd *apiextensions.CustomResourceDefinition) error {
 		return err
 	}
 	outputFilepath := outputDir + "/" + outputFilename
-	if err := ioutil.WriteFile(outputFilepath, crdBytes, fileMode); err != nil {
+	if err := os.WriteFile(outputFilepath, crdBytes, fileMode); err != nil {
 		return err
 	}
 	return nil

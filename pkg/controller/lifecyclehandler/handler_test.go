@@ -157,7 +157,9 @@ func TestIsOrphaned(t *testing.T) {
 			t.Parallel()
 			testId := testvariable.NewUniqueId()
 			tc.resource.SetNamespace(testId)
-			testcontroller.EnsureNamespaceExists(c, testId)
+			if err := testcontroller.EnsureNamespaceExists(c, testId); err != nil {
+				t.Fatal(err)
+			}
 			if tc.parentObjectName != "" {
 				references := []*unstructured.Unstructured{
 					test.NewBarUnstructured(tc.parentObjectName, testId, corev1.ConditionTrue),

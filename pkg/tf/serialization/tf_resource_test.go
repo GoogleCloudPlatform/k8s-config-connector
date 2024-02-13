@@ -16,7 +16,7 @@ package serialization
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"regexp"
 	"strings"
 	"testing"
@@ -36,7 +36,7 @@ func TestSerializeCluster(t *testing.T) {
 
 func testSerialize(t *testing.T, instanceStateFile, tfType, goldenFile string) string {
 	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
-	b, err := ioutil.ReadFile(instanceStateFile)
+	b, err := os.ReadFile(instanceStateFile)
 	if err != nil {
 		t.Fatalf("failed to load instance state for instance, %s", err.Error())
 	}
@@ -55,7 +55,7 @@ func testSerialize(t *testing.T, instanceStateFile, tfType, goldenFile string) s
 	if err != nil {
 		t.Fatal(err)
 	}
-	golden, err := ioutil.ReadFile(goldenFile)
+	golden, err := os.ReadFile(goldenFile)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -17,7 +17,7 @@ package yamlresource
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -65,8 +65,11 @@ func TestRenderJSONSuccess(t *testing.T) {
 		t.Fatalf("Error loading test_file %v, %v", testPath, err)
 	}
 	buf := bytes.Buffer{}
-	RenderJSON(unstructured, &buf)
-	renderOutput, err := ioutil.ReadFile(fmt.Sprintf("%v/%v", PathPrefix, JSONOutputFile))
+	if err := RenderJSON(unstructured, &buf); err != nil {
+		t.Fatal(err)
+	}
+
+	renderOutput, err := os.ReadFile(fmt.Sprintf("%v/%v", PathPrefix, JSONOutputFile))
 	if err != nil {
 		t.Fatalf("Error loading test_file %v, %v", JSONOutputFile, err)
 	}

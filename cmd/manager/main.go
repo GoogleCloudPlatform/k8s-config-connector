@@ -18,7 +18,7 @@ import (
 	"context"
 	goflag "flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
@@ -69,7 +69,7 @@ func main() {
 	// Discard everything logged onto the Go standard logger. We do this since
 	// there are cases of Terraform logging sensitive data onto the Go standard
 	// logger.
-	log.SetOutput(ioutil.Discard)
+	log.SetOutput(io.Discard)
 
 	logging.SetupLogger()
 

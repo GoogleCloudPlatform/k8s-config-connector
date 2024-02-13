@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path"
 	"strings"
 
@@ -172,7 +173,7 @@ func LoadCRDs() ([]apiextensions.CustomResourceDefinition, error) {
 }
 
 func FileToCRD(fileName string) (*apiextensions.CustomResourceDefinition, error) {
-	bytes, err := ioutil.ReadFile(fileName)
+	bytes, err := os.ReadFile(fileName)
 	if err != nil {
 		return nil, fmt.Errorf("error reading file '%v': %v", fileName, err)
 	}

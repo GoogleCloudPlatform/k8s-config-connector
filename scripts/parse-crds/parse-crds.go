@@ -20,7 +20,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -55,7 +54,7 @@ func run(file, outputDir string) error {
 	if err != nil {
 		return fmt.Errorf("error converting file %v to an absolute path: %v", file, err)
 	}
-	bytes, err := ioutil.ReadFile(filePath)
+	bytes, err := os.ReadFile(filePath)
 	if err != nil {
 		return fmt.Errorf("error reading file %v: %v", filePath, err)
 	}
@@ -81,7 +80,7 @@ func run(file, outputDir string) error {
 			return fmt.Errorf("error determining file name for CRD with GVK %v: %v", crd.GroupVersionKind(), err)
 		}
 		outputPath := filepath.Join(outputDir, outputName)
-		if err := ioutil.WriteFile(outputPath, bytes, fileMode); err != nil {
+		if err := os.WriteFile(outputPath, bytes, fileMode); err != nil {
 			return fmt.Errorf("error writing file %v: %v", outputName, err)
 		}
 	}

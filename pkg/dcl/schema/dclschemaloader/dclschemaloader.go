@@ -16,7 +16,7 @@ package dclschemaloader
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"path"
 	"strings"
 
@@ -145,7 +145,7 @@ func parseOpenAPISchema(filePath string) (*openapi.Schema, error) {
 		return nil, err
 	}
 	defer file.Close()
-	b, err := ioutil.ReadAll(file)
+	b, err := io.ReadAll(file)
 	if err != nil {
 		return nil, fmt.Errorf("error reading file: %v", err)
 	}

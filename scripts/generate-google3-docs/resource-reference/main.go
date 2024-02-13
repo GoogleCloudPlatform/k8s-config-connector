@@ -478,7 +478,7 @@ func buildSampleYAML(kind, sampleDir string) (string, error) {
 	}
 	objectYAMLs := make([]string, 0)
 	for _, f := range fileInfos {
-		bytes, err := ioutil.ReadFile(filepath.Join(sampleDir, f.Name()))
+		bytes, err := os.ReadFile(filepath.Join(sampleDir, f.Name()))
 		if err != nil {
 			return "", fmt.Errorf("error reading file '%v': %v\n", filepath.Join(sampleDir, f.Name()), err)
 		}

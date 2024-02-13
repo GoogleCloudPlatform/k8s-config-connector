@@ -18,7 +18,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"os"
 
 	"github.com/ghodss/yaml"
 	goyaml "gopkg.in/yaml.v2"
@@ -43,7 +43,7 @@ func BytesToUnstruct(bytes []byte) (*unstructured.Unstructured, error) {
 
 func ReadFileToUnstructs(filePath string) ([]*unstructured.Unstructured, error) {
 	var returnUnstructs []*unstructured.Unstructured
-	b, err := ioutil.ReadFile(filePath)
+	b, err := os.ReadFile(filePath)
 	if err != nil {
 		return nil, err
 	}

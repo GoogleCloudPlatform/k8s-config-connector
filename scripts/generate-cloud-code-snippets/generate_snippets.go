@@ -17,7 +17,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -53,7 +52,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		content, err := ioutil.ReadFile(sampleFilePath)
+		content, err := os.ReadFile(sampleFilePath)
 		if err != nil {
 			log.Fatalf("error reading file: %v", err)
 		}
@@ -77,7 +76,7 @@ func outputSnippetToFile(outputFileName string, s snippetgeneration.Snippet) err
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(outputPath, b, outputFileMode)
+	err = os.WriteFile(outputPath, b, outputFileMode)
 	if err != nil {
 		return err
 	}
