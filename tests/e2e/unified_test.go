@@ -53,11 +53,11 @@ func TestAllInSeries(t *testing.T) {
 			sampleKey := sampleKey
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
-			t.Run(sampleKey.Name, func(t *testing.T) {
+			t.Run(sampleKey.FullName, func(t *testing.T) {
 				// Quickly load the sample with a dummy project, just to see if we should skip it
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
-					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
+					create.MaybeSkip(t, sampleKey.FullName, dummySample.Resources)
 				}
 
 				h := create.NewHarness(t, ctx)
@@ -87,7 +87,7 @@ func TestAllInSeries(t *testing.T) {
 			fixture := fixture
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
-			t.Run(fixture.Name, func(t *testing.T) {
+			t.Run(fixture.FullName, func(t *testing.T) {
 				uniqueID := testvariable.NewUniqueId()
 
 				loadFixture := func(project testgcp.GCPProject) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
@@ -114,7 +114,7 @@ func TestAllInSeries(t *testing.T) {
 				// Quickly load the fixture with a dummy project, just to see if we should skip it
 				{
 					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
-					create.MaybeSkip(t, fixture.Name, opt.Create)
+					create.MaybeSkip(t, fixture.FullName, opt.Create)
 				}
 
 				h := create.NewHarness(t, ctx)

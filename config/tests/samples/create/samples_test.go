@@ -241,17 +241,17 @@ func TestAll(t *testing.T) {
 	maximumNetworks := 14
 	sem := semaphore.NewWeighted(int64(maximumNetworks))
 	releaseFunc := func(s Sample, n int64) {
-		logger.Info("Releasing network semaphore for test", "testName", s.Name)
+		logger.Info("Releasing network semaphore for test", "testName", s.FullName)
 		sem.Release(n)
 	}
 	for _, s := range samples {
-		if _, ok := testDisabledList[s.Name]; ok {
+		if _, ok := testDisabledList[s.ShortName]; ok {
 			continue
 		}
 		s := s
 		s.Resources = replaceResourceNamesWithUniqueIDs(t, s.Resources)
 		s.Resources = updateProjectResourceWithExistingResourceIDs(t, s.Resources)
-		t.Run(s.Name, func(t *testing.T) {
+		t.Run(s.ShortName, func(t *testing.T) {
 			t.Parallel()
 
 			ctx := context.TODO()
@@ -261,11 +261,11 @@ func TestAll(t *testing.T) {
 
 			networkCount := int64(networksInSampleCount(s))
 			if networkCount > 0 {
-				logger.Info("Acquiring network semaphore for test...", "testName", s.Name)
-				if err := sem.Acquire(context.TODO(), networkCount); err != nil {
+				logger.Info("Acquiring network semaphore for test...", "testName", s.FullName)
+				if err := sem.Acquire(ctx, networkCount); err != nil {
 					t.Fatalf("error acquiring semaphore: %v", err)
 				}
-				logger.Info("Acquired network semaphore for test", "testName", s.Name)
+				logger.Info("Acquired network semaphore for test", "testName", s.FullName)
 				defer releaseFunc(s, networkCount)
 			}
 			RunCreateDeleteTest(h, CreateDeleteTestOptions{Create: s.Resources, CleanupResources: cleanupResources})

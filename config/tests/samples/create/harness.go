@@ -393,7 +393,7 @@ func (h *Harness) GetClient() client.Client {
 	return h.client
 }
 
-func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured) {
+func MaybeSkip(t *testing.T, fullName string, resources []*unstructured.Unstructured) {
 	if os.Getenv("E2E_GCP_TARGET") == "mock" {
 		for _, resource := range resources {
 			gvk := resource.GroupVersionKind()

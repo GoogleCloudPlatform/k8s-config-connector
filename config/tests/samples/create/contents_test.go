@@ -20,7 +20,7 @@ func TestNames(t *testing.T) {
 	samples := LoadAllSamples(t, project)
 	for _, s := range samples {
 		for _, r := range s.Resources {
-			validateResourceName(t, s.Name, r)
+			validateResourceName(t, s.FullName, r)
 		}
 	}
 }
@@ -32,13 +32,13 @@ func TestLicenses(t *testing.T) {
 		for _, f := range sampleKey.files {
 			b := test.MustReadFile(t, f)
 			if !beginsWithCopyrightRegex.Match(b) {
-				t.Errorf("file '%v' in sample '%v' does not contain a license header", f, sampleKey.Name)
+				t.Errorf("file '%v' in sample '%v' does not contain a license header", f, sampleKey.FullName)
 			}
 		}
 	}
 }
 
-func validateResourceName(t *testing.T, sampleName string, u *unstructured.Unstructured) {
+func validateResourceName(t *testing.T, fullName string, u *unstructured.Unstructured) {
 	// Service resources should specify the service to enable (e.g.
 	// pubsub.googleapis.com) via spec.resourceID instead of metadata.name.
 	// Output a targeted error message for this case since it is an easy
@@ -47,7 +47,7 @@ func validateResourceName(t *testing.T, sampleName string, u *unstructured.Unstr
 		if strings.HasSuffix(u.GetName(), ".com") {
 			t.Fatalf("invalid metadata.name value '%v' for Service resource in sample '%v': "+
 				"use %v instead of metadata.name to specify the service to enable",
-				u.GetName(), sampleName, k8s.ResourceIDFieldPath)
+				u.GetName(), fullName, k8s.ResourceIDFieldPath)
 		}
 	}
 
@@ -61,5 +61,5 @@ func validateResourceName(t *testing.T, sampleName string, u *unstructured.Unstr
 	// create sample test looks for either "sample" or "dep" to "uniqify" the
 	// name of a sample
 	t.Errorf("invalid metadata.name value '%v' in sample '%v': must contain one of {%v} to be valid",
-		u.GetName(), sampleName, strings.Join(allowedNameFragments, ","))
+		u.GetName(), fullName, strings.Join(allowedNameFragments, ","))
 }

@@ -50,8 +50,9 @@ const (
 
 type ResourceFixture struct {
 	GVK          schema.GroupVersionKind
-	Name         string
 	SourceDir    string
+	ShortName    string
+	FullName     string
 	Create       []byte
 	Update       []byte
 	Dependencies []byte
@@ -118,7 +119,7 @@ func LoadWithFilter(t *testing.T, lightFilterFunc LightFilter, heavyFilterFunc H
 			if lightFilterFunc != nil && !lightFilterFunc(name, testType) {
 				return nil
 			}
-			rf := loadResourceFixture(t, name, testType, path, createFile, updateFile, depFile)
+			rf := loadResourceFixture(t, testType, path, createFile, updateFile, depFile)
 			if heavyFilterFunc != nil && !heavyFilterFunc(rf) {
 				return nil
 			}
@@ -133,16 +134,24 @@ func LoadWithFilter(t *testing.T, lightFilterFunc LightFilter, heavyFilterFunc H
 	return allCases
 }
 
-func loadResourceFixture(t *testing.T, testName string, testType TestType, dir, createFile, updateFile, depFile string) ResourceFixture {
+func loadResourceFixture(t *testing.T, testType TestType, dir, createFile, updateFile, depFile string) ResourceFixture {
 	t.Helper()
+
+	shortName := filepath.Base(dir)
+	baseDir := getTestDataPath(t)
+	fullName, err := filepath.Rel(baseDir, dir)
+	if err != nil {
+		t.Fatalf("unable to find relative path from %q to %q: %v", baseDir, dir, err)
+	}
 	createConfig := test.MustReadFile(t, path.Join(dir, createFile))
 	gvk, err := readGroupVersionKind(t, createConfig)
 	if err != nil {
-		t.Fatalf("unable to determine GroupVersionKind for test case named %v: %v", testName, err)
+		t.Fatalf("unable to determine GroupVersionKind for test case %q: %v", fullName, err)
 	}
 
 	rf := ResourceFixture{
-		Name:      testName,
+		FullName:  fullName,
+		ShortName: shortName,
 		SourceDir: dir,
 		GVK:       gvk,
 		Create:    createConfig,
