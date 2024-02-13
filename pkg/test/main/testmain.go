@@ -77,7 +77,9 @@ func TestMainSetupMultipleEnvironments(m *testing.M, testType test.TestType, crd
 		mgr, stop := testcontroller.StartTestManagerInstance(env, testType, whCfgs)
 		stops = append(stops, stop)
 
-		testcontroller.EnsureNamespaceExists(mgr.GetClient(), k8s.SystemNamespace)
+		if err := testcontroller.EnsureNamespaceExists(mgr.GetClient(), k8s.SystemNamespace); err != nil {
+			log.Fatalf("error ensuring namesapce exists: %v", err)
+		}
 		*mp = mgr
 	}
 

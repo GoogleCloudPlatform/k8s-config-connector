@@ -28,7 +28,9 @@ var update = flag.Bool("update", false, "update .golden files")
 
 func VerifyContentsMatch(t *testing.T, actualBytes []byte, expectedFilePath string) {
 	if *update {
-		os.WriteFile(expectedFilePath, actualBytes, 0644)
+		if err := os.WriteFile(expectedFilePath, actualBytes, 0644); err != nil {
+			t.Fatalf("error writing file '%v': %v", expectedFilePath, err)
+		}
 	}
 	expectedBytes, err := os.ReadFile(expectedFilePath)
 	if err != nil {

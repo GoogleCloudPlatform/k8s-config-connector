@@ -321,7 +321,7 @@ func updateContainerEnvIfFound(container map[string]interface{}, name, value str
 	}
 
 	// write back env list
-	if unstructured.SetNestedSlice(container, envs, "env"); err != nil {
+	if err := unstructured.SetNestedSlice(container, envs, "env"); err != nil {
 		return fmt.Errorf("error setting container env list: %v", err)
 	}
 	return nil
