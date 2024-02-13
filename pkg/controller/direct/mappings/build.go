@@ -101,6 +101,10 @@ func Ignore(id string) FieldMapping {
 	return &ignoreField{ID: ToFieldID(id)}
 }
 
+func TODO(id string) FieldMapping {
+	return &ignoreField{ID: ToFieldID(id)}
+}
+
 type resourceID struct {
 	ID string
 }
@@ -284,3 +288,42 @@ func (b *MappingBuilder) mapCloudToKRM(inType *reflectType, outType *reflectType
 
 	return b
 }
+
+// func (b *MappingBuilder) MapEnum(enum protoreflect.EnumType) *MappingBuilder {
+// 	enumDescriptor := enum.Descriptor()
+// 	cloudObj := enum.New(0)
+// 	cloudVal := reflect.ValueOf(cloudObj)
+// 	// krmVal := reflect.ValueOf(krmObj)
+// 	// cloudType := typeOf(cloudVal.Type())
+// 	// resourceKRMType := typeOf(krmVal.Type())
+// 	enumType := typeOf(reflect.PtrTo(cloudVal.Type()))
+// 	// klog.Fatalf("enumType is %v", enumType)
+
+// 	var krmObj string
+// 	krmVal := reflect.ValueOf(krmObj)
+// 	stringType := typeOf(krmVal.Type())
+
+// 	{
+// 		createMapping := &enumToStringTypeMapping{
+// 			// scope:         b.mapping,
+// 			enumType:       enumType,
+// 			enumDescriptor: enumDescriptor,
+// 			stringType:     stringType,
+// 			// hasSpecStatus: false,
+// 		}
+// 		b.mapping.Mappings = append(b.mapping.Mappings, createMapping)
+// 	}
+
+// 	{
+// 		createMapping := &stringToEnumTypeMapping{
+// 			// scope:         b.mapping,
+// 			enumType:       enumType,
+// 			enumDescriptor: enumDescriptor,
+// 			stringType:     stringType,
+// 			// hasSpecStatus: false,
+// 		}
+// 		b.mapping.Mappings = append(b.mapping.Mappings, createMapping)
+// 	}
+
+// 	return b
+// }

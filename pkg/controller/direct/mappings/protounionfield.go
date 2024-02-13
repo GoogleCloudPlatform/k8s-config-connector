@@ -20,6 +20,7 @@ import (
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"k8s.io/klog/v2"
 )
 
 type protoOneOfField struct {
@@ -54,10 +55,23 @@ func (f *protoOneOfField) getValue(p *point) *point {
 	if !fdVal.IsValid() {
 		return nil
 	}
-	obj := fdVal.Message().Interface()
-	rv := reflect.ValueOf(obj)
-	out := p.scope.newPoint(rv)
-	return out
+	klog.Infof("getting value of %v => %v", f.fd, fdVal)
+
+	switch f.fd.Kind() {
+	case protoreflect.MessageKind:
+		obj := fdVal.Message().Interface()
+		rv := reflect.ValueOf(obj)
+		out := p.scope.newPoint(rv)
+		return out
+	case protoreflect.StringKind:
+		obj := fdVal.String()
+		rv := reflect.ValueOf(obj)
+		out := p.scope.newPoint(rv)
+		return out
+	default:
+		klog.Fatalf("unhandled value type %v", f.fd.Kind())
+		return nil
+	}
 }
 
 func (f *protoOneOfField) setValue(p *point, srcVal reflect.Value) error {

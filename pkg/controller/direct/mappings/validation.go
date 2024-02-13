@@ -36,6 +36,10 @@ func (m *Mapping) Validate() []ValidationError {
 		switch typeMapping := typeMapping.(type) {
 		case *structTypeMapping:
 			errors = append(errors, typeMapping.Validate(checkMissing)...)
+		// case *enumToStringTypeMapping:
+		// 	// Anything to validate here?
+		// case *stringToEnumTypeMapping:
+		// 	// Anything to validate here?
 		default:
 			klog.Fatalf("unhandled type mapping %T", typeMapping)
 		}
