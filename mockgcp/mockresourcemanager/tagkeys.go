@@ -27,7 +27,6 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -50,11 +49,7 @@ func (s *TagKeys) GetTagKey(ctx context.Context, req *pb.GetTagKeyRequest) (*pb.
 
 	obj := &pb.TagKey{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "tagKey %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading tagKey: %v", err)
-		}
+		return nil, err
 	}
 
 	// We should verify that this is part of on of our projects, but ... it's a mock
@@ -128,10 +123,7 @@ func (s *TagKeys) UpdateTagKey(ctx context.Context, req *pb.UpdateTagKeyRequest)
 	fqn := name.String()
 	obj := &pb.TagKey{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "tagKey %q not found", reqName)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading tagKey: %v", err)
+		return nil, err
 	}
 
 	// We should verify that this is part of on of our projects, but ... it's a mock
@@ -172,11 +164,7 @@ func (s *TagKeys) DeleteTagKey(ctx context.Context, req *pb.DeleteTagKeyRequest)
 
 	deleted := &pb.TagKey{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "tagKey %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting tagKey: %v", err)
-		}
+		return nil, err
 	}
 
 	// We should verify that this is part of on of our projects, but ... it's a mock
