@@ -22,7 +22,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
@@ -44,11 +43,7 @@ func (s *RegionalDisksV1) Get(ctx context.Context, req *pb.GetRegionDiskRequest)
 
 	obj := &pb.Disk{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "disk %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading disk: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -81,7 +76,7 @@ func (s *RegionalDisksV1) Insert(ctx context.Context, req *pb.InsertRegionDiskRe
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating disk: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -98,10 +93,7 @@ func (s *RegionalDisksV1) Update(ctx context.Context, req *pb.UpdateRegionDiskRe
 	fqn := name.String()
 	obj := &pb.Disk{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "disk %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading disk: %v", err)
+		return nil, err
 	}
 
 	// TODO: Implement helper to implement the full rules here
@@ -125,11 +117,7 @@ func (s *RegionalDisksV1) Delete(ctx context.Context, req *pb.DeleteRegionDiskRe
 
 	deleted := &pb.Disk{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "disk %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting disk: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
