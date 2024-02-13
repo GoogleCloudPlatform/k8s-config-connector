@@ -17,8 +17,6 @@ package mockcompute
 import (
 	"context"
 
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -63,7 +61,7 @@ func (s *NodeGroupsV1) Insert(ctx context.Context, req *pb.InsertNodeGroupReques
 	obj.Kind = PtrTo("compute#nodegroup")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating node group: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -79,7 +77,7 @@ func (s *NodeGroupsV1) Patch(ctx context.Context, req *pb.PatchNodeGroupRequest)
 	obj := &pb.NodeGroup{}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating node group: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -101,41 +99,14 @@ func (s *NodeGroupsV1) Delete(ctx context.Context, req *pb.DeleteNodeGroupReques
 	return s.newLRO(ctx, name.Project.ID)
 }
 
-func (s *NodeGroupsV1) SetNodeTemplate(ctx context.Context, req *pb.SetNodeTemplateNodeGroupRequest) (*pb.Operation, error) {
-	name, err := s.newNodeTemplateNodeGroupName(req.GetProject(), req.GetZone(), req.GetNodeGroup(), req.GetNodeGroupsSetNodeTemplateRequestResource().GetNodeTemplate())
-	if err != nil {
-		return nil, err
-	}
-
-	fqn := name.String()
-
-	obj := &pb.NodeGroup{}
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error set node template for node group: %v", err)
-	}
-
-	return s.newLRO(ctx, name.Project.ID)
-}
-
 type nodeGroupName struct {
 	Project *projects.ProjectData
 	Zone    string
 	Name    string
 }
 
-type nodeTemplateNodeGroupName struct {
-	Project          *projects.ProjectData
-	Zone             string
-	NodeGroupName    string
-	NodeTemplateName string
-}
-
 func (n *nodeGroupName) String() string {
 	return "projects/" + n.Project.ID + "/zones/" + n.Zone + "/nodeGroups/" + n.Name
-}
-
-func (n *nodeTemplateNodeGroupName) String() string {
-	return "projects/" + n.Project.ID + "/zones/" + n.Zone + "/nodeGroups/" + n.NodeGroupName + "/setNodeTemplate/" + n.NodeTemplateName
 }
 
 // newNodeGroupName builds a normalized nodeGroupName from the constituent parts.
@@ -150,21 +121,5 @@ func (s *MockService) newNodeGroupName(project string, zone string, name string)
 		Project: projectObj,
 		Zone:    zone,
 		Name:    name,
-	}, nil
-}
-
-// newNodeGroupName builds a normalized nodeGroupName from the constituent parts.
-// The expected form is `projects/{project}/zones/{zone}/nodeGroups/{nodeGroup}/setNodeTemplate/{nodeTemplate}`.
-func (s *MockService) newNodeTemplateNodeGroupName(project string, zone string, nodeGroupName string, nodeTemplateName string) (*nodeTemplateNodeGroupName, error) {
-	projectObj, err := s.projects.GetProjectByID(project)
-	if err != nil {
-		return nil, err
-	}
-
-	return &nodeTemplateNodeGroupName{
-		Project:          projectObj,
-		Zone:             zone,
-		NodeGroupName:    nodeGroupName,
-		NodeTemplateName: nodeTemplateName,
 	}, nil
 }

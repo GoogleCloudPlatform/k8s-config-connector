@@ -252,6 +252,7 @@ func TestAllInSeries(t *testing.T) {
 						})
 					}
 
+					addReplacement("id", "000000000000000000000")
 					addReplacement("uniqueId", "111111111111111111111")
 					addReplacement("oauth2ClientId", "888888888888888888888")
 

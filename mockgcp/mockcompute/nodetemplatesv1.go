@@ -19,8 +19,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -62,7 +60,7 @@ func (s *NodeTemplatesV1) Insert(ctx context.Context, req *pb.InsertNodeTemplate
 	obj.Kind = PtrTo("compute#nodetemplate")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating node template: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
