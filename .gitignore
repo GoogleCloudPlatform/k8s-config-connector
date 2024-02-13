@@ -22,6 +22,7 @@
 # Temporary Build Files
 tmp/_output
 tmp/_test
+.tmp
 
 # build output
 bin/
