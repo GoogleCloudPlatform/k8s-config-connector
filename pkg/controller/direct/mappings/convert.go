@@ -19,6 +19,7 @@ import (
 	"reflect"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"k8s.io/klog/v2"
 )
@@ -74,6 +75,14 @@ func (m *Mapping) convert(src reflect.Value, destType reflect.Type) (reflect.Val
 			}
 			durationProto := durationpb.New(duration)
 			return reflect.ValueOf(durationProto), nil
+		case "*v1alpha1.ResourceRef":
+			// TODO: Register some well-known conversion functions and use them?
+			ref := &v1alpha1.ResourceRef{External: v}
+			return reflect.ValueOf(ref), nil
+		case "v1alpha1.ResourceRef":
+			// TODO: Register some well-known conversion functions and use them?
+			ref := &v1alpha1.ResourceRef{External: v}
+			return reflect.ValueOf(ref).Elem(), nil
 		default:
 			return reflect.Value{}, fmt.Errorf("string conversion to %v not implemented", destType.String())
 		}
@@ -88,6 +97,18 @@ func (m *Mapping) convert(src reflect.Value, destType reflect.Type) (reflect.Val
 			return reflect.ValueOf(&s), nil
 		default:
 			return reflect.Value{}, fmt.Errorf("duration conversion to %v not implemented", destType.String())
+		}
+	case "v1alpha1.ResourceRef":
+		v := src.Addr().Interface().(*v1alpha1.ResourceRef)
+		switch destType.String() {
+		case "string":
+			s := v.External
+			return reflect.ValueOf(s), nil
+		case "*string":
+			s := v.External
+			return reflect.ValueOf(&s), nil
+		default:
+			return reflect.Value{}, fmt.Errorf("v1alpha1.ResourceRef conversion to %v not implemented", destType.String())
 		}
 	case "int":
 		v64 := src.Int()
