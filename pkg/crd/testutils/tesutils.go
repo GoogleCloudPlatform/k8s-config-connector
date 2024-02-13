@@ -16,7 +16,7 @@ package testutils
 
 import (
 	"flag"
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -28,9 +28,11 @@ var update = flag.Bool("update", false, "update .golden files")
 
 func VerifyContentsMatch(t *testing.T, actualBytes []byte, expectedFilePath string) {
 	if *update {
-		ioutil.WriteFile(expectedFilePath, actualBytes, 0644)
+		if err := os.WriteFile(expectedFilePath, actualBytes, 0644); err != nil {
+			t.Fatalf("error writing file '%v': %v", expectedFilePath, err)
+		}
 	}
-	expectedBytes, err := ioutil.ReadFile(expectedFilePath)
+	expectedBytes, err := os.ReadFile(expectedFilePath)
 	if err != nil {
 		t.Fatalf("error reading file '%v': %v", expectedFilePath, err)
 	}

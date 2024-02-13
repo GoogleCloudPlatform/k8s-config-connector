@@ -38,11 +38,11 @@ func TestBuildLoggerFormat(t *testing.T) {
 	logger.Info(inputInfo)
 	logger.Error(&ExampleError{}, "test")
 	wantList := [...]map[string]interface{}{
-		map[string]interface{}{
+		{
 			"msg":      inputInfo,
 			"severity": "info",
 		},
-		map[string]interface{}{
+		{
 			"error":    "ExampleError",
 			"msg":      "test",
 			"severity": "error",
@@ -56,7 +56,9 @@ func TestBuildLoggerFormat(t *testing.T) {
 				t.Fatalf("ReadString('\n') failed: %s", err)
 			}
 			var got map[string]interface{}
-			json.Unmarshal([]byte(loggedLine), &got)
+			if err := json.Unmarshal([]byte(loggedLine), &got); err != nil {
+				t.Fatal(err)
+			}
 			if _, ok := got["timestamp"]; !ok {
 				t.Fatalf("the log message %v doesn't contain `timestamp`", got)
 			}

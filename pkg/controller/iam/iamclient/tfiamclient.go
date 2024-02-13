@@ -341,7 +341,9 @@ func (t *TFIAMClient) newResource(ctx context.Context, iamInterface interface{},
 		if err != nil {
 			return nil, fmt.Errorf("error marshalling policy data to JSON: %w", err)
 		}
-		unstructured.SetNestedField(unstructSkeleton.Object, string(b), "spec", "policyData")
+		if err := unstructured.SetNestedField(unstructSkeleton.Object, string(b), "spec", "policyData"); err != nil {
+			return nil, err
+		}
 	case *v1beta1.IAMPolicyMember:
 		// An unstructured skeleton for getting an IAM policy member already
 		// fully represents the IAM policy member.
@@ -352,7 +354,9 @@ func (t *TFIAMClient) newResource(ctx context.Context, iamInterface interface{},
 		if err := util.Marshal(auditLogConfigs, &auditLogConfigSlice); err != nil {
 			return nil, fmt.Errorf("unable to marshal %v to slice: %w", reflect.TypeOf(auditLogConfigs).Name(), err)
 		}
-		unstructured.SetNestedSlice(unstructSkeleton.Object, auditLogConfigSlice, "spec", "auditLogConfig")
+		if err := unstructured.SetNestedSlice(unstructSkeleton.Object, auditLogConfigSlice, "spec", "auditLogConfig"); err != nil {
+			return nil, err
+		}
 	default:
 		panic(fmt.Errorf("unknown type: %v", reflect.TypeOf(iamInterface).Name()))
 	}
@@ -398,20 +402,28 @@ func (t *TFIAMClient) newUnstructuredSkeleton(ctx context.Context, iamInterface 
 		if err != nil {
 			return nil, fmt.Errorf("could not resolve member identity for IAMPolicyMember: %w", err)
 		}
-		unstructured.SetNestedField(unstructSkeleton.Object, member, "spec", "member")
-		unstructured.SetNestedField(unstructSkeleton.Object, iamObject.Spec.Role, "spec", "role")
+		if err := unstructured.SetNestedField(unstructSkeleton.Object, member, "spec", "member"); err != nil {
+			return nil, err
+		}
+		if err := unstructured.SetNestedField(unstructSkeleton.Object, iamObject.Spec.Role, "spec", "role"); err != nil {
+			return nil, err
+		}
 		if iamObject.Spec.Condition != nil {
 			condition := iamObject.Spec.Condition
 			var conditionMap map[string]interface{}
 			if err := util.Marshal(condition, &conditionMap); err != nil {
 				return nil, fmt.Errorf("unable to marshal %v to map: %w", reflect.TypeOf(condition).Name(), err)
 			}
-			unstructured.SetNestedMap(unstructSkeleton.Object, conditionMap, "spec", "condition")
+			if err := unstructured.SetNestedMap(unstructSkeleton.Object, conditionMap, "spec", "condition"); err != nil {
+				return nil, err
+			}
 		}
 		return unstructSkeleton, nil
 	case *v1beta1.IAMAuditConfig:
 		// IAM audit configs are uniquely identified by their service field.
-		unstructured.SetNestedField(unstructSkeleton.Object, iamObject.Spec.Service, "spec", "service")
+		if err := unstructured.SetNestedField(unstructSkeleton.Object, iamObject.Spec.Service, "spec", "service"); err != nil {
+			return nil, err
+		}
 		return unstructSkeleton, nil
 	default:
 		panic(fmt.Errorf("unknown type: %v", reflect.TypeOf(iamInterface).Name()))

@@ -79,7 +79,10 @@ func (m *mockGCPClient) Get(ctx context.Context, u *unstructured.Unstructured) (
 		Object: deepcopy.DeepCopy(u.Object).(map[string]interface{}),
 	}
 	value := "this value verifies I was created by the mock client"
-	unstructured.SetNestedField(newUnstruct.Object, value, "spec", "testKey")
+	if err := unstructured.SetNestedField(newUnstruct.Object, value, "spec", "testKey"); err != nil {
+		return nil, err
+	}
+
 	return &newUnstruct, nil
 }
 
