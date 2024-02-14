@@ -27,7 +27,6 @@ import (
 func ValidateOrDefaultStateIntoSpecAnnotation(obj metav1.Object, defaultValue string) error {
 	_, found := GetAnnotation(StateIntoSpecAnnotation, obj)
 	if !found {
-		// TODO(b/322836859): Ensure ComputeAddress doesn't need special handling.
 		SetAnnotation(StateIntoSpecAnnotation, defaultValue, obj)
 	}
 	return validateStateIntoSpecAnnotation(obj)

@@ -51,6 +51,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
@@ -114,6 +115,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	kccConfig.ManagerOptions.HealthProbeBindAddress = "0"
 	// supply a concrete client to disable the default behavior of caching
 	kccConfig.ManagerOptions.NewClient = nocache.NoCacheClientFunc
+	kccConfig.StateIntoSpecDefaultValue = k8s.StateIntoSpecDefaultValueV1Beta1
 
 	var webhooks []cnrmwebhook.WebhookConfig
 
@@ -357,7 +359,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	}
 
 	// Register the deletion defender controller.
-	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterDeletionDefenderController); err != nil {
+	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterDeletionDefenderController, nil); err != nil {
 		t.Fatalf("error adding registration controller for deletion defender controllers: %v", err)
 	}
 	// Start the manager, Start(...) is a blocking operation so it needs to be done asynchronously.

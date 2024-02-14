@@ -77,8 +77,9 @@ const (
 	ManagementConflictPreventionPolicyResource = "resource"
 
 	// State into spec annotation values
-	StateMergeIntoSpec = "merge"
-	StateAbsentInSpec  = "absent"
+	StateMergeIntoSpec               = "merge"
+	StateAbsentInSpec                = "absent"
+	StateIntoSpecDefaultValueV1Beta1 = StateMergeIntoSpec
 
 	// Core kubernetes constants
 	LastAppliedConfigurationAnnotation = "kubectl.kubernetes.io/last-applied-configuration"
