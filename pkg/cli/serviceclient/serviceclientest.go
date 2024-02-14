@@ -32,14 +32,14 @@ func NewMockServiceClient(t *testing.T) mockServiceClient {
 }
 
 func (m *mockServiceClient) GetProjectFromProjectIDOrNumber(projectIDOrNumber string) (*resourcemanager.Project, error) {
-	returnedProjectId := ""
+	returnedProjectID := ""
 	switch projectIDOrNumber {
 	case "1234567890":
-		returnedProjectId = "project-id-1"
+		returnedProjectID = "project-id-1"
 	default:
 		return nil, fmt.Errorf("mock does not have a project id for %v, please add a new mapping", projectIDOrNumber)
 	}
 	return &resourcemanager.Project{
-		ProjectId: returnedProjectId,
+		ProjectId: returnedProjectID,
 	}, nil
 }

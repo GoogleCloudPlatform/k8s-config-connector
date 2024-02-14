@@ -25,30 +25,30 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/randomid"
 )
 
-func NewUniqueId() string {
+func NewUniqueID() string {
 	var id string
 	for i := 0; i < 3; i++ {
 		// generate a globally unique ID
 		id = randomid.New().String()
-		if isValidId(id) {
+		if isValidID(id) {
 			return id
 		}
 	}
 	panic(fmt.Sprintf("unable to generate a valid id, last attempt resulted in value: %v", id))
 }
 
-func isValidId(id string) bool {
+func isValidID(id string) bool {
 	// ssl and google are reserved words and cannot be used in project ids, a valid lookbehind regex would be
 	// "((?!ssl|google).*)", but golang does not support lookbehinds. For that reason, just throw out any id
 	// that contains these reserved words
 	return !strings.Contains(id, "google") && !strings.Contains(id, "ssl")
 }
 
-// RandomIdGenerator generates a randomized string of a given length and
+// RandomIDGenerator generates a randomized string of a given length and
 // contains only the characters defined in the given regex
 // the IDs returned by this are NOT globally unique so this should only be used in locations where there cannot be
 // collisions across tests
-func RandomIdGenerator(reg *regexp.Regexp, length uint) string {
+func RandomIDGenerator(reg *regexp.Regexp, length uint) string {
 	var stringBuffer strings.Builder
 
 	// Keep generating and appending randomized characters until the length is hit

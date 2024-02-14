@@ -90,13 +90,13 @@ var resourceConfigTestCases = []ResourceConfigTestCase{
 	{"valid kind", true, PubSubTopicResourceConfigName, &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"kind":       PubSubTopicKind,
-			"apiVersion": groupToApiVersion(PubSubGroup),
+			"apiVersion": groupToAPIVersion(PubSubGroup),
 		},
 	}},
 	{"invalid kind", false, "", &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"kind":       "InvalidKind",
-			"apiVersion": groupToApiVersion(PubSubGroup),
+			"apiVersion": groupToAPIVersion(PubSubGroup),
 		},
 	}},
 	{"regional resource", true, ComputeAddressResourceConfigName, &unstructured.Unstructured{
@@ -105,7 +105,7 @@ var resourceConfigTestCases = []ResourceConfigTestCase{
 				"location": "us-central1",
 			},
 			"kind":       ComputeAddressKind,
-			"apiVersion": groupToApiVersion(ComputeGroup),
+			"apiVersion": groupToAPIVersion(ComputeGroup),
 		},
 	}},
 	{"global resource", true, ComputeGlobalAddressResourceConfigName, &unstructured.Unstructured{
@@ -114,19 +114,19 @@ var resourceConfigTestCases = []ResourceConfigTestCase{
 				"location": "global",
 			},
 			"kind":       ComputeAddressKind,
-			"apiVersion": groupToApiVersion(ComputeGroup),
+			"apiVersion": groupToAPIVersion(ComputeGroup),
 		},
 	}},
 	{"global address resource without location", false, ComputeAddressResourceConfigName, &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"kind":       ComputeAddressKind,
-			"apiVersion": groupToApiVersion(ComputeGroup),
+			"apiVersion": groupToAPIVersion(ComputeGroup),
 		},
 	}},
 	{"compute address resource with invalid location", false, ComputeAddressResourceConfigName, &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"kind":       ComputeAddressKind,
-			"apiVersion": groupToApiVersion(ComputeGroup),
+			"apiVersion": groupToAPIVersion(ComputeGroup),
 			"spec": map[string]interface{}{
 				"location": "asia-east1-a",
 			},
@@ -135,13 +135,13 @@ var resourceConfigTestCases = []ResourceConfigTestCase{
 	{"KCC compute instance using compute_instance TF resource", true, ComputeInstanceResourceConfigName, &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"kind":       ComputeInstanceKind,
-			"apiVersion": groupToApiVersion(ComputeGroup),
+			"apiVersion": groupToAPIVersion(ComputeGroup),
 		},
 	}},
 	{"KCC compute instance using compute_instance_from_template TF resource", true, ComputeInstanceFromTemplateResourceConfigName, &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"kind":       ComputeInstanceKind,
-			"apiVersion": groupToApiVersion(ComputeGroup),
+			"apiVersion": groupToAPIVersion(ComputeGroup),
 			"spec": map[string]interface{}{
 				"instanceTemplateRef": map[string]interface{}{
 					"name": "test-ref",
@@ -181,6 +181,6 @@ func getResourceConfigAssertResult(t *testing.T, tc ResourceConfigTestCase, smLo
 	}
 }
 
-func groupToApiVersion(groupName string) string {
+func groupToAPIVersion(groupName string) string {
 	return fmt.Sprintf("%v/v1beta1", groupName)
 }

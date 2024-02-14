@@ -34,9 +34,9 @@ func TestNewStreamFromStorageObject(t *testing.T) {
 	object := storage.Object{
 		Name: objectName,
 	}
-	file, err := os.Open(exportJsonFile)
+	file, err := os.Open(exportJSONFile)
 	if err != nil {
-		t.Fatalf("error opening '%v': %v", exportJsonFile, err)
+		t.Fatalf("error opening '%v': %v", exportJSONFile, err)
 	}
 	defer file.Close()
 	if _, err := storageClient.Objects.Insert(bucketName, &object).Media(file).Do(); err != nil {

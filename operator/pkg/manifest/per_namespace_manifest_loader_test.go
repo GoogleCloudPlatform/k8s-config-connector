@@ -30,7 +30,7 @@ import (
 
 func TestManifestLoader_ResolveNamespacedComponents(t *testing.T) {
 	t.Parallel()
-	baseDir, repo := newTestNewLocalRepository(t)
+	baseDir, repo := newTestNewLocalRepository()
 	manifestPath := path.Join(baseDir, "packages/configconnector/0.0.0-test/namespaced/per-namespace-components.yaml")
 	ml := manifest.NewPerNamespaceManifestLoader(repo)
 	tests := []struct {

@@ -33,9 +33,9 @@ func TestForParentToStorageObject(t *testing.T) {
 	httpClient := testgcp.NewDefaultHTTPClient(t)
 	bucketName, prefix := testexport.NewTemporaryBucketAndObjectName(t, httpClient)
 	defer testexport.DeleteTemporaryBucket(t, httpClient, bucketName)
-	projectId := testgcp.GetDefaultProjectID(t)
+	projectID := testgcp.GetDefaultProjectID(t)
 	if err := export.ForParentToStorageObject(context.TODO(), httpClient,
-		fmt.Sprintf("projects/%v", projectId), bucketName, prefix); err != nil {
+		fmt.Sprintf("projects/%v", projectID), bucketName, prefix); err != nil {
 		t.Fatalf("error exporting asset inventory: %v", err)
 	}
 	defer testexport.DeleteExport(t, httpClient, bucketName, prefix)

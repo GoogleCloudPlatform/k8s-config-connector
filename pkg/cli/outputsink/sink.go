@@ -91,7 +91,7 @@ func NewFile(filePath string) (*FileSink, error) {
 	return &sink, nil
 }
 
-func (fs *FileSink) Receive(ctx context.Context, bytes []byte, _ *unstructured.Unstructured) error {
+func (fs *FileSink) Receive(_ context.Context, bytes []byte, _ *unstructured.Unstructured) error {
 	// bufio.Writer either writes all the bytes or returns an error so we can ignore the first 'nn' return value
 	_, err := fs.writer.Write(bytes)
 	if err != nil {

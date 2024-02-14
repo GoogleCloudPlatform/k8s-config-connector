@@ -103,5 +103,5 @@ func testDeleteNamespaceID(t *testing.T, mgr manager.Manager) {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForUnitTests(m, &mgr)
+	testmain.ForUnitTests(m, &mgr)
 }

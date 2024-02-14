@@ -31,9 +31,9 @@ const (
 	InputParam          = "input"
 	OnErrorParam        = "on-error"
 	StorageKeyParam     = "storage-key"
-	ProjectIdParam      = "project"
-	FolderIdParam       = "folder"
-	OrganizationIdParam = "organization"
+	ProjectIDParam      = "project"
+	FolderIDParam       = "folder"
+	OrganizationIDParam = "organization"
 
 	ContinueOnErrorOption = "continue"
 	HaltOnErrorOption     = "halt"
@@ -55,9 +55,9 @@ type Parameters struct {
 	Output                  string
 	OnError                 string
 	StorageKey              string
-	ProjectId               string
-	FolderId                int
-	OrganizationId          int
+	ProjectID               string
+	FolderID                int
+	OrganizationID          int
 	OAuth2Token             string
 	ResourceFormat          string
 	Verbose                 bool
@@ -72,19 +72,19 @@ type param struct {
 func Validate(p *Parameters, stdin *os.File) error {
 	inputParam := param{Value: &p.Input, Name: InputParam}
 	storageKeyParam := param{Value: &p.StorageKey, Name: StorageKeyParam}
-	projectIdParam := param{Value: &p.ProjectId, Name: ProjectIdParam}
-	folderIdParam := param{Value: &p.FolderId, Name: FolderIdParam}
-	organizationIdParam := param{Value: &p.OrganizationId, Name: OrganizationIdParam}
-	if err := validateMutuallyExclusiveParams(inputParam, storageKeyParam, projectIdParam, folderIdParam, organizationIdParam); err != nil {
+	projectIDParam := param{Value: &p.ProjectID, Name: ProjectIDParam}
+	folderIDParam := param{Value: &p.FolderID, Name: FolderIDParam}
+	organizationIDParam := param{Value: &p.OrganizationID, Name: OrganizationIDParam}
+	if err := validateMutuallyExclusiveParams(inputParam, storageKeyParam, projectIDParam, folderIDParam, organizationIDParam); err != nil {
 		return err
 	}
-	if err := validateMutuallyExclusiveParams(projectIdParam, folderIdParam, organizationIdParam); err != nil {
+	if err := validateMutuallyExclusiveParams(projectIDParam, folderIDParam, organizationIDParam); err != nil {
 		return err
 	}
-	if err := validateMutuallyExclusiveParams(folderIdParam, organizationIdParam); err != nil {
+	if err := validateMutuallyExclusiveParams(folderIDParam, organizationIDParam); err != nil {
 		return err
 	}
-	if err := validatePipedInput(stdin, inputParam, storageKeyParam, projectIdParam, folderIdParam, organizationIdParam); err != nil {
+	if err := validatePipedInput(stdin, inputParam, storageKeyParam, projectIDParam, folderIDParam, organizationIDParam); err != nil {
 		return err
 	}
 	if err := validateStorageKey(p); err != nil {
@@ -131,7 +131,7 @@ func validateOneInput(p *Parameters, stdin *os.File) error {
 		return nil
 	}
 	return fmt.Errorf("no input or export parameters supplied, must supply an asset inventory on 'stdin' or the '%v' parameter or supply one of '%v', '%v', or '%v' to perform an export",
-		InputParam, ProjectIdParam, FolderIdParam, OrganizationIdParam)
+		InputParam, ProjectIDParam, FolderIDParam, OrganizationIDParam)
 }
 
 func validatePipedInput(stdin *os.File, exclusiveParams ...param) error {
@@ -177,9 +177,9 @@ func validateStorageKey(p *Parameters) error {
 }
 
 func validateCanExport(p *Parameters) error {
-	if p.ProjectId == "" && p.FolderId == 0 && p.OrganizationId == 0 {
+	if p.ProjectID == "" && p.FolderID == 0 && p.OrganizationID == 0 {
 		return fmt.Errorf("one of the '%v', '%v', or '%v' parameters must be defined to perform an export",
-			ProjectIdParam, FolderIdParam, OrganizationIdParam)
+			ProjectIDParam, FolderIDParam, OrganizationIDParam)
 	}
 	return nil
 }

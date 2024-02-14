@@ -23,7 +23,7 @@ type IAMReferenceType string
 
 const (
 	IAMReferenceTypeName IAMReferenceType = "name"
-	IAMReferenceTypeId   IAMReferenceType = "id"
+	IAMReferenceTypeId   IAMReferenceType = "id" //nolint:revive
 )
 
 type ServiceMappingSpec struct {

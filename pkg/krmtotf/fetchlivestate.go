@@ -51,7 +51,7 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 		}
 		return nil, fmt.Errorf("error getting ID for resource: %w", err)
 	}
-	return fetchLiveStateFromId(ctx, id, resource, provider, kubeClient, smLoader)
+	return fetchLiveStateFromID(ctx, id, resource, provider, kubeClient, smLoader)
 
 }
 
@@ -101,13 +101,13 @@ func FetchLiveStateForDelete(ctx context.Context, resource *Resource, provider *
 			return nil, err
 		}
 		if id != "" {
-			return fetchLiveStateFromId(ctx, id, resource, provider, kubeClient, smLoader)
+			return fetchLiveStateFromID(ctx, id, resource, provider, kubeClient, smLoader)
 		}
 	}
 	return FetchLiveState(ctx, resource, provider, kubeClient, smLoader)
 }
 
-func fetchLiveStateFromId(ctx context.Context, id string, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
+func fetchLiveStateFromID(ctx context.Context, id string, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
 	// Get the imported resource
 	var state *terraform.InstanceState
 	var err error

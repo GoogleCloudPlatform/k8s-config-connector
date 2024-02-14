@@ -58,7 +58,7 @@ var (
 func TestReconcileIAMPolicyMemberResourceLevelCreateDelete(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, testId string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, testID string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
 		k8sPolicyMember := newIAMPolicyMemberFixture(t, refResource, resourceRef, rc.CreateBindingRole, testgcp.GetIAMPolicyBindingMember(t))
 		testPolicyMemberCreateDelete(ctx, t, mgr, k8sPolicyMember)
 	}
@@ -71,7 +71,7 @@ func TestReconcileIAMPolicyMemberResourceLevelCreateDeleteWithReconcileInterval(
 	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
 		return fixture.GVK.Kind == "PubSubTopic"
 	}
-	testFunc := func(ctx context.Context, t *testing.T, testId string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, testID string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
 		k8sPolicyMember := newIAMPolicyMemberFixture(t, refResource, resourceRef, rc.CreateBindingRole, testgcp.GetIAMPolicyBindingMember(t))
 		k8sPolicyMember.SetAnnotations(map[string]string{k8s.ReconcileIntervalInSecondsAnnotation: "5"})
 		testPolicyMemberCreateDelete(ctx, t, mgr, k8sPolicyMember)
@@ -82,7 +82,7 @@ func TestReconcileIAMPolicyMemberResourceLevelCreateDeleteWithReconcileInterval(
 func TestReconcileIAMPolicyMemberResourceLevelCreateDeleteWithExternalRef(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, testId string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, testID string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
 		k8sPolicyMember := newIAMPolicyMemberFixture(t, refResource, resourceRef, rc.CreateBindingRole, testgcp.GetIAMPolicyBindingMember(t))
 		testPolicyMemberCreateDelete(ctx, t, mgr, k8sPolicyMember)
 	}
@@ -307,5 +307,5 @@ func name(t *testing.T) string {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

@@ -37,20 +37,20 @@ const (
 	perNamespaceComponentsFileName = "per-namespace-components.yaml"
 )
 
-type ManifestLoader struct {
+type Loader struct {
 	repo Repository
 }
 
-func NewManifestLoader(repo Repository) *ManifestLoader {
-	return &ManifestLoader{
+func NewLoader(repo Repository) *Loader {
+	return &Loader{
 		repo: repo,
 	}
 }
 
 // Ensure that ManifestController implements declarative.ManifestController.
-var _ declarative.ManifestController = &ManifestLoader{}
+var _ declarative.ManifestController = &Loader{}
 
-func (c *ManifestLoader) ResolveManifest(ctx context.Context, o runtime.Object) (map[string]string, error) {
+func (c *Loader) ResolveManifest(ctx context.Context, o runtime.Object) (map[string]string, error) {
 	cc, ok := o.(*corev1beta1.ConfigConnector)
 	if !ok {
 		return nil, fmt.Errorf("expected the resource to be a ConfigConnector, but it was not. Object: %v", o)

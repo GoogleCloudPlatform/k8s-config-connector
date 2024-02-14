@@ -37,9 +37,9 @@ import (
 
 const ProjectKind = "Project"
 
-var ResourceManagerAPIGroupName = fmt.Sprintf("resourcemanager.%v", crdgeneration.ApiDomain)
+var ResourceManagerAPIGroupName = fmt.Sprintf("resourcemanager.%v", crdgeneration.APIDomain)
 
-func NewProject(projectId string, smLoader *servicemappingloader.ServiceMappingLoader) (*unstructured.Unstructured, error) {
+func NewProject(projectID string, smLoader *servicemappingloader.ServiceMappingLoader) (*unstructured.Unstructured, error) {
 	sm, err := smLoader.GetServiceMapping(ResourceManagerAPIGroupName)
 	if err != nil {
 		return nil, fmt.Errorf("error getting service mapping for '%v': %w", ResourceManagerAPIGroupName, err)
@@ -51,7 +51,7 @@ func NewProject(projectId string, smLoader *servicemappingloader.ServiceMappingL
 		Kind:    ProjectKind,
 	}
 	u.SetGroupVersionKind(gvk)
-	u.SetName(projectId)
+	u.SetName(projectID)
 	annotations := make(map[string]string, 1)
 	annotations[k8s.FolderIDAnnotation] = "skeleton-folder"
 	u.SetAnnotations(annotations)
@@ -59,18 +59,18 @@ func NewProject(projectId string, smLoader *servicemappingloader.ServiceMappingL
 }
 
 func NewFromURI(uri string, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *tfschema.Provider) (*unstructured.Unstructured, error) {
-	parsedUrl, err := url.Parse(uri)
+	parsedURL, err := url.Parse(uri)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing '%v' as url: %w", uri, err)
 	}
-	sm, rc, err := uri2.GetServiceMappingAndResourceConfig(smLoader, parsedUrl.Host, parsedUrl.Path)
+	sm, rc, err := uri2.GetServiceMappingAndResourceConfig(smLoader, parsedURL.Host, parsedURL.Path)
 	if err != nil {
 		return nil, fmt.Errorf("error getting service mapping and resource config for url '%v': %w", uri, err)
 	}
 	tfInfo := terraform.InstanceInfo{
 		Type: rc.Name,
 	}
-	state, err := krmtotf.ImportState(context.Background(), strings.TrimPrefix(parsedUrl.Path, "/"), &tfInfo, tfProvider)
+	state, err := krmtotf.ImportState(context.Background(), strings.TrimPrefix(parsedURL.Path, "/"), &tfInfo, tfProvider)
 	if err != nil {
 		return nil, fmt.Errorf("error importing resource name to TF state: %w", err)
 	}

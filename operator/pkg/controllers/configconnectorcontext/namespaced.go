@@ -79,11 +79,11 @@ func transformNamespacedComponentTemplates(ctx context.Context, c client.Client,
 
 func handleControllerManagerService(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object) (*manifest.Object, error) {
 	u := obj.UnstructuredObject().DeepCopy()
-	nsId, err := cluster.GetNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, c, ctx, ccc.Namespace)
+	nsID, err := cluster.GetNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, c, ctx, ccc.Namespace)
 	if err != nil {
 		return nil, fmt.Errorf("error getting namespace id for namespace %v: %w", ccc.Namespace, err)
 	}
-	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsId))
+	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsID))
 	if err := removeStaleControllerManagerService(ctx, c, ccc.Namespace, u.GetName()); err != nil {
 		return nil, fmt.Errorf("error deleting stale Services for watched namespace %v: %w", ccc.Namespace, err)
 	}
@@ -111,18 +111,18 @@ func removeStaleControllerManagerService(ctx context.Context, c client.Client, n
 func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object) (*manifest.Object, error) {
 	u := obj.UnstructuredObject().DeepCopy()
 
-	nsId, err := cluster.GetNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, c, ctx, ccc.Namespace)
+	nsID, err := cluster.GetNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, c, ctx, ccc.Namespace)
 	if err != nil {
 		return nil, fmt.Errorf("error getting namespace id for namespace %v: %w", ccc.Namespace, err)
 	}
 
-	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsId))
+	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsID))
 
 	serviceName, found, err := unstructured.NestedString(u.Object, "spec", "serviceName")
 	if err != nil || !found {
 		return nil, fmt.Errorf("couldn't resolve serviceName in StatefulSet %v for watched namespace %v: %w", u.GetName(), ccc.Namespace, err)
 	}
-	if err := unstructured.SetNestedField(u.Object, strings.ReplaceAll(serviceName, "${NAMESPACE?}", nsId), "spec", "serviceName"); err != nil {
+	if err := unstructured.SetNestedField(u.Object, strings.ReplaceAll(serviceName, "${NAMESPACE?}", nsID), "spec", "serviceName"); err != nil {
 		return nil, err
 	}
 

@@ -52,7 +52,7 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error building cloudresourcemanagerv1 client: %v", err)
 	}
-	op, err := crm.Projects.Create(&cloudresourcemanagerv1.Project{ProjectId: "mock-project"}).Context(ctx).Do()
+	op, err := crm.Projects.Create(&cloudresourcemanagerv1.Project{ProjectID: "mock-project"}).Context(ctx).Do()
 	if err != nil {
 		t.Fatalf("error creating project: %v", err)
 	}

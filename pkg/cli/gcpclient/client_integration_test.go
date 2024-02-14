@@ -61,8 +61,8 @@ func TestGetNotFound(t *testing.T) {
 			},
 		},
 	}
-	projectId := testgcp.GetDefaultProjectID(t)
-	applyProjectRefOrAnnotation(t, smLoader, serviceResource, projectId)
+	projectID := testgcp.GetDefaultProjectID(t)
+	applyProjectRefOrAnnotation(t, smLoader, serviceResource, projectID)
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.Config{})
 	client := gcpclient.New(tfProvider, smLoader)
 	result, err := client.Get(ctx, serviceResource)
@@ -104,27 +104,27 @@ func TestCRUD(t *testing.T) {
 	smLoader := testservicemappingloader.New(t)
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.Config{})
 	client := gcpclient.New(tfProvider, smLoader)
-	projectId := testgcp.GetDefaultProjectID(t)
+	projectID := testgcp.GetDefaultProjectID(t)
 	testFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext) {
 		var resources []*unstructured.Unstructured
 		for _, d := range testContext.DependencyUnstructs {
 			resolveAPIServerDependenciesIfKCCManaged(t, smLoader, tfProvider, resources, d)
 			if k8s.IsManagedByKCC(d.GroupVersionKind()) {
-				applyProjectRefOrAnnotation(t, smLoader, d, projectId)
+				applyProjectRefOrAnnotation(t, smLoader, d, projectID)
 				defer buildDeleteFunc(t, client, d)()
 				d = clientApply(t, client, d)
 			}
 			resources = append(resources, d)
 		}
 		createUnstruct := testContext.CreateUnstruct
-		applyProjectRefOrAnnotation(t, smLoader, createUnstruct, projectId)
+		applyProjectRefOrAnnotation(t, smLoader, createUnstruct, projectID)
 		resolveAPIServerDependenciesIfKCCManaged(t, smLoader, tfProvider, resources, createUnstruct)
 		defer buildDeleteFunc(t, client, createUnstruct)()
 		clientApply(t, client, createUnstruct)
 		clientGet(t, ctx, client, createUnstruct)
 		if testContext.UpdateUnstruct != nil {
 			resolveAPIServerDependenciesIfKCCManaged(t, smLoader, tfProvider, resources, testContext.UpdateUnstruct)
-			applyProjectRefOrAnnotation(t, smLoader, testContext.UpdateUnstruct, projectId)
+			applyProjectRefOrAnnotation(t, smLoader, testContext.UpdateUnstruct, projectID)
 			clientApply(t, client, testContext.UpdateUnstruct)
 		}
 		clientDelete(t, client, createUnstruct)
@@ -214,20 +214,20 @@ func allKindsAreSupported(t *testing.T, client gcpclient.Client, fixture resourc
 	return true
 }
 
-func applyProjectRefOrAnnotation(t *testing.T, smLoader *servicemappingloader.ServiceMappingLoader, u *unstructured.Unstructured, projectId string) {
+func applyProjectRefOrAnnotation(t *testing.T, smLoader *servicemappingloader.ServiceMappingLoader, u *unstructured.Unstructured, projectID string) {
 	rc, err := smLoader.GetResourceConfig(u)
 	if err != nil {
 		t.Fatalf("error getting ResourceConfig: %v", err)
 	}
 	switch {
 	case krmtotf.SupportsHierarchicalReferences(rc):
-		applyProjectRef(t, rc, u, projectId)
+		applyProjectRef(t, rc, u, projectID)
 	case len(rc.Containers) > 0:
-		applyProjectAnnotation(t, rc, u, projectId)
+		applyProjectAnnotation(t, rc, u, projectID)
 	}
 }
 
-func applyProjectRef(t *testing.T, rc *corekccv1alpha1.ResourceConfig, u *unstructured.Unstructured, projectId string) {
+func applyProjectRef(t *testing.T, rc *corekccv1alpha1.ResourceConfig, u *unstructured.Unstructured, projectID string) {
 	r, err := k8s.NewResource(u)
 	if err != nil {
 		t.Fatalf("error creating resource from unstructured: %v", err)
@@ -246,7 +246,7 @@ func applyProjectRef(t *testing.T, rc *corekccv1alpha1.ResourceConfig, u *unstru
 	if h == nil {
 		return
 	}
-	if err := k8s.SetHierarchicalReference(r, h, projectId); err != nil {
+	if err := k8s.SetHierarchicalReference(r, h, projectID); err != nil {
 		t.Fatalf("error setting hierarchical reference on resource: %v", err)
 	}
 
@@ -257,7 +257,7 @@ func applyProjectRef(t *testing.T, rc *corekccv1alpha1.ResourceConfig, u *unstru
 	*u = *unstruct
 }
 
-func applyProjectAnnotation(t *testing.T, rc *corekccv1alpha1.ResourceConfig, u *unstructured.Unstructured, projectId string) {
+func applyProjectAnnotation(t *testing.T, rc *corekccv1alpha1.ResourceConfig, u *unstructured.Unstructured, projectID string) {
 	// If the resource already has a container annotation, no modification is required
 	val, _, err := k8s.GetContainerAnnotation(u.GetAnnotations(), k8s.ContainerTypes(rc.Containers))
 	if err != nil {
@@ -267,6 +267,6 @@ func applyProjectAnnotation(t *testing.T, rc *corekccv1alpha1.ResourceConfig, u 
 		return
 	}
 	if k8s.IsProjectScoped(rc.Containers) {
-		k8s.SetAnnotation(k8s.ProjectIDAnnotation, projectId, u)
+		k8s.SetAnnotation(k8s.ProjectIDAnnotation, projectID, u)
 	}
 }

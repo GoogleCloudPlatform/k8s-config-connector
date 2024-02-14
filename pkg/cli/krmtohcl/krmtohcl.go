@@ -70,7 +70,7 @@ func UnstructuredToHCL(ctx context.Context, u *unstructured.Unstructured, smLoad
 		return "", fmt.Errorf("error generating hcl: %w", err)
 	}
 
-	importId, err := krmResource.GetImportID(k8s.NewErroringClient(), smLoader)
+	importID, err := krmResource.GetImportID(k8s.NewErroringClient(), smLoader)
 	if err != nil {
 		return "", fmt.Errorf("error getting import id for '%v': %w", krmResource.GetName(), err)
 	}
@@ -79,7 +79,7 @@ func UnstructuredToHCL(ctx context.Context, u *unstructured.Unstructured, smLoad
 	// 2. gcloud is looking for this output and printing it out for their users
 	//
 	// any changes to the format of this output should be communicated to the gcloud team
-	hcl = fmt.Sprintf("%v# terraform import %v.%v %v\n", hcl, exportOp.TerraformInfo.Type, krmResource.TFInfo.Id, importId)
+	hcl = fmt.Sprintf("%v# terraform import %v.%v %v\n", hcl, exportOp.TerraformInfo.Type, krmResource.TFInfo.Id, importID)
 	return hcl, nil
 }
 

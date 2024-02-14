@@ -396,7 +396,7 @@ func iamExternalReferenceFormatsFor(gvk schema.GroupVersionKind, rcs []*v1alpha1
 			if rc.IDTemplate != "" {
 				formatSet[rc.IDTemplate] = struct{}{}
 			} else if krmtotf.SupportsServerGeneratedIDField(rc) {
-				formatSet[krmtotf.ServerGeneratedIdToTemplate(rc)] = struct{}{}
+				formatSet[krmtotf.ServerGeneratedIDToTemplate(rc)] = struct{}{}
 			}
 		}
 		formatList := make([]string, 0)

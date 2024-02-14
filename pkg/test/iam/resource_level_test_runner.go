@@ -26,7 +26,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
 
-type ResourceLevelTestFunc func(ctx context.Context, t *testing.T, testId string, mgr manager.Manager, rc IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference)
+type ResourceLevelTestFunc func(ctx context.Context, t *testing.T, testID string, mgr manager.Manager, rc IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference)
 
 // Runs a resource level test against all resources.
 // testFunc will be executed once for each resource that supports IAMPolicy.
@@ -56,7 +56,7 @@ func buildTestFunc(kindToIamPolicyResourceContext map[string]IAMResourceContext,
 		rc := kindToIamPolicyResourceContext[testContext.ResourceFixture.GVK.Kind]
 		refResource := testContext.CreateUnstruct
 		resourceRef := NewResourceRef(refResource)
-		testFunc(ctx, t, testContext.UniqueId, sysContext.Manager, rc, refResource, resourceRef)
+		testFunc(ctx, t, testContext.UniqueID, sysContext.Manager, rc, refResource, resourceRef)
 	}
 }
 
@@ -68,7 +68,7 @@ func buildTestFuncWithExternalRef(kindToIamPolicyResourceContext map[string]IAMR
 		if err != nil {
 			t.Fatal(err)
 		}
-		testFunc(ctx, t, testContext.UniqueId, sysContext.Manager, rc, refResource, resourceRef)
+		testFunc(ctx, t, testContext.UniqueID, sysContext.Manager, rc, refResource, resourceRef)
 	}
 }
 

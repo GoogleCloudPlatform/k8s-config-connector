@@ -204,7 +204,7 @@ func makeStructNamesUniquePerKind(kindMap map[string]*svkMap) {
 
 func getArrayOfNestedFieldKeys(m map[string][]*fieldProperties) []string {
 	arr := make([]string, 0)
-	for k, _ := range m {
+	for k := range m {
 		arr = append(arr, k)
 	}
 	return arr
@@ -274,7 +274,7 @@ func constructResourceDefinition(crdsPath, crdFile string) *resourceDefinition {
 	if err = buildFieldProperties(r, crd); err != nil {
 		log.Fatalf("error building field properties for %v: %v", r.Name, err)
 	}
-	r.Service = strings.TrimSuffix(crd.Spec.Group, k8s.ApiDomainSuffix)
+	r.Service = strings.TrimSuffix(crd.Spec.Group, k8s.APIDomainSuffix)
 	r.Kind = strings.ToLower(crd.Spec.Names.Kind)
 	r.Version = k8s.GetVersionFromCRD(crd)
 	return r
@@ -336,9 +336,9 @@ func isResourceReference(d fielddesc.FieldDescription) bool {
 			r := regexp.MustCompile("external|name|namespace")
 			if r.MatchString(c.ShortName) {
 				continue
-			} else {
-				return false
 			}
+
+			return false
 		}
 		return true
 	}
@@ -353,9 +353,9 @@ func isSecretReference(d fielddesc.FieldDescription) bool {
 		for _, c := range d.Children {
 			if c.ShortName == "name" || c.ShortName == "key" {
 				continue
-			} else {
-				return false
 			}
+
+			return false
 		}
 		return d.ShortName == "secretKeyRef"
 	}

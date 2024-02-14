@@ -63,10 +63,11 @@ var (
 )
 
 const (
-	TestDependentOrgProjectId               = "TEST_DEPENDENT_ORG_PROJECT_ID"
-	TestDependentFolderProjectId            = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
-	TestDependentFolder2ProjectId           = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
+	TestDependentFolder2ProjectID           = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
 	TestDependentNoNetworkProjectId         = "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID" // A dependent project with default network disabled
+	TestDependentOrgProjectID               = "TEST_DEPENDENT_ORG_PROJECT_ID"
+	TestDependentFolderProjectID            = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
+	TestDependentNoNetworkProjectID         = "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID" // A dependent project with default network disabled
 	IsolatedTestOrgName                     = "ISOLATED_TEST_ORG_NAME"
 	TestBillingAccountIDForBillingResources = "BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES"
 	FirestoreTestProject                    = "FIRESTORE_TEST_PROJECT"
@@ -79,17 +80,17 @@ const (
 )
 
 var (
-	testDependentOrgProjectId               = os.Getenv(TestDependentOrgProjectId)
-	testDependentFolderProjectId            = os.Getenv(TestDependentFolderProjectId)
-	testDependentFolder2ProjectId           = os.Getenv(TestDependentFolder2ProjectId)
-	testDependentNoNetworkProjectId         = os.Getenv(TestDependentNoNetworkProjectId)
+	testDependentFolder2ProjectID           = os.Getenv(TestDependentFolder2ProjectID)
+	testDependentOrgProjectID               = os.Getenv(TestDependentOrgProjectID)
+	testDependentFolderProjectID            = os.Getenv(TestDependentFolderProjectID)
+	testDependentNoNetworkProjectID         = os.Getenv(TestDependentNoNetworkProjectID)
 	isolatedTestOrgName                     = os.Getenv(IsolatedTestOrgName)
 	testBillingAccountIDForBillingResources = os.Getenv(TestBillingAccountIDForBillingResources)
 	firestoreTestProject                    = os.Getenv(FirestoreTestProject)
 	cloudFunctionsTestProject               = os.Getenv(CloudFunctionsTestProject)
 	identityPlatformTestProject             = os.Getenv(IdentityPlatformTestProject)
 	interconnectTestProject                 = os.Getenv(InterconnectTestProject)
-	highCpuQuotaTestProject                 = os.Getenv(HighCPUQuotaTestProject)
+	highCPUQuotaTestProject                 = os.Getenv(HighCPUQuotaTestProject)
 	recaptchaEnterpriseTestProject          = os.Getenv(RecaptchaEnterpriseTestProject)
 	dlpTestBucket                           = os.Getenv(DLPTestBucket)
 )
@@ -161,55 +162,55 @@ func FindDefaultServiceAccount() (string, error) {
 	return rawCreds["client_email"], nil
 }
 
-func GetTestBillingAccountIDForBillingResources(t *testing.T) string {
+func GetTestBillingAccountIDForBillingResources(_ *testing.T) string {
 	return testBillingAccountIDForBillingResources
 }
 
-func GetDependentOrgProjectID(t *testing.T) string {
-	return testDependentOrgProjectId
+func GetDependentOrgProjectID(_ *testing.T) string {
+	return testDependentOrgProjectID
 }
 
-func GetDependentFolderProjectID(t *testing.T) string {
-	return testDependentFolderProjectId
+func GetDependentFolderProjectID(_ *testing.T) string {
+	return testDependentFolderProjectID
 }
 
-func GetDependentFolder2ProjectID(t *testing.T) string {
-	return testDependentFolder2ProjectId
+func GetDependentFolder2ProjectID(_ *testing.T) string {
+	return testDependentFolder2ProjectID
 }
 
-func GetDependentNoNetworkProjectID(t *testing.T) string {
-	return testDependentNoNetworkProjectId
+func GetDependentNoNetworkProjectID(_ *testing.T) string {
+	return testDependentNoNetworkProjectID
 }
 
-func GetIsolatedTestOrgName(t *testing.T) string {
+func GetIsolatedTestOrgName(_ *testing.T) string {
 	return isolatedTestOrgName
 }
 
-func GetFirestoreTestProject(t *testing.T) string {
+func GetFirestoreTestProject(_ *testing.T) string {
 	return firestoreTestProject
 }
 
-func GetCloudFunctionsTestProject(t *testing.T) string {
+func GetCloudFunctionsTestProject(_ *testing.T) string {
 	return cloudFunctionsTestProject
 }
 
-func GetIdentityPlatformTestProject(t *testing.T) string {
+func GetIdentityPlatformTestProject(_ *testing.T) string {
 	return identityPlatformTestProject
 }
 
-func GetInterconnectTestProject(t *testing.T) string {
+func GetInterconnectTestProject(_ *testing.T) string {
 	return interconnectTestProject
 }
 
-func GetHighCpuQuotaTestProject(t *testing.T) string {
-	return highCpuQuotaTestProject
+func GetHighCPUQuotaTestProject(_ *testing.T) string {
+	return highCPUQuotaTestProject
 }
 
-func GetRecaptchaEnterpriseTestProject(t *testing.T) string {
+func GetRecaptchaEnterpriseTestProject(_ *testing.T) string {
 	return recaptchaEnterpriseTestProject
 }
 
-func GetDLPTestBucket(t *testing.T) string {
+func GetDLPTestBucket(_ *testing.T) string {
 	return dlpTestBucket
 }
 

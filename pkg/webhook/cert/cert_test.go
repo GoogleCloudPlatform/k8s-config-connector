@@ -23,7 +23,7 @@ import (
 	"k8s.io/client-go/util/cert"
 )
 
-const COMMON_NAME = "foo.example.com"
+const CommonName = "foo.example.com"
 
 // TestDoesCertificateWorkWithKubernetes verifies that certificates
 // that are created without a SAN are considered invalid, and
@@ -32,7 +32,7 @@ const COMMON_NAME = "foo.example.com"
 //
 // This verifies a fix for https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/406.
 func TestDoesCertificateWorkWithKubernetes(t *testing.T) {
-	certConfig := cert.Config{CommonName: COMMON_NAME}
+	certConfig := cert.Config{CommonName: CommonName}
 	privateKey, err := generator.NewPrivateKey()
 	if err != nil {
 		t.Fatalf("error when creating a private key: %s", err)

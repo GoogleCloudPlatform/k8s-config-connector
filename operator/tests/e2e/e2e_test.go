@@ -54,28 +54,28 @@ import (
 )
 
 const (
-	SERVICE_ACC_ID = "cnrm-system"
-	SECRET_NAME    = "gsa-key"
+	ServiceAccID = "cnrm-system"
+	SecretName   = "gsa-key"
 
 	// projects, by default, are limited to 3 GKE clusters per region, for that reason we run the tests in two regions
-	GKE_CLUSTER_ZONE1      = "us-central1-a"
-	GKE_CLUSTER_ZONE2      = "us-west1-a"
-	GKE_CLUSTER_ZONE3      = "us-west2-a"
-	KUBECTL_DELETE_TIMEOUT = 5 * time.Minute
+	GkeClusterZone1      = "us-central1-a"
+	GkeClusterZone2      = "us-west1-a"
+	GkeClusterZone3      = "us-west2-a"
+	KubectlDeleteTimeout = 5 * time.Minute
 
-	OPERATOR_RELEASE_BUCKET  = "kcc-operator-internal"
-	OPERATOR_RELEASE_TARBALL = "release-bundle.tar.gz"
-	KCC_RELEASE_BUCKET       = "cnrm"
-	KCC_RELEASE_TARBALL      = "release-bundle.tar.gz"
+	OperatorReleaseBucket  = "kcc-operator-internal"
+	OperatorReleaseTarball = "release-bundle.tar.gz"
+	KccReleaseBucket       = "cnrm"
+	KccReleaseTarball      = "release-bundle.tar.gz"
 	// Use ConfigConnector operator 1.95.0 as the base version for upgrade test
 	// because previous versions cannot be installed onto K8s 1.26+ (default GKE
 	// cluster version as of 6/27/2023) due to the removal of
 	// autoscaling/v2beta2.
-	BASE_VERSION_SHA = "4119846"
+	BaseVersionSha = "4119846"
 )
 
 var (
-	SERVICES = []string{
+	services = []string{
 		"container.googleapis.com",
 		"iamcredentials.googleapis.com",
 		"artifactregistry.googleapis.com",
@@ -143,11 +143,11 @@ func TestMain(m *testing.M) {
 	}
 
 	log.Info("Setting up a project for E2E tests...")
-	deleteProject, err := setupProject(organization, f.projectID, billingAccount, SERVICE_ACC_ID, log)
+	deleteProject, err := setupProject(organization, f.projectID, billingAccount, ServiceAccID, log)
 	if err != nil {
 		log.Error(err, "error setting up project\r\n",
 			"Organization", organization, "ProjectID", f.projectID,
-			"BillingAccount", billingAccount, "ServiceID", SERVICE_ACC_ID)
+			"BillingAccount", billingAccount, "ServiceId", ServiceAccID)
 		cleanUpProject(deleteProject, f.cleanup, log)
 		os.Exit(1)
 	}
@@ -160,8 +160,8 @@ func TestMain(m *testing.M) {
 func TestKCCInstallAndUninstall_Namespaced(t *testing.T) {
 	t.Parallel()
 	testOptions := newTestOptions()
-	testOptions.GKEClusterLocation = GKE_CLUSTER_ZONE1
-	testId, log, cluster, teardown := setup(t, testOptions)
+	testOptions.GKEClusterLocation = GkeClusterZone1
+	testID, log, cluster, teardown := setup(t, testOptions)
 	if f.cleanup {
 		defer teardown()
 	}
@@ -200,7 +200,7 @@ func TestKCCInstallAndUninstall_Namespaced(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -221,8 +221,8 @@ func TestKCCInstallAndUninstall_Namespaced(t *testing.T) {
 func TestKCCInstallAnd_Delete_Namespace_In_Namespaced_Mode(t *testing.T) {
 	t.Parallel()
 	testOptions := newTestOptions()
-	testOptions.GKEClusterLocation = GKE_CLUSTER_ZONE3
-	testId, log, cluster, teardown := setup(t, testOptions)
+	testOptions.GKEClusterLocation = GkeClusterZone3
+	testID, log, cluster, teardown := setup(t, testOptions)
 	if f.cleanup {
 		defer teardown()
 	}
@@ -260,7 +260,7 @@ func TestKCCInstallAnd_Delete_Namespace_In_Namespaced_Mode(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -313,8 +313,8 @@ func TestKCCInstallAnd_Delete_Namespace_In_Namespaced_Mode(t *testing.T) {
 func TestKCCInstallAndUninstall_Cluster_WorkloadIdentity(t *testing.T) {
 	t.Parallel()
 	testOptions := newTestOptions()
-	testOptions.GKEClusterLocation = GKE_CLUSTER_ZONE2
-	testId, log, cluster, teardown := setup(t, testOptions)
+	testOptions.GKEClusterLocation = GkeClusterZone2
+	testID, log, cluster, teardown := setup(t, testOptions)
 	if f.cleanup {
 		defer teardown()
 	}
@@ -350,7 +350,7 @@ func TestKCCInstallAndUninstall_Cluster_WorkloadIdentity(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -371,9 +371,9 @@ func TestKCCInstallAndUninstall_Cluster_WorkloadIdentity(t *testing.T) {
 func TestKCCInstallAndUninstall_Cluster_GCPIdentity(t *testing.T) {
 	t.Parallel()
 	testOptions := newTestOptions()
-	testOptions.GKEClusterLocation = GKE_CLUSTER_ZONE2
-	testOptions.SecretName = SECRET_NAME
-	testId, log, cluster, teardown := setup(t, testOptions)
+	testOptions.GKEClusterLocation = GkeClusterZone2
+	testOptions.SecretName = SecretName
+	testID, log, cluster, teardown := setup(t, testOptions)
 	if f.cleanup {
 		defer teardown()
 	}
@@ -409,7 +409,7 @@ func TestKCCInstallAndUninstall_Cluster_GCPIdentity(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -430,8 +430,8 @@ func TestKCCInstallAndUninstall_Cluster_GCPIdentity(t *testing.T) {
 func TestKCCInstallAndUninstallWithoutDeletingKCCResources(t *testing.T) {
 	t.Parallel()
 	testOptions := newTestOptions()
-	testOptions.GKEClusterLocation = GKE_CLUSTER_ZONE1
-	testId, log, cluster, teardown := setup(t, testOptions)
+	testOptions.GKEClusterLocation = GkeClusterZone1
+	testID, log, cluster, teardown := setup(t, testOptions)
 	if f.cleanup {
 		defer teardown()
 	}
@@ -470,7 +470,7 @@ func TestKCCInstallAndUninstallWithoutDeletingKCCResources(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -490,8 +490,8 @@ func TestKCCInstallAndUninstallWithoutDeletingKCCResources(t *testing.T) {
 func TestShouldNotBeAbleToCreateKCCResourcesIfKCCNotEnabledForNamespace(t *testing.T) {
 	t.Parallel()
 	testOptions := newTestOptions()
-	testOptions.GKEClusterLocation = GKE_CLUSTER_ZONE1
-	testId, log, cluster, teardown := setup(t, testOptions)
+	testOptions.GKEClusterLocation = GkeClusterZone1
+	testID, log, cluster, teardown := setup(t, testOptions)
 	if f.cleanup {
 		defer teardown()
 	}
@@ -527,7 +527,7 @@ func TestShouldNotBeAbleToCreateKCCResourcesIfKCCNotEnabledForNamespace(t *testi
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -558,8 +558,8 @@ func TestShouldNotBeAbleToCreateKCCResourcesIfKCCNotEnabledForNamespace(t *testi
 func TestUpgrade(t *testing.T) {
 	t.Parallel()
 	testOptions := newTestOptions()
-	testOptions.GKEClusterLocation = GKE_CLUSTER_ZONE2
-	testId, log, cluster, teardown := setup(t, testOptions)
+	testOptions.GKEClusterLocation = GkeClusterZone2
+	testID, log, cluster, teardown := setup(t, testOptions)
 	if f.cleanup {
 		defer teardown()
 	}
@@ -598,7 +598,7 @@ func TestUpgrade(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -642,8 +642,8 @@ func newTestOptions() TestOptions {
 	return TestOptions{
 		OrganizationID:   organization,
 		BillingAccountID: billingAccount,
-		ServiceAccountID: SERVICE_ACC_ID,
-		BaseVersionSHA:   BASE_VERSION_SHA,
+		ServiceAccountID: ServiceAccID,
+		BaseVersionSHA:   BaseVersionSha,
 		ProjectID:        f.projectID,
 	}
 }
@@ -672,13 +672,13 @@ func checkIfKCCHasUpgradedToTheLatestVersion(t *testing.T, cluster *cluster, log
 	}
 }
 
-func setup(t *testing.T, testOptions TestOptions) (testId string, log logr.Logger, cluster *cluster, teardown func()) {
-	testId = newUniqueTestId()
+func setup(t *testing.T, testOptions TestOptions) (testID string, log logr.Logger, cluster *cluster, teardown func()) {
+	testID = newUniquetestID()
 	log, err := newLogger(t.Name())
 	if err != nil {
 		t.Fatal(fmt.Errorf("error creating logger: %w", err))
 	}
-	clusterName := "e2e-test-" + testId
+	clusterName := "e2e-test-" + testID
 	cluster, cleanup, err := setupCluster(clusterName, testOptions.ProjectID, testOptions.GKEClusterLocation,
 		testOptions.ServiceAccountID, log)
 	teardown = func() {
@@ -697,7 +697,7 @@ func setup(t *testing.T, testOptions TestOptions) (testId string, log logr.Logge
 		teardown()
 		t.Fatal(fmt.Errorf("error setting up cluster: %w", err))
 	}
-	return testId, log, cluster, teardown
+	return testID, log, cluster, teardown
 }
 
 func cleanUpProject(deleteFunc cleanupFunc, shouldCleanUp bool, log logr.Logger) {
@@ -720,7 +720,7 @@ func getOperatorReleaseAssetsForVersion(version, serviceAccountID, projectID str
 		return "", emptySample, fmt.Errorf("error downloading and extracting operator release tarball with version '%v': %w", version, err)
 	}
 	manifestsDir = path.Join(releaseAssetsDir, "operator-system")
-	sample, err = getConfigConnectorSample(releaseAssetsDir, serviceAccountID, projectID, version)
+	sample, err = getConfigConnectorSample(releaseAssetsDir, serviceAccountID, projectID)
 	if err != nil {
 		return "", emptySample, fmt.Errorf("error getting ConfigConnector sample from operator release assets: %w", err)
 	}
@@ -735,7 +735,7 @@ func (c *cluster) installOperator(operatorManifestsDir string) error {
 	return nil
 }
 
-func getConfigConnectorSample(operatorReleaseAssetsDir, serviceAccountID, projectID, version string) (sample configConnectorSample, err error) {
+func getConfigConnectorSample(operatorReleaseAssetsDir, serviceAccountID, projectID string) (sample configConnectorSample, err error) {
 	emptySample := configConnectorSample{}
 	samplesDir := path.Join(operatorReleaseAssetsDir, "samples")
 	var yamlPaths []string
@@ -791,9 +791,9 @@ func (c *cluster) installKCC(configConnectorYAMLPath string) error {
 	return c.waitForAllComponentPodsReady()
 }
 
-func (c *cluster) enableKCCForNamespace(namespace, configConnectorContextYAMLPath, serviceAccountId, projectID string) error {
+func (c *cluster) enableKCCForNamespace(namespace, configConnectorContextYAMLPath, serviceAccountID, projectID string) error {
 	c.log.Info("Setting up Workload Identity binding for namespace...", "namespace", namespace)
-	serviceAccEmail := fmt.Sprintf("%v@%v.iam.gserviceaccount.com", serviceAccountId, projectID)
+	serviceAccEmail := fmt.Sprintf("%v@%v.iam.gserviceaccount.com", serviceAccountID, projectID)
 	if err := setupWorkloadIdentityForNamespace(namespace, serviceAccEmail, projectID); err != nil {
 		return fmt.Errorf("error setting up Workload Identity binding for namespace '%v': %w", namespace, err)
 	}
@@ -928,7 +928,7 @@ func setupWorkloadIdentityForNamespace(namespace, serviceAccEmail, projectID str
 	return nil
 }
 
-func getArtifactRegistryRepositorySample(kccReleaseAssetsDir, uniqueId string) (repoName string, repoYAMLDir string, err error) {
+func getArtifactRegistryRepositorySample(kccReleaseAssetsDir, uniqueID string) (repoName string, repoYAMLDir string, err error) {
 	repoYAMLDir = path.Join(kccReleaseAssetsDir, "samples", "resources", "artifactregistryrepository")
 	yamlPaths, err := getYAMLFilesInDir(repoYAMLDir)
 	if err != nil {
@@ -940,8 +940,8 @@ func getArtifactRegistryRepositorySample(kccReleaseAssetsDir, uniqueId string) (
 			return "", "", fmt.Errorf("error reading file '%v': %w", yamlPath, err)
 		}
 		s := string(b)
-		s = strings.ReplaceAll(s, "sample", "sample"+uniqueId)
-		s = strings.ReplaceAll(s, "dep", "dep"+uniqueId)
+		s = strings.ReplaceAll(s, "sample", "sample"+uniqueID)
+		s = strings.ReplaceAll(s, "dep", "dep"+uniqueID)
 
 		// Write back modified YAML to disk
 		if err := writeToFile(s, yamlPath); err != nil {
@@ -1286,7 +1286,7 @@ func checkArtifactRegistryRepositoryExistsOnGCP(repoName, projectID string) erro
 	return nil
 }
 
-func setupCluster(clusterName, projectID, location, serviceAccountId string, log logr.Logger) (*cluster, cleanupFunc, error) {
+func setupCluster(clusterName, projectID, location, serviceAccountID string, log logr.Logger) (*cluster, cleanupFunc, error) {
 	var cleanup cleanupFunc
 	log.Info("Creating a Container client...")
 	ctx := context.Background()
@@ -1327,7 +1327,7 @@ func setupCluster(clusterName, projectID, location, serviceAccountId string, log
 	cluster := &cluster{
 		kubectl: &kubectl{
 			kubeconfigPath: outPathForKubeconfig,
-			deleteTimeout:  KUBECTL_DELETE_TIMEOUT,
+			deleteTimeout:  KubectlDeleteTimeout,
 		},
 		clientset: clientset,
 		log:       log,
@@ -1339,19 +1339,15 @@ func setupIdentity(testOptions TestOptions, k *kubectl, log logr.Logger) error {
 	if testOptions.SecretName != "" {
 		log.Info("Creating a secret containing service account key..")
 		serviceAccEmail := fmt.Sprintf("%v@%v.iam.gserviceaccount.com", testOptions.ServiceAccountID, testOptions.ProjectID)
-		if err := createCredentialSecret(serviceAccEmail, testOptions.ProjectID, testOptions.SecretName, k); err != nil {
-			return err
-		}
-		return nil
+
+		return createCredentialSecret(serviceAccEmail, testOptions.ProjectID, testOptions.SecretName, k)
 	} else {
 		log.Info("Setting up Workload Identity binding...")
 		serviceAccEmail := fmt.Sprintf("%v@%v.iam.gserviceaccount.com", testOptions.ServiceAccountID, testOptions.ProjectID)
 		member := fmt.Sprintf("serviceAccount:%v.svc.id.goog[cnrm-system/cnrm-controller-manager]", testOptions.ProjectID)
 		role := "roles/iam.workloadIdentityUser"
-		if err := addIAMBindingForServiceAcc(serviceAccEmail, member, role, testOptions.ProjectID); err != nil {
-			return err
-		}
-		return nil
+
+		return addIAMBindingForServiceAcc(serviceAccEmail, member, role, testOptions.ProjectID)
 	}
 }
 
@@ -1387,7 +1383,7 @@ func setupProject(organizationID, projectID, billingAccountID, serviceAccountID 
 		return cleanup, fmt.Errorf("error linking project to billing account '%v'", billingAccountID)
 	}
 	log.Info("Enabling services for project...")
-	if err := enableServicesForProject(projectID, SERVICES, log); err != nil {
+	if err := enableServicesForProject(projectID, services, log); err != nil {
 		return cleanup, fmt.Errorf("error enabling services for project: %w", err)
 	}
 	log.Info("Setting up IAM service account...")
@@ -1638,12 +1634,12 @@ func (k *kubectl) exec(command, stdin string, args ...string) (stdout string, er
 }
 
 func downloadAndExtractOperatorReleaseTarball(version, outputDir string) error {
-	tarballGCSPath := fmt.Sprintf("gs://%v/%v/%v", OPERATOR_RELEASE_BUCKET, version, OPERATOR_RELEASE_TARBALL)
+	tarballGCSPath := fmt.Sprintf("gs://%v/%v/%v", OperatorReleaseBucket, version, OperatorReleaseTarball)
 	return utils.DownloadAndExtractTarballAt(tarballGCSPath, outputDir)
 }
 
 func downloadAndExtractKCCReleaseTarball(version, outputDir string) error {
-	tarballGCSPath := fmt.Sprintf("gs://%v/%v/%v", KCC_RELEASE_BUCKET, version, KCC_RELEASE_TARBALL)
+	tarballGCSPath := fmt.Sprintf("gs://%v/%v/%v", KccReleaseBucket, version, KccReleaseTarball)
 	return utils.DownloadAndExtractTarballAt(tarballGCSPath, outputDir)
 }
 
@@ -1682,7 +1678,7 @@ func (c *cluster) addProjectIDAnnotationToNamespace(namespace, projectID string)
 	}
 	ns := res.(*v1.Namespace)
 	annotations := getAnnotationsForNS(ns)
-	annotations[k8s.ProjectIdAnnotation] = projectID
+	annotations[k8s.ProjectIDAnnotation] = projectID
 	ns.SetAnnotations(annotations)
 	updateFunc := func() (interface{}, error) {
 		ns, err = c.clientset.CoreV1().Namespaces().Update(context.Background(), ns, metav1.UpdateOptions{})
@@ -1755,7 +1751,7 @@ func getAnnotationsForNS(ns *v1.Namespace) map[string]string {
 	return annotations
 }
 
-func newUniqueTestId() string {
+func newUniquetestID() string {
 	return randomid.New().String()
 }
 
