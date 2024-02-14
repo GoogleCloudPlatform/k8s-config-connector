@@ -173,8 +173,12 @@ func TestAllInSeries(t *testing.T) {
 						body := event.Response.ParseBody()
 						val, ok := body["name"]
 						if ok {
-							if strings.Contains(val.(string), "operations/") {
+							// operation name format: operations/operation-{operationId}
+							if strings.HasPrefix(val.(string), "operations/") {
 								id = strings.TrimPrefix(val.(string), "operations/")
+								// operation name format: operation-{operationId}
+							} else if strings.HasPrefix(val.(string), "operation") {
+								id = val.(string)
 							}
 						}
 						if id != "" {
@@ -248,6 +252,7 @@ func TestAllInSeries(t *testing.T) {
 						})
 					}
 
+					addReplacement("id", "000000000000000000000")
 					addReplacement("uniqueId", "111111111111111111111")
 					addReplacement("oauth2ClientId", "888888888888888888888")
 
@@ -257,6 +262,7 @@ func TestAllInSeries(t *testing.T) {
 
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 
@@ -277,7 +283,7 @@ func TestAllInSeries(t *testing.T) {
 						normalizers = append(normalizers, h.ReplaceString(k, v))
 					}
 					for k := range operationIDs {
-						normalizers = append(normalizers, h.ReplaceString("operations/"+k, "operations/${operationId}"))
+						normalizers = append(normalizers, h.ReplaceString(k, "${operationId}"))
 					}
 					h.CompareGoldenFile(expectedPath, got, normalizers...)
 				}
