@@ -68,11 +68,11 @@ func (u *UpgradeChecker) Preflight(ctx context.Context, o declarative.Declarativ
 
 	channel, err := u.repo.LoadChannel(ctx, k8s.StableChannel)
 	if err != nil {
-		return fmt.Errorf("preflight check failed loading the channel %v: %v", k8s.StableChannel, err)
+		return fmt.Errorf("preflight check failed loading the channel %v: %w", k8s.StableChannel, err)
 	}
 	version, err := channel.Latest(ctx, k8s.ConfigConnectorComponentName)
 	if err != nil {
-		return fmt.Errorf("preflight check failed resolving the version to deploy: %v", err)
+		return fmt.Errorf("preflight check failed resolving the version to deploy: %w", err)
 	}
 	if version == nil {
 		return fmt.Errorf("could not find the latest version in channel %v", k8s.StableChannel)
@@ -80,12 +80,12 @@ func (u *UpgradeChecker) Preflight(ctx context.Context, o declarative.Declarativ
 	versionToDeployRaw := version.Version
 	currentVersion, err := semver.ParseTolerant(currentVersionRaw)
 	if err != nil {
-		return fmt.Errorf("current version %v is not a valid semantic version: %v", currentVersionRaw, err)
+		return fmt.Errorf("current version %v is not a valid semantic version: %w", currentVersionRaw, err)
 	}
 	ulog.Info("Checking version", "current version", currentVersion)
 	versionToDeploy, err := semver.ParseTolerant(versionToDeployRaw)
 	if err != nil {
-		return fmt.Errorf("the version to deploy %v is not a valid semantic version: %v", versionToDeployRaw, err)
+		return fmt.Errorf("the version to deploy %v is not a valid semantic version: %w", versionToDeployRaw, err)
 	}
 	ulog.Info("Checking version", "version to deploy", versionToDeploy)
 	if compareMajorOnly(currentVersion, versionToDeploy) != 0 {

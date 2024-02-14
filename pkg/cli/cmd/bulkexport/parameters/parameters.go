@@ -108,7 +108,7 @@ func Validate(p *Parameters, stdin *os.File) error {
 func IsInputPiped(stdin *os.File) (bool, error) {
 	fi, err := stdin.Stat()
 	if err != nil {
-		return false, fmt.Errorf("error stating stdin: %v", err)
+		return false, fmt.Errorf("error stating stdin: %w", err)
 	}
 	return (fi.Mode() & os.ModeCharDevice) == 0, nil
 }

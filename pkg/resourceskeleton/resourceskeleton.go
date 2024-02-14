@@ -42,7 +42,7 @@ var ResourceManagerAPIGroupName = fmt.Sprintf("resourcemanager.%v", crdgeneratio
 func NewProject(projectId string, smLoader *servicemappingloader.ServiceMappingLoader) (*unstructured.Unstructured, error) {
 	sm, err := smLoader.GetServiceMapping(ResourceManagerAPIGroupName)
 	if err != nil {
-		return nil, fmt.Errorf("error getting service mapping for '%v': %v", ResourceManagerAPIGroupName, err)
+		return nil, fmt.Errorf("error getting service mapping for '%v': %w", ResourceManagerAPIGroupName, err)
 	}
 	u := &unstructured.Unstructured{}
 	gvk := schema.GroupVersionKind{
@@ -92,19 +92,19 @@ func NewFromAsset(a *asset.Asset, smLoader *servicemappingloader.ServiceMappingL
 	name := trimServiceHostName(a, sm)
 	importID, err := convertAssetNameToImportID(a, rc, name)
 	if err != nil {
-		return nil, fmt.Errorf("error coverting cloud asset inventory name '%v' to resource id: %v", name, err)
+		return nil, fmt.Errorf("error coverting cloud asset inventory name '%v' to resource id: %w", name, err)
 	}
 	state, err := krmtotf.ImportState(context.Background(), importID, &tfInfo, tfProvider)
 	if err != nil {
-		return nil, fmt.Errorf("error importing resource name to TF state: %v", err)
+		return nil, fmt.Errorf("error importing resource name to TF state: %w", err)
 	}
 	resource, err := tfStateToResource(state, sm, rc, tfProvider)
 	if err != nil {
-		return nil, fmt.Errorf("error creating new resource: %v", err)
+		return nil, fmt.Errorf("error creating new resource: %w", err)
 	}
 	err = applyAssetKRMResourceHacks(resource, a, serviceClient, state)
 	if err != nil {
-		return nil, fmt.Errorf("unable to apply asset KRM hacks on asset %v: %v", a, err)
+		return nil, fmt.Errorf("unable to apply asset KRM hacks on asset %v: %w", a, err)
 	}
 	return resource.MarshalAsUnstructured()
 }
@@ -112,7 +112,7 @@ func NewFromAsset(a *asset.Asset, smLoader *servicemappingloader.ServiceMappingL
 func tfStateToResource(state *terraform.InstanceState, sm *v1alpha1.ServiceMapping, rc *v1alpha1.ResourceConfig, tfProvider *tfschema.Provider) (*krmtotf.Resource, error) {
 	resource, err := krmtotf.NewResourceFromResourceConfig(rc, tfProvider)
 	if err != nil {
-		return nil, fmt.Errorf("error creating new resource: %v", err)
+		return nil, fmt.Errorf("error creating new resource: %w", err)
 	}
 	gvk := schema.GroupVersionKind{
 		Group:   sm.Name,
@@ -139,7 +139,7 @@ func convertAssetNameToImportID(a *asset.Asset, rc *v1alpha1.ResourceConfig, nam
 	if rc.Kind == "IAMCustomRole" {
 		id, err := parseIAMCustomRoleID(name)
 		if err != nil {
-			return "", fmt.Errorf("unable to parse IAMCustomRole id: %v", err)
+			return "", fmt.Errorf("unable to parse IAMCustomRole id: %w", err)
 		}
 		switch id.parentType {
 		case Project:
@@ -180,7 +180,7 @@ func applyAssetKRMResourceHacks(resource *krmtotf.Resource, a *asset.Asset, clie
 	} else if resource.Kind == "IAMCustomRole" {
 		id, err := parseIAMCustomRoleID(state.ID)
 		if err != nil {
-			return fmt.Errorf("unable to parse IAMCustomRole id: %v", err)
+			return fmt.Errorf("unable to parse IAMCustomRole id: %w", err)
 		}
 		if resource.Spec == nil {
 			resource.Spec = make(map[string]interface{})

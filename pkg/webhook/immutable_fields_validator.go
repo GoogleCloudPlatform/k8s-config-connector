@@ -86,13 +86,13 @@ func (a *immutableFieldsValidatorHandler) Handle(ctx context.Context, req admiss
 	if _, _, err := deserializer.Decode(req.AdmissionRequest.Object.Raw, nil, obj); err != nil {
 		klog.Error(err)
 		return admission.Errored(http.StatusBadRequest,
-			fmt.Errorf("error decoding object: %v", err))
+			fmt.Errorf("error decoding object: %w", err))
 	}
 	oldObj := &unstructured.Unstructured{}
 	if _, _, err := deserializer.Decode(req.AdmissionRequest.OldObject.Raw, nil, oldObj); err != nil {
 		klog.Error(err)
 		return admission.Errored(http.StatusBadRequest,
-			fmt.Errorf("error decoding old object: %v", err))
+			fmt.Errorf("error decoding old object: %w", err))
 	}
 
 	spec, ok := obj.Object["spec"].(map[string]interface{})
@@ -139,16 +139,16 @@ func validateImmutableFieldsForDCLBasedResource(obj, oldObj *unstructured.Unstru
 	containers, err := dclcontainer.GetContainersForGVK(gvk, serviceMetadataLoader, dclSchemaLoader)
 	if err != nil {
 		return admission.Errored(http.StatusInternalServerError,
-			fmt.Errorf("error getting containers supported by GroupVersionKind %v: %v", gvk, err))
+			fmt.Errorf("error getting containers supported by GroupVersionKind %v: %w", gvk, err))
 	}
 	hierarchicalRefs, err := dcl.GetHierarchicalReferencesForGVK(gvk, serviceMetadataLoader, dclSchemaLoader)
 	if err != nil {
 		return admission.Errored(http.StatusInternalServerError,
-			fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %v", gvk, err))
+			fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %w", gvk, err))
 	}
 	if err := validateContainerAnnotationsForResource(gvk.Kind, obj.GetAnnotations(), oldObj.GetAnnotations(), containers, hierarchicalRefs); err != nil {
 		return admission.Errored(http.StatusBadRequest,
-			fmt.Errorf("error validating container annotations: %v", err))
+			fmt.Errorf("error validating container annotations: %w", err))
 	}
 	if isResourceIDModified(spec, oldSpec) {
 		return admission.Errored(http.StatusForbidden,
@@ -282,12 +282,12 @@ func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstruc
 	rc, err := smLoader.GetResourceConfig(obj)
 	if err != nil {
 		return admission.Errored(http.StatusBadRequest,
-			fmt.Errorf("couldn't get ResourceConfig for kind %v: %v", obj.GetKind(), err))
+			fmt.Errorf("couldn't get ResourceConfig for kind %v: %w", obj.GetKind(), err))
 	}
 
 	if err := validateContainerAnnotationsForResource(obj.GetKind(), obj.GetAnnotations(), oldObj.GetAnnotations(), rc.Containers, rc.HierarchicalReferences); err != nil {
 		return admission.Errored(http.StatusBadRequest,
-			fmt.Errorf("error validating container annotations: %v", err))
+			fmt.Errorf("error validating container annotations: %w", err))
 	}
 
 	r, ok := tfResourceMap[rc.Name]

@@ -88,7 +88,7 @@ func (rc ResourceContext) SupportsLabels(smLoader *servicemappingloader.ServiceM
 	if rc.DCLBased {
 		_, _, found, err := dclextension.GetLabelsFieldSchema(rc.DCLSchema)
 		if err != nil {
-			panic(fmt.Sprintf("error getting the DCL schema for labels field: %v", err))
+			panic(fmt.Errorf("error getting the DCL schema for labels field: %w", err))
 		}
 		return found
 	}
@@ -147,7 +147,7 @@ func terraformDelete(ctx context.Context, u *unstructured.Unstructured, provider
 	}
 	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
-		return fmt.Errorf("error deleting resource: %v", err)
+		return fmt.Errorf("error deleting resource: %w", err)
 	}
 	return err
 }
@@ -162,15 +162,15 @@ func terraformCreate(ctx context.Context, u *unstructured.Unstructured, provider
 	}
 	config, _, err := krmtotf.KRMResourceToTFResourceConfig(resource, c, smLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error expanding resource configuration: %v", err)
+		return nil, fmt.Errorf("error expanding resource configuration: %w", err)
 	}
 	diff, err := resource.TFResource.Diff(ctx, liveState, config, provider.Meta())
 	if err != nil {
-		return nil, fmt.Errorf("error calculating diff: %v", err)
+		return nil, fmt.Errorf("error calculating diff: %w", err)
 	}
 	newState, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
-		return nil, fmt.Errorf("error applying resource change: %v", err)
+		return nil, fmt.Errorf("error applying resource change: %w", err)
 	}
 	return resourceToKRM(resource, newState)
 }
@@ -208,12 +208,12 @@ func dclCreate(ctx context.Context, u *unstructured.Unstructured, config *mmdcl.
 	}
 	createdDCLObj, err := dclunstruct.Apply(ctx, config, dclObj, dclcontroller.LifecycleParams...)
 	if err != nil {
-		return nil, fmt.Errorf("error applying the desired resource: %v", err)
+		return nil, fmt.Errorf("error applying the desired resource: %w", err)
 	}
 	// get the new state in KCC lite format
 	newStateLite, err := converter.DCLObjectToKRMObject(createdDCLObj)
 	if err != nil {
-		return nil, fmt.Errorf("error converting DCL resource to KCC lite: %v", err)
+		return nil, fmt.Errorf("error converting DCL resource to KCC lite: %w", err)
 	}
 	return dclStateToKRM(resource, newStateLite, converter.MetadataLoader)
 }
@@ -280,7 +280,7 @@ func resourceToKRM(resource *krmtotf.Resource, state *terraform.InstanceState) (
 	resource.Labels = krmtotf.GetLabelsFromState(resource, state)
 	// Apply post-actuation transformation.
 	if err := resourceoverrides.Handler.PostActuationTransform(resource.Original, &resource.Resource, state, nil); err != nil {
-		return nil, fmt.Errorf("error applying post-actuation transformation to resource '%v': %v", resource.GetNamespacedName(), err)
+		return nil, fmt.Errorf("error applying post-actuation transformation to resource '%v': %w", resource.GetNamespacedName(), err)
 	}
 	return resource.MarshalAsUnstructured()
 }
@@ -293,11 +293,11 @@ func getTerraformResourceAndLiveState(ctx context.Context, u *unstructured.Unstr
 	}
 	// Apply pre-actuation transformation.
 	if err := resourceoverrides.Handler.PreActuationTransform(&resource.Resource); err != nil {
-		return nil, nil, fmt.Errorf("error applying pre-actuation transformation to resource '%s': %v", u.GetName(), err)
+		return nil, nil, fmt.Errorf("error applying pre-actuation transformation to resource '%s': %w", u.GetName(), err)
 	}
 	liveState, err := krmtotf.FetchLiveState(ctx, resource, provider, c, smLoader)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error fetching live state: %v", err)
+		return nil, nil, fmt.Errorf("error fetching live state: %w", err)
 	}
 	return resource, liveState, nil
 }
@@ -309,7 +309,7 @@ func newTerraformResource(u *unstructured.Unstructured, provider *tfschema.Provi
 	}
 	resource, err := krmtotf.NewResource(u, sm, provider)
 	if err != nil {
-		return nil, fmt.Errorf("could not parse resource %s: %v", u.GetName(), err)
+		return nil, fmt.Errorf("could not parse resource %s: %w", u.GetName(), err)
 	}
 	return resource, nil
 }

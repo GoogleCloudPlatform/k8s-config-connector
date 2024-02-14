@@ -16,6 +16,7 @@ package export
 
 import (
 	"context"
+	"errors"
 	"io"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/outputstream"
@@ -42,7 +43,7 @@ func Execute(ctx context.Context, params *parameters.Parameters) error {
 		return err
 	}
 	defer outputSink.Close()
-	for bytes, unstructured, err := recoverableStream.Next(ctx); err != io.EOF; bytes, unstructured, err = recoverableStream.Next(ctx) {
+	for bytes, unstructured, err := recoverableStream.Next(ctx); !errors.Is(err, io.EOF); bytes, unstructured, err = recoverableStream.Next(ctx) {
 		if err != nil {
 			return err
 		}

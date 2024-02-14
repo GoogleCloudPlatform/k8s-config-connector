@@ -56,7 +56,7 @@ func RegisterCommonWebhooks(mgr manager.Manager, nocacheClient client.Client) er
 	fmt.Println("starting up webhooks")
 	whCfgs, err := GetCommonWebhookConfigs()
 	if err != nil {
-		return fmt.Errorf("error getting common wehbook configs: %v", err)
+		return fmt.Errorf("error getting common wehbook configs: %w", err)
 	}
 	return register(
 		ValidatingWebhookConfigurationName,
@@ -306,7 +306,7 @@ func persistCertificatesToDisk(certWriter writer.CertWriter, svc *corev1.Service
 	dnsName := getDnsNameForService(svc)
 	artifacts, _, err := certWriter.EnsureCert(dnsName)
 	if err != nil {
-		return fmt.Errorf("error ensuring certificate: %v", err)
+		return fmt.Errorf("error ensuring certificate: %w", err)
 	}
 	if err := writeCertificates(artifacts, certDir, writer.ServerCertName, writer.ServerKeyName); err != nil {
 		return err
@@ -316,19 +316,19 @@ func persistCertificatesToDisk(certWriter writer.CertWriter, svc *corev1.Service
 
 func writeCertificates(artifacts *generator.Artifacts, dir, certName, keyName string) error {
 	if err := os.RemoveAll(dir); err != nil {
-		return fmt.Errorf("error removing cert dir '%v': %v", dir, err)
+		return fmt.Errorf("error removing cert dir '%v': %w", dir, err)
 	}
 	if err := os.MkdirAll(dir, 0777); err != nil {
-		return fmt.Errorf("error creating cert dir '%v': %v", dir, err)
+		return fmt.Errorf("error creating cert dir '%v': %w", dir, err)
 	}
 	perms := os.FileMode(0644)
 	certPath := path.Join(dir, certName)
 	if err := os.WriteFile(certPath, artifacts.Cert, perms); err != nil {
-		return fmt.Errorf("error writing certificate to '%v': %v", certPath, err)
+		return fmt.Errorf("error writing certificate to '%v': %w", certPath, err)
 	}
 	keyPath := path.Join(dir, keyName)
 	if err := os.WriteFile(keyPath, artifacts.Key, perms); err != nil {
-		return fmt.Errorf("error writing key to '%v': %v", keyPath, err)
+		return fmt.Errorf("error writing key to '%v': %w", keyPath, err)
 	}
 	return nil
 }

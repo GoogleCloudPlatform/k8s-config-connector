@@ -163,7 +163,7 @@ func readGroupVersionKind(t *testing.T, config []byte) (schema.GroupVersionKind,
 	u := &unstructured.Unstructured{}
 	err := yaml.Unmarshal(config, u)
 	if err != nil {
-		return schema.GroupVersionKind{}, fmt.Errorf("error unmarshalling bytes to CRD: %v", err)
+		return schema.GroupVersionKind{}, fmt.Errorf("error unmarshalling bytes to CRD: %w", err)
 	}
 	return u.GroupVersionKind(), nil
 }

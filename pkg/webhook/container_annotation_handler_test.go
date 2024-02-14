@@ -1050,7 +1050,7 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 				// test to test resources that reference hierarchical resources
 				// (e.g. "Cloudresourcemanager/Project").
 				"cloudresourcemanager_ga_project": {},
-				"cloudresourcemanager_ga_folder":  &openapi.Schema{},
+				"cloudresourcemanager_ga_folder":  {},
 			}
 			dclSchemaLoader := testdclschemaloader.New(dclSchemaMap)
 			response := handleContainerAnnotationsForDCLBasedResources(tc.obj, tc.ns, dclSchemaLoader, smLoader)

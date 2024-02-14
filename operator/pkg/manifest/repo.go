@@ -55,12 +55,12 @@ func (r *LocalRepository) LoadChannel(ctx context.Context, name string) (*loader
 	b, err := os.ReadFile(p)
 	if err != nil {
 		rlog.Error(err, "error reading channel", "path", p)
-		return nil, fmt.Errorf("error reading channel %s: %v", p, err)
+		return nil, fmt.Errorf("error reading channel %s: %w", p, err)
 	}
 
 	channel := &loaders.Channel{}
 	if err := yaml.Unmarshal(b, channel); err != nil {
-		return nil, fmt.Errorf("error parsing channel %s: %v", p, err)
+		return nil, fmt.Errorf("error parsing channel %s: %w", p, err)
 	}
 
 	return channel, nil
@@ -76,7 +76,7 @@ func (r *LocalRepository) LoadManifest(ctx context.Context, componentName string
 	p := filepath.Join(r.basedir, "packages", componentName, version, crdFileName)
 	b, err := os.ReadFile(p)
 	if err != nil {
-		return nil, fmt.Errorf("error reading file %s: %v", p, err)
+		return nil, fmt.Errorf("error reading file %s: %w", p, err)
 	}
 	var sb strings.Builder
 	sb.Write(b)
@@ -92,7 +92,7 @@ func (r *LocalRepository) LoadManifest(ctx context.Context, componentName string
 		p := filepath.Join(r.basedir, "packages", componentName, version, mode, authIdentity, cnrmSystemFileName)
 		b, err := os.ReadFile(p)
 		if err != nil {
-			return nil, fmt.Errorf("error reading file %s: %v", p, err)
+			return nil, fmt.Errorf("error reading file %s: %w", p, err)
 		}
 		sb.Write(b)
 		path := strings.Join([]string{r.basedir, "packages", componentName, version, mode, authIdentity}, "/")
@@ -102,7 +102,7 @@ func (r *LocalRepository) LoadManifest(ctx context.Context, componentName string
 		p := filepath.Join(r.basedir, "packages", componentName, version, "namespaced", cnrmSystemFileName)
 		b, err := os.ReadFile(p)
 		if err != nil {
-			return nil, fmt.Errorf("error reading file %s: %v", p, err)
+			return nil, fmt.Errorf("error reading file %s: %w", p, err)
 		}
 		sb.Write(b)
 		path := strings.Join([]string{r.basedir, "packages", componentName, version, mode}, "/")
@@ -114,7 +114,7 @@ func (r *LocalRepository) LoadNamespacedComponents(ctx context.Context, componen
 	p := filepath.Join(r.basedir, "packages", componentName, version, "namespaced", perNamespaceComponentsFileName)
 	b, err := os.ReadFile(p)
 	if err != nil {
-		return nil, fmt.Errorf("error reading file %s: %v", p, err)
+		return nil, fmt.Errorf("error reading file %s: %w", p, err)
 	}
 	return map[string]string{p: string(b)}, nil
 }

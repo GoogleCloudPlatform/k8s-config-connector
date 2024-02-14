@@ -106,7 +106,7 @@ func add(mgr manager.Manager, r *ReconcileIAMPartialPolicy) error {
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
 	if err != nil {
-		return fmt.Errorf("error creating new controller: %v", err)
+		return fmt.Errorf("error creating new controller: %w", err)
 	}
 	return nil
 }

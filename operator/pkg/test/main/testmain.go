@@ -93,7 +93,7 @@ func StartTestManager(cfg *rest.Config) (manager.Manager, func(), error) {
 		Scheme:                 scheme,
 	})
 	if err != nil {
-		return nil, nil, fmt.Errorf("error creating manager: %v", err)
+		return nil, nil, fmt.Errorf("error creating manager: %w", err)
 	}
 	stopFunc := startMgr(mgr, log.Fatalf)
 	return mgr, stopFunc, nil
@@ -108,7 +108,7 @@ func startMgr(mgr manager.Manager, mgrStartErrHandler func(string, ...interface{
 	go func() {
 		defer wg.Done()
 		if err := mgr.Start(ctx); err != nil {
-			mgrStartErrHandler("unable to start manager: %v", err)
+			mgrStartErrHandler("unable to start manager: %w", err)
 		}
 	}()
 	stop := func() {

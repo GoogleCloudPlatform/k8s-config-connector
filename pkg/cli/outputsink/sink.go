@@ -64,7 +64,7 @@ func NewWriter(w io.Writer) *WriterSink {
 
 func (ws *WriterSink) Receive(ctx context.Context, bytes []byte, _ *unstructured.Unstructured) error {
 	if _, err := ws.w.Write(bytes); err != nil {
-		return fmt.Errorf("error writing bytes: %v", err)
+		return fmt.Errorf("error writing bytes: %w", err)
 	}
 	return nil
 }
@@ -82,7 +82,7 @@ type FileSink struct {
 func NewFile(filePath string) (*FileSink, error) {
 	file, err := os.Create(filePath)
 	if err != nil {
-		return nil, fmt.Errorf("error opening file '%v': %v", filePath, err)
+		return nil, fmt.Errorf("error opening file '%v': %w", filePath, err)
 	}
 	sink := FileSink{
 		file:   file,
@@ -95,7 +95,7 @@ func (fs *FileSink) Receive(ctx context.Context, bytes []byte, _ *unstructured.U
 	// bufio.Writer either writes all the bytes or returns an error so we can ignore the first 'nn' return value
 	_, err := fs.writer.Write(bytes)
 	if err != nil {
-		return fmt.Errorf("error writing to '%v': %v", fs.file.Name(), err)
+		return fmt.Errorf("error writing to '%v': %w", fs.file.Name(), err)
 	}
 	return nil
 }
@@ -105,10 +105,10 @@ func (fs *FileSink) Close() error {
 		return nil
 	}
 	if err := fs.writer.Flush(); err != nil {
-		return fmt.Errorf("error flushing buffered writes for '%v': %v", fs.file.Name(), err)
+		return fmt.Errorf("error flushing buffered writes for '%v': %w", fs.file.Name(), err)
 	}
 	if err := fs.file.Close(); err != nil {
-		return fmt.Errorf("error closing '%v': %v", fs.file.Name(), err)
+		return fmt.Errorf("error closing '%v': %w", fs.file.Name(), err)
 	}
 	fs.file = nil
 	fs.writer = nil
@@ -141,7 +141,7 @@ func (ds *DirectorySink) receive(ctx context.Context, bytes []byte, unstructured
 		return fmt.Errorf("error ensuring parent path '%v' exists: %w", dir, err)
 	}
 	if err := os.WriteFile(filePath, bytes, 0644); err != nil {
-		return fmt.Errorf("error writing bytes to '%v': %v", filePath, err)
+		return fmt.Errorf("error writing bytes to '%v': %w", filePath, err)
 	}
 	return nil
 }
@@ -244,7 +244,7 @@ func newSink(tfProvider *schema.Provider, outputParam string, newDirectoryFunc f
 	// if the output path ends with a '/' then the user intends for a directory to be created
 	if strings.HasSuffix(outputParam, string(os.PathSeparator)) {
 		if err := os.MkdirAll(outputParam, os.ModePerm); err != nil {
-			return nil, fmt.Errorf("error creating directory '%v': %v", outputParam, err)
+			return nil, fmt.Errorf("error creating directory '%v': %w", outputParam, err)
 		}
 		return newDirectoryFunc(tfProvider, outputParam), nil
 	}
@@ -260,7 +260,7 @@ func newSink(tfProvider *schema.Provider, outputParam string, newDirectoryFunc f
 		return nil, fmt.Errorf("cannot use output parameter '%v': parent path '%v' exists, but is not a directory", outputParam, dir)
 	}
 	if err := os.MkdirAll(outputParam, os.ModePerm); err != nil {
-		return nil, fmt.Errorf("error creating directory '%v': %v", outputParam, err)
+		return nil, fmt.Errorf("error creating directory '%v': %w", outputParam, err)
 	}
 	return newDirectoryFunc(tfProvider, outputParam), nil
 }

@@ -87,11 +87,11 @@ func (l *Leaser) Obtain(ctx context.Context, u *unstructured.Unstructured, owner
 	}
 	config, _, err := krmtotf.KRMResourceToTFResourceConfig(resource, l.kubeClient, l.smLoader)
 	if err != nil {
-		return fmt.Errorf("error expanding resource configuration: %v", err)
+		return fmt.Errorf("error expanding resource configuration: %w", err)
 	}
 	diff, err := resource.TFResource.Diff(ctx, liveState, config, l.tfProvider.Meta())
 	if err != nil {
-		return fmt.Errorf("error calculating diff: %v", err)
+		return fmt.Errorf("error calculating diff: %w", err)
 	}
 	if diff.Empty() {
 		return nil
@@ -99,7 +99,7 @@ func (l *Leaser) Obtain(ctx context.Context, u *unstructured.Unstructured, owner
 	_, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, l.tfProvider.Meta())
 
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
-		return fmt.Errorf("error applying resource change: %v", err)
+		return fmt.Errorf("error applying resource change: %w", err)
 	}
 	return nil
 }
@@ -160,15 +160,15 @@ func (l *Leaser) Release(ctx context.Context, u *unstructured.Unstructured, owne
 	delete(resource.Labels, leaseHolderKey)
 	config, _, err := krmtotf.KRMResourceToTFResourceConfig(resource, l.kubeClient, l.smLoader)
 	if err != nil {
-		return fmt.Errorf("error expanding resource configuration: %v", err)
+		return fmt.Errorf("error expanding resource configuration: %w", err)
 	}
 	diff, err := resource.TFResource.Diff(ctx, liveState, config, l.tfProvider.Meta())
 	if err != nil {
-		return fmt.Errorf("error calculating diff: %v", err)
+		return fmt.Errorf("error calculating diff: %w", err)
 	}
 	_, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, l.tfProvider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
-		return fmt.Errorf("error applying resource change: %v", err)
+		return fmt.Errorf("error applying resource change: %w", err)
 	}
 	return nil
 }
@@ -189,15 +189,15 @@ func (l *Leaser) getResourceAndLiveState(ctx context.Context, u *unstructured.Un
 	*terraform.InstanceState, error) {
 	sm, err := l.smLoader.GetServiceMapping(u.GroupVersionKind().Group)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error getting service mapping for gvk '%v': %v", u.GroupVersionKind(), err)
+		return nil, nil, fmt.Errorf("error getting service mapping for gvk '%v': %w", u.GroupVersionKind(), err)
 	}
 	resource, err := krmtotf.NewResource(u, sm, l.tfProvider)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error parsing resource %s: %v", u.GetName(), err)
+		return nil, nil, fmt.Errorf("error parsing resource %s: %w", u.GetName(), err)
 	}
 	liveState, err := krmtotf.FetchLiveState(ctx, resource, l.tfProvider, l.kubeClient, l.smLoader)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error fetching live state: %v", err)
+		return nil, nil, fmt.Errorf("error fetching live state: %w", err)
 	}
 	if liveState.Empty() {
 		return nil, nil, fmt.Errorf("resource '%v' of type '%v': not found", u.GetName(), u.GroupVersionKind())
@@ -217,11 +217,11 @@ func GetLabelKeys() []string {
 func (l *Leaser) UnstructuredSupportsLeasing(u *unstructured.Unstructured) (ok bool, err error) {
 	sm, err := l.smLoader.GetServiceMapping(u.GroupVersionKind().Group)
 	if err != nil {
-		return false, fmt.Errorf("error getting service mapping: %v", err)
+		return false, fmt.Errorf("error getting service mapping: %w", err)
 	}
 	rc, err := servicemappingloader.GetResourceConfig(sm, u)
 	if err != nil {
-		return false, fmt.Errorf("error getting resource config: %v", err)
+		return false, fmt.Errorf("error getting resource config: %w", err)
 	}
 	return leasable.ResourceConfigSupportsLeasing(rc, l.tfProvider.ResourcesMap)
 }
@@ -229,7 +229,7 @@ func (l *Leaser) UnstructuredSupportsLeasing(u *unstructured.Unstructured) (ok b
 func (l *Leaser) validateUnstructuredSupportsLocking(u *unstructured.Unstructured) error {
 	ok, err := l.UnstructuredSupportsLeasing(u)
 	if err != nil {
-		return fmt.Errorf("error determining if gvk '%v' supports locking: %v", u.GroupVersionKind(), err)
+		return fmt.Errorf("error determining if gvk '%v' supports locking: %w", u.GroupVersionKind(), err)
 	}
 	if !ok {
 		return fmt.Errorf("gvk '%v' does not support locking", u.GroupVersionKind())

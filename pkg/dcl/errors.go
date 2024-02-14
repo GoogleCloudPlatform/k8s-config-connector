@@ -15,6 +15,8 @@
 package dcl
 
 import (
+	"errors"
+
 	dclunstruct "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured"
 )
 
@@ -22,8 +24,6 @@ func IsNoSuchMethodError(err error) bool {
 	if err == nil {
 		return false
 	}
-	if err == dclunstruct.ErrNoSuchMethod {
-		return true
-	}
-	return false
+
+	return errors.Is(err, dclunstruct.ErrNoSuchMethod)
 }

@@ -48,7 +48,7 @@ func propsToYAML(props apiextensions.JSONSchemaProps) ([]byte, error) {
 	value := propsToValue(props)
 	bytes, err := yaml.Marshal(value)
 	if err != nil {
-		return nil, fmt.Errorf("error marshalling value yaml: %v", err)
+		return nil, fmt.Errorf("error marshalling value yaml: %w", err)
 	}
 	return bytes, nil
 }

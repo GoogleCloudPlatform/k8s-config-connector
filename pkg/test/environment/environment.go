@@ -66,7 +66,7 @@ func startTestEnvironment(testType test.TestType, crds []*apiextensions.CustomRe
 	}
 	_, err := env.Start()
 	if err != nil {
-		return nil, fmt.Errorf("error starting test environment: %v", err)
+		return nil, fmt.Errorf("error starting test environment: %w", err)
 	}
 	return env, nil
 }

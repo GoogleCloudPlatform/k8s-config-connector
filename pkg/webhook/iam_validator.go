@@ -61,7 +61,7 @@ func (a *iamValidatorHandler) Handle(ctx context.Context, req admission.Request)
 	if _, _, err := deserializer.Decode(req.AdmissionRequest.Object.Raw, nil, obj); err != nil {
 		klog.Error(err)
 		return admission.Errored(http.StatusBadRequest,
-			fmt.Errorf("error decoding object: %v", err))
+			fmt.Errorf("error decoding object: %w", err))
 	}
 	switch {
 	case isIAMPolicy(obj):
@@ -115,7 +115,7 @@ func (a *iamValidatorHandler) Handle(ctx context.Context, req admission.Request)
 func toIAMPolicy(obj *unstructured.Unstructured) (*v1beta1.IAMPolicy, error) {
 	policy := &v1beta1.IAMPolicy{}
 	if err := util.Marshal(obj, policy); err != nil {
-		return nil, fmt.Errorf("error parsing %v into IAM Policy object: %v", obj.GetName(), err)
+		return nil, fmt.Errorf("error parsing %v into IAM Policy object: %w", obj.GetName(), err)
 	}
 	return policy, nil
 }
@@ -123,7 +123,7 @@ func toIAMPolicy(obj *unstructured.Unstructured) (*v1beta1.IAMPolicy, error) {
 func toIAMPartialPolicy(obj *unstructured.Unstructured) (*v1beta1.IAMPartialPolicy, error) {
 	partialPolicy := &v1beta1.IAMPartialPolicy{}
 	if err := util.Marshal(obj, partialPolicy); err != nil {
-		return nil, fmt.Errorf("error parsing %v into IAMPartialPolicy object: %v", obj.GetName(), err)
+		return nil, fmt.Errorf("error parsing %v into IAMPartialPolicy object: %w", obj.GetName(), err)
 	}
 	return partialPolicy, nil
 }
@@ -131,7 +131,7 @@ func toIAMPartialPolicy(obj *unstructured.Unstructured) (*v1beta1.IAMPartialPoli
 func toIAMPolicyMember(obj *unstructured.Unstructured) (*v1beta1.IAMPolicyMember, error) {
 	policyMember := &v1beta1.IAMPolicyMember{}
 	if err := util.Marshal(obj, policyMember); err != nil {
-		return nil, fmt.Errorf("error parsing %v into IAM Policy Member object: %v", obj.GetName(), err)
+		return nil, fmt.Errorf("error parsing %v into IAM Policy Member object: %w", obj.GetName(), err)
 	}
 	return policyMember, nil
 }
@@ -139,7 +139,7 @@ func toIAMPolicyMember(obj *unstructured.Unstructured) (*v1beta1.IAMPolicyMember
 func toIAMAuditConfig(obj *unstructured.Unstructured) (*v1beta1.IAMAuditConfig, error) {
 	auditConfig := &v1beta1.IAMAuditConfig{}
 	if err := util.Marshal(obj, auditConfig); err != nil {
-		return nil, fmt.Errorf("error parsing %v into IAMAuditConfig object: %v", obj.GetName(), err)
+		return nil, fmt.Errorf("error parsing %v into IAMAuditConfig object: %w", obj.GetName(), err)
 	}
 	return auditConfig, nil
 }
@@ -165,13 +165,13 @@ func getResourceConfigs(smLoader *servicemappingloader.ServiceMappingLoader, gvk
 	if externalonlygvks.IsExternalOnlyGVK(gvk) {
 		rc, err := kcciamclient.GetResourceConfigForExternalOnlyGVK(gvk)
 		if err != nil {
-			return []*v1alpha1.ResourceConfig{}, fmt.Errorf("error getting ResourceConfig for GroupVersionKind %v: %v", gvk, err)
+			return []*v1alpha1.ResourceConfig{}, fmt.Errorf("error getting ResourceConfig for GroupVersionKind %v: %w", gvk, err)
 		}
 		return []*v1alpha1.ResourceConfig{rc}, nil
 	}
 	rcs, err := smLoader.GetResourceConfigs(gvk)
 	if err != nil {
-		return []*v1alpha1.ResourceConfig{}, fmt.Errorf("error getting ResourceConfig for GroupVersionKind %v: %v", gvk, err)
+		return []*v1alpha1.ResourceConfig{}, fmt.Errorf("error getting ResourceConfig for GroupVersionKind %v: %w", gvk, err)
 	}
 	if len(rcs) == 0 {
 		return []*v1alpha1.ResourceConfig{}, fmt.Errorf("couldn't find any ResourceConfig defined for GroupVersionKind %v", gvk)

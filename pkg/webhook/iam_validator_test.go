@@ -638,8 +638,7 @@ func newTestExternalOnlyRefPolicyMember() *v1beta1.IAMPolicyMember {
 }
 
 func newTestResourceRCs() []*v1alpha1.ResourceConfig {
-	return []*v1alpha1.ResourceConfig{
-		&v1alpha1.ResourceConfig{
+	return []*v1alpha1.ResourceConfig{{
 			Name: "google_resource_type",
 			Kind: "ResourceType",
 			IAMConfig: v1alpha1.IAMConfig{

@@ -46,21 +46,21 @@ func ForParentToStorageObject(ctx context.Context, httpClient *http.Client, pare
 	}
 	assetClient, err := newAssetInventoryClient(ctx, httpClient)
 	if err != nil {
-		return fmt.Errorf("error creating asset client: %v", err)
+		return fmt.Errorf("error creating asset client: %w", err)
 	}
 	projectNum, err := getDefaultProjectNumber(ctx, httpClient)
 	if err != nil {
-		return fmt.Errorf("error getting project number: %v", err)
+		return fmt.Errorf("error getting project number: %w", err)
 	}
 	projectNumString := fmt.Sprint(projectNum)
 	request := assetClient.V1.ExportAssets(parent, &exportAssetsRequest)
 	request.Header().Add("X-Goog-User-Project", projectNumString)
 	op, err := request.Do()
 	if err != nil {
-		return fmt.Errorf("error response from exportassets request: %v", err)
+		return fmt.Errorf("error response from exportassets request: %w", err)
 	}
 	if _, err := gcp.WaitForAssetInventoryOperationDefaultTimeout(assetClient, op, projectNumString, nil); err != nil {
-		return fmt.Errorf("error waiting for operation: %v", err)
+		return fmt.Errorf("error waiting for operation: %w", err)
 	}
 	return nil
 }
@@ -68,11 +68,11 @@ func ForParentToStorageObject(ctx context.Context, httpClient *http.Client, pare
 func NewTemporaryBucketAndObjectName(ctx context.Context, httpClient *http.Client) (string, string, error) {
 	storageClient, err := newStorageClient(ctx, httpClient)
 	if err != nil {
-		return "", "", fmt.Errorf("error creating storage client: %v", err)
+		return "", "", fmt.Errorf("error creating storage client: %w", err)
 	}
 	projectId, err := gcp.GetDefaultProjectID()
 	if err != nil {
-		return "", "", fmt.Errorf("error getting project id: %v", err)
+		return "", "", fmt.Errorf("error getting project id: %w", err)
 	}
 	bucketName := fmt.Sprintf("export-%v", randomid.New().String())
 	bucket := &storage.Bucket{
@@ -80,7 +80,7 @@ func NewTemporaryBucketAndObjectName(ctx context.Context, httpClient *http.Clien
 	}
 	_, err = storageClient.Buckets.Insert(projectId, bucket).Do()
 	if err != nil {
-		return "", "", fmt.Errorf("error creating bucket '%v': %v", bucketName, err)
+		return "", "", fmt.Errorf("error creating bucket '%v': %w", bucketName, err)
 	}
 	objectName := NewObjectName()
 	return bucketName, objectName, nil
@@ -93,10 +93,10 @@ func NewObjectName() string {
 func DeleteExport(ctx context.Context, httpClient *http.Client, bucketName, objectName string) error {
 	storageClient, err := newStorageClient(ctx, httpClient)
 	if err != nil {
-		return fmt.Errorf("error creating storage client: %v", err)
+		return fmt.Errorf("error creating storage client: %w", err)
 	}
 	if err := storageClient.Objects.Delete(bucketName, objectName).Do(); err != nil {
-		return fmt.Errorf("error deleting storage object gs://%v/%v: %v", bucketName, objectName, err)
+		return fmt.Errorf("error deleting storage object gs://%v/%v: %w", bucketName, objectName, err)
 	}
 	return err
 }
@@ -104,10 +104,10 @@ func DeleteExport(ctx context.Context, httpClient *http.Client, bucketName, obje
 func DeleteTemporaryBucket(ctx context.Context, httpClient *http.Client, bucketName string) error {
 	storageClient, err := newStorageClient(ctx, httpClient)
 	if err != nil {
-		return fmt.Errorf("error creating storage client: %v", err)
+		return fmt.Errorf("error creating storage client: %w", err)
 	}
 	if err := storageClient.Buckets.Delete(bucketName).Do(); err != nil {
-		return fmt.Errorf("error deleting temporary bucket '%v': %v", bucketName, err)
+		return fmt.Errorf("error deleting temporary bucket '%v': %w", bucketName, err)
 	}
 	return nil
 }
@@ -115,7 +115,7 @@ func DeleteTemporaryBucket(ctx context.Context, httpClient *http.Client, bucketN
 func newAssetInventoryClient(ctx context.Context, httpClient *http.Client) (*cloudasset.Service, error) {
 	client, err := cloudasset.NewService(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
-		return nil, fmt.Errorf("error creating asset inventory client: %v", err)
+		return nil, fmt.Errorf("error creating asset inventory client: %w", err)
 	}
 	return client, nil
 }
@@ -123,7 +123,7 @@ func newAssetInventoryClient(ctx context.Context, httpClient *http.Client) (*clo
 func newStorageClient(ctx context.Context, httpClient *http.Client) (*storage.Service, error) {
 	client, err := storage.NewService(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
-		return nil, fmt.Errorf("error creating storage client: %v", err)
+		return nil, fmt.Errorf("error creating storage client: %w", err)
 	}
 	return client, nil
 }

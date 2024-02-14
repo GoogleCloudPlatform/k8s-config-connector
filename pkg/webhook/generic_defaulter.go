@@ -49,11 +49,11 @@ func (a *genericDefaulter) Handle(ctx context.Context, req admission.Request) ad
 	if _, _, err := deserializer.Decode(req.AdmissionRequest.Object.Raw, nil, obj); err != nil {
 		klog.Error(err)
 		return admission.Errored(http.StatusBadRequest,
-			fmt.Errorf("error decoding object: %v", err))
+			fmt.Errorf("error decoding object: %w", err))
 	}
 	newObj := obj.DeepCopy()
 	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(newObj); err != nil {
-		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting '%v' annotation: %v", k8s.StateIntoSpecAnnotation, err))
+		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting '%v' annotation: %w", k8s.StateIntoSpecAnnotation, err))
 	}
 	return constructPatchResponse(obj, newObj)
 }

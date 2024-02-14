@@ -126,7 +126,7 @@ func PathToSampleFileUsedForSnippets(resourceDirName string) (string, error) {
 	resourceDirPath := path.Join(samplesPath, resourceDirName)
 	dirExists, err := fileutil.DirExists(resourceDirPath)
 	if err != nil {
-		return "", fmt.Errorf("error: failed to determine if directory with name %v exists in %v: %v", resourceDirName, samplesPath, err)
+		return "", fmt.Errorf("error: failed to determine if directory with name %v exists in %v: %w", resourceDirName, samplesPath, err)
 	}
 	if !dirExists {
 		return "", fmt.Errorf("error: no directory with name %v found in %v", resourceDirName, samplesPath)
@@ -134,7 +134,7 @@ func PathToSampleFileUsedForSnippets(resourceDirName string) (string, error) {
 
 	hasSubdirs, err := fileutil.HasSubdirs(resourceDirPath)
 	if err != nil {
-		return "", fmt.Errorf("error determining if directory at %v has subdirectories: %v", resourceDirPath, err)
+		return "", fmt.Errorf("error determining if directory at %v has subdirectories: %w", resourceDirPath, err)
 	}
 
 	sampleDirPath := resourceDirPath
@@ -147,7 +147,7 @@ func PathToSampleFileUsedForSnippets(resourceDirName string) (string, error) {
 
 	fileNames, err := fileutil.FileNamesWithSuffixInDir(sampleDirPath, resourceDirName+".yaml")
 	if err != nil {
-		return "", fmt.Errorf("error getting files to use for generating snippets: %v", err)
+		return "", fmt.Errorf("error getting files to use for generating snippets: %w", err)
 	}
 	if len(fileNames) != 1 {
 		return "", fmt.Errorf("error getting exactly one file to use for generating snippets (dir=%q, suffix=%q); expected one, got %v", sampleDirPath, resourceDirName+".yaml", fileNames)
@@ -165,7 +165,7 @@ func pathToPreferredSamplesSubdirForResource(resourceDirPath string) (string, er
 	sampleSubdirPath := path.Join(resourceDirPath, sampleSubdirName)
 	dirExists, err := fileutil.DirExists(sampleSubdirPath)
 	if err != nil {
-		return "", fmt.Errorf("error: failed to determine if directory at %v exists: %v", sampleSubdirPath, err)
+		return "", fmt.Errorf("error: failed to determine if directory at %v exists: %w", sampleSubdirPath, err)
 	}
 	if !dirExists {
 		return "", fmt.Errorf("error: no directory found at %v", sampleSubdirPath)
@@ -176,11 +176,11 @@ func pathToPreferredSamplesSubdirForResource(resourceDirPath string) (string, er
 func SnippifyResourceConfig(resourceConfig []byte) (Snippet, error) {
 	kind, err := resourceKind(resourceConfig)
 	if err != nil {
-		return Snippet{}, fmt.Errorf("error parsing resource kind from resource config: %v", err)
+		return Snippet{}, fmt.Errorf("error parsing resource kind from resource config: %w", err)
 	}
 	config, err := snippifyResourceConfig(kind, resourceConfig)
 	if err != nil {
-		return Snippet{}, fmt.Errorf("error snippifying resource config: %v", err)
+		return Snippet{}, fmt.Errorf("error snippifying resource config: %w", err)
 	}
 	return Snippet{
 		Label:               "Config Connector " + kind,
@@ -193,7 +193,7 @@ func snippifyResourceConfig(kind string, config []byte) (string, error) {
 	var mapSlice goyaml.MapSlice
 	err := goyaml.Unmarshal(config, &mapSlice)
 	if err != nil {
-		return "", fmt.Errorf("error unmarshalling bytes: %v", err)
+		return "", fmt.Errorf("error unmarshalling bytes: %w", err)
 	}
 
 	newMapSlice := goyaml.MapSlice{}
@@ -210,7 +210,7 @@ func snippifyResourceConfig(kind string, config []byte) (string, error) {
 
 	out, err := goyaml.Marshal(newMapSlice)
 	if err != nil {
-		return "", fmt.Errorf("error marshalling bytes to YAML: %v", err)
+		return "", fmt.Errorf("error marshalling bytes to YAML: %w", err)
 	}
 	return string(out), nil
 }
@@ -280,7 +280,7 @@ func resourceKind(config []byte) (string, error) {
 	u := &unstructured.Unstructured{}
 	err := yaml.Unmarshal(config, u)
 	if err != nil {
-		return "", fmt.Errorf("error unmarshalling bytes to CRD: %v", err)
+		return "", fmt.Errorf("error unmarshalling bytes to CRD: %w", err)
 	}
 	return u.GetKind(), nil
 }

@@ -28,12 +28,12 @@ const (
 
 func DownloadAndExtractTarballAt(gcsPath, outputDir string) error {
 	if err := DownloadObjectFromGCS(gcsPath, outputDir); err != nil {
-		return fmt.Errorf("error downloading tarball at '%v': %v", gcsPath, err)
+		return fmt.Errorf("error downloading tarball at '%v': %w", gcsPath, err)
 	}
 	tarballName := path.Base(gcsPath)
 	tarballPath := path.Join(outputDir, tarballName)
 	if err := ExtractTarball(tarballPath, outputDir); err != nil {
-		return fmt.Errorf("error extracting tarball: %v", err)
+		return fmt.Errorf("error extracting tarball: %w", err)
 	}
 	return nil
 }
@@ -95,7 +95,7 @@ func Execute(cmd *exec.Cmd) error {
 func ExecuteAndCaptureOutput(cmd *exec.Cmd) (stdout string, err error) {
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		return "", fmt.Errorf("%v: %v", err, string(out))
+		return "", fmt.Errorf("%w: %v", err, string(out))
 	}
 	return string(out), nil
 }
