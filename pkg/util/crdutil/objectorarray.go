@@ -21,8 +21,8 @@ import (
 )
 
 var (
-	objectSchemaErr = fmt.Errorf("the object schema has neither properties nor additionalProperties in the schema")
-	schemaTypeErr   = fmt.Errorf("type of schema must be 'object' or 'array'")
+	errObjectSchema = fmt.Errorf("the object schema has neither properties nor additionalProperties in the schema")
+	errSchemaType   = fmt.Errorf("type of schema must be 'object' or 'array'")
 )
 
 func getConfigurableSchemaForObjectOrArray(schema *apiextensions.JSONSchemaProps) (configurableSchema *apiextensions.JSONSchemaProps, err error) {
@@ -33,12 +33,12 @@ func getConfigurableSchemaForObjectOrArray(schema *apiextensions.JSONSchemaProps
 		} else if schema.AdditionalProperties != nil {
 			configurableSchema = schema.AdditionalProperties.Schema
 		} else {
-			return nil, objectSchemaErr
+			return nil, errObjectSchema
 		}
 	case "array":
 		return getConfigurableSchemaForObjectOrArray(schema.Items.Schema)
 	default:
-		return nil, schemaTypeErr
+		return nil, errSchemaType
 	}
 	return configurableSchema, nil
 }
@@ -91,7 +91,7 @@ func GetOneOfRuleForObjectOrArray(schema *apiextensions.JSONSchemaProps) ([]*api
 	}
 	oneOfRuleValue = configurableSchema.OneOf
 	if oneOfRuleValue != nil {
-		for i, _ := range oneOfRuleValue {
+		for i := range oneOfRuleValue {
 			oneOfRule = append(oneOfRule, &oneOfRuleValue[i])
 		}
 	}

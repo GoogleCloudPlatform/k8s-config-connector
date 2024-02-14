@@ -59,7 +59,7 @@ func (s *ProjectsV3) GetProject(ctx context.Context, req *pb.GetProjectRequest) 
 func (s *ProjectsV3) CreateProject(ctx context.Context, req *pb.CreateProjectRequest) (*longrunningpb.Operation, error) {
 	projectID := req.GetProject().GetProjectId()
 	if projectID == "" {
-		return nil, status.Errorf(codes.InvalidArgument, "projectId is required")
+		return nil, status.Errorf(codes.InvalidArgument, "projectID is required")
 	}
 
 	hasher := adler32.New()

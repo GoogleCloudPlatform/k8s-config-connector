@@ -110,7 +110,7 @@ func IsImmutableField(schema *openapi.Schema) (bool, error) {
 }
 
 func GetLabelsFieldSchema(schema *openapi.Schema) (labelsField string, fieldSchema *openapi.Schema, found bool, err error) {
-	raw, found := schema.Extension[constants.DCL_LABELS_FIELD]
+	raw, found := schema.Extension[constants.DCLLabelsField]
 	if !found {
 		return "", nil, false, nil
 	}

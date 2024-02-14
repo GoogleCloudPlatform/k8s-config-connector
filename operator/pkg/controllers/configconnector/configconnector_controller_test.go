@@ -50,7 +50,7 @@ func TestHandleReconcileFailed(t *testing.T) {
 	defer stop()
 	c := mgr.GetClient()
 	mockEventRecorder := testmocks.NewMockEventRecorder(t, mgr.GetScheme())
-	r := ConfigConnectorReconciler{
+	r := Reconciler{
 		client:   c,
 		recorder: mockEventRecorder,
 	}
@@ -108,7 +108,7 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 	defer stop()
 	c := mgr.GetClient()
 	mockEventRecorder := testmocks.NewMockEventRecorder(t, mgr.GetScheme())
-	r := ConfigConnectorReconciler{
+	r := Reconciler{
 		client:   c,
 		recorder: mockEventRecorder,
 	}
@@ -266,7 +266,7 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 			c := mgr.GetClient()
 			testcontroller.EnsureNamespaceExists(c, k8s.CNRMSystemNamespace)
 			testcontroller.EnsureNamespaceExists(c, k8s.OperatorSystemNamespace)
-			m := testcontroller.ParseObjects(t, ctx, tc.loadedManifest)
+			m := testcontroller.ParseObjects(ctx, t, tc.loadedManifest)
 			r := newConfigConnectorReconciler(c)
 
 			if err := c.Create(ctx, tc.cc); err != nil {
@@ -284,17 +284,17 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 			expectedObjs := tc.resultsFunc(t, c)
-			expectedManifest := testcontroller.ParseObjects(t, ctx, expectedObjs)
-			expectedJson, err := expectedManifest.JSONManifest()
+			expectedManifest := testcontroller.ParseObjects(ctx, t, expectedObjs)
+			expectedJSON, err := expectedManifest.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			resJson, err := m.JSONManifest()
+			resJSON, err := m.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if !reflect.DeepEqual(resJson, expectedJson) {
-				t.Fatalf("unexpected diff: %v", cmp.Diff(resJson, expectedJson))
+			if !reflect.DeepEqual(resJSON, expectedJSON) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(resJSON, expectedJSON))
 			}
 
 			// Verify that CCC objects are NOT attached finalizers by the CC controller.
@@ -418,7 +418,7 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 			c := mgr.GetClient()
 			testcontroller.EnsureNamespaceExists(c, k8s.OperatorSystemNamespace)
 			testcontroller.EnsureNamespaceExists(c, k8s.CNRMSystemNamespace)
-			m := testcontroller.ParseObjects(t, ctx, tc.installedObjectsFunc(t, c))
+			m := testcontroller.ParseObjects(ctx, t, tc.installedObjectsFunc(t, c))
 			r := newConfigConnectorReconciler(c)
 			if err := c.Create(ctx, tc.cc); err != nil {
 				t.Fatalf("error creating %v %v: %v", tc.cc.Kind, tc.cc.Name, err)
@@ -467,17 +467,17 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 			expectedObjs := tc.resultsFunc(t, c)
-			expectedManifest := testcontroller.ParseObjects(t, ctx, expectedObjs)
-			expectedJson, err := expectedManifest.JSONManifest()
+			expectedManifest := testcontroller.ParseObjects(ctx, t, expectedObjs)
+			expectedJSON, err := expectedManifest.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			resJson, err := m.JSONManifest()
+			resJSON, err := m.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if !reflect.DeepEqual(resJson, expectedJson) {
-				t.Fatalf("unexpected diff: %v", cmp.Diff(resJson, expectedJson))
+			if !reflect.DeepEqual(resJSON, expectedJSON) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(resJSON, expectedJSON))
 			}
 
 			// Assert that the ConfigConnector object is deleted.
@@ -761,7 +761,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 				}
 			}
 			installedComponents := tc.installedObjectsFunc(t, c)
-			installedManifest := testcontroller.ParseObjects(t, ctx, installedComponents)
+			installedManifest := testcontroller.ParseObjects(ctx, t, installedComponents)
 			for _, item := range installedManifest.Items {
 				if err := c.Create(ctx, item.UnstructuredObject()); err != nil && !apierrors.IsAlreadyExists(err) {
 					t.Fatalf("error creating %v %v: %v", item.GroupKind(), item.GetName(), err)
@@ -774,7 +774,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 				t.Fatalf("error updating %v %v: %v", tc.updatedCc.Kind, tc.updatedCc.Name, err)
 			}
 
-			m := testcontroller.ParseObjects(t, ctx, tc.manifest)
+			m := testcontroller.ParseObjects(ctx, t, tc.manifest)
 			if tc.cc.GetMode() == "namespaced" {
 				if err := handleLifecycles(t, ctx, r, tc.updatedCc, m); err == nil {
 					t.Fatalf("got nil, but want to have an error because the controller manager pod per namespace is not deleted")
@@ -792,17 +792,17 @@ func TestConfigConnectorUpdate(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 			expectedObjs := tc.resultsFunc(t, c)
-			expectedManifest := testcontroller.ParseObjects(t, ctx, expectedObjs)
-			expectedJson, err := expectedManifest.JSONManifest()
+			expectedManifest := testcontroller.ParseObjects(ctx, t, expectedObjs)
+			expectedJSON, err := expectedManifest.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			resJson, err := m.JSONManifest()
+			resJSON, err := m.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if !reflect.DeepEqual(resJson, expectedJson) {
-				t.Fatalf("unexpected diff: %v", cmp.Diff(resJson, expectedJson))
+			if !reflect.DeepEqual(resJSON, expectedJSON) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(resJSON, expectedJSON))
 			}
 			// assert unneeded components are deleted
 			unneededComponents := tc.toDeleteObjectsFunc(t, c)
@@ -826,7 +826,7 @@ type testCaseStruct struct {
 }
 
 func handleLifecycles(t *testing.T, ctx context.Context,
-	r *ConfigConnectorReconciler, cc *corev1beta1.ConfigConnector, m *manifest.Objects) error {
+	r *Reconciler, cc *corev1beta1.ConfigConnector, m *manifest.Objects) error {
 	t.Helper()
 
 	fn := r.transformForClusterMode()
@@ -834,14 +834,12 @@ func handleLifecycles(t *testing.T, ctx context.Context,
 		return err
 	}
 	fn = r.handleConfigConnectorLifecycle()
-	if err := fn(ctx, cc, m); err != nil {
-		return err
-	}
-	return nil
+
+	return fn(ctx, cc, m)
 }
 
-func newConfigConnectorReconciler(c client.Client) *ConfigConnectorReconciler {
-	return &ConfigConnectorReconciler{
+func newConfigConnectorReconciler(c client.Client) *Reconciler {
+	return &Reconciler{
 		client: c,
 		log:    logr.Discard(),
 	}
@@ -888,7 +886,7 @@ func TestSelectingCRDsByVersion(t *testing.T) {
 			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
 			defer stop()
 			c := mgr.GetClient()
-			manifests := testcontroller.ParseObjects(t, ctx, tc.manifests)
+			manifests := testcontroller.ParseObjects(ctx, t, tc.manifests)
 			r := newConfigConnectorReconciler(c)
 
 			err := r.selectCRDsByVersion(manifests, tc.version)
@@ -905,7 +903,7 @@ func TestSelectingCRDsByVersion(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			expectedManifests := testcontroller.ParseObjects(t, ctx, tc.expectedManifests)
+			expectedManifests := testcontroller.ParseObjects(ctx, t, tc.expectedManifests)
 			expectedJSON, err := expectedManifests.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
@@ -1197,7 +1195,7 @@ func TestApplyCustomizations(t *testing.T) {
 					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
 				}
 			}
-			manifests := testcontroller.ParseObjects(t, ctx, tc.manifests)
+			manifests := testcontroller.ParseObjects(ctx, t, tc.manifests)
 			r := newConfigConnectorReconciler(c)
 
 			// run the test function
@@ -1207,20 +1205,20 @@ func TestApplyCustomizations(t *testing.T) {
 			}
 
 			// check the resulting manifests
-			gotJson, err := manifests.JSONManifest()
+			gotJSON, err := manifests.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			expectedManifests := testcontroller.ParseObjects(t, ctx, tc.expectedManifests)
+			expectedManifests := testcontroller.ParseObjects(ctx, t, tc.expectedManifests)
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			expectedJson, err := expectedManifests.JSONManifest()
+			expectedJSON, err := expectedManifests.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if !reflect.DeepEqual(gotJson, expectedJson) {
-				t.Fatalf("unexpected diff: %v", cmp.Diff(gotJson, expectedJson))
+			if !reflect.DeepEqual(gotJSON, expectedJSON) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotJSON, expectedJSON))
 			}
 
 			// check the status of cluster-scoped customization CR
@@ -1239,8 +1237,8 @@ func TestApplyCustomizations(t *testing.T) {
 	}
 }
 
-func newConfigConnectorReconcilerWithCustomizationWatcher(m ctrl.Manager) *ConfigConnectorReconciler {
-	r := &ConfigConnectorReconciler{
+func newConfigConnectorReconcilerWithCustomizationWatcher(m ctrl.Manager) *Reconciler {
+	r := &Reconciler{
 		client: m.GetClient(),
 		log:    logr.Discard(),
 	}

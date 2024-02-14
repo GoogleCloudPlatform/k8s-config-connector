@@ -86,7 +86,7 @@ func TestAllInSeries(t *testing.T) {
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(fixture.Name, func(t *testing.T) {
-				uniqueID := testvariable.NewUniqueId()
+				uniqueID := testvariable.NewUniqueID()
 
 				loadFixture := func(project testgcp.GCPProject) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
 					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)

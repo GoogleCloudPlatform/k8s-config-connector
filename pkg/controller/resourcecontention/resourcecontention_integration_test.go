@@ -59,9 +59,9 @@ func TestResourceContentionIsPreventedForTwoNamespacesMappingToSameProjectInDiff
 		}
 		systemContext.Reconciler.Reconcile(ctx, testContext.UpdateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.UpdateUnstruct), nil)
 		assertLeaseLabelsAreNotPresent(t, systemContext.Manager, testContext.CreateUnstruct)
-		projectId := testgcp.GetDefaultProjectID(t)
+		projectID := testgcp.GetDefaultProjectID(t)
 		testcontroller.EnsureNamespaceExistsT(t, mgr2.GetClient(), testContext.UniqueId)
-		testcontroller.EnsureNamespaceHasProjectIDAnnotation(t, mgr2.GetClient(), testContext.UniqueId, projectId)
+		testcontroller.EnsureNamespaceHasProjectIDAnnotation(t, mgr2.GetClient(), testContext.UniqueId, projectID)
 		assertNamespaceIdsAreNotEqual(t, systemContext.Manager, mgr2, testContext.UniqueId, testContext.UniqueId)
 		reconciler2 := testreconciler.New(t, mgr2, systemContext.TFProvider)
 		if err := mgr2.GetClient().Create(context.TODO(), testContext.UpdateUnstruct); err != nil {

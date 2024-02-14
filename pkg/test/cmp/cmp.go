@@ -25,7 +25,7 @@ func UnorderedLineByLineComparisonIgnoreBlankLines(t *testing.T, expected, actua
 		if s == "" {
 			continue
 		}
-		expectedLines[s] += 1
+		expectedLines[s]++
 	}
 	actualLines := strings.Split(actual, "\n")
 	for linenum, line := range actualLines {

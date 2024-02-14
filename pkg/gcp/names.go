@@ -19,40 +19,40 @@ import (
 	"strings"
 )
 
-func FormatBigtableInstanceName(projectId string, name string) string {
-	return fmt.Sprintf("projects/%v/instances/%v", projectId, name)
+func FormatBigtableInstanceName(projectID string, name string) string {
+	return fmt.Sprintf("projects/%v/instances/%v", projectID, name)
 }
 
-func FormatBigtableClusterName(projectId, instanceName, clusterName string) string {
-	return fmt.Sprintf("projects/%v/instances/%v/clusters/%v", projectId, instanceName, clusterName)
+func FormatBigtableClusterName(projectID, instanceName, clusterName string) string {
+	return fmt.Sprintf("projects/%v/instances/%v/clusters/%v", projectID, instanceName, clusterName)
 }
 
-func FormatFullProjectID(projectId string) string {
-	return fmt.Sprintf("projects/%v", projectId)
+func FormatFullProjectID(projectID string) string {
+	return fmt.Sprintf("projects/%v", projectID)
 }
 
-func FormatComputeNetworkName(projectId, name string) string {
-	return fmt.Sprintf("projects/%v/global/networks/%v", projectId, name)
+func FormatComputeNetworkName(projectID, name string) string {
+	return fmt.Sprintf("projects/%v/global/networks/%v", projectID, name)
 }
 
-func FormatComputeRouterName(projectId, region, name string) string {
-	return fmt.Sprintf("projects/%v/regions/%v/routers/%v", projectId, region, name)
+func FormatComputeRouterName(projectID, region, name string) string {
+	return fmt.Sprintf("projects/%v/regions/%v/routers/%v", projectID, region, name)
 }
 
-func FormatComputeSubNetworkName(projectId, region, name string) string {
-	return fmt.Sprintf("projects/%v/regions/%v/subnetworks/%v", projectId, region, name)
+func FormatComputeSubNetworkName(projectID, region, name string) string {
+	return fmt.Sprintf("projects/%v/regions/%v/subnetworks/%v", projectID, region, name)
 }
 
-func FormatGlobalComputeSslCertificateName(projectId, name string) string {
-	return fmt.Sprintf("projects/%v/global/sslCertificates/%v", projectId, name)
+func FormatGlobalComputeSslCertificateName(projectID, name string) string {
+	return fmt.Sprintf("projects/%v/global/sslCertificates/%v", projectID, name)
 }
 
-func FormatPubSubTopicName(projectId, name string) string {
-	return fmt.Sprintf("projects/%v/topics/%v", projectId, name)
+func FormatPubSubTopicName(projectID, name string) string {
+	return fmt.Sprintf("projects/%v/topics/%v", projectID, name)
 }
 
-func FormatInstanceLocationName(projectId, name string) string {
-	return fmt.Sprintf("projects/%v/locations/%v", projectId, name)
+func FormatInstanceLocationName(projectID, name string) string {
+	return fmt.Sprintf("projects/%v/locations/%v", projectID, name)
 }
 
 func FullResourceNameToShortName(fullName string) string {

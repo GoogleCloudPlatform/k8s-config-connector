@@ -26,7 +26,7 @@ type ManagementConflictPreventionPolicy string
 // TODO: clean up old conditions used in handcrafted controllers
 const (
 	CNRMGroup                            = "cnrm.cloud.google.com"
-	ApiDomainSuffix                      = ".cnrm.cloud.google.com"
+	APIDomainSuffix                      = ".cnrm.cloud.google.com"
 	SystemNamespace                      = "cnrm-system"
 	ControllerManagerNamePrefix          = "cnrm-controller-manager"
 	ControllerMaxConcurrentReconciles    = 20

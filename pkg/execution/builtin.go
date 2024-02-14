@@ -63,7 +63,7 @@ func safeRemoveFirstLine(value string) string {
 	idx := strings.Index(value, "\n")
 	if idx >= 0 {
 		if len(value) > idx+1 {
-			idx += 1
+			idx++
 		}
 		return value[idx:]
 	}

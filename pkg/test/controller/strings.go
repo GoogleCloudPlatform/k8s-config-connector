@@ -32,6 +32,6 @@ func Name(t *testing.T) string {
 }
 
 // UniqueName takes a name and returns a unique version.
-func UniqueName(t *testing.T, name string) string {
+func UniqueName(_ *testing.T, name string) string {
 	return fmt.Sprintf("%v-%v", name, rand.Intn(1000000))
 }

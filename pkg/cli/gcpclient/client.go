@@ -180,9 +180,9 @@ func isRCSupported(rc v1alpha1.ResourceConfig) bool {
 	if _, ok := unsupportedKinds[rc.Kind]; ok {
 		return false
 	}
-	return !hasServerGeneratedId(rc)
+	return !hasServerGeneratedID(rc)
 }
 
-func hasServerGeneratedId(rc v1alpha1.ResourceConfig) bool {
+func hasServerGeneratedID(rc v1alpha1.ResourceConfig) bool {
 	return rc.ServerGeneratedIDField != ""
 }

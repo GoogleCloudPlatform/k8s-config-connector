@@ -37,10 +37,10 @@ import (
 )
 
 func TestResolveResourceReferenceToTFResource(t *testing.T) {
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Foo"}
-	ns := testId
+	ns := testID
 	testcontroller.EnsureNamespaceExistsT(t, c, ns)
 	resource := &Resource{}
 	resource.SetGroupVersionKind(gvk)
@@ -648,10 +648,10 @@ func TestResolveResourceReferenceToTFResource(t *testing.T) {
 }
 
 func TestResolveResourceReferenceToTFResource_deleting(t *testing.T) {
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Foo"}
-	ns := testId
+	ns := testID
 	testcontroller.EnsureNamespaceExistsT(t, c, ns)
 	resource := &Resource{}
 	resource.SetGroupVersionKind(gvk)
@@ -744,14 +744,14 @@ func TestResolveResourceReferenceToTFResource_deleting(t *testing.T) {
 }
 
 func TestResolveResourceReferenceToDCLResourceWithResourceID(t *testing.T) {
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{
 		Group:   "test1.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "Foo",
 	}
-	ns := testId
+	ns := testID
 	if err := testcontroller.EnsureNamespaceExists(c, ns); err != nil {
 		t.Fatal(err)
 	}
@@ -1033,14 +1033,14 @@ func TestResolveResourceReferenceToDCLResourceWithResourceID(t *testing.T) {
 }
 
 func TestResolveResourceReferenceToTFResourceWithResourceID(t *testing.T) {
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{
 		Group:   "test1.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "Foo",
 	}
-	ns := testId
+	ns := testID
 	if err := testcontroller.EnsureNamespaceExists(c, ns); err != nil {
 		t.Fatal(err)
 	}
@@ -1406,11 +1406,11 @@ func TestResolveResourceReferenceToTFResourceWithResourceID(t *testing.T) {
 }
 
 func TestResource_GetReferencedDCLResource(t *testing.T) {
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Foo"}
-	ns1 := testId + "-1"
-	ns2 := testId + "-2"
+	ns1 := testID + "-1"
+	ns2 := testID + "-2"
 	testcontroller.EnsureNamespaceExistsT(t, c, ns1)
 	testcontroller.EnsureNamespaceExistsT(t, c, ns2)
 	resource := &Resource{}
@@ -1546,11 +1546,11 @@ func TestResource_GetReferencedDCLResource(t *testing.T) {
 }
 
 func TestResource_GetReferencedTFResource(t *testing.T) {
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Foo"}
-	ns1 := testId + "-1"
-	ns2 := testId + "-2"
+	ns1 := testID + "-1"
+	ns2 := testID + "-2"
 	testcontroller.EnsureNamespaceExistsT(t, c, ns1)
 	testcontroller.EnsureNamespaceExistsT(t, c, ns2)
 	resource := &Resource{}

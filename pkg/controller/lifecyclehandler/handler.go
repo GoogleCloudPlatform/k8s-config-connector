@@ -202,16 +202,16 @@ func (r *LifecycleHandler) EnsureFinalizers(ctx context.Context, original, resou
 		if err != nil {
 			return err
 		}
-		copy, err := k8s.NewResource(u)
+		copyR, err := k8s.NewResource(u)
 		if err != nil {
 			return err
 		}
-		if !k8s.EnsureFinalizers(copy, finalizers...) {
-			if err := r.updateAPIServer(ctx, copy); err != nil {
+		if !k8s.EnsureFinalizers(copyR, finalizers...) {
+			if err := r.updateAPIServer(ctx, copyR); err != nil {
 				return err
 			}
 			// sync the resource up with the updated metadata.
-			resource.ObjectMeta = copy.ObjectMeta
+			resource.ObjectMeta = copyR.ObjectMeta
 		}
 	}
 	return nil
@@ -315,7 +315,7 @@ func (r *LifecycleHandler) HandleUpdating(ctx context.Context, resource *k8s.Res
 }
 
 func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s.Resource, err error) error {
-	msg := fmt.Sprintf("Update call failed: %w", err)
+	msg := fmt.Errorf("Update call failed: %w", err).Error()
 	setCondition(resource, corev1.ConditionFalse, k8s.UpdateFailed, msg)
 	setObservedGeneration(resource, resource.GetGeneration())
 	if err := r.updateStatus(ctx, resource); err != nil {

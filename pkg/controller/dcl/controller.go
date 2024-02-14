@@ -147,7 +147,7 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		mgr: mgr,
 		schemaRef: &k8s.SchemaReference{
 			CRD:        crd,
-			JsonSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
+			JSONSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
 			GVK:        gvk,
 		},
 		resourceLeaser:             leaser.NewResourceLeaser(nil, nil, mgr.GetClient()),
@@ -480,7 +480,7 @@ func (r *Reconciler) constructDesiredStateWithManagedFields(original *dcl.Resour
 	if err != nil {
 		return nil, fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %w", gvk, err)
 	}
-	trimmed, err := k8s.ConstructTrimmedSpecWithManagedFields(&original.Resource, r.schemaRef.JsonSchema, hierarchicalRefs)
+	trimmed, err := k8s.ConstructTrimmedSpecWithManagedFields(&original.Resource, r.schemaRef.JSONSchema, hierarchicalRefs)
 	if err != nil {
 		return nil, err
 	}

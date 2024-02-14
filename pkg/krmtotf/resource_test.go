@@ -639,16 +639,16 @@ func TestResource_GetImportID(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
 			r := resourceSkeleton()
 			r.ResourceConfig = *tc.rc
 			if tc.metadataName != "" {
 				r.SetName(tc.metadataName)
 			}
-			r.SetNamespace(testId)
-			testcontroller.EnsureNamespaceExistsT(t, c, testId)
-			bar := test.NewBarUnstructured("my-resource", testId, corev1.ConditionTrue)
+			r.SetNamespace(testID)
+			testcontroller.EnsureNamespaceExistsT(t, c, testID)
+			bar := test.NewBarUnstructured("my-resource", testID, corev1.ConditionTrue)
 			r.SetAnnotations(bar.GetAnnotations())
 			r.Spec = tc.spec
 			if r.Spec == nil {
@@ -656,7 +656,7 @@ func TestResource_GetImportID(t *testing.T) {
 			}
 			r.Status = bar.Object["status"].(map[string]interface{})
 			for _, obj := range tc.referencedResources {
-				obj.SetNamespace(testId)
+				obj.SetNamespace(testID)
 			}
 			test.EnsureObjectsExist(t, tc.referencedResources, c)
 			actual, err := r.GetImportID(c, smLoader)

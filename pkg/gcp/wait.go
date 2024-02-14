@@ -34,7 +34,7 @@ type AssetInventoryWaitCallback func(operation *cloudasset.Operation) error
 type BigtableWaitCallback func(operation *bigtableadmin.Operation) error
 type RedisWaitCallback func(operation *redis.Operation) error
 type SpannerWaitCallback func(operation *spanner.Operation) error
-type SqlWaitCallback func(operation *sqladmin.Operation) error
+type SQLWaitCallback func(operation *sqladmin.Operation) error
 type ResourceManagerCallback func(operation *resourcemanager.Operation) error
 type ComputeWaitCallback func(operation *compute.Operation) error
 type ContainerWaitCallback func(operation *container.Operation) error

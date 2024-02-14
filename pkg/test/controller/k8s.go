@@ -26,9 +26,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 
+	goerrors "errors"
+
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
-	goerrors "errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -143,9 +144,9 @@ func WaitForUnstructDeleteToFinish(t *testing.T, kubeClient client.Client, origU
 }
 
 // ReplaceTestVars replaces all occurrences of placeholder strings e.g. ${uniqueId} in a given byte slice.
-func ReplaceTestVars(t *testing.T, b []byte, uniqueId string, project testgcp.GCPProject) []byte {
+func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GCPProject) []byte {
 	s := string(b)
-	s = strings.Replace(s, "${uniqueId}", uniqueId, -1)
+	s = strings.Replace(s, "${uniqueId}", uniqueID, -1)
 	s = strings.Replace(s, "${projectId}", project.ProjectID, -1)
 	if strings.Contains(s, "${projectNumber}") {
 		projectNumber := strconv.FormatInt(project.ProjectNumber, 10)
@@ -158,12 +159,12 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueId string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestFolder2ID.Key), fmt.Sprintf("\"%s\"", testgcp.TestFolder2ID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("organizations/${%s}", testgcp.TestOrgID.Key), fmt.Sprintf("organizations/%s", testgcp.TestOrgID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestOrgID.Key), fmt.Sprintf("\"%s\"", testgcp.TestOrgID.Get()), -1)
-	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentOrgProjectId), fmt.Sprintf("projects/%s", testgcp.GetDependentOrgProjectID(t)), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentOrgProjectId), fmt.Sprintf("\"%s\"", testgcp.GetDependentOrgProjectID(t)), -1)
-	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentFolderProjectId), fmt.Sprintf("projects/%s", testgcp.GetDependentFolderProjectID(t)), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentFolderProjectId), fmt.Sprintf("\"%s\"", testgcp.GetDependentFolderProjectID(t)), -1)
-	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentNoNetworkProjectId), fmt.Sprintf("projects/%s", testgcp.GetDependentNoNetworkProjectID(t)), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentNoNetworkProjectId), fmt.Sprintf("\"%s\"", testgcp.GetDependentNoNetworkProjectID(t)), -1)
+	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentOrgProjectID), fmt.Sprintf("projects/%s", testgcp.GetDependentOrgProjectID(t)), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentOrgProjectID), fmt.Sprintf("\"%s\"", testgcp.GetDependentOrgProjectID(t)), -1)
+	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentFolderProjectID), fmt.Sprintf("projects/%s", testgcp.GetDependentFolderProjectID(t)), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentFolderProjectID), fmt.Sprintf("\"%s\"", testgcp.GetDependentFolderProjectID(t)), -1)
+	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentNoNetworkProjectID), fmt.Sprintf("projects/%s", testgcp.GetDependentNoNetworkProjectID(t)), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentNoNetworkProjectID), fmt.Sprintf("\"%s\"", testgcp.GetDependentNoNetworkProjectID(t)), -1)
 	s = strings.Replace(s, fmt.Sprintf("organizations/${%s}", testgcp.IAMIntegrationTestsOrganizationID.Key), fmt.Sprintf("organizations/%s", testgcp.IAMIntegrationTestsOrganizationID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IAMIntegrationTestsOrganizationID.Key), fmt.Sprintf("\"%s\"", testgcp.IAMIntegrationTestsOrganizationID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IsolatedTestOrgName), testgcp.GetIsolatedTestOrgName(t), -1)
@@ -174,7 +175,7 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueId string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.CloudFunctionsTestProject), testgcp.GetCloudFunctionsTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IdentityPlatformTestProject), testgcp.GetIdentityPlatformTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.InterconnectTestProject), testgcp.GetInterconnectTestProject(t), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.HighCPUQuotaTestProject), testgcp.GetHighCpuQuotaTestProject(t), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.HighCPUQuotaTestProject), testgcp.GetHighCPUQuotaTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.RecaptchaEnterpriseTestProject), testgcp.GetRecaptchaEnterpriseTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAttachedClusterProject.Key), testgcp.TestKCCAttachedClusterProject.Get(), -1)
 	return []byte(s)

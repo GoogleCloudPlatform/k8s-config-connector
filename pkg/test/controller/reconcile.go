@@ -209,9 +209,9 @@ tryAgain:
 				t.Logf("detected transient error, will retry: %v", err)
 				time.Sleep(transientErrorsRetryInterval)
 				goto tryAgain
-			} else {
-				t.Logf("detected transient error, but maximum number of retries reached: %v", err)
-			}
+			} 
+
+			t.Logf("detected transient error, but maximum number of retries reached: %v", err)
 		}
 	}
 
@@ -229,7 +229,7 @@ tryAgain:
 	}
 }
 
-func GetCRDForKind(t *testing.T, kubeClient client.Client, kind string) *apiextensions.CustomResourceDefinition {
+func GetCRDForKind(t *testing.T, kind string) *apiextensions.CustomResourceDefinition {
 	t.Helper()
 	c, err := crdloader.GetCRDForKind(kind)
 	if err != nil {
@@ -245,7 +245,7 @@ func SetupNamespaceForDefaultProject(t *testing.T, c client.Client, name string)
 
 func SetupNamespaceForProject(t *testing.T, c client.Client, name, projectID string) {
 	EnsureNamespaceExistsT(t, c, name)
-	EnsureNamespaceHasProjectIDAnnotation(t, c, name, projectID)
+	EnsureNamespaceHasprojectIDAnnotation(t, c, name, projectID)
 }
 
 func EnsureNamespaceExists(c client.Client, name string) error {
@@ -266,15 +266,15 @@ func EnsureNamespaceExistsT(t *testing.T, c client.Client, name string) {
 	}
 }
 
-func EnsureNamespaceHasProjectIDAnnotation(t *testing.T, c client.Client, namespaceName, projectId string) {
+func EnsureNamespaceHasprojectIDAnnotation(t *testing.T, c client.Client, namespaceName, projectID string) {
 	t.Helper()
-	err := createNamespaceProjectIdAnnotation(context.TODO(), c, namespaceName, projectId)
+	err := createNamespaceprojectIDAnnotation(context.TODO(), c, namespaceName, projectID)
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
-func createNamespaceProjectIdAnnotation(ctx context.Context, c client.Client, namespaceName, projectId string) error {
+func createNamespaceprojectIDAnnotation(ctx context.Context, c client.Client, namespaceName, projectID string) error {
 tryAgain:
 	attempt := 0
 	var ns corev1.Namespace
@@ -282,15 +282,14 @@ tryAgain:
 		return fmt.Errorf("error getting namespace %q: %w", namespaceName, err)
 	}
 	if val, ok := k8s.GetAnnotation(k8s.ProjectIDAnnotation, &ns); ok {
-		if val == projectId {
-			klog.Infof("namespace %q already has project id annotation value %q", namespaceName, projectId)
+		if val == projectID {
+			klog.Infof("namespace %q already has project id annotation value %q", namespaceName, projectID)
 			return nil
-		} else {
-			return fmt.Errorf("cannot set project id annotatation value to %q: the annotation already contained a value of %q",
-				projectId, val)
 		}
+
+		return fmt.Errorf("cannot set project id annotatation value to %q: the annotation already contained a value of %q", projectID, val)
 	}
-	k8s.SetAnnotation(k8s.ProjectIDAnnotation, projectId, &ns)
+	k8s.SetAnnotation(k8s.ProjectIDAnnotation, projectID, &ns)
 	err := c.Update(ctx, &ns)
 	if err != nil {
 		if apierrors.IsConflict(err) {

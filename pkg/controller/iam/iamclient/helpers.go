@@ -169,7 +169,7 @@ func useIfNonEmptyElseDefaultTo(str, backup string) string {
 	return backup
 }
 
-func parseNameFromId(id string) (string, error) {
+func parseNameFromID(id string) (string, error) {
 	if strings.TrimSpace(id) == "" {
 		return "", fmt.Errorf("error parsing name from id: id is empty")
 	}

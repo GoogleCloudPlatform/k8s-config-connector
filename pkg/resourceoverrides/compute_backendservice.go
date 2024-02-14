@@ -26,8 +26,8 @@ import (
 )
 
 var (
-	oauth2ClientIdPath    = []string{"iap", "oauth2ClientId"}
-	oauth2ClientIdRefPath = []string{"iap", "oauth2ClientIdRef"}
+	oauth2ClientIDPath    = []string{"iap", "oauth2ClientId"}
+	oauth2ClientIDRefPath = []string{"iap", "oauth2ClientIdRef"}
 )
 
 func GetComputeBackendServiceResourceOverrides() ResourceOverrides {
@@ -36,30 +36,30 @@ func GetComputeBackendServiceResourceOverrides() ResourceOverrides {
 	}
 	// Preserve the legacy non-reference field 'iap.oauth2ClientId' after it is changed to
 	// a reference field, 'iap.oauth2ClientIdRef'.
-	ro.Overrides = append(ro.Overrides, keepOauth2ClientIdField())
+	ro.Overrides = append(ro.Overrides, keepOauth2ClientIDField())
 	return ro
 }
 
-func keepOauth2ClientIdField() ResourceOverride {
+func keepOauth2ClientIDField() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		if err := PreserveMutuallyExclusiveNonReferenceField(crd, []string{"iap"}, oauth2ClientIdRefPath[1], oauth2ClientIdPath[1]); err != nil {
+		if err := PreserveMutuallyExclusiveNonReferenceField(crd, []string{"iap"}, oauth2ClientIDRefPath[1], oauth2ClientIDPath[1]); err != nil {
 			return err
 		}
 		return nil
 	}
 	o.PreActuationTransform = func(r *k8s.Resource) error {
-		if err := FavorAuthoritativeFieldOverLegacyField(r, oauth2ClientIdPath, oauth2ClientIdRefPath); err != nil {
-			return fmt.Errorf("error handling '%v' and '%v' fields in pre-actuation transformation: %w", strings.Join(oauth2ClientIdPath, "."), strings.Join(oauth2ClientIdRefPath, "."), err)
+		if err := FavorAuthoritativeFieldOverLegacyField(r, oauth2ClientIDPath, oauth2ClientIDRefPath); err != nil {
+			return fmt.Errorf("error handling '%v' and '%v' fields in pre-actuation transformation: %w", strings.Join(oauth2ClientIDPath, "."), strings.Join(oauth2ClientIDRefPath, "."), err)
 		}
 		return nil
 	}
 	o.PostActuationTransform = func(original, reconciled *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error {
-		if err := PreserveUserSpecifiedLegacyField(original, reconciled, oauth2ClientIdPath...); err != nil {
-			return fmt.Errorf("error preserving '%v' in post-actuation transformation: %w", strings.Join(oauth2ClientIdPath, "."), err)
+		if err := PreserveUserSpecifiedLegacyField(original, reconciled, oauth2ClientIDPath...); err != nil {
+			return fmt.Errorf("error preserving '%v' in post-actuation transformation: %w", strings.Join(oauth2ClientIDPath, "."), err)
 		}
-		if err := PruneDefaultedAuthoritativeFieldIfOnlyLegacyFieldSpecified(original, reconciled, oauth2ClientIdPath, oauth2ClientIdRefPath); err != nil {
-			return fmt.Errorf("error conditionally pruning '%v' in post-actuation transformation: %w", strings.Join(oauth2ClientIdRefPath, "."), err)
+		if err := PruneDefaultedAuthoritativeFieldIfOnlyLegacyFieldSpecified(original, reconciled, oauth2ClientIDPath, oauth2ClientIDRefPath); err != nil {
+			return fmt.Errorf("error conditionally pruning '%v' in post-actuation transformation: %w", strings.Join(oauth2ClientIDRefPath, "."), err)
 		}
 		return nil
 	}

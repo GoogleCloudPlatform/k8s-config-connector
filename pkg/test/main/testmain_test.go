@@ -45,11 +45,11 @@ func TestKubeAPIServerVersion(t *testing.T) {
 // getKubernetesVersion retrieves the Kubernetes API Server version,
 // and returns the major and minor version.
 func getKubernetesVersion(clientConfig *rest.Config) (*version.Info, error) {
-	clientGoClient := kubernetes.NewForConfigOrDie(mgr.GetConfig())
+	clientGoClient := kubernetes.NewForConfigOrDie(clientConfig)
 	version, err := clientGoClient.ServerVersion()
 	return version, err
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForUnitTests(m, &mgr)
+	testmain.ForUnitTests(m, &mgr)
 }

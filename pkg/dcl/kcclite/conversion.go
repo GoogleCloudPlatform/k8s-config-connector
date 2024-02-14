@@ -808,7 +808,7 @@ func mergeObjectMap(state map[string]interface{}, spec map[string]interface{}, p
 		return nil, fmt.Errorf("the number of items for field '%v' returned in state is not the same as configured in spec; state: %v, spec: %v", field, stateObjectMap, specObjectMap)
 	}
 
-	for k, _ := range stateObjectMap {
+	for k := range stateObjectMap {
 		if _, ok := specObjectMap[k]; !ok {
 			return nil, fmt.Errorf("key '%v' is not configured in spec for field '%v'", k, field)
 		}

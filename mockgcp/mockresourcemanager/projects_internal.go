@@ -165,7 +165,7 @@ func (s *ProjectsInternal) tryGetProject(ctx context.Context, project *projects.
 // 		return nil, status.Error(codes.PermissionDenied, "permission denied")
 // 	}
 
-// 	fqn := "projects/" + obj.ProjectId
+// 	fqn := "projects/" + obj.ProjectID
 
 // 	// Only the `display_name` and `labels` fields can be change.
 // 	paths := req.GetUpdateMask().GetPaths()

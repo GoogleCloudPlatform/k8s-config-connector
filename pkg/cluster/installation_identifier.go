@@ -32,7 +32,7 @@ import (
 // The first time GetNamespaceID(...) is called, an ID is generated and persisted to the APIServer in a ConfigMap.
 // The xid library is used to generate an ID that is unique across all KCC installations and namespaces.
 func GetNamespaceID(namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, ctx context.Context, namespace string) (string, error) {
-	return getOrSetNamespaceId(namespaceIDConfigMapNN, kubeClient, ctx, namespace, nil)
+	return getOrSetNamespaceID(namespaceIDConfigMapNN, kubeClient, ctx, namespace, nil)
 }
 
 // Set the namespace ID value. This is useful for scenarios where ID uniqueness is not desired, for example, while
@@ -41,7 +41,7 @@ func GetNamespaceID(namespaceIDConfigMapNN types.NamespacedName, kubeClient clie
 // test to succeed at a time. To enable parallel testing, we have all tests running against the main test project use
 // the same ID for their namespace.
 func SetNamespaceID(namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, ctx context.Context, namespace, uniqueID string) error {
-	_, err := getOrSetNamespaceId(namespaceIDConfigMapNN, kubeClient, ctx, namespace, &uniqueID)
+	_, err := getOrSetNamespaceID(namespaceIDConfigMapNN, kubeClient, ctx, namespace, &uniqueID)
 	return err
 }
 
@@ -65,13 +65,11 @@ func DeleteNamespaceID(namespaceIDConfigMapNN types.NamespacedName, kubeClient c
 		}
 		return backoff.Permanent(fmt.Errorf("error deleting namespace id from config map '%v': %w", namespaceIDConfigMapNN, err))
 	}
-	if err := backoff.Retry(deleteNamespaceIDFunc, backoff.NewExponentialBackOff()); err != nil {
-		return err
-	}
-	return nil
+
+	return backoff.Retry(deleteNamespaceIDFunc, backoff.NewExponentialBackOff())
 }
 
-func getOrSetNamespaceId(namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, ctx context.Context, namespace string, idToSet *string) (string, error) {
+func getOrSetNamespaceID(namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, ctx context.Context, namespace string, idToSet *string) (string, error) {
 	var configMap *corev1.ConfigMap
 	var err error
 	getOrUpdateConfigMapFunc := func() error {

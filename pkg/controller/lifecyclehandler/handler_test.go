@@ -155,14 +155,14 @@ func TestIsOrphaned(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
-			tc.resource.SetNamespace(testId)
-			if err := testcontroller.EnsureNamespaceExists(c, testId); err != nil {
+			testID := testvariable.NewUniqueID()
+			tc.resource.SetNamespace(testID)
+			if err := testcontroller.EnsureNamespaceExists(c, testID); err != nil {
 				t.Fatal(err)
 			}
 			if tc.parentObjectName != "" {
 				references := []*unstructured.Unstructured{
-					test.NewBarUnstructured(tc.parentObjectName, testId, corev1.ConditionTrue),
+					test.NewBarUnstructured(tc.parentObjectName, testID, corev1.ConditionTrue),
 				}
 				test.EnsureObjectsExist(t, references, c)
 			}
@@ -178,5 +178,5 @@ func TestIsOrphaned(t *testing.T) {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForUnitTests(m, &mgr)
+	testmain.ForUnitTests(m, &mgr)
 }

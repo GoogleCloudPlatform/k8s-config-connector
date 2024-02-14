@@ -56,7 +56,7 @@ func (h *Harness) RESTConfig() *rest.Config {
 	return h.restConfig
 }
 
-func (h *Harness) NewClient(config *rest.Config, options client.Options) (client.Client, error) {
+func (h *Harness) NewClient(_ *rest.Config, _ client.Options) (client.Client, error) {
 	if h.Client == nil {
 		h.Fatalf("WithObjects must be called before NewClient")
 	}

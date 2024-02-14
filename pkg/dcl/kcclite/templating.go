@@ -112,12 +112,12 @@ func resolveParentReferenceFieldValueForDCLResource(field string, resource *k8s.
 		return "", fmt.Errorf("could not find schema for DCL field '%v' for GroupVersionKind %v", field, resource.GroupVersionKind())
 	}
 	if dcl.IsMultiTypeParentReferenceField([]string{field}) {
-		return resolveMultiTypeParentReferenceFieldValueForDCLResource(field, fieldSchema, resource, smLoader, kubeClient)
+		return resolveMultiTypeParentReferenceFieldValueForDCLResource(fieldSchema, resource, smLoader, kubeClient)
 	}
 	return resolveSingleTypeParentReferenceFieldValueForDCLResource(field, fieldSchema, resource, smLoader, kubeClient)
 }
 
-func resolveMultiTypeParentReferenceFieldValueForDCLResource(field string, schema *openapi.Schema, resource *k8s.Resource,
+func resolveMultiTypeParentReferenceFieldValueForDCLResource(schema *openapi.Schema, resource *k8s.Resource,
 	smLoader dclmetadata.ServiceMetadataLoader, kubeClient client.Client) (string, error) {
 	rawVal, tc, err := dcl.GetHierarchicalRefFromConfigForMultiParentResource(resource.Spec, schema, smLoader)
 	if err != nil {

@@ -77,7 +77,7 @@ func (i *iamClient) newIAMPolicySkeleton(u *unstructured.Unstructured, kubeClien
 	if err != nil {
 		return nil, fmt.Errorf("error converting '%v' with name '%v' to krmtotf resource: %w", u.GroupVersionKind(), u.GetName(), err)
 	}
-	importId, err := resource.GetImportID(kubeClient, i.smLoader)
+	importID, err := resource.GetImportID(kubeClient, i.smLoader)
 	if err != nil {
 		return nil, fmt.Errorf("error getting import id for '%v' with name '%v': %w",
 			resource.GroupVersionKind(),
@@ -97,7 +97,7 @@ func (i *iamClient) newIAMPolicySkeleton(u *unstructured.Unstructured, kubeClien
 			ResourceReference: v1beta1.ResourceReference{
 				Kind:       u.GetKind(),
 				APIVersion: u.GetAPIVersion(),
-				External:   importId,
+				External:   importID,
 			},
 		},
 	}

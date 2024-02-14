@@ -364,10 +364,10 @@ func TestProjectIdAsNamespace(t *testing.T) {
 		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "IAMServiceAccount"
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, tstCtx testrunner.TestContext, sysCtx testrunner.SystemContext) {
-		projectId := testgcp.GetDefaultProjectID(t)
-		testcontroller.SetupNamespaceForDefaultProject(t, sysCtx.Manager.GetClient(), projectId)
+		projectID := testgcp.GetDefaultProjectID(t)
+		testcontroller.SetupNamespaceForDefaultProject(t, sysCtx.Manager.GetClient(), projectID)
 		refResource := tstCtx.CreateUnstruct
-		refResource.SetNamespace(projectId)
+		refResource.SetNamespace(projectID)
 		if err := sysCtx.Manager.GetClient().Create(ctx, refResource); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
@@ -757,14 +757,14 @@ func testConflictPreventionWithEtags(ctx context.Context, t *testing.T, iamClien
 	}
 }
 
-func newPolicyMemberWithIAMCondition(t *testing.T, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference, testId string) *iamv1beta1.IAMPolicyMember {
-	iamPolicyMember := newPolicyMember(t, refResource, resourceRef, testId)
+func newPolicyMemberWithIAMCondition(t *testing.T, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference, testID string) *iamv1beta1.IAMPolicyMember {
+	iamPolicyMember := newPolicyMember(t, refResource, resourceRef, testID)
 	iamPolicyMember.Spec.Condition = newIAMCondition()
 	return iamPolicyMember
 }
 
-func newPolicyWithIAMConditions(t *testing.T, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference, testId string) *iamv1beta1.IAMPolicy {
-	iamPolicy := newPolicy(t, refResource, resourceRef, testId)
+func newPolicyWithIAMConditions(t *testing.T, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference, testID string) *iamv1beta1.IAMPolicy {
+	iamPolicy := newPolicy(t, refResource, resourceRef, testID)
 	bindings := make([]iamv1beta1.IAMPolicyBinding, 0)
 	for _, binding := range iamPolicy.Spec.Bindings {
 		binding.Condition = newIAMCondition()
@@ -774,8 +774,8 @@ func newPolicyWithIAMConditions(t *testing.T, refResource *unstructured.Unstruct
 	return iamPolicy
 }
 
-func newPolicyWithAuditConfigs(t *testing.T, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference, testId string) *iamv1beta1.IAMPolicy {
-	iamPolicy := newPolicy(t, refResource, resourceRef, testId)
+func newPolicyWithAuditConfigs(t *testing.T, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference, testID string) *iamv1beta1.IAMPolicy {
+	iamPolicy := newPolicy(t, refResource, resourceRef, testID)
 	iamPolicy.Spec.AuditConfigs = []iamv1beta1.IAMPolicyAuditConfig{
 		{
 			Service: "allServices",
@@ -793,7 +793,7 @@ func newPolicyWithAuditConfigs(t *testing.T, refResource *unstructured.Unstructu
 	return iamPolicy
 }
 
-func newPolicyMember(t *testing.T, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference, testId string) *iamv1beta1.IAMPolicyMember {
+func newPolicyMember(t *testing.T, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference, testID string) *iamv1beta1.IAMPolicyMember {
 	rc := testiam.GetResourceContext(t, refResource.GetKind())
 	return &iamv1beta1.IAMPolicyMember{
 		TypeMeta: metav1.TypeMeta{
@@ -801,7 +801,7 @@ func newPolicyMember(t *testing.T, refResource *unstructured.Unstructured, resou
 			Kind:       iamv1beta1.IAMPolicyMemberGVK.Kind,
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      fmt.Sprintf("iam-policy-member-%v", testId),
+			Name:      fmt.Sprintf("iam-policy-member-%v", testID),
 			Namespace: refResource.GetNamespace(),
 		},
 		Spec: iamv1beta1.IAMPolicyMemberSpec{
@@ -812,7 +812,7 @@ func newPolicyMember(t *testing.T, refResource *unstructured.Unstructured, resou
 	}
 }
 
-func newPolicy(t *testing.T, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference, testId string) *iamv1beta1.IAMPolicy {
+func newPolicy(t *testing.T, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference, testID string) *iamv1beta1.IAMPolicy {
 	rc := testiam.GetResourceContext(t, refResource.GetKind())
 	return &iamv1beta1.IAMPolicy{
 		TypeMeta: metav1.TypeMeta{
@@ -820,7 +820,7 @@ func newPolicy(t *testing.T, refResource *unstructured.Unstructured, resourceRef
 			Kind:       iamv1beta1.IAMPolicyGVK.Kind,
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      fmt.Sprintf("iam-policy-%v", testId),
+			Name:      fmt.Sprintf("iam-policy-%v", testID),
 			Namespace: refResource.GetNamespace(),
 		},
 		Spec: iamv1beta1.IAMPolicySpec{
@@ -846,14 +846,14 @@ func newIAMCondition() *iamv1beta1.IAMCondition {
 	}
 }
 
-func newAuditConfig(t *testing.T, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference, testId string) *iamv1beta1.IAMAuditConfig {
+func newAuditConfig(t *testing.T, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference, testID string) *iamv1beta1.IAMAuditConfig {
 	return &iamv1beta1.IAMAuditConfig{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: iamv1beta1.IAMAuditConfigGVK.GroupKind().String(),
 			Kind:       iamv1beta1.IAMPolicyGVK.Kind,
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      fmt.Sprintf("iam-audit-config-%v", testId),
+			Name:      fmt.Sprintf("iam-audit-config-%v", testID),
 			Namespace: refResource.GetNamespace(),
 		},
 		Spec: iamv1beta1.IAMAuditConfigSpec{

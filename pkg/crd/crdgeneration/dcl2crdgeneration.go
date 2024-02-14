@@ -43,7 +43,7 @@ const (
 )
 
 var (
-	UnsupportedReferencedResource = fmt.Errorf("referenced resource is unsupported by KCC")
+	ErrUnsupportedReferencedResource = fmt.Errorf("referenced resource is unsupported by KCC")
 )
 
 type DCL2CRDGenerator struct {
@@ -422,10 +422,10 @@ func (a *DCL2CRDGenerator) resolveResourceReferenceJSONSchema(schema *openapi.Sc
 	if len(tcs) == 1 {
 		refSchema, err := a.resolveResourceReferenceJSONSchemaPerType(&tcs[0], schema.Description)
 		return refSchema, err
-	} else {
-		refSchema, err := a.resolveResourceReferenceJSONSchemaMultiTypes(tcs, schema.Description)
-		return refSchema, err
 	}
+
+	refSchema, err := a.resolveResourceReferenceJSONSchemaMultiTypes(tcs, schema.Description)
+	return refSchema, err
 }
 
 func (a *DCL2CRDGenerator) resolveResourceReferenceJSONSchemaPerType(tc *corekccv1alpha1.TypeConfig, description string) (*apiextensions.JSONSchemaProps, error) {
@@ -517,7 +517,7 @@ func (a *DCL2CRDGenerator) addSchemaRulesForHierarchicalReferences(jsonSchema *a
 func (a *DCL2CRDGenerator) getDescriptionForExternalRef(tc *corekccv1alpha1.TypeConfig, baseDescription string) (string, error) {
 	exampleAllowedValue, err := a.getExampleAllowedValueForExternalRef(tc)
 	if err != nil {
-		if errors.Is(err, UnsupportedReferencedResource) {
+		if errors.Is(err, ErrUnsupportedReferencedResource) {
 			return baseDescription, nil
 		}
 		return "", err
@@ -533,7 +533,7 @@ func (a *DCL2CRDGenerator) getDescriptionForMultiKindExternalRef(tcs []corekccv1
 	for _, tc := range tcs {
 		v, err := a.getExampleAllowedValueForExternalRef(&tc)
 		if err != nil {
-			if errors.Is(err, UnsupportedReferencedResource) {
+			if errors.Is(err, ErrUnsupportedReferencedResource) {
 				continue
 			}
 			return "", err
@@ -555,7 +555,7 @@ func (a *DCL2CRDGenerator) getExampleAllowedValueForExternalRef(tc *corekccv1alp
 	if !k8s.GVKListContains(a.allSupportedGVKs, tc.GVK) {
 		switch tc.GVK.Kind {
 		default:
-			return "", UnsupportedReferencedResource
+			return "", ErrUnsupportedReferencedResource
 		// For some resources, `external` allows the same value regardless of
 		// the referencing resource, allowing us to just hardcode an allowed
 		// value.

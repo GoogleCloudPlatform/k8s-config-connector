@@ -303,7 +303,7 @@ func formatSecretName(serviceName string) string {
 // the webhook.Server requires the certificates to be present on the local filesystem so fetch them from the API
 // server and persist them to disk
 func persistCertificatesToDisk(certWriter writer.CertWriter, svc *corev1.Service) error {
-	dnsName := getDnsNameForService(svc)
+	dnsName := getDNSNameForService(svc)
 	artifacts, _, err := certWriter.EnsureCert(dnsName)
 	if err != nil {
 		return fmt.Errorf("error ensuring certificate: %w", err)
@@ -333,7 +333,7 @@ func writeCertificates(artifacts *generator.Artifacts, dir, certName, keyName st
 	return nil
 }
 
-func getDnsNameForService(svc *corev1.Service) string {
+func getDNSNameForService(svc *corev1.Service) string {
 	// the following line of logic for calculating the dnsName is taken from provisioner.dnsNameFromClientConfig(...)
 	// that code is not easily reused
 	return generator.ServiceToCommonName(svc.Namespace, svc.Name)

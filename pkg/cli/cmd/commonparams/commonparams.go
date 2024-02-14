@@ -113,10 +113,8 @@ func ValidateResourceFormat(resourceFormat, iamFormat string) error {
 	if err := validateResourceFormatValue(resourceFormat); err != nil {
 		return err
 	}
-	if err := validateResourceFormatMutualExclusivity(resourceFormat, iamFormat); err != nil {
-		return err
-	}
-	return nil
+	
+	return validateResourceFormatMutualExclusivity(resourceFormat, iamFormat)
 }
 
 func validateResourceFormatValue(value string) error {
@@ -135,7 +133,7 @@ func validateResourceFormatValue(value string) error {
 func validateResourceFormatMutualExclusivity(resourceFormat, iamFormat string) error {
 	switch resourceFormat {
 	case HCLResourceFormatOption:
-		return validateHCLResourceFormatMutualExclusivity(resourceFormat, iamFormat)
+		return validateHCLResourceFormatMutualExclusivity(iamFormat)
 	case KRMResourceFormatOption:
 		// all parameters can be used with the KRM format
 		return nil
@@ -144,7 +142,7 @@ func validateResourceFormatMutualExclusivity(resourceFormat, iamFormat string) e
 	}
 }
 
-func validateHCLResourceFormatMutualExclusivity(resourceFormat, iamFormat string) error {
+func validateHCLResourceFormatMutualExclusivity(iamFormat string) error {
 	if iamFormat == NoneIAMFormatOption {
 		return nil
 	}

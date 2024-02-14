@@ -117,7 +117,7 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		mgr:            mgr,
 		schemaRef: &k8s.SchemaReference{
 			CRD:        crd,
-			JsonSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
+			JSONSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
 			GVK: schema.GroupVersionKind{
 				Group:   crd.Spec.Group,
 				Version: k8s.GetVersionFromCRD(crd),
@@ -222,7 +222,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 		}
 
 		if krmtotf.ShouldResolveParentForDelete(krmResource) {
-			orphaned, parent, err := r.isOrphaned(ctx, krmResource)
+			orphaned, parent, err := r.isOrphaned(krmResource)
 			// Handle orphaned resources
 			if err != nil {
 				return false, err
@@ -282,7 +282,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			fmt.Errorf("underlying resource no longer exists and can't be recreated without creating a brand new resource"))
 	}
 	config, secretVersions, err := krmtotf.KRMResourceToTFResourceConfigFull(
-		krmResource, r, r.smLoader, liveState, r.schemaRef.JsonSchema, true, label.GetDefaultLabels(),
+		krmResource, r, r.smLoader, liveState, r.schemaRef.JSONSchema, true, label.GetDefaultLabels(),
 	)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
@@ -404,7 +404,7 @@ func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, 
 	// Ensure the resource has a management-conflict-prevention-policy
 	// annotation. This is done to be backwards compatible with resources
 	// created before the webhook for defaulting the annotation was added.
-	if err := k8s.EnsureManagementConflictPreventionAnnotationForTFBasedResource(r.Client, ctx, resource, &rc, r.provider.ResourcesMap); err != nil {
+	if err := k8s.EnsureManagementConflictPreventionAnnotationForTFBasedResource(ctx, r.Client, resource, &rc, r.provider.ResourcesMap); err != nil {
 		return fmt.Errorf("error ensuring resource '%v' has a management conflict policy: %w", k8s.GetNamespacedName(resource), err)
 	}
 
@@ -483,7 +483,7 @@ func (r *Reconciler) handleUpToDate(ctx context.Context, resource *krmtotf.Resou
 // * Hierarchical resources are also considered parents.
 // It is assumed that parent and hierarchical references are always at the top
 // level.
-func (r *Reconciler) isOrphaned(ctx context.Context, resource *krmtotf.Resource) (orphaned bool, parent *k8s.Resource, err error) {
+func (r *Reconciler) isOrphaned(resource *krmtotf.Resource) (orphaned bool, parent *k8s.Resource, err error) {
 	// Currently, it's assumed that parent reference fields only support one resource type.
 	parentConfigs := make([]corekccv1alpha1.TypeConfig, 0)
 	for _, ref := range resource.ResourceConfig.ResourceReferences {

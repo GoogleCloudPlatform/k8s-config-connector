@@ -115,19 +115,19 @@ func deleteExport(httpClient *http.Client, bucketName, objectName string) {
 }
 
 func getParentName(params *parameters.Parameters) (string, error) {
-	if params.ProjectId != "" {
-		return fmt.Sprintf("projects/%v", params.ProjectId), nil
+	if params.ProjectID != "" {
+		return fmt.Sprintf("projects/%v", params.ProjectID), nil
 	}
-	if params.FolderId != 0 {
-		return fmt.Sprintf("folders/%v", params.FolderId), nil
+	if params.FolderID != 0 {
+		return fmt.Sprintf("folders/%v", params.FolderID), nil
 	}
-	if params.OrganizationId != 0 {
-		return fmt.Sprintf("organizations/%v", params.OrganizationId), nil
+	if params.OrganizationID != 0 {
+		return fmt.Sprintf("organizations/%v", params.OrganizationID), nil
 	}
 	// technically the parameters validation methods guard against this case but we return a helpful error in case there
 	// is a bug in the validation
 	return "", fmt.Errorf("one of the '%v', '%v', or '%v' parameters must be defined when exporting",
-		parameters.ProjectIdParam, parameters.FolderIdParam, parameters.OrganizationIdParam)
+		parameters.ProjectIDParam, parameters.FolderIDParam, parameters.OrganizationIDParam)
 }
 
 func newRequestContext() (context.Context, func()) {
