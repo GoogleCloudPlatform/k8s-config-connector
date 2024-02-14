@@ -119,7 +119,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
 	if err != nil {
-		return nil, fmt.Errorf("error creating new controller: %v", err)
+		return nil, fmt.Errorf("error creating new controller: %w", err)
 	}
 	logger.V(2).Info("Registered dcl controller", "kind", kind, "apiVersion", apiVersion)
 	return r, nil
@@ -203,7 +203,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(resource), err)
 	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
-		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %v", k8s.GetNamespacedName(resource), err)
+		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %w", k8s.GetNamespacedName(resource), err)
 	}
 	// Apply pre-actuation transformation.
 	if err := resourceoverrides.Handler.PreActuationTransform(&resource.Resource); err != nil {
@@ -435,14 +435,14 @@ func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, 
 	gvk := resource.GroupVersionKind()
 	containers, err := dclcontainer.GetContainersForGVK(gvk, r.converter.MetadataLoader, r.converter.SchemaLoader)
 	if err != nil {
-		return fmt.Errorf("error getting containers supported by GroupVersionKind %v: %v", gvk, err)
+		return fmt.Errorf("error getting containers supported by GroupVersionKind %v: %w", gvk, err)
 	}
 	hierarchicalRefs, err := dcl.GetHierarchicalReferencesForGVK(gvk, r.converter.MetadataLoader, r.converter.SchemaLoader)
 	if err != nil {
-		return fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %v", gvk, err)
+		return fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %w", gvk, err)
 	}
 	if err := k8s.EnsureHierarchicalReference(ctx, &resource.Resource, hierarchicalRefs, containers, r.Client); err != nil {
-		return fmt.Errorf("error ensuring resource '%v' has a hierarchical reference: %v", k8s.GetNamespacedName(resource), err)
+		return fmt.Errorf("error ensuring resource '%v' has a hierarchical reference: %w", k8s.GetNamespacedName(resource), err)
 	}
 	return nil
 }
@@ -485,7 +485,7 @@ func (r *Reconciler) constructDesiredStateWithManagedFields(original *dcl.Resour
 	gvk := original.GroupVersionKind()
 	hierarchicalRefs, err := dcl.GetHierarchicalReferencesForGVK(gvk, r.converter.MetadataLoader, r.converter.SchemaLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %v", gvk, err)
+		return nil, fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %w", gvk, err)
 	}
 	trimmed, err := k8s.ConstructTrimmedSpecWithManagedFields(&original.Resource, r.schemaRef.JsonSchema, hierarchicalRefs)
 	if err != nil {

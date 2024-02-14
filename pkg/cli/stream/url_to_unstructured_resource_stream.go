@@ -51,11 +51,11 @@ func (s *URLToUnstructuredResourceStream) Next(ctx context.Context) (*unstructur
 	}
 	skel, err := resourceskeleton.NewFromURI(s.url, s.smLoader, s.tfProvider)
 	if err != nil {
-		return nil, fmt.Errorf("error converting url '%v' to skeleton: %v", s.url, err)
+		return nil, fmt.Errorf("error converting url '%v' to skeleton: %w", s.url, err)
 	}
 	u, err := s.gcpClient.Get(ctx, skel)
 	if err != nil {
-		return nil, fmt.Errorf("error getting '%v': %v", s.url, err)
+		return nil, fmt.Errorf("error getting '%v': %w", s.url, err)
 	}
 	s.done = true
 	return u, nil

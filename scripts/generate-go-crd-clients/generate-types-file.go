@@ -287,7 +287,7 @@ func buildFieldProperties(r *resourceDefinition, crd *apiextensions.CustomResour
 	organizeSpecFieldDescriptions(specDescriptions, r)
 	statusDesc, err := fielddesc.GetStatusDescription(crd)
 	if err != nil {
-		return fmt.Errorf("error getting status descriptions: %v", err)
+		return fmt.Errorf("error getting status descriptions: %w", err)
 	}
 	statusDescriptions := dropRootAndFlattenChildrenDescriptions(statusDesc)
 	r.StatusNestedStructs = make(map[string][]*fieldProperties)

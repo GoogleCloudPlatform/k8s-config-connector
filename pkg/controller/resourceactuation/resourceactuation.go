@@ -28,14 +28,14 @@ import (
 func ShouldSkip(u *unstructured.Unstructured) (bool, error) {
 	generation, found, err := unstructured.NestedInt64(u.Object, "metadata", "generation")
 	if err != nil {
-		return false, fmt.Errorf("error getting the value for 'metadata.generation' %v", err)
+		return false, fmt.Errorf("error getting the value for 'metadata.generation' %w", err)
 	}
 	if !found {
 		return false, nil
 	}
 	observedGeneration, found, err := unstructured.NestedInt64(u.Object, "status", "observedGeneration")
 	if err != nil {
-		return false, fmt.Errorf("error getting the value for 'status.observedGeneration': %v", err)
+		return false, fmt.Errorf("error getting the value for 'status.observedGeneration': %w", err)
 	}
 	if !found {
 		return false, nil
@@ -52,7 +52,7 @@ func ShouldSkip(u *unstructured.Unstructured) (bool, error) {
 		if reconcileInterval == 0 {
 			conditions, found, err := unstructured.NestedSlice(u.Object, "status", "conditions")
 			if err != nil {
-				return false, fmt.Errorf("error getting object conditions: %v", err)
+				return false, fmt.Errorf("error getting object conditions: %w", err)
 			}
 			if !found {
 				return false, nil

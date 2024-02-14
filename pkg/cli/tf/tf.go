@@ -28,7 +28,7 @@ func NewProvider(ctx context.Context, gcpAccessToken string) (*schema.Provider, 
 	}
 	p, err := tfprovider.New(ctx, config)
 	if err != nil {
-		return nil, fmt.Errorf("error creating tf provider: %v", err)
+		return nil, fmt.Errorf("error creating tf provider: %w", err)
 	}
 	return p, nil
 }

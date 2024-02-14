@@ -40,7 +40,7 @@ func InstanceStateToMap(r *schema.Resource, state *terraform.InstanceState) map[
 	ctyType := ctyTypeForResource(r)
 	stateVal, err := state.AttrsAsObjectValue(ctyType)
 	if err != nil {
-		panic(fmt.Errorf("error parsing instance state as cty.Value: %v", err))
+		panic(fmt.Errorf("error parsing instance state as cty.Value: %w", err))
 	}
 	return CtyValToMap(stateVal, ctyType)
 }
@@ -64,11 +64,11 @@ func MapToResourceConfig(r *schema.Resource, m map[string]interface{}) *terrafor
 func CtyValToMap(val cty.Value, t cty.Type) map[string]interface{} {
 	b, err := ctyjson.Marshal(val, t)
 	if err != nil {
-		panic(fmt.Errorf("error marshaling cty.Value as JSON: %v", err))
+		panic(fmt.Errorf("error marshaling cty.Value as JSON: %w", err))
 	}
 	var ret map[string]interface{}
 	if err := json.Unmarshal(b, &ret); err != nil {
-		panic(fmt.Errorf("error unmarshaling JSON as map[string]interface{}: %v", err))
+		panic(fmt.Errorf("error unmarshaling JSON as map[string]interface{}: %w", err))
 	}
 	return ret
 }
@@ -76,11 +76,11 @@ func CtyValToMap(val cty.Value, t cty.Type) map[string]interface{} {
 func MapToCtyVal(m map[string]interface{}, t cty.Type) cty.Value {
 	b, err := json.Marshal(&m)
 	if err != nil {
-		panic(fmt.Errorf("error marshaling map as JSON: %v", err))
+		panic(fmt.Errorf("error marshaling map as JSON: %w", err))
 	}
 	ret, err := ctyjson.Unmarshal(b, t)
 	if err != nil {
-		panic(fmt.Errorf("error unmarshaling JSON as cty.Value: %v", err))
+		panic(fmt.Errorf("error unmarshaling JSON as cty.Value: %w", err))
 	}
 	return ret
 }
@@ -88,11 +88,11 @@ func MapToCtyVal(m map[string]interface{}, t cty.Type) cty.Value {
 func MapToCtyValWithSchema(m map[string]interface{}, s map[string]*schema.Schema) cty.Value {
 	b, err := json.Marshal(&m)
 	if err != nil {
-		panic(fmt.Errorf("error marshaling map as JSON: %v", err))
+		panic(fmt.Errorf("error marshaling map as JSON: %w", err))
 	}
 	ret, err := ctyjson.Unmarshal(b, schema.InternalMap(s).CoreConfigSchema().ImpliedType())
 	if err != nil {
-		panic(fmt.Errorf("error unmarshaling JSON as cty.Value: %v", err))
+		panic(fmt.Errorf("error unmarshaling JSON as cty.Value: %w", err))
 	}
 	return ret
 }

@@ -111,7 +111,7 @@ func (r *Resource) ValidateResourceIDIfSupported() error {
 
 	_, err := r.IsResourceIDConfigured()
 	if err != nil {
-		return fmt.Errorf("error validating '%s' field: %v", k8s.ResourceIDFieldPath, err)
+		return fmt.Errorf("error validating '%s' field: %w", k8s.ResourceIDFieldPath, err)
 	}
 	return nil
 }
@@ -246,7 +246,7 @@ func (r *Resource) GetServerGeneratedID() (string, error) {
 	// if the field is not specified, fallback to resolve it from status.
 	idInStatus, exists, err := getServerGeneratedIDFromStatus(&r.ResourceConfig, r.Status)
 	if err != nil {
-		return "", fmt.Errorf("error getting server-generated ID: %v", err)
+		return "", fmt.Errorf("error getting server-generated ID: %w", err)
 	}
 	if !exists {
 		return "", k8s.NewServerGeneratedIDNotFoundError(r.GroupVersionKind(),

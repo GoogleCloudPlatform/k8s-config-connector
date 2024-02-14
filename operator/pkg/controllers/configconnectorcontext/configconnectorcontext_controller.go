@@ -141,7 +141,7 @@ func (r *ConfigConnectorContextReconciler) Reconcile(ctx context.Context, req re
 	_, reconciliationErr := r.reconciler.Reconcile(ctx, req)
 	if reconciliationErr != nil {
 		if err := r.handleReconcileFailed(ctx, req.NamespacedName, reconciliationErr); err != nil {
-			return reconcile.Result{}, fmt.Errorf("error handling reconciled failed: %v, original reconciliation error: %w", err, reconciliationErr)
+			return reconcile.Result{}, fmt.Errorf("error handling reconciled failed: %w, original reconciliation error: %w", err, reconciliationErr)
 		}
 		return reconcile.Result{}, reconciliationErr
 	}
@@ -298,11 +298,11 @@ func (r *ConfigConnectorContextReconciler) finalizeCCContextDeletion(ctx context
 func (r *ConfigConnectorContextReconciler) finalizeNamespacedComponentsDeletion(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
 	r.log.Info("finalizing namespaced components deletion...", "namespace", ccc.Namespace)
 	if err := removeNamespacedComponents(ctx, r.client, m.Items); err != nil {
-		return fmt.Errorf("error finalizing ConfigConnectorContext %v/%v deletion: %v", ccc.Namespace, ccc.Name, err)
+		return fmt.Errorf("error finalizing ConfigConnectorContext %v/%v deletion: %w", ccc.Namespace, ccc.Name, err)
 	}
 	if controllers.RemoveOperatorFinalizer(ccc) {
 		if err := r.client.Update(ctx, ccc); err != nil {
-			return fmt.Errorf("error removing %v finalizer in ConfigConnectorContext object %v/%v: %v", k8s.OperatorFinalizer, ccc.Namespace, ccc.GetName(), err)
+			return fmt.Errorf("error removing %v finalizer in ConfigConnectorContext object %v/%v: %w", k8s.OperatorFinalizer, ccc.Namespace, ccc.GetName(), err)
 		}
 	}
 	return nil
@@ -331,7 +331,7 @@ func (r *ConfigConnectorContextReconciler) handleCCContextLifecycleForNamespaced
 
 	if !controllers.EnsureOperatorFinalizer(ccc) {
 		if err := r.client.Update(ctx, ccc); err != nil {
-			return fmt.Errorf("error adding %v finalizer in ConfigConnectorContext object %v: %v", k8s.OperatorFinalizer, client.ObjectKeyFromObject(ccc), err)
+			return fmt.Errorf("error adding %v finalizer in ConfigConnectorContext object %v: %w", k8s.OperatorFinalizer, client.ObjectKeyFromObject(ccc), err)
 		}
 	}
 	return nil

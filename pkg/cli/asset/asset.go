@@ -33,7 +33,7 @@ func GetServiceMappingAndResourceConfig(smLoader *servicemappingloader.ServiceMa
 	serviceHostName := pieces[0]
 	sm, err := smLoader.GetServiceMappingForServiceHostName(serviceHostName)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error getting service mapping: %v", err)
+		return nil, nil, fmt.Errorf("error getting service mapping: %w", err)
 	}
 	assetKind := pieces[1]
 	resourceConfigs, err := getResourceConfigs(sm, assetKind)
@@ -96,7 +96,7 @@ func matchAssetNameToRC(assetName string, resourceConfigs []v1alpha1.ResourceCon
 		regexIDTemplate := idTemplateToRegex(rc.IDTemplate)
 		regex, err := regexp.Compile(regexIDTemplate)
 		if err != nil {
-			return nil, fmt.Errorf("error compiling '%v' to regex: %v", regexIDTemplate, err)
+			return nil, fmt.Errorf("error compiling '%v' to regex: %w", regexIDTemplate, err)
 		}
 		if regex.MatchString(assetName) {
 			return &rc, nil

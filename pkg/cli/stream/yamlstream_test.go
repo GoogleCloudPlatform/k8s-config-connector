@@ -16,6 +16,7 @@ package stream_test
 
 import (
 	"context"
+	"errors"
 	"io"
 	"io/ioutil"
 	"reflect"
@@ -176,7 +177,7 @@ func yamlStreamToBytes(t *testing.T, stream *stream.YAMLStream) []byte {
 	ctx := context.TODO()
 
 	results := make([]byte, 0)
-	for bytes, _, err := stream.Next(ctx); err != io.EOF; bytes, _, err = stream.Next(ctx) {
+	for bytes, _, err := stream.Next(ctx); !errors.Is(err, io.EOF); bytes, _, err = stream.Next(ctx) {
 		if err != nil {
 			t.Fatalf("error reading next yaml: %v", err)
 		}
@@ -189,7 +190,7 @@ func yamlStreamToBytesIgnoreErrors(t *testing.T, stream *stream.YAMLStream) []by
 	ctx := context.TODO()
 
 	results := make([]byte, 0)
-	for bytes, _, err := stream.Next(ctx); err != io.EOF; bytes, _, err = stream.Next(ctx) {
+	for bytes, _, err := stream.Next(ctx); !errors.Is(err, io.EOF); bytes, _, err = stream.Next(ctx) {
 		if err != nil {
 			continue
 		}

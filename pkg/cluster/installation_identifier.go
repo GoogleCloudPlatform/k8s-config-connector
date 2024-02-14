@@ -94,7 +94,7 @@ func getOrSetNamespaceId(namespaceIDConfigMapNN types.NamespacedName, kubeClient
 		if err == nil || errors.IsConflict(err) {
 			return err
 		}
-		return backoff.Permanent(fmt.Errorf("error updating config map '%v': %v", namespaceIDConfigMapNN, err))
+		return backoff.Permanent(fmt.Errorf("error updating config map '%v': %w", namespaceIDConfigMapNN, err))
 	}
 	if err := backoff.Retry(getOrUpdateConfigMapFunc, backoff.NewExponentialBackOff()); err != nil {
 		return "", err
@@ -107,10 +107,10 @@ func createOrGetNamespaceIDConfigMap(namespaceIDConfigMapNN types.NamespacedName
 	if err := kubeClient.Create(ctx, &configMap); err == nil {
 		return &configMap, nil
 	} else if !errors.IsAlreadyExists(err) {
-		return nil, fmt.Errorf("error creating configmap '%v': %v", namespaceIDConfigMapNN, err)
+		return nil, fmt.Errorf("error creating configmap '%v': %w", namespaceIDConfigMapNN, err)
 	}
 	if err := kubeClient.Get(ctx, namespaceIDConfigMapNN, &configMap); err != nil {
-		return nil, fmt.Errorf("error getting configmap '%v': %v", namespaceIDConfigMapNN, err)
+		return nil, fmt.Errorf("error getting configmap '%v': %w", namespaceIDConfigMapNN, err)
 	}
 	return &configMap, nil
 }

@@ -60,7 +60,7 @@ func isDefaultNetworkingAsset(smLoader *servicemappingloader.ServiceMappingLoade
 func NewFilteredAssetStream(assetStream *asset.Stream, tfProvider *schema.Provider) (stream.AssetStream, error) {
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
-		return nil, fmt.Errorf("error loading service mappings: %v", err)
+		return nil, fmt.Errorf("error loading service mappings: %w", err)
 	}
 	filter := func(a *asset.Asset) bool {
 		if !isAssetSupported(smLoader, tfProvider, a) {

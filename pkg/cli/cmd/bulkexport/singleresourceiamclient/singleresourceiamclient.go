@@ -49,7 +49,7 @@ func New(tfProvider *schema.Provider, smloader *servicemappingloader.ServiceMapp
 func (i *iamClient) SupportsIAM(unstructured *unstructured.Unstructured) (bool, error) {
 	rc, err := i.smLoader.GetResourceConfig(unstructured)
 	if err != nil {
-		return false, fmt.Errorf("error getting resource config for %v with name '%v': %v",
+		return false, fmt.Errorf("error getting resource config for %v with name '%v': %w",
 			unstructured.GetKind(), unstructured.GetName(), err)
 	}
 	return krmtotf.SupportsIAM(rc), nil
@@ -63,7 +63,7 @@ func (i *iamClient) GetPolicy(ctx context.Context, resource *unstructured.Unstru
 	iamClient := kcciamclient.New(i.tfProvider, i.smLoader, kubeClient, nil, nil).TFIAMClient
 	iamPolicySkeleton, err := i.newIAMPolicySkeleton(resource, kubeClient)
 	if err != nil {
-		return nil, fmt.Errorf("error creating new iam policy skeleton: %v", err)
+		return nil, fmt.Errorf("error creating new iam policy skeleton: %w", err)
 	}
 	return iamClient.GetPolicy(ctx, iamPolicySkeleton)
 }
@@ -71,15 +71,15 @@ func (i *iamClient) GetPolicy(ctx context.Context, resource *unstructured.Unstru
 func (i *iamClient) newIAMPolicySkeleton(u *unstructured.Unstructured, kubeClient client.Client) (*v1beta1.IAMPolicy, error) {
 	sm, err := i.smLoader.GetServiceMapping(u.GroupVersionKind().Group)
 	if err != nil {
-		return nil, fmt.Errorf("error getting service mapping for '%v': %v", u.GroupVersionKind().Group, err)
+		return nil, fmt.Errorf("error getting service mapping for '%v': %w", u.GroupVersionKind().Group, err)
 	}
 	resource, err := krmtotf.NewResource(u, sm, i.tfProvider)
 	if err != nil {
-		return nil, fmt.Errorf("error converting '%v' with name '%v' to krmtotf resource: %v", u.GroupVersionKind(), u.GetName(), err)
+		return nil, fmt.Errorf("error converting '%v' with name '%v' to krmtotf resource: %w", u.GroupVersionKind(), u.GetName(), err)
 	}
 	importId, err := resource.GetImportID(kubeClient, i.smLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error getting import id for '%v' with name '%v': %v",
+		return nil, fmt.Errorf("error getting import id for '%v' with name '%v': %w",
 			resource.GroupVersionKind(),
 			resource.GetName(),
 			err)

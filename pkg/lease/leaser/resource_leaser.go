@@ -47,10 +47,10 @@ func NewResourceLeaser(tfProvider *schema.Provider, smLoader *servicemappingload
 func (l *ResourceLeaser) SoftObtain(ctx context.Context, resource *k8s.Resource, liveLabels map[string]string) error {
 	uniqueId, err := cluster.GetNamespaceID(k8s.NamespaceIDConfigMapNN, l.kubeClient, ctx, resource.GetNamespace())
 	if err != nil {
-		return fmt.Errorf("error getting unique id for namespace '%v': %v", resource.GetNamespace(), err)
+		return fmt.Errorf("error getting unique id for namespace '%v': %w", resource.GetNamespace(), err)
 	}
 	if err := l.leaser.SoftObtain(resource, liveLabels, uniqueId, k8s.TimeToLeaseExpiration, k8s.TimeToLeaseRenewal); err != nil {
-		return fmt.Errorf("error obtaining lease: %v", err)
+		return fmt.Errorf("error obtaining lease: %w", err)
 	}
 	return nil
 }
@@ -58,10 +58,10 @@ func (l *ResourceLeaser) SoftObtain(ctx context.Context, resource *k8s.Resource,
 func (l *ResourceLeaser) Release(ctx context.Context, u *unstructured.Unstructured) error {
 	uniqueId, err := cluster.GetNamespaceID(k8s.NamespaceIDConfigMapNN, l.kubeClient, ctx, u.GetNamespace())
 	if err != nil {
-		return fmt.Errorf("error getting unique id for namespace '%v': %v", u.GetNamespace(), err)
+		return fmt.Errorf("error getting unique id for namespace '%v': %w", u.GetNamespace(), err)
 	}
 	if err := l.leaser.Release(ctx, u, uniqueId); err != nil {
-		return fmt.Errorf("error releasing lease on %v with name '%v': %v", u.GroupVersionKind(), u.GetName(), err)
+		return fmt.Errorf("error releasing lease on %v with name '%v': %w", u.GroupVersionKind(), u.GetName(), err)
 	}
 	return nil
 }

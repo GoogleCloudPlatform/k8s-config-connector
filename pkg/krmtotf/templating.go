@@ -215,7 +215,7 @@ func getValueFromReference(refConfig *corekccv1alpha1.ReferenceConfig, r *Resour
 	pathToRef := getPathToReferenceKey(refConfig)
 	refObj, ok, err := unstructured.NestedMap(r.Spec, pathToRef...)
 	if err != nil {
-		return "", false, fmt.Errorf("error getting reference object '%v': %v", strings.Join(pathToRef, "."), err)
+		return "", false, fmt.Errorf("error getting reference object '%v': %w", strings.Join(pathToRef, "."), err)
 	}
 	if !ok {
 		return "", false, nil

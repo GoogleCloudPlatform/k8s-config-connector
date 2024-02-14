@@ -186,7 +186,7 @@ func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.Cust
 		if val, ok := crd.Labels[k8s.DCL2CRDLabel]; ok && val == "true" {
 			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters)
 			if err != nil {
-				return nil, fmt.Errorf("error adding dcl controller for %v to a manager: %v", crd.Spec.Names.Kind, err)
+				return nil, fmt.Errorf("error adding dcl controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 			return su, nil
 		}
@@ -197,14 +197,14 @@ func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.Cust
 		}
 		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters)
 		if err != nil {
-			return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %v", crd.Spec.Names.Kind, err)
+			return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 		}
 		schemaUpdater = su
 		// register the controller to automatically create secrets for GSA keys
 		if isServiceAccountKeyCRD(crd) {
 			logger.Info("registering the GSA-Key-to-Secret generation controller")
 			if err := gsakeysecretgenerator.Add(r.mgr, crd); err != nil {
-				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %v", crd.Spec.Names.Kind, err)
+				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		}
 	}

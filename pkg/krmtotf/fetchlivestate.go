@@ -129,7 +129,7 @@ func fetchLiveStateFromId(ctx context.Context, id string, resource *Resource, pr
 	state = SetBlueprintAttribution(state, resource, provider)
 	state, diagnostics := resource.TFResource.RefreshWithoutUpgrade(ctx, state, provider.Meta())
 	if err := NewErrorFromDiagnostics(diagnostics); err != nil {
-		return nil, fmt.Errorf("error reading underlying resource: %v", err)
+		return nil, fmt.Errorf("error reading underlying resource: %w", err)
 	}
 	// Set the blueprint attribution again in case the Refresh returns nil, which
 	// clears the previously set value.
@@ -171,7 +171,7 @@ func FetchLiveStateForCreateAndUpdate(ctx context.Context, resource *Resource, p
 func ImportState(ctx context.Context, id string, tfInfo *terraform.InstanceInfo, provider *tfschema.Provider) (*terraform.InstanceState, error) {
 	importedResources, err := provider.ImportState(ctx, tfInfo, id)
 	if err != nil {
-		return nil, fmt.Errorf("error importing resource: %v", err)
+		return nil, fmt.Errorf("error importing resource: %w", err)
 	}
 	if len(importedResources) != 1 {
 		return nil, fmt.Errorf("import corresponds to more than one resource")
@@ -208,12 +208,12 @@ func WithFieldsPresetForRead(imported map[string]interface{}, r *Resource, kubeC
 	ret := withImmutableFields(imported, ResourceConfigToMap(config), r.TFResource.Schema)
 	ret, err = withMutableButUnreadableFields(ret, r, secretVersions, kubeClient)
 	if err != nil {
-		return nil, fmt.Errorf("error presetting mutable but unreadable fields for read: %v", err)
+		return nil, fmt.Errorf("error presetting mutable but unreadable fields for read: %w", err)
 	}
 	ret = withDirectives(ret, r)
 	ret, err = withStatusFields(ret, r, kubeClient, smLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error presetting status fields for read: %v", err)
+		return nil, fmt.Errorf("error presetting status fields for read: %w", err)
 	}
 	return ret, nil
 }
@@ -310,7 +310,7 @@ func setMutableButUnreadableFields(imported, mutableButUnreadableSpec map[string
 
 			sensitiveField := corekccv1alpha1.SensitiveField{}
 			if err := util.Marshal(v, &sensitiveField); err != nil {
-				return nil, fmt.Errorf("error parsing %v onto a SensitiveField struct: %v", v, err)
+				return nil, fmt.Errorf("error parsing %v onto a SensitiveField struct: %w", v, err)
 			}
 
 			if sensitiveField.Value != nil {
@@ -358,7 +358,7 @@ func setMutableButUnreadableFields(imported, mutableButUnreadableSpec map[string
 				}
 				importedObj, err := getObjectAtFieldInState(imported, tfKey)
 				if err != nil {
-					return nil, fmt.Errorf("error getting object at field %v from state map: %v", tfKey, err)
+					return nil, fmt.Errorf("error getting object at field %v from state map: %w", tfKey, err)
 				}
 				obj, err := setMutableButUnreadableFields(importedObj, prevObj, elem.Schema, secretVersions, namespace, kubeClient)
 				if err != nil {
@@ -406,7 +406,7 @@ func withStatusFields(imported map[string]interface{}, r *Resource, kubeClient c
 	ret := deepcopy.MapStringInterface(imported)
 	tfStatus, err := KRMObjectToTFObject(r.Status, r.TFResource)
 	if err != nil {
-		return nil, fmt.Errorf("error converting status object: %v", err)
+		return nil, fmt.Errorf("error converting status object: %w", err)
 	}
 	for k, v := range tfStatus {
 		ret[k] = v
@@ -415,7 +415,7 @@ func withStatusFields(imported map[string]interface{}, r *Resource, kubeClient c
 	if SupportsResourceIDField(&r.ResourceConfig) && IsResourceIDFieldServerGenerated(&r.ResourceConfig) {
 		idInStatus, err := r.ConstructServerGeneratedIDInStatusFromResourceID(kubeClient, smLoader)
 		if err != nil {
-			return nil, fmt.Errorf("error syncing the server-generated ID: %v", err)
+			return nil, fmt.Errorf("error syncing the server-generated ID: %w", err)
 		}
 		if idInStatus != "" {
 			ret[r.ResourceConfig.ServerGeneratedIDField] = idInStatus

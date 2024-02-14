@@ -68,7 +68,7 @@ func (a *DCL2CRDGenerator) GenerateCRDFromOpenAPISchema(schema *openapi.Schema, 
 	}
 	openAPIV3Schema, err := a.generateOpenAPIV3Schema(schema, r)
 	if err != nil {
-		return nil, fmt.Errorf("error generating CRD schema for %v: %v", gvk.Kind, err)
+		return nil, fmt.Errorf("error generating CRD schema for %v: %w", gvk.Kind, err)
 	}
 	crd := GetCustomResourceDefinition(gvk.Kind, gvk.Group, []string{gvk.Version}, "", openAPIV3Schema, Dcl2CRDLabel)
 	if r.DCLVersion == "alpha" {
@@ -99,7 +99,7 @@ func (a *DCL2CRDGenerator) generateOpenAPIV3Schema(schema *openapi.Schema, resou
 	if statusJSONSchema != nil {
 		statusJSONSchema, err = k8s.RenameStatusFieldsWithReservedNames(statusJSONSchema)
 		if err != nil {
-			return nil, fmt.Errorf("error renaming status fields with reserved names: %v", err)
+			return nil, fmt.Errorf("error renaming status fields with reserved names: %w", err)
 		}
 		for k, v := range statusJSONSchema.Properties {
 			crdSchema.Properties["status"].Properties[k] = v
@@ -120,7 +120,7 @@ func (a *DCL2CRDGenerator) generateSpecJSONSchema(schema *openapi.Schema, resour
 	required := make([]string, 0)
 	dclLabelsField, _, dclLabelsFieldFound, err := extension.GetLabelsFieldSchema(schema)
 	if err != nil {
-		return nil, fmt.Errorf("error extracting DCL labels field schema: %v", err)
+		return nil, fmt.Errorf("error extracting DCL labels field schema: %w", err)
 	}
 	for k, v := range schema.Properties {
 		if !v.ReadOnly {
@@ -156,7 +156,7 @@ func (a *DCL2CRDGenerator) generateSpecJSONSchema(schema *openapi.Schema, resour
 				for fieldName, s := range refs {
 					s, err := prependImmutableToDescriptionIfImmutable(s, v)
 					if err != nil {
-						return nil, fmt.Errorf("error prepending Immutable to description of hierarchical reference field %v if field is immutable: %v", fieldName, err)
+						return nil, fmt.Errorf("error prepending Immutable to description of hierarchical reference field %v if field is immutable: %w", fieldName, err)
 					}
 					jsonSchema.Properties[fieldName] = *s
 				}
@@ -261,7 +261,7 @@ func (a *DCL2CRDGenerator) dclSchemaToSpecJSONSchema(path []string, schema *open
 		}
 		refSchema, err = prependImmutableToDescriptionIfImmutable(refSchema, schema)
 		if err != nil {
-			return "", nil, fmt.Errorf("error prepending Immutable to description of field %v if field is immutable: %v", field, err)
+			return "", nil, fmt.Errorf("error prepending Immutable to description of field %v if field is immutable: %w", field, err)
 		}
 		return refFieldName, refSchema, nil
 	}
@@ -274,7 +274,7 @@ func (a *DCL2CRDGenerator) dclSchemaToSpecJSONSchema(path []string, schema *open
 		s.Description = schema.Description
 		jsonSchema, err := prependImmutableToDescriptionIfImmutable(&s, schema)
 		if err != nil {
-			return "", nil, fmt.Errorf("error prepending Immutable to description of field %v if field is immutable: %v", field, err)
+			return "", nil, fmt.Errorf("error prepending Immutable to description of field %v if field is immutable: %w", field, err)
 		}
 		return field, jsonSchema, nil
 	}
@@ -285,7 +285,7 @@ func (a *DCL2CRDGenerator) dclSchemaToSpecJSONSchema(path []string, schema *open
 
 	jsonSchema, err = prependImmutableToDescriptionIfImmutable(jsonSchema, schema)
 	if err != nil {
-		return "", nil, fmt.Errorf("error prepending Immutable to description of field %v if field is immutable: %v", field, err)
+		return "", nil, fmt.Errorf("error prepending Immutable to description of field %v if field is immutable: %w", field, err)
 	}
 
 	fieldName := field
@@ -589,7 +589,7 @@ func prependImmutableToDescriptionIfImmutable(jsonSchema *apiextensions.JSONSche
 	jsonSchemaCopy := jsonSchema.DeepCopy()
 	ok, err := dclextension.IsImmutableField(schema)
 	if err != nil {
-		return nil, fmt.Errorf("error determining if field is immutable: %v", err)
+		return nil, fmt.Errorf("error determining if field is immutable: %w", err)
 	}
 	if ok {
 		jsonSchemaCopy.Description = strings.TrimSpace("Immutable. " + jsonSchemaCopy.Description)

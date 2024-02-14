@@ -188,7 +188,7 @@ func (r *ConfigConnectorReconciler) handleReconcileSucceeded(ctx context.Context
 			r.log.Info("ConfigConnector not found in API server; skipping the handling of successful reconciliation", "name", nn.Name)
 			return nil
 		}
-		return fmt.Errorf("error getting ConfigConnector object %v: %v", nn.Name, err)
+		return fmt.Errorf("error getting ConfigConnector object %v: %w", nn.Name, err)
 	}
 	r.recordEvent(cc, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
 	cc.SetCommonStatus(v1alpha1.CommonStatus{
@@ -222,7 +222,7 @@ func (r *ConfigConnectorReconciler) handleConfigConnectorLifecycle() declarative
 			}
 			if controllers.RemoveOperatorFinalizer(cc) {
 				if err := r.client.Update(ctx, cc); err != nil {
-					return fmt.Errorf("error removing %v finalizer from ConfigConnector object %v: %v", k8s.OperatorFinalizer, cc.GetName(), err)
+					return fmt.Errorf("error removing %v finalizer from ConfigConnector object %v: %w", k8s.OperatorFinalizer, cc.GetName(), err)
 				}
 			}
 			// Nothing needs to apply when it's a delete ops.
@@ -232,7 +232,7 @@ func (r *ConfigConnectorReconciler) handleConfigConnectorLifecycle() declarative
 		// On apply
 		if !controllers.EnsureOperatorFinalizer(cc) {
 			if err := r.client.Update(ctx, cc); err != nil {
-				return fmt.Errorf("error adding %v finalizer in ConfigConnector object %v: %v", k8s.OperatorFinalizer, cc.GetName(), err)
+				return fmt.Errorf("error adding %v finalizer in ConfigConnector object %v: %w", k8s.OperatorFinalizer, cc.GetName(), err)
 			}
 			// Create the cnrm-systm namespace first; this is done to prevent the creation of components from failing due to the cnrm-system namespace not existing yet.
 			if err := createCNRMSystemNamespace(ctx, r.client, m); err != nil {
@@ -384,16 +384,16 @@ func setSecretVolume(object *manifest.Object, secretName string) (*manifest.Obje
 	u := object.UnstructuredObject()
 	volumes, ok, err := unstructured.NestedSlice(u.Object, "spec", "template", "spec", "volumes")
 	if err != nil || !ok || len(volumes) == 0 {
-		return nil, fmt.Errorf("couldn't find volumes from StatefulSet %v: %v", u.GetName(), err)
+		return nil, fmt.Errorf("couldn't find volumes from StatefulSet %v: %w", u.GetName(), err)
 	}
 	for _, volume := range volumes {
 		volume := volume.(map[string]interface{})
 		if volume["name"] == "gcp-service-account" {
 			if err := unstructured.SetNestedField(volume, secretName, "secret", "secretName"); err != nil {
-				return nil, fmt.Errorf("error setting the secret volume for StatefulSet %v: %v", u.GetName(), err)
+				return nil, fmt.Errorf("error setting the secret volume for StatefulSet %v: %w", u.GetName(), err)
 			}
 			if err := unstructured.SetNestedSlice(u.Object, volumes, "spec", "template", "spec", "volumes"); err != nil {
-				return nil, fmt.Errorf("error setting the secret volume for StatefulSet %v: %v", u.GetName(), err)
+				return nil, fmt.Errorf("error setting the secret volume for StatefulSet %v: %w", u.GetName(), err)
 			}
 			return manifest.NewObject(u)
 		}
@@ -404,7 +404,7 @@ func setSecretVolume(object *manifest.Object, secretName string) (*manifest.Obje
 func (r *ConfigConnectorReconciler) verifyPerNamespaceControllerManagerPodsAreDeleted(ctx context.Context, c client.Client) error {
 	podLabelSelector, err := labels.Parse(k8s.KCCControllerPodLabelSelectorRaw)
 	if err != nil {
-		return fmt.Errorf("error parsing '%v' as a label selector: %v", k8s.KCCControllerPodLabelSelectorRaw, err)
+		return fmt.Errorf("error parsing '%v' as a label selector: %w", k8s.KCCControllerPodLabelSelectorRaw, err)
 	}
 	podList := &corev1.PodList{}
 	podOpts := &client.ListOptions{
@@ -449,7 +449,7 @@ func (r *ConfigConnectorReconciler) finalizeSystemComponentsDeletion(ctx context
 
 	podLabelSelector, err := labels.Parse(k8s.KCCControllerPodLabelSelectorRaw)
 	if err != nil {
-		return fmt.Errorf("error parsing '%v' as a label selector: %v", k8s.KCCControllerPodLabelSelectorRaw, err)
+		return fmt.Errorf("error parsing '%v' as a label selector: %w", k8s.KCCControllerPodLabelSelectorRaw, err)
 	}
 	podList := &corev1.PodList{}
 	podOpts := &client.ListOptions{
@@ -489,7 +489,7 @@ func (r *ConfigConnectorReconciler) finalizeSystemComponentsDeletion(ctx context
 			allDeleted = false
 			r.log.Info("deleting CRD", "name", crd.GetName())
 			if err := c.Delete(ctx, &crd); err != nil && !apierrors.IsNotFound(err) {
-				return false, fmt.Errorf("error deleting CRD %v: %v", crd.GetName(), err)
+				return false, fmt.Errorf("error deleting CRD %v: %w", crd.GetName(), err)
 			}
 		}
 		return allDeleted, nil
@@ -542,7 +542,7 @@ func (r *ConfigConnectorReconciler) updateConfigConnectorStatus(ctx context.Cont
 		if apierrors.IsConflict(err); err != nil {
 			return fmt.Errorf("couldn't update ConfigConnector on API server due to conflict")
 		}
-		return fmt.Errorf("failed to update ConfigConnector on API server: %v", err)
+		return fmt.Errorf("failed to update ConfigConnector on API server: %w", err)
 	}
 	return nil
 }
@@ -554,7 +554,7 @@ func (r *ConfigConnectorReconciler) recordEvent(cc *corev1beta1.ConfigConnector,
 func (r *ConfigConnectorReconciler) installV1Beta1CRDsOnly() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
 		if err := r.selectCRDsByVersion(m, "v1beta1"); err != nil {
-			return fmt.Errorf("error installing v1beta1 CRDs only: error selecting CRDs by version v1beta1: %v", err)
+			return fmt.Errorf("error installing v1beta1 CRDs only: error selecting CRDs by version v1beta1: %w", err)
 		}
 		return nil
 	}
@@ -570,7 +570,7 @@ func (r *ConfigConnectorReconciler) selectCRDsByVersion(m *manifest.Objects, ver
 			}
 			hasVersion, err := containsVersion(obj, version)
 			if err != nil {
-				return fmt.Errorf("error checking if CRD %v contains version %v: %v", obj.UnstructuredObject().GetName(), version, err)
+				return fmt.Errorf("error checking if CRD %v contains version %v: %w", obj.UnstructuredObject().GetName(), version, err)
 			}
 			if hasVersion {
 				transformed = append(transformed, obj)
@@ -692,7 +692,7 @@ func (r *ConfigConnectorReconciler) fetchAndApplyAllWebhookConfigurationCustomiz
 // applyValidatingWebhookConfigurationCustomizationCR applies customizations specified in a ValidatingWebhookConfigurationCustomization CR.
 func (r *ConfigConnectorReconciler) applyValidatingWebhookConfigurationCustomizationCR(ctx context.Context, cr *customizev1beta1.ValidatingWebhookConfigurationCustomization) error {
 	if err := checkForDuplicateWebhooks(cr.Spec.Webhooks); err != nil {
-		return r.handleApplyValidatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("invalid webhook configuration customization: %v", err))
+		return r.handleApplyValidatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Errorf("invalid webhook configuration customization: %w", err).Error())
 	}
 	// 1. get the webhook configuration.
 	whCfg := &admissionregistration.ValidatingWebhookConfiguration{}
@@ -738,7 +738,7 @@ func (r *ConfigConnectorReconciler) applyValidatingWebhookConfigurationCustomiza
 // applyMutatingWebhookConfigurationCustomizationCR applies customizations specified in a MutatingWebhookConfigurationCustomization CR.
 func (r *ConfigConnectorReconciler) applyMutatingWebhookConfigurationCustomizationCR(ctx context.Context, cr *customizev1beta1.MutatingWebhookConfigurationCustomization) error {
 	if err := checkForDuplicateWebhooks(cr.Spec.Webhooks); err != nil {
-		return r.handleApplyMutatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Sprintf("invalid webhook configuration customization: %v", err))
+		return r.handleApplyMutatingWebhookConfigurationCustomizationCRFailed(ctx, cr, fmt.Errorf("invalid webhook configuration customization: %w", err).Error())
 	}
 	// 1. get the webhook configuration.
 	whCfg := &admissionregistration.MutatingWebhookConfiguration{}

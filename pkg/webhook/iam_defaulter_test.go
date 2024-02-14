@@ -106,7 +106,7 @@ func TestDefaultAPIVersionForIAMResourceRef(t *testing.T) {
 	}
 
 	iamTemplates := map[string]map[string]interface{}{
-		"IAMPolicy": map[string]interface{}{
+		"IAMPolicy": {
 			"apiVersion": v1beta1.IAMPolicyGVK.GroupVersion().String(),
 			"kind":       v1beta1.IAMPolicyGVK.Kind,
 			"metadata": map[string]interface{}{
@@ -123,7 +123,7 @@ func TestDefaultAPIVersionForIAMResourceRef(t *testing.T) {
 				},
 			},
 		},
-		"IAMPartialPolicy": map[string]interface{}{
+		"IAMPartialPolicy": {
 			"apiVersion": v1beta1.IAMPartialPolicyGVK.GroupVersion().String(),
 			"kind":       v1beta1.IAMPartialPolicyGVK.Kind,
 			"metadata": map[string]interface{}{
@@ -142,7 +142,7 @@ func TestDefaultAPIVersionForIAMResourceRef(t *testing.T) {
 				},
 			},
 		},
-		"IAMPolicyMember": map[string]interface{}{
+		"IAMPolicyMember": {
 			"apiVersion": v1beta1.IAMPolicyMemberGVK.GroupVersion().String(),
 			"kind":       v1beta1.IAMPolicyMemberGVK.Kind,
 			"metadata": map[string]interface{}{
@@ -153,7 +153,7 @@ func TestDefaultAPIVersionForIAMResourceRef(t *testing.T) {
 				"role":   "role",
 			},
 		},
-		"IAMAuditConfig": map[string]interface{}{
+		"IAMAuditConfig": {
 			"apiVersion": v1beta1.IAMAuditConfigGVK.GroupVersion().String(),
 			"kind":       v1beta1.IAMAuditConfigGVK.Kind,
 			"metadata": map[string]interface{}{

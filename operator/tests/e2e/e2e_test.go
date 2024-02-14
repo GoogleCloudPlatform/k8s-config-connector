@@ -44,6 +44,7 @@ import (
 	"google.golang.org/api/iam/v1"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
+	goerrors "errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -137,7 +138,7 @@ func TestMain(m *testing.M) {
 
 	log, err := newLogger("TestMain")
 	if err != nil {
-		fmt.Printf("error creating logger: %v", err)
+		fmt.Print(fmt.Errorf("error creating logger: %w", err))
 		os.Exit(1)
 	}
 
@@ -167,45 +168,45 @@ func TestKCCInstallAndUninstall_Namespaced(t *testing.T) {
 
 	manifestsDir, sample, err := getOperatorReleaseAssetsForVersion(f.version, testOptions.ServiceAccountID, testOptions.ProjectID, log)
 	if err != nil {
-		t.Fatalf("error getting operator release assets for version '%v': %v", f.version, err)
+		t.Fatal(fmt.Errorf("error getting operator release assets for version '%v': %w", f.version, err))
 	}
 	log.Info("Installing the operator...")
 	if err := cluster.installOperator(manifestsDir); err != nil {
-		t.Fatalf("error installing the operator: %v", err)
+		t.Fatal(fmt.Errorf("error installing the operator: %w", err))
 	}
 	log.Info("Installing KCC...")
 	if err := cluster.installKCC(sample.configConnectorNamespacedModeYAMLPath); err != nil {
-		t.Fatalf("error installing KCC: %v", err)
+		t.Fatal(fmt.Errorf("error installing KCC: %w", err))
 	}
 	namespace := "e2e-test-namespace"
 	if err := cluster.createNamespace(namespace); err != nil {
-		t.Fatalf("error creating namespace '%v': %v", namespace, err)
+		t.Fatal(fmt.Errorf("error creating namespace '%v': %w", namespace, err))
 	}
 	if err := cluster.enableKCCForNamespace(namespace, sample.configConnectorContextYAMLPath, testOptions.ServiceAccountID, testOptions.ProjectID); err != nil {
-		t.Fatalf("error enabling KCC for namespace '%v': %v", namespace, err)
+		t.Fatal(fmt.Errorf("error enabling KCC for namespace '%v': %w", namespace, err))
 	}
 	if err := cluster.addProjectIDAnnotationToNamespace(namespace, f.projectID); err != nil {
-		t.Fatalf("error annotating namespace '%v' with the project ID: %v", namespace, err)
+		t.Fatal(fmt.Errorf("error annotating namespace '%v' with the project ID: %w", namespace, err))
 	}
 	kccVersion, err := cluster.getKCCVersion()
 	if err != nil {
-		t.Fatalf("error determining KCC version: %v", err)
+		t.Fatal(fmt.Errorf("error determining KCC version: %w", err))
 	}
 	log.Info("Downloading and extracting KCC release tarball ...", "version", kccVersion)
 	kccReleaseAssetsDir, err := createTempDir("e2e-kcc-release-assets")
 	if err != nil {
-		t.Fatalf("error creating temporary directory for KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error creating temporary directory for KCC release assets: %w", err))
 	}
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
-		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
+		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
 	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
 	log.Info("Creating ArtifactRegistryRepository...")
 	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
-		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
+		t.Fatal(fmt.Errorf("error creating ArtifactRegistryRepository: %w", err))
 	}
 	log.Info("Deleting ArtifactRegistryRepository...")
 	if err := cluster.deleteArtifactRegistryRepository(namespace, repoName); err != nil {
@@ -213,7 +214,7 @@ func TestKCCInstallAndUninstall_Namespaced(t *testing.T) {
 	}
 	log.Info("Uninstalling KCC...")
 	if err := cluster.uninstallKCC(); err != nil {
-		t.Fatalf("error uninstalling KCC: %v", err)
+		t.Fatal(fmt.Errorf("error uninstalling KCC: %w", err))
 	}
 }
 
@@ -227,56 +228,56 @@ func TestKCCInstallAnd_Delete_Namespace_In_Namespaced_Mode(t *testing.T) {
 	}
 	manifestsDir, sample, err := getOperatorReleaseAssetsForVersion(f.version, testOptions.ServiceAccountID, testOptions.ProjectID, log)
 	if err != nil {
-		t.Fatalf("error getting operator release assets for version '%v': %v", f.version, err)
+		t.Fatal(fmt.Errorf("error getting operator release assets for version '%v': %w", f.version, err))
 	}
 	log.Info("Installing the operator...")
 	if err := cluster.installOperator(manifestsDir); err != nil {
-		t.Fatalf("error installing the operator: %v", err)
+		t.Fatal(fmt.Errorf("error installing the operator: %w", err))
 	}
 	log.Info("Installing KCC...")
 	if err := cluster.installKCC(sample.configConnectorNamespacedModeYAMLPath); err != nil {
-		t.Fatalf("error installing KCC: %v", err)
+		t.Fatal(fmt.Errorf("error installing KCC: %w", err))
 	}
 	namespace := "e2e-test-namespace"
 	if err := cluster.createNamespace(namespace); err != nil {
-		t.Fatalf("error creating namespace '%v': %v", namespace, err)
+		t.Fatal(fmt.Errorf("error creating namespace '%v': %w", namespace, err))
 	}
 	if err := cluster.enableKCCForNamespace(namespace, sample.configConnectorContextYAMLPath, testOptions.ServiceAccountID, testOptions.ProjectID); err != nil {
-		t.Fatalf("error enabling KCC for namespace '%v': %v", namespace, err)
+		t.Fatal(fmt.Errorf("error enabling KCC for namespace '%v': %w", namespace, err))
 	}
 	if err := cluster.addProjectIDAnnotationToNamespace(namespace, f.projectID); err != nil {
-		t.Fatalf("error annotating namespace '%v' with the project ID: %v", namespace, err)
+		t.Fatal(fmt.Errorf("error annotating namespace '%v' with the project ID: %w", namespace, err))
 	}
 	kccVersion, err := cluster.getKCCVersion()
 	if err != nil {
-		t.Fatalf("error determining KCC version: %v", err)
+		t.Fatal(fmt.Errorf("error determining KCC version: %w", err))
 	}
 	log.Info("Downloading and extracting KCC release tarball ...", "version", kccVersion)
 	kccReleaseAssetsDir, err := createTempDir("e2e-kcc-release-assets")
 	if err != nil {
-		t.Fatalf("error creating temporary directory for KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error creating temporary directory for KCC release assets: %w", err))
 	}
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
-		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
+		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
 	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
 	log.Info("Creating ArtifactRegistryRepository...")
 	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
-		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
+		t.Fatal(fmt.Errorf("error creating ArtifactRegistryRepository: %w", err))
 	}
 	// add an extra finalizer to ensure resources are not deleted, the config-connector-operator should wait
 	// until all KCC resources are deleted before deleting the related KCC pods
 	log.Info("Adding custom finalizer to prevent deletion...")
 	extraFinalizer := "extra-finalizer"
 	if err := cluster.addFinalizerToArtifactRegistryRepository(namespace, repoName, extraFinalizer); err != nil {
-		t.Fatalf("error adding finalizer to ArtifactRegistryRepository: %v", err)
+		t.Fatal(fmt.Errorf("error adding finalizer to ArtifactRegistryRepository: %w", err))
 	}
 	log.Info("Deleting Namespace...")
 	if err := cluster.deleteNamespace(namespace); err != nil {
-		t.Fatalf("error deleting namespace: %v", err)
+		t.Fatal(fmt.Errorf("error deleting namespace: %w", err))
 	}
 	// Sometimes, it takes a long time for k8s to cascade delete KCC resource CRs under the deleted namespace.
 	// Therefore we perform a direct deletion on the ArtifactRegistryRepository object to speed things up.
@@ -288,20 +289,20 @@ func TestKCCInstallAnd_Delete_Namespace_In_Namespaced_Mode(t *testing.T) {
 	// deleting the manager pods. This check ensures the manager is able to remove its finalizer from the ArtifactRegistryRepository.
 	log.Info("Waiting for CNRM finalizer to be removed from ArtifactRegistryRepository...")
 	if err := cluster.waitForCNRMFinalizersToBeRemovedFromArtifactRegistryRepository(namespace, repoName); err != nil {
-		t.Fatalf("error waiting for CNRM finalizer to be removed from ArtifactRegistryRepository: %v", err)
+		t.Fatal(fmt.Errorf("error waiting for CNRM finalizer to be removed from ArtifactRegistryRepository: %w", err))
 	}
 	// The config connector context should NOT be removed as the ArtifactRegistryRepository has not yet been removed due to its extra finalizer
 	log.Info("Verifying the ConfigConnectorContext still exists but is unhealthy...")
 	if err := cluster.waitForConfigConnectorContextToBeUnhealthy(namespace, k8s.ConfigConnectorContextAllowedName); err != nil {
-		t.Fatalf("error verifying the ConfigConnectorContext's health: %v", err)
+		t.Fatal(fmt.Errorf("error verifying the ConfigConnectorContext's health: %w", err))
 	}
 	log.Info("Removing custom finalizer to enable deletion...")
 	if err := cluster.removeFinalizerToArtifactRegistryRepository(namespace, repoName, extraFinalizer); err != nil {
-		t.Fatalf("error removing finalizer from ArtifactRegistryRepository: %v", err)
+		t.Fatal(fmt.Errorf("error removing finalizer from ArtifactRegistryRepository: %w", err))
 	}
 	log.Info("Waiting for ConfigConnectorContext to be removed...")
 	if err := cluster.waitForConfigConnectorContextToBeRemoved(namespace, k8s.ConfigConnectorContextAllowedName); err != nil {
-		t.Fatalf("error waiting for ConfigConnectorContextToBeRemoved: %v", err)
+		t.Fatal(fmt.Errorf("error waiting for ConfigConnectorContextToBeRemoved: %w", err))
 	}
 	log.Info("Waiting for namespace to be deleted...")
 	if err := cluster.waitForNamespaceToBeDeleted(namespace); err != nil {
@@ -320,42 +321,42 @@ func TestKCCInstallAndUninstall_Cluster_WorkloadIdentity(t *testing.T) {
 
 	manifestsDir, sample, err := getOperatorReleaseAssetsForVersion(f.version, testOptions.ServiceAccountID, testOptions.ProjectID, log)
 	if err != nil {
-		t.Fatalf("error getting operator release assets for version '%v': %v", f.version, err)
+		t.Fatal(fmt.Errorf("error getting operator release assets for version '%v': %w", f.version, err))
 	}
 	log.Info("Installing the operator...")
 	if err := cluster.installOperator(manifestsDir); err != nil {
-		t.Fatalf("error installing the operator: %v", err)
+		t.Fatal(fmt.Errorf("error installing the operator: %w", err))
 	}
 	log.Info("Installing KCC in cluster mode with workload identity...")
 	if err := cluster.installKCC(sample.configConnectorClusterModeWorkloadIdentityYAMLPath); err != nil {
-		t.Fatalf("error installing KCC: %v", err)
+		t.Fatal(fmt.Errorf("error installing KCC: %w", err))
 	}
 	namespace := "e2e-test-namespace"
 	if err := cluster.createNamespace(namespace); err != nil {
-		t.Fatalf("error creating namespace '%v': %v", namespace, err)
+		t.Fatal(fmt.Errorf("error creating namespace '%v': %w", namespace, err))
 	}
 	if err := cluster.addProjectIDAnnotationToNamespace(namespace, f.projectID); err != nil {
-		t.Fatalf("error annotating namespace '%v' with the project ID: %v", namespace, err)
+		t.Fatal(fmt.Errorf("error annotating namespace '%v' with the project ID: %w", namespace, err))
 	}
 	kccVersion, err := cluster.getKCCVersion()
 	if err != nil {
-		t.Fatalf("error determining KCC version: %v", err)
+		t.Fatal(fmt.Errorf("error determining KCC version: %w", err))
 	}
 	log.Info("Downloading and extracting KCC release tarball ...", "version", kccVersion)
 	kccReleaseAssetsDir, err := createTempDir("e2e-kcc-release-assets")
 	if err != nil {
-		t.Fatalf("error creating temporary directory for KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error creating temporary directory for KCC release assets: %w", err))
 	}
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
-		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
+		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
 	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
 	log.Info("Creating ArtifactRegistryRepository...")
 	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
-		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
+		t.Fatal(fmt.Errorf("error creating ArtifactRegistryRepository: %w", err))
 	}
 	log.Info("Deleting ArtifactRegistryRepository...")
 	if err := cluster.deleteArtifactRegistryRepository(namespace, repoName); err != nil {
@@ -363,7 +364,7 @@ func TestKCCInstallAndUninstall_Cluster_WorkloadIdentity(t *testing.T) {
 	}
 	log.Info("Uninstalling KCC...")
 	if err := cluster.uninstallKCC(); err != nil {
-		t.Fatalf("error uninstalling KCC: %v", err)
+		t.Fatal(fmt.Errorf("error uninstalling KCC: %w", err))
 	}
 }
 
@@ -379,42 +380,42 @@ func TestKCCInstallAndUninstall_Cluster_GCPIdentity(t *testing.T) {
 
 	manifestsDir, sample, err := getOperatorReleaseAssetsForVersion(f.version, testOptions.ServiceAccountID, testOptions.ProjectID, log)
 	if err != nil {
-		t.Fatalf("error getting operator release assets for version '%v': %v", f.version, err)
+		t.Fatal(fmt.Errorf("error getting operator release assets for version '%v': %w", f.version, err))
 	}
 	log.Info("Installing the operator...")
 	if err := cluster.installOperator(manifestsDir); err != nil {
-		t.Fatalf("error installing the operator: %v", err)
+		t.Fatal(fmt.Errorf("error installing the operator: %w", err))
 	}
 	log.Info("Installing KCC in cluster mode with GCP identity...")
 	if err := cluster.installKCC(sample.configConnectorClusterModeGCPIdentityYAMLPath); err != nil {
-		t.Fatalf("error installing KCC: %v", err)
+		t.Fatal(fmt.Errorf("error installing KCC: %w", err))
 	}
 	namespace := "e2e-test-namespace"
 	if err := cluster.createNamespace(namespace); err != nil {
-		t.Fatalf("error creating namespace '%v': %v", namespace, err)
+		t.Fatal(fmt.Errorf("error creating namespace '%v': %w", namespace, err))
 	}
 	if err := cluster.addProjectIDAnnotationToNamespace(namespace, f.projectID); err != nil {
-		t.Fatalf("error annotating namespace '%v' with the project ID: %v", namespace, err)
+		t.Fatal(fmt.Errorf("error annotating namespace '%v' with the project ID: %w", namespace, err))
 	}
 	kccVersion, err := cluster.getKCCVersion()
 	if err != nil {
-		t.Fatalf("error determining KCC version: %v", err)
+		t.Fatal(fmt.Errorf("error determining KCC version: %w", err))
 	}
 	log.Info("Downloading and extracting KCC release tarball ...", "version", kccVersion)
 	kccReleaseAssetsDir, err := createTempDir("e2e-kcc-release-assets")
 	if err != nil {
-		t.Fatalf("error creating temporary directory for KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error creating temporary directory for KCC release assets: %w", err))
 	}
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
-		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
+		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
 	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
 	log.Info("Creating ArtifactRegistryRepository...")
 	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
-		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
+		t.Fatal(fmt.Errorf("error creating ArtifactRegistryRepository: %w", err))
 	}
 	log.Info("Deleting ArtifactRegistryRepository...")
 	if err := cluster.deleteArtifactRegistryRepository(namespace, repoName); err != nil {
@@ -422,7 +423,7 @@ func TestKCCInstallAndUninstall_Cluster_GCPIdentity(t *testing.T) {
 	}
 	log.Info("Uninstalling KCC...")
 	if err := cluster.uninstallKCC(); err != nil {
-		t.Fatalf("error uninstalling KCC: %v", err)
+		t.Fatal(fmt.Errorf("error uninstalling KCC: %w", err))
 	}
 }
 
@@ -437,49 +438,49 @@ func TestKCCInstallAndUninstallWithoutDeletingKCCResources(t *testing.T) {
 
 	manifestsDir, sample, err := getOperatorReleaseAssetsForVersion(f.version, testOptions.ServiceAccountID, testOptions.ProjectID, log)
 	if err != nil {
-		t.Fatalf("error getting operator release assets for version '%v': %v", f.version, err)
+		t.Fatal(fmt.Errorf("error getting operator release assets for version '%v': %w", f.version, err))
 	}
 	log.Info("Installing the operator...")
 	if err := cluster.installOperator(manifestsDir); err != nil {
-		t.Fatalf("error installing the operator: %v", err)
+		t.Fatal(fmt.Errorf("error installing the operator: %w", err))
 	}
 	log.Info("Installing KCC...")
 	if err := cluster.installKCC(sample.configConnectorNamespacedModeYAMLPath); err != nil {
-		t.Fatalf("error installing KCC: %v", err)
+		t.Fatal(fmt.Errorf("error installing KCC: %w", err))
 	}
 	namespace := "e2e-test-namespace"
 	if err := cluster.createNamespace(namespace); err != nil {
-		t.Fatalf("error creating namespace '%v': %v", namespace, err)
+		t.Fatal(fmt.Errorf("error creating namespace '%v': %w", namespace, err))
 	}
 	if err := cluster.enableKCCForNamespace(namespace, sample.configConnectorContextYAMLPath, testOptions.ServiceAccountID, testOptions.ProjectID); err != nil {
-		t.Fatalf("error enabling KCC for namespace '%v': %v", namespace, err)
+		t.Fatal(fmt.Errorf("error enabling KCC for namespace '%v': %w", namespace, err))
 	}
 	if err := cluster.addProjectIDAnnotationToNamespace(namespace, f.projectID); err != nil {
-		t.Fatalf("error annotating namespace '%v' with the project ID: %v", namespace, err)
+		t.Fatal(fmt.Errorf("error annotating namespace '%v' with the project ID: %w", namespace, err))
 	}
 	kccVersion, err := cluster.getKCCVersion()
 	if err != nil {
-		t.Fatalf("error determining KCC version: %v", err)
+		t.Fatal(fmt.Errorf("error determining KCC version: %w", err))
 	}
 	log.Info("Downloading and extracting KCC release tarball...", "version", kccVersion)
 	kccReleaseAssetsDir, err := createTempDir("e2e-kcc-release-assets")
 	if err != nil {
-		t.Fatalf("error creating temporary directory for KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error creating temporary directory for KCC release assets: %w", err))
 	}
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
-		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
+		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
 	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
 	log.Info("Creating ArtifactRegistryRepository...")
 	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
-		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
+		t.Fatal(fmt.Errorf("error creating ArtifactRegistryRepository: %w", err))
 	}
 	log.Info("Uninstalling KCC...")
 	if err := cluster.uninstallKCC(); err != nil {
-		t.Fatalf("error uninstalling KCC: %v", err)
+		t.Fatal(fmt.Errorf("error uninstalling KCC: %w", err))
 	}
 	if err := checkArtifactRegistryRepositoryExistsOnGCP(repoName, f.projectID); err != nil {
 		t.Fatal(err)
@@ -497,53 +498,53 @@ func TestShouldNotBeAbleToCreateKCCResourcesIfKCCNotEnabledForNamespace(t *testi
 
 	manifestsDir, sample, err := getOperatorReleaseAssetsForVersion(f.version, testOptions.ServiceAccountID, testOptions.ProjectID, log)
 	if err != nil {
-		t.Fatalf("error getting operator release assets for version '%v': %v", f.version, err)
+		t.Fatal(fmt.Errorf("error getting operator release assets for version '%v': %w", f.version, err))
 	}
 	log.Info("Installing the operator...")
 	if err := cluster.installOperator(manifestsDir); err != nil {
-		t.Fatalf("error installing the operator: %v", err)
+		t.Fatal(fmt.Errorf("error installing the operator: %w", err))
 	}
 	log.Info("Installing KCC...")
 	if err := cluster.installKCC(sample.configConnectorNamespacedModeYAMLPath); err != nil {
-		t.Fatalf("error installing KCC: %v", err)
+		t.Fatal(fmt.Errorf("error installing KCC: %w", err))
 	}
 	namespace := "e2e-test-namespace"
 	if err := cluster.createNamespace(namespace); err != nil {
-		t.Fatalf("error creating namespace '%v': %v", namespace, err)
+		t.Fatal(fmt.Errorf("error creating namespace '%v': %w", namespace, err))
 	}
 	if err := cluster.addProjectIDAnnotationToNamespace(namespace, f.projectID); err != nil {
-		t.Fatalf("error annotating namespace '%v' with the project ID: %v", namespace, err)
+		t.Fatal(fmt.Errorf("error annotating namespace '%v' with the project ID: %w", namespace, err))
 	}
 	kccVersion, err := cluster.getKCCVersion()
 	if err != nil {
-		t.Fatalf("error determining KCC version: %v", err)
+		t.Fatal(fmt.Errorf("error determining KCC version: %w", err))
 	}
 	log.Info("Downloading and extracting KCC release tarball ...", "version", kccVersion)
 	kccReleaseAssetsDir, err := createTempDir("e2e-kcc-release-assets")
 	if err != nil {
-		t.Fatalf("error creating temporary directory for KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error creating temporary directory for KCC release assets: %w", err))
 	}
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
-		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
+		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
 	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
 	log.Info("Creating ArtifactRegistryRepository...")
 	if err := cluster.createArtifactRegistryRepositoryShouldFail(namespace, repoName, repoYAMLDir); err != nil {
-		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
+		t.Fatal(fmt.Errorf("error creating ArtifactRegistryRepository: %w", err))
 	}
 	ok, err := cluster.doesArtifactRegistryRepositoryHaveFinalizer(namespace, repoName, k8s.KCCFinalizer)
 	if err != nil {
-		t.Fatalf("error checking if ArtifactRegistryRepository has finalizer: %v", err)
+		t.Fatal(fmt.Errorf("error checking if ArtifactRegistryRepository has finalizer: %w", err))
 	}
 	if ok {
 		t.Fatalf("expected ArtifactRegistryRepository to not have finalizer '%v', but it does", k8s.KCCFinalizer)
 	}
 	ok, err = cluster.doesArtifactRegistryRepositoryHaveStatusUnmanaged(namespace, repoName, repoYAMLDir)
 	if err != nil {
-		t.Fatalf("error checking if ArtifactRegistryRepository has status '%v': %v", kcck8s.Unmanaged, err)
+		t.Fatal(fmt.Errorf("error checking if ArtifactRegistryRepository has status '%v': %w", kcck8s.Unmanaged, err))
 	}
 	if !ok {
 		t.Fatalf("expected ArtifactRegistryRepository to have status '%v', but it does not", kcck8s.Unmanaged)
@@ -565,63 +566,63 @@ func TestUpgrade(t *testing.T) {
 	//Get older version of the operator to perform an upgrade against
 	manifestsDir, sample, err := getOperatorReleaseAssetsForVersion(testOptions.BaseVersionSHA, testOptions.ServiceAccountID, testOptions.ProjectID, log)
 	if err != nil {
-		t.Fatalf("error getting operator release assets for version %v: %v", testOptions.BaseVersionSHA, err)
+		t.Fatal(fmt.Errorf("error getting operator release assets for version %v: %w", testOptions.BaseVersionSHA, err))
 	}
 	log.Info("Installing the base version operator...")
 	if err := cluster.installOperator(manifestsDir); err != nil {
-		t.Fatalf("error installing the base version operator: %v", err)
+		t.Fatal(fmt.Errorf("error installing the base version operator: %w", err))
 	}
 	log.Info("Installing KCC...")
 	if err := cluster.installKCC(sample.configConnectorNamespacedModeYAMLPath); err != nil {
-		t.Fatalf("error installing KCC: %v", err)
+		t.Fatal(fmt.Errorf("error installing KCC: %w", err))
 	}
 	namespace := "e2e-test-namespace"
 	if err := cluster.createNamespace(namespace); err != nil {
-		t.Fatalf("error creating namespace '%v': %v", namespace, err)
+		t.Fatal(fmt.Errorf("error creating namespace '%v': %w", namespace, err))
 	}
 	if err := cluster.enableKCCForNamespace(namespace, sample.configConnectorContextYAMLPath, testOptions.ServiceAccountID, testOptions.ProjectID); err != nil {
-		t.Fatalf("error enabling KCC for namespace '%v': %v", namespace, err)
+		t.Fatal(fmt.Errorf("error enabling KCC for namespace '%v': %w", namespace, err))
 	}
 	if err := cluster.addProjectIDAnnotationToNamespace(namespace, f.projectID); err != nil {
-		t.Fatalf("error annotating namespace '%v' with the project ID: %v", namespace, err)
+		t.Fatal(fmt.Errorf("error annotating namespace '%v' with the project ID: %w", namespace, err))
 	}
 	kccVersion, err := cluster.getKCCVersion()
 	if err != nil {
-		t.Fatalf("error determining KCC version: %v", err)
+		t.Fatal(fmt.Errorf("error determining KCC version: %w", err))
 	}
 	log.Info("Downloading and extracting KCC release tarball ...", "version", kccVersion)
 	kccReleaseAssetsDir, err := createTempDir("e2e-kcc-release-assets")
 	if err != nil {
-		t.Fatalf("error creating temporary directory for KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error creating temporary directory for KCC release assets: %w", err))
 	}
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
-		t.Fatalf("error downloading and extracting KCC with version '%v': %v", kccVersion, err)
+		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
 	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testId)
 	if err != nil {
-		t.Fatalf("error getting ArtifactRegistryRepository sample from KCC release assets: %v", err)
+		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
 	log.Info("Creating ArtifactRegistryRepository...")
 	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
-		t.Fatalf("error creating ArtifactRegistryRepository: %v", err)
+		t.Fatal(fmt.Errorf("error creating ArtifactRegistryRepository: %w", err))
 	}
 	log.Info("Upgrading the operator to the latest version")
 	manifestsDir, _, err = getOperatorReleaseAssetsForVersion(f.version, testOptions.ServiceAccountID, testOptions.ProjectID, log)
 	if err != nil {
-		t.Fatalf("error getting operator release assets for version '%v': %v", f.version, err)
+		t.Fatal(fmt.Errorf("error getting operator release assets for version '%v': %w", f.version, err))
 	}
 	log.Info("Installing the latest operator...")
 	if err := cluster.installOperator(manifestsDir); err != nil {
-		t.Fatalf("error installing the latest operator: %v", err)
+		t.Fatal(fmt.Errorf("error installing the latest operator: %w", err))
 	}
 	time.Sleep(120 * time.Second) // Some buffer time for the operator to reconcile on the existing ConfigConnector
 	if err := cluster.waitForConfigConnectorToBeHealthy(k8s.ConfigConnectorAllowedName); err != nil {
-		t.Fatalf("error waitting for ConfigConnector to be healthy: %v", err)
+		t.Fatal(fmt.Errorf("error waitting for ConfigConnector to be healthy: %w", err))
 	}
 	checkIfKCCHasUpgradedToTheLatestVersion(t, cluster, log)
 	log.Info("Re-applying ArtifactRegistryRepository")
 	if err := cluster.createArtifactRegistryRepository(namespace, repoName, repoYAMLDir); err != nil {
-		t.Fatalf("error re-applying ArtifactRegistryRepository: %v", err)
+		t.Fatal(fmt.Errorf("error re-applying ArtifactRegistryRepository: %w", err))
 	}
 	log.Info("Deleting ArtifactRegistryRepository...")
 	if err := cluster.deleteArtifactRegistryRepository(namespace, repoName); err != nil {
@@ -633,7 +634,7 @@ func TestUpgrade(t *testing.T) {
 	}
 	log.Info("Uninstalling KCC...")
 	if err := cluster.uninstallKCC(); err != nil {
-		t.Fatalf("error uninstalling KCC: %v", err)
+		t.Fatal(fmt.Errorf("error uninstalling KCC: %w", err))
 	}
 }
 
@@ -650,7 +651,7 @@ func newTestOptions() TestOptions {
 func checkIfKCCHasUpgradedToTheLatestVersion(t *testing.T, cluster *cluster, log logr.Logger) {
 	curKccVersionRaw, err := cluster.getKCCVersion()
 	if err != nil {
-		t.Fatalf("error getting the current KCC version: %v", err)
+		t.Fatal(fmt.Errorf("error getting the current KCC version: %w", err))
 	}
 	currentKccVersion, err := semver.ParseTolerant(curKccVersionRaw)
 	if err != nil {
@@ -658,7 +659,7 @@ func checkIfKCCHasUpgradedToTheLatestVersion(t *testing.T, cluster *cluster, log
 	}
 	latestOperatorVersionRaw, err := cluster.getOperatorVersion()
 	if err != nil {
-		t.Fatalf("error getting the latest operator version: %v", err)
+		t.Fatal(fmt.Errorf("error getting the latest operator version: %w", err))
 	}
 	latestOperatorVersion, err := semver.ParseTolerant(latestOperatorVersionRaw)
 	if err != nil {
@@ -675,7 +676,7 @@ func setup(t *testing.T, testOptions TestOptions) (testId string, log logr.Logge
 	testId = newUniqueTestId()
 	log, err := newLogger(t.Name())
 	if err != nil {
-		t.Fatalf("error creating logger: %v", err)
+		t.Fatal(fmt.Errorf("error creating logger: %w", err))
 	}
 	clusterName := "e2e-test-" + testId
 	cluster, cleanup, err := setupCluster(clusterName, testOptions.ProjectID, testOptions.GKEClusterLocation,
@@ -684,17 +685,17 @@ func setup(t *testing.T, testOptions TestOptions) (testId string, log logr.Logge
 		if cleanup != nil {
 			log.Info("Beginning cluster cleanup...")
 			if err := cleanup(); err != nil {
-				t.Errorf("error during cluster cleanup: %v", err)
+				t.Fatal(fmt.Errorf("error during cluster cleanup: %w", err))
 			}
 		}
 	}
 	if err != nil {
 		teardown()
-		t.Fatalf("error setting up cluster: %v", err)
+		t.Fatal(fmt.Errorf("error setting up cluster: %w", err))
 	}
 	if err := setupIdentity(testOptions, cluster.kubectl, log); err != nil {
 		teardown()
-		t.Fatalf("error setting up cluster: %v", err)
+		t.Fatal(fmt.Errorf("error setting up cluster: %w", err))
 	}
 	return testId, log, cluster, teardown
 }
@@ -713,22 +714,22 @@ func getOperatorReleaseAssetsForVersion(version, serviceAccountID, projectID str
 	emptySample := configConnectorSample{}
 	releaseAssetsDir, err := createTempDir("e2e-operator-release-assets")
 	if err != nil {
-		return "", emptySample, fmt.Errorf("error creating temporary directory for operator release assets: %v", err)
+		return "", emptySample, fmt.Errorf("error creating temporary directory for operator release assets: %w", err)
 	}
 	if err := downloadAndExtractOperatorReleaseTarball(version, releaseAssetsDir); err != nil {
-		return "", emptySample, fmt.Errorf("error downloading and extracting operator release tarball with version '%v': %v", version, err)
+		return "", emptySample, fmt.Errorf("error downloading and extracting operator release tarball with version '%v': %w", version, err)
 	}
 	manifestsDir = path.Join(releaseAssetsDir, "operator-system")
 	sample, err = getConfigConnectorSample(releaseAssetsDir, serviceAccountID, projectID, version)
 	if err != nil {
-		return "", emptySample, fmt.Errorf("error getting ConfigConnector sample from operator release assets: %v", err)
+		return "", emptySample, fmt.Errorf("error getting ConfigConnector sample from operator release assets: %w", err)
 	}
 	return manifestsDir, sample, nil
 }
 
 func (c *cluster) installOperator(operatorManifestsDir string) error {
 	if _, err := c.kubectl.apply("-f", operatorManifestsDir); err != nil {
-		return fmt.Errorf("error applying operator manifests: %v", err)
+		return fmt.Errorf("error applying operator manifests: %w", err)
 	}
 	time.Sleep(30 * time.Second) // Wait for the operator's controllers and webhooks to come up and be registered
 	return nil
@@ -748,7 +749,7 @@ func getConfigConnectorSample(operatorReleaseAssetsDir, serviceAccountID, projec
 	for _, yamlPath := range yamlPaths {
 		content, err := ioutil.ReadFile(yamlPath)
 		if err != nil {
-			return emptySample, fmt.Errorf("error reading YAML: %v", err)
+			return emptySample, fmt.Errorf("error reading YAML: %w", err)
 		}
 		s := string(content)
 
@@ -767,7 +768,7 @@ func getConfigConnectorSample(operatorReleaseAssetsDir, serviceAccountID, projec
 
 		// Write back modified YAML to disk
 		if err := writeToFile(s, yamlPath); err != nil {
-			return emptySample, fmt.Errorf("error updating YAML file: %v", err)
+			return emptySample, fmt.Errorf("error updating YAML file: %w", err)
 		}
 	}
 	return sample, nil
@@ -776,11 +777,11 @@ func getConfigConnectorSample(operatorReleaseAssetsDir, serviceAccountID, projec
 func (c *cluster) installKCC(configConnectorYAMLPath string) error {
 	content, err := ioutil.ReadFile(configConnectorYAMLPath)
 	if err != nil {
-		return fmt.Errorf("error reading ConfigConnector YAML: %v", err)
+		return fmt.Errorf("error reading ConfigConnector YAML: %w", err)
 	}
 	c.log.Info("Applying ConfigConnector YAML", "content", string(content))
 	if _, err := c.kubectl.apply("-f", configConnectorYAMLPath); err != nil {
-		return fmt.Errorf("error applying ConfigConnector YAML: %v", err)
+		return fmt.Errorf("error applying ConfigConnector YAML: %w", err)
 	}
 	if err := c.waitForConfigConnectorToBeHealthy(k8s.ConfigConnectorAllowedName); err != nil {
 		return err
@@ -794,16 +795,16 @@ func (c *cluster) enableKCCForNamespace(namespace, configConnectorContextYAMLPat
 	c.log.Info("Setting up Workload Identity binding for namespace...", "namespace", namespace)
 	serviceAccEmail := fmt.Sprintf("%v@%v.iam.gserviceaccount.com", serviceAccountId, projectID)
 	if err := setupWorkloadIdentityForNamespace(namespace, serviceAccEmail, projectID); err != nil {
-		return fmt.Errorf("error setting up Workload Identity binding for namespace '%v': %v", namespace, err)
+		return fmt.Errorf("error setting up Workload Identity binding for namespace '%v': %w", namespace, err)
 	}
 
 	content, err := ioutil.ReadFile(configConnectorContextYAMLPath)
 	if err != nil {
-		return fmt.Errorf("error reading ConfigConnectorContext YAML for namespace '%v': %v", namespace, err)
+		return fmt.Errorf("error reading ConfigConnectorContext YAML for namespace '%v': %w", namespace, err)
 	}
 	c.log.Info("Applying ConfigConnectorContext YAML", "namespace", namespace, "content", string(content))
 	if _, err := c.kubectl.apply("-n", namespace, "-f", configConnectorContextYAMLPath); err != nil {
-		return fmt.Errorf("error applying ConfigConnectorContext YAML for namespace '%v': %v", namespace, err)
+		return fmt.Errorf("error applying ConfigConnectorContext YAML for namespace '%v': %w", namespace, err)
 	}
 	if err := c.waitForConfigConnectorToBeHealthy(k8s.ConfigConnectorAllowedName); err != nil {
 		return err
@@ -822,13 +823,13 @@ func (c *cluster) waitForConfigConnectorToBeHealthy(name string) error {
 		}
 		res, err := c.retry(f, longIntervalBackOff)
 		if err != nil {
-			return false, fmt.Errorf("error getting ConfigConnector '%v': %v", name, err)
+			return false, fmt.Errorf("error getting ConfigConnector '%v': %w", name, err)
 		}
 		c.log.Info("Waiting for ConfigConnector to reach a healthy state...", "name", name)
 		return strings.Contains(res.(string), "healthy: true"), nil
 	})
 	if err != nil {
-		if err != wait.ErrWaitTimeout {
+		if !goerrors.Is(err, wait.ErrWaitTimeout) {
 			return err
 		}
 		out, _ := c.kubectl.get("configconnector", name, "-o", "yaml")
@@ -876,7 +877,7 @@ func (c *cluster) waitForConfigConnectorContextToBeRemoved(namespace, name strin
 	if err == nil {
 		return nil
 	}
-	if err != wait.ErrWaitTimeout {
+	if !goerrors.Is(err, wait.ErrWaitTimeout) {
 		return err
 	}
 	out, _ := c.kubectl.get("-n", namespace, "configconnectorcontext", name, "-o", "yaml")
@@ -902,13 +903,13 @@ func (c *cluster) waitForConfigConnectorContextToBeHealthyOrUnhealthy(namespace,
 		}
 		out, err := c.retry(f, longIntervalBackOff)
 		if err != nil {
-			return false, fmt.Errorf("error getting ConfigConnectorContext '%v' for namespace '%v': %v", name, namespace, err)
+			return false, fmt.Errorf("error getting ConfigConnectorContext '%v' for namespace '%v': %w", name, namespace, err)
 		}
 		c.log.Info(fmt.Sprintf("Waiting for ConfigConnectorContext to reach an %v state...", desiredState), "namespace", namespace, "name", name)
 		return strings.Contains(out.(string), fmt.Sprintf("healthy: %v", healthy)), nil
 	})
 	if err != nil {
-		if err != wait.ErrWaitTimeout {
+		if !goerrors.Is(err, wait.ErrWaitTimeout) {
 			return err
 		}
 		out, _ := c.kubectl.get("-n", namespace, "configconnectorcontext", name, "-o", "yaml")
@@ -922,7 +923,7 @@ func setupWorkloadIdentityForNamespace(namespace, serviceAccEmail, projectID str
 	member := fmt.Sprintf("serviceAccount:%v.svc.id.goog[cnrm-system/%v%v]", projectID, k8s.ServiceAccountNamePrefix, namespace)
 	role := "roles/iam.workloadIdentityUser"
 	if err := addIAMBindingForServiceAcc(serviceAccEmail, member, role, projectID); err != nil {
-		return fmt.Errorf("error setting up Workload Identity binding: %v", err)
+		return fmt.Errorf("error setting up Workload Identity binding: %w", err)
 	}
 	return nil
 }
@@ -931,12 +932,12 @@ func getArtifactRegistryRepositorySample(kccReleaseAssetsDir, uniqueId string) (
 	repoYAMLDir = path.Join(kccReleaseAssetsDir, "samples", "resources", "artifactregistryrepository")
 	yamlPaths, err := getYAMLFilesInDir(repoYAMLDir)
 	if err != nil {
-		return "", "", fmt.Errorf("error getting paths to YAML files in ArtifactRegistryRepository sample directory '%v': %v", repoYAMLDir, err)
+		return "", "", fmt.Errorf("error getting paths to YAML files in ArtifactRegistryRepository sample directory '%v': %w", repoYAMLDir, err)
 	}
 	for _, yamlPath := range yamlPaths {
 		b, err := ioutil.ReadFile(yamlPath)
 		if err != nil {
-			return "", "", fmt.Errorf("error reading file '%v': %v", yamlPath, err)
+			return "", "", fmt.Errorf("error reading file '%v': %w", yamlPath, err)
 		}
 		s := string(b)
 		s = strings.ReplaceAll(s, "sample", "sample"+uniqueId)
@@ -944,12 +945,12 @@ func getArtifactRegistryRepositorySample(kccReleaseAssetsDir, uniqueId string) (
 
 		// Write back modified YAML to disk
 		if err := writeToFile(s, yamlPath); err != nil {
-			return "", "", fmt.Errorf("error updating file '%v': %v", yamlPath, err)
+			return "", "", fmt.Errorf("error updating file '%v': %w", yamlPath, err)
 		}
 	}
 	repoName, err = getRepoNameFromArtifactRegistryRepositorySampleDir(repoYAMLDir)
 	if err != nil {
-		return "", "", fmt.Errorf("error getting name of ArtifactRegistryRepository for ArtifactRegistryRepository sample directory '%v': %v", repoYAMLDir, err)
+		return "", "", fmt.Errorf("error getting name of ArtifactRegistryRepository for ArtifactRegistryRepository sample directory '%v': %w", repoYAMLDir, err)
 	}
 	return repoName, repoYAMLDir, nil
 }
@@ -958,12 +959,12 @@ func getRepoNameFromArtifactRegistryRepositorySampleDir(repoYAMLDir string) (str
 	unstructs := make([]*unstructured.Unstructured, 0)
 	yamlPaths, err := getYAMLFilesInDir(repoYAMLDir)
 	if err != nil {
-		return "", fmt.Errorf("error getting paths to YAML files in directory '%v': %v", repoYAMLDir, err)
+		return "", fmt.Errorf("error getting paths to YAML files in directory '%v': %w", repoYAMLDir, err)
 	}
 	for _, yamlPath := range yamlPaths {
 		u, err := utils.ReadFileToUnstructs(yamlPath)
 		if err != nil {
-			return "", fmt.Errorf("error converting file '%v' to unstructs: %v", yamlPath, err)
+			return "", fmt.Errorf("error converting file '%v' to unstructs: %w", yamlPath, err)
 		}
 		unstructs = append(unstructs, u...)
 	}
@@ -987,7 +988,7 @@ func getYAMLFilesInDir(dir string) (yamlPaths []string, err error) {
 	yamlPaths = make([]string, 0)
 	fileInfos, err := ioutil.ReadDir(dir)
 	if err != nil {
-		return []string{}, fmt.Errorf("error reading directory '%v': %v", dir, err)
+		return []string{}, fmt.Errorf("error reading directory '%v': %w", dir, err)
 	}
 	for _, fi := range fileInfos {
 		if fi.IsDir() {
@@ -1003,7 +1004,7 @@ func getYAMLFilesInDir(dir string) (yamlPaths []string, err error) {
 
 func (c *cluster) createArtifactRegistryRepository(namespace, repoName, repoYAMLDir string) error {
 	if err := c.createArtifactRegistryRepositoryAndWait(namespace, repoName, repoYAMLDir); err != nil {
-		if err == wait.ErrWaitTimeout {
+		if goerrors.Is(err, wait.ErrWaitTimeout) {
 			out, _ := c.kubectl.get("-n", namespace, "artifactregistryrepository", repoName, "-o", "yaml")
 			return fmt.Errorf("timed out waiting for ArtifactRegistryRepository to reach an UpToDate state:\n%v", out)
 		}
@@ -1014,7 +1015,7 @@ func (c *cluster) createArtifactRegistryRepository(namespace, repoName, repoYAML
 
 func (c *cluster) createArtifactRegistryRepositoryShouldFail(namespace, repoName, repoYAMLDir string) error {
 	if err := c.createArtifactRegistryRepositoryAndWait(namespace, repoName, repoYAMLDir); err != nil {
-		if err == wait.ErrWaitTimeout {
+		if goerrors.Is(err, wait.ErrWaitTimeout) {
 			return nil // i.e. ArtifactRegistryRepository never reached an "UpToDate" state as expected
 		}
 		return err
@@ -1026,7 +1027,7 @@ func (c *cluster) createArtifactRegistryRepositoryShouldFail(namespace, repoName
 
 func (c *cluster) createArtifactRegistryRepositoryAndWait(namespace, repoName, repoYAMLDir string) error {
 	if _, err := c.kubectl.apply("-n", namespace, "-f", repoYAMLDir); err != nil {
-		return fmt.Errorf("error applying ArtifactRegistryRepository: %v", err)
+		return fmt.Errorf("error applying ArtifactRegistryRepository: %w", err)
 	}
 	return wait.PollImmediate(5*time.Second, 2*time.Minute, func() (done bool, err error) {
 		c.log.Info("Getting ArtifactRegistryRepository...", "name", repoName)
@@ -1037,7 +1038,7 @@ func (c *cluster) createArtifactRegistryRepositoryAndWait(namespace, repoName, r
 		// here we want to be more tolerant/robust by retrying a little more with a longer interval.
 		out, err := c.retry(f, longIntervalBackOff)
 		if err != nil {
-			return false, fmt.Errorf("error getting ArtifactRegistryRepository '%v/%v': %v", namespace, repoName, err)
+			return false, fmt.Errorf("error getting ArtifactRegistryRepository '%v/%v': %w", namespace, repoName, err)
 		}
 		c.log.Info("Waiting for ArtifactRegistryRepository to reach an UpToDate state...", "name", repoName)
 		return strings.Contains(out.(string), "UpToDate"), nil
@@ -1053,7 +1054,7 @@ func (c *cluster) waitForCNRMFinalizersToBeRemovedFromArtifactRegistryRepository
 		return !ok, nil
 	}
 	if err := wait.PollImmediate(5*time.Second, 5*time.Minute, waitFunc); err != nil {
-		if err != wait.ErrWaitTimeout {
+		if !goerrors.Is(err, wait.ErrWaitTimeout){
 			return err
 		}
 		out, _ := c.kubectl.get("-n", namespace, "artifactregistryrepository", repoName, "-o", "yaml")
@@ -1065,7 +1066,7 @@ func (c *cluster) waitForCNRMFinalizersToBeRemovedFromArtifactRegistryRepository
 func (c *cluster) getArtifactRegistryRepositoryUnstructured(namespace, repoName string) (*unstructured.Unstructured, error) {
 	out, err := c.kubectl.get("-n", namespace, "artifactregistryrepository", repoName, "-o", "yaml")
 	if err != nil {
-		return nil, fmt.Errorf("error getting ArtifactRegistryRepository '%v/%v': %v", namespace, repoName, err)
+		return nil, fmt.Errorf("error getting ArtifactRegistryRepository '%v/%v': %w", namespace, repoName, err)
 	}
 	repoUnstruct, err := utils.BytesToUnstruct([]byte(out))
 	if err != nil {
@@ -1149,7 +1150,7 @@ func (c *cluster) deleteArtifactRegistryRepository(namespace, repoName string, e
 	}
 	_, err := c.retry(f, defaultBackOff)
 	if err != nil {
-		return fmt.Errorf("error deleting ArtifactRegistryRepository: %v", err)
+		return fmt.Errorf("error deleting ArtifactRegistryRepository: %w", err)
 	}
 	return nil
 }
@@ -1164,7 +1165,7 @@ func (c *cluster) deleteConfigConnectorContext(namespace, name string) error {
 		return nil, nil
 	}
 	if _, err := c.retry(f, longIntervalBackOff); err != nil {
-		return fmt.Errorf("error deleting ConfigConnectorContext: %v", err)
+		return fmt.Errorf("error deleting ConfigConnectorContext: %w", err)
 	}
 	return c.waitForConfigConnectorContextToBeRemoved(namespace, name)
 }
@@ -1179,12 +1180,12 @@ func (c *cluster) uninstallKCC() error {
 		return nil, nil
 	}
 	if _, err := c.retry(f, longIntervalBackOff); err != nil {
-		return fmt.Errorf("error deleting ConfigConnectors: %v", err)
+		return fmt.Errorf("error deleting ConfigConnectors: %w", err)
 	}
 	c.log.Info("Asserting that the ConfigConnector object is gone")
 	out, err := c.kubectl.get("configconnector")
 	if err != nil {
-		return fmt.Errorf("error getting ConfigConnectors: %v", err)
+		return fmt.Errorf("error getting ConfigConnectors: %w", err)
 	}
 	if !strings.Contains(out, "No resources found") {
 		return fmt.Errorf("expected no ConfigConnectors to exist, but got:\n%v", out)
@@ -1200,7 +1201,7 @@ func (c *cluster) uninstallKCC() error {
 		c.log.Info("Asserting that resource CRDs are deleted")
 		out, err = c.kubectl.get("crds", "--selector", "cnrm.cloud.google.com/managed-by-kcc=true")
 		if err != nil {
-			return nil, fmt.Errorf("error getting KCC CRDs: %v", err)
+			return nil, fmt.Errorf("error getting KCC CRDs: %w", err)
 		}
 		if !strings.Contains(out, "No resources found") {
 			return nil, fmt.Errorf("expected KCC CRDs to not exist, but got:\n%v", out)
@@ -1214,14 +1215,14 @@ func (c *cluster) uninstallKCC() error {
 
 	out, err = c.kubectl.get("validatingwebhookconfiguration")
 	if err != nil {
-		return fmt.Errorf("error getting ValidatingWebhookConfigurations: %v", err)
+		return fmt.Errorf("error getting ValidatingWebhookConfigurations: %w", err)
 	}
 	if strings.Contains(out, k8s.CNRMDomain) {
 		return fmt.Errorf("expected KCC validating webhooks to not exist, but got:\n%v", out)
 	}
 	out, err = c.kubectl.get("mutatingwebhookconfiguration")
 	if err != nil {
-		return fmt.Errorf("error getting MutatingWebhookConfigurations: %v", err)
+		return fmt.Errorf("error getting MutatingWebhookConfigurations: %w", err)
 	}
 	if strings.Contains(out, k8s.CNRMDomain) {
 		return fmt.Errorf("expected KCC mutating webhooks to not exist, but got:\n%v", out)
@@ -1253,7 +1254,7 @@ func (c *cluster) waitForNamespaceToBeDeleted(namespace string) error {
 		// here we want to be more tolerant/robust by retrying a little more with a longer interval.
 		res, err := c.retry(f, longIntervalBackOff)
 		if err != nil {
-			return false, fmt.Errorf("error getting namespace '%v': %v", namespace, err)
+			return false, fmt.Errorf("error getting namespace '%v': %w", namespace, err)
 		}
 		if isDeleted {
 			return true, nil
@@ -1263,7 +1264,7 @@ func (c *cluster) waitForNamespaceToBeDeleted(namespace string) error {
 		return false, nil
 	})
 	if err != nil {
-		if err != wait.ErrWaitTimeout {
+		if !goerrors.Is(err, wait.ErrWaitTimeout) {
 			return err
 		}
 		return fmt.Errorf("timed out waiting for namespace '%v' to be deleted", namespace)
@@ -1278,9 +1279,9 @@ func checkArtifactRegistryRepositoryExistsOnGCP(repoName, projectID string) erro
 	_, err := utils.ExecuteAndCaptureOutput(cmd)
 	if err != nil {
 		if strings.Contains(err.Error(), "NOT_FOUND") {
-			return fmt.Errorf("expected project '%v' to have Artifact Registry Repository named '%v', but got:\n%v", projectID, repoName, err)
+			return fmt.Errorf("expected project '%v' to have Artifact Registry Repository named '%v', but got:\n%w", projectID, repoName, err)
 		}
-		return fmt.Errorf("error checking if Artifact Registry Repository exists on GCP: %v", err)
+		return fmt.Errorf("error checking if Artifact Registry Repository exists on GCP: %w", err)
 	}
 	return nil
 }
@@ -1291,16 +1292,16 @@ func setupCluster(clusterName, projectID, location, serviceAccountId string, log
 	ctx := context.Background()
 	container, err := containerBeta.NewService(ctx)
 	if err != nil {
-		return nil, cleanup, fmt.Errorf("error creating Container client: %v", err)
+		return nil, cleanup, fmt.Errorf("error creating Container client: %w", err)
 	}
 	log.Info("Creating a GKE cluster...", "name", clusterName)
 	if err := createGKECluster(container, clusterName, projectID, location, log); err != nil {
-		return nil, cleanup, fmt.Errorf("error creating GKE cluster with name '%v': %v", clusterName, err)
+		return nil, cleanup, fmt.Errorf("error creating GKE cluster with name '%v': %w", clusterName, err)
 	}
 	cleanup = func() error {
 		log.Info("Deleting GKE cluster...", "name", clusterName)
 		if err := deleteGKECluster(container, clusterName, projectID, location); err != nil {
-			return fmt.Errorf("error deleting cluster with name '%v': %v", clusterName, err)
+			return fmt.Errorf("error deleting cluster with name '%v': %w", clusterName, err)
 		}
 		return nil
 	}
@@ -1308,20 +1309,20 @@ func setupCluster(clusterName, projectID, location, serviceAccountId string, log
 	log.Info("Getting the cluster's kubeconfig...")
 	outDirForKubeconfig, err := createTempDir("e2e-" + clusterName + "-kubeconfig")
 	if err != nil {
-		return nil, cleanup, fmt.Errorf("error creating temporary directory for cluster's kubeconfig: %v", err)
+		return nil, cleanup, fmt.Errorf("error creating temporary directory for cluster's kubeconfig: %w", err)
 	}
 	outPathForKubeconfig := path.Join(outDirForKubeconfig, "kubeconfig.yaml")
 	if err := getKubeconfigForGKECluster(projectID, location, clusterName, outPathForKubeconfig); err != nil {
-		return nil, cleanup, fmt.Errorf("error getting cluster's kubeconfig: %v", err)
+		return nil, cleanup, fmt.Errorf("error getting cluster's kubeconfig: %w", err)
 	}
 	log.Info("Setting up a client-go Clientset...")
 	config, err := clientcmd.BuildConfigFromFlags("", outPathForKubeconfig)
 	if err != nil {
-		return nil, cleanup, fmt.Errorf("error building REST client config from kubeconfig: %v", err)
+		return nil, cleanup, fmt.Errorf("error building REST client config from kubeconfig: %w", err)
 	}
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
-		return nil, cleanup, fmt.Errorf("error creating client-go Clientset: %v", err)
+		return nil, cleanup, fmt.Errorf("error creating client-go Clientset: %w", err)
 	}
 	cluster := &cluster{
 		kubectl: &kubectl{
@@ -1360,24 +1361,24 @@ func setupProject(organizationID, projectID, billingAccountID, serviceAccountID 
 	ctx := context.Background()
 	resourceManagerClient, err := cloudresourcemanager.NewService(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error creating ResourceManager client: %v", err)
+		return nil, fmt.Errorf("error creating ResourceManager client: %w", err)
 	}
 	billingClient, err := cloudbilling.NewService(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error creating Billing client: %v", err)
+		return nil, fmt.Errorf("error creating Billing client: %w", err)
 	}
 	iamClient, err := iam.NewService(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error creating IAM client: %v", err)
+		return nil, fmt.Errorf("error creating IAM client: %w", err)
 	}
 	log.Info("Creating project...", "projectID", projectID)
 	if err := createProject(resourceManagerClient, organizationID, projectID, log); err != nil {
-		return cleanup, fmt.Errorf("error creating project with project ID '%v': %v", projectID, err)
+		return cleanup, fmt.Errorf("error creating project with project ID '%v': %w", projectID, err)
 	}
 	cleanup = func() error {
 		log.Info("Deleting project...", "projectID", projectID)
 		if err := deleteProject(resourceManagerClient, projectID); err != nil {
-			return fmt.Errorf("error deleting project with project ID '%v': %v", projectID, err)
+			return fmt.Errorf("error deleting project with project ID '%v': %w", projectID, err)
 		}
 		return nil
 	}
@@ -1387,15 +1388,15 @@ func setupProject(organizationID, projectID, billingAccountID, serviceAccountID 
 	}
 	log.Info("Enabling services for project...")
 	if err := enableServicesForProject(projectID, SERVICES, log); err != nil {
-		return cleanup, fmt.Errorf("error enabling services for project: %v", err)
+		return cleanup, fmt.Errorf("error enabling services for project: %w", err)
 	}
 	log.Info("Setting up IAM service account...")
 	if err := createServiceAccount(iamClient, serviceAccountID, projectID); err != nil {
-		return cleanup, fmt.Errorf("error creating service account: %v", err)
+		return cleanup, fmt.Errorf("error creating service account: %w", err)
 	}
 	serviceAccEmail := fmt.Sprintf("%v@%v.iam.gserviceaccount.com", serviceAccountID, projectID)
 	if err := addIAMBindingForProject(projectID, "serviceAccount:"+serviceAccEmail, "roles/owner"); err != nil {
-		return cleanup, fmt.Errorf("error granting service account project owner role: %v", err)
+		return cleanup, fmt.Errorf("error granting service account project owner role: %w", err)
 	}
 	return cleanup, nil
 }
@@ -1487,17 +1488,17 @@ func createCredentialSecret(serviceAccEmail, projectID, secretName string, k *ku
 		"./key.json",
 	)
 	if err := utils.Execute(cmd); err != nil {
-		return fmt.Errorf("error creating a service account key: %v", err)
+		return fmt.Errorf("error creating a service account key: %w", err)
 	}
 	if _, err := k.exec("create", "", "ns", "cnrm-system"); err != nil {
-		return fmt.Errorf("error creating cnrm-system namespace: %v", err)
+		return fmt.Errorf("error creating cnrm-system namespace: %w", err)
 	}
 	if _, err := k.exec("create", "", "secret", "generic", secretName, "--from-file", "./key.json", "--namespace", "cnrm-system"); err != nil {
-		return fmt.Errorf("error creating a secret containing service account key: %v", err)
+		return fmt.Errorf("error creating a secret containing service account key: %w", err)
 	}
 	rm := exec.Command("rm", "./key.json")
 	if err := utils.Execute(rm); err != nil {
-		return fmt.Errorf("error removing the service account key: %v", err)
+		return fmt.Errorf("error removing the service account key: %w", err)
 	}
 	return nil
 }
@@ -1686,7 +1687,7 @@ func (c *cluster) addProjectIDAnnotationToNamespace(namespace, projectID string)
 	updateFunc := func() (interface{}, error) {
 		ns, err = c.clientset.CoreV1().Namespaces().Update(context.Background(), ns, metav1.UpdateOptions{})
 		if err != nil {
-			return nil, fmt.Errorf("error updating namespace '%v': %v", namespace, err)
+			return nil, fmt.Errorf("error updating namespace '%v': %w", namespace, err)
 		}
 		return ns, nil
 	}

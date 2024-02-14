@@ -89,7 +89,7 @@ func DeleteObject(ctx context.Context, c client.Client, obj client.Object) error
 		if apierrors.IsNotFound(err) {
 			return nil
 		}
-		return fmt.Errorf("error deleting %v %v: %v", kind, name, err)
+		return fmt.Errorf("error deleting %v %v: %w", kind, name, err)
 	}
 	return removeOperatorFinalizerIfPresent(ctx, c, obj)
 }
@@ -236,7 +236,7 @@ func customizeContainerResourcesFn(cMap map[string]customizev1beta1.ResourceRequ
 	return func(container map[string]interface{}) error {
 		name, _, err := unstructured.NestedString(container, "name")
 		if err != nil {
-			return fmt.Errorf("error reading container name: %v", err)
+			return fmt.Errorf("error reading container name: %w", err)
 		}
 		r, found := cMap[name]
 		if !found {
@@ -251,22 +251,22 @@ func customizeContainerResourcesFn(cMap map[string]customizev1beta1.ResourceRequ
 		shouldUpdateGOMEMLIMIT := false // we need to update the GOMEMLIMIT environment variable if we update the memory request.
 		if r.Limits != nil && !r.Limits.Cpu().IsZero() {
 			if err := unstructured.SetNestedField(container, r.Limits.Cpu().String(), "resources", "limits", "cpu"); err != nil {
-				return fmt.Errorf("error setting cpu limit: %v", err)
+				return fmt.Errorf("error setting cpu limit: %w", err)
 			}
 		}
 		if r.Limits != nil && !r.Limits.Memory().IsZero() {
 			if err := unstructured.SetNestedField(container, r.Limits.Memory().String(), "resources", "limits", "memory"); err != nil {
-				return fmt.Errorf("error setting memory limit: %v", err)
+				return fmt.Errorf("error setting memory limit: %w", err)
 			}
 		}
 		if r.Requests != nil && !r.Requests.Cpu().IsZero() {
 			if err := unstructured.SetNestedField(container, r.Requests.Cpu().String(), "resources", "requests", "cpu"); err != nil {
-				return fmt.Errorf("error setting cpu request: %v", err)
+				return fmt.Errorf("error setting cpu request: %w", err)
 			}
 		}
 		if r.Requests != nil && !r.Requests.Memory().IsZero() {
 			if err := unstructured.SetNestedField(container, r.Requests.Memory().String(), "resources", "requests", "memory"); err != nil {
-				return fmt.Errorf("error setting memory request: %v", err)
+				return fmt.Errorf("error setting memory request: %w", err)
 			}
 			shouldUpdateGOMEMLIMIT = true
 		}
@@ -296,7 +296,7 @@ func updateContainerEnvIfFound(container map[string]interface{}, name, value str
 	// retrieve env list
 	envs, found, err := unstructured.NestedSlice(container, "env")
 	if err != nil {
-		return fmt.Errorf("error getting container env list: %v", err)
+		return fmt.Errorf("error getting container env list: %w", err)
 	}
 	if !found { // do not update the value if we cannot find the environment variable.
 		return nil
@@ -310,11 +310,11 @@ func updateContainerEnvIfFound(container map[string]interface{}, name, value str
 		}
 		envName, ok, err := unstructured.NestedFieldNoCopy(env, "name")
 		if err != nil {
-			return fmt.Errorf("error getting \"name\" field from container env %v: %v", env, err)
+			return fmt.Errorf("error getting \"name\" field from container env %v: %w", env, err)
 		}
 		if ok && envName == name { // found a match
 			if err := unstructured.SetNestedField(env, value, "value"); err != nil {
-				return fmt.Errorf("error setting container env %s: %v", name, err)
+				return fmt.Errorf("error setting container env %s: %w", name, err)
 			}
 			break
 		}
@@ -322,7 +322,7 @@ func updateContainerEnvIfFound(container map[string]interface{}, name, value str
 
 	// write back env list
 	if err := unstructured.SetNestedSlice(container, envs, "env"); err != nil {
-		return fmt.Errorf("error setting container env list: %v", err)
+		return fmt.Errorf("error setting container env list: %w", err)
 	}
 	return nil
 }

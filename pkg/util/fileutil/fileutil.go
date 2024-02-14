@@ -44,7 +44,7 @@ func HasSubdirs(path string) (bool, error) {
 func SubdirsIn(path string) ([]string, error) {
 	fileInfos, err := ioutil.ReadDir(path)
 	if err != nil {
-		return []string{}, fmt.Errorf("error reading directory '%v': %v", path, err)
+		return []string{}, fmt.Errorf("error reading directory '%v': %w", path, err)
 	}
 	subdirNames := make([]string, 0)
 	for _, fi := range fileInfos {
@@ -60,7 +60,7 @@ func SubdirsIn(path string) ([]string, error) {
 func FileNamesWithSuffixInDir(path, suffix string) (names []string, err error) {
 	fileInfos, err := ioutil.ReadDir(path)
 	if err != nil {
-		return []string{}, fmt.Errorf("error reading directory '%v': %v", path, err)
+		return []string{}, fmt.Errorf("error reading directory '%v': %w", path, err)
 	}
 	names = make([]string, 0)
 	for _, fi := range fileInfos {
@@ -77,7 +77,7 @@ func FileNamesWithSuffixInDir(path, suffix string) (names []string, err error) {
 // NewEmptyFile creates an empty file at the given path.
 func NewEmptyFile(path string) (*os.File, error) {
 	if err := ensureParentDirectoryExists(path); err != nil {
-		return nil, fmt.Errorf("error ensuring parent directory of %v exists: %v", path, err)
+		return nil, fmt.Errorf("error ensuring parent directory of %v exists: %w", path, err)
 	}
 	return os.Create(path)
 }
@@ -85,7 +85,7 @@ func NewEmptyFile(path string) (*os.File, error) {
 func ensureParentDirectoryExists(path string) error {
 	dir := filepath.Dir(path)
 	if err := os.MkdirAll(dir, 0700); err != nil {
-		return fmt.Errorf("error creating directory %v and its parents: %v", dir, err)
+		return fmt.Errorf("error creating directory %v and its parents: %w", dir, err)
 	}
 	return nil
 }

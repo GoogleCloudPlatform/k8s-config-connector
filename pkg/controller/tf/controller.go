@@ -101,7 +101,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
 	if err != nil {
-		return nil, fmt.Errorf("error creating new controller: %v", err)
+		return nil, fmt.Errorf("error creating new controller: %w", err)
 	}
 	logger.Info("Registered controller", "kind", kind, "apiVersion", apiVersion)
 	return r, nil
@@ -174,13 +174,13 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	}
 	resource, err := krmtotf.NewResource(u, sm, r.provider)
 	if err != nil {
-		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %v", req.NamespacedName.String(), err)
+		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %w", req.NamespacedName.String(), err)
 	}
 	if err := r.handleDefaults(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(resource), err)
 	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
-		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %v", k8s.GetNamespacedName(resource), err)
+		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %w", k8s.GetNamespacedName(resource), err)
 	}
 
 	// Apply pre-actuation transformation.
@@ -248,7 +248,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 		}
 		liveState, err := krmtotf.FetchLiveStateForDelete(ctx, krmResource, r.provider, r, r.smLoader)
 		if err != nil {
-			return false, r.HandleDeleteFailed(ctx, &krmResource.Resource, fmt.Errorf("error fetching live state: %v", err))
+			return false, r.HandleDeleteFailed(ctx, &krmResource.Resource, fmt.Errorf("error fetching live state: %w", err))
 		}
 		if liveState.Empty() {
 			r.logger.Info("underlying resource does not exist; no API call necessary", "resource", k8s.GetNamespacedName(krmResource))
@@ -269,7 +269,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			r.logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(krmResource))
 			return r.handleUnresolvableDeps(ctx, &krmResource.Resource, unwrappedErr)
 		}
-		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error fetching live state: %v", err))
+		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error fetching live state: %w", err))
 	}
 	if err := r.obtainResourceLeaseIfNecessary(ctx, krmResource, liveState); err != nil {
 		return false, err
@@ -294,7 +294,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			r.logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(krmResource))
 			return r.handleUnresolvableDeps(ctx, &krmResource.Resource, unwrappedErr)
 		}
-		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error expanding resource configuration for kind %s: %v", krmResource.Kind, err))
+		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error expanding resource configuration for kind %s: %w", krmResource.Kind, err))
 	}
 	// Apply last-minute apply overrides
 	if err := resourceoverrides.Handler.PreTerraformApply(ctx, krmResource.GroupVersionKind(), &operations.PreTerraformApply{KRMResource: krmResource, TerraformConfig: config, LiveState: liveState}); err != nil {
@@ -302,7 +302,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 	}
 	diff, err := krmResource.TFResource.Diff(ctx, liveState, config, r.provider.Meta())
 	if err != nil {
-		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error calculating diff: %v", err))
+		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error calculating diff: %w", err))
 	}
 	if !liveState.Empty() && diff.RequiresNew() {
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource,
@@ -419,14 +419,14 @@ func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, 
 	// annotation. This is done to be backwards compatible with resources
 	// created before the webhook for defaulting the annotation was added.
 	if err := k8s.EnsureManagementConflictPreventionAnnotationForTFBasedResource(r.Client, ctx, resource, &rc, r.provider.ResourcesMap); err != nil {
-		return fmt.Errorf("error ensuring resource '%v' has a management conflict policy: %v", k8s.GetNamespacedName(resource), err)
+		return fmt.Errorf("error ensuring resource '%v' has a management conflict policy: %w", k8s.GetNamespacedName(resource), err)
 	}
 
 	// Ensure the resource has a hierarchical reference. This is done to be
 	// backwards compatible with resources created before the webhook for
 	// defaulting hierarchical references was added.
 	if err := k8s.EnsureHierarchicalReference(ctx, &resource.Resource, rc.HierarchicalReferences, rc.Containers, r.Client); err != nil {
-		return fmt.Errorf("error ensuring resource '%v' has a hierarchical reference: %v", k8s.GetNamespacedName(resource), err)
+		return fmt.Errorf("error ensuring resource '%v' has a hierarchical reference: %w", k8s.GetNamespacedName(resource), err)
 	}
 	return nil
 }
@@ -451,7 +451,7 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, krmReso
 	// to GCP. The reason to do that is to reduce the number of writes to GCP and therefore improve performance and reduce errors.
 	// The labels are written to GCP by the main sync(...) function because the changes to the labels show up in the diff.
 	if err := r.resourceLeaser.SoftObtain(ctx, &krmResource.Resource, krmtotf.GetLabelsFromState(krmResource, liveState)); err != nil {
-		return r.HandleObtainLeaseFailed(ctx, &krmResource.Resource, fmt.Errorf("error obtaining lease on '%v': %v",
+		return r.HandleObtainLeaseFailed(ctx, &krmResource.Resource, fmt.Errorf("error obtaining lease on '%v': %w",
 			k8s.GetNamespacedName(krmResource), err))
 	}
 	return nil
@@ -534,7 +534,7 @@ func updateMutableButUnreadableFieldsAnnotationFor(resource *krmtotf.Resource) e
 	}
 	annotationVal, err := krmtotf.MutableButUnreadableFieldsAnnotationFor(resource)
 	if err != nil {
-		return fmt.Errorf("error constructing value for %v: %v", k8s.MutableButUnreadableFieldsAnnotation, err)
+		return fmt.Errorf("error constructing value for %v: %w", k8s.MutableButUnreadableFieldsAnnotation, err)
 	}
 	k8s.SetAnnotation(k8s.MutableButUnreadableFieldsAnnotation, annotationVal, resource)
 	return nil

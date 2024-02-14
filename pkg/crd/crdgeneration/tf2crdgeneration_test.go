@@ -142,7 +142,7 @@ func TestTFSchemaToJSONSchema(t *testing.T) {
 			json: apiextensions.JSONSchemaProps{
 				Type: "object",
 				Properties: map[string]apiextensions.JSONSchemaProps{
-					"sensitiveField": apiextensions.JSONSchemaProps{
+					"sensitiveField": {
 						Type: "string",
 					},
 				},
