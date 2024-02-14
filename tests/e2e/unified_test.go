@@ -279,10 +279,13 @@ func TestAllInSeries(t *testing.T) {
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 
 					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+
+					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")

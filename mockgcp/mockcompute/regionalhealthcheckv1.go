@@ -67,7 +67,10 @@ func (s *RegionalHealthCheckV1) Insert(ctx context.Context, req *pb.InsertRegion
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a HealthCheck resource in the specified project using the data included in the request.
@@ -91,7 +94,10 @@ func (s *RegionalHealthCheckV1) Patch(ctx context.Context, req *pb.PatchRegionHe
 		return nil, status.Errorf(codes.Internal, "error updating healthCheck: %v", err)
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 // Updates a HealthCheck resource in the specified project using the data included in the request.
@@ -114,7 +120,10 @@ func (s *RegionalHealthCheckV1) Update(ctx context.Context, req *pb.UpdateRegion
 		return nil, status.Errorf(codes.Internal, "error updating healthCheck: %v", err)
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalHealthCheckV1) Delete(ctx context.Context, req *pb.DeleteRegionHealthCheckRequest) (*pb.Operation, error) {
@@ -130,7 +139,10 @@ func (s *RegionalHealthCheckV1) Delete(ctx context.Context, req *pb.DeleteRegion
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type regionalHealthCheckName struct {
