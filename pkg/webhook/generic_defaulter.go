@@ -16,13 +16,7 @@ package webhook
 
 import (
 	"context"
-	"fmt"
-	"net/http"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
@@ -44,16 +38,5 @@ func NewGenericDefaulter() HandlerFunc {
 }
 
 func (a *genericDefaulter) Handle(ctx context.Context, req admission.Request) admission.Response {
-	deserializer := codecs.UniversalDeserializer()
-	obj := &unstructured.Unstructured{}
-	if _, _, err := deserializer.Decode(req.AdmissionRequest.Object.Raw, nil, obj); err != nil {
-		klog.Error(err)
-		return admission.Errored(http.StatusBadRequest,
-			fmt.Errorf("error decoding object: %v", err))
-	}
-	newObj := obj.DeepCopy()
-	if err := k8s.ValidateOrDefaultStateIntoSpecAnnotation(newObj); err != nil {
-		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting '%v' annotation: %v", k8s.StateIntoSpecAnnotation, err))
-	}
-	return constructPatchResponse(obj, newObj)
+	return admission.ValidationResponse(true, "no-op: this webhook is deprecated")
 }
