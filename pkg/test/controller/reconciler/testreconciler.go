@@ -184,19 +184,24 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 	// nature.
 	var immediateReconcileRequests chan event.GenericEvent = nil
 	var resourceWatcherRoutines *semaphore.Weighted = nil
+	stateIntoSpecDefaulter, err := k8s.NewStateIntoSpecDefaulter(k8s.StateIntoSpecDefaultValueV1Beta1, nil)
+	if err != nil {
+		r.t.Fatalf("error constructing new state into spec value: %v", err)
+	}
+	defaulters := []k8s.Defaulter{stateIntoSpecDefaulter}
 
 	switch kind {
 	case "IAMPolicy":
-		reconciler, err = policy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
+		reconciler, err = policy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	case "IAMPartialPolicy":
-		reconciler, err = partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
+		reconciler, err = partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	case "IAMPolicyMember":
-		reconciler, err = policymember.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
+		reconciler, err = policymember.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	case "IAMAuditConfig":
-		reconciler, err = auditconfig.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
+		reconciler, err = auditconfig.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	default:
 		crd := testcontroller.GetCRDForKind(r.t, r.mgr.GetClient(), kind)
-		reconciler, err = r.newReconcilerForCRD(crd)
+		reconciler, err = r.newReconcilerForCRD(crd, defaulters)
 	}
 	if err != nil {
 		r.t.Fatalf("error creating reconciler: %v", err)
@@ -204,7 +209,7 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 	return reconciler
 }
 
-func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDefinition) (reconcile.Reconciler, error) {
+func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDefinition, defaulters []k8s.Defaulter) (reconcile.Reconciler, error) {
 	if crd.GetLabels()[crdgeneration.ManagedByKCCLabel] == "true" {
 		// Set 'immediateReconcileRequests' and 'resourceWatcherRoutines'
 		// to nil to disable reconciler's ability to create asynchronous
@@ -215,16 +220,12 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 		// nature.
 		var immediateReconcileRequests chan event.GenericEvent = nil
 		var resourceWatcherRoutines *semaphore.Weighted = nil
-		stateIntoSpecDefaulter, err := k8s.NewStateIntoSpecDefaulter(k8s.StateIntoSpecDefaultValueV1Beta1, nil)
-		if err != nil {
-			return nil, fmt.Errorf("error constructing new state into spec value: %v", err)
-		}
 
 		if crd.GetLabels()[crdgeneration.TF2CRDLabel] == "true" {
-			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, []k8s.Defaulter{stateIntoSpecDefaulter})
+			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 		}
 		if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
-			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, []k8s.Defaulter{stateIntoSpecDefaulter})
+			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")

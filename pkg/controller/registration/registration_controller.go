@@ -166,19 +166,19 @@ func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.Cust
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	switch gvk.Kind {
 	case "IAMPolicy":
-		if err := policy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
+		if err := policy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
 			return nil, err
 		}
 	case "IAMPartialPolicy":
-		if err := partialpolicy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
+		if err := partialpolicy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
 			return nil, err
 		}
 	case "IAMPolicyMember":
-		if err := policymember.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
+		if err := policymember.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
 			return nil, err
 		}
 	case "IAMAuditConfig":
-		if err := auditconfig.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
+		if err := auditconfig.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
 			return nil, err
 		}
 	default:
