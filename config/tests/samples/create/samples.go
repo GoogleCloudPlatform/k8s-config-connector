@@ -293,10 +293,10 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 		if strings.HasSuffix(d.Name(), ".yaml") {
 			sampleName := filepath.Base(filepath.Dir(path))
 			if regex.MatchString(sampleName) {
-				sampleKey := samples[sampleName]
+				sampleKey := samples[filepath.Dir(path)]
 				sampleKey.Name = sampleName
 				sampleKey.files = append(sampleKey.files, path)
-				samples[sampleName] = sampleKey
+				samples[filepath.Dir(path)] = sampleKey
 			}
 		}
 		return nil
