@@ -1072,7 +1072,7 @@ type EventTrigger struct {
 	//
 	// If no string is provided, the default service implementing the API will
 	// be used. For example, `storage.googleapis.com` is the default for all
-	// event types in the `google.storage` namespace.
+	// event types in the `mockgcp.storage` namespace.
 	Service string `protobuf:"bytes,3,opt,name=service,proto3" json:"service,omitempty"`
 	// Specifies policy for failed executions.
 	FailurePolicy *FailurePolicy `protobuf:"bytes,5,opt,name=failure_policy,json=failurePolicy,proto3" json:"failure_policy,omitempty"`
