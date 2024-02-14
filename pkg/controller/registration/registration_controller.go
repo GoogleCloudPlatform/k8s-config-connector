@@ -24,6 +24,7 @@ import (
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/monitoring"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
@@ -185,6 +186,11 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 			return schemaUpdater, nil
 		case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
 			if err := monitoring.AddDashboardController(r.mgr, config); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+		case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeHealthCheck"}:
+			if err := compute.AddHealthCheckReconciler(r.mgr, config); err != nil {
 				return nil, err
 			}
 			return schemaUpdater, nil

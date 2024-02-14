@@ -297,22 +297,25 @@ func (a *dashboardAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *dashboardAdapter) Delete(ctx context.Context) error {
+func (a *dashboardAdapter) Delete(ctx context.Context) (bool, error) {
 	// TODO: Delete via status selfLink?
 	req := &pb.DeleteDashboardRequest{
 		Name: a.fullyQualifiedName(),
 	}
 	if err := a.gcp.DeleteDashboard(ctx, req); err != nil {
-		return fmt.Errorf("deleting dashboard: %w", err)
+		if IsNotFound(err) {
+			return false, nil
+		}
+		return false, fmt.Errorf("deleting dashboard: %w", err)
 	}
 
-	return nil
+	return true, nil
 }
 
-func (a *dashboardAdapter) Create(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *dashboardAdapter) Create(ctx context.Context, obj *unstructured.Unstructured) error {
 	desired := &pb.Dashboard{}
 	if err := dashboardMapping.Map(a.desired, desired); err != nil {
-		return nil, err
+		return err
 	}
 
 	desired.Name = a.fullyQualifiedName()
@@ -324,13 +327,13 @@ func (a *dashboardAdapter) Create(ctx context.Context) (*unstructured.Unstructur
 
 	created, err := a.gcp.CreateDashboard(ctx, req)
 	if err != nil {
-		return nil, fmt.Errorf("creating dashboard: %w", err)
+		return fmt.Errorf("creating dashboard: %w", err)
 	}
 
 	log := klog.FromContext(ctx)
 	log.V(2).Info("created dashboard", "dashboard", created)
 	// TODO: Return created object
-	return nil, nil
+	return nil
 }
 
 func (a *dashboardAdapter) Update(ctx context.Context) (*unstructured.Unstructured, error) {

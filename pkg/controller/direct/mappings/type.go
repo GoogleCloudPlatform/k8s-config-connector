@@ -121,10 +121,14 @@ func (t *reflectType) Fields() map[FieldID]Field {
 			if oneOf == nil {
 				continue
 			}
+			// Ignore proto2 -> proto3 "fake" oneofs
+			if oneOf.IsSynthetic() {
+				continue
+			}
+
+			// klog.Infof("found oneof for %v: %v", fd, oneOf)
 
 			fdObj := obj.ProtoReflect().Get(fd)
-
-			// klog.Infof("found oneof %s", oneOf)
 
 			field := &protoOneOfField{fd: fd}
 			field.jsonKey = fd.JSONName()
@@ -135,6 +139,18 @@ func (t *reflectType) Fields() map[FieldID]Field {
 			case protoreflect.StringKind:
 				stringVal := ""
 				field.t = allTypes.get(reflect.TypeOf(stringVal))
+			case protoreflect.Int32Kind:
+				int32Val := int32(0)
+				field.t = allTypes.get(reflect.TypeOf(int32Val))
+			case protoreflect.Int64Kind:
+				int64Val := int64(0)
+				field.t = allTypes.get(reflect.TypeOf(int64Val))
+			case protoreflect.Uint32Kind:
+				uint32Val := uint32(0)
+				field.t = allTypes.get(reflect.TypeOf(uint32Val))
+			case protoreflect.Uint64Kind:
+				uint64Val := uint64(0)
+				field.t = allTypes.get(reflect.TypeOf(uint64Val))
 			default:
 				klog.Fatalf("cannot handle oneof member field %v", fd)
 			}
@@ -190,7 +206,7 @@ func (t *reflectType) Fields() map[FieldID]Field {
 	for _, f := range fieldList {
 		id := f.ID()
 		if fields[id] != nil {
-			klog.Fatalf("duplicate field %s", f.ID())
+			klog.Fatalf("duplicate field in %v %s", t, f.ID())
 		}
 		fields[id] = f
 	}

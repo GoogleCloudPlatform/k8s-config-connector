@@ -118,6 +118,14 @@ func (m *Mapping) convert(src reflect.Value, destType reflect.Type) (reflect.Val
 		case "int64":
 			// TODO: int64 <-> int should actually be a validation warning, we're using an ill-defined type in KRM
 			return reflect.ValueOf(v64), nil
+		case "int32":
+			// TODO: int32 <-> int should actually be a validation warning, we're using an ill-defined type in KRM
+			i32 := int32(v64)
+			return reflect.ValueOf(i32), nil
+		case "*int32":
+			// TODO: int32 <-> int should actually be a validation warning, we're using an ill-defined type in KRM
+			i32 := int32(v64)
+			return reflect.ValueOf(&i32), nil
 		default:
 			return reflect.Value{}, fmt.Errorf("int conversion to %v not implemented", destType.String())
 		}
@@ -130,6 +138,19 @@ func (m *Mapping) convert(src reflect.Value, destType reflect.Type) (reflect.Val
 			return reflect.ValueOf(v), nil
 		case "*int":
 			v := int(v64)
+			return reflect.ValueOf(&v), nil
+		default:
+			return reflect.Value{}, fmt.Errorf("int64 conversion to %v not implemented", destType.String())
+		}
+	case "int32":
+		v32 := int32(src.Int())
+		switch destType.String() {
+		case "int":
+			// TODO: int32 <-> int should actually be a validation warning, we're using an ill-defined type in KRM
+			v := int(v32)
+			return reflect.ValueOf(v), nil
+		case "*int":
+			v := int(v32)
 			return reflect.ValueOf(&v), nil
 		default:
 			return reflect.Value{}, fmt.Errorf("int64 conversion to %v not implemented", destType.String())
