@@ -773,6 +773,11 @@ func (in *DatasetAccess) DeepCopyInto(out *DatasetAccess) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.IamMember != nil {
+		in, out := &in.IamMember, &out.IamMember
+		*out = new(string)
+		**out = **in
+	}
 	if in.Role != nil {
 		in, out := &in.Role, &out.Role
 		*out = new(string)

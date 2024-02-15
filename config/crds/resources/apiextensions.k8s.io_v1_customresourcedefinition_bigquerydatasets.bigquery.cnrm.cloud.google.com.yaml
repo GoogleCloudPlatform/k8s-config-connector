@@ -100,6 +100,11 @@ spec:
                       description: An email address of a Google Group to grant access
                         to.
                       type: string
+                    iamMember:
+                      description: |-
+                        Some other type of member that appears in the IAM Policy but isn't a user,
+                        group, domain, or special group. For example: 'allUsers'.
+                      type: string
                     role:
                       description: |-
                         Describes the rights granted to the user specified by the other
