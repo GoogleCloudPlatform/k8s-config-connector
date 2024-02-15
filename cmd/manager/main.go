@@ -49,12 +49,14 @@ func main() {
 	stop := signals.SetupSignalHandler()
 
 	var (
-		prometheusScrapeEndpoint string
-		scopedNamespace          string
-		userProjectOverride      bool
-		billingProject           string
-		enablePprof              bool
-		pprofPort                int
+		prometheusScrapeEndpoint  string
+		scopedNamespace           string
+		userProjectOverride       bool
+		billingProject            string
+		enablePprof               bool
+		pprofPort                 int
+		stateIntoSpecDefaultValue string
+		stateIntoSpecUserOverride string
 	)
 	flag.StringVar(&prometheusScrapeEndpoint, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
 	flag.BoolVar(&controllermetrics.ResourceNameLabel, "resource-name-label", false, "option to enable the resource name label on some Prometheus metrics; false by default")
@@ -63,6 +65,9 @@ func main() {
 	flag.StringVar(&scopedNamespace, "scoped-namespace", "", "scope controllers to only watch resources in the specified namespace; if unspecified, controllers will run in cluster scope")
 	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
+	flag.StringVar(&stateIntoSpecDefaultValue, "state-into-spec-default-value", k8s.StateIntoSpecDefaultValueV1Beta1, "default value for the cnrm.cloud.google.com/state-into-spec annotation if the annotation is unset in a resource; if --state-into-spec-user-override is set, then the user override is used instead")
+	flag.StringVar(&stateIntoSpecUserOverride, "state-into-spec-user-override", "", "user override for the cnrm.cloud.google.com/state-into-spec annotation if the annotation is unset in a resource")
+
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.Parse()
@@ -94,8 +99,15 @@ func main() {
 		logging.Fatal(err, "fatal getting configuration from APIServer.")
 	}
 
+	var stateIntoSpecUserOverridePtr *string
+	if isFlagPassed("state-into-spec-user-override") {
+		stateIntoSpecUserOverridePtr = &stateIntoSpecUserOverride
+	} else {
+		stateIntoSpecUserOverridePtr = nil
+	}
+
 	logger.Info("Creating the manager")
-	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject)
+	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, stateIntoSpecDefaultValue, stateIntoSpecUserOverridePtr)
 	if err != nil {
 		logging.Fatal(err, "error creating the manager")
 	}
@@ -134,7 +146,17 @@ func main() {
 	logging.Fatal(mgr.Start(stop), "error during manager execution.")
 }
 
-func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string) (manager.Manager, error) {
+func isFlagPassed(name string) bool {
+	found := false
+	flag.Visit(func(f *flag.Flag) {
+		if f.Name == name {
+			found = true
+		}
+	})
+	return found
+}
+
+func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, stateIntoSpecDefaultValue string, stateIntoSpecUserOverride *string) (manager.Manager, error) {
 	krmtotf.SetUserAgentForTerraformProvider()
 	controllersCfg := kccmanager.Config{
 		ManagerOptions: manager.Options{
@@ -144,8 +166,8 @@ func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace strin
 
 	controllersCfg.UserProjectOverride = userProjectOverride
 	controllersCfg.BillingProject = billingProject
-	// TODO(b/320784855): StateIntoSpecDefaultValue and StateIntoSpecUserOverride values should come from the flags.
-	controllersCfg.StateIntoSpecDefaultValue = k8s.StateIntoSpecDefaultValueV1Beta1
+	controllersCfg.StateIntoSpecDefaultValue = stateIntoSpecDefaultValue
+	controllersCfg.StateIntoSpecUserOverride = stateIntoSpecUserOverride
 	mgr, err := kccmanager.New(ctx, restCfg, controllersCfg)
 	if err != nil {
 		return nil, fmt.Errorf("error creating manager: %w", err)

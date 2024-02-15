@@ -28,6 +28,7 @@ import (
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/controller"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 	testmocks "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/mocks"
+	corekcck8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	"github.com/go-logr/logr"
 	"github.com/google/go-cmp/cmp"
@@ -40,6 +41,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
+)
+
+var (
+	stateIntoSpecAbsent  = corekcck8s.StateAbsentInSpec
+	stateIntoSpecInvalid = "invalid"
 )
 
 func TestRemovingStaleComponents(t *testing.T) {
@@ -137,12 +143,13 @@ spec:
 func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
-		name           string
-		cc             *corev1beta1.ConfigConnector
-		ccc            *corev1beta1.ConfigConnectorContext
-		loadedManifest []string
-		resultsFunc    func(t *testing.T, c client.Client) []string
-		hasError       bool
+		name                   string
+		cc                     *corev1beta1.ConfigConnector
+		ccc                    *corev1beta1.ConfigConnectorContext
+		loadedManifest         []string
+		resultsFunc            func(t *testing.T, c client.Client) []string
+		hasApplicationError    bool
+		hasReconciliationError bool
 	}{
 		{
 			name: "CC is in cluster mode, CCC surfaces errors",
@@ -163,8 +170,8 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
 				},
 			},
-			loadedManifest: testcontroller.GetPerNamespaceManifest(),
-			hasError:       true,
+			loadedManifest:         testcontroller.GetPerNamespaceManifest(),
+			hasReconciliationError: true,
 		},
 		{
 			name: "CC is in namespaced mode, CCC has spec.requestProjectPolicy omitted",
@@ -187,7 +194,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", false, "", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", false, "", nil, c)
 			},
 		},
 		{
@@ -212,10 +219,9 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", true, "", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", true, "", nil, c)
 			},
 		},
-
 		{
 			name: "CC is in namespaced mode, CCC has spec.billingProject set and spec.requestProjectPolicy set to BILLING_PROJECT",
 			cc: &corev1beta1.ConfigConnector{
@@ -239,8 +245,56 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", true, "BILL_ME", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", true, "BILL_ME", nil, c)
 			},
+		},
+		{
+			name: "CC is in namespaced mode, CCC has spec.stateIntoSpec set to 'absent'",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: k8s.ConfigConnectorAllowedName,
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      k8s.ConfigConnectorContextAllowedName,
+					Namespace: "foo-ns",
+				},
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+					StateIntoSpec:        &stateIntoSpecAbsent,
+				},
+			},
+			loadedManifest: testcontroller.GetPerNamespaceManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", false, "", &stateIntoSpecAbsent, c)
+			},
+		},
+		{
+			name: "CC is in namespaced mode, CCC has spec.stateIntoSpec set to invalid value 'invalid'",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: k8s.ConfigConnectorAllowedName,
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      k8s.ConfigConnectorContextAllowedName,
+					Namespace: "foo-ns",
+				},
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+					StateIntoSpec:        &stateIntoSpecInvalid,
+				},
+			},
+			loadedManifest:      testcontroller.GetPerNamespaceManifest(),
+			hasApplicationError: true,
 		},
 	}
 
@@ -261,11 +315,18 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 				t.Fatalf("error creating %v %v: %v", tc.cc.Kind, tc.cc.Name, err)
 			}
 			testcontroller.EnsureNamespaceExists(c, tc.ccc.Namespace)
-			if err := c.Create(ctx, tc.ccc); err != nil {
+			err := c.Create(ctx, tc.ccc)
+			if tc.hasApplicationError {
+				if err == nil {
+					t.Fatalf("got nil, but want an error")
+				}
+				return
+			}
+			if err != nil {
 				t.Fatalf("error creating %v %v: %v", tc.ccc.Kind, tc.ccc.Name, err)
 			}
-			err := handleLifecycles(ctx, t, r, tc.ccc, m)
-			if tc.hasError {
+			err = handleLifecycles(ctx, t, r, tc.ccc, m)
+			if tc.hasReconciliationError {
 				if err == nil {
 					t.Fatalf("got nil, but want an error")
 				}
@@ -345,7 +406,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", false, "", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", false, "", nil, c)
 			},
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
@@ -375,7 +436,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", false, "", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", false, "", nil, c)
 			},
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
@@ -405,7 +466,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", false, "", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", false, "", nil, c)
 			},
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
@@ -428,7 +489,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", false, "", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "foo-ns", "foo@bar.iam.gserviceaccount.com", false, "", nil, c)
 			},
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
