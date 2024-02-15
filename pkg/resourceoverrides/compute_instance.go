@@ -47,7 +47,7 @@ func addNetworkIPRefField() ResourceOverride {
 			return err
 		}
 
-		return  EnsureReferenceFieldIsMultiKind(crd, networkInterfacePath, networkIPRefFieldPath[0], supportedKinds)
+		return EnsureReferenceFieldIsMultiKind(crd, networkInterfacePath, networkIPRefFieldPath[0], supportedKinds)
 	}
 	o.PreActuationTransform = func(r *k8s.Resource) error {
 		if err := FavorReferenceFieldOverNonReferenceFieldUnderSlice(r, networkInterfacePath, networkIPFieldPath, networkIPRefFieldPath); err != nil {

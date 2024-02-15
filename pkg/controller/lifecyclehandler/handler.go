@@ -187,9 +187,9 @@ func reasonForUnresolvableDeps(err error) (string, error) {
 	switch {
 	case errors.Is(err, &k8s.ReferenceNotReadyError{}) || errors.Is(err, &k8s.TransitiveDependencyNotReadyError{}):
 		return k8s.DependencyNotReady, nil
-	case errors.Is(err, &k8s.ReferenceNotFoundError{}) ||  errors.Is(err, &k8s.SecretNotFoundError{}) || errors.Is(err, &k8s.TransitiveDependencyNotFoundError{}):
+	case errors.Is(err, &k8s.ReferenceNotFoundError{}) || errors.Is(err, &k8s.SecretNotFoundError{}) || errors.Is(err, &k8s.TransitiveDependencyNotFoundError{}):
 		return k8s.DependencyNotFound, nil
-	case  errors.Is(err, &k8s.KeyInSecretNotFoundError{}):
+	case errors.Is(err, &k8s.KeyInSecretNotFoundError{}):
 		return k8s.DependencyInvalid, nil
 	default:
 		return "", fmt.Errorf("unrecognized error caused by unresolvable dependencies: %w", err)

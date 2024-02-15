@@ -48,8 +48,8 @@ import (
 )
 
 var (
-	scheme           = runtime.NewScheme()
-	codecs           = serializer.NewCodecFactory(scheme)
+	scheme              = runtime.NewScheme()
+	codecs              = serializer.NewCodecFactory(scheme)
 	ErrTFSchemaNotFound = fmt.Errorf("schema does not exist")
 )
 

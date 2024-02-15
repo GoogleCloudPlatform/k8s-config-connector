@@ -15,6 +15,7 @@
 package create
 
 import (
+	goerrors "errors"
 	"fmt"
 	"io/fs"
 	"path/filepath"
@@ -25,7 +26,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-	goerrors "errors"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"

@@ -113,7 +113,7 @@ func ValidateResourceFormat(resourceFormat, iamFormat string) error {
 	if err := validateResourceFormatValue(resourceFormat); err != nil {
 		return err
 	}
-	
+
 	return validateResourceFormatMutualExclusivity(resourceFormat, iamFormat)
 }
 

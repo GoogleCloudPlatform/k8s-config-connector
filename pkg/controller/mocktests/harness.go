@@ -72,7 +72,7 @@ func NewHarness(t *testing.T) *Harness {
 	if err := corev1.AddToScheme(h.Scheme); err != nil {
 		t.Fatal(err)
 	}
-	
+
 	if err := iamv1beta1.SchemeBuilder.AddToScheme(h.Scheme); err != nil {
 		t.Fatal(err)
 	}

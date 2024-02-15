@@ -67,9 +67,8 @@ func TestWatchResourceSuccess(t *testing.T) {
 	}
 	if _, err := fake.Resource(k8s.ToGVR(gvk)).
 		Namespace(nn.Namespace).
-		Create(context.TODO(), readyResourceUnstructured, metav1.CreateOptions{});
-		err != nil {
-			t.Fatal(err)
+		Create(context.TODO(), readyResourceUnstructured, metav1.CreateOptions{}); err != nil {
+		t.Fatal(err)
 	}
 	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
 	defer cancel()
