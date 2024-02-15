@@ -17,8 +17,16 @@
 # Build the manager binary
 FROM golang:1.22.2 AS builder
 
-# Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
+
+# Copy in the go.mod files and pre-download to enable caching
+COPY go.mod go.mod
+COPY go.sum go.sum
+COPY mockgcp/go.mod mockgcp/go.mod
+COPY third_party/github.com/hashicorp/terraform-provider-google-beta/go.mod third_party/github.com/hashicorp/terraform-provider-google-beta/go.mod
+RUN go mod download
+
+# Copy in the Go source code
 COPY operator/pkg/      operator/pkg/
 COPY operator/cmd/      operator/cmd/
 COPY operator/channels/ operator/channels/
@@ -28,8 +36,6 @@ COPY pkg/ pkg/
 COPY third_party/ third_party/
 COPY config/servicemappings/ config/servicemappings/
 COPY scripts/resource-autogen/ scripts/resource-autogen/
-COPY go.mod  go.mod
-COPY go.sum  go.sum
 
 # Build the binary from source
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
