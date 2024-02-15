@@ -60,7 +60,7 @@ func TestObtainAndReleaseResourceLease(t *testing.T) {
 		}
 		krmResource1 := testkrmtotf.NewKRMResource(t, u, sm, systemContext.TFProvider)
 		krmResource2 := testkrmtotf.NewKRMResource(t, u, sm, systemContext.TFProvider)
-		krmResource2.SetNamespace(testvariable.NewUniqueId())
+		krmResource2.SetNamespace(testvariable.NewUniqueID())
 		resourceLeaser := leaser.NewResourceLeaser(systemContext.TFProvider, systemContext.SMLoader, systemContext.Manager.GetClient())
 		liveState1 := testkrmtotf.FetchLiveState(t, krmResource1, systemContext.TFProvider, systemContext.Manager.GetClient(), systemContext.SMLoader)
 		// obtain a lease for the first namespace

@@ -99,8 +99,8 @@ func testReconcileResourceLevelCreate(ctx context.Context, t *testing.T, mgr man
 	kubeClient := mgr.GetClient()
 	tfIamClient := kcciamclient.New(provider, smLoader, kubeClient, nil, nil).TFIAMClient
 	reconciler := testreconciler.New(t, mgr, provider)
-	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.NotFoundError) {
-		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.ErrNotFound) {
+		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	if err := kubeClient.Create(ctx, k8sAuditConfig); err != nil {
 		t.Fatalf("error creating k8s resource: %v", err)
@@ -189,8 +189,8 @@ func testReconcileResourceLevelUpdate(ctx context.Context, t *testing.T, mgr man
 	kubeClient := mgr.GetClient()
 	tfIamClient := kcciamclient.New(provider, smLoader, kubeClient, nil, nil).TFIAMClient
 	reconciler := testreconciler.New(t, mgr, provider)
-	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.NotFoundError) {
-		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.ErrNotFound) {
+		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	if err := kubeClient.Create(ctx, k8sAuditConfig); err != nil {
 		t.Fatalf("error creating k8s resource: %v", err)
@@ -272,8 +272,8 @@ func testReconcileResourceLevelNoChanges(ctx context.Context, t *testing.T, mgr 
 	kubeClient := mgr.GetClient()
 	tfIamClient := kcciamclient.New(provider, smLoader, kubeClient, nil, nil).TFIAMClient
 	reconciler := testreconciler.New(t, mgr, provider)
-	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.NotFoundError) {
-		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.ErrNotFound) {
+		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	if err := kubeClient.Create(ctx, k8sAuditConfig); err != nil {
 		t.Fatalf("error creating k8s resource: %v", err)
@@ -355,8 +355,8 @@ func testReconcileResourceLevelDelete(ctx context.Context, t *testing.T, mgr man
 	kubeClient := mgr.GetClient()
 	tfIamClient := kcciamclient.New(provider, smLoader, kubeClient, nil, nil).TFIAMClient
 	reconciler := testreconciler.New(t, mgr, provider)
-	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.NotFoundError) {
-		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.ErrNotFound) {
+		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	if err := kubeClient.Create(ctx, k8sAuditConfig); err != nil {
 		t.Fatalf("error creating k8s resource: %v", err)
@@ -383,8 +383,8 @@ func testReconcileResourceLevelDelete(ctx context.Context, t *testing.T, mgr man
 	}
 	testk8s.RemoveDeletionDefenderFinalizer(t, k8sAuditConfig, v1beta1.IAMAuditConfigGVK, kubeClient)
 	reconciler.ReconcileObjectMeta(ctx, k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
-	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.NotFoundError) {
-		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.ErrNotFound) {
+		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sAuditConfig), k8sAuditConfig); err == nil || !apierrors.IsNotFound(err) {
 		t.Fatalf("unexpected error value: %v", err)
@@ -439,8 +439,8 @@ func testReconcileResourceLevelDeleteParentFirst(ctx context.Context, t *testing
 	kubeClient := mgr.GetClient()
 	tfIamClient := kcciamclient.New(provider, smLoader, kubeClient, nil, nil).TFIAMClient
 	reconciler := testreconciler.New(t, mgr, provider)
-	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.NotFoundError) {
-		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.ErrNotFound) {
+		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	if err := kubeClient.Create(ctx, k8sAuditConfig); err != nil {
 		t.Fatalf("error creating k8s resource: %v", err)
@@ -591,5 +591,5 @@ func name(t *testing.T) string {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

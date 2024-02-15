@@ -295,5 +295,5 @@ func setup() {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &unusedManager)
+	testmain.ForIntegrationTests(m, &unusedManager)
 }

@@ -97,8 +97,8 @@ func TestAll(t *testing.T) {
 		defer resourceCleanup()
 		systemContext.Reconciler.Reconcile(ctx, testContext.CreateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.CreateUnstruct), nil)
 		leaser := leaser.NewLeaser(systemContext.TFProvider, systemContext.SMLoader, systemContext.Manager.GetClient())
-		uniqueId1 := fmt.Sprintf("l1-%v", testContext.UniqueId)
-		uniqueId2 := fmt.Sprintf("l2-%v", testContext.UniqueId)
+		uniqueId1 := fmt.Sprintf("l1-%v", testContext.UniqueID)
+		uniqueId2 := fmt.Sprintf("l2-%v", testContext.UniqueID)
 		initialUnstruct := testContext.CreateUnstruct
 		testObtainReleaseShouldSucceed(t, initialUnstruct, uniqueId1, leaser)
 		testObtainTwiceShouldSucceed(t, initialUnstruct, uniqueId1, leaser)
@@ -226,5 +226,5 @@ func releaseAssertError(t *testing.T, u *unstructured.Unstructured, uniqueID str
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

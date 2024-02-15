@@ -100,7 +100,7 @@ func TestAllGetSetDeletePolicy(t *testing.T) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
-		iamPolicy := newPolicy(t, refResource, resourceRef, testContext.UniqueId)
+		iamPolicy := newPolicy(t, refResource, resourceRef, testContext.UniqueID)
 		testGetSetDeletePolicy(ctx, t, iamClient, iamPolicy, refResource.GetKind())
 	}
 	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -126,7 +126,7 @@ func TestAllGetSetDeletePolicyWithExternalRef(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		iamPolicy := newPolicy(t, refResource, resourceRef, testContext.UniqueId)
+		iamPolicy := newPolicy(t, refResource, resourceRef, testContext.UniqueID)
 		testGetSetDeletePolicy(ctx, t, iamClient, iamPolicy, refResource.GetKind())
 	}
 	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -168,7 +168,7 @@ func TestAllGetSetDeletePolicyWithIAMCondition(t *testing.T) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
-		iamPolicy := newPolicyWithIAMConditions(t, refResource, resourceRef, testContext.UniqueId)
+		iamPolicy := newPolicyWithIAMConditions(t, refResource, resourceRef, testContext.UniqueID)
 		testGetSetDeletePolicy(ctx, t, iamClient, iamPolicy, refResource.GetKind())
 	}
 	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -187,7 +187,7 @@ func TestAllGetSetPolicyWithAuditConfigs(t *testing.T) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
-		iamPolicy := newPolicyWithAuditConfigs(t, refResource, resourceRef, testContext.UniqueId)
+		iamPolicy := newPolicyWithAuditConfigs(t, refResource, resourceRef, testContext.UniqueID)
 		testGetSetDeletePolicy(ctx, t, iamClient, iamPolicy, refResource.GetKind())
 	}
 	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -333,7 +333,7 @@ func TestGetSetDeletePolicyReferenceNotFound(t *testing.T) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
-		newPolicy := newPolicy(t, refResource, resourceRef, testContext.UniqueId)
+		newPolicy := newPolicy(t, refResource, resourceRef, testContext.UniqueID)
 		testGetSetDeletePolicyReferenceNotFound(ctx, t, iamClient, newPolicy)
 	}
 	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -376,7 +376,7 @@ func TestProjectIdAsNamespace(t *testing.T) {
 		sysCtx.Reconciler.Reconcile(ctx, refResource, reconcile.Result{RequeueAfter: k8s.MeanReconcileReenqueuePeriod}, nil)
 		iamClient := testiam.NewIAMClient(sysCtx)
 		resourceRef := testiam.NewResourceRef(refResource)
-		newPolicy := newPolicy(t, refResource, resourceRef, tstCtx.UniqueId)
+		newPolicy := newPolicy(t, refResource, resourceRef, tstCtx.UniqueID)
 		policy, err := iamClient.GetPolicy(ctx, newPolicy)
 		if err != nil {
 			t.Fatalf("error getting iam policy: %v", err)
@@ -415,7 +415,7 @@ func TestAllGetSetDeletePolicyMember(t *testing.T) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
-		iamPolicyMember := newPolicyMember(t, refResource, resourceRef, testContext.UniqueId)
+		iamPolicyMember := newPolicyMember(t, refResource, resourceRef, testContext.UniqueID)
 		testGetSetDeleteIamPolicyMember(ctx, t, iamClient, iamPolicyMember, refResource)
 	}
 	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -441,7 +441,7 @@ func TestAllGetSetDeletePolicyMemberWithExternalRef(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		iamPolicyMember := newPolicyMember(t, refResource, resourceRef, testContext.UniqueId)
+		iamPolicyMember := newPolicyMember(t, refResource, resourceRef, testContext.UniqueID)
 		testGetSetDeleteIamPolicyMember(ctx, t, iamClient, iamPolicyMember, refResource)
 	}
 	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -464,7 +464,7 @@ func TestAllGetSetDeletePolicyMemberWithIAMCondition(t *testing.T) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
-		iamPolicyMember := newPolicyMemberWithIAMCondition(t, refResource, resourceRef, testContext.UniqueId)
+		iamPolicyMember := newPolicyMemberWithIAMCondition(t, refResource, resourceRef, testContext.UniqueID)
 		testGetSetDeleteIamPolicyMember(ctx, t, iamClient, iamPolicyMember, refResource)
 	}
 	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -512,7 +512,7 @@ func testGetSetDeleteIamPolicyMember(ctx context.Context, t *testing.T, iamClien
 		t.Fatalf("expected an error when retrieving IAMPolicyMember, instead got 'nil'")
 	}
 	if !isNotFoundError(err) {
-		t.Fatalf("unexpected error when retrieving IAMPolicyMember: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+		t.Fatalf("unexpected error when retrieving IAMPolicyMember: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	gcpPolicyMember, err := iamClient.SetPolicyMember(ctx, policyMember)
 	if err != nil {
@@ -546,7 +546,7 @@ func testGetSetDeleteIamPolicyMember(ctx context.Context, t *testing.T, iamClien
 		t.Fatalf("expected an error when retrieving IAMPolicyMember, instead got 'nil'")
 	}
 	if !isNotFoundError(err) {
-		t.Fatalf("unexpected error when retrieving IAMPolicyMember: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+		t.Fatalf("unexpected error when retrieving IAMPolicyMember: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 }
 
@@ -561,7 +561,7 @@ func TestGetSetDeletePolicyMemberReferenceNotFound(t *testing.T) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
-		iamPolicyMember := newPolicyMemberWithIAMCondition(t, refResource, resourceRef, testContext.UniqueId)
+		iamPolicyMember := newPolicyMemberWithIAMCondition(t, refResource, resourceRef, testContext.UniqueID)
 		testGetSetDeletePolicyMemberReferenceNotFound(ctx, t, iamClient, iamPolicyMember)
 	}
 	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -595,7 +595,7 @@ func TestAllGetSetDeleteAuditConfig(t *testing.T) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
-		iamAuditConfig := newAuditConfig(t, refResource, resourceRef, testContext.UniqueId)
+		iamAuditConfig := newAuditConfig(t, refResource, resourceRef, testContext.UniqueID)
 		testGetSetDeleteIamAuditConfig(ctx, t, iamClient.TFIAMClient, iamAuditConfig, refResource)
 	}
 	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -617,7 +617,7 @@ func TestAllGetSetDeleteAuditConfigWithExternalRef(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		iamAuditConfig := newAuditConfig(t, refResource, resourceRef, testContext.UniqueId)
+		iamAuditConfig := newAuditConfig(t, refResource, resourceRef, testContext.UniqueID)
 		testGetSetDeleteIamAuditConfig(ctx, t, iamClient.TFIAMClient, iamAuditConfig, refResource)
 	}
 	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -628,8 +628,8 @@ func testGetSetDeleteIamAuditConfig(ctx context.Context, t *testing.T, iamClient
 	if err == nil {
 		t.Fatalf("expected an error when retrieving IAMAuditConfig, instead got 'nil'")
 	}
-	if !errors.Is(err, kcciamclient.NotFoundError) {
-		t.Fatalf("unexpected error when retrieving IAMAuditConfig: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+	if !errors.Is(err, kcciamclient.ErrNotFound) {
+		t.Fatalf("unexpected error when retrieving IAMAuditConfig: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	gcpAuditConfig, err := iamClient.SetAuditConfig(ctx, auditConfig)
 	if err != nil {
@@ -658,8 +658,8 @@ func testGetSetDeleteIamAuditConfig(ctx context.Context, t *testing.T, iamClient
 	if err == nil {
 		t.Fatalf("expected an error when retrieving IAMAuditConfig, instead got 'nil'")
 	}
-	if !errors.Is(err, kcciamclient.NotFoundError) {
-		t.Fatalf("unexpected error when retrieving IAMAuditConfig: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+	if !errors.Is(err, kcciamclient.ErrNotFound) {
+		t.Fatalf("unexpected error when retrieving IAMAuditConfig: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 }
 
@@ -674,7 +674,7 @@ func TestGetSetDeleteAuditConfigReferenceNotFound(t *testing.T) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
-		iamAuditConfig := newAuditConfig(t, refResource, resourceRef, testContext.UniqueId)
+		iamAuditConfig := newAuditConfig(t, refResource, resourceRef, testContext.UniqueID)
 		testGetSetDeleteAuditConfigReferenceNotFound(ctx, t, iamClient.TFIAMClient, iamAuditConfig)
 	}
 	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -709,7 +709,7 @@ func TestConflictPreventionWithEtags(t *testing.T) {
 		iamClient := testiam.NewIAMClient(sysContext)
 		refResource := testContext.CreateUnstruct
 		resourceRef := testiam.NewResourceRef(refResource)
-		iamPolicy := newPolicy(t, refResource, resourceRef, testContext.UniqueId)
+		iamPolicy := newPolicy(t, refResource, resourceRef, testContext.UniqueID)
 		testConflictPreventionWithEtags(ctx, t, iamClient, iamPolicy, refResource)
 	}
 	testrunner.RunAllWithObjectCreated(ctx, t, mgr, shouldRun, testCaseFunc)
@@ -881,9 +881,9 @@ func getCurrentFuncName() string {
 // LiveState is empty. DCL-based resource Member gets from the API and
 // returns a 404 if the Member does not exist.
 func isNotFoundError(err error) bool {
-	return errors.Is(err, kcciamclient.NotFoundError) || dcl.IsNotFound(errors.Unwrap(err))
+	return errors.Is(err, kcciamclient.ErrNotFound) || dcl.IsNotFound(errors.Unwrap(err))
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

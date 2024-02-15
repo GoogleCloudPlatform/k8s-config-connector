@@ -60,9 +60,9 @@ func TestResourceContentionIsPreventedForTwoNamespacesMappingToSameProjectInDiff
 		systemContext.Reconciler.Reconcile(ctx, testContext.UpdateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.UpdateUnstruct), nil)
 		assertLeaseLabelsAreNotPresent(t, systemContext.Manager, testContext.CreateUnstruct)
 		projectID := testgcp.GetDefaultProjectID(t)
-		testcontroller.EnsureNamespaceExistsT(t, mgr2.GetClient(), testContext.UniqueId)
-		testcontroller.EnsureNamespaceHasProjectIDAnnotation(t, mgr2.GetClient(), testContext.UniqueId, projectID)
-		assertNamespaceIdsAreNotEqual(t, systemContext.Manager, mgr2, testContext.UniqueId, testContext.UniqueId)
+		testcontroller.EnsureNamespaceExistsT(t, mgr2.GetClient(), testContext.UniqueID)
+		testcontroller.EnsureNamespaceHasProjectIDAnnotation(t, mgr2.GetClient(), testContext.UniqueID, projectID)
+		assertNamespaceIdsAreNotEqual(t, systemContext.Manager, mgr2, testContext.UniqueID, testContext.UniqueID)
 		reconciler2 := testreconciler.New(t, mgr2, systemContext.TFProvider)
 		if err := mgr2.GetClient().Create(context.TODO(), testContext.UpdateUnstruct); err != nil {
 			t.Fatalf("error creating resource: %v", err)
@@ -147,7 +147,7 @@ func assertNamespaceIdsAreNotEqual(t *testing.T, mgr1, mgr2 manager.Manager, nam
 
 func getNamespaceID(t *testing.T, mgr manager.Manager, namespace string) string {
 	t.Helper()
-	id, err := cluster.GetNamespaceID(k8s.NamespaceIDConfigMapNN, mgr.GetClient(), context.TODO(), namespace)
+	id, err := cluster.GetNamespaceID(context.TODO(), k8s.NamespaceIDConfigMapNN, mgr.GetClient(), namespace)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -156,5 +156,5 @@ func getNamespaceID(t *testing.T, mgr manager.Manager, namespace string) string 
 
 func TestMain(m *testing.M) {
 	mgrs := []*manager.Manager{&mgr1, &mgr2}
-	testmain.TestMainSetupMultipleEnvironments(m, test.IntegrationTestType, nil, mgrs)
+	testmain.SetupMultipleEnvironments(m, test.IntegrationTestType, nil, mgrs)
 }

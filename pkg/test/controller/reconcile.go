@@ -245,7 +245,7 @@ func SetupNamespaceForDefaultProject(t *testing.T, c client.Client, name string)
 
 func SetupNamespaceForProject(t *testing.T, c client.Client, name, projectID string) {
 	EnsureNamespaceExistsT(t, c, name)
-	EnsureNamespaceHasprojectIDAnnotation(t, c, name, projectID)
+	EnsureNamespaceHasProjectIDAnnotation(t, c, name, projectID)
 }
 
 func EnsureNamespaceExists(c client.Client, name string) error {
@@ -266,7 +266,7 @@ func EnsureNamespaceExistsT(t *testing.T, c client.Client, name string) {
 	}
 }
 
-func EnsureNamespaceHasprojectIDAnnotation(t *testing.T, c client.Client, namespaceName, projectID string) {
+func EnsureNamespaceHasProjectIDAnnotation(t *testing.T, c client.Client, namespaceName, projectID string) {
 	t.Helper()
 	err := createNamespaceprojectIDAnnotation(context.TODO(), c, namespaceName, projectID)
 	if err != nil {

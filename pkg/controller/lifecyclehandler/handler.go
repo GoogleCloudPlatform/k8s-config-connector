@@ -202,7 +202,7 @@ func (r *LifecycleHandler) EnsureFinalizers(ctx context.Context, original, resou
 		if err != nil {
 			return err
 		}
-    
+
 		originalCopy, err := k8s.NewResource(uo)
 		if err != nil {
 			return err

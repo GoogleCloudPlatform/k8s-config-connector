@@ -220,5 +220,5 @@ func TestMain(m *testing.M) {
 		&clusterModeManager,
 		&namespacedModeManager,
 	}
-	testmain.TestMainSetupMultipleEnvironments(m, test.IntegrationTestType, nil, managers)
+	testmain.SetupMultipleEnvironments(m, test.IntegrationTestType, nil, managers)
 }

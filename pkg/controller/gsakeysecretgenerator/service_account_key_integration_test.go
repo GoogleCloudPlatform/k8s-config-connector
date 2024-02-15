@@ -64,7 +64,7 @@ func TestServiceAccountKey(t *testing.T) {
 	kubeClient := mgr.GetClient()
 	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
 	ctx := context.TODO()
-	uuid := testvariable.NewUniqueId()
+	uuid := testvariable.NewUniqueID()
 	project := testgcp.GetDefaultProjectID(t)
 	iamClient := testgcp.NewIAMClient(t)
 	testcontroller.SetupNamespaceForDefaultProject(t, kubeClient, project)
@@ -230,5 +230,5 @@ func convertToUnstructAndReplaceName(t *testing.T, testID, testNamespace, sa str
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

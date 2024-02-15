@@ -86,7 +86,7 @@ func TestNewStorageObjectStreamFromStorageKey(t *testing.T) {
 }
 
 func TestNewStorageObjectStreamFromBucketParameter(t *testing.T) {
-	bucketName := strings.ToLower(fmt.Sprintf("%v-%v", "inputstream-", testvariable.NewUniqueId()))
+	bucketName := strings.ToLower(fmt.Sprintf("%v-%v", "inputstream-", testvariable.NewUniqueID()))
 	storageClient := testgcp.NewStorageClient(t)
 	bucket := &gcpstorage.Bucket{
 		Name: bucketName,
