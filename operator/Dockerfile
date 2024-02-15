@@ -28,7 +28,6 @@ COPY pkg/ pkg/
 COPY third_party/ third_party/
 COPY config/servicemappings/ config/servicemappings/
 COPY scripts/resource-autogen/ scripts/resource-autogen/
-COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY go.mod  go.mod
 COPY go.sum  go.sum
 
@@ -37,6 +36,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager github.com/Goog
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
 
 # Generate licenses
+COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 RUN go mod vendor -o temp-vendor # So we can load license files
 RUN go run scripts/generate-third-party-licenses/main.go
 RUN rm -rf temp-vendor

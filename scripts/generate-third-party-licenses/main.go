@@ -18,8 +18,8 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -30,14 +30,25 @@ const (
 	inputDir                 = "temp-vendor"
 	thirdPartyNoticeDir      = "THIRD_PARTY_NOTICES"
 	mirroredLibrarySourceDir = "MIRRORED_LIBRARY_SOURCE"
-	dirMode                  = 0700
 	fileMode                 = 0600
 )
 
 func main() {
+	if err := Run(context.Background()); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+}
+
+func Run(ctx context.Context) error {
 	var files []string
-	os.RemoveAll(thirdPartyNoticeDir)
-	os.RemoveAll(mirroredLibrarySourceDir)
+
+	if err := os.RemoveAll(thirdPartyNoticeDir); err != nil {
+		return fmt.Errorf("removing dir %q: %w", thirdPartyNoticeDir, err)
+	}
+	if err := os.RemoveAll(mirroredLibrarySourceDir); err != nil {
+		return fmt.Errorf("removing dir %q: %w", mirroredLibrarySourceDir, err)
+	}
 
 	// find all the LICENSE files in the vendor directory
 	err := filepath.Walk(inputDir, func(path string, info os.FileInfo, err error) error {
@@ -48,8 +59,7 @@ func main() {
 		return nil
 	})
 	if err != nil {
-		fmt.Printf("error walking vendor directory: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("error walking vendor directory: %w", err)
 	}
 
 	for _, file := range files {
@@ -60,41 +70,40 @@ func main() {
 
 		outputFilename := thirdPartyNoticeDir + "/" + licensePath
 		outputFileDir := thirdPartyNoticeDir + "/" + repo
-		input, err := ioutil.ReadFile(file)
+		input, err := os.ReadFile(file)
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			return fmt.Errorf("reading file %q: %w", file, err)
 		}
-		if err := os.MkdirAll(outputFileDir, dirMode); err != nil {
-			fmt.Printf("error creating output directory '%v': %v\n", outputFileDir, err)
-			os.Exit(1)
+		if err := os.MkdirAll(outputFileDir, 0700); err != nil {
+			return fmt.Errorf("error creating output directory %q: %w", outputFileDir, err)
 		}
 
 		// copy the license
-		if err := ioutil.WriteFile(outputFilename, input, fileMode); err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+		if err := os.WriteFile(outputFilename, input, fileMode); err != nil {
+			return fmt.Errorf("writing file %q: %w", outputFilename, err)
 		}
 
 		if licenseRequiresSourceCodeMirroring(input) {
+			sourceDir := "temp-vendor/" + repo
 			fmt.Printf("REQUIRES SOURCE MIRRORING: %v\n", file)
 			outputSourceDir := mirroredLibrarySourceDir + "/" + repo
 
-			if err := os.MkdirAll(outputSourceDir, dirMode); err != nil {
-				fmt.Printf("error creating output directory '%v': %v\n", outputFileDir, err)
-				os.Exit(1)
+			if err := os.MkdirAll(outputSourceDir, 0700); err != nil {
+				return fmt.Errorf("error creating output directory %q: %w", outputFileDir, err)
 			}
 			// need to remove the actual dir so 'cp' works
-			os.Remove(outputSourceDir)
+			if err := os.Remove(outputSourceDir); err != nil {
+				return fmt.Errorf("removing dir %q: %w", outputSourceDir, err)
+			}
 
-			sourceDir := "temp-vendor/" + repo
+			fmt.Printf("copying %q -> %q\n", sourceDir, outputSourceDir)
 			cmd := exec.Command("cp", "-r", sourceDir, outputSourceDir)
 			if output, err := cmd.CombinedOutput(); err != nil {
-				fmt.Printf("error copying source code for '%v': %v", sourceDir, string(output))
-				os.Exit(1)
+				return fmt.Errorf("error copying source code for %q: %v", sourceDir, string(output))
 			}
 		}
 	}
+	return nil
 }
 
 func licenseRequiresSourceCodeMirroring(licenseText []byte) bool {
