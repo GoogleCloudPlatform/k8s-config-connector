@@ -94,10 +94,6 @@ resource "google_container_cluster" "foo" {
   project         = "my-project"
   release_channel = {}
 
-  resource_labels = {
-    managed-by-cnrm = "true"
-  }
-
   subnetwork = "projects/my-project/regions/us-central1/subnetworks/default"
 
   workload_identity_config {
