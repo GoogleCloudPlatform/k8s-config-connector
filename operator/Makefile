@@ -124,3 +124,8 @@ upgrade-kcc-local:
 	cd ${REPO_ROOT}/operator; go run scripts/copy-dependency-manifests/main.go
 	make -C ${REPO_ROOT}/operator manifests
 
+
+# Build and push images to a local kind cluster
+.PHONY: push-to-kind
+push-to-kind: docker-build
+	kind load docker-image ${OPERATOR_IMG}

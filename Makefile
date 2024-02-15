@@ -210,3 +210,9 @@ ready-pr: manifests resource-docs generate-go-client
 upgrade-dcl:
 	go get github.com/GoogleCloudPlatform/declarative-resource-client-library
 	make ensure
+
+# Build and push images to a local kind cluster
+.PHONY: push-to-kind
+push-to-kind: docker-build
+	kind load docker-image ${CONTROLLER_IMG} ${RECORDER_IMG} \
+		${WEBHOOK_IMG} ${DELETION_DEFENDER_IMG} ${UNMANAGED_DETECTOR_IMG}
