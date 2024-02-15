@@ -79,7 +79,7 @@ func transformNamespacedComponentTemplates(ctx context.Context, c client.Client,
 
 func handleControllerManagerService(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object) (*manifest.Object, error) {
 	u := obj.UnstructuredObject().DeepCopy()
-	nsID, err := cluster.GetNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, c, ctx, ccc.Namespace)
+	nsID, err := cluster.GetNamespaceID(ctx, k8s.OperatorNamespaceIDConfigMapNN, c, ccc.Namespace)
 	if err != nil {
 		return nil, fmt.Errorf("error getting namespace id for namespace %v: %w", ccc.Namespace, err)
 	}
@@ -111,7 +111,7 @@ func removeStaleControllerManagerService(ctx context.Context, c client.Client, n
 func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object) (*manifest.Object, error) {
 	u := obj.UnstructuredObject().DeepCopy()
 
-	nsID, err := cluster.GetNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, c, ctx, ccc.Namespace)
+	nsID, err := cluster.GetNamespaceID(ctx, k8s.OperatorNamespaceIDConfigMapNN, c, ccc.Namespace)
 	if err != nil {
 		return nil, fmt.Errorf("error getting namespace id for namespace %v: %w", ccc.Namespace, err)
 	}

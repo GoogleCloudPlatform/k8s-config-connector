@@ -182,8 +182,8 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 	// first before the resource under test is reconciled. Overall,
 	// the feature adds risk of complications due to it's multi-threaded
 	// nature.
-	var immediateReconcileRequests chan event.GenericEvent = nil
-	var resourceWatcherRoutines *semaphore.Weighted = nil
+	var immediateReconcileRequests chan event.GenericEvent = nil //nolint:revive
+	var resourceWatcherRoutines *semaphore.Weighted = nil //nolint:revive
 
 	switch kind {
 	case "IAMPolicy":
@@ -213,8 +213,8 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 		// first before the resource under test is reconciled. Overall,
 		// the feature adds risk of complications due to it's multi-threaded
 		// nature.
-		var immediateReconcileRequests chan event.GenericEvent = nil
-		var resourceWatcherRoutines *semaphore.Weighted = nil
+		var immediateReconcileRequests chan event.GenericEvent = nil //nolint:revive
+		var resourceWatcherRoutines *semaphore.Weighted = nil //nolint:revive
 
 		if crd.GetLabels()[crdgeneration.TF2CRDLabel] == "true" {
 			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines)

@@ -39,7 +39,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
-	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
@@ -69,7 +68,7 @@ func RegisterCommonWebhooks(mgr manager.Manager, nocacheClient client.Client) er
 	)
 }
 
-func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
+func GetCommonWebhookConfigs() ([]Config, error) {
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
 		return nil, fmt.Errorf("error getting new service mapping loader: %w", err)
@@ -84,7 +83,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 	dynamicResourcesRules := getRulesFromResources(supportedgvks.AllDynamicTypes(smLoader, serviceMetadataLoader))
 	handwrittenIamResourcesRules := getRulesFromResources(supportedgvks.BasedOnHandwrittenIAMTypes())
 	resourcesWithOverridesRules := getRulesForResourcesWithCustomValidation(allGVKs)
-	whCfgs := []WebhookConfig{
+	whCfgs := []Config{
 		{
 			Name:          "deny-immutable-field-updates.cnrm.cloud.google.com",
 			Path:          "/deny-immutable-field-updates",
@@ -186,7 +185,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 }
 
 func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {
-	whCfgs := []WebhookConfig{
+	whCfgs := []Config{
 		{
 			Name:        "abandon-on-uninstall.cnrm.cloud.google.com",
 			Path:        "/abandon-on-uninstall",
@@ -226,7 +225,7 @@ func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client
 }
 
 func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string,
-	whCfgs []WebhookConfig, mgr manager.Manager, nocacheClient client.Client) error {
+	whCfgs []Config, mgr manager.Manager, nocacheClient client.Client) error {
 	validatingWebhookCfg, mutatingWebhookCfg := GenerateWebhookManifests(
 		validatingWebhookConfigurationName,
 		mutatingWebhookConfigurationName,
@@ -308,10 +307,8 @@ func persistCertificatesToDisk(certWriter writer.CertWriter, svc *corev1.Service
 	if err != nil {
 		return fmt.Errorf("error ensuring certificate: %w", err)
 	}
-	if err := writeCertificates(artifacts, certDir, writer.ServerCertName, writer.ServerKeyName); err != nil {
-		return err
-	}
-	return nil
+
+	return writeCertificates(artifacts, certDir, writer.ServerCertName, writer.ServerKeyName)
 }
 
 func writeCertificates(artifacts *generator.Artifacts, dir, certName, keyName string) error {

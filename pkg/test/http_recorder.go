@@ -128,7 +128,7 @@ func (r *HTTPRecorder) record(entry *LogEntry, req *http.Request, resp *http.Res
 	}
 
 	ctx := req.Context()
-	t := TestFromContext(ctx)
+	t := FromContext(ctx)
 	testName := "unknown"
 	if t != nil {
 		testName = t.Name()

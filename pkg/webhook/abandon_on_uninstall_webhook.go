@@ -35,6 +35,6 @@ func NewAbandonOnCRDUninstallWebhook() HandlerFunc {
 // This webhook is now a no-op and will soon be removed as deletiondefender does not need this layer of protection any
 // longer. The reason to keep it for now is that the operator does not yet remove the old webhook registration. The
 // operator will be updated to remove this webhook registration and then the code can be deleted.
-func (a *abandonOnCRDUninstallWebhook) Handle(ctx context.Context, req admission.Request) admission.Response {
+func (a *abandonOnCRDUninstallWebhook) Handle(_ context.Context, _ admission.Request) admission.Response {
 	return admission.ValidationResponse(true, "no-op: this webhook is deprecated")
 }

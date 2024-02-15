@@ -24,7 +24,7 @@ type testKeyType int
 // testKey is the key value for testing.T in a context.Context
 var testKey testKeyType
 
-func TestFromContext(ctx context.Context) *testing.T {
+func FromContext(ctx context.Context) *testing.T {
 	v := ctx.Value(testKey)
 	if v == nil {
 		return nil

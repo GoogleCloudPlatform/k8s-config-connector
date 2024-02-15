@@ -29,6 +29,6 @@ func New(t *testing.T) *servicemappingloader.ServiceMappingLoader {
 	return smLoader
 }
 
-func NewForUnitTest(t *testing.T) *servicemappingloader.ServiceMappingLoader {
+func NewForUnitTest() *servicemappingloader.ServiceMappingLoader {
 	return servicemappingloader.NewFromServiceMappings(test.FakeServiceMappings())
 }

@@ -53,14 +53,14 @@ import (
 
 const controllerName = "configconnectorcontext-controller"
 
-// ConfigConnectorContextReconciler reconciles a ConfigConnectorContext object.
+// Reconciler reconciles a ConfigConnectorContext object.
 //
-// From the high level, the ConfigConnectorContextReconciler watches `ConfigConnectorContext` kind
+// From the high level, the Reconciler watches `ConfigConnectorContext` kind
 // and is responsible for managing the lifecycle of per-namespace KCC components (e.g. Service, StatefulSet, ServiceAccount and RoleBindings)
 // independently with multiple workers.
-// ConfigConnectorContextReconciler also watches "NamespacedControllerResource" kind and apply
+// Reconciler also watches "NamespacedControllerResource" kind and apply
 // customizations specified in "NamespacedControllerResource" CRs to per-namespace KCC components.
-type ConfigConnectorContextReconciler struct {
+type Reconciler struct {
 	reconciler           *declarative.Reconciler
 	client               client.Client
 	recorder             record.EventRecorder
@@ -91,7 +91,7 @@ func Add(mgr ctrl.Manager, repoPath string) error {
 	return nil
 }
 
-func newReconciler(mgr ctrl.Manager, repoPath string) (*ConfigConnectorContextReconciler, error) {
+func newReconciler(mgr ctrl.Manager, repoPath string) (*Reconciler, error) {
 	repo := cnrmmanifest.NewLocalRepository(repoPath)
 	manifestLoader := cnrmmanifest.NewPerNamespaceManifestLoader(repo)
 	preflight := preflight.NewCompositePreflight([]declarative.Preflight{
@@ -100,7 +100,7 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*ConfigConnectorContextRe
 		preflight.NewConfigConnectorContextChecker(),
 	})
 
-	r := &ConfigConnectorContextReconciler{
+	r := &Reconciler{
 		reconciler: &declarative.Reconciler{},
 		client:     mgr.GetClient(),
 		recorder:   mgr.GetEventRecorderFor(controllerName),
@@ -129,7 +129,7 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*ConfigConnectorContextRe
 	return r, err
 }
 
-func (r *ConfigConnectorContextReconciler) Reconcile(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
+func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
 	r.log.Info("reconciling ConfigConnectorContext", "name", req.Name, "namespace", req.Namespace)
 	_, err := r.getConfigConnectorContext(ctx, req.NamespacedName)
 	if err != nil {
@@ -157,7 +157,7 @@ func (r *ConfigConnectorContextReconciler) Reconcile(ctx context.Context, req re
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, r.handleReconcileSucceeded(ctx, req.NamespacedName)
 }
 
-func (r *ConfigConnectorContextReconciler) getConfigConnectorContext(ctx context.Context, nn types.NamespacedName) (*corev1beta1.ConfigConnectorContext, error) {
+func (r *Reconciler) getConfigConnectorContext(ctx context.Context, nn types.NamespacedName) (*corev1beta1.ConfigConnectorContext, error) {
 	ccc := &corev1beta1.ConfigConnectorContext{}
 	if err := r.client.Get(ctx, nn, ccc); err != nil {
 		return nil, err
@@ -165,7 +165,7 @@ func (r *ConfigConnectorContextReconciler) getConfigConnectorContext(ctx context
 	return ccc, nil
 }
 
-func (r *ConfigConnectorContextReconciler) handleReconcileFailed(ctx context.Context, nn types.NamespacedName, reconcileErr error) error {
+func (r *Reconciler) handleReconcileFailed(ctx context.Context, nn types.NamespacedName, reconcileErr error) error {
 	ccc, err := r.getConfigConnectorContext(ctx, nn)
 	if err != nil {
 		if apierrors.IsNotFound(err) {
@@ -186,7 +186,7 @@ func (r *ConfigConnectorContextReconciler) handleReconcileFailed(ctx context.Con
 	return r.updateConfigConnectorContextStatus(ctx, ccc)
 }
 
-func (r *ConfigConnectorContextReconciler) handleReconcileSucceeded(ctx context.Context, nn types.NamespacedName) error {
+func (r *Reconciler) handleReconcileSucceeded(ctx context.Context, nn types.NamespacedName) error {
 	ccc, err := r.getConfigConnectorContext(ctx, nn)
 	if err != nil {
 		if apierrors.IsNotFound(err) {
@@ -204,14 +204,14 @@ func (r *ConfigConnectorContextReconciler) handleReconcileSucceeded(ctx context.
 	return r.updateConfigConnectorContextStatus(ctx, ccc)
 }
 
-func (r *ConfigConnectorContextReconciler) updateConfigConnectorContextStatus(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext) error {
+func (r *Reconciler) updateConfigConnectorContextStatus(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext) error {
 	if err := r.client.Status().Update(ctx, ccc); err != nil {
 		return fmt.Errorf("failed to update ConfigConnectorContext %v/%v on API server: %w", ccc.Namespace, ccc.Name, err)
 	}
 	return nil
 }
 
-func (r *ConfigConnectorContextReconciler) transformNamespacedComponents() declarative.ObjectTransform {
+func (r *Reconciler) transformNamespacedComponents() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
 		ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
 		if !ok {
@@ -227,7 +227,7 @@ func (r *ConfigConnectorContextReconciler) transformNamespacedComponents() decla
 }
 
 // Add labels that will be used for the controller to dynamically watch on deployed KCC components.
-func (r *ConfigConnectorContextReconciler) addLabels() declarative.ObjectTransform {
+func (r *Reconciler) addLabels() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, manifest *manifest.Objects) error {
 		labels := r.labelMaker(ctx, o)
 		for _, o := range manifest.Items {
@@ -248,7 +248,7 @@ func (r *ConfigConnectorContextReconciler) addLabels() declarative.ObjectTransfo
 //	then ensure per-namespace components are created.
 //
 // 4) If the ConfigConnector object says the namespaced mode, and if this ConfigConnectorContext object is pending deletion, verify that all KCC resource CRs are deleted, then finalize the deletion of per-namespace components.
-func (r *ConfigConnectorContextReconciler) handleCCContextLifecycle() declarative.ObjectTransform {
+func (r *Reconciler) handleCCContextLifecycle() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
 		ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
 		if !ok {
@@ -272,7 +272,7 @@ func (r *ConfigConnectorContextReconciler) handleCCContextLifecycle() declarativ
 	}
 }
 
-func (r *ConfigConnectorContextReconciler) finalizeCCContextDeletion(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
+func (r *Reconciler) finalizeCCContextDeletion(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
 	r.log.Info("ConfigConnectorContext for namespace is marked for deletion; verifying all CNRM resources have been deleted...", "namespace", ccc.Namespace)
 	kindToCount, err := getCNRMResourceCounts(ctx, r.client, ccc.Namespace)
 	if err != nil {
@@ -286,7 +286,7 @@ func (r *ConfigConnectorContextReconciler) finalizeCCContextDeletion(ctx context
 	if err := r.finalizeNamespacedComponentsDeletion(ctx, ccc, m); err != nil {
 		return err
 	}
-	if err := cluster.DeleteNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, r.client, ctx, ccc.Namespace); err != nil {
+	if err := cluster.DeleteNamespaceID(ctx, k8s.OperatorNamespaceIDConfigMapNN, r.client, ccc.Namespace); err != nil {
 		return err
 	}
 	r.log.Info("Successfully finalized ConfigConnectorContext deletion...", "name", ccc.Name, "namespace", ccc.Namespace)
@@ -295,7 +295,7 @@ func (r *ConfigConnectorContextReconciler) finalizeCCContextDeletion(ctx context
 	return nil
 }
 
-func (r *ConfigConnectorContextReconciler) finalizeNamespacedComponentsDeletion(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
+func (r *Reconciler) finalizeNamespacedComponentsDeletion(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
 	r.log.Info("finalizing namespaced components deletion...", "namespace", ccc.Namespace)
 	if err := removeNamespacedComponents(ctx, r.client, m.Items); err != nil {
 		return fmt.Errorf("error finalizing ConfigConnectorContext %v/%v deletion: %w", ccc.Namespace, ccc.Name, err)
@@ -308,7 +308,7 @@ func (r *ConfigConnectorContextReconciler) finalizeNamespacedComponentsDeletion(
 	return nil
 }
 
-func (r *ConfigConnectorContextReconciler) handleCCContextLifecycleForClusterMode(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
+func (r *Reconciler) handleCCContextLifecycleForClusterMode(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
 	// On the cluster mode, clean up namespaced components associated with the ConfigConnectorContext.
 	if err := r.finalizeNamespacedComponentsDeletion(ctx, ccc, m); err != nil {
 		return err
@@ -316,7 +316,7 @@ func (r *ConfigConnectorContextReconciler) handleCCContextLifecycleForClusterMod
 	return fmt.Errorf("ConfigConnector is in cluster-mode, this ConfigConnectorContext object does not serve any purpose and should be removed")
 }
 
-func (r *ConfigConnectorContextReconciler) handleCCContextLifecycleForNamespacedMode(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
+func (r *Reconciler) handleCCContextLifecycleForNamespacedMode(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
 	if !ccc.GetDeletionTimestamp().IsZero() {
 		return r.finalizeCCContextDeletion(ctx, ccc, m)
 	}
@@ -337,7 +337,7 @@ func (r *ConfigConnectorContextReconciler) handleCCContextLifecycleForNamespaced
 	return nil
 }
 
-func (r *ConfigConnectorContextReconciler) finalizeSystemComponentsDeletion(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
+func (r *Reconciler) finalizeSystemComponentsDeletion(ctx context.Context, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
 	r.log.Info("deleting namespaced components on uninstallation", "namespace", ccc.Namespace)
 	if err := r.finalizeNamespacedComponentsDeletion(ctx, ccc, m); err != nil {
 		return err
@@ -349,7 +349,7 @@ func (r *ConfigConnectorContextReconciler) finalizeSystemComponentsDeletion(ctx 
 	return nil
 }
 
-func (r *ConfigConnectorContextReconciler) verifyControllerManagerPodForClusterModeIsDeleted(ctx context.Context) error {
+func (r *Reconciler) verifyControllerManagerPodForClusterModeIsDeleted(ctx context.Context) error {
 	sts := &appsv1.StatefulSet{}
 	sts.Namespace = k8s.CNRMSystemNamespace
 	sts.Name = k8s.KCCControllerManagerComponent
@@ -380,7 +380,7 @@ func (r *ConfigConnectorContextReconciler) verifyControllerManagerPodForClusterM
 	return nil
 }
 
-func (r *ConfigConnectorContextReconciler) verifyCNRMSystemNamespaceIsActive(ctx context.Context) error {
+func (r *Reconciler) verifyCNRMSystemNamespaceIsActive(ctx context.Context) error {
 	r.log.Info("verifying that ConfigConnector system namespace is active...", "system namespace", k8s.CNRMSystemNamespace)
 	n := &corev1.Namespace{}
 	key := types.NamespacedName{
@@ -389,9 +389,9 @@ func (r *ConfigConnectorContextReconciler) verifyCNRMSystemNamespaceIsActive(ctx
 	if err := r.client.Get(ctx, key, n); err != nil {
 		if apierrors.IsNotFound(err) {
 			return fmt.Errorf("ConfigConnector system namespace %v is not created by configconnector controller yet, reenquee the reconcilation for another attempt later", k8s.CNRMSystemNamespace)
-		} else {
-			return fmt.Errorf("error getting the ConfigConnector system namespace %v: %w", key, err)
 		}
+
+		return fmt.Errorf("error getting the ConfigConnector system namespace %v: %w", key, err)
 	}
 	if !n.GetDeletionTimestamp().IsZero() {
 		return fmt.Errorf("ConfigConnector system namespace %v is pending deletion, stop the reconcilation", k8s.CNRMSystemNamespace)
@@ -400,7 +400,7 @@ func (r *ConfigConnectorContextReconciler) verifyCNRMSystemNamespaceIsActive(ctx
 }
 
 // applyNamespacedCustomizations fetches and applies all namespace-scoped customization CRDs.
-func (r *ConfigConnectorContextReconciler) applyNamespacedCustomizations() declarative.ObjectTransform {
+func (r *Reconciler) applyNamespacedCustomizations() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
 		ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
 		if !ok {
@@ -427,7 +427,7 @@ func (r *ConfigConnectorContextReconciler) applyNamespacedCustomizations() decla
 }
 
 // applyNamespacedControllerResourceCustomization applies customizations specified in NamespacedControllerResource CR.
-func (r *ConfigConnectorContextReconciler) applyNamespacedControllerResourceCustomization(ctx context.Context, cr *customizev1beta1.NamespacedControllerResource, m *manifest.Objects) error {
+func (r *Reconciler) applyNamespacedControllerResourceCustomization(ctx context.Context, cr *customizev1beta1.NamespacedControllerResource, m *manifest.Objects) error {
 	if cr.Name != "cnrm-controller-manager" {
 		msg := fmt.Sprintf("resource customization for controller %s is not supported", cr.Name)
 		r.log.Info(msg)
@@ -445,7 +445,7 @@ func (r *ConfigConnectorContextReconciler) applyNamespacedControllerResourceCust
 	return r.handleApplyCustomizationSucceeded(ctx, cr.Namespace, cr.Name)
 }
 
-func (r *ConfigConnectorContextReconciler) handleApplyCustomizationFailed(ctx context.Context, namespace, name string, msg string) error {
+func (r *Reconciler) handleApplyCustomizationFailed(ctx context.Context, namespace, name string, msg string) error {
 	cr, err := controllers.GetNamespacedControllerResource(ctx, r.client, namespace, name)
 	if err != nil {
 		if apierrors.IsNotFound(err) {
@@ -464,7 +464,7 @@ func (r *ConfigConnectorContextReconciler) handleApplyCustomizationFailed(ctx co
 	return r.updateNamespacedControllerResourceStatus(ctx, cr)
 }
 
-func (r *ConfigConnectorContextReconciler) handleApplyCustomizationSucceeded(ctx context.Context, namespace, name string) error {
+func (r *Reconciler) handleApplyCustomizationSucceeded(ctx context.Context, namespace, name string) error {
 	cr, err := controllers.GetNamespacedControllerResource(ctx, r.client, namespace, name)
 	if err != nil {
 		if apierrors.IsNotFound(err) {
@@ -483,7 +483,7 @@ func (r *ConfigConnectorContextReconciler) handleApplyCustomizationSucceeded(ctx
 	return r.updateNamespacedControllerResourceStatus(ctx, cr)
 }
 
-func (r *ConfigConnectorContextReconciler) updateNamespacedControllerResourceStatus(ctx context.Context, cr *customizev1beta1.NamespacedControllerResource) error {
+func (r *Reconciler) updateNamespacedControllerResourceStatus(ctx context.Context, cr *customizev1beta1.NamespacedControllerResource) error {
 	if err := r.client.Status().Update(ctx, cr); err != nil {
 		r.log.Error(err, "failed to update NamespacedControllerResource", "Namespace", cr.Namespace, "Name", cr.Name, "Object", cr)
 		// Don't fail entire reconciliation if we cannot update NamespacedControllerResource status.

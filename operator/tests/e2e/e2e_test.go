@@ -543,7 +543,7 @@ func TestShouldNotBeAbleToCreateKCCResourcesIfKCCNotEnabledForNamespace(t *testi
 	if ok {
 		t.Fatalf("expected ArtifactRegistryRepository to not have finalizer '%v', but it does", k8s.KCCFinalizer)
 	}
-	ok, err = cluster.doesArtifactRegistryRepositoryHaveStatusUnmanaged(namespace, repoName, repoYAMLDir)
+	ok, err = cluster.doesArtifactRegistryRepositoryHaveStatusUnmanaged(namespace, repoName)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error checking if ArtifactRegistryRepository has status '%v': %w", kcck8s.Unmanaged, err))
 	}
@@ -680,8 +680,7 @@ func setup(t *testing.T, testOptions TestOptions) (testID string, log logr.Logge
 		t.Fatal(fmt.Errorf("error creating logger: %w", err))
 	}
 	clusterName := "e2e-test-" + testID
-	cluster, cleanup, err := setupCluster(clusterName, testOptions.ProjectID, testOptions.GKEClusterLocation,
-		testOptions.serviceAccountID, log)
+	cluster, cleanup, err := setupCluster(clusterName, testOptions.ProjectID, testOptions.GKEClusterLocation, log)
 	teardown = func() {
 		if cleanup != nil {
 			log.Info("Beginning cluster cleanup...")
@@ -1127,7 +1126,7 @@ func (c *cluster) doesArtifactRegistryRepositoryHaveFinalizer(namespace, repoNam
 	return false, nil
 }
 
-func (c *cluster) doesArtifactRegistryRepositoryHaveStatusUnmanaged(namespace, repoName, finalizer string) (ok bool, err error) {
+func (c *cluster) doesArtifactRegistryRepositoryHaveStatusUnmanaged(namespace, repoName string) (ok bool, err error) {
 	repoUnstruct, err := c.getArtifactRegistryRepositoryUnstructured(namespace, repoName)
 	if err != nil {
 		return false, err
@@ -1287,7 +1286,7 @@ func checkArtifactRegistryRepositoryExistsOnGCP(repoName, projectID string) erro
 	return nil
 }
 
-func setupCluster(clusterName, projectID, location, serviceAccountID string, log logr.Logger) (*cluster, cleanupFunc, error) {
+func setupCluster(clusterName, projectID, location string, log logr.Logger) (*cluster, cleanupFunc, error) {
 	var cleanup cleanupFunc
 	log.Info("Creating a Container client...")
 	ctx := context.Background()
@@ -1342,14 +1341,14 @@ func setupIdentity(testOptions TestOptions, k *kubectl, log logr.Logger) error {
 		serviceAccEmail := fmt.Sprintf("%v@%v.iam.gserviceaccount.com", testOptions.serviceAccountID, testOptions.ProjectID)
 
 		return createCredentialSecret(serviceAccEmail, testOptions.ProjectID, testOptions.SecretName, k)
-	} else {
-		log.Info("Setting up Workload Identity binding...")
-		serviceAccEmail := fmt.Sprintf("%v@%v.iam.gserviceaccount.com", testOptions.serviceAccountID, testOptions.ProjectID)
-		member := fmt.Sprintf("serviceAccount:%v.svc.id.goog[cnrm-system/cnrm-controller-manager]", testOptions.ProjectID)
-		role := "roles/iam.workloadIdentityUser"
-
-		return addIAMBindingForServiceAcc(serviceAccEmail, member, role, testOptions.ProjectID)
 	}
+
+	log.Info("Setting up Workload Identity binding...")
+	serviceAccEmail := fmt.Sprintf("%v@%v.iam.gserviceaccount.com", testOptions.serviceAccountID, testOptions.ProjectID)
+	member := fmt.Sprintf("serviceAccount:%v.svc.id.goog[cnrm-system/cnrm-controller-manager]", testOptions.ProjectID)
+	role := "roles/iam.workloadIdentityUser"
+
+	return addIAMBindingForServiceAcc(serviceAccEmail, member, role, testOptions.ProjectID)
 }
 
 func setupProject(organizationID, projectID, billingAccountID, serviceAccountID string, log logr.Logger) (cleanupFunc, error) {

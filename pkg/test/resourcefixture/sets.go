@@ -159,7 +159,7 @@ func getUncoveredCount(f fixtureRCId, rcIDToCovered map[string]bool) int {
 			panic(fmt.Sprintf("expected resource config id '%v' to be in the map", r))
 		}
 		if !covered {
-			count += 1
+			count++
 		}
 	}
 	return count

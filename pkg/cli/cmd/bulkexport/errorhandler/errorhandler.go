@@ -51,7 +51,7 @@ func NewIgnore() Handler {
 	return &ignoreHandler{}
 }
 
-func (i *ignoreHandler) Handle(err error) error {
+func (i *ignoreHandler) Handle(_ error) error {
 	return nil
 }
 

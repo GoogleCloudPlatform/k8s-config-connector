@@ -43,8 +43,6 @@ func testAssetType(t *testing.T, assetType string, expectedResult bool) {
 }
 
 func TestIsDefaultNetworkingAsset(t *testing.T) {
-	smLoader := testservicemappingloader.New(t)
-	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	testCases := []struct {
 		Name                     string
 		Asset                    *asset.Asset
@@ -137,7 +135,7 @@ func TestIsDefaultNetworkingAsset(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			got := isDefaultNetworkingAsset(smLoader, tfProvider, tc.Asset)
+			got := isDefaultNetworkingAsset(tc.Asset)
 			if got != tc.IsDefaultNetworkingAsset {
 				t.Errorf("isDefaultNetworkingAsset(..., '%v') = '%v', want '%v'", tc.Asset, got, tc.IsDefaultNetworkingAsset)
 			}

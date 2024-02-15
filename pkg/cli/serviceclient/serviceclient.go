@@ -37,7 +37,7 @@ type ServiceClient interface {
 	GetProjectFromProjectIDOrNumber(string) (*resourcemanager.Project, error)
 }
 
-func NewServiceClient(httpClient *http.Client) serviceClient {
+func NewServiceClient(httpClient *http.Client) serviceClient { //nolint:revive
 	return serviceClient{httpClient: httpClient}
 }
 

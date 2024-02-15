@@ -627,7 +627,7 @@ func TestResolveResourceReferenceToTFResource(t *testing.T) {
 			},
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			test.EnsureObjectsExist(t, tc.referencedResources, c)
@@ -723,7 +723,7 @@ func TestResolveResourceReferenceToTFResource_deleting(t *testing.T) {
 			shouldError: false,
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			test.EnsureObjectsExist(t, tc.referencedResources, c)
@@ -1005,7 +1005,7 @@ func TestResolveResourceReferenceToDCLResourceWithResourceID(t *testing.T) {
 			hasError: true,
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -1378,7 +1378,7 @@ func TestResolveResourceReferenceToTFResourceWithResourceID(t *testing.T) {
 			hasError: true,
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -1520,7 +1520,7 @@ func TestResource_GetReferencedDCLResource(t *testing.T) {
 			shouldError: true,
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			if tc.referencedResource != nil {
@@ -1656,7 +1656,7 @@ func TestResource_GetReferencedTFResource(t *testing.T) {
 			shouldError: true,
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			if tc.referencedResource != nil {

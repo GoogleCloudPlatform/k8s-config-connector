@@ -31,7 +31,7 @@ import (
 )
 
 var (
-	NotFoundError = fmt.Errorf("resource not found")
+	ErrNotFound = fmt.Errorf("resource not found")
 )
 
 type Client interface {
@@ -77,7 +77,7 @@ func (c *gcpClient) Get(ctx context.Context, u *unstructured.Unstructured) (*uns
 		return nil, fmt.Errorf("error fetching live state: %w", err)
 	}
 	if state == nil {
-		return nil, NotFoundError
+		return nil, ErrNotFound
 	}
 	return updateResourceAndNewUnstructuredFromState(resource, state)
 }

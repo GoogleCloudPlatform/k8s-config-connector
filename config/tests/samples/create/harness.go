@@ -117,7 +117,7 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	// supply a concrete client to disable the default behavior of caching
 	kccConfig.ManagerOptions.NewClient = nocache.NoCacheClientFunc
 
-	var webhooks []cnrmwebhook.WebhookConfig
+	var webhooks []cnrmwebhook.Config
 
 	loadCRDs := true
 	if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "envtest" {

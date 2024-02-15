@@ -713,7 +713,7 @@ func TestToKCCLite(t *testing.T) {
 	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Test1Foo"}
 	loader := testservicemetadataloader.NewForUnitTest()
 	schemaLoader := testdclschemaloader.New(dclSchemaMap)
-	serviceMappingLoader := testservicemappingloader.NewForUnitTest(t)
+	serviceMappingLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -892,7 +892,7 @@ func TestToKCCLiteBestEffort(t *testing.T) {
 	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Foo"}
 	loader := testservicemetadataloader.NewForUnitTest()
 	schemaLoader := testdclschemaloader.New(dclSchemaMap)
-	serviceMappingLoader := testservicemappingloader.NewForUnitTest(t)
+	serviceMappingLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -1658,7 +1658,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 	}
 
 	smLoader := dclmetadata.NewFromServiceList(testservicemetadataloader.FakeServiceMetadataWithHierarchicalResources())
-	serviceMappingLoader := testservicemappingloader.NewForUnitTest(t)
+	serviceMappingLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {

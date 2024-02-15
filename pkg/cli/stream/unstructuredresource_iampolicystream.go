@@ -93,10 +93,8 @@ func (s *UnstructuredResourceAndIAMPolicyStream) fillNextIAMPolicyIfSupportedAnd
 	if !hasIAMSupport {
 		return nil
 	}
-	if err := s.fillNextIAMPolicyIfNonEmpty(u); err != nil {
-		return err
-	}
-	return nil
+
+	return s.fillNextIAMPolicyIfNonEmpty(u)
 }
 
 func (s *UnstructuredResourceAndIAMPolicyStream) fillNextIAMPolicyIfNonEmpty(u *unstructured.Unstructured) error {

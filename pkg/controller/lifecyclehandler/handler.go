@@ -161,7 +161,7 @@ func CausedByUnreadyOrNonexistentResourceRefs(err error) (refGVK schema.GroupVer
 	return schema.GroupVersionKind{}, types.NamespacedName{}, false
 }
 
-func CausedByUnresolvableDeps(err error) (unwrappedErr error, ok bool) {
+func CausedByUnresolvableDeps(err error) (unwrappedErr error, ok bool) { //nolint:revive
 	if unwrappedErr, ok := k8s.AsReferenceNotReadyError(err); ok {
 		return unwrappedErr, true
 	}

@@ -799,7 +799,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 	}
 
 	smLoader := dclmetadata.NewFromServiceList(testservicemetadataloader.FakeServiceMetadataWithHierarchicalResources())
-	serviceMappingLoader := testservicemappingloader.NewForUnitTest(t)
+	serviceMappingLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {

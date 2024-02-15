@@ -634,7 +634,7 @@ func TestResource_GetImportID(t *testing.T) {
 			assertGotExpectedErr: hasError,
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -1027,7 +1027,7 @@ func TestResource_ConstructServerGeneratedIDInStatusFromResourceID(t *testing.T)
 		},
 	}
 
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {

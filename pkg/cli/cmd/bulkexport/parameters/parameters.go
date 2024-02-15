@@ -99,10 +99,8 @@ func Validate(p *Parameters, stdin *os.File) error {
 	if err := commonparams.ValidateResourceFormat(p.ResourceFormat, p.IAMFormat); err != nil {
 		return err
 	}
-	if err := validateOneInput(p, stdin); err != nil {
-		return err
-	}
-	return nil
+
+	return validateOneInput(p, stdin)
 }
 
 func IsInputPiped(stdin *os.File) (bool, error) {
@@ -170,10 +168,8 @@ func validateStorageKey(p *Parameters) error {
 	if !regex.MatchString(p.StorageKey) {
 		return fmt.Errorf("invalid %v value of '%v': must be a valid cloud storage URI", StorageKeyParam, p.StorageKey)
 	}
-	if err := validateCanExport(p); err != nil {
-		return err
-	}
-	return nil
+
+	return validateCanExport(p)
 }
 
 func validateCanExport(p *Parameters) error {
