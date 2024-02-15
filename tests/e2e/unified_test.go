@@ -247,7 +247,9 @@ func TestAllInSeries(t *testing.T) {
 						jsonMutators = append(jsonMutators, func(obj map[string]any) {
 							_, found, _ := unstructured.NestedString(obj, tokens...)
 							if found {
-								unstructured.SetNestedField(obj, newValue, tokens...)
+								if err := unstructured.SetNestedField(obj, newValue, tokens...); err != nil {
+									t.Fatal(err)
+								}
 							}
 						})
 					}

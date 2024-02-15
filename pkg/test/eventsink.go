@@ -66,7 +66,7 @@ type MemoryEventSink struct {
 	HTTPEvents []*LogEntry `json:"httpEvents,omitempty"`
 }
 
-func (s *MemoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) {
+func (s *MemoryEventSink) AddHTTPEvent(_ context.Context, entry *LogEntry) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 

@@ -63,10 +63,10 @@ var (
 )
 
 const (
-	TestDependentOrgProjectID               = "TEST_DEPENDENT_ORG_PROJECT_ID"
-	TestDependentFolderProjectID            = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
-	TestDependentNoNetworkProjectID         = "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID" // A dependent project with default network disabled
-	TestDependentFolder2ProjectId           = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
+	TestDependentOrgProjectID       = "TEST_DEPENDENT_ORG_PROJECT_ID"
+	TestDependentFolderProjectID    = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
+	TestDependentNoNetworkProjectID = "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID" // A dependent project with default network disabled
+	TestDependentFolder2ProjectID   = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
 
 	IsolatedTestOrgName                     = "ISOLATED_TEST_ORG_NAME"
 	TestBillingAccountIDForBillingResources = "BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES"
@@ -83,7 +83,7 @@ var (
 	testDependentOrgProjectID               = os.Getenv(TestDependentOrgProjectID)
 	testDependentFolderProjectID            = os.Getenv(TestDependentFolderProjectID)
 	testDependentNoNetworkProjectID         = os.Getenv(TestDependentNoNetworkProjectID)
-	testDependentFolder2ProjectId           = os.Getenv(TestDependentFolder2ProjectId)
+	testDependentFolder2ProjectID           = os.Getenv(TestDependentFolder2ProjectID)
 	isolatedTestOrgName                     = os.Getenv(IsolatedTestOrgName)
 	testBillingAccountIDForBillingResources = os.Getenv(TestBillingAccountIDForBillingResources)
 	firestoreTestProject                    = os.Getenv(FirestoreTestProject)
@@ -179,7 +179,7 @@ func GetDependentNoNetworkProjectID(_ *testing.T) string {
 }
 
 func GetDependentFolder2ProjectID(_ *testing.T) string {
-	return testDependentFolder2ProjectId
+	return testDependentFolder2ProjectID
 }
 
 func GetIsolatedTestOrgName(_ *testing.T) string {
