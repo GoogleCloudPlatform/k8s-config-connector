@@ -76,13 +76,9 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 	wantBytes, err := os.ReadFile(p)
 	if err != nil {
 		if writeGoldenOutput && os.IsNotExist(err) {
-<<<<<<< HEAD
 			// Expected when creating output for the first time;
 			// treat as empty
 			wantBytes = []byte{} // Not strictly needed, but clearer
-=======
-			// expected when creating output for the first time
->>>>>>> 69546b01c (Update hcl to v2)
 		} else {
 			t.Fatalf("failed to read golden file %q: %v", p, err)
 		}
