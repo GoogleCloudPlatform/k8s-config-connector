@@ -379,7 +379,7 @@ func buildNamespacedMode(operatorSrcRoot, buildPath, output string, autopilot bo
 func swapContainerRegistry(manifestPath string) error {
 	content, err := os.ReadFile(manifestPath)
 	if err != nil {
-		return fmt.Errorf("error reading manifestPath: %v", err)
+		return fmt.Errorf("error reading manifestPath: %w", err)
 	}
 	manifest := string(content)
 	updatedManifest := strings.ReplaceAll(manifest, "gcr.io/cnrm-eap/", "gcr.io/gke-release/cnrm/")
@@ -390,7 +390,7 @@ func swapContainerRegistry(manifestPath string) error {
 func extractVersionFromManifest(filePath string) (string, error) {
 	objs, err := utils.ReadFileToUnstructs(filePath)
 	if err != nil {
-		return "", fmt.Errorf("error reading file %v and converting to unstructs: %v", filePath, err)
+		return "", fmt.Errorf("error reading file %v and converting to unstructs: %w", filePath, err)
 	}
 	for _, obj := range objs {
 		if obj.GetKind() == "Namespace" && obj.GetName() == k8s.CNRMSystemNamespace {
