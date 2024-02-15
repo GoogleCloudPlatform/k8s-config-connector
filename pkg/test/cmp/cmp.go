@@ -14,35 +14,30 @@
 
 package testcmp
 
-import (
-	"strings"
-	"testing"
-)
-
-func UnorderedLineByLineComparisonIgnoreBlankLines(t *testing.T, expected, actual string) {
-	expectedLines := make(map[string]int)
-	for _, s := range strings.Split(expected, "\n") {
-		if s == "" {
-			continue
-		}
-		expectedLines[s] += 1
-	}
-	actualLines := strings.Split(actual, "\n")
-	for linenum, line := range actualLines {
-		if line == "" {
-			continue
-		}
-		v, ok := expectedLines[line]
-		if !ok {
-			t.Fatalf("actual value didn't match expected value: line %d, %q, not in expected.", linenum, line)
-		}
-		if v == 1 {
-			delete(expectedLines, line)
-		} else {
-			expectedLines[line] = v - 1
-		}
-	}
-	if len(expectedLines) != 0 {
-		t.Fatalf("actual value didn't match expected value: line '%v' not in actual value", expectedLines)
-	}
-}
+// func UnorderedLineByLineComparisonIgnoreBlankLines(t *testing.T, expected, actual string) {
+// 	expectedLines := make(map[string]int)
+// 	for _, s := range strings.Split(expected, "\n") {
+// 		if s == "" {
+// 			continue
+// 		}
+// 		expectedLines[s] += 1
+// 	}
+// 	actualLines := strings.Split(actual, "\n")
+// 	for linenum, line := range actualLines {
+// 		if line == "" {
+// 			continue
+// 		}
+// 		v, ok := expectedLines[line]
+// 		if !ok {
+// 			t.Fatalf("actual value didn't match expected value: line %d, %q, not in expected.", linenum, line)
+// 		}
+// 		if v == 1 {
+// 			delete(expectedLines, line)
+// 		} else {
+// 			expectedLines[line] = v - 1
+// 		}
+// 	}
+// 	if len(expectedLines) != 0 {
+// 		t.Fatalf("actual value didn't match expected value: line '%v' not in actual value", expectedLines)
+// 	}
+// }

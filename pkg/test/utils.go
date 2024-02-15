@@ -66,32 +66,36 @@ func MustReadFile(t *testing.T, p string) []byte {
 
 // CompareGoldenFile performs a file comparison for a golden test.
 func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s string) string) {
-	if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-		// Short-circuit when the output is correct
-		b, err := os.ReadFile(p)
-		if err == nil {
-			want := string(b)
-			for _, normalizer := range normalizers {
-				got = normalizer(got)
-				want = normalizer(want)
-			}
-			if want == got {
-				return
-			}
-		}
+	writeGoldenOutput := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
 
+	for _, normalizer := range normalizers {
+		got = normalizer(got)
+	}
+
+	wantBytes, err := os.ReadFile(p)
+	if err != nil {
+		if writeGoldenOutput && os.IsNotExist(err) {
+			// expected when creating output for the first time
+		} else {
+			t.Fatalf("failed to read golden file %q: %v", p, err)
+		}
+	}
+	want := string(wantBytes)
+	for _, normalizer := range normalizers {
+		want = normalizer(want)
+	}
+
+	if want == got {
+		return
+	}
+
+	if writeGoldenOutput {
+		// Write the output to the golden file
 		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
 			t.Fatalf("failed to write golden output %s: %v", p, err)
 		}
-		t.Errorf("wrote output to %s", p)
+		t.Errorf("wrote updated golden output to %s", p)
 	} else {
-		want := string(MustReadFile(t, p))
-
-		for _, normalizer := range normalizers {
-			got = normalizer(got)
-			want = normalizer(want)
-		}
-
 		if diff := cmp.Diff(want, got); diff != "" {
 			t.Errorf("unexpected diff in %s: %s", p, diff)
 		}
@@ -99,7 +103,7 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 }
 
 // IgnoreLeadingComments is a normalizer function that strips comments.
-// It will stop when it finds the first non-empty, non-comment line.
+// It will stop when it finds the first non-comment line.
 // It is intended to be used with CompareGoldenFile.
 func IgnoreLeadingComments(s string) string {
 	var out []string
