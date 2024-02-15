@@ -25,6 +25,7 @@ import (
 	"sync"
 	"testing"
 	"time"
+	goerrors "errors"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -59,7 +60,7 @@ func networksInSampleCount(sample Sample) int {
 	count := 0
 	for _, r := range sample.Resources {
 		if r.GetKind() == "ComputeNetwork" {
-			count += 1
+			count++
 		}
 	}
 	return count
@@ -84,7 +85,7 @@ func getNamespaces(resources []*unstructured.Unstructured) []string {
 	return namespaces.List()
 }
 
-type CreateDeleteTestOptions struct {
+type CreateDeleteTestOptions struct { //nolint:revive
 	// Create is the set of objects to create
 	Create []*unstructured.Unstructured
 
@@ -181,7 +182,7 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 	if err == nil {
 		return
 	}
-	if err != wait.ErrWaitTimeout {
+	if !goerrors.Is(err, wait.ErrWaitTimeout) {
 		t.Errorf("error while polling for ready on %v with name '%v': %v", u.GetKind(), u.GetName(), err)
 		return
 	}
@@ -403,7 +404,9 @@ func replaceResourceNamesWithUniqueIDs(t *testing.T, unstructs []*unstructured.U
 			if err != nil {
 				t.Fatalf("error generating new spec.displayName value for Folder '%v': %v", u.GetName(), err)
 			}
-			unstructured.SetNestedField(newUnstruct.Object, newDisplayName, "spec", "displayName")
+			if err := unstructured.SetNestedField(newUnstruct.Object, newDisplayName, "spec", "displayName"); err != nil {
+				t.Fatal(err)
+			}
 		}
 		newUnstructs = append(newUnstructs, newUnstruct)
 	}
@@ -486,7 +489,7 @@ func generateNewFolderDisplayName(folderUnstruct *unstructured.Unstructured, idR
 func getFolderDisplayName(folderUnstruct *unstructured.Unstructured) (string, error) {
 	displayName, ok, err := unstructured.NestedString(folderUnstruct.Object, "spec", "displayName")
 	if err != nil {
-		return "", fmt.Errorf("error getting spec.displayName of Folder unstruct: %v", err)
+		return "", fmt.Errorf("error getting spec.displayName of Folder unstruct: %w", err)
 	}
 	if !ok {
 		return "", fmt.Errorf("spec.displayName not found for Folder unstruct")

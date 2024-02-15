@@ -83,7 +83,7 @@ var httpRoundTripperKey httpRoundTripperKeyType
 
 // NewHarnessWithManager builds a Harness for an existing manager.
 // deprecated: Prefer NewHarness, which can construct a manager and mock gcp etc.
-func NewHarnessWithManager(t *testing.T, ctx context.Context, mgr manager.Manager) *Harness {
+func NewHarnessWithManager(ctx context.Context, t *testing.T, mgr manager.Manager) *Harness {
 	h := &Harness{
 		T:      t,
 		Ctx:    ctx,
@@ -92,7 +92,7 @@ func NewHarnessWithManager(t *testing.T, ctx context.Context, mgr manager.Manage
 	return h
 }
 
-func NewHarness(t *testing.T, ctx context.Context) *Harness {
+func NewHarness(ctx context.Context, t *testing.T) *Harness {
 	ctx, ctxCancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
 		ctxCancel()
@@ -422,14 +422,14 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "ServiceIdentity"}:
 
 			default:
-				t.Skipf("gk %v not suppported by mock gcp; skipping", gvk.GroupKind())
+				t.Skipf("gk %v not suppported by mock gcp; skipping test %v", gvk.GroupKind(), name)
 			}
 		}
 	}
 }
 
-func (t *Harness) waitForCRDReady(obj client.Object) {
-	logger := log.FromContext(t.Ctx)
+func (h *Harness) waitForCRDReady(obj client.Object) {
+	logger := log.FromContext(h.Ctx)
 
 	apiVersion, kind := obj.GetObjectKind().GroupVersionKind().ToAPIVersionAndKind()
 	name := obj.GetName()
@@ -441,11 +441,11 @@ func (t *Harness) waitForCRDReady(obj client.Object) {
 		u.SetAPIVersion(apiVersion)
 		u.SetKind(kind)
 		logger.V(2).Info("Testing to see if resource is ready", "kind", kind, "id", id)
-		if err := t.GetClient().Get(t.Ctx, id, u); err != nil {
+		if err := h.GetClient().Get(h.Ctx, id, u); err != nil {
 			logger.Info("Error getting resource", "kind", kind, "id", id, "error", err)
 			return false, err
 		}
-		objectStatus := dynamic.GetObjectStatus(t.T, u)
+		objectStatus := dynamic.GetObjectStatus(h.T, u)
 		// CRDs do not have observedGeneration
 		for _, condition := range objectStatus.Conditions {
 			if condition.Type == "Established" && condition.Status == "True" {
@@ -457,7 +457,7 @@ func (t *Harness) waitForCRDReady(obj client.Object) {
 		logger.V(2).Info("CRD is not ready", "kind", kind, "id", id, "conditions", objectStatus.Conditions)
 		return false, nil
 	}); err != nil {
-		t.Errorf("error while polling for ready on %v %v: %v", kind, id, err)
+		h.Errorf("error while polling for ready on %v %v: %v", kind, id, err)
 		return
 	}
 }

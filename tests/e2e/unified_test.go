@@ -58,7 +58,7 @@ func TestAllInSeries(t *testing.T) {
 					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
 				}
 
-				h := create.NewHarness(t, ctx)
+				h := create.NewHarness(ctx, t)
 				project := h.Project
 				s := create.LoadSample(t, sampleKey, project)
 
@@ -115,7 +115,7 @@ func TestAllInSeries(t *testing.T) {
 					create.MaybeSkip(t, fixture.Name, opt.Create)
 				}
 
-				h := create.NewHarness(t, ctx)
+				h := create.NewHarness(ctx, t)
 				project := h.Project
 
 				primaryResource, opt := loadFixture(project)
