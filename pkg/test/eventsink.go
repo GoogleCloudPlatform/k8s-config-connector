@@ -129,7 +129,7 @@ func NewDirectoryEventSink(outputDir string) *DirectoryEventSink {
 
 func (r *DirectoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) {
 	// Write to a log file
-	t := TestFromContext(ctx)
+	t := FromContext(ctx)
 	testName := "unknown"
 	if t != nil {
 		testName = t.Name()

@@ -176,6 +176,7 @@ func GetDependentFolderProjectID(_ *testing.T) string {
 
 func GetDependentNoNetworkProjectID(_ *testing.T) string {
 	return testDependentNoNetworkProjectID
+}
 
 func GetDependentFolder2ProjectID(_ *testing.T) string {
 	return testDependentFolder2ProjectId
