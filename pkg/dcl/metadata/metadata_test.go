@@ -68,7 +68,7 @@ func TestResourceNamesAreCaseInsensitiveEqual(t *testing.T) {
 		for _, r := range s.Resources {
 			gvk := metadata.GVKForResource(s, r)
 			kindWithoutService := k8s.KindWithoutServicePrefix(gvk)
-			if strings.EqualFold(kindWithoutService, r.DCLType) {
+			if strings.ToLower(kindWithoutService) != strings.ToLower(r.DCLType) {
 				t.Fatalf("Kind %v (with service prefix ignored) is not the same (case-insensitive) with the DCL Type %v, there might be a typo.", r.Kind, r.DCLType)
 			}
 		}
