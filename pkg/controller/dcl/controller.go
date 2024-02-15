@@ -78,6 +78,7 @@ type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
 	metrics.ReconcilerMetrics
 	resourceLeaser *leaser.ResourceLeaser
+	defaulters     []k8s.Defaulter
 	mgr            manager.Manager
 	schemaRef      *k8s.SchemaReference
 	schemaRefMu    sync.RWMutex
@@ -94,13 +95,13 @@ type Reconciler struct {
 }
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter,
-	dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader) (k8s.SchemaReferenceUpdater, error) {
+	dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter) (k8s.SchemaReferenceUpdater, error) {
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	r, err := NewReconciler(mgr, crd, converter, dclConfig, serviceMappingLoader, immediateReconcileRequests, resourceWatcherRoutines)
+	r, err := NewReconciler(mgr, crd, converter, dclConfig, serviceMappingLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +125,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 	return r, nil
 }
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter, dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter, dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter) (*Reconciler, error) {
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
 	gvk := schema.GroupVersionKind{
 		Group:   crd.Spec.Group,
@@ -151,6 +152,7 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 			GVK:        gvk,
 		},
 		resourceLeaser:             leaser.NewResourceLeaser(nil, nil, mgr.GetClient()),
+		defaulters:                 defaulters,
 		schema:                     dclSchema,
 		logger:                     logger.WithName(controllerName),
 		dclConfig:                  dclclientconfig.CopyAndModifyForKind(dclConfig, gvk.Kind),
@@ -196,6 +198,9 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	resource, err := dcl.NewResource(u, r.schema)
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %w", req.NamespacedName.String(), err)
+	}
+	if err := r.handleDefaults(ctx, resource); err != nil {
+		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(resource), err)
 	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %w", k8s.GetNamespacedName(resource), err)
@@ -414,6 +419,15 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resourc
 	return nil
 }
 
+func (r *Reconciler) handleDefaults(ctx context.Context, resource *dcl.Resource) error {
+	for _, defaulter := range r.defaulters {
+		if _, err := defaulter.ApplyDefaults(ctx, resource); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, resource *dcl.Resource) error {
 	// Ensure the resource has a hierarchical reference. This is done to be
 	// backwards compatible with resources created before the webhook for
@@ -431,12 +445,6 @@ func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, 
 		return fmt.Errorf("error ensuring resource '%v' has a hierarchical reference: %w", k8s.GetNamespacedName(resource), err)
 	}
 
-	// Ensure the resource has a state-into-spec annotation.
-	// This is done to be backwards compatible with resources
-	// created before the webhook for defaulting the annotation was added.
-	if err := k8s.EnsureSpecIntoSateAnnotation(&resource.Resource); err != nil {
-		return fmt.Errorf("error ensuring resource '%v' has a '%v' annotation: %w", k8s.GetNamespacedName(resource), k8s.StateIntoSpecAnnotation, err)
-	}
 	return nil
 }
 

@@ -16,7 +16,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeProjectMetadata
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: metadata-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   name: computeprojectmetadata-${uniqueId}
 spec:
   metadata:

@@ -27,6 +27,7 @@ import (
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -96,6 +97,11 @@ func getServerGeneratedIDFromStatus(rc *corekccv1alpha1.ResourceConfig, status m
 		strings.Split(rc.ServerGeneratedIDField, "."))
 
 	return unstructured.NestedString(status, splitPath...)
+}
+
+// DeepCopyObject is needed to implement the interface of client.Object.
+func (r *Resource) DeepCopyObject() runtime.Object {
+	panic("unexpected call to resource.DeepCopyObject(...)")
 }
 
 func (r *Resource) ValidateResourceIDIfSupported() error {

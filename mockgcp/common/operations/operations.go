@@ -17,16 +17,15 @@ package operations
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	pb "google.golang.org/genproto/googleapis/longrunning"
 	rpcstatus "google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/util/uuid"
 	"k8s.io/klog/v2"
 
@@ -63,7 +62,7 @@ func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
 	return op, nil
 }
 
-func (s *Operations) StartLRO(ctx context.Context, callback func() (proto.Message, error)) (*pb.Operation, error) {
+func (s *Operations) StartLRO(ctx context.Context, metadata proto.Message, callback func() (proto.Message, error)) (*pb.Operation, error) {
 	now := time.Now()
 	millis := now.UnixMilli()
 	id := uuid.NewUUID()
@@ -73,6 +72,15 @@ func (s *Operations) StartLRO(ctx context.Context, callback func() (proto.Messag
 	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
 	op.Done = false
 
+	if metadata != nil {
+		metadataAny, err := anypb.New(metadata)
+		if err != nil {
+			return nil, fmt.Errorf("error building anypb for metadata: %w", err)
+		}
+		rewriteTypes(metadataAny)
+
+		op.Metadata = metadataAny
+	}
 	fqn := op.Name
 
 	if err := s.storage.Create(ctx, fqn, op); err != nil {
@@ -100,6 +108,8 @@ func (s *Operations) StartLRO(ctx context.Context, callback func() (proto.Messag
 				klog.Warningf("error building anypb for result: %v", err)
 				finished.Result = &pb.Operation_Response{}
 			} else {
+				rewriteTypes(resultAny)
+
 				finished.Result = &pb.Operation_Response{
 					Response: resultAny,
 				}
@@ -114,6 +124,13 @@ func (s *Operations) StartLRO(ctx context.Context, callback func() (proto.Messag
 	return op, nil
 }
 
+func rewriteTypes(any *anypb.Any) {
+	// Fix our mockgcp hack
+	if strings.HasPrefix(any.TypeUrl, "type.googleapis.com/mockgcp.") {
+		any.TypeUrl = "type.googleapis.com/google." + strings.TrimPrefix(any.TypeUrl, "type.googleapis.com/mockgcp.")
+	}
+}
+
 // Gets the latest state of a long-running operation.  Clients can use this
 // method to poll the operation result at intervals as recommended by the API
 // service.
@@ -122,11 +139,7 @@ func (s *Operations) GetOperation(ctx context.Context, req *pb.GetOperationReque
 
 	op := &pb.Operation{}
 	if err := s.storage.Get(ctx, fqn, op); err != nil {
-		if apierrors.IsNotFound(err) {
-			klog.Infof("LRO not found for %v", prototext.Format(req))
-			return nil, status.Errorf(codes.NotFound, "LRO %q not found", req.Name)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading LRO: %v", err)
+		return nil, err
 	}
 
 	return op, nil

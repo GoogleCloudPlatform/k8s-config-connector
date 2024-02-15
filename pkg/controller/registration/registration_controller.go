@@ -56,7 +56,7 @@ var logger = klog.Log.WithName(controllerName)
 
 // Add creates a new registration Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and Start it when the Manager is Started.
-func Add(mgr manager.Manager, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, dclConfig *dcl.Config, dclConverter *conversion.Converter, regFunc registrationFunc) error {
+func Add(mgr manager.Manager, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, dclConfig *dcl.Config, dclConverter *conversion.Converter, regFunc registrationFunc, defaulters []k8s.Defaulter) error {
 	r := &ReconcileRegistration{
 		Client:           mgr.GetClient(),
 		provider:         p,
@@ -66,6 +66,7 @@ func Add(mgr manager.Manager, p *tfschema.Provider, smLoader *servicemappingload
 		mgr:              mgr,
 		controllers:      make(map[string]map[string]controllerContext),
 		registrationFunc: regFunc,
+		defaulters:       defaulters,
 	}
 	c, err := controller.New(controllerName, mgr,
 		controller.Options{
@@ -90,6 +91,7 @@ type ReconcileRegistration struct {
 	mgr              manager.Manager
 	controllers      map[string]map[string]controllerContext
 	registrationFunc registrationFunc
+	defaulters       []k8s.Defaulter
 	mu               sync.Mutex
 }
 
@@ -164,25 +166,25 @@ func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.Cust
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	switch gvk.Kind {
 	case "IAMPolicy":
-		if err := policy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
+		if err := policy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
 			return nil, err
 		}
 	case "IAMPartialPolicy":
-		if err := partialpolicy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
+		if err := partialpolicy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
 			return nil, err
 		}
 	case "IAMPolicyMember":
-		if err := policymember.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
+		if err := policymember.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
 			return nil, err
 		}
 	case "IAMAuditConfig":
-		if err := auditconfig.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
+		if err := auditconfig.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
 			return nil, err
 		}
 	default:
 		// register controllers for dcl-based CRDs
 		if val, ok := crd.Labels[k8s.DCL2CRDLabel]; ok && val == "true" {
-			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader)
+			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters)
 			if err != nil {
 				return nil, fmt.Errorf("error adding dcl controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
@@ -193,7 +195,7 @@ func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.Cust
 			logger.Info("unrecognized CRD; skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
 			return nil, nil
 		}
-		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader)
+		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters)
 		if err != nil {
 			return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 		}

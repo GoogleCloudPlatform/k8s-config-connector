@@ -294,10 +294,10 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 		if strings.HasSuffix(d.Name(), ".yaml") {
 			sampleName := filepath.Base(filepath.Dir(path))
 			if regex.MatchString(sampleName) {
-				sampleKey := samples[sampleName]
+				sampleKey := samples[filepath.Dir(path)]
 				sampleKey.Name = sampleName
 				sampleKey.files = append(sampleKey.files, path)
-				samples[sampleName] = sampleKey
+				samples[filepath.Dir(path)] = sampleKey
 			}
 		}
 		return nil
@@ -324,6 +324,7 @@ func newSubstitutionVariables(t *testing.T, project testgcp.GCPProject) map[stri
 	subs["${GSA_EMAIL?}"] = getKCCServiceAccountEmail(t, project)
 	subs["${DLP_TEST_BUCKET?}"] = testgcp.GetDLPTestBucket(t)
 	subs["${ATTACHED_CLUSTER_NAME?}"] = testgcp.TestAttachedClusterName.Get()
+	subs["${KCC_ATTACHED_CLUSTER_TEST_PROJECT?}"] = testgcp.TestKCCAttachedClusterProject.Get()
 	return subs
 }
 

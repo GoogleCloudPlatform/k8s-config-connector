@@ -31,18 +31,23 @@ spec:
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: project-${uniqueId}
 spec:
+  resourceID: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: "Dependent Project"
   organizationRef:
     external: "${TEST_ORG_ID}"
   billingAccountRef:
     external: "${TEST_BILLING_ACCOUNT_ID}"
-  name: "project-${uniqueId}"
 ---
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   name: bigquery.googleapis.com
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
     name: "project-${uniqueId}"

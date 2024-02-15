@@ -24,28 +24,12 @@ import (
 	"testing"
 	"time"
 
-	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
-	"google.golang.org/api/cloudresourcemanager/v1"
-	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
-	"google.golang.org/api/option"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
-	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
-	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
-	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
-	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
-
 	"github.com/google/go-cmp/cmp"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
+	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -60,12 +44,27 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
+	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
+	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 )
 
 type Harness struct {
 	*testing.T
 	Ctx context.Context
 
+	Events  *test.MemoryEventSink
 	Project testgcp.GCPProject
 
 	client     client.Client
@@ -116,6 +115,7 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 	kccConfig.ManagerOptions.HealthProbeBindAddress = "0"
 	// supply a concrete client to disable the default behavior of caching
 	kccConfig.ManagerOptions.NewClient = nocache.NoCacheClientFunc
+	kccConfig.StateIntoSpecDefaultValue = k8s.StateIntoSpecDefaultValueV1Beta1
 
 	var webhooks []cnrmwebhook.Config
 
@@ -251,7 +251,7 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 		testgcp.TestAttachedClusterName.Set("xks-cluster")
 
 		crm := h.getCloudResourceManagerClient(kccConfig.HTTPClient)
-		req := &cloudresourcemanager.Project{
+		req := &cloudresourcemanagerv1.Project{
 			ProjectId: "mock-project",
 		}
 		op, err := crm.Projects.Create(req).Context(ctx).Do()
@@ -275,9 +275,24 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 		h.Project = testgcp.GetDefaultProject(t)
 	}
 
-	// Log DCL requests
+	eventSink := test.NewMemoryEventSink()
+	ctx = test.AddSinkToContext(ctx, eventSink)
+	h.Ctx = ctx
+
+	h.Events = eventSink
+
+	eventSinks := test.EventSinksFromContext(ctx)
+
+	// Set up event sink for logging to a file, if ARTIFACTS env var is set
 	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
 		outputDir := filepath.Join(artifacts, "http-logs")
+		eventSinks = append(eventSinks, test.NewDirectoryEventSink(outputDir))
+	} else {
+		log.Info("env var ARTIFACTS is not set; will not record http log")
+	}
+
+	// Intercept (and log) DCL requests
+	if len(eventSinks) != 0 {
 		if kccConfig.HTTPClient == nil {
 			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
 			if err != nil {
@@ -285,37 +300,31 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 			}
 			kccConfig.HTTPClient = httpClient
 		}
-		t := test.NewHTTPRecorder(kccConfig.HTTPClient.Transport, outputDir)
+		t := test.NewHTTPRecorder(kccConfig.HTTPClient.Transport, eventSinks...)
 		kccConfig.HTTPClient = &http.Client{Transport: t}
 	}
 
-	// Log TF requests
+	// Intercept (and log) TF requests
 	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
 		if t := ctx.Value(httpRoundTripperKey); t != nil {
 			ret = &http.Client{Transport: t.(http.RoundTripper)}
 		}
-		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
-			log.Info("env var ARTIFACTS is not set; will not record http log")
-		} else {
-			outputDir := filepath.Join(artifacts, "http-logs")
-			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+		if len(eventSinks) != 0 {
+			t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
 			ret = &http.Client{Transport: t}
 		}
 		return ret
 	}
 
-	// Log TF oauth requests
+	// Intercept (and log) TF oauth requests
 	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
 		if t := ctx.Value(httpRoundTripperKey); t != nil {
 			ret = &http.Client{Transport: t.(http.RoundTripper)}
 		}
-		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
-			log.Info("env var ARTIFACTS is not set; will not record http log")
-		} else {
-			outputDir := filepath.Join(artifacts, "http-logs")
-			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+		if len(eventSinks) != 0 {
+			t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
 			ret = &http.Client{Transport: t}
 		}
 		return ret
@@ -326,9 +335,16 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 	// Create a context specifically for this, and register the test cleanup function
 	// after the envtest cleanup function (these run last-in, first-out).
 	// See https://github.com/kubernetes-sigs/controller-runtime/issues/1571#issuecomment-945535598
+	var ctrlManagerShutdown sync.WaitGroup
 	mgrContext, mgrContextCancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
 		mgrContextCancel()
+		// Wait for the manager to exit, cancel doesn't wait for the exist.
+		// Otherwise the manager may still connect to kube-apiserver
+		// during its shutdown, blocking the shutdown of kube-apiserver.
+		t.Log("waiting for controller-runtime manager shutdown")
+		ctrlManagerShutdown.Wait()
+		t.Log("controller-runtime manager is shutdown")
 	})
 	mgr, err := kccmanager.New(mgrContext, h.restConfig, kccConfig)
 	if err != nil {
@@ -343,11 +359,14 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 	}
 
 	// Register the deletion defender controller.
-	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterDeletionDefenderController); err != nil {
+	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterDeletionDefenderController, nil); err != nil {
 		t.Fatalf("error adding registration controller for deletion defender controllers: %v", err)
 	}
 	// Start the manager, Start(...) is a blocking operation so it needs to be done asynchronously.
+	ctrlManagerShutdown.Add(1)
 	go func() {
+		defer ctrlManagerShutdown.Done()
+
 		err := mgr.Start(mgrContext)
 		if err != nil {
 			t.Errorf("error from mgr.Start: %v", err)
@@ -387,11 +406,16 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			}
 
 			switch gvk.GroupKind() {
+			case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
+
 			case schema.GroupKind{Group: "cloudfunctions.cnrm.cloud.google.com", Kind: "CloudFunctionsFunction"}:
 
 			case schema.GroupKind{Group: "containerattached.cnrm.cloud.google.com", Kind: "ContainerAttachedCluster"}:
 
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeDisk"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetwork"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNodeGroup"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNodeTemplate"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSubnetwork"}:
 				// ok
 
@@ -420,6 +444,10 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "ServiceIdentity"}:
+
+			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucket"}:
+
+			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
 
 			default:
 				t.Skipf("gk %v not suppported by mock gcp; skipping test %v", gvk.GroupKind(), name)

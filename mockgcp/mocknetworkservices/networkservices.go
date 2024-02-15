@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkservices/v1"
 )
@@ -45,11 +44,7 @@ func (s *NetworkServicesServer) GetMesh(ctx context.Context, req *pb.GetMeshRequ
 
 	obj := &pb.Mesh{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "mesh %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading mesh: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -84,10 +79,7 @@ func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMe
 	fqn := name.String()
 	obj := &pb.Mesh{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "mesh %q not found", reqName)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading mesh: %v", err)
+		return nil, err
 	}
 
 	// Field mask is used to specify the fields to be overwritten in the
@@ -111,7 +103,7 @@ func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMe
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating mesh: %v", err)
+		return nil, err
 	}
 	return s.operations.NewLRO(ctx)
 }
@@ -126,11 +118,7 @@ func (s *NetworkServicesServer) DeleteMesh(ctx context.Context, req *pb.DeleteMe
 
 	deletedObj := &pb.Mesh{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "mesh %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting mesh: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

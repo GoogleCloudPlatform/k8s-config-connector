@@ -24,13 +24,19 @@ import (
 type Storage interface {
 	// Create stores the object, erroring if it already exists
 	Create(ctx context.Context, fqn string, create proto.Message) error
+
 	// Update stores a new version of an object, erroring if it does not already exist
 	Update(ctx context.Context, fqn string, update proto.Message) error
-	// Get returns an existing object
+
+	// Get returns an existing object.
+	// The error is "ready to return"; we return codes.NotFound if not found.
 	Get(ctx context.Context, fqn string, dest proto.Message) error
+
 	// List returns all matching objects
 	List(ctx context.Context, kind protoreflect.Descriptor, options ListOptions, callback func(obj proto.Message) error) error
+
 	// Deleting deletes the object, returning a not found error if it does not exist.
+	// The error is "ready to return", e.g. we return codes.NotFound if not found.
 	Delete(ctx context.Context, fqn string, dest proto.Message) error
 }
 

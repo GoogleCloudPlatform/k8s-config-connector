@@ -17,11 +17,13 @@ kind: Project
 metadata:
   annotations:
     cnrm.cloud.google.com/auto-create-network: "false"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: acm-${uniqueId}
 spec:
-  name: acm-${uniqueId}
-  organizationRef:
-    external: ${TEST_ORG_ID}
+  resourceID: ${TEST_DEPENDENT_NO_NETWORK_PROJECT_ID}
+  name: "Dependent Project"
+  folderRef:
+    external: ${TEST_FOLDER_ID}
   billingAccountRef:
     external: ${TEST_BILLING_ACCOUNT_ID}
 ---
@@ -29,7 +31,7 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: acm-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_NO_NETWORK_PROJECT_ID}
     # Without disabling the dependent service, gkeconnect.googleapis.com, gkehub.googleapis.com
     # can't be cleaned up. So "disable-dependent-services" should be true.
     cnrm.cloud.google.com/disable-dependent-services: "true"
@@ -39,6 +41,7 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: acm-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_NO_NETWORK_PROJECT_ID}
     cnrm.cloud.google.com/disable-dependent-services: "false"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: anthosconfigmanagement.googleapis.com

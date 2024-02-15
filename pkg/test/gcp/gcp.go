@@ -66,6 +66,8 @@ const (
 	TestDependentOrgProjectID               = "TEST_DEPENDENT_ORG_PROJECT_ID"
 	TestDependentFolderProjectID            = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
 	TestDependentNoNetworkProjectID         = "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID" // A dependent project with default network disabled
+	TestDependentFolder2ProjectId           = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
+
 	IsolatedTestOrgName                     = "ISOLATED_TEST_ORG_NAME"
 	TestBillingAccountIDForBillingResources = "BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES"
 	FirestoreTestProject                    = "FIRESTORE_TEST_PROJECT"
@@ -81,6 +83,7 @@ var (
 	testDependentOrgProjectID               = os.Getenv(TestDependentOrgProjectID)
 	testDependentFolderProjectID            = os.Getenv(TestDependentFolderProjectID)
 	testDependentNoNetworkProjectID         = os.Getenv(TestDependentNoNetworkProjectID)
+	testDependentFolder2ProjectId           = os.Getenv(TestDependentFolder2ProjectId)
 	isolatedTestOrgName                     = os.Getenv(IsolatedTestOrgName)
 	testBillingAccountIDForBillingResources = os.Getenv(TestBillingAccountIDForBillingResources)
 	firestoreTestProject                    = os.Getenv(FirestoreTestProject)
@@ -173,6 +176,9 @@ func GetDependentFolderProjectID(_ *testing.T) string {
 
 func GetDependentNoNetworkProjectID(_ *testing.T) string {
 	return testDependentNoNetworkProjectID
+
+func GetDependentFolder2ProjectID(_ *testing.T) string {
+	return testDependentFolder2ProjectId
 }
 
 func GetIsolatedTestOrgName(_ *testing.T) string {
@@ -271,6 +277,10 @@ func NewIAMClient(t *testing.T) *iam.Service {
 
 func ResourceSupportsDeletion(resourceKind string) bool {
 	switch resourceKind {
+	case "APIKeysKey":
+		// APIKeysKey has a delete method, but the key is only marked for deletion.
+		return false
+
 	case "BigQueryJob",
 		"BinaryAuthorizationPolicy",
 		"ComputeProjectMetadata",

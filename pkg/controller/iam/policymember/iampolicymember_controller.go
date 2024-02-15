@@ -64,10 +64,10 @@ var logger = klog.Log.WithName(controllerName)
 // Add creates a new IAM Policy Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and start it when the Manager is started.
 func Add(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader,
-	converter *conversion.Converter, dclConfig *mmdcl.Config) error {
+	converter *conversion.Converter, dclConfig *mmdcl.Config, defaulters []k8s.Defaulter) error {
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	reconciler, err := NewReconciler(mgr, provider, smLoader, converter, dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
+	reconciler, err := NewReconciler(mgr, provider, smLoader, converter, dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	if err != nil {
 		return err
 	}
@@ -75,7 +75,7 @@ func Add(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemapp
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
-func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter) (*Reconciler, error) {
 	r := Reconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
@@ -85,6 +85,7 @@ func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *s
 		iamClient:                  kcciamclient.New(provider, smLoader, mgr.GetClient(), converter, dclConfig),
 		scheme:                     mgr.GetScheme(),
 		config:                     mgr.GetConfig(),
+		defaulters:                 defaulters,
 		immediateReconcileRequests: immediateReconcileRequests,
 		resourceWatcherRoutines:    resourceWatcherRoutines,
 		requeueRateLimiter:         kccratelimiter.RequeueRateLimiter(),
@@ -115,9 +116,10 @@ type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
 	client.Client
 	metrics.ReconcilerMetrics
-	iamClient *kcciamclient.IAMClient
-	scheme    *runtime.Scheme
-	config    *rest.Config
+	iamClient  *kcciamclient.IAMClient
+	scheme     *runtime.Scheme
+	config     *rest.Config
+	defaulters []k8s.Defaulter
 	// Fields used for triggering reconciliations when dependencies are ready
 	immediateReconcileRequests chan event.GenericEvent
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
@@ -149,6 +151,9 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 		}
 		return reconcile.Result{}, err
 	}
+	if err := r.handleDefaults(ctx, &memberPolicy); err != nil {
+		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM policy member '%v': %w", k8s.GetNamespacedName(&memberPolicy), err)
+	}
 	reconcileContext := &reconcileContext{
 		Reconciler:     r,
 		Ctx:            ctx,
@@ -170,6 +175,15 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	requeueAfter := jitteredPeriod + requeueDelay
 	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", requeueAfter)
 	return reconcile.Result{RequeueAfter: requeueAfter}, nil
+}
+
+func (r *Reconciler) handleDefaults(ctx context.Context, policyMember *iamv1beta1.IAMPolicyMember) error {
+	for _, defaulter := range r.defaulters {
+		if _, err := defaulter.ApplyDefaults(ctx, policyMember); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember) (requeue bool, err error) {

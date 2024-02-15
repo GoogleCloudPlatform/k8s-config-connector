@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
@@ -42,11 +41,7 @@ func (s *SubnetsV1) Get(ctx context.Context, req *pb.GetSubnetworkRequest) (*pb.
 
 	obj := &pb.Subnetwork{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "subnet %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading subnet: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -85,11 +80,7 @@ func (s *SubnetsV1) Delete(ctx context.Context, req *pb.DeleteSubnetworkRequest)
 
 	deleted := &pb.Subnetwork{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "subnet %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting subnet: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -104,16 +95,13 @@ func (s *SubnetsV1) SetPrivateIpGoogleAccess(ctx context.Context, req *pb.SetPri
 	fqn := name.String()
 	obj := &pb.Subnetwork{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "subnet %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading subnet: %v", err)
+		return nil, err
 	}
 
 	obj.PrivateIpGoogleAccess = PtrTo(req.GetSubnetworksSetPrivateIpGoogleAccessRequestResource().GetPrivateIpGoogleAccess())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating subnet: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)

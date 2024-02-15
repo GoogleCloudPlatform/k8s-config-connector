@@ -36,6 +36,7 @@ SUPPORTED_SERVICES=(
   anthosaudit.googleapis.com
   anthosgke.googleapis.com
   apigee.googleapis.com
+  apikeys.googleapis.com
   appengine.googleapis.com
   artifactregistry.googleapis.com
   bigquery.googleapis.com

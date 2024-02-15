@@ -22,5 +22,3 @@ spec:
   name: KCC-2 ${uniqueId}
   folderRef:
     external: ${TEST_FOLDER_ID}
-  billingAccountRef:
-    external: ${TEST_BILLING_ACCOUNT_ID}

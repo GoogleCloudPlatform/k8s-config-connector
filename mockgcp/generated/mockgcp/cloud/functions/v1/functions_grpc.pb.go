@@ -29,13 +29,13 @@ type CloudFunctionsServiceClient interface {
 	// Returns a function with the given name from the requested project.
 	GetFunction(ctx context.Context, in *GetFunctionRequest, opts ...grpc.CallOption) (*CloudFunction, error)
 	// Creates a new function. If a function with the given name already exists in
-	// the specified project, the long running operation returns an
+	// the specified project, the long running operation will return
 	// `ALREADY_EXISTS` error.
 	CreateFunction(ctx context.Context, in *CreateFunctionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Updates existing function.
 	UpdateFunction(ctx context.Context, in *UpdateFunctionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes a function with the given name from the specified project. If the
-	// given function is used by some trigger, the trigger is updated to
+	// given function is used by some trigger, the trigger will be updated to
 	// remove this function.
 	DeleteFunction(ctx context.Context, in *DeleteFunctionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Synchronously invokes a deployed Cloud Function. To be used for testing
@@ -60,19 +60,19 @@ type CloudFunctionsServiceClient interface {
 	//     attached, the identity from the credentials would be used, but that
 	//     identity does not have permissions to upload files to the URL.
 	//
-	// When making an HTTP PUT request, these two headers must be specified:
+	// When making a HTTP PUT request, these two headers need to be specified:
 	//
 	// * `content-type: application/zip`
 	// * `x-goog-content-length-range: 0,104857600`
 	//
-	// And this header must NOT be specified:
+	// And this header SHOULD NOT be specified:
 	//
 	// * `Authorization: Bearer YOUR_TOKEN`
 	GenerateUploadUrl(ctx context.Context, in *GenerateUploadUrlRequest, opts ...grpc.CallOption) (*GenerateUploadUrlResponse, error)
 	// Returns a signed URL for downloading deployed function source code.
-	// The URL is only valid for a limited period and must be used within
+	// The URL is only valid for a limited period and should be used within
 	// minutes after generation.
-	// For more information about the signed URL usage, see:
+	// For more information about the signed URL usage see:
 	// https://cloud.google.com/storage/docs/access-control/signed-urls
 	GenerateDownloadUrl(ctx context.Context, in *GenerateDownloadUrlRequest, opts ...grpc.CallOption) (*GenerateDownloadUrlResponse, error)
 	// Sets the IAM access control policy on the specified function.
@@ -84,7 +84,7 @@ type CloudFunctionsServiceClient interface {
 	GetIamPolicy(ctx context.Context, in *iampb.GetIamPolicyRequest, opts ...grpc.CallOption) (*iampb.Policy, error)
 	// Tests the specified permissions against the IAM access control policy
 	// for a function.
-	// If the function does not exist, this returns an empty set of
+	// If the function does not exist, this will return an empty set of
 	// permissions, not a NOT_FOUND error.
 	TestIamPermissions(ctx context.Context, in *iampb.TestIamPermissionsRequest, opts ...grpc.CallOption) (*iampb.TestIamPermissionsResponse, error)
 }
@@ -205,13 +205,13 @@ type CloudFunctionsServiceServer interface {
 	// Returns a function with the given name from the requested project.
 	GetFunction(context.Context, *GetFunctionRequest) (*CloudFunction, error)
 	// Creates a new function. If a function with the given name already exists in
-	// the specified project, the long running operation returns an
+	// the specified project, the long running operation will return
 	// `ALREADY_EXISTS` error.
 	CreateFunction(context.Context, *CreateFunctionRequest) (*longrunningpb.Operation, error)
 	// Updates existing function.
 	UpdateFunction(context.Context, *UpdateFunctionRequest) (*longrunningpb.Operation, error)
 	// Deletes a function with the given name from the specified project. If the
-	// given function is used by some trigger, the trigger is updated to
+	// given function is used by some trigger, the trigger will be updated to
 	// remove this function.
 	DeleteFunction(context.Context, *DeleteFunctionRequest) (*longrunningpb.Operation, error)
 	// Synchronously invokes a deployed Cloud Function. To be used for testing
@@ -236,19 +236,19 @@ type CloudFunctionsServiceServer interface {
 	//     attached, the identity from the credentials would be used, but that
 	//     identity does not have permissions to upload files to the URL.
 	//
-	// When making an HTTP PUT request, these two headers must be specified:
+	// When making a HTTP PUT request, these two headers need to be specified:
 	//
 	// * `content-type: application/zip`
 	// * `x-goog-content-length-range: 0,104857600`
 	//
-	// And this header must NOT be specified:
+	// And this header SHOULD NOT be specified:
 	//
 	// * `Authorization: Bearer YOUR_TOKEN`
 	GenerateUploadUrl(context.Context, *GenerateUploadUrlRequest) (*GenerateUploadUrlResponse, error)
 	// Returns a signed URL for downloading deployed function source code.
-	// The URL is only valid for a limited period and must be used within
+	// The URL is only valid for a limited period and should be used within
 	// minutes after generation.
-	// For more information about the signed URL usage, see:
+	// For more information about the signed URL usage see:
 	// https://cloud.google.com/storage/docs/access-control/signed-urls
 	GenerateDownloadUrl(context.Context, *GenerateDownloadUrlRequest) (*GenerateDownloadUrlResponse, error)
 	// Sets the IAM access control policy on the specified function.
@@ -260,7 +260,7 @@ type CloudFunctionsServiceServer interface {
 	GetIamPolicy(context.Context, *iampb.GetIamPolicyRequest) (*iampb.Policy, error)
 	// Tests the specified permissions against the IAM access control policy
 	// for a function.
-	// If the function does not exist, this returns an empty set of
+	// If the function does not exist, this will return an empty set of
 	// permissions, not a NOT_FOUND error.
 	TestIamPermissions(context.Context, *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error)
 	mustEmbedUnimplementedCloudFunctionsServiceServer()

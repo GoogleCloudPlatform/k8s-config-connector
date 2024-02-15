@@ -165,6 +165,8 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentFolderProjectID), fmt.Sprintf("\"%s\"", testgcp.GetDependentFolderProjectID(t)), -1)
 	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentNoNetworkProjectID), fmt.Sprintf("projects/%s", testgcp.GetDependentNoNetworkProjectID(t)), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentNoNetworkProjectID), fmt.Sprintf("\"%s\"", testgcp.GetDependentNoNetworkProjectID(t)), -1)
+	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentFolder2ProjectId), fmt.Sprintf("projects/%s", testgcp.GetDependentFolder2ProjectID(t)), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentFolder2ProjectId), fmt.Sprintf("\"%s\"", testgcp.GetDependentFolder2ProjectID(t)), -1)
 	s = strings.Replace(s, fmt.Sprintf("organizations/${%s}", testgcp.IAMIntegrationTestsOrganizationID.Key), fmt.Sprintf("organizations/%s", testgcp.IAMIntegrationTestsOrganizationID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IAMIntegrationTestsOrganizationID.Key), fmt.Sprintf("\"%s\"", testgcp.IAMIntegrationTestsOrganizationID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IsolatedTestOrgName), testgcp.GetIsolatedTestOrgName(t), -1)

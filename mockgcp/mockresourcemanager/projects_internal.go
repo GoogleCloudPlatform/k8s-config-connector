@@ -26,7 +26,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 )
 
 type ProjectsInternal struct {
@@ -109,10 +108,10 @@ func (s *ProjectsInternal) tryGetProjectByID(ctx context.Context, projectID stri
 
 	obj := &pb.Project{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			return nil, nil
 		} else {
-			return nil, status.Errorf(codes.Internal, "error reading project: %v", err)
+			return nil, err
 		}
 	}
 
@@ -219,7 +218,7 @@ func (s *ProjectsInternal) mutateProject(ctx context.Context, name string, mutat
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating project: %v", err)
+		return nil, err
 	}
 
 	return obj, nil

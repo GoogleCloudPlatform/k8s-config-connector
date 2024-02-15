@@ -78,7 +78,7 @@ func TestAll(t *testing.T) {
 
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		switch fixture.GVK.Kind {
-		case "PubSubTopic":
+		case "Project", "PubSubTopic":
 			return true
 		default:
 			return false

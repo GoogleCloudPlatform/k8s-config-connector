@@ -23,7 +23,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -54,10 +53,10 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 	create := false
 	service := &pb.Service{}
 	if err := s.storage.Get(ctx, fqn, service); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			create = true
 		} else {
-			return nil, status.Errorf(codes.Internal, "error reading service: %v", err)
+			return nil, err
 		}
 	}
 
@@ -77,7 +76,7 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 
 	service.State = pb.State_ENABLED
 	if err := s.storage.Update(ctx, fqn, service); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating service: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -99,10 +98,10 @@ func (s *ServiceUsageV1) DisableService(ctx context.Context, req *pb.DisableServ
 	exists := true
 	service := &pb.Service{}
 	if err := s.storage.Get(ctx, fqn, service); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			exists = false
 		} else {
-			return nil, status.Errorf(codes.Internal, "error reading service: %v", err)
+			return nil, err
 		}
 	}
 
@@ -111,7 +110,7 @@ func (s *ServiceUsageV1) DisableService(ctx context.Context, req *pb.DisableServ
 	} else {
 		service.State = pb.State_DISABLED
 		if err := s.storage.Update(ctx, fqn, service); err != nil {
-			return nil, status.Errorf(codes.Internal, "error updating service: %v", err)
+			return nil, err
 		}
 	}
 
@@ -128,14 +127,14 @@ func (s *ServiceUsageV1) GetService(ctx context.Context, req *pb.GetServiceReque
 
 	obj := &pb.Service{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			// Mock: everything is enabled
 			obj = &pb.Service{
 				Name:  serviceName.String(),
 				State: pb.State_DISABLED,
 			}
 		} else {
-			return nil, status.Errorf(codes.Internal, "error reading service: %v", err)
+			return nil, err
 		}
 	}
 

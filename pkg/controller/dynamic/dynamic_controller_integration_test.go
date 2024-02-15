@@ -88,7 +88,7 @@ func init() {
 			log.Info("env var ARTIFACTS is not set; will not record http log")
 		} else {
 			outputDir := filepath.Join(artifacts, "http-logs")
-			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+			t := test.NewHTTPRecorder(ret.Transport, test.NewDirectoryEventSink(outputDir))
 			ret = &http.Client{Transport: t}
 		}
 		return ret
@@ -590,6 +590,11 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 		}
 		if gcpUnstruct, err = resourceContext.Create(ctx, t, unstructToCreate, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
 			t.Fatalf("unexpected error when creating GCP resource '%v': %v", unstructToCreate.GetName(), err)
+		}
+		if unstructToCreate.GroupVersionKind().Kind == "Folder" {
+			// We should not be using the search method, it is only eventually consistent.
+			t.Logf("created GCP Folder; waiting 60 seconds for eventual consistency to catch up")
+			time.Sleep(time.Minute)
 		}
 	}
 

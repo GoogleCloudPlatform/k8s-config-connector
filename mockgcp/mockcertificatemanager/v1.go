@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/klog/v2"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/certificatemanager/v1"
@@ -42,11 +41,7 @@ func (s *CertificateManagerV1) GetCertificate(ctx context.Context, req *pb.GetCe
 
 	obj := &pb.Certificate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "certificate %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading certificate: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -82,10 +77,7 @@ func (s *CertificateManagerV1) UpdateCertificate(ctx context.Context, req *pb.Up
 	fqn := name.String()
 	obj := &pb.Certificate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "certificate %q not found", reqName)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading certificate: %v", err)
+		return nil, err
 	}
 
 	// Required. The update mask applies to the resource.
@@ -107,7 +99,7 @@ func (s *CertificateManagerV1) UpdateCertificate(ctx context.Context, req *pb.Up
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating certificate: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -123,11 +115,7 @@ func (s *CertificateManagerV1) DeleteCertificate(ctx context.Context, req *pb.De
 
 	deletedObj := &pb.Certificate{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "certificate %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting certificate: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -143,11 +131,7 @@ func (s *CertificateManagerV1) GetCertificateMap(ctx context.Context, req *pb.Ge
 
 	obj := &pb.CertificateMap{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "certificateMap %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading certificateMap: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -183,10 +167,7 @@ func (s *CertificateManagerV1) UpdateCertificateMap(ctx context.Context, req *pb
 	fqn := name.String()
 	obj := &pb.CertificateMap{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "certificateMap %q not found", reqName)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading certificateMap: %v", err)
+		return nil, err
 	}
 
 	// Required. The update mask applies to the resource.
@@ -207,7 +188,7 @@ func (s *CertificateManagerV1) UpdateCertificateMap(ctx context.Context, req *pb
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating certificateMap: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -223,11 +204,7 @@ func (s *CertificateManagerV1) DeleteCertificateMap(ctx context.Context, req *pb
 
 	oldObj := &pb.CertificateMap{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "certificate map %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting certificate map: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -243,11 +220,7 @@ func (s *CertificateManagerV1) GetDnsAuthorization(ctx context.Context, req *pb.
 
 	obj := &pb.DnsAuthorization{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "dns authorization %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading dns authorization: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -283,10 +256,7 @@ func (s *CertificateManagerV1) UpdateDnsAuthorization(ctx context.Context, req *
 	fqn := name.String()
 	obj := &pb.DnsAuthorization{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "dnsAuthorization %q not found", reqName)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading dnsAuthorization: %v", err)
+		return nil, err
 	}
 
 	// Required. The update mask applies to the resource.
@@ -308,7 +278,7 @@ func (s *CertificateManagerV1) UpdateDnsAuthorization(ctx context.Context, req *
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating dnsAuthorization: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -324,11 +294,7 @@ func (s *CertificateManagerV1) DeleteDnsAuthorization(ctx context.Context, req *
 
 	oldObj := &pb.DnsAuthorization{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "dns authorization %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting dns authorization: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -344,11 +310,7 @@ func (s *CertificateManagerV1) GetCertificateMapEntry(ctx context.Context, req *
 
 	obj := &pb.CertificateMapEntry{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "certificate map entry %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading certificate map entry: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -384,10 +346,7 @@ func (s *CertificateManagerV1) UpdateCertificateMapEntry(ctx context.Context, re
 	fqn := name.String()
 	obj := &pb.CertificateMapEntry{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "certificateMapEntry %q not found", reqName)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading certificateMapEntry: %v", err)
+		return nil, err
 	}
 
 	// Required. The update mask applies to the resource.
@@ -408,7 +367,7 @@ func (s *CertificateManagerV1) UpdateCertificateMapEntry(ctx context.Context, re
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating certificateMapEntry: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -424,11 +383,7 @@ func (s *CertificateManagerV1) DeleteCertificateMapEntry(ctx context.Context, re
 
 	deletedObj := &pb.CertificateMapEntry{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "certificate map entry %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting certificate map entry: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
