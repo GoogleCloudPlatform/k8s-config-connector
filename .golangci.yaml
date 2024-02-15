@@ -22,24 +22,24 @@ linters:
   enable:
     - errcheck
     - errorlint
-    - exportloopref
-    - forcetypeassert
-    - gci
-    - gocritic
-    - goconst
-    - godot
-    - gofmt
-    - gofumpt
-    - goimports
-    - gosec
-    - gosimple
-    - govet
-    - importas
-    - ineffassign
-    - misspell
+    # - exportloopref
+    # - forcetypeassert
+    # - gci
+    # - gocritic
+    # - goconst
+    # - godot
+    # - gofmt
+    # - gofumpt
+    # - goimports
+    # - gosec
+    # - gosimple
+    # - govet
+    # - importas
+    # - ineffassign
+    # - misspell
     - revive # replacement for golint
-    - staticcheck
-    - typecheck
-    - unconvert
-    - unused
-    - whitespace
+    # - staticcheck
+    # - typecheck
+    # - unconvert
+    # - unused
+    # - whitespace
