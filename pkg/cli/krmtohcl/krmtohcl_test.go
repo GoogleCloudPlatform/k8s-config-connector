@@ -16,29 +16,20 @@ package krmtohcl_test
 
 import (
 	"context"
-	"flag"
 	"io/fs"
-	"io/ioutil"
 	"path/filepath"
 	"strings"
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/krmtohcl"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
-	testcmp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/cmp"
-	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
-	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
-	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
-
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/yaml"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/krmtohcl"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
+	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
+	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 )
 
-var update = flag.Bool("update", false, "update .golden files")
-
-// when adding a new test case or when a resource schema changes run this test with '-update' parameter to update the
-// 'golden files'. The HCL output is not deterministic so running an update will almost modify all the HCL files.
 func TestUnstructuredToHCL(t *testing.T) {
 	smLoader := testservicemappingloader.New(t)
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
@@ -47,39 +38,29 @@ func TestUnstructuredToHCL(t *testing.T) {
 	testCases := FindTestCases(t, testDir, ".golden.tf")
 	for _, testCase := range testCases {
 		t.Run(testCase, func(t *testing.T) {
+			ctx := context.TODO()
+
 			krmFile := testCase + ".yaml"
 			goldenHCLFile := testCase + ".golden.tf"
 
-			testUnstructuredToHCL(t, krmFile, goldenHCLFile, smLoader, tfProvider)
+			var u unstructured.Unstructured
+			b := test.MustReadFile(t, krmFile)
+			if err := yaml.Unmarshal(b, &u); err != nil {
+				t.Fatalf("parsing yaml from %q: %v", krmFile, err)
+			}
+
+			// the managed-by-cnrm is removed to test Terraform export for resources which are not managed by KCC.
+			labels := u.GetLabels()
+			delete(labels, "managed-by-cnrm")
+			u.SetLabels(labels)
+			hcl, err := krmtohcl.UnstructuredToHCL(ctx, &u, smLoader, tfProvider)
+			if err != nil {
+				t.Fatalf("error converting unstructured to HCL: %v", err)
+			}
+
+			test.CompareGoldenFile(t, goldenHCLFile, hcl, test.IgnoreLeadingComments)
 		})
 	}
-}
-
-func testUnstructuredToHCL(t *testing.T, krmFile, goldenHCLFile string, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider) {
-	ctx := context.TODO()
-
-	var u unstructured.Unstructured
-	testyaml.UnmarshalFile(t, krmFile, &u)
-	// the managed-by-cnrm is removed to test Terraform export for resources which are not managed by KCC.
-	labels := u.GetLabels()
-	delete(labels, "managed-by-cnrm")
-	u.SetLabels(labels)
-	hcl, err := krmtohcl.UnstructuredToHCL(ctx, &u, smLoader, tfProvider)
-	if err != nil {
-		t.Fatalf("error converting unstructured to HCL: %v", err)
-	}
-	if *update {
-		if err := ioutil.WriteFile(goldenHCLFile, []byte(hcl), 0644); err != nil {
-			t.Fatalf("error writing file '%v': %v", goldenHCLFile, err)
-		}
-	}
-	bytes, err := ioutil.ReadFile(goldenHCLFile)
-	if err != nil {
-		t.Fatalf("error reading file '%v': %v", goldenHCLFile, err)
-	}
-	goldenHCL := test.TrimLicenseHeaderFromTF(string(bytes))
-	// HCL output is not stable so we do a line by line comparison
-	testcmp.UnorderedLineByLineComparisonIgnoreBlankLines(t, goldenHCL, hcl)
 }
 
 // FindTestCases returns all the test cases under basedir.

@@ -15,12 +15,14 @@
 package serialization
 
 import (
+	"bytes"
+	"errors"
 	"fmt"
+	"io"
 	"sort"
 	"strconv"
 	"strings"
 
-	"github.com/hashicorp/hcl/hcl/printer"
 	"github.com/hashicorp/hcl/v2/hclwrite"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -32,25 +34,34 @@ import (
 // of all resources present..
 func InstanceStateToHCL(state *terraform.InstanceState, info *terraform.InstanceInfo, provider *tfschema.Provider) (string, error) {
 	providerSchema := provider.ResourcesMap[info.Type].Schema
-	str, err := resourceOrSubresourceHCL(providerSchema, state.Attributes)
-	if err != nil {
+	var buff bytes.Buffer
+	buff.WriteString(fmt.Sprintf("resource %q %q {\n", info.Type, info.Id))
+	if err := resourceOrSubresourceHCL(&buff, providerSchema, state.Attributes, 1); err != nil {
 		return "", err
 	}
-	str = fmt.Sprintf("resource %q %q {\n%s\n}\n", info.Type, info.Id, str)
-	hBytes, err := printer.Format([]byte(str))
-	if err != nil {
-		return "", fmt.Errorf("could not pretty print hcl: %w", err)
-	}
-	return string(hBytes), nil
+	buff.WriteString("}\n")
+	// str = fmt.Sprintf("resource %q %q {\n%s\n}\n", info.Type, info.Id, strings.TrimSpace(str))
+
+	hcl := hclwrite.Format(buff.Bytes())
+
+	return string(hcl), nil
 }
 
-func resourceOrSubresourceHCL(schema map[string]*tfschema.Schema, attributes map[string]string) (string, error) {
-	var hcl strings.Builder
+func resourceOrSubresourceHCL(w io.Writer, schema map[string]*tfschema.Schema, attributes map[string]string, indent int) error {
+	var errs []error
+	writeLine := func(msg string, args ...any) {
+		line := strings.Repeat("  ", indent) + fmt.Sprintf(msg, args...) + "\n"
+		if _, err := w.Write([]byte(line)); err != nil {
+			errs = append(errs, err)
+		}
+	}
+
 	keys := make([]string, 0, len(schema))
 	for k := range schema {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
+
 	for _, aname := range keys {
 		aschema := schema[aname]
 		if !aschema.Optional && !aschema.Required {
@@ -65,21 +76,21 @@ func resourceOrSubresourceHCL(schema map[string]*tfschema.Schema, attributes map
 			if attributes[aname] == "" {
 				continue
 			}
-			hcl.WriteString(fmt.Sprintf("%s = %s\n", aname, attributes[aname]))
+			writeLine("%s = %s", aname, attributes[aname])
 		case tfschema.TypeString:
 			if attributes[aname] == "" {
 				continue
 			}
-			hcl.WriteString(fmt.Sprintf("%s = %s\n", aname, stringLitToHCL(attributes[aname])))
+			writeLine("%s = %s", aname, stringLitToHCL(attributes[aname]))
 		// for each non-primitive, find if there are any values and set them.
 		case tfschema.TypeMap:
 			if val, ok := attributes[aname+".%"]; !ok || val == "0" {
 				continue
 			}
-			hcl.WriteString(fmt.Sprintf("%s = {\n", aname))
+			writeLine("%s = {", aname)
 			m, err := mapFromPrefix(attributes, aname)
 			if err != nil {
-				return "", err
+				return err
 			}
 			var keys []string
 			for k := range m {
@@ -88,9 +99,9 @@ func resourceOrSubresourceHCL(schema map[string]*tfschema.Schema, attributes map
 			sort.Strings(keys)
 			for _, k := range keys {
 				v := m[k]
-				hcl.WriteString(fmt.Sprintf("%s = %q\n", k, v))
+				writeLine("%s = %q", k, v)
 			}
-			hcl.WriteString("}\n")
+			writeLine("}")
 		case tfschema.TypeSet:
 			fallthrough
 		case tfschema.TypeList:
@@ -98,10 +109,10 @@ func resourceOrSubresourceHCL(schema map[string]*tfschema.Schema, attributes map
 				continue
 			}
 			if subtype, ok := aschema.Elem.(*tfschema.Schema); ok {
-				hcl.WriteString(fmt.Sprintf("%s = [", aname))
+				writeLine("%s = [", aname)
 				l, err := listFromPrefix(attributes, aname, aschema.Type)
 				if err != nil {
-					return "", err
+					return err
 				}
 				for _, v := range l {
 					switch subtype.Type {
@@ -110,32 +121,33 @@ func resourceOrSubresourceHCL(schema map[string]*tfschema.Schema, attributes map
 					case tfschema.TypeInt:
 						fallthrough
 					case tfschema.TypeBool:
-						hcl.WriteString(fmt.Sprintf("%s, ", v))
+						writeLine("%s,", v)
 					case tfschema.TypeString:
-						hcl.WriteString(fmt.Sprintf("%q, ", v))
+						writeLine("%q,", v)
 					}
 				}
-				hcl.WriteString("]\n")
+				writeLine("]")
 			} else if subtype, ok := aschema.Elem.(*tfschema.Resource); ok {
 				cnt, err := strconv.Atoi(attributes[aname+".#"])
 				if err != nil {
-					return "", fmt.Errorf("could not parse count of %s, %w", aname, err)
+					return fmt.Errorf("could not parse count of %s, %w", aname, err)
 				}
 				for i := 0; i < cnt; i++ {
 					subAttrs, err := mapsFromPrefix(attributes, fmt.Sprintf("%s.%d", aname, i))
 					if err != nil {
-						return "", fmt.Errorf("could not get subresource attributes for %s: %w", aname, err)
+						return fmt.Errorf("could not get subresource attributes for %s: %w", aname, err)
 					}
-					subresource, err := resourceOrSubresourceHCL(subtype.Schema, subAttrs)
-					if err != nil {
-						return "", fmt.Errorf("could not create subresource %s: %w", aname, err)
+
+					writeLine("%s {", aname)
+					if err := resourceOrSubresourceHCL(w, subtype.Schema, subAttrs, indent+1); err != nil {
+						return err
 					}
-					hcl.WriteString(fmt.Sprintf("%s {\n%s\n}\n", aname, subresource))
+					writeLine("}")
 				}
 			}
 		}
 	}
-	return hcl.String(), nil
+	return errors.Join(errs...)
 }
 
 func mapsFromPrefix(attributes map[string]string, prefix string) (map[string]string, error) {
