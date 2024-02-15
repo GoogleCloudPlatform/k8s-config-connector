@@ -43,10 +43,7 @@ func GetComputeBackendServiceResourceOverrides() ResourceOverrides {
 func keepOauth2ClientIDField() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		if err := PreserveMutuallyExclusiveNonReferenceField(crd, []string{"iap"}, oauth2ClientIDRefPath[1], oauth2ClientIDPath[1]); err != nil {
-			return err
-		}
-		return nil
+		return PreserveMutuallyExclusiveNonReferenceField(crd, []string{"iap"}, oauth2ClientIDRefPath[1], oauth2ClientIDPath[1])
 	}
 	o.PreActuationTransform = func(r *k8s.Resource) error {
 		if err := FavorAuthoritativeFieldOverLegacyField(r, oauth2ClientIDPath, oauth2ClientIDRefPath); err != nil {

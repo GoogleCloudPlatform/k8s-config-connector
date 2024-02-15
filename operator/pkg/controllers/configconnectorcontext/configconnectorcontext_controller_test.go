@@ -264,7 +264,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			if err := c.Create(ctx, tc.ccc); err != nil {
 				t.Fatalf("error creating %v %v: %v", tc.ccc.Kind, tc.ccc.Name, err)
 			}
-			err := handleLifecycles(t, ctx, r, tc.ccc, m)
+			err := handleLifecycles(ctx, t, r, tc.ccc, m)
 			if tc.hasError {
 				if err == nil {
 					t.Fatalf("got nil, but want an error")
@@ -487,7 +487,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			// Handle the lifecycle of CCC.
 			// If error is expected, assert that there is an error returned.
 			// Otherwise, assert that the finalized objects are matching with the expect the result.
-			err := handleLifecycles(t, ctx, r, tc.ccc, m)
+			err := handleLifecycles(ctx, t, r, tc.ccc, m)
 			if tc.hasError {
 				if err == nil {
 					t.Fatalf("got nil, but want an error")
@@ -546,7 +546,7 @@ func TestHandleReconcileFailed(t *testing.T) {
 	defer stop()
 	c := mgr.GetClient()
 	mockEventRecorder := testmocks.NewMockEventRecorder(t, mgr.GetScheme())
-	r := ConfigConnectorContextReconciler{
+	r := Reconciler{
 		client:   c,
 		recorder: mockEventRecorder,
 		log:      logr.Discard(),
@@ -598,7 +598,7 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 	defer stop()
 	c := mgr.GetClient()
 	mockEventRecorder := testmocks.NewMockEventRecorder(t, mgr.GetScheme())
-	r := ConfigConnectorContextReconciler{
+	r := Reconciler{
 		client:   c,
 		recorder: mockEventRecorder,
 		log:      logr.Discard(),
@@ -895,8 +895,8 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 	}
 }
 
-func handleLifecycles(t *testing.T, ctx context.Context,
-	r *ConfigConnectorContextReconciler, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
+func handleLifecycles(ctx context.Context, t *testing.T,
+	r *Reconciler, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
 	t.Helper()
 	fn := r.transformNamespacedComponents()
 	if err := fn(ctx, ccc, m); err != nil {
@@ -910,16 +910,16 @@ func handleLifecycles(t *testing.T, ctx context.Context,
 	return fn(ctx, ccc, m)
 }
 
-func newConfigConnectorReconciler(c client.Client) *ConfigConnectorContextReconciler {
-	return &ConfigConnectorContextReconciler{
+func newConfigConnectorReconciler(c client.Client) *Reconciler {
+	return &Reconciler{
 		client:     c,
 		log:        logr.Discard(),
 		labelMaker: SourceLabel(),
 	}
 }
 
-func newConfigConnectorContextReconcilerWithCustomizationWatcher(m ctrl.Manager) *ConfigConnectorContextReconciler {
-	r := &ConfigConnectorContextReconciler{
+func newConfigConnectorContextReconcilerWithCustomizationWatcher(m ctrl.Manager) *Reconciler {
+	r := &Reconciler{
 		client: m.GetClient(),
 		log:    logr.Discard(),
 	}

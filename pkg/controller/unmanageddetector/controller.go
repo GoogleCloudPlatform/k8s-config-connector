@@ -65,7 +65,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles}).
-		For(obj, builder.OnlyMetadata, builder.WithPredicates(UnmanagedDetectorPredicate{})).
+		For(obj, builder.OnlyMetadata, builder.WithPredicates(Predicate{})).
 		Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %w", err)

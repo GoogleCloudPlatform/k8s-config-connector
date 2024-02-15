@@ -28,7 +28,7 @@ import (
 // mockIdentityResolver helps to resolve referenced member identity
 type mockIdentityResolver struct{}
 
-func (t *mockIdentityResolver) Resolve(member iamv1beta1.Member, memberFrom *iamv1beta1.MemberSource, defaultNamespace string) (string, error) {
+func (t *mockIdentityResolver) Resolve(member iamv1beta1.Member, memberFrom *iamv1beta1.MemberSource, _ string) (string, error) {
 	if member != "" {
 		return string(member), nil
 	}

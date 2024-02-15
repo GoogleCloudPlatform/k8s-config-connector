@@ -590,13 +590,13 @@ func TestMustHaveIDTemplateOrServerGeneratedId(t *testing.T) {
 			rc := rc
 			t.Run(rc.Kind, func(t *testing.T) {
 				t.Parallel()
-				assertIDTemplateOrServerGeneratedId(t, rc)
+				assertIDTemplateOrServerGeneratedID(t, rc)
 			})
 		}
 	}
 }
 
-func assertIDTemplateOrServerGeneratedId(t *testing.T, rc v1alpha1.ResourceConfig) {
+func assertIDTemplateOrServerGeneratedID(t *testing.T, rc v1alpha1.ResourceConfig) {
 	if rc.IDTemplate == "" && rc.ServerGeneratedIDField == "" {
 		t.Fatalf("resource kind '%v' with name '%v' has neither id template or server generated ID defined: at least one must be present", rc.Kind, rc.Name)
 	}
@@ -625,10 +625,10 @@ func TestIDTemplate(t *testing.T) {
 
 					// The idTemplate should contain either the user-specified
 					// ID or the server-generated ID.
-					if (IDTemplateContainsMetadataName(t, rc) &&
-						!IDTemplateContainsServerGeneratedIDField(t, rc)) ||
-						(!IDTemplateContainsMetadataName(t, rc) &&
-							IDTemplateContainsServerGeneratedIDField(t, rc)) {
+					if (IDTemplateContainsMetadataName(rc) &&
+						!IDTemplateContainsServerGeneratedIDField(rc)) ||
+						(!IDTemplateContainsMetadataName(rc) &&
+							IDTemplateContainsServerGeneratedIDField(rc)) {
 						return
 					}
 
@@ -642,12 +642,12 @@ func TestIDTemplate(t *testing.T) {
 	}
 }
 
-func IDTemplateContainsMetadataName(t *testing.T, rc v1alpha1.ResourceConfig) bool {
+func IDTemplateContainsMetadataName(rc v1alpha1.ResourceConfig) bool {
 	return strings.Contains(rc.IDTemplate,
 		fmt.Sprintf("{{%v}}", rc.MetadataMapping.Name))
 }
 
-func IDTemplateContainsServerGeneratedIDField(t *testing.T, rc v1alpha1.ResourceConfig) bool {
+func IDTemplateContainsServerGeneratedIDField(rc v1alpha1.ResourceConfig) bool {
 	return strings.Contains(rc.IDTemplate,
 		fmt.Sprintf("{{%v}}", rc.ServerGeneratedIDField))
 }
@@ -1261,11 +1261,11 @@ func TestStorageVersionIsSetAndValidIFFV1alpha1ToV1beta1IsSet(t *testing.T) {
 						"must be %v or %v", r.Name, k8s.KCCAPIVersionV1Alpha1,
 						k8s.KCCAPIVersion)
 					continue
-				} else {
-					t.Errorf("Resource config %v has `v1alpha1ToV1beta1: "+
-						"true` but doesn't have a `storageVersion`", r.Name)
-					continue
 				}
+
+				t.Errorf("Resource config %v has `v1alpha1ToV1beta1: "+
+					"true` but doesn't have a `storageVersion`", r.Name)
+				continue
 			}
 			if hasStorageVersion {
 				t.Errorf("Resource config %v has `storageVersion` set "+

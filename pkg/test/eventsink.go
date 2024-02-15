@@ -66,7 +66,7 @@ type MemoryEventSink struct {
 	HTTPEvents []*LogEntry `json:"httpEvents,omitempty"`
 }
 
-func (s *MemoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) {
+func (s *MemoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) { //nolint:revive
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -129,7 +129,7 @@ func NewDirectoryEventSink(outputDir string) *DirectoryEventSink {
 
 func (r *DirectoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) {
 	// Write to a log file
-	t := TestFromContext(ctx)
+	t := FromContext(ctx)
 	testName := "unknown"
 	if t != nil {
 		testName = t.Name()

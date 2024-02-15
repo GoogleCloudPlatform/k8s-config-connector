@@ -195,9 +195,9 @@ func (r *Response) FormatHTTP() string {
 
 type JSONMutator func(obj map[string]any)
 
-func (r *LogEntry) PrettifyJSON(mutators ...JSONMutator) {
-	r.Request.PrettifyJSON(mutators...)
-	r.Response.PrettifyJSON(mutators...)
+func (e *LogEntry) PrettifyJSON(mutators ...JSONMutator) {
+	e.Request.PrettifyJSON(mutators...)
+	e.Response.PrettifyJSON(mutators...)
 }
 
 func (r *Response) PrettifyJSON(mutators ...JSONMutator) {

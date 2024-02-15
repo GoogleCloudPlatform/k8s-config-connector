@@ -54,8 +54,8 @@ const (
 )
 
 var (
-	NotFoundError = fmt.Errorf("IAM resource does not exist")
-	logger        = klog.Log.WithName("iamclient")
+	ErrNotFound = fmt.Errorf("IAM resource does not exist")
+	logger      = klog.Log.WithName("iamclient")
 
 	ProjectGVK = schema.GroupVersionKind{
 		Group:   ResourceManagerGroup,

@@ -599,7 +599,7 @@ func TestKRMResourceSpecsToTFConfig(t *testing.T) {
 			},
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -702,7 +702,7 @@ func TestKRMResourceMetadataToTFConfig(t *testing.T) {
 			},
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -960,7 +960,7 @@ func TestKRMResourceToTFResourceHierarchicalReferencesAndContainers(t *testing.T
 		},
 	}
 
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -1157,7 +1157,7 @@ func TestKRMResourceToTFResourceConfigSecretVersions(t *testing.T) {
 			secretVersionsShouldContainSecrets: []string{},
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -1316,7 +1316,7 @@ func TestKRMResourceResourceIDToTFConfig(t *testing.T) {
 			expectedConfig: map[string]interface{}{},
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {

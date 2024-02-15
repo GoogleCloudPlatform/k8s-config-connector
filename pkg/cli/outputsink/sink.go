@@ -62,7 +62,7 @@ func NewWriter(w io.Writer) *WriterSink {
 	return &sink
 }
 
-func (ws *WriterSink) Receive(ctx context.Context, bytes []byte, _ *unstructured.Unstructured) error {
+func (ws *WriterSink) Receive(_ context.Context, bytes []byte, _ *unstructured.Unstructured) error {
 	if _, err := ws.w.Write(bytes); err != nil {
 		return fmt.Errorf("error writing bytes: %w", err)
 	}

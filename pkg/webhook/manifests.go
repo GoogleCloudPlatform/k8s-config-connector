@@ -30,7 +30,7 @@ var (
 )
 
 func GenerateWebhookManifests(validatingWebhookConfigurationName, mutatingWebhookConfigurationName,
-	serviceName string, whCfgs []WebhookConfig) (*admissionregistration.ValidatingWebhookConfiguration, *admissionregistration.MutatingWebhookConfiguration) {
+	serviceName string, whCfgs []Config) (*admissionregistration.ValidatingWebhookConfiguration, *admissionregistration.MutatingWebhookConfiguration) {
 	validating := validatingWebhookConfig(validatingWebhookConfigurationName, serviceName, whCfgs)
 	mutating := mutatingWebhookConfig(mutatingWebhookConfigurationName, serviceName, whCfgs)
 	return validating, mutating
@@ -54,7 +54,7 @@ func generateService(name string, selector map[string]string) *corev1.Service {
 	}
 }
 
-func mutatingWebhooksForWebhookConfigs(whCfgs []WebhookConfig, svcName string, whType webhookType) []admissionregistration.MutatingWebhook {
+func mutatingWebhooksForWebhookConfigs(whCfgs []Config, svcName string, whType webhookType) []admissionregistration.MutatingWebhook {
 	whs := make([]admissionregistration.MutatingWebhook, 0)
 	for _, whCfg := range whCfgs {
 		if whCfg.Type != whType {
@@ -81,7 +81,7 @@ func mutatingWebhooksForWebhookConfigs(whCfgs []WebhookConfig, svcName string, w
 	return whs
 }
 
-func validatingWebhooksForWebhookConfigs(whCfgs []WebhookConfig, svcName string, whType webhookType) []admissionregistration.ValidatingWebhook {
+func validatingWebhooksForWebhookConfigs(whCfgs []Config, svcName string, whType webhookType) []admissionregistration.ValidatingWebhook {
 	whs := make([]admissionregistration.ValidatingWebhook, 0)
 	for _, whCfg := range whCfgs {
 		if whCfg.Type != whType {
@@ -108,7 +108,7 @@ func validatingWebhooksForWebhookConfigs(whCfgs []WebhookConfig, svcName string,
 	return whs
 }
 
-func mutatingWebhookConfig(name, svcName string, whCfgs []WebhookConfig) *admissionregistration.MutatingWebhookConfiguration {
+func mutatingWebhookConfig(name, svcName string, whCfgs []Config) *admissionregistration.MutatingWebhookConfiguration {
 	whs := mutatingWebhooksForWebhookConfigs(whCfgs, svcName, Mutating)
 	if len(whs) > 0 {
 		return &admissionregistration.MutatingWebhookConfiguration{
@@ -128,7 +128,7 @@ func mutatingWebhookConfig(name, svcName string, whCfgs []WebhookConfig) *admiss
 	return nil
 }
 
-func validatingWebhookConfig(name, svcName string, whCfgs []WebhookConfig) *admissionregistration.ValidatingWebhookConfiguration {
+func validatingWebhookConfig(name, svcName string, whCfgs []Config) *admissionregistration.ValidatingWebhookConfiguration {
 	whs := validatingWebhooksForWebhookConfigs(whCfgs, svcName, Validating)
 	if len(whs) > 0 {
 		return &admissionregistration.ValidatingWebhookConfiguration{

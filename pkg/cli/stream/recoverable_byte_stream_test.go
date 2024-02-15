@@ -34,6 +34,6 @@ func TestRecoverableByteStream(t *testing.T) {
 
 type panicStream struct{}
 
-func (s *panicStream) Next(ctx context.Context) (bytes []byte, u *unstructured.Unstructured, err error) {
+func (s *panicStream) Next(_ context.Context) (bytes []byte, u *unstructured.Unstructured, err error) {
 	panic("intentionally panic")
 }

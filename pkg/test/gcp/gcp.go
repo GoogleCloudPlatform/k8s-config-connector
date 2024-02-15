@@ -64,7 +64,6 @@ var (
 
 const (
 	TestDependentFolder2ProjectID           = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
-	TestDependentNoNetworkProjectId         = "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID" // A dependent project with default network disabled
 	TestDependentOrgProjectID               = "TEST_DEPENDENT_ORG_PROJECT_ID"
 	TestDependentFolderProjectID            = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
 	TestDependentNoNetworkProjectID         = "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID" // A dependent project with default network disabled

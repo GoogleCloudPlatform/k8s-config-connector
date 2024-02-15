@@ -48,9 +48,9 @@ import (
 )
 
 var (
-	scheme           = runtime.NewScheme()
-	codecs           = serializer.NewCodecFactory(scheme)
-	TFSchemaNotFound = fmt.Errorf("schema does not exist")
+	scheme              = runtime.NewScheme()
+	codecs              = serializer.NewCodecFactory(scheme)
+	ErrTFSchemaNotFound = fmt.Errorf("schema does not exist")
 )
 
 type immutableFieldsValidatorHandler struct {
@@ -75,7 +75,7 @@ func NewImmutableFieldsValidatorHandler(smLoader *servicemappingloader.ServiceMa
 	}
 }
 
-func (a *immutableFieldsValidatorHandler) Handle(ctx context.Context, req admission.Request) admission.Response {
+func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admission.Request) admission.Response {
 	if regexp.MustCompile(ControllerManagerServiceAccountRegex).MatchString(req.AdmissionRequest.UserInfo.Username) {
 		return admission.ValidationResponse(true, "ignore non-user requests")
 	}
@@ -379,7 +379,7 @@ func validateDeprecatedContainerAnnotations(annotations, oldAnnotations map[stri
 
 		// Container annotation was either added or changed.
 		possibleFields := k8s.HierarchicalReferencesToFields(hierarchicalRefs)
-		return fmt.Errorf("cannot add/change container annotation %v as it is no longer supported by the resource; set one of [%v] instead.", a, strings.Join(possibleFields, ", "))
+		return fmt.Errorf("cannot add/change container annotation %v as it is no longer supported by the resource; set one of [%v] instead", a, strings.Join(possibleFields, ", "))
 	}
 	return nil
 }
@@ -514,7 +514,7 @@ func compareAndFindChangesOnImmutableFields(obj map[string]interface{}, oldObj m
 						o2 = v2.(map[string]interface{})
 					}
 					compareAndFindChangesOnImmutableFields(o1, o2, tfObjSchemaMap, qualifiedName, resourceConfig, ignoredFields, fields)
-				} else {
+				} else { //nolint:revive
 					// TODO(kcc-eng): Kubernetes considers all lists of objects to be atomic, and so all subsequent
 					//  applies will currently wipe out defaulted immutable fields. Temporarily delegate validation
 					//  to the controller, which will determine via comparing the config with calculated fields in
