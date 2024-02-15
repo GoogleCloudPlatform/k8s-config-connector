@@ -1,0 +1,41 @@
+#!/bin/bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if [[ -z "${IMAGE_BASE:-}" ]]; then
+  echo "IMAGE_BASE is required"
+  exit 1
+fi
+
+if [[ -z "${IMAGE_TAG:-}" ]]; then
+  echo "IMAGE_TAG is required"
+  exit 1
+fi
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}/operator
+
+for f in $(find channels autopilot-channels -type f -name '*.yaml'); do
+# -exec sed -i 's/g
+  echo "${f}"
+  sed -i -e "s@image: gcr.io/gke-release/cnrm/recorder:.*@image: ${IMAGE_BASE}/recorder:${IMAGE_TAG}@g" ${f}
+  sed -i -e "s@image: gcr.io/gke-release/cnrm/webhook:.*@image: ${IMAGE_BASE}/webhook:${IMAGE_TAG}@g" ${f}
+  sed -i -e "s@image: gcr.io/gke-release/cnrm/controller:.*@image: ${IMAGE_BASE}/controller:${IMAGE_TAG}@g" ${f}
+  sed -i -e "s@image: gcr.io/gke-release/cnrm/deletiondefender:.*@image: ${IMAGE_BASE}/deletiondefender:${IMAGE_TAG}@g" ${f}
+  sed -i -e "s@image: gcr.io/gke-release/cnrm/unmanageddetector:.*@image: ${IMAGE_BASE}/unmanageddetector:${IMAGE_TAG}@g" ${f}
+done

@@ -29,8 +29,6 @@ RUN go mod download
 # Copy in the Go source code
 COPY operator/pkg/      operator/pkg/
 COPY operator/cmd/      operator/cmd/
-COPY operator/channels/ operator/channels/
-COPY operator/autopilot-channels/ operator/autopilot-channels/
 COPY mockgcp/ mockgcp/
 COPY pkg/ pkg/
 COPY third_party/ third_party/
@@ -53,10 +51,10 @@ FROM alpine:latest AS packager
 WORKDIR /configconnector-operator/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/manager .
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/gke_addon_poststart .
-COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/operator/channels/ channels/
-COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/operator/autopilot-channels/ autopilot-channels/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/
+COPY operator/channels/ channels/
+COPY operator/autopilot-channels/ autopilot-channels/
 
 # Set user with UID 1000 as the owner of the directory
 RUN chown 1000 -R /configconnector-operator

@@ -129,3 +129,8 @@ upgrade-kcc-local:
 .PHONY: push-to-kind
 push-to-kind: docker-build
 	kind load docker-image ${OPERATOR_IMG}
+
+.PHONY: deploy-to-kind
+deploy-to-kind: push-to-kind
+	kustomize build config/crd | kubectl apply -f -
+	kustomize build config/default | sed -e s@imagePullPolicy:@#imagePullPolicy:@g | kubectl apply -f -

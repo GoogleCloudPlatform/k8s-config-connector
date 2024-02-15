@@ -224,3 +224,7 @@ upgrade-dcl:
 push-to-kind: docker-build
 	kind load docker-image ${CONTROLLER_IMG} ${RECORDER_IMG} \
 		${WEBHOOK_IMG} ${DELETION_DEFENDER_IMG} ${UNMANAGED_DETECTOR_IMG}
+
+.PHONY: update-channel-for-kind
+update-channel-for-kind:
+	IMAGE_BASE=gcr.io/${PROJECT_ID} IMAGE_TAG=${SHORT_SHA} operator/scripts/set-channel-images
