@@ -1,4 +1,4 @@
-POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectid}/locations/us-central1/tensorboards?alt=json
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -26,296 +26,16 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
     "genericMetadata": {
-      "createTime": "2024-02-16T01:20:54.949017Z",
-      "updateTime": "2024-02-16T01:20:54.949017Z"
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688"
+  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}"
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
-    "genericMetadata": {
-      "createTime": "2024-02-16T01:20:54.949017Z",
-      "updateTime": "2024-02-16T01:20:54.949017Z"
-    }
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688"
-}
-
----
-
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
-    "genericMetadata": {
-      "createTime": "2024-02-16T01:20:54.949017Z",
-      "updateTime": "2024-02-16T01:20:54.949017Z"
-    }
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688"
-}
-
----
-
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
-    "genericMetadata": {
-      "createTime": "2024-02-16T01:20:54.949017Z",
-      "updateTime": "2024-02-16T01:20:54.949017Z"
-    }
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688"
-}
-
----
-
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
-    "genericMetadata": {
-      "createTime": "2024-02-16T01:20:54.949017Z",
-      "updateTime": "2024-02-16T01:20:54.949017Z"
-    }
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688"
-}
-
----
-
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
-    "genericMetadata": {
-      "createTime": "2024-02-16T01:20:54.949017Z",
-      "updateTime": "2024-02-16T01:20:54.949017Z"
-    }
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688"
-}
-
----
-
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
-    "genericMetadata": {
-      "createTime": "2024-02-16T01:20:54.949017Z",
-      "updateTime": "2024-02-16T01:20:54.949017Z"
-    }
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688"
-}
-
----
-
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
-    "genericMetadata": {
-      "createTime": "2024-02-16T01:20:54.949017Z",
-      "updateTime": "2024-02-16T01:20:54.949017Z"
-    }
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688"
-}
-
----
-
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
-    "genericMetadata": {
-      "createTime": "2024-02-16T01:20:54.949017Z",
-      "updateTime": "2024-02-16T01:20:54.949017Z"
-    }
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688"
-}
-
----
-
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
-    "genericMetadata": {
-      "createTime": "2024-02-16T01:20:54.949017Z",
-      "updateTime": "2024-02-16T01:20:54.949017Z"
-    }
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688"
-}
-
----
-
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
-    "genericMetadata": {
-      "createTime": "2024-02-16T01:20:54.949017Z",
-      "updateTime": "2024-02-16T01:20:54.949017Z"
-    }
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688"
-}
-
----
-
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -335,11 +55,11 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
     "genericMetadata": {
-      "createTime": "2024-02-16T01:20:54.949017Z",
-      "updateTime": "2024-02-16T01:22:28.264978Z"
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296/operations/8501230323198066688",
+  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Tensorboard",
     "description": "Dashboard version 1",
@@ -348,13 +68,13 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296"
+    "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}"
   }
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -370,7 +90,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "blobStoragePathPrefix": "cloud-ai-platform-489ea394-ae01-4b47-9591-f3dc71b73ef3",
+  "blobStoragePathPrefix": "cloud-ai-platform-00000000-1111-2222-3333-444444444444",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Dashboard version 1",
   "displayName": "config-connector v1",
@@ -379,13 +99,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296",
+  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -401,7 +121,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "blobStoragePathPrefix": "cloud-ai-platform-489ea394-ae01-4b47-9591-f3dc71b73ef3",
+  "blobStoragePathPrefix": "cloud-ai-platform-00000000-1111-2222-3333-444444444444",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Dashboard version 1",
   "displayName": "config-connector v1",
@@ -410,13 +130,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296",
+  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -432,7 +152,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "blobStoragePathPrefix": "cloud-ai-platform-489ea394-ae01-4b47-9591-f3dc71b73ef3",
+  "blobStoragePathPrefix": "cloud-ai-platform-00000000-1111-2222-3333-444444444444",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Dashboard version 1",
   "displayName": "config-connector v1",
@@ -441,13 +161,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296",
+  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296?alt=json&updateMask=displayName%2Cdescription
+PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json&updateMask=displayName%2Cdescription
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -476,14 +196,14 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateTensorboardOperationMetadata",
     "genericMetadata": {
-      "createTime": "2024-02-16T01:22:37.231304Z",
-      "updateTime": "2024-02-16T01:22:37.231304Z"
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/operations/3327720251256209408",
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Tensorboard",
-    "blobStoragePathPrefix": "cloud-ai-platform-489ea394-ae01-4b47-9591-f3dc71b73ef3",
+    "blobStoragePathPrefix": "cloud-ai-platform-00000000-1111-2222-3333-444444444444",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Dashboard version 2",
     "displayName": "config-connector v2",
@@ -492,14 +212,14 @@ X-Xss-Protection: 0
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296",
+    "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -515,7 +235,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "blobStoragePathPrefix": "cloud-ai-platform-489ea394-ae01-4b47-9591-f3dc71b73ef3",
+  "blobStoragePathPrefix": "cloud-ai-platform-00000000-1111-2222-3333-444444444444",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Dashboard version 2",
   "displayName": "config-connector v2",
@@ -524,13 +244,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296",
+  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -546,7 +266,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "blobStoragePathPrefix": "cloud-ai-platform-489ea394-ae01-4b47-9591-f3dc71b73ef3",
+  "blobStoragePathPrefix": "cloud-ai-platform-00000000-1111-2222-3333-444444444444",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Dashboard version 2",
   "displayName": "config-connector v2",
@@ -555,13 +275,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296",
+  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/4467751150258487296?alt=json
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -581,11 +301,11 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
     "genericMetadata": {
-      "createTime": "2024-02-16T01:22:38.290411Z",
-      "updateTime": "2024-02-16T01:22:38.290411Z"
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/operations/5568261065873031168",
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
