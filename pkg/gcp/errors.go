@@ -37,7 +37,7 @@ func isGoogleErrorWithCode(err error, code int) bool {
 		return false
 	}
 	ge := &googleapi.Error{}
-	if errors.Is(err, ge) {
+	if errors.As(err, &ge) {
 		return ge.Code == code
 	}
 
