@@ -247,39 +247,41 @@ func (r *DirectReconciler) updateAPIServer(ctx context.Context, u *unstructured.
 	// Restore the status, it was likely removed in the above update
 	u.Object["status"] = originalStatus
 
-	// obj.SetResourceVersion(spec.GetResourceVersion())
-
-	// copyForStatus.SetResourceVersion(obj.GetResourceVersion())
 	setObservedGeneration(u, observedGeneration)
 
-	// Workaround for https://github.com/kubernetes-sigs/controller-runtime/issues/2453
-	// status := obj.DeepCopyObject()
-	if err := r.updateStatus(ctx, u); err != nil {
-		return err
+	// obj.SetResourceVersion(spec.GetResourceVersion())
+
+	shouldUpdateStatus := true
+	if !u.GetDeletionTimestamp().IsZero() && len(u.GetFinalizers()) == 0 {
+		// This resource is already gone, or is about to be already gone, don't set the status.
+		// Status updates for successful deletions must be handled before the finalizer is removed.
+		shouldUpdateStatus = false
 	}
-	u.SetResourceVersion(u.GetResourceVersion())
 
-	// // rejections by validating webhooks won't be returned as an error; instead, they will be
-	// // objects of kind "Status" with a "Failure" status.
-	// if isFailureStatus(u) {
-	// 	return fmt.Errorf("error with update call to API server: %v", u.Object["message"])
-	// }
+	if shouldUpdateStatus {
+		// copyForStatus.SetResourceVersion(obj.GetResourceVersion())
+		setObservedGeneration(u, observedGeneration)
 
-	// TODO: this doesn't look right
-	// // sync the resource up with the updated metadata
-	// if err := util.Marshal(u, resource); err != nil {
-	// 	return fmt.Errorf("error syncing updated resource metadata: %w", err)
-	// }
+		// Workaround for https://github.com/kubernetes-sigs/controller-runtime/issues/2453
+		// status := obj.DeepCopyObject()
+		if err := r.updateStatus(ctx, u); err != nil {
+			return err
+		}
+		u.SetResourceVersion(u.GetResourceVersion())
 
-	// TODO: this doesn't look right
-	// if !obj.GetDeletionTimestamp().IsZero() && len(obj.GetFinalizers()) == 0 {
-	// 	// This resource is set for garbage collection and any status updates would be racey.
-	// 	// Status updates for successful deletions must be handled independently.
-	// 	return nil
-	// }
+		// TODO: this doesn't look right
+		// // rejections by validating webhooks won't be returned as an error; instead, they will be
+		// // objects of kind "Status" with a "Failure" status.
+		// if isFailureStatus(u) {
+		// 	return fmt.Errorf("error with update call to API server: %v", u.Object["message"])
+		// }
 
-	// resource.Status = status
-	// return r.updateStatus(ctx, obj)
+		// // sync the resource up with the updated metadata
+		// if err := util.Marshal(u, resource); err != nil {
+		// 	return fmt.Errorf("error syncing updated resource metadata: %w", err)
+		// }
+	}
+
 	return nil
 }
 
@@ -318,12 +320,24 @@ func (r *DirectReconciler) updateStatus(ctx context.Context, obj *unstructured.U
 	// 	return err
 	// }
 
-	if err := r.Client.Status().Update(ctx, obj, r.GetFieldOwner()); err != nil {
+	// TODO: Do we need to workaround https://github.com/kubernetes-sigs/controller-runtime/issues/2453
+	// We could just copy the spec etc
+
+	// Workaround for https://github.com/kubernetes-sigs/controller-runtime/issues/2453
+	statusCopy := &unstructured.Unstructured{Object: make(map[string]interface{})}
+	for k, v := range obj.Object {
+		statusCopy.Object[k] = v
+	}
+
+	if err := r.Client.Status().Update(ctx, statusCopy, r.GetFieldOwner()); err != nil {
 		if apierrors.IsConflict(err) {
 			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %w", err)
 		}
 		return fmt.Errorf("error with status update call to API server: %w", err)
 	}
+
+	obj.Object["status"] = statusCopy.Object["status"]
+	obj.SetResourceVersion(statusCopy.GetResourceVersion())
 
 	// // rejections by some validating webhooks won't be returned as an error; instead, they will be
 	// // objects of kind "Status" with a "Failure" status.
@@ -391,6 +405,8 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 
 func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unstructured) (requeue bool, err error) {
 	logger := log.FromContext(ctx)
+
+	logger.Info("RECONCILE", "obj", u)
 
 	adapter, err := r.Reconciler.model.AdapterForObject(ctx, u)
 	if err != nil {

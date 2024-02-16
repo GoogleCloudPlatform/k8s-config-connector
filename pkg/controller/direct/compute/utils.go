@@ -15,6 +15,8 @@
 package compute
 
 import (
+	"errors"
+
 	"github.com/googleapis/gax-go/v2/apierror"
 	"k8s.io/klog/v2"
 )
@@ -36,14 +38,11 @@ func HasHTTPCode(err error, code int) bool {
 	if err == nil {
 		return false
 	}
-	switch err := err.(type) {
-	case *apierror.APIError:
-		if err.HTTPCode() == code {
-			return true
-		}
-	default:
-		klog.Warningf("unexpected error type %T", err)
+	apiError := &apierror.APIError{}
+	if errors.As(err, &apiError) {
+		return apiError.HTTPCode() == code
 	}
+	klog.Warningf("unexpected error type %T", err)
 	return false
 }
 

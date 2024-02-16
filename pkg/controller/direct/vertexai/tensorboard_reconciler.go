@@ -179,16 +179,22 @@ func (a *tensorboardAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *tensorboardAdapter) Delete(ctx context.Context) (bool, error) {
+	log := klog.FromContext(ctx)
+	if a.tensorboardID == "" {
+		return false, fmt.Errorf("cannot delete tensorboard as resource id is not set")
+	}
+
 	// TODO: Delete via status selfLink?
 	req := &pb.DeleteTensorboardRequest{
 		Name: a.fullyQualifiedName(),
 	}
+	log.Info("deleting tensorboard", "request", req)
 	op, err := a.gcp.DeleteTensorboard(ctx, req)
 	if err != nil {
 		if IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("deleting tensorboard: %w", err)
+		return false, fmt.Errorf("deleting tensorboard %q: %w", req.Name, err)
 	}
 
 	if err := op.Wait(ctx); err != nil {
@@ -244,6 +250,8 @@ func (a *tensorboardAdapter) Create(ctx context.Context, u *unstructured.Unstruc
 		klog.Fatalf("error setting field: %v", err)
 	}
 	log.Info("created kube object", "object", FormatJSON(u))
+
+	// time.Sleep(10 * time.Second)
 
 	// TODO: Return created object
 	return nil
