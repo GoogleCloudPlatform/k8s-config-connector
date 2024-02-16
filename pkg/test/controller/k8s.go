@@ -26,9 +26,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 
+	"errors"
+
 	v1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/errors"
-	goerrors "errors"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -81,7 +82,7 @@ func assertEventNotRecorded(t *testing.T, c client.Client, kind, name, namespace
 	err := waitUntilEventRecorded(t, c, kind, name, namespace, reason)
 	if err == nil {
 		t.Errorf("expected event with reason '%v' to not be recorded for %v %v/%v, but it was", reason, kind, namespace, name)
-	} else if !goerrors.Is(err, wait.ErrWaitTimeout) {
+	} else if !errors.Is(err, wait.ErrWaitTimeout) {
 		t.Errorf("error waiting for event with reason '%v' to be recorded for %v %v/%v: %v", reason, kind, namespace, name, err)
 	}
 }
@@ -132,7 +133,7 @@ func WaitForUnstructDeleteToFinish(t *testing.T, kubeClient client.Client, origU
 		if err == nil {
 			return false, nil
 		}
-		if errors.IsNotFound(err) {
+		if apierrors.IsNotFound(err) {
 			return true, nil
 		}
 		return true, err

@@ -17,6 +17,7 @@ package e2e
 import (
 	"bytes"
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -43,8 +44,7 @@ import (
 	containerBeta "google.golang.org/api/container/v1beta1"
 	"google.golang.org/api/iam/v1"
 	v1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/errors"
-	goerrors "errors"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -829,7 +829,7 @@ func (c *cluster) waitForConfigConnectorToBeHealthy(name string) error {
 		return strings.Contains(res.(string), "healthy: true"), nil
 	})
 	if err != nil {
-		if !goerrors.Is(err, wait.ErrWaitTimeout) {
+		if !errors.Is(err, wait.ErrWaitTimeout) {
 			return err
 		}
 		out, _ := c.kubectl.get("configconnector", name, "-o", "yaml")
@@ -877,7 +877,7 @@ func (c *cluster) waitForConfigConnectorContextToBeRemoved(namespace, name strin
 	if err == nil {
 		return nil
 	}
-	if !goerrors.Is(err, wait.ErrWaitTimeout) {
+	if !errors.Is(err, wait.ErrWaitTimeout) {
 		return err
 	}
 	out, _ := c.kubectl.get("-n", namespace, "configconnectorcontext", name, "-o", "yaml")
@@ -909,7 +909,7 @@ func (c *cluster) waitForConfigConnectorContextToBeHealthyOrUnhealthy(namespace,
 		return strings.Contains(out.(string), fmt.Sprintf("healthy: %v", healthy)), nil
 	})
 	if err != nil {
-		if !goerrors.Is(err, wait.ErrWaitTimeout) {
+		if !errors.Is(err, wait.ErrWaitTimeout) {
 			return err
 		}
 		out, _ := c.kubectl.get("-n", namespace, "configconnectorcontext", name, "-o", "yaml")
@@ -1004,7 +1004,7 @@ func getYAMLFilesInDir(dir string) (yamlPaths []string, err error) {
 
 func (c *cluster) createArtifactRegistryRepository(namespace, repoName, repoYAMLDir string) error {
 	if err := c.createArtifactRegistryRepositoryAndWait(namespace, repoName, repoYAMLDir); err != nil {
-		if goerrors.Is(err, wait.ErrWaitTimeout) {
+		if errors.Is(err, wait.ErrWaitTimeout) {
 			out, _ := c.kubectl.get("-n", namespace, "artifactregistryrepository", repoName, "-o", "yaml")
 			return fmt.Errorf("timed out waiting for ArtifactRegistryRepository to reach an UpToDate state:\n%v", out)
 		}
@@ -1015,7 +1015,7 @@ func (c *cluster) createArtifactRegistryRepository(namespace, repoName, repoYAML
 
 func (c *cluster) createArtifactRegistryRepositoryShouldFail(namespace, repoName, repoYAMLDir string) error {
 	if err := c.createArtifactRegistryRepositoryAndWait(namespace, repoName, repoYAMLDir); err != nil {
-		if goerrors.Is(err, wait.ErrWaitTimeout) {
+		if errors.Is(err, wait.ErrWaitTimeout) {
 			return nil // i.e. ArtifactRegistryRepository never reached an "UpToDate" state as expected
 		}
 		return err
@@ -1054,7 +1054,7 @@ func (c *cluster) waitForCNRMFinalizersToBeRemovedFromArtifactRegistryRepository
 		return !ok, nil
 	}
 	if err := wait.PollImmediate(5*time.Second, 5*time.Minute, waitFunc); err != nil {
-		if !goerrors.Is(err, wait.ErrWaitTimeout){
+		if !errors.Is(err, wait.ErrWaitTimeout) {
 			return err
 		}
 		out, _ := c.kubectl.get("-n", namespace, "artifactregistryrepository", repoName, "-o", "yaml")
@@ -1242,7 +1242,7 @@ func (c *cluster) waitForNamespaceToBeDeleted(namespace string) error {
 			ns, err := c.getNamespace(namespace)
 			if err != nil {
 				// Quick exit if the namespace is deleted already.
-				if errors.IsNotFound(err) {
+				if apierrors.IsNotFound(err) {
 					isDeleted = true
 					return nil, nil
 				}
@@ -1264,7 +1264,7 @@ func (c *cluster) waitForNamespaceToBeDeleted(namespace string) error {
 		return false, nil
 	})
 	if err != nil {
-		if !goerrors.Is(err, wait.ErrWaitTimeout) {
+		if !errors.Is(err, wait.ErrWaitTimeout) {
 			return err
 		}
 		return fmt.Errorf("timed out waiting for namespace '%v' to be deleted", namespace)
