@@ -45,7 +45,7 @@ import (
 
 var (
 	// SchemeGroupVersion is the group version used to register these objects.
-	SchemeGroupVersion = schema.GroupVersion{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1"}
+	SchemeGroupVersion = schema.GroupVersion{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1alpha1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
 	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
