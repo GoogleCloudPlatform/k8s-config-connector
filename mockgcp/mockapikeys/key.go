@@ -167,7 +167,7 @@ func (s *APIKeysV2) DeleteKey(ctx context.Context, req *pb.DeleteKeyRequest) (*l
 		return nil, err
 	}
 
-	return s.operations.StartLRO(ctx, nil, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, "", nil, func() (proto.Message, error) {
 		return deleted, nil
 	})
 }

@@ -63,7 +63,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn,
 		pb.RegisterApiKeysHandler,
-		s.operations.RegisterOperationsHandler("v2"),
+		s.operations.RegisterOperationsPath("/v2/operations/{name}"),
 	)
 	if err != nil {
 		return nil, err
