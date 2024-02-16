@@ -163,7 +163,7 @@ func forEach(c client.Client, gvk schema.GroupVersionKind, listOptions *client.L
 		list.SetGroupVersionKind(gvk)
 		err := c.List(context.Background(), &list, listOptions)
 		if err != nil {
-			return fmt.Errorf("error listing objects:%v", err)
+			return fmt.Errorf("error listing objects: %w", err)
 		}
 		for _, item := range list.Items {
 			if err := fn(item); err != nil {

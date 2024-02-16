@@ -15,6 +15,7 @@
 package create
 
 import (
+	"errors"
 	"fmt"
 	"io/fs"
 	"path/filepath"
@@ -36,7 +37,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
 	"github.com/ghodss/yaml"
-	"k8s.io/apimachinery/pkg/api/errors"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -181,7 +182,7 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 	if err == nil {
 		return
 	}
-	if err != wait.ErrWaitTimeout {
+	if !errors.Is(err, wait.ErrWaitTimeout) {
 		t.Errorf("error while polling for ready on %v with name '%v': %v", u.GetKind(), u.GetName(), err)
 		return
 	}
@@ -216,7 +217,7 @@ func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Uns
 	// Do a best-faith cleanup of the resources. Gives a 30 minute buffer for cleanup, though
 	// resources that can be cleaned up quicker exit earlier.
 	err := wait.PollImmediate(1*time.Second, 30*time.Minute, func() (bool, error) {
-		if err := t.GetClient().Get(t.Ctx, k8s.GetNamespacedName(u), u); !errors.IsNotFound(err) {
+		if err := t.GetClient().Get(t.Ctx, k8s.GetNamespacedName(u), u); !apierrors.IsNotFound(err) {
 			if t.Ctx.Err() != nil {
 				return false, t.Ctx.Err()
 			}
@@ -489,7 +490,7 @@ func generateNewFolderDisplayName(folderUnstruct *unstructured.Unstructured, idR
 func getFolderDisplayName(folderUnstruct *unstructured.Unstructured) (string, error) {
 	displayName, ok, err := unstructured.NestedString(folderUnstruct.Object, "spec", "displayName")
 	if err != nil {
-		return "", fmt.Errorf("error getting spec.displayName of Folder unstruct: %v", err)
+		return "", fmt.Errorf("error getting spec.displayName of Folder unstruct: %w", err)
 	}
 	if !ok {
 		return "", fmt.Errorf("spec.displayName not found for Folder unstruct")

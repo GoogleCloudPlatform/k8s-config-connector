@@ -128,7 +128,7 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 
 	stateIntoSpecDefaulter, err := k8s.NewStateIntoSpecDefaulter(config.StateIntoSpecDefaultValue, config.StateIntoSpecUserOverride)
 	if err != nil {
-		return nil, fmt.Errorf("error constructing new state into spec value: %v", err)
+		return nil, fmt.Errorf("error constructing new state into spec value: %w", err)
 	}
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
