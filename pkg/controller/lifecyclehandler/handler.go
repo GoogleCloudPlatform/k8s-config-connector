@@ -56,6 +56,10 @@ func NewLifecycleHandlerWithFieldOwner(c client.Client, r record.EventRecorder, 
 	}
 }
 
+func (r *LifecycleHandler) GetFieldOwner() client.FieldOwner {
+	return client.FieldOwner(r.fieldOwner)
+}
+
 func (r *LifecycleHandler) updateStatus(ctx context.Context, resource *k8s.Resource) error {
 	u, err := resource.MarshalAsUnstructured()
 	if err != nil {
@@ -182,7 +186,7 @@ func CausedByUnresolvableDeps(err error) (unwrappedErr error, ok bool) { //nolin
 	return nil, false
 }
 
-func reasonForUnresolvableDeps(err error) (string, error) {
+func ReasonForUnresolvableDeps(err error) (string, error) {
 	switch {
 	case k8s.IsReferenceNotReadyError(err) || k8s.IsTransitiveDependencyNotReadyError(err):
 		return k8s.DependencyNotReady, nil
@@ -229,7 +233,7 @@ func (r *LifecycleHandler) HandleUpToDate(ctx context.Context, resource *k8s.Res
 }
 
 func (r *LifecycleHandler) HandleUnresolvableDeps(ctx context.Context, resource *k8s.Resource, originErr error) error {
-	reason, err := reasonForUnresolvableDeps(originErr)
+	reason, err := ReasonForUnresolvableDeps(originErr)
 	if err != nil {
 		return r.HandleUpdateFailed(ctx, resource, err)
 	}

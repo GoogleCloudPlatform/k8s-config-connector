@@ -30,9 +30,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"golang.org/x/sync/semaphore"
+	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -42,6 +45,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -127,6 +131,215 @@ type DirectReconciler struct {
 	controllerName string
 }
 
+func (r *DirectReconciler) HandleUpToDate(ctx context.Context, obj *unstructured.Unstructured) error {
+	setCondition(obj, corev1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage)
+	if err := r.updateAPIServer(ctx, obj); err != nil {
+		return err
+	}
+
+	r.recordEvent(obj, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
+	return nil
+}
+
+func (r *DirectReconciler) HandleUnresolvableDeps(ctx context.Context, obj *unstructured.Unstructured, originErr error) error {
+	reason, err := lifecyclehandler.ReasonForUnresolvableDeps(originErr)
+	if err != nil {
+		return r.HandleUpdateFailed(ctx, obj, err)
+	}
+	msg := originErr.Error()
+	// Only update the API server if there's new information
+	if !k8s.UnstructuredReadyConditionMatches(obj, corev1.ConditionFalse, reason, msg) {
+		setCondition(obj, corev1.ConditionFalse, reason, msg)
+		setObservedGeneration(obj, obj.GetGeneration())
+		if err := r.updateStatus(ctx, obj); err != nil {
+			return err
+		}
+	}
+
+	r.recordEvent(obj, corev1.EventTypeWarning, reason, msg)
+	return nil
+}
+
+func (r *DirectReconciler) HandleUpdateFailed(ctx context.Context, obj *unstructured.Unstructured, err error) error {
+	msg := fmt.Errorf("Update call failed: %w", err).Error()
+	setCondition(obj, corev1.ConditionFalse, k8s.UpdateFailed, msg)
+	setObservedGeneration(obj, obj.GetGeneration())
+	if err := r.updateStatus(ctx, obj); err != nil {
+		return err
+	}
+
+	r.recordEvent(obj, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
+	return fmt.Errorf("Update call failed: %w", err)
+}
+
+func (r *DirectReconciler) HandleDeleted(ctx context.Context, obj *unstructured.Unstructured) error {
+	setCondition(obj, corev1.ConditionFalse, k8s.Deleted, k8s.DeletedMessage)
+	setObservedGeneration(obj, obj.GetGeneration())
+	// Do an explicit status update first to prevent a race between the status update and the API
+	// server pruning the resource if there are no more finalizers present.
+	if err := r.updateStatus(ctx, obj); err != nil {
+		return fmt.Errorf("error updating status: %w", err)
+	}
+
+	r.recordEvent(obj, corev1.EventTypeNormal, k8s.Deleted, k8s.DeletedMessage)
+
+	k8s.RemoveFinalizer(obj, k8s.ControllerFinalizerName)
+	return r.updateAPIServer(ctx, obj)
+}
+
+func (r *DirectReconciler) HandleDeleteFailed(ctx context.Context, obj *unstructured.Unstructured, err error) error {
+	msg := fmt.Sprintf(k8s.DeleteFailedMessageTmpl, err)
+	setCondition(obj, corev1.ConditionFalse, k8s.DeleteFailed, msg)
+	setObservedGeneration(obj, obj.GetGeneration())
+	if err := r.updateStatus(ctx, obj); err != nil {
+		return err
+	}
+
+	r.recordEvent(obj, corev1.EventTypeWarning, k8s.DeleteFailed, msg)
+	return fmt.Errorf("Delete call failed: %w", err)
+}
+
+func (r *DirectReconciler) recordEvent(obj *unstructured.Unstructured, eventtype, reason, message string) {
+	r.Recorder.Event(obj, eventtype, reason, message)
+}
+
+// The system sets various labels on the resource that are not user facing and should not be saved in the API server
+// this function removes any that may be present
+func removeSystemLabels(u client.Object) {
+	labels := u.GetLabels()
+	if labels == nil {
+		return
+	}
+	keys := leaser.GetLabelKeys()
+	keys = append(keys, label.CnrmManagedKey)
+	for _, k := range keys {
+		delete(labels, k)
+	}
+	// GetLabels(...) returns a new copy of the labels map so we must overwrite that value with our local value
+	u.SetLabels(labels)
+}
+
+// WARNING: This function should NOT be exported and invoked directly outside the package.
+// Controllers are supposed to call exported functions to handle lifecycle transitions.
+func (r *DirectReconciler) updateAPIServer(ctx context.Context, u *unstructured.Unstructured) error {
+	// Preserve the intended status, as the client.Update call will ignore the given status
+	// and return the stale existing status.
+	originalStatus := u.Object["status"]
+
+	// Get the current generation as the observed generation because the following client.Update
+	// might increase the generation. We want the next reconciliation to handle the new generation.
+	observedGeneration := u.GetGeneration()
+	// u, err := resource.MarshalAsUnstructured()
+	// if err != nil {
+	// 	return err
+	// }
+	removeSystemLabels(u)
+
+	// TODO: Only if spec/label/annotation changes
+
+	// spec := obj.DeepCopyObject().(T)
+	if err := r.Client.Update(ctx, u, r.GetFieldOwner()); err != nil {
+		if apierrors.IsConflict(err) {
+			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %w", err)
+		}
+		return fmt.Errorf("error with update call to API server: %w", err)
+	}
+	// Restore the status, it was likely removed in the above update
+	u.Object["status"] = originalStatus
+
+	// obj.SetResourceVersion(spec.GetResourceVersion())
+
+	// copyForStatus.SetResourceVersion(obj.GetResourceVersion())
+	setObservedGeneration(u, observedGeneration)
+
+	// Workaround for https://github.com/kubernetes-sigs/controller-runtime/issues/2453
+	// status := obj.DeepCopyObject()
+	if err := r.updateStatus(ctx, u); err != nil {
+		return err
+	}
+	u.SetResourceVersion(u.GetResourceVersion())
+
+	// // rejections by validating webhooks won't be returned as an error; instead, they will be
+	// // objects of kind "Status" with a "Failure" status.
+	// if isFailureStatus(u) {
+	// 	return fmt.Errorf("error with update call to API server: %v", u.Object["message"])
+	// }
+
+	// TODO: this doesn't look right
+	// // sync the resource up with the updated metadata
+	// if err := util.Marshal(u, resource); err != nil {
+	// 	return fmt.Errorf("error syncing updated resource metadata: %w", err)
+	// }
+
+	// TODO: this doesn't look right
+	// if !obj.GetDeletionTimestamp().IsZero() && len(obj.GetFinalizers()) == 0 {
+	// 	// This resource is set for garbage collection and any status updates would be racey.
+	// 	// Status updates for successful deletions must be handled independently.
+	// 	return nil
+	// }
+
+	// resource.Status = status
+	// return r.updateStatus(ctx, obj)
+	return nil
+}
+
+func setObservedGeneration(obj *unstructured.Unstructured, observedGeneration int64) {
+	k8s.UnstructuredSetObservedGeneration(obj, observedGeneration)
+}
+
+func setCondition(obj *unstructured.Unstructured, status corev1.ConditionStatus, reason, msg string) {
+	conditions, _ := k8s.UnstructuredGetConditions(obj)
+
+	newReadyCondition := k8s.NewCustomReadyCondition(status, reason, msg)
+
+	done := false
+	for i, condition := range conditions {
+		if condition.Type != newReadyCondition.Type {
+			continue
+		}
+		// We should only update the ready condition's last transition time if there was a transition
+		// since its last state. The function sets it to time.Now(), so let's replace it if there was
+		// no transition.
+		if newReadyCondition.Status == condition.Status {
+			newReadyCondition.LastTransitionTime = condition.LastTransitionTime
+		}
+		conditions[i] = newReadyCondition
+		done = true
+	}
+	if !done {
+		conditions = append(conditions, newReadyCondition)
+	}
+	k8s.UnstructuredSetConditions(obj, conditions)
+}
+
+func (r *DirectReconciler) updateStatus(ctx context.Context, obj *unstructured.Unstructured) error {
+	// u, err := resource.MarshalAsUnstructured()
+	// if err != nil {
+	// 	return err
+	// }
+
+	if err := r.Client.Status().Update(ctx, obj, r.GetFieldOwner()); err != nil {
+		if apierrors.IsConflict(err) {
+			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %w", err)
+		}
+		return fmt.Errorf("error with status update call to API server: %w", err)
+	}
+
+	// // rejections by some validating webhooks won't be returned as an error; instead, they will be
+	// // objects of kind "Status" with a "Failure" status.
+	// if isFailureStatus(u) {
+	// 	return fmt.Errorf("error with status update call to API server: %v", u.Object["message"])
+	// }
+	// // sync the resource up with the updated metadata.
+	// if err := util.Marshal(u, resource); err != nil {
+	// 	return err
+	// }
+
+	// TODO: No transforms in DirectReconcilers
+	// return resourceoverrides.Handler.PostUpdateStatusTransform(resource)
+	return nil
+}
+
 type reconcileContext struct {
 	gvk            schema.GroupVersionKind
 	Reconciler     *DirectReconciler
@@ -200,18 +413,22 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 				if !errors.Is(err, kcciamclient.NotFoundError) && !k8s.IsReferenceNotFoundError(err) {
 					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
-						resource, err := toK8sResource(u)
-						if err != nil {
-							return false, fmt.Errorf("error converting k8s resource while handling unresolvable dependencies event: %w", err)
-						}
+						// resource, err := toK8sResource(u)
+						// if err != nil {
+						// 	return false, fmt.Errorf("error converting k8s resource while handling unresolvable dependencies event: %w", err)
+						// }
 						// Requeue resource for reconciliation with exponential backoff applied
-						return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, unwrappedErr)
+						return true, r.Reconciler.HandleUnresolvableDeps(ctx, u, unwrappedErr)
 					}
 					return false, r.handleDeleteFailed(ctx, u, err)
 				}
 			}
 		}
 		return false, r.handleDeleted(ctx, u)
+	}
+
+	if err := r.ensureFinalizers(ctx, u); err != nil {
+		return false, err
 	}
 
 	existsAlready, err := adapter.Find(ctx)
@@ -222,7 +439,6 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		}
 		return false, r.handleUpdateFailed(ctx, u, err)
 	}
-	k8s.EnsureFinalizers(u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
 
 	// set the etag to an empty string, since IAMPolicy is the authoritative intent, KCC wants to overwrite the underlying policy regardless
 	//policy.Spec.Etag = ""
@@ -250,61 +466,75 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 	return false, nil
 }
 
-func (r *reconcileContext) handleUpToDate(ctx context.Context, u *unstructured.Unstructured) error {
-	resource, err := toK8sResource(u)
-	if err != nil {
-		return fmt.Errorf("error converting to k8s resource while handling %v event: %w", k8s.UpToDate, err)
+func (r *reconcileContext) ensureFinalizers(ctx context.Context, obj *unstructured.Unstructured) error {
+	updated := false
+	updated = updated || controllerutil.AddFinalizer(obj, k8s.ControllerFinalizerName)
+	updated = updated || controllerutil.AddFinalizer(obj, k8s.DeletionDefenderFinalizerName)
+
+	if updated {
+		if err := r.Reconciler.Client.Update(ctx, obj); err != nil {
+			return fmt.Errorf("updating finalizers: %w", err)
+		}
 	}
-	return r.Reconciler.HandleUpToDate(ctx, resource)
+
+	return nil
 }
 
-func (r *reconcileContext) handleUpdateFailed(ctx context.Context, policy *unstructured.Unstructured, origErr error) error {
-	logger := log.FromContext(ctx)
-
-	resource, err := toK8sResource(policy)
-	if err != nil {
-		logger.Error(err, "error converting to k8s resource while handling event",
-			"resource", k8s.GetNamespacedName(policy), "event", k8s.UpdateFailed)
-		return fmt.Errorf("Update call failed: %w", origErr)
-	}
-	return r.Reconciler.HandleUpdateFailed(ctx, resource, origErr)
+func (r *reconcileContext) handleUpToDate(ctx context.Context, obj *unstructured.Unstructured) error {
+	// resource, err := toK8sResource(u)
+	// if err != nil {
+	// 	return fmt.Errorf("error converting to k8s resource while handling %v event: %w", k8s.UpToDate, err)
+	// }
+	return r.Reconciler.HandleUpToDate(ctx, obj)
 }
 
-func (r *reconcileContext) handleDeleted(ctx context.Context, policy *unstructured.Unstructured) error {
-	resource, err := toK8sResource(policy)
-	if err != nil {
-		return fmt.Errorf("error converting to k8s resource while handling %v event: %w", k8s.Deleted, err)
-	}
-	return r.Reconciler.HandleDeleted(ctx, resource)
+func (r *reconcileContext) handleUpdateFailed(ctx context.Context, u *unstructured.Unstructured, origErr error) error {
+	// logger := log.FromContext(ctx)
+
+	// resource, err := toK8sResource(obj)
+	// if err != nil {
+	// 	logger.Error(err, "error converting to k8s resource while handling event",
+	// 		"resource", k8s.GetNamespacedName(obj), "event", k8s.UpdateFailed)
+	// 	return fmt.Errorf("Update call failed: %w", origErr)
+	// }
+	return r.Reconciler.HandleUpdateFailed(ctx, u, origErr)
 }
 
-func (r *reconcileContext) handleDeleteFailed(ctx context.Context, policy *unstructured.Unstructured, origErr error) error {
-	logger := log.FromContext(ctx)
+func (r *reconcileContext) handleDeleted(ctx context.Context, u *unstructured.Unstructured) error {
+	// resource, err := toK8sResource(policy)
+	// if err != nil {
+	// 	return fmt.Errorf("error converting to k8s resource while handling %v event: %w", k8s.Deleted, err)
+	// }
+	return r.Reconciler.HandleDeleted(ctx, u)
+}
 
-	resource, err := toK8sResource(policy)
-	if err != nil {
-		logger.Error(err, "error converting to k8s resource while handling event",
-			"resource", k8s.GetNamespacedName(policy), "event", k8s.DeleteFailed)
-		return fmt.Errorf(k8s.DeleteFailedMessageTmpl, origErr)
-	}
-	return r.Reconciler.HandleDeleteFailed(ctx, resource, origErr)
+func (r *reconcileContext) handleDeleteFailed(ctx context.Context, u *unstructured.Unstructured, origErr error) error {
+	// logger := log.FromContext(ctx)
+
+	// resource, err := toK8sResource(policy)
+	// if err != nil {
+	// 	logger.Error(err, "error converting to k8s resource while handling event",
+	// 		"resource", k8s.GetNamespacedName(policy), "event", k8s.DeleteFailed)
+	// 	return fmt.Errorf(k8s.DeleteFailedMessageTmpl, origErr)
+	// }
+	return r.Reconciler.HandleDeleteFailed(ctx, u, origErr)
 }
 
 func (r *DirectReconciler) supportsImmediateReconciliations() bool {
 	return r.immediateReconcileRequests != nil
 }
 
-func (r *reconcileContext) handleUnresolvableDeps(ctx context.Context, policy *unstructured.Unstructured, origErr error) (requeue bool, err error) {
+func (r *reconcileContext) handleUnresolvableDeps(ctx context.Context, u *unstructured.Unstructured, origErr error) (requeue bool, err error) {
 	logger := log.FromContext(ctx)
 
-	resource, err := toK8sResource(policy)
-	if err != nil {
-		return false, fmt.Errorf("error converting to k8s resource while handling unresolvable dependencies event: %w", err)
-	}
+	// resource, err := toK8sResource(policy)
+	// if err != nil {
+	// 	return false, fmt.Errorf("error converting to k8s resource while handling unresolvable dependencies event: %w", err)
+	// }
 	refGVK, refNN, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(origErr)
 	if !ok || !r.Reconciler.supportsImmediateReconciliations() {
 		// Requeue resource for reconciliation with exponential backoff applied
-		return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, origErr)
+		return true, r.Reconciler.HandleUnresolvableDeps(ctx, u, origErr)
 	}
 	// Check that the number of active resource watches
 	// does not exceed the controller's cap. If the
@@ -313,23 +543,23 @@ func (r *reconcileContext) handleUnresolvableDeps(ctx context.Context, policy *u
 	// is started
 	if !r.Reconciler.resourceWatcherRoutines.TryAcquire(1) {
 		// Requeue resource for reconciliation with exponential backoff applied
-		return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, origErr)
+		return true, r.Reconciler.HandleUnresolvableDeps(ctx, u, origErr)
 	}
 	// Create a logger for ResourceWatcher that contains info
 	// about the referencing resource. This is done since the
 	// messages logged by ResourceWatcher only include the
 	// information of the resource it is watching by default.
 	watcherLogger := logger.WithValues(
-		"referencingResource", resource.GetNamespacedName(),
-		"referencingResourceGVK", resource.GroupVersionKind())
+		"referencingResource", k8s.GetNamespacedName(u),
+		"referencingResourceGVK", u.GroupVersionKind())
 	watcher, err := resourcewatcher.New(r.Reconciler.config, watcherLogger)
 	if err != nil {
-		return false, r.Reconciler.HandleUpdateFailed(ctx, resource, fmt.Errorf("error initializing new resourcewatcher: %w", err))
+		return false, r.Reconciler.HandleUpdateFailed(ctx, u, fmt.Errorf("error initializing new resourcewatcher: %w", err))
 	}
 
 	logger = logger.WithValues(
-		"resource", resource.GetNamespacedName(),
-		"resourceGVK", resource.GroupVersionKind(),
+		"resource", k8s.GetNamespacedName(u),
+		"resourceGVK", u.GroupVersionKind(),
 		"reference", refNN,
 		"referenceGVK", refGVK)
 	go func() {
@@ -345,13 +575,13 @@ func (r *reconcileContext) handleUnresolvableDeps(ctx context.Context, policy *u
 			return
 		}
 		logger.Info("enqueuing resource for immediate reconciliation now that its reference is ready")
-		r.Reconciler.enqueueForImmediateReconciliation(resource.GetNamespacedName())
+		r.Reconciler.enqueueForImmediateReconciliation(k8s.GetNamespacedName(u))
 	}()
 
 	// Do not requeue resource for immediate reconciliation. Wait for either
 	// the next periodic reconciliation or for the referenced resource to be ready (which
 	// triggers a reconciliation), whichever comes first.
-	return false, r.Reconciler.HandleUnresolvableDeps(ctx, resource, origErr)
+	return false, r.Reconciler.HandleUnresolvableDeps(ctx, u, origErr)
 }
 
 // enqueueForImmediateReconciliation enqueues the given resource for immediate
