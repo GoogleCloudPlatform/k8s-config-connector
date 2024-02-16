@@ -103,7 +103,7 @@ func enforceMutuallyExclusiveRrdatasAndRoutingPolicy() ResourceOverride {
 		}); err != nil {
 			return err
 		}
-	
+
 		return crdutil.SetSchemaForFieldUnderObjectOrArray("spec", schema, &spec)
 	}
 	return o
