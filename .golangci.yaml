@@ -22,7 +22,7 @@ linters:
   disable-all: true
   enable:
     - errcheck
-    # - errorlint
+    - errorlint
     # - exportloopref
     # - forcetypeassert
     # - gci

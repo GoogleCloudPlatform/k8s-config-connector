@@ -16,6 +16,7 @@ package lifecyclehandler
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -63,9 +64,9 @@ func (r *LifecycleHandler) updateStatus(ctx context.Context, resource *k8s.Resou
 	}
 	if err := r.Client.Status().Update(ctx, u, client.FieldOwner(r.fieldOwner)); err != nil {
 		if apierrors.IsConflict(err) {
-			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %v", err)
+			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %w", err)
 		}
-		return fmt.Errorf("error with status update call to API server: %v", err)
+		return fmt.Errorf("error with status update call to API server: %w", err)
 	}
 	// rejections by some validating webhooks won't be returned as an error; instead, they will be
 	// objects of kind "Status" with a "Failure" status.
@@ -95,9 +96,9 @@ func (r *LifecycleHandler) updateAPIServer(ctx context.Context, resource *k8s.Re
 	removeSystemLabels(u)
 	if err := r.Client.Update(ctx, u, client.FieldOwner(r.fieldOwner)); err != nil {
 		if apierrors.IsConflict(err) {
-			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %v", err)
+			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %w", err)
 		}
-		return fmt.Errorf("error with update call to API server: %v", err)
+		return fmt.Errorf("error with update call to API server: %w", err)
 	}
 	// rejections by validating webhooks won't be returned as an error; instead, they will be
 	// objects of kind "Status" with a "Failure" status.
@@ -183,15 +184,15 @@ func CausedByUnresolvableDeps(err error) (unwrappedErr error, ok bool) {
 }
 
 func reasonForUnresolvableDeps(err error) (string, error) {
-	switch err.(type) {
-	case *k8s.ReferenceNotReadyError, *k8s.TransitiveDependencyNotReadyError:
+	switch {
+	case errors.Is(err, &k8s.ReferenceNotReadyError{}) || errors.Is(err, &k8s.TransitiveDependencyNotReadyError{}):
 		return k8s.DependencyNotReady, nil
-	case *k8s.ReferenceNotFoundError, *k8s.SecretNotFoundError, *k8s.TransitiveDependencyNotFoundError:
+	case errors.Is(err, &k8s.ReferenceNotFoundError{}) || errors.Is(err, &k8s.SecretNotFoundError{}) || errors.Is(err, &k8s.TransitiveDependencyNotFoundError{}):
 		return k8s.DependencyNotFound, nil
-	case *k8s.KeyInSecretNotFoundError:
+	case errors.Is(err, &k8s.KeyInSecretNotFoundError{}):
 		return k8s.DependencyInvalid, nil
 	default:
-		return "", fmt.Errorf("unrecognized error caused by unresolvable dependencies: %v", err)
+		return "", fmt.Errorf("unrecognized error caused by unresolvable dependencies: %w", err)
 	}
 }
 
@@ -304,7 +305,7 @@ func (r *LifecycleHandler) HandleUpdating(ctx context.Context, resource *k8s.Res
 }
 
 func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s.Resource, err error) error {
-	msg := fmt.Sprintf("Update call failed: %v", err)
+	msg := fmt.Errorf("Update call failed: %w", err).Error()
 	setCondition(resource, corev1.ConditionFalse, k8s.UpdateFailed, msg)
 	setObservedGeneration(resource, resource.GetGeneration())
 	if err := r.updateStatus(ctx, resource); err != nil {
@@ -419,7 +420,7 @@ func IsOrphaned(resource *k8s.Resource, parentReferenceConfigs []corekccv1alpha1
 			if k8s.IsReferenceNotFoundError(err) {
 				return true, nil, nil
 			}
-			return false, nil, fmt.Errorf("error getting parent reference 'spec.%v': %v", refConfig.Key, err)
+			return false, nil, fmt.Errorf("error getting parent reference 'spec.%v': %w", refConfig.Key, err)
 		}
 		return false, parent, nil
 	}

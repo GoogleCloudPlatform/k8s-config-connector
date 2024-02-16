@@ -108,13 +108,13 @@ func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourc
 	parentPathStr := strings.Join(parentPath, ".")
 	parent, err = getSchemaForPath(schema, parentPath)
 	if err != nil {
-		return fmt.Errorf("can't get schema for path '%v' in CRD %s: %v", parentPathStr, crd.Name, err)
+		return fmt.Errorf("can't get schema for path '%v' in CRD %s: %w", parentPathStr, crd.Name, err)
 	}
 
 	// 2. Check if the reference field is required.
 	requiredFields, err := crdutil.GetRequiredRuleForObjectOrArray(parent)
 	if err != nil {
-		return fmt.Errorf("error getting the required rule under path %s for CRD %s: %v", parentPath, crd.Name, err)
+		return fmt.Errorf("error getting the required rule under path %s for CRD %s: %w", parentPath, crd.Name, err)
 	}
 	var required bool
 	for _, field := range requiredFields {
@@ -129,7 +129,7 @@ func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourc
 	if required {
 		oneOfRule, err := crdutil.GetOneOfRuleForObjectOrArray(parent)
 		if err != nil {
-			return fmt.Errorf("error getting the oneOf rule under path %s for CRD %s: %v", parentPath, crd.Name, err)
+			return fmt.Errorf("error getting the oneOf rule under path %s for CRD %s: %w", parentPath, crd.Name, err)
 		}
 		// TODO(b/223688758): Handle multiple oneOf rules.
 		if oneOfRule != nil {
@@ -145,7 +145,7 @@ func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourc
 			},
 		}
 		if err := crdutil.SetOneOfRuleForObjectOrArray(parent, oneOfRule); err != nil {
-			return fmt.Errorf("error setting the oneOf rule under path %s for CRD %s: %v", parentPath, crd.Name, err)
+			return fmt.Errorf("error setting the oneOf rule under path %s for CRD %s: %w", parentPath, crd.Name, err)
 		}
 
 		var updatedRequiredFields []string
@@ -155,12 +155,12 @@ func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourc
 			}
 		}
 		if err := crdutil.SetRequiredRuleForObjectOrArray(parent, updatedRequiredFields); err != nil {
-			return fmt.Errorf("error setting the required rule under path %s for CRD %s: %v", parentPath, crd.Name, err)
+			return fmt.Errorf("error setting the required rule under path %s for CRD %s: %w", parentPath, crd.Name, err)
 		}
 	} else {
 		notRule, err := crdutil.GetNotRuleForObjectOrArray(parent)
 		if err != nil {
-			return fmt.Errorf("error getting the not rule under path %s for CRD %s: %v", parentPath, crd.Name, err)
+			return fmt.Errorf("error getting the not rule under path %s for CRD %s: %w", parentPath, crd.Name, err)
 		}
 		// TODO(b/223688758): Handle multiple not rules.
 		if notRule != nil {
@@ -171,14 +171,14 @@ func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourc
 			Required: []string{nonReferenceFieldName, referenceFieldName},
 		}
 		if err := crdutil.SetNotRuleForObjectOrArray(parent, notRule); err != nil {
-			return fmt.Errorf("error setting the not rule under path %s for CRD %s: %v", parentPath, crd.Name, err)
+			return fmt.Errorf("error setting the not rule under path %s for CRD %s: %w", parentPath, crd.Name, err)
 		}
 	}
 
 	// 4. Add the non-reference field into the schema.
 	referenceFieldSchema, ok, err := crdutil.GetSchemaForFieldUnderObjectOrArray(referenceFieldName, parent)
 	if err != nil {
-		return fmt.Errorf("error getting schema for reference field %s under path %s for CRD %s: %v", referenceFieldName, parentPath, crd.Name, err)
+		return fmt.Errorf("error getting schema for reference field %s under path %s for CRD %s: %w", referenceFieldName, parentPath, crd.Name, err)
 	}
 	if !ok {
 		return fmt.Errorf("can't find reference field %s under path %s for CRD %s", referenceFieldName, parentPath, crd.Name)
@@ -213,16 +213,16 @@ func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourc
 	}
 
 	if err := crdutil.SetSchemaForFieldUnderObjectOrArray(nonReferenceFieldName, parent, nonReferenceFieldSchema); err != nil {
-		return fmt.Errorf("error setting schema for non-reference field %s under path %s for CRD %s: %v", nonReferenceFieldName, parentPath, crd.Name, err)
+		return fmt.Errorf("error setting schema for non-reference field %s under path %s for CRD %s: %w", nonReferenceFieldName, parentPath, crd.Name, err)
 	}
 
 	// 5. Set the updated schema.
 	updatedSchema, err := getSchemaForPath(schema, parentPath[:len(parentPath)-1])
 	if err != nil {
-		return fmt.Errorf("can't get schema for path '%v' in CRD %s: %v", parentPathStr, crd.Name, err)
+		return fmt.Errorf("can't get schema for path '%v' in CRD %s: %w", parentPathStr, crd.Name, err)
 	}
 	if err := crdutil.SetSchemaForFieldUnderObjectOrArray(parentPath[len(parentPath)-1], updatedSchema, parent); err != nil {
-		return fmt.Errorf("error setting updated schema for parent path '%v' for CRD %s: %v", parentPathStr, crd.Name, err)
+		return fmt.Errorf("error setting updated schema for parent path '%v' for CRD %s: %w", parentPathStr, crd.Name, err)
 	}
 
 	return nil
@@ -248,14 +248,14 @@ func EnsureReferenceFieldIsMultiKind(crd *apiextensions.CustomResourceDefinition
 	parentPathStr := strings.Join(parentPath, ".")
 	parent, err = getSchemaForPath(schema, parentPath)
 	if err != nil {
-		return fmt.Errorf("can't get schema for path '%v' in CRD %s: %v", parentPathStr, crd.Name, err)
+		return fmt.Errorf("can't get schema for path '%v' in CRD %s: %w", parentPathStr, crd.Name, err)
 	}
 
 	// 2. Ensure the required `kind` subfield is supported in the reference
 	// field.
 	referenceFieldSchema, ok, err := crdutil.GetSchemaForFieldUnderObjectOrArray(referenceFieldName, parent)
 	if err != nil {
-		return fmt.Errorf("error getting schema for reference field %s under path %s for CRD %s: %v", referenceFieldName, parentPath, crd.Name, err)
+		return fmt.Errorf("error getting schema for reference field %s under path %s for CRD %s: %w", referenceFieldName, parentPath, crd.Name, err)
 	}
 	if !ok {
 		return fmt.Errorf("can't find reference field %s under path %s for CRD %s", referenceFieldName, parentPath, crd.Name)
@@ -288,17 +288,17 @@ func EnsureReferenceFieldIsMultiKind(crd *apiextensions.CustomResourceDefinition
 			referenceFieldSchema = referenceFieldSchemaWithKind
 		}
 		if err := crdutil.SetSchemaForFieldUnderObjectOrArray(referenceFieldName, parent, referenceFieldSchema); err != nil {
-			return fmt.Errorf("error setting schema for reference field %s under path %s for CRD %s: %v", referenceFieldName, parentPath, crd.Name, err)
+			return fmt.Errorf("error setting schema for reference field %s under path %s for CRD %s: %w", referenceFieldName, parentPath, crd.Name, err)
 		}
 	}
 
 	// 3. Set the updated schema.
 	updatedSchema, err := getSchemaForPath(schema, parentPath[:len(parentPath)-1])
 	if err != nil {
-		return fmt.Errorf("can't get schema for path '%v' in CRD %s: %v", parentPathStr, crd.Name, err)
+		return fmt.Errorf("can't get schema for path '%v' in CRD %s: %w", parentPathStr, crd.Name, err)
 	}
 	if err := crdutil.SetSchemaForFieldUnderObjectOrArray(parentPath[len(parentPath)-1], updatedSchema, parent); err != nil {
-		return fmt.Errorf("error setting updated schema for parent path '%v' for CRD %s: %v", parentPathStr, crd.Name, err)
+		return fmt.Errorf("error setting updated schema for parent path '%v' for CRD %s: %w", parentPathStr, crd.Name, err)
 	}
 
 	return nil
@@ -335,11 +335,11 @@ func PreserveUserSpecifiedLegacyField(original, reconciled *k8s.Resource, path .
 func PreserveUserSpecifiedLegacyFieldUnderSlice(original, reconciled *k8s.Resource, upToSlicePath []string, path []string) error {
 	originalSlice, foundOriginal, err := unstructured.NestedSlice(original.Spec, upToSlicePath...)
 	if err != nil {
-		return fmt.Errorf("error getting the nested slice under path %s for the original resource: %v", strings.Join(upToSlicePath, "."), err)
+		return fmt.Errorf("error getting the nested slice under path %s for the original resource: %w", strings.Join(upToSlicePath, "."), err)
 	}
 	reconciledSlice, foundReconciled, err := unstructured.NestedSlice(reconciled.Spec, upToSlicePath...)
 	if err != nil {
-		return fmt.Errorf("error getting the nested slice under path %s for the reconciled resource: %v", strings.Join(upToSlicePath, "."), err)
+		return fmt.Errorf("error getting the nested slice under path %s for the reconciled resource: %w", strings.Join(upToSlicePath, "."), err)
 	}
 	if !foundOriginal || !foundReconciled {
 		return nil
@@ -347,17 +347,17 @@ func PreserveUserSpecifiedLegacyFieldUnderSlice(original, reconciled *k8s.Resour
 	for i, v := range originalSlice {
 		pathFieldValue, foundPathField, err := unstructured.NestedFieldCopy(v.(map[string]interface{}), path...)
 		if err != nil {
-			return fmt.Errorf("error getting the user-specified value from the path %s within the slice field: %v", strings.Join(path, "."), err)
+			return fmt.Errorf("error getting the user-specified value from the path %s within the slice field: %w", strings.Join(path, "."), err)
 		}
 		if !foundPathField {
 			continue
 		}
 		if err := unstructured.SetNestedField(reconciledSlice[i].(map[string]interface{}), pathFieldValue, path...); err != nil {
-			return fmt.Errorf("error setting original value to reconciled slice element: %v", err)
+			return fmt.Errorf("error setting original value to reconciled slice element: %w", err)
 		}
 	}
 	if err := unstructured.SetNestedSlice(reconciled.Spec, reconciledSlice, upToSlicePath...); err != nil {
-		return fmt.Errorf("error setting preserved values back into reconciled object: %v", err)
+		return fmt.Errorf("error setting preserved values back into reconciled object: %w", err)
 	}
 	return nil
 }
@@ -415,11 +415,11 @@ func PruneDefaultedAuthoritativeFieldIfOnlyLegacyFieldSpecified(original, reconc
 func PruneDefaultedAuthoritativeFieldIfOnlyLegacyFieldSpecifiedUnderSlice(original, reconciled *k8s.Resource, pathUpToSlice, nonReferenceFieldPath, referenceFieldPath []string) error {
 	originalSlice, foundOriginal, err := unstructured.NestedSlice(original.Spec, pathUpToSlice...)
 	if err != nil {
-		return fmt.Errorf("error getting the nested slice under path %s for the original resource: %v", strings.Join(pathUpToSlice, "."), err)
+		return fmt.Errorf("error getting the nested slice under path %s for the original resource: %w", strings.Join(pathUpToSlice, "."), err)
 	}
 	reconciledSlice, foundReconciled, err := unstructured.NestedSlice(reconciled.Spec, pathUpToSlice...)
 	if err != nil {
-		return fmt.Errorf("error getting the nested slice under path %s for the reconciled resource: %v", strings.Join(pathUpToSlice, "."), err)
+		return fmt.Errorf("error getting the nested slice under path %s for the reconciled resource: %w", strings.Join(pathUpToSlice, "."), err)
 	}
 	if !foundOriginal || !foundReconciled {
 		return nil
@@ -427,18 +427,18 @@ func PruneDefaultedAuthoritativeFieldIfOnlyLegacyFieldSpecifiedUnderSlice(origin
 	for i, v := range originalSlice {
 		_, foundReferenceField, err := unstructured.NestedFieldCopy(v.(map[string]interface{}), referenceFieldPath...)
 		if err != nil {
-			return fmt.Errorf("error checking the existence of the nested reference field %s within the slice field of the original resource: %v", strings.Join(referenceFieldPath, "."), err)
+			return fmt.Errorf("error checking the existence of the nested reference field %s within the slice field of the original resource: %w", strings.Join(referenceFieldPath, "."), err)
 		}
 		_, foundNonReferenceField, err := unstructured.NestedFieldCopy(v.(map[string]interface{}), nonReferenceFieldPath...)
 		if err != nil {
-			return fmt.Errorf("error checking the existence of the nested non-reference field %s within the slice field of the original resource: %v", strings.Join(nonReferenceFieldPath, "."), err)
+			return fmt.Errorf("error checking the existence of the nested non-reference field %s within the slice field of the original resource: %w", strings.Join(nonReferenceFieldPath, "."), err)
 		}
 		if !foundReferenceField && foundNonReferenceField {
 			unstructured.RemoveNestedField(reconciledSlice[i].(map[string]interface{}), referenceFieldPath...)
 		}
 	}
 	if err := unstructured.SetNestedSlice(reconciled.Spec, reconciledSlice, pathUpToSlice...); err != nil {
-		return fmt.Errorf("error setting the altered slice field %s back into the reconciled resource: %v", strings.Join(pathUpToSlice, "."), err)
+		return fmt.Errorf("error setting the altered slice field %s back into the reconciled resource: %w", strings.Join(pathUpToSlice, "."), err)
 	}
 	return nil
 }
@@ -539,7 +539,7 @@ func FavorReferenceFieldOverNonReferenceFieldUnderSlice(r *k8s.Resource, pathUpT
 	}
 	sliceVal, found, err := unstructured.NestedSlice(r.Spec, pathUpToSlice...)
 	if err != nil {
-		return fmt.Errorf("error getting nested slice field %s from resource: %v", strings.Join(pathUpToSlice, "."), err)
+		return fmt.Errorf("error getting nested slice field %s from resource: %w", strings.Join(pathUpToSlice, "."), err)
 	}
 	if !found {
 		return nil
@@ -547,18 +547,18 @@ func FavorReferenceFieldOverNonReferenceFieldUnderSlice(r *k8s.Resource, pathUpT
 	for i, v := range sliceVal {
 		nonReferenceVal, found, err := unstructured.NestedFieldCopy(v.(map[string]interface{}), nonReferenceFieldPath...)
 		if err != nil {
-			return fmt.Errorf("error getting non-reference field %s from slice field: %v", strings.Join(nonReferenceFieldPath, "."), err)
+			return fmt.Errorf("error getting non-reference field %s from slice field: %w", strings.Join(nonReferenceFieldPath, "."), err)
 		}
 		if !found {
 			continue
 		}
 		if err := unstructured.SetNestedField(sliceVal[i].(map[string]interface{}), nonReferenceVal, append(referenceFieldPath, "external")...); err != nil {
-			return fmt.Errorf("error setting non-reference value to reference field path %s: %v", strings.Join(append(referenceFieldPath, "external"), "."), err)
+			return fmt.Errorf("error setting non-reference value to reference field path %s: %w", strings.Join(append(referenceFieldPath, "external"), "."), err)
 		}
 		unstructured.RemoveNestedField(sliceVal[i].(map[string]interface{}), nonReferenceFieldPath...)
 	}
 	if err := unstructured.SetNestedSlice(r.Spec, sliceVal, pathUpToSlice...); err != nil {
-		return fmt.Errorf("error setting altered slice %s back into resource: %v", strings.Join(pathUpToSlice, "."), err)
+		return fmt.Errorf("error setting altered slice %s back into resource: %w", strings.Join(pathUpToSlice, "."), err)
 	}
 	return nil
 }
@@ -589,7 +589,7 @@ func validateIfAuthoritativeFieldAndLegacyFieldTakeDifferentValues(r *k8s.Resour
 func validateAtMostOneFieldIsSetUnderSlice(r *k8s.Resource, fieldPathUpToSlice, fieldPath1, fieldPath2 []string) error {
 	sliceField, found, err := unstructured.NestedSlice(r.Spec, fieldPathUpToSlice...)
 	if err != nil {
-		return fmt.Errorf("error getting slice field %s from resource: %v", strings.Join(fieldPathUpToSlice, "."), err)
+		return fmt.Errorf("error getting slice field %s from resource: %w", strings.Join(fieldPathUpToSlice, "."), err)
 	}
 	if !found {
 		return nil
@@ -597,11 +597,11 @@ func validateAtMostOneFieldIsSetUnderSlice(r *k8s.Resource, fieldPathUpToSlice, 
 	for _, v := range sliceField {
 		_, found1, err := unstructured.NestedFieldCopy(v.(map[string]interface{}), fieldPath1...)
 		if err != nil {
-			return fmt.Errorf("error checking existence of nested field %s within slice field: %v", strings.Join(fieldPath1, "."), err)
+			return fmt.Errorf("error checking existence of nested field %s within slice field: %w", strings.Join(fieldPath1, "."), err)
 		}
 		_, found2, err := unstructured.NestedFieldCopy(v.(map[string]interface{}), fieldPath2...)
 		if err != nil {
-			return fmt.Errorf("error checking existence of nested field %s within slice field: %v", strings.Join(fieldPath2, "."), err)
+			return fmt.Errorf("error checking existence of nested field %s within slice field: %w", strings.Join(fieldPath2, "."), err)
 		}
 		if !found1 || !found2 {
 			continue
@@ -636,11 +636,11 @@ func markFieldAsManaged(r *k8s.Resource, fieldPath ...string) error {
 func FavorReferenceArrayFieldOverNonReferenceArrayField(r *k8s.Resource, nonReferenceFieldPath, referenceFieldPath []string) error {
 	nonRefArray, foundNonRef, err := unstructured.NestedStringSlice(r.Spec, nonReferenceFieldPath...)
 	if err != nil {
-		return fmt.Errorf("error getting the non-reference field '%v': %v", strings.Join(nonReferenceFieldPath, "."), err)
+		return fmt.Errorf("error getting the non-reference field '%v': %w", strings.Join(nonReferenceFieldPath, "."), err)
 	}
 	_, foundRef, err := unstructured.NestedSlice(r.Spec, referenceFieldPath...)
 	if err != nil {
-		return fmt.Errorf("error getting the reference field '%v': %v", strings.Join(referenceFieldPath, "."), err)
+		return fmt.Errorf("error getting the reference field '%v': %w", strings.Join(referenceFieldPath, "."), err)
 	}
 
 	if foundNonRef && foundRef {
@@ -658,7 +658,7 @@ func FavorReferenceArrayFieldOverNonReferenceArrayField(r *k8s.Resource, nonRefe
 	for i, val := range nonRefArray {
 		refItem := make(map[string]interface{})
 		if err := unstructured.SetNestedField(refItem, val, "external"); err != nil {
-			return fmt.Errorf("error setting the 'external' field under the reference array '%v': %v", strings.Join(referenceFieldPath, "."), err)
+			return fmt.Errorf("error setting the 'external' field under the reference array '%v': %w", strings.Join(referenceFieldPath, "."), err)
 		}
 		refArray[i] = refItem
 	}

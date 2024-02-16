@@ -43,7 +43,7 @@ func start() error {
 	}
 	// Profiler initialization, best done as early as possible.
 	if err := profiler.Start(cfg); err != nil {
-		return fmt.Errorf("error starting profiler: %v", err)
+		return fmt.Errorf("error starting profiler: %w", err)
 	}
 	return nil
 }

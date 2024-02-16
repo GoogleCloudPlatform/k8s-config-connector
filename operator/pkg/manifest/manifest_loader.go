@@ -61,7 +61,7 @@ func (c *ManifestLoader) ResolveManifest(ctx context.Context, o runtime.Object) 
 	channelName := k8s.StableChannel
 	version, err := ResolveVersion(ctx, c.repo, componentName, channelName)
 	if err != nil {
-		return nil, fmt.Errorf("error resolving the version for %v in %v channel: %v", componentName, channelName, err)
+		return nil, fmt.Errorf("error resolving the version for %v in %v channel: %w", componentName, channelName, err)
 	}
 	mlog.Info("resolved version from channel", "channel", channelName, "version", version)
 	return c.repo.LoadManifest(ctx, componentName, version, cc)

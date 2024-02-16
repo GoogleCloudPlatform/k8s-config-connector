@@ -16,6 +16,7 @@ package yaml
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 
@@ -27,13 +28,13 @@ func SplitYAML(yamlBytes []byte) ([][]byte, error) {
 	dec := goyaml.NewDecoder(r)
 	results := make([][]byte, 0)
 	var value map[string]interface{}
-	for eof := dec.Decode(&value); eof != io.EOF; eof = dec.Decode(&value) {
+	for eof := dec.Decode(&value); !errors.Is(eof, io.EOF); eof = dec.Decode(&value) {
 		if eof != nil {
 			return nil, eof
 		}
 		bytes, err := goyaml.Marshal(value)
 		if err != nil {
-			return nil, fmt.Errorf("error marshalling '%v' to YAML: %v", value, err)
+			return nil, fmt.Errorf("error marshalling '%v' to YAML: %w", value, err)
 		}
 		results = append(results, bytes)
 		value = make(map[string]interface{})

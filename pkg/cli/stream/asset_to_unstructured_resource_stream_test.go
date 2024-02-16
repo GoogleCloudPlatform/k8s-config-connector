@@ -16,6 +16,7 @@ package stream_test
 
 import (
 	"context"
+	"errors"
 	"io"
 	"testing"
 
@@ -55,7 +56,7 @@ func unstructuredStreamToSlice(t *testing.T, stream stream.UnstructuredStream) [
 	ctx := context.TODO()
 
 	results := make([]*unstructured.Unstructured, 0)
-	for u, err := stream.Next(ctx); err != io.EOF; u, err = stream.Next(ctx) {
+	for u, err := stream.Next(ctx); !errors.Is(err, io.EOF); u, err = stream.Next(ctx) {
 		if err != nil {
 			t.Fatalf("error reading asset: %v", err)
 		}

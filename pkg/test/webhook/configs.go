@@ -23,7 +23,7 @@ import (
 func GetTestCommonWebhookConfigs() ([]webhook.WebhookConfig, error) {
 	whCfgs, err := webhook.GetCommonWebhookConfigs()
 	if err != nil {
-		return nil, fmt.Errorf("error getting common wehbook configs: %v", err)
+		return nil, fmt.Errorf("error getting common wehbook configs: %w", err)
 	}
 	res := make([]webhook.WebhookConfig, 0)
 	for _, config := range whCfgs {

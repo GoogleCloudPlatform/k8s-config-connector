@@ -57,13 +57,13 @@ func WaitForAssetInventoryOperation(assetClient *cloudasset.Service, operation *
 		request.Header().Add("X-Goog-User-Project", projectNum)
 		newOp, err := request.Do()
 		if err != nil {
-			return false, fmt.Errorf("error getting operation %v: %v", operation.Name,
+			return false, fmt.Errorf("error getting operation %v: %w", operation.Name,
 				err)
 		}
 		operation = newOp
 		if callback != nil {
 			if err = callback(operation); err != nil {
-				return false, fmt.Errorf("error returned by wait callback: %v", err)
+				return false, fmt.Errorf("error returned by wait callback: %w", err)
 			}
 		}
 		return operation.Done, nil
@@ -81,13 +81,13 @@ func WaitForResourceManagerOperation(rmClient *resourcemanager.Service, operatio
 	err := wait.PollImmediate(interval, timeout, func() (done bool, err error) {
 		newOp, err := rmClient.Operations.Get(operation.Name).Do()
 		if err != nil {
-			return false, fmt.Errorf("error getting operation %v: %v", operation.Name,
+			return false, fmt.Errorf("error getting operation %v: %w", operation.Name,
 				err)
 		}
 		operation = newOp
 		if callback != nil {
 			if err = callback(operation); err != nil {
-				return false, fmt.Errorf("error returned by wait callback: %v", err)
+				return false, fmt.Errorf("error returned by wait callback: %w", err)
 			}
 		}
 		return operation.Done, nil
@@ -114,13 +114,13 @@ func WaitForComputeOperation(computeClient *compute.Service, operation *compute.
 			newOp, err = computeClient.GlobalOperations.Get(projectID, operation.Name).Do()
 		}
 		if err != nil {
-			return false, fmt.Errorf("error getting operation %v/%v: %v", projectID, operation.Name,
+			return false, fmt.Errorf("error getting operation %v/%v: %w", projectID, operation.Name,
 				err)
 		}
 		operation = newOp
 		if callback != nil {
 			if err = callback(operation); err != nil {
-				return false, fmt.Errorf("error returned by wait callback: %v", err)
+				return false, fmt.Errorf("error returned by wait callback: %w", err)
 			}
 		}
 		return operation.Status == "DONE", nil

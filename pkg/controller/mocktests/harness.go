@@ -17,6 +17,7 @@ package mocktests
 import (
 	"bytes"
 	"context"
+	"errors"
 	"io"
 	"os"
 	"strings"
@@ -89,7 +90,7 @@ func (h *Harness) ParseObjects(y string) []*unstructured.Unstructured {
 	for {
 		var rawObj runtime.RawExtension
 		if err := decoder.Decode(&rawObj); err != nil {
-			if err != io.EOF {
+			if !errors.Is(err, io.EOF) {
 				t.Fatalf("error decoding yaml: %v", err)
 			}
 			break

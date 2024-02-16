@@ -31,7 +31,7 @@ import (
 func NewResourceByteStream(tfProvider *schema.Provider, params *parameters.Parameters) (stream.ByteStream, error) {
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
-		return nil, fmt.Errorf("error creating service mapping loader: %v", err)
+		return nil, fmt.Errorf("error creating service mapping loader: %w", err)
 	}
 	unstructuredStream, err := NewUnstructuredStream(params, tfProvider, smLoader)
 	if err != nil {

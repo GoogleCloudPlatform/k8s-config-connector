@@ -15,6 +15,7 @@
 package stream_test
 
 import (
+	"errors"
 	"io"
 	"testing"
 
@@ -51,7 +52,7 @@ func TestFilteredAssetStream(t *testing.T) {
 
 func assetStreamToSlice(t *testing.T, stream stream.AssetStream) []asset.Asset {
 	results := make([]asset.Asset, 0)
-	for asset, err := stream.Next(); err != io.EOF; asset, err = stream.Next() {
+	for asset, err := stream.Next(); !errors.Is(err, io.EOF); asset, err = stream.Next() {
 		if err != nil {
 			t.Fatalf("error reading asset: %v", err)
 		}

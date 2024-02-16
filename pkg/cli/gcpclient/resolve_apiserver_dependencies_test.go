@@ -131,7 +131,7 @@ func convertSensitiveFieldsToValue(t *testing.T, resources []*unstructured.Unstr
 func getSecretValue(secretResource *unstructured.Unstructured, key string) (string, error) {
 	var secret v1.Secret
 	if err := util.Marshal(secretResource, &secret); err != nil {
-		return "", fmt.Errorf("error marshalling '%v' to a Secret: %v", secretResource, err)
+		return "", fmt.Errorf("error marshalling '%v' to a Secret: %w", secretResource, err)
 	}
 	if secret.Data != nil {
 		value, ok := secret.Data[key]

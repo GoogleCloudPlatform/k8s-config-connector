@@ -15,6 +15,7 @@
 package stream
 
 import (
+	"errors"
 	"io"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/asset"
@@ -48,7 +49,7 @@ func (f *FilteredAssetStream) Next() (*asset.Asset, error) {
 	if f.shouldInclude == nil {
 		return f.assetStream.Next()
 	}
-	for asset, err := f.assetStream.Next(); err != io.EOF; asset, err = f.assetStream.Next() {
+	for asset, err := f.assetStream.Next(); !errors.Is(err, io.EOF); asset, err = f.assetStream.Next() {
 		if err != nil {
 			return nil, err
 		}

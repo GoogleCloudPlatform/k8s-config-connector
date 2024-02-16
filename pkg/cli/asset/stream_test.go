@@ -16,6 +16,7 @@ package asset_test
 
 import (
 	"context"
+	"errors"
 	"io"
 	"testing"
 
@@ -57,7 +58,7 @@ func testFileStream(t *testing.T, filePath string, expectedCount int) {
 
 func testStream(t *testing.T, stream *asset.Stream, expectedCount int) {
 	count := 0
-	for asset, err := stream.Next(); err != io.EOF; asset, err = stream.Next() {
+	for asset, err := stream.Next(); !errors.Is(err, io.EOF); asset, err = stream.Next() {
 		if err != nil {
 			t.Fatalf("unexpected error reading asset: %v", err)
 		}

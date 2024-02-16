@@ -447,7 +447,7 @@ func ConvertTFObjToKCCObj(state map[string]interface{}, prevSpec map[string]inte
 	// Round-trip via JSON in order to ensure consistency with unstructured.Unstructured's Object type.
 	var ret map[string]interface{}
 	if err := util.Marshal(raw, &ret); err != nil {
-		panic(fmt.Errorf("error normalizing KRM-ified object: %v", err))
+		panic(fmt.Errorf("error normalizing KRM-ified object: %w", err))
 	}
 	return ret
 }
@@ -717,7 +717,7 @@ func convertTFSetToKCCSet(stateVal, prevSpecVal interface{}, schema *tfschema.Sc
 			// convert the KRM previous spec object to a TF object so that we can calculate the correct hash
 			prevElemAsTFObject, err := KRMObjectToTFObject(prevElem.(map[string]interface{}), schemaElem)
 			if err != nil {
-				panic(fmt.Errorf("error converting set object: %v", err))
+				panic(fmt.Errorf("error converting set object: %w", err))
 			}
 			prevHashable = asHashable(prevElemAsTFObject, schemaElem)
 		default:
@@ -775,7 +775,7 @@ func asHashable(o, schemaElem interface{}) interface{} {
 		}
 		val, err := reader.ReadField([]string{key})
 		if err != nil {
-			panic(fmt.Errorf("unable to convert field to hashable: %v", err))
+			panic(fmt.Errorf("unable to convert field to hashable: %w", err))
 		}
 		var ret interface{}
 		if val.Exists {
@@ -796,7 +796,7 @@ func asHashable(o, schemaElem interface{}) interface{} {
 		for k, s := range schemaElem.Schema {
 			val, err := reader.ReadField([]string{k})
 			if err != nil {
-				panic(fmt.Errorf("unable to read field %v: %v", k, err))
+				panic(fmt.Errorf("unable to read field %v: %w", k, err))
 			}
 			if val.Exists {
 				res[k] = val.Value

@@ -189,7 +189,7 @@ func OverlayManagedFieldsOntoState(spec, stateAsKRM map[string]interface{}, mana
 	if len(hierarchicalRefs) > 0 {
 		config, err = addHierarchicalReferenceToConfig(config, spec, hierarchicalRefs)
 		if err != nil {
-			return nil, fmt.Errorf("error adding hierarchical reference to config: %v", err)
+			return nil, fmt.Errorf("error adding hierarchical reference to config: %w", err)
 		}
 	}
 
@@ -441,17 +441,17 @@ func addHierarchicalReferenceToConfig(config, spec map[string]interface{}, hiera
 	modifiedConfig := deepcopy.MapStringInterface(config)
 	resourceRef, hierarchicalRef, err := GetHierarchicalReferenceFromSpec(spec, hierarchicalRefs)
 	if err != nil {
-		return nil, fmt.Errorf("error getting hierarchical reference: %v", err)
+		return nil, fmt.Errorf("error getting hierarchical reference: %w", err)
 	}
 	if resourceRef == nil {
 		return modifiedConfig, nil
 	}
 	var resourceRefRaw map[string]interface{}
 	if err := util.Marshal(resourceRef, &resourceRefRaw); err != nil {
-		return nil, fmt.Errorf("error marshalling hierarchical reference to map[string]interface{}: %v", err)
+		return nil, fmt.Errorf("error marshalling hierarchical reference to map[string]interface{}: %w", err)
 	}
 	if err := unstructured.SetNestedField(modifiedConfig, resourceRefRaw, hierarchicalRef.Key); err != nil {
-		return nil, fmt.Errorf("error setting hierarchical reference in config: %v", err)
+		return nil, fmt.Errorf("error setting hierarchical reference in config: %w", err)
 	}
 	return modifiedConfig, nil
 }

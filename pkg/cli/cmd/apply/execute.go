@@ -33,17 +33,17 @@ func Execute(ctx context.Context, params *parameters.Parameters, output io.Write
 	}
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
-		return fmt.Errorf("error loading service mappings: %v", err)
+		return fmt.Errorf("error loading service mappings: %w", err)
 	}
 
 	usFromFile, err := yamlresource.UnstructuredFromYamlFile(params.Input)
 	if err != nil {
-		return fmt.Errorf("error loading resource from file: %v", err)
+		return fmt.Errorf("error loading resource from file: %w", err)
 	}
 	client := gcpclient.New(tfProvider, smLoader)
 	appliedResource, err := client.Apply(usFromFile)
 	if err != nil {
-		return fmt.Errorf("error applying resource from file: %v", err)
+		return fmt.Errorf("error applying resource from file: %w", err)
 	}
 
 	return yamlresource.RenderJSON(appliedResource, output)

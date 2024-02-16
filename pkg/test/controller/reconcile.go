@@ -74,7 +74,7 @@ func startTestManager(env *envtest.Environment, testType test.TestType, whCfgs [
 		MetricsBindAddress: "0",
 	})
 	if err != nil {
-		return nil, nil, fmt.Errorf("error creating manager: %v", err)
+		return nil, nil, fmt.Errorf("error creating manager: %w", err)
 	}
 	if testType == test.IntegrationTestType {
 		server := mgr.GetWebhookServer()
@@ -100,7 +100,7 @@ func startMgr(mgr manager.Manager, mgrStartErrHandler func(string, ...interface{
 	go func() {
 		defer wg.Done()
 		if err := mgr.Start(ctx); err != nil {
-			mgrStartErrHandler("unable to start manager: %v", err)
+			mgrStartErrHandler("unable to start manager: %w", err)
 		}
 	}()
 	stop := func() {
@@ -217,7 +217,7 @@ tryAgain:
 
 	if expectedErrorRegex == nil {
 		if err != nil {
-			t.Fatalf("reconcile returned unexpected error: %v", err)
+			t.Fatal(fmt.Errorf("reconcile returned unexpected error: %w", err))
 		}
 	} else {
 		if err == nil || !expectedErrorRegex.MatchString(err.Error()) {
@@ -253,7 +253,7 @@ func EnsureNamespaceExists(c client.Client, name string) error {
 	ns.SetName(name)
 	if err := c.Create(context.Background(), ns); err != nil {
 		if !apierrors.IsAlreadyExists(err) {
-			return fmt.Errorf("error creating namespace %v: %v", name, err)
+			return fmt.Errorf("error creating namespace %v: %w", name, err)
 		}
 	}
 	return nil

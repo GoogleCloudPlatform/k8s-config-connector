@@ -66,7 +66,7 @@ func createDefaultConfigConnector(ctx context.Context, dynamicClient dynamic.Int
 	u := &unstructured.Unstructured{}
 	b := []byte(defaultConfigConnector)
 	if err := yaml.Unmarshal(b, u); err != nil {
-		return fmt.Errorf("error unmarshalling bytes to unstruct: %v", err)
+		return fmt.Errorf("error unmarshalling bytes to unstruct: %w", err)
 	}
 
 	// Create the ConfigConnector object. Retry on error just in case the

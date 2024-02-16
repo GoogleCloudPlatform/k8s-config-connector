@@ -22,10 +22,10 @@ import (
 func Marshal(raw interface{}, processed interface{}) error {
 	b, err := json.Marshal(raw)
 	if err != nil {
-		return fmt.Errorf("error marshaling as JSON: %v", err)
+		return fmt.Errorf("error marshaling as JSON: %w", err)
 	}
 	if err := json.Unmarshal(b, processed); err != nil {
-		return fmt.Errorf("error unmarshaling into processed object: %v", err)
+		return fmt.Errorf("error unmarshaling into processed object: %w", err)
 	}
 	return nil
 }
