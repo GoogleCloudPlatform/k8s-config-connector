@@ -65,7 +65,9 @@ func TestRenderJSONSuccess(t *testing.T) {
 		t.Fatalf("Error loading test_file %v, %v", testPath, err)
 	}
 	buf := bytes.Buffer{}
-	RenderJSON(unstructured, &buf)
+	if err := RenderJSON(unstructured, &buf); err != nil {
+		t.Fatal(err)
+	}
 	renderOutput, err := ioutil.ReadFile(fmt.Sprintf("%v/%v", PathPrefix, JSONOutputFile))
 	if err != nil {
 		t.Fatalf("Error loading test_file %v, %v", JSONOutputFile, err)

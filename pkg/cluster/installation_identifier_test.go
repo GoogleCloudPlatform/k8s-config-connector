@@ -43,7 +43,9 @@ var (
 )
 
 func TestGetNamespaceId(t *testing.T) {
-	testcontroller.EnsureNamespaceExists(mgr.GetClient(), namespaceIDConfigMapNN.Namespace)
+	if err := testcontroller.EnsureNamespaceExists(mgr.GetClient(), namespaceIDConfigMapNN.Namespace); err != nil {
+		t.Fatal(err)
+	}
 	testGetNamespaceID(t, mgr)
 	testSetNamespaceID(t, mgr)
 	testDeleteNamespaceID(t, mgr)

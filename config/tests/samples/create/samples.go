@@ -404,7 +404,9 @@ func replaceResourceNamesWithUniqueIDs(t *testing.T, unstructs []*unstructured.U
 			if err != nil {
 				t.Fatalf("error generating new spec.displayName value for Folder '%v': %v", u.GetName(), err)
 			}
-			unstructured.SetNestedField(newUnstruct.Object, newDisplayName, "spec", "displayName")
+			if err := unstructured.SetNestedField(newUnstruct.Object, newDisplayName, "spec", "displayName"); err != nil {
+				t.Fatal(err)
+			}
 		}
 		newUnstructs = append(newUnstructs, newUnstruct)
 	}

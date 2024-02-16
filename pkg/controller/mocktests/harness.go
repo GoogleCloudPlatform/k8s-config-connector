@@ -68,9 +68,13 @@ func NewHarness(t *testing.T) *Harness {
 		Scheme: runtime.NewScheme(),
 		Ctx:    context.Background(),
 	}
-	corev1.AddToScheme(h.Scheme)
+	if err := corev1.AddToScheme(h.Scheme); err != nil {
+		t.Fatal(err)
+	}
 
-	iamv1beta1.SchemeBuilder.AddToScheme(h.Scheme)
+	if err := iamv1beta1.SchemeBuilder.AddToScheme(h.Scheme); err != nil {
+		t.Fatal(err)
+	}
 
 	t.Cleanup(h.Stop)
 	return h
