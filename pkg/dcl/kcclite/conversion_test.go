@@ -43,7 +43,7 @@ var (
 	emptyObject  = make(map[string]interface{})
 	dclSchemaMap = map[string]*openapi.Schema{
 		"test1_beta_foo": testSchema(),
-		"test1_beta_bar": &openapi.Schema{
+		"test1_beta_bar": {
 			Type: "object",
 			Extension: map[string]interface{}{
 				"x-dcl-id": "projects/{{project}}/bars/{{name}}",
@@ -110,13 +110,13 @@ func testSchema() *openapi.Schema {
 	return &openapi.Schema{
 		Type: "object",
 		Properties: map[string]*openapi.Schema{
-			"project": &openapi.Schema{
+			"project": {
 				Type: "string",
 			},
-			"name": &openapi.Schema{
+			"name": {
 				Type: "string",
 			},
-			"labels": &openapi.Schema{
+			"labels": {
 				Type: "object",
 				AdditionalProperties: &openapi.Schema{
 					Type: "string",
@@ -720,7 +720,9 @@ func TestToKCCLite(t *testing.T) {
 			t.Parallel()
 			testId := testvariable.NewUniqueId()
 			c := mgr.GetClient()
-			testcontroller.EnsureNamespaceExists(c, testId)
+			if err := testcontroller.EnsureNamespaceExists(c, testId); err != nil {
+				t.Fatal(err)
+			}
 			if tc.hasResourceReferences {
 				references := []*unstructured.Unstructured{
 					newBarUnstructuredWithResourceID(t, "my-ref1", testId, corev1.ConditionTrue),
@@ -730,10 +732,10 @@ func TestToKCCLite(t *testing.T) {
 			}
 			if tc.hasSecretReferences {
 				secretsData := []map[string]interface{}{
-					map[string]interface{}{
+					{
 						"secret-key1": "secret-val1",
 					},
-					map[string]interface{}{
+					{
 						"secret-key2": "secret-val2",
 					},
 				}
@@ -897,7 +899,10 @@ func TestToKCCLiteBestEffort(t *testing.T) {
 			t.Parallel()
 			testId := testvariable.NewUniqueId()
 			c := mgr.GetClient()
-			testcontroller.EnsureNamespaceExists(c, testId)
+			if err := testcontroller.EnsureNamespaceExists(c, testId); err != nil {
+				t.Fatal(err)
+			}
+
 			if len(tc.references) != 0 {
 				for _, ref := range tc.references {
 					ref.SetNamespace(testId)
@@ -954,7 +959,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -990,7 +995,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1021,7 +1026,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1052,7 +1057,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1089,7 +1094,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"folder": &openapi.Schema{
+					"folder": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1124,7 +1129,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1170,7 +1175,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1211,7 +1216,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1252,7 +1257,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1298,7 +1303,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1344,7 +1349,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1385,7 +1390,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1426,7 +1431,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1472,7 +1477,7 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1513,10 +1518,10 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"field": &openapi.Schema{
+					"field": {
 						Type: "string",
 					},
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1547,10 +1552,10 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"field": &openapi.Schema{
+					"field": {
 						Type: "string",
 					},
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1587,10 +1592,10 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"field": &openapi.Schema{
+					"field": {
 						Type: "string",
 					},
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1617,10 +1622,10 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			schema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"field": &openapi.Schema{
+					"field": {
 						Type: "string",
 					},
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -1660,7 +1665,9 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 			t.Parallel()
 			testId := testvariable.NewUniqueId()
 			c := mgr.GetClient()
-			testcontroller.EnsureNamespaceExists(c, testId)
+			if err := testcontroller.EnsureNamespaceExists(c, testId); err != nil {
+				t.Fatal(err)
+			}
 			if tc.reference != nil {
 				tc.reference.SetNamespace(testId)
 				test.EnsureObjectExists(t, tc.reference, c)
@@ -1681,12 +1688,12 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 				// (e.g. "Cloudresourcemanager/Project").
 				// Note that the "x-dcl-id" values used below for testing are
 				// the same ones from the real DCL schemas.
-				"cloudresourcemanager_ga_project": &openapi.Schema{
+				"cloudresourcemanager_ga_project": {
 					Extension: map[string]interface{}{
 						"x-dcl-id": "projects/{{name}}",
 					},
 				},
-				"cloudresourcemanager_ga_folder": &openapi.Schema{
+				"cloudresourcemanager_ga_folder": {
 					Extension: map[string]interface{}{
 						"x-dcl-id": "{{name}}",
 					},
@@ -2302,7 +2309,7 @@ func TestResolveSpecAndStatusWithMixedSpecAndLegacyStatus(t *testing.T) {
 				Schema: &openapi.Schema{
 					Type: "object",
 					Properties: map[string]*openapi.Schema{
-						"project": &openapi.Schema{
+						"project": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-references": []interface{}{
@@ -2345,7 +2352,7 @@ func TestResolveSpecAndStatusWithMixedSpecAndLegacyStatus(t *testing.T) {
 				Schema: &openapi.Schema{
 					Type: "object",
 					Properties: map[string]*openapi.Schema{
-						"project": &openapi.Schema{
+						"project": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-references": []interface{}{
@@ -2388,7 +2395,7 @@ func TestResolveSpecAndStatusWithMixedSpecAndLegacyStatus(t *testing.T) {
 				Schema: &openapi.Schema{
 					Type: "object",
 					Properties: map[string]*openapi.Schema{
-						"parent": &openapi.Schema{
+						"parent": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-references": []interface{}{
@@ -2441,7 +2448,7 @@ func TestResolveSpecAndStatusWithMixedSpecAndLegacyStatus(t *testing.T) {
 				Schema: &openapi.Schema{
 					Type: "object",
 					Properties: map[string]*openapi.Schema{
-						"parent": &openapi.Schema{
+						"parent": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-references": []interface{}{
@@ -2494,7 +2501,7 @@ func TestResolveSpecAndStatusWithMixedSpecAndLegacyStatus(t *testing.T) {
 				Schema: &openapi.Schema{
 					Type: "object",
 					Properties: map[string]*openapi.Schema{
-						"parent": &openapi.Schema{
+						"parent": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-references": []interface{}{
@@ -2547,7 +2554,7 @@ func TestResolveSpecAndStatusWithMixedSpecAndLegacyStatus(t *testing.T) {
 				Schema: &openapi.Schema{
 					Type: "object",
 					Properties: map[string]*openapi.Schema{
-						"parent": &openapi.Schema{
+						"parent": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-references": []interface{}{
@@ -2596,7 +2603,7 @@ func TestResolveSpecAndStatusWithMixedSpecAndLegacyStatus(t *testing.T) {
 				Schema: &openapi.Schema{
 					Type: "object",
 					Properties: map[string]*openapi.Schema{
-						"project": &openapi.Schema{
+						"project": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-references": []interface{}{
@@ -2635,7 +2642,7 @@ func TestResolveSpecAndStatusWithMixedSpecAndLegacyStatus(t *testing.T) {
 				Schema: &openapi.Schema{
 					Type: "object",
 					Properties: map[string]*openapi.Schema{
-						"parent": &openapi.Schema{
+						"parent": {
 							Type: "string",
 							Extension: map[string]interface{}{
 								"x-dcl-references": []interface{}{

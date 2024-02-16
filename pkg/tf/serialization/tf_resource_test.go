@@ -41,7 +41,9 @@ func testSerialize(t *testing.T, instanceStateFile, tfType, goldenFile string) s
 		t.Fatalf("failed to load instance state for instance, %s", err.Error())
 	}
 	is := &terraform.InstanceState{}
-	yaml.Unmarshal(b, &is)
+	if err := yaml.Unmarshal(b, &is); err != nil {
+		t.Fatal(err)
+	}
 	info := &terraform.InstanceInfo{
 		Id:   "foo",
 		Type: tfType,

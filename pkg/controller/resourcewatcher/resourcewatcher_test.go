@@ -65,9 +65,11 @@ func TestWatchResourceSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("got unexpected error: %v", err)
 	}
-	fake.Resource(k8s.ToGVR(gvk)).
+	if _, err := fake.Resource(k8s.ToGVR(gvk)).
 		Namespace(nn.Namespace).
-		Create(context.TODO(), readyResourceUnstructured, metav1.CreateOptions{})
+		Create(context.TODO(), readyResourceUnstructured, metav1.CreateOptions{}); err != nil {
+		t.Fatal(err)
+	}
 	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
 	defer cancel()
 	if err := resourcewatcher.WaitForResourceToBeReadyViaWatch(ctx, watch, logger); err != nil {

@@ -223,6 +223,7 @@ func (r *LifecycleHandler) HandleUpToDate(ctx context.Context, resource *k8s.Res
 	if err := r.updateAPIServer(ctx, resource); err != nil {
 		return err
 	}
+
 	r.recordEvent(resource, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
 	return nil
 }
@@ -241,6 +242,7 @@ func (r *LifecycleHandler) HandleUnresolvableDeps(ctx context.Context, resource 
 			return err
 		}
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, reason, msg)
 	return nil
 }
@@ -255,6 +257,7 @@ func (r *LifecycleHandler) HandleObtainLeaseFailed(ctx context.Context, resource
 			return err
 		}
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.ManagementConflict, msg)
 	return err
 }
@@ -269,6 +272,7 @@ func (r *LifecycleHandler) HandlePreActuationTransformFailed(ctx context.Context
 			return err
 		}
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.PreActuationTransformFailed, msg)
 	return err
 }
@@ -283,6 +287,7 @@ func (r *LifecycleHandler) HandlePostActuationTransformFailed(ctx context.Contex
 			return err
 		}
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.PostActuationTransformFailed, msg)
 	return err
 }
@@ -293,6 +298,7 @@ func (r *LifecycleHandler) HandleUpdating(ctx context.Context, resource *k8s.Res
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
+
 	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
 	return nil
 }
@@ -304,6 +310,7 @@ func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
 	return fmt.Errorf("Update call failed: %w", err)
 }
@@ -314,6 +321,7 @@ func (r *LifecycleHandler) HandleDeleting(ctx context.Context, resource *k8s.Res
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
+
 	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Deleting, k8s.DeletingMessage)
 	return nil
 }
@@ -326,6 +334,7 @@ func (r *LifecycleHandler) HandleDeleted(ctx context.Context, resource *k8s.Reso
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return fmt.Errorf("error updating status: %w", err)
 	}
+
 	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Deleted, k8s.DeletedMessage)
 
 	k8s.RemoveFinalizer(resource, k8s.ControllerFinalizerName)
@@ -339,6 +348,7 @@ func (r *LifecycleHandler) HandleDeleteFailed(ctx context.Context, resource *k8s
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.DeleteFailed, msg)
 	return fmt.Errorf("Delete call failed: %w", err)
 }
@@ -350,6 +360,7 @@ func (r *LifecycleHandler) HandleUnmanaged(ctx context.Context, resource *k8s.Re
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.Unmanaged, msg)
 	return nil
 }
@@ -377,13 +388,13 @@ func setObservedGeneration(resource *k8s.Resource, observedGeneration int64) {
 	resource.Status["observedGeneration"] = observedGeneration
 }
 
-func (r *LifecycleHandler) recordEvent(resource *k8s.Resource, eventtype, reason, message string) error {
+func (r *LifecycleHandler) recordEvent(resource *k8s.Resource, eventtype, reason, message string) {
 	u, err := resource.MarshalAsUnstructured()
 	if err != nil {
-		return err
+		// todo acpana log err
+		return
 	}
 	r.Recorder.Event(u, eventtype, reason, message)
-	return nil
 }
 
 func IsOrphaned(resource *k8s.Resource, parentReferenceConfigs []corekccv1alpha1.TypeConfig, kubeClient client.Client) (orphaned bool, parent *k8s.Resource, err error) {

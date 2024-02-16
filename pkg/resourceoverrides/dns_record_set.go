@@ -62,7 +62,10 @@ func preserveRrdatasFieldAndEnsureRrdatasRefsFieldIsMultiKind() ResourceOverride
 		// override, so we will manually remove it.
 		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
 		spec := schema.Properties["spec"]
-		crdutil.SetNotRuleForObjectOrArray(&spec, nil)
+		if err := crdutil.SetNotRuleForObjectOrArray(&spec, nil); err != nil {
+			return err
+		}
+
 		return crdutil.SetSchemaForFieldUnderObjectOrArray("spec", schema, &spec)
 	}
 	o.PreActuationTransform = func(r *k8s.Resource) error {
@@ -93,11 +96,14 @@ func enforceMutuallyExclusiveRrdatasAndRoutingPolicy() ResourceOverride {
 				Required: []string{field},
 			}
 		}
-		crdutil.SetOneOfRuleForObjectOrArray(&spec, []*apiextensions.JSONSchemaProps{
+		if err := crdutil.SetOneOfRuleForObjectOrArray(&spec, []*apiextensions.JSONSchemaProps{
 			requireField(rrdatasFieldName),
 			requireField(rrdatasRefsFieldName),
 			requireField(routingPolicyFieldName),
-		})
+		}); err != nil {
+			return err
+		}
+
 		return crdutil.SetSchemaForFieldUnderObjectOrArray("spec", schema, &spec)
 	}
 	return o

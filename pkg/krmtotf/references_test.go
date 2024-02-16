@@ -752,7 +752,10 @@ func TestResolveResourceReferenceToDCLResourceWithResourceID(t *testing.T) {
 		Kind:    "Foo",
 	}
 	ns := testId
-	testcontroller.EnsureNamespaceExists(c, ns)
+	if err := testcontroller.EnsureNamespaceExists(c, ns); err != nil {
+		t.Fatal(err)
+	}
+
 	resource := &Resource{}
 	resource.SetGroupVersionKind(gvk)
 	resource.SetNamespace(ns)
@@ -1038,7 +1041,10 @@ func TestResolveResourceReferenceToTFResourceWithResourceID(t *testing.T) {
 		Kind:    "Foo",
 	}
 	ns := testId
-	testcontroller.EnsureNamespaceExists(c, ns)
+	if err := testcontroller.EnsureNamespaceExists(c, ns); err != nil {
+		t.Fatal(err)
+	}
+
 	resource := &Resource{}
 	resource.SetGroupVersionKind(gvk)
 	resource.SetNamespace(ns)

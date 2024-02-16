@@ -104,7 +104,9 @@ func AddOutputParam(cmd *cobra.Command, value *string) {
 
 func AddResourceFormatParam(cmd *cobra.Command, value *string) {
 	cmd.Flags().StringVar(value, ResourceFormatParamName, ResourceFormatDefault, ResourceFormatUsage)
-	cmd.Flags().MarkHidden(ResourceFormatParamName)
+	if err := cmd.Flags().MarkHidden(ResourceFormatParamName); err != nil {
+		panic(err)
+	}
 }
 
 func ValidateResourceFormat(resourceFormat, iamFormat string) error {
