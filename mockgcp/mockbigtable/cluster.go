@@ -140,7 +140,7 @@ func (s *instanceAdminServer) PartialUpdateCluster(ctx context.Context, req *pb.
 		return nil, err
 	}
 
-	return s.operations.StartLRO(ctx, nil, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, "", nil, func() (proto.Message, error) {
 		return obj, nil
 	})
 }

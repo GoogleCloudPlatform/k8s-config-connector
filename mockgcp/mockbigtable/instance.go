@@ -59,7 +59,7 @@ func (s *instanceAdminServer) ListInstances(ctx context.Context, req *pb.ListIns
 	if err != nil {
 		return nil, err
 	}
-	project, err := s.projects.GetProject(projectName)
+	project, err := s.Projects.GetProject(projectName)
 	if err != nil {
 		return nil, err
 	}
@@ -81,13 +81,13 @@ func (s *instanceAdminServer) ListInstances(ctx context.Context, req *pb.ListIns
 
 func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.CreateInstanceRequest) (*longrunning.Operation, error) {
 	reqName := req.GetParent() + "/instances/" + req.GetInstanceId()
-	instanceName, err := s.parseInstanceName(reqName)
+	name, err := s.parseInstanceName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	now := time.Now()
-	instanceFQN := instanceName.String()
+	instanceFQN := name.String()
 
 	obj := proto.Clone(req.Instance).(*pb.Instance)
 	obj.Name = instanceFQN
@@ -112,7 +112,13 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 		}
 	}
 
-	return s.operations.NewLRO(ctx)
+	prefix := fmt.Sprintf("operations/%s", name.String())
+	metadata := &pb.CreateInstanceMetadata{
+		RequestTime: timestamppb.New(now),
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb.PartialUpdateInstanceRequest) (*longrunning.Operation, error) {
@@ -149,7 +155,7 @@ func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	return s.operations.StartLRO(ctx, nil, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, "", nil, func() (proto.Message, error) {
 		return obj, nil
 	})
 }
@@ -185,7 +191,7 @@ func (s *MockService) parseInstanceName(name string) (*instanceName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "instances" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
