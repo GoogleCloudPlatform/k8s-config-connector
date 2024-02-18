@@ -56,6 +56,7 @@ func (s *MockService) ExpectedHost() string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterBigtableInstanceAdminServer(grpcServer, &instanceAdminServer{MockService: s})
+	pb.RegisterBigtableTableAdminServer(grpcServer, &tableAdminServer{MockService: s})
 	s.operations.RegisterGRPCServices(grpcServer)
 }
 
