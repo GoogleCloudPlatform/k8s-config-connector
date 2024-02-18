@@ -718,15 +718,15 @@ func TestToKCCLite(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
-			if err := testcontroller.EnsureNamespaceExists(c, testId); err != nil {
+			if err := testcontroller.EnsureNamespaceExists(c, testID); err != nil {
 				t.Fatal(err)
 			}
 			if tc.hasResourceReferences {
 				references := []*unstructured.Unstructured{
-					newBarUnstructuredWithResourceID(t, "my-ref1", testId, corev1.ConditionTrue),
-					newBarUnstructuredWithResourceID(t, "my-ref2", testId, corev1.ConditionTrue),
+					newBarUnstructuredWithResourceID(t, "my-ref1", testID, corev1.ConditionTrue),
+					newBarUnstructuredWithResourceID(t, "my-ref2", testID, corev1.ConditionTrue),
 				}
 				test.EnsureObjectsExist(t, references, c)
 			}
@@ -740,15 +740,15 @@ func TestToKCCLite(t *testing.T) {
 					},
 				}
 				secrets := []*unstructured.Unstructured{
-					test.NewSecretUnstructured("secret1", testId, secretsData[0]),
-					test.NewSecretUnstructured("secret2", testId, secretsData[1]),
+					test.NewSecretUnstructured("secret1", testID, secretsData[0]),
+					test.NewSecretUnstructured("secret2", testID, secretsData[1]),
 				}
 				test.EnsureObjectsExist(t, secrets, c)
 			}
 			r := &dcl.Resource{
 				Schema: testSchema(),
 			}
-			r.SetNamespace(testId)
+			r.SetNamespace(testID)
 			r.Spec = tc.prevSpec
 			r.SetGroupVersionKind(gvk)
 			actual, err := kcclite.ToKCCLite(r, loader, schemaLoader, serviceMappingLoader, c)
@@ -897,22 +897,22 @@ func TestToKCCLiteBestEffort(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
-			if err := testcontroller.EnsureNamespaceExists(c, testId); err != nil {
+			if err := testcontroller.EnsureNamespaceExists(c, testID); err != nil {
 				t.Fatal(err)
 			}
 
 			if len(tc.references) != 0 {
 				for _, ref := range tc.references {
-					ref.SetNamespace(testId)
+					ref.SetNamespace(testID)
 				}
 				test.EnsureObjectsExist(t, tc.references, c)
 			}
 			r := &dcl.Resource{
 				Schema: testSchema(),
 			}
-			r.SetNamespace(testId)
+			r.SetNamespace(testID)
 			r.Spec = tc.prevSpec
 			r.SetGroupVersionKind(gvk)
 			_, err := kcclite.ToKCCLite(r, loader, schemaLoader, serviceMappingLoader, c)
@@ -1663,19 +1663,19 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
-			if err := testcontroller.EnsureNamespaceExists(c, testId); err != nil {
+			if err := testcontroller.EnsureNamespaceExists(c, testID); err != nil {
 				t.Fatal(err)
 			}
 			if tc.reference != nil {
-				tc.reference.SetNamespace(testId)
+				tc.reference.SetNamespace(testID)
 				test.EnsureObjectExists(t, tc.reference, c)
 			}
 			r := &dcl.Resource{
 				Schema: tc.schema,
 			}
-			r.SetNamespace(testId)
+			r.SetNamespace(testID)
 			r.Spec = tc.spec
 			r.SetGroupVersionKind(tc.gvk)
 
@@ -3853,5 +3853,5 @@ func newBarUnstructuredWithResourceID(t *testing.T, name, ns string, readyStatus
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForUnitTestsWithCRDs(m, test.FakeCRDsWithHierarchicalResources(), &mgr)
+	testmain.ForUnitTestsWithCRDs(m, test.FakeCRDsWithHierarchicalResources(), &mgr)
 }

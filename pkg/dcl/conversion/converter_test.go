@@ -31,27 +31,27 @@ import (
 )
 
 var (
-	stv_foo = dclunstruct.ServiceTypeVersion{
+	stvFoo = dclunstruct.ServiceTypeVersion{
 		Service: "test1",
 		Type:    "Foo",
 		Version: "beta",
 	}
-	stv_bar = dclunstruct.ServiceTypeVersion{
+	stvBar = dclunstruct.ServiceTypeVersion{
 		Service: "test1",
 		Type:    "Bar",
 		Version: "beta",
 	}
-	stv_baz = dclunstruct.ServiceTypeVersion{
+	stvBaz = dclunstruct.ServiceTypeVersion{
 		Service: "test2",
 		Type:    "Baz",
 		Version: "beta",
 	}
-	stv_noname = dclunstruct.ServiceTypeVersion{
+	stvNoname = dclunstruct.ServiceTypeVersion{
 		Service: "test2",
 		Type:    "NoName",
 		Version: "beta",
 	}
-	stv_nolabelsextension = dclunstruct.ServiceTypeVersion{
+	stvNolabelsextension = dclunstruct.ServiceTypeVersion{
 		Service: "test1",
 		Type:    "NoLabelsExtension",
 		Version: "beta",
@@ -90,7 +90,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"name":    "CustomizedName",
 					"project": projectID,
@@ -114,7 +114,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"name":    "foo-example",
 					"project": projectID,
@@ -160,7 +160,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_baz,
+				STV: stvBaz,
 				Object: map[string]interface{}{
 					"name":    "server-generated-value",
 					"project": projectID,
@@ -184,7 +184,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_baz,
+				STV: stvBaz,
 				Object: map[string]interface{}{
 					"project": projectID,
 				},
@@ -209,7 +209,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_noname,
+				STV: stvNoname,
 				Object: map[string]interface{}{
 					"project": projectID,
 				},
@@ -238,7 +238,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"intKey":     int64(1),
 					"numberKey":  float64(0.5),
@@ -270,7 +270,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"intKey":    int64(1),
 					"numberKey": float64(1),
@@ -302,7 +302,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"primitiveArrayKey": []interface{}{
 						"myString1",
@@ -342,7 +342,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"nestedObjectKey": map[string]interface{}{
 						"nestedField1":         true,
@@ -402,7 +402,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"stringObjectMapKey": map[string]interface{}{
 						"someKey": map[string]interface{}{
@@ -472,7 +472,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"intKey":     int64(1),
 					"numberKey":  float64(0.5),
@@ -525,7 +525,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"sensitiveFieldKey": "sensitive-data",
 					"name":              "CustomizedName",
@@ -555,7 +555,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"referenceKey": "my-ref",
 					"name":         "CustomizedName",
@@ -585,7 +585,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"complexReferenceKey": "bar-url",
 					"name":                "CustomizedName",
@@ -615,7 +615,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"complexReferenceKey": "baz-url",
 					"name":                "CustomizedName",
@@ -650,7 +650,7 @@ func TestConverter_KRMObjectToDCLObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"referenceArrayKey": []interface{}{
 						"my-ref-1",
@@ -1081,7 +1081,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"name":    "CustomizedName",
 					"project": projectID,
@@ -1107,7 +1107,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_baz,
+				STV: stvBaz,
 				Object: map[string]interface{}{
 					"name":    "server-generated-value",
 					"project": projectID,
@@ -1117,7 +1117,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 		{
 			name: "error out if server-generated id is not returned",
 			dclObj: &dclunstruct.Resource{
-				STV: stv_baz,
+				STV: stvBaz,
 				Object: map[string]interface{}{
 					"project": projectID,
 				},
@@ -1141,7 +1141,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_noname,
+				STV: stvNoname,
 				Object: map[string]interface{}{
 					"project": projectID,
 				},
@@ -1170,7 +1170,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"intKey":     1,
 					"numberKey":  0.5,
@@ -1204,7 +1204,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"primitiveArrayKey": []interface{}{
 						"myString1",
@@ -1244,7 +1244,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"nestedObjectKey": map[string]interface{}{
 						"nestedField1":         true,
@@ -1302,7 +1302,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"intKey":     1,
 					"numberKey":  0.5,
@@ -1349,7 +1349,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"sensitiveFieldKey": "sensitive-data",
 					"name":              "CustomizedName",
@@ -1379,7 +1379,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"referenceKey": "my-ref",
 					"name":         "CustomizedName",
@@ -1409,7 +1409,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"complexReferenceKey": "my-ref",
 					"name":                "CustomizedName",
@@ -1444,7 +1444,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"referenceArrayKey": []interface{}{
 						"my-ref-1",
@@ -1510,7 +1510,7 @@ func TestConverter_DCLObjectToKRMObject(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"stringObjectMapKey": map[string]interface{}{
 						"someKey": map[string]interface{}{
@@ -1973,7 +1973,7 @@ func TestLabelsConversion(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_bar,
+				STV: stvBar,
 				Object: map[string]interface{}{
 					"labels": map[string]interface{}{
 						"key1":            "val1",
@@ -2009,7 +2009,7 @@ func TestLabelsConversion(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_bar,
+				STV: stvBar,
 				Object: map[string]interface{}{
 					"labels": map[string]interface{}{
 						"key1":            "val1",
@@ -2045,7 +2045,7 @@ func TestLabelsConversion(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_nolabelsextension,
+				STV: stvNolabelsextension,
 				Object: map[string]interface{}{
 					"project": projectID,
 					"name":    "CustomizedName",
@@ -2076,7 +2076,7 @@ func TestLabelsConversion(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_nolabelsextension,
+				STV: stvNolabelsextension,
 				Object: map[string]interface{}{
 					"project": projectID,
 					"name":    "CustomizedName",
@@ -2107,7 +2107,7 @@ func TestLabelsConversion(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			labelsField := dclSchema.Extension[constants.DCL_LABELS_FIELD]
+			labelsField := dclSchema.Extension[constants.DCLLabelsField]
 			want := interface{}(nil)
 			if labelsField != nil {
 				want = tc.dclObj.Object[labelsField.(string)].(map[string]interface{})
@@ -2156,7 +2156,7 @@ func TestConverter_DCLObjectToKRMObject_WithStatus(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"intKey":      1,
 					"numberKey":   0.5,
@@ -2200,7 +2200,7 @@ func TestConverter_DCLObjectToKRMObject_WithStatus(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"intKey":      1,
 					"numberKey":   0.5,
@@ -2243,7 +2243,7 @@ func TestConverter_DCLObjectToKRMObject_WithStatus(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"intKey":               1,
 					"numberKey":            0.5,
@@ -2290,7 +2290,7 @@ func TestConverter_DCLObjectToKRMObject_WithStatus(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"intKey":      1,
 					"numberKey":   0.5,
@@ -2346,7 +2346,7 @@ func TestConverter_DCLObjectToKRMObject_WithStatus(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"intKey":      1,
 					"numberKey":   0.5,
@@ -2394,7 +2394,7 @@ func TestConverter_DCLObjectToKRMObject_WithStatus(t *testing.T) {
 				},
 			},
 			dclObj: &dclunstruct.Resource{
-				STV: stv_foo,
+				STV: stvFoo,
 				Object: map[string]interface{}{
 					"intKey":             1,
 					"numberKey":          0.5,

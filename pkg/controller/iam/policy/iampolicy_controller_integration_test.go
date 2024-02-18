@@ -456,5 +456,5 @@ func name(t *testing.T) string {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

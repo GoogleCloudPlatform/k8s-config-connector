@@ -391,7 +391,7 @@ func ManuallyReplaceSecretVolume(components []string, secretName string) []strin
 
 func ManuallyModifyNamespaceTemplates(t *testing.T, template []string, nsName, saName string, userProjectOverride bool, billingProject string, c client.Client) []string {
 	var res []string
-	nsId, err := cluster.GetNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, c, context.TODO(), nsName)
+	nsID, err := cluster.GetNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, c, context.TODO(), nsName)
 	if err != nil {
 		t.Fatalf("error getting the id for namespace %v", err)
 	}
@@ -412,11 +412,11 @@ func ManuallyModifyNamespaceTemplates(t *testing.T, template []string, nsName, s
 				)
 			}
 
-			applied = strings.ReplaceAll(applied, "cnrm-controller-manager-${NAMESPACE?}", "cnrm-controller-manager-"+nsId)
-			applied = strings.ReplaceAll(applied, k8s.NamespacedManagerServiceTmpl, k8s.NamespacedManagerServicePrefix+nsId)
+			applied = strings.ReplaceAll(applied, "cnrm-controller-manager-${NAMESPACE?}", "cnrm-controller-manager-"+nsID)
+			applied = strings.ReplaceAll(applied, k8s.NamespacedManagerServiceTmpl, k8s.NamespacedManagerServicePrefix+nsID)
 		}
 		if strings.Contains(s, "name: cnrm-manager-${NAMESPACE?}") {
-			applied = strings.ReplaceAll(applied, k8s.NamespacedManagerServiceTmpl, k8s.NamespacedManagerServicePrefix+nsId)
+			applied = strings.ReplaceAll(applied, k8s.NamespacedManagerServiceTmpl, k8s.NamespacedManagerServicePrefix+nsID)
 		}
 		applied = strings.ReplaceAll(applied, "${SERVICE_ACCOUNT?}", saName)
 		applied = strings.ReplaceAll(applied, "${NAMESPACE?}", nsName)
@@ -452,7 +452,7 @@ func ToString(t *testing.T, u *unstructured.Unstructured) string {
 	return string(y)
 }
 
-func ParseObjects(t *testing.T, ctx context.Context, objects []string) *manifest.Objects {
+func ParseObjects(ctx context.Context, t *testing.T, objects []string) *manifest.Objects {
 	objs := strings.Join(objects, "---\n")
 	m, err := manifest.ParseObjects(ctx, objs)
 	if err != nil {

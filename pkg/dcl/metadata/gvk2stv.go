@@ -64,5 +64,5 @@ func IsDCLBasedResourceKind(gvk k8sschema.GroupVersionKind, loader ServiceMetada
 }
 
 func groupToService(group string) string {
-	return strings.TrimSuffix(group, k8s.ApiDomainSuffix)
+	return strings.TrimSuffix(group, k8s.APIDomainSuffix)
 }

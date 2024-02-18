@@ -32,7 +32,7 @@ import (
 // see additional methods in this package for creating a temporary bucket and generating an object name
 //
 // parent is the fully qualified org, folder, or project, i.e.
-// projects/projectId
+// projects/projectID
 // folders/folderNumber
 // organizations/orgNumber
 func ForParentToStorageObject(ctx context.Context, httpClient *http.Client, parent, bucketName, objectName string) error {
@@ -70,7 +70,7 @@ func NewTemporaryBucketAndObjectName(ctx context.Context, httpClient *http.Clien
 	if err != nil {
 		return "", "", fmt.Errorf("error creating storage client: %w", err)
 	}
-	projectId, err := gcp.GetDefaultProjectID()
+	projectID, err := gcp.GetDefaultProjectID()
 	if err != nil {
 		return "", "", fmt.Errorf("error getting project id: %w", err)
 	}
@@ -78,7 +78,7 @@ func NewTemporaryBucketAndObjectName(ctx context.Context, httpClient *http.Clien
 	bucket := &storage.Bucket{
 		Name: bucketName,
 	}
-	_, err = storageClient.Buckets.Insert(projectId, bucket).Do()
+	_, err = storageClient.Buckets.Insert(projectID, bucket).Do()
 	if err != nil {
 		return "", "", fmt.Errorf("error creating bucket '%v': %w", bucketName, err)
 	}
@@ -135,13 +135,13 @@ func getDefaultProjectNumber(ctx context.Context, httpClient *http.Client) (int6
 	}
 	// get the default project id by shelling out to gcloud, this is questionable but *OK* because it is only reading
 	// local configuration files
-	projectId, err := gcp.GetDefaultProjectID()
+	projectID, err := gcp.GetDefaultProjectID()
 	if err != nil {
 		return 0, fmt.Errorf("error getting default gcloud sdk project id: %w", err)
 	}
-	project, err := client.Projects.Get(projectId).Do()
+	project, err := client.Projects.Get(projectID).Do()
 	if err != nil {
-		return 0, fmt.Errorf("error getting default project '%v': %w", projectId, err)
+		return 0, fmt.Errorf("error getting default project '%v': %w", projectID, err)
 	}
 	return project.ProjectNumber, nil
 }

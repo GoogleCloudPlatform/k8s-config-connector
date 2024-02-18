@@ -51,15 +51,15 @@ type FakeRepo struct {
 
 var _ manifest.Repository = &FakeRepo{}
 
-func (r *FakeRepo) LoadManifest(ctx context.Context, component string, id string, o declarative.DeclarativeObject) (map[string]string, error) {
+func (r *FakeRepo) LoadManifest(_ context.Context, _ string, _ string, _ declarative.DeclarativeObject) (map[string]string, error) {
 	panic("implement me")
 }
 
-func (r *FakeRepo) LoadChannel(ctx context.Context, name string) (*loaders.Channel, error) {
+func (r *FakeRepo) LoadChannel(_ context.Context, _ string) (*loaders.Channel, error) {
 	return r.channel, nil
 }
 
-func (r *FakeRepo) LoadNamespacedComponents(ctx context.Context, componentName string, version string) (map[string]string, error) {
+func (r *FakeRepo) LoadNamespacedComponents(_ context.Context, _ string, _ string) (map[string]string, error) {
 	panic("implement me")
 }
 

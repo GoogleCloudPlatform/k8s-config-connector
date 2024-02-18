@@ -23,7 +23,7 @@ import (
 
 type SchemaReference struct {
 	CRD        *apiextensions.CustomResourceDefinition
-	JsonSchema *apiextensions.JSONSchemaProps
+	JSONSchema *apiextensions.JSONSchemaProps
 	GVK        schema.GroupVersionKind
 }
 
@@ -44,6 +44,6 @@ func UpdateSchema(schemaRef *SchemaReference, crd *apiextensions.CustomResourceD
 		return fmt.Errorf("unexpected mismatch of GVK when updating schema reference for controller, old GVK = %s, new GVK = %s", schemaRef.GVK.String(), gvk.String())
 	}
 	schemaRef.CRD = crd
-	schemaRef.JsonSchema = GetOpenAPIV3SchemaFromCRD(crd)
+	schemaRef.JSONSchema = GetOpenAPIV3SchemaFromCRD(crd)
 	return nil
 }

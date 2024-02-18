@@ -76,7 +76,7 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 		openAPIV3Schema.Properties["status"].Properties[k] = v
 	}
 
-	group := strings.ToLower(sm.Spec.Name) + "." + ApiDomain
+	group := strings.ToLower(sm.Spec.Name) + "." + APIDomain
 
 	kind := text.SnakeCaseToUpperCamelCase(resource)
 	if resourceConfig != nil && resourceConfig.Kind != "" {

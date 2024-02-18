@@ -200,7 +200,7 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 	case "IAMAuditConfig":
 		reconciler, err = auditconfig.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	default:
-		crd := testcontroller.GetCRDForKind(r.t, r.mgr.GetClient(), kind)
+		crd := testcontroller.GetCRDForKind(r.t, kind)
 		reconciler, err = r.newReconcilerForCRD(crd, defaulters)
 	}
 	if err != nil {

@@ -97,8 +97,8 @@ func TestAll(t *testing.T) {
 		defer resourceCleanup()
 		systemContext.Reconciler.Reconcile(ctx, testContext.CreateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.CreateUnstruct), nil)
 		leaser := leaser.NewLeaser(systemContext.TFProvider, systemContext.SMLoader, systemContext.Manager.GetClient())
-		uniqueId1 := fmt.Sprintf("l1-%v", testContext.UniqueId)
-		uniqueId2 := fmt.Sprintf("l2-%v", testContext.UniqueId)
+		uniqueId1 := fmt.Sprintf("l1-%v", testContext.UniqueID)
+		uniqueId2 := fmt.Sprintf("l2-%v", testContext.UniqueID)
 		initialUnstruct := testContext.CreateUnstruct
 		testObtainReleaseShouldSucceed(t, initialUnstruct, uniqueId1, leaser)
 		testObtainTwiceShouldSucceed(t, initialUnstruct, uniqueId1, leaser)
@@ -113,19 +113,19 @@ func TestAll(t *testing.T) {
 	testrunner.RunAllWithDependenciesCreatedButNotObject(ctx, t, mgr, shouldRun, testFunc)
 }
 
-func testObtainReleaseShouldSucceed(t *testing.T, u *unstructured.Unstructured, uniqueId string, leaser *leaser.Leaser) {
-	obtainAssertSuccess(t, u, uniqueId, defaultLeaseDuration, defaultLeaseDuration, leaser)
-	releaseAssertSuccess(t, u, uniqueId, leaser)
+func testObtainReleaseShouldSucceed(t *testing.T, u *unstructured.Unstructured, uniqueID string, leaser *leaser.Leaser) {
+	obtainAssertSuccess(t, u, uniqueID, defaultLeaseDuration, defaultLeaseDuration, leaser)
+	releaseAssertSuccess(t, u, uniqueID, leaser)
 }
 
-func testObtainTwiceShouldSucceed(t *testing.T, u *unstructured.Unstructured, uniqueId string, leaser *leaser.Leaser) {
-	obtainAssertSuccess(t, u, uniqueId, defaultLeaseDuration, defaultLeaseDuration, leaser)
-	obtainAssertSuccess(t, u, uniqueId, defaultLeaseDuration, defaultLeaseDuration, leaser)
-	releaseAssertSuccess(t, u, uniqueId, leaser)
+func testObtainTwiceShouldSucceed(t *testing.T, u *unstructured.Unstructured, uniqueID string, leaser *leaser.Leaser) {
+	obtainAssertSuccess(t, u, uniqueID, defaultLeaseDuration, defaultLeaseDuration, leaser)
+	obtainAssertSuccess(t, u, uniqueID, defaultLeaseDuration, defaultLeaseDuration, leaser)
+	releaseAssertSuccess(t, u, uniqueID, leaser)
 }
 
-func testReleaseUnobtainedShouldFail(t *testing.T, u *unstructured.Unstructured, uniqueId string, leaser *leaser.Leaser) {
-	releaseAssertError(t, u, uniqueId, leaser)
+func testReleaseUnobtainedShouldFail(t *testing.T, u *unstructured.Unstructured, uniqueID string, leaser *leaser.Leaser) {
+	releaseAssertError(t, u, uniqueID, leaser)
 }
 
 func testObtainingPreviouslyReleasedResourceShouldSucceed(t *testing.T, u *unstructured.Unstructured, uniqueId1, uniqueId2 string, leaser *leaser.Leaser) {
@@ -147,11 +147,11 @@ func testReleasingLockedResourceShouldFail(t *testing.T, u *unstructured.Unstruc
 	releaseAssertSuccess(t, u, uniqueId1, leaser)
 }
 
-func testReleasingExpiredResourceShouldFail(t *testing.T, u *unstructured.Unstructured, uniqueId string, leaser *leaser.Leaser) {
+func testReleasingExpiredResourceShouldFail(t *testing.T, u *unstructured.Unstructured, uniqueID string, leaser *leaser.Leaser) {
 	shortLeaseDuration := 1 * time.Second
-	obtainAssertSuccess(t, u, uniqueId, shortLeaseDuration, shortLeaseDuration, leaser)
+	obtainAssertSuccess(t, u, uniqueID, shortLeaseDuration, shortLeaseDuration, leaser)
 	time.Sleep(shortLeaseDuration + 1*time.Second)
-	releaseAssertError(t, u, uniqueId, leaser)
+	releaseAssertError(t, u, uniqueID, leaser)
 }
 
 func testObtainingExpiredLeaseShouldSucceed(t *testing.T, u *unstructured.Unstructured, uniqueId1, uniqueId2 string, leaser *leaser.Leaser) {
@@ -164,17 +164,17 @@ func testObtainingExpiredLeaseShouldSucceed(t *testing.T, u *unstructured.Unstru
 	releaseAssertSuccess(t, u, uniqueId2, leaser)
 }
 
-func testRenewLease(t *testing.T, u *unstructured.Unstructured, uniqueId string, leaser *leaser.Leaser) {
+func testRenewLease(t *testing.T, u *unstructured.Unstructured, uniqueID string, leaser *leaser.Leaser) {
 	shortMinRemaining := 2 * time.Second
-	obtainAssertSuccess(t, u, uniqueId, defaultLeaseDuration, defaultLeaseDuration, leaser)
+	obtainAssertSuccess(t, u, uniqueID, defaultLeaseDuration, defaultLeaseDuration, leaser)
 	_, originalExpirationTIme := getOwnerAndExpirationTime(t, u, leaser)
-	obtainAssertSuccess(t, u, uniqueId, defaultLeaseDuration, shortMinRemaining, leaser)
+	obtainAssertSuccess(t, u, uniqueID, defaultLeaseDuration, shortMinRemaining, leaser)
 	_, expirationTime := getOwnerAndExpirationTime(t, u, leaser)
 	if expirationTime != originalExpirationTIme {
 		t.Fatalf("expected expiration times to be equal, instead '%v' and '%v'", expirationTime, originalExpirationTIme)
 	}
 	time.Sleep(shortMinRemaining + 1*time.Second)
-	obtainAssertSuccess(t, u, uniqueId, defaultLeaseDuration, defaultLeaseDuration-shortMinRemaining, leaser)
+	obtainAssertSuccess(t, u, uniqueID, defaultLeaseDuration, defaultLeaseDuration-shortMinRemaining, leaser)
 	_, expirationTime = getOwnerAndExpirationTime(t, u, leaser)
 	if expirationTime == originalExpirationTIme {
 		t.Fatalf("expected expiration times to NOT be equal")
@@ -182,49 +182,49 @@ func testRenewLease(t *testing.T, u *unstructured.Unstructured, uniqueId string,
 	if originalExpirationTIme.After(expirationTime) {
 		t.Fatalf("expected original expiration time '%v' to be after updated expiration time '%v'", originalExpirationTIme, expirationTime)
 	}
-	releaseAssertSuccess(t, u, uniqueId, leaser)
+	releaseAssertSuccess(t, u, uniqueID, leaser)
 }
 
 func getOwnerAndExpirationTime(t *testing.T, u *unstructured.Unstructured, leaser *leaser.Leaser) (string, time.Time) {
-	ownerId, expirationTime, err := leaser.GetOwnerAndExpirationTime(context.Background(), u)
+	ownerID, expirationTime, err := leaser.GetOwnerAndExpirationTime(context.Background(), u)
 	if err != nil {
 		t.Fatalf("error getting owner and expiration time: %v", err)
 	}
-	return ownerId, expirationTime
+	return ownerID, expirationTime
 }
 
-func obtainAssertSuccess(t *testing.T, u *unstructured.Unstructured, uniqueId string, duration time.Duration, minRemaining time.Duration, leaser *leaser.Leaser) {
+func obtainAssertSuccess(t *testing.T, u *unstructured.Unstructured, uniqueID string, duration time.Duration, minRemaining time.Duration, leaser *leaser.Leaser) {
 	t.Helper()
-	err := leaser.Obtain(context.Background(), u, uniqueId, duration, minRemaining)
+	err := leaser.Obtain(context.Background(), u, uniqueID, duration, minRemaining)
 	if err != nil {
 		t.Fatalf("error obtaining lease: %v", err)
 	}
 }
 
-func obtainAssertError(t *testing.T, u *unstructured.Unstructured, uniqueId string, duration time.Duration, minRemaining time.Duration, leaser *leaser.Leaser) {
+func obtainAssertError(t *testing.T, u *unstructured.Unstructured, uniqueID string, duration time.Duration, minRemaining time.Duration, leaser *leaser.Leaser) {
 	t.Helper()
-	err := leaser.Obtain(context.Background(), u, uniqueId, duration, minRemaining)
+	err := leaser.Obtain(context.Background(), u, uniqueID, duration, minRemaining)
 	if err == nil {
 		t.Fatalf("expected error when obtaining, instead got 'nil'")
 	}
 }
 
-func releaseAssertSuccess(t *testing.T, u *unstructured.Unstructured, uniqueId string, leaser *leaser.Leaser) {
+func releaseAssertSuccess(t *testing.T, u *unstructured.Unstructured, uniqueID string, leaser *leaser.Leaser) {
 	t.Helper()
-	err := leaser.Release(context.Background(), u, uniqueId)
+	err := leaser.Release(context.Background(), u, uniqueID)
 	if err != nil {
 		t.Fatalf("error obtaining lease: %v", err)
 	}
 }
 
-func releaseAssertError(t *testing.T, u *unstructured.Unstructured, uniqueId string, leaser *leaser.Leaser) {
+func releaseAssertError(t *testing.T, u *unstructured.Unstructured, uniqueID string, leaser *leaser.Leaser) {
 	t.Helper()
-	err := leaser.Release(context.Background(), u, uniqueId)
+	err := leaser.Release(context.Background(), u, uniqueID)
 	if err == nil {
 		t.Fatalf("expected error when releasing, instead got 'nil'")
 	}
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

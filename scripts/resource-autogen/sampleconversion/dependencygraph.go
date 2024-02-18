@@ -55,7 +55,7 @@ func (d *DependencyGraph) TopologicalSort() []string {
 	referencees := make([]string, 0)
 	result := make([]string, 0)
 
-	for referencee, _ := range d.edges {
+	for referencee := range d.edges {
 		visited[referencee] = false
 		referencees = append(referencees, referencee)
 	}

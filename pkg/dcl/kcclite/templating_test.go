@@ -804,14 +804,14 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
-			if err := testcontroller.EnsureNamespaceExists(c, testId); err != nil {
+			if err := testcontroller.EnsureNamespaceExists(c, testID); err != nil {
 				t.Fatal(err)
 			}
-			tc.refResource.SetNamespace(testId)
+			tc.refResource.SetNamespace(testID)
 			if tc.refResourceReference != nil {
-				tc.refResourceReference.SetNamespace(testId)
+				tc.refResourceReference.SetNamespace(testID)
 				test.EnsureObjectExists(t, tc.refResourceReference, c)
 			}
 
@@ -1403,14 +1403,14 @@ func TestCanonicalizeReferencedResourceNameForTFBasedResource(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
-			if err := testcontroller.EnsureNamespaceExists(c, testId); err != nil {
+			if err := testcontroller.EnsureNamespaceExists(c, testID); err != nil {
 				t.Fatal(err)
 			}
-			tc.refResource.SetNamespace(testId)
+			tc.refResource.SetNamespace(testID)
 			if tc.refResourceReference != nil {
-				tc.refResourceReference.SetNamespace(testId)
+				tc.refResourceReference.SetNamespace(testID)
 				test.EnsureObjectExists(t, tc.refResourceReference, c)
 			}
 

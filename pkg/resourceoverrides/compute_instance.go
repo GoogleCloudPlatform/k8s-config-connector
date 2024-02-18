@@ -27,8 +27,8 @@ import (
 
 var (
 	networkInterfacePath  = []string{"networkInterface"}
-	networkIpFieldPath    = []string{"networkIp"}
-	networkIpRefFieldPath = []string{"networkIpRef"}
+	networkIPFieldPath    = []string{"networkIp"}
+	networkIPRefFieldPath = []string{"networkIpRef"}
 	supportedKinds        = []string{"ComputeAddress"}
 )
 
@@ -36,34 +36,34 @@ func GetComputeInstanceResourceOverrides() ResourceOverrides {
 	ro := ResourceOverrides{
 		Kind: "ComputeInstance",
 	}
-	ro.Overrides = append(ro.Overrides, addNetworkIpRefField())
+	ro.Overrides = append(ro.Overrides, addNetworkIPRefField())
 	return ro
 }
 
-func addNetworkIpRefField() ResourceOverride {
+func addNetworkIPRefField() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		if err := PreserveMutuallyExclusiveNonReferenceField(crd, networkInterfacePath, networkIpRefFieldPath[0], networkIpFieldPath[0]); err != nil {
+		if err := PreserveMutuallyExclusiveNonReferenceField(crd, networkInterfacePath, networkIPRefFieldPath[0], networkIPFieldPath[0]); err != nil {
 			return err
 		}
-		if err := EnsureReferenceFieldIsMultiKind(crd, networkInterfacePath, networkIpRefFieldPath[0], supportedKinds); err != nil {
+		if err := EnsureReferenceFieldIsMultiKind(crd, networkInterfacePath, networkIPRefFieldPath[0], supportedKinds); err != nil {
 			return err
 		}
 
 		return nil
 	}
 	o.PreActuationTransform = func(r *k8s.Resource) error {
-		if err := FavorReferenceFieldOverNonReferenceFieldUnderSlice(r, networkInterfacePath, networkIpFieldPath, networkIpRefFieldPath); err != nil {
-			return fmt.Errorf("error handling '%v' and '%v' fields in pre-actuation transformation: %w", strings.Join(networkIpFieldPath, "."), strings.Join(networkIpRefFieldPath, "."), err)
+		if err := FavorReferenceFieldOverNonReferenceFieldUnderSlice(r, networkInterfacePath, networkIPFieldPath, networkIPRefFieldPath); err != nil {
+			return fmt.Errorf("error handling '%v' and '%v' fields in pre-actuation transformation: %w", strings.Join(networkIPFieldPath, "."), strings.Join(networkIPRefFieldPath, "."), err)
 		}
 		return nil
 	}
 	o.PostActuationTransform = func(original, reconciled *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error {
-		if err := PreserveUserSpecifiedLegacyFieldUnderSlice(original, reconciled, networkInterfacePath, networkIpFieldPath); err != nil {
-			return fmt.Errorf("error preserving '%v' in post-actuation transformation: %w", strings.Join(networkIpFieldPath, "."), err)
+		if err := PreserveUserSpecifiedLegacyFieldUnderSlice(original, reconciled, networkInterfacePath, networkIPFieldPath); err != nil {
+			return fmt.Errorf("error preserving '%v' in post-actuation transformation: %w", strings.Join(networkIPFieldPath, "."), err)
 		}
-		if err := PruneDefaultedAuthoritativeFieldIfOnlyLegacyFieldSpecifiedUnderSlice(original, reconciled, networkInterfacePath, networkIpFieldPath, networkIpRefFieldPath); err != nil {
-			return fmt.Errorf("error conditionally pruning '%v' in post-actuation transformation: %w", strings.Join(networkIpRefFieldPath, "."), err)
+		if err := PruneDefaultedAuthoritativeFieldIfOnlyLegacyFieldSpecifiedUnderSlice(original, reconciled, networkInterfacePath, networkIPFieldPath, networkIPRefFieldPath); err != nil {
+			return fmt.Errorf("error conditionally pruning '%v' in post-actuation transformation: %w", strings.Join(networkIPRefFieldPath, "."), err)
 		}
 		return nil
 	}

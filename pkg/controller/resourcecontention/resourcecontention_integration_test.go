@@ -59,10 +59,10 @@ func TestResourceContentionIsPreventedForTwoNamespacesMappingToSameProjectInDiff
 		}
 		systemContext.Reconciler.Reconcile(ctx, testContext.UpdateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.UpdateUnstruct), nil)
 		assertLeaseLabelsAreNotPresent(t, systemContext.Manager, testContext.CreateUnstruct)
-		projectId := testgcp.GetDefaultProjectID(t)
-		testcontroller.EnsureNamespaceExistsT(t, mgr2.GetClient(), testContext.UniqueId)
-		testcontroller.EnsureNamespaceHasProjectIDAnnotation(t, mgr2.GetClient(), testContext.UniqueId, projectId)
-		assertNamespaceIdsAreNotEqual(t, systemContext.Manager, mgr2, testContext.UniqueId, testContext.UniqueId)
+		projectID := testgcp.GetDefaultProjectID(t)
+		testcontroller.EnsureNamespaceExistsT(t, mgr2.GetClient(), testContext.UniqueID)
+		testcontroller.EnsureNamespaceHasProjectIDAnnotation(t, mgr2.GetClient(), testContext.UniqueID, projectID)
+		assertNamespaceIdsAreNotEqual(t, systemContext.Manager, mgr2, testContext.UniqueID, testContext.UniqueID)
 		reconciler2 := testreconciler.New(t, mgr2, systemContext.TFProvider)
 		if err := mgr2.GetClient().Create(context.TODO(), testContext.UpdateUnstruct); err != nil {
 			t.Fatalf("error creating resource: %v", err)
@@ -156,5 +156,5 @@ func getNamespaceID(t *testing.T, mgr manager.Manager, namespace string) string 
 
 func TestMain(m *testing.M) {
 	mgrs := []*manager.Manager{&mgr1, &mgr2}
-	testmain.TestMainSetupMultipleEnvironments(m, test.IntegrationTestType, nil, mgrs)
+	testmain.SetupMultipleEnvironments(m, test.IntegrationTestType, nil, mgrs)
 }

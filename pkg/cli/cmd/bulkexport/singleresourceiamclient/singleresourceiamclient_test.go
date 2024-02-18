@@ -67,5 +67,5 @@ func TestGetPolicy(t *testing.T) {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

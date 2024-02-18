@@ -20,8 +20,8 @@ package gsakeysecretgenerator
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -64,7 +64,7 @@ func TestServiceAccountKey(t *testing.T) {
 	kubeClient := mgr.GetClient()
 	provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
 	ctx := context.TODO()
-	uuid := testvariable.NewUniqueId()
+	uuid := testvariable.NewUniqueID()
 	project := testgcp.GetDefaultProjectID(t)
 	iamClient := testgcp.NewIAMClient(t)
 	testcontroller.SetupNamespaceForDefaultProject(t, kubeClient, project)
@@ -209,13 +209,13 @@ func newSecretGenerator(t *testing.T, mgr manager.Manager, crdPath string) recon
 	return reconciler
 }
 
-func convertToUnstructAndReplaceName(t *testing.T, testId, testNamespace, sa string, fileName string) *unstructured.Unstructured {
-	b, err := ioutil.ReadFile(fileName)
+func convertToUnstructAndReplaceName(t *testing.T, testID, testNamespace, sa string, fileName string) *unstructured.Unstructured {
+	b, err := os.ReadFile(fileName)
 	if err != nil {
 		log.Fatalf("error reading file '%v': %v", fileName, err)
 	}
 	s := string(b)
-	s = strings.Replace(s, "${uniqueId}", testId, -1)
+	s = strings.Replace(s, "${uniqueId}", testID, -1)
 	s = strings.Replace(s, "${projectId}", testNamespace, -1)
 	s = strings.Replace(s, "${IAMServiceAccount}", sa, -1)
 	b = []byte(s)
@@ -230,5 +230,5 @@ func convertToUnstructAndReplaceName(t *testing.T, testId, testNamespace, sa str
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

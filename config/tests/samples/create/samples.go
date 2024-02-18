@@ -379,7 +379,7 @@ func replaceResourceNamesWithUniqueIDs(t *testing.T, unstructs []*unstructured.U
 	namesToUniqueIDs := make(map[string]string)
 	idReg := regexp.MustCompile("[a-z]")
 	for _, n := range namesToBeReplaced {
-		namesToUniqueIDs[n] = testvariable.RandomIdGenerator(idReg, uint(len(n)))
+		namesToUniqueIDs[n] = testvariable.RandomIDGenerator(idReg, uint(len(n)))
 	}
 
 	newUnstructs := make([]*unstructured.Unstructured, 0)
@@ -484,7 +484,7 @@ func generateNewFolderDisplayName(folderUnstruct *unstructured.Unstructured, idR
 			"least '%v' characters", folderUnstruct.GetName(), displayName, minDisplayNameLen)
 	}
 
-	return newDisplayNamePrefix + testvariable.RandomIdGenerator(idReg, uint(len(displayName)-len(newDisplayNamePrefix))), nil
+	return newDisplayNamePrefix + testvariable.RandomIDGenerator(idReg, uint(len(displayName)-len(newDisplayNamePrefix))), nil
 }
 
 func getFolderDisplayName(folderUnstruct *unstructured.Unstructured) (string, error) {

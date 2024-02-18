@@ -222,7 +222,7 @@ func mergeMembers(memberSlice1, memberSlice2 []v1beta1.Member) []v1beta1.Member 
 		memberMap[m] = true
 	}
 	res := make([]v1beta1.Member, 0)
-	for k, _ := range memberMap {
+	for k := range memberMap {
 		res = append(res, k)
 	}
 	sort.Slice(res, func(i, j int) bool {

@@ -89,7 +89,7 @@ func MergeClusterConfigsFromLiveStateForBigtableInstance(config map[string]inter
 		if !ok {
 			return nil, fmt.Errorf("expected the item value of `cluster` field to be map[string]interface{}, but was actually %T", item)
 		}
-		c, found, err := getClusterById(clusters, newCluster["cluster_id"])
+		c, found, err := getClusterByID(clusters, newCluster["cluster_id"])
 		if err != nil {
 			return nil, err
 		}
@@ -103,7 +103,7 @@ func MergeClusterConfigsFromLiveStateForBigtableInstance(config map[string]inter
 	return config, nil
 }
 
-func getClusterById(clusters []interface{}, id interface{}) (map[string]interface{}, bool, error) {
+func getClusterByID(clusters []interface{}, id interface{}) (map[string]interface{}, bool, error) {
 	for _, item := range clusters {
 		c, ok := item.(map[string]interface{})
 		if !ok {
@@ -117,7 +117,7 @@ func getClusterById(clusters []interface{}, id interface{}) (map[string]interfac
 }
 
 func mergeClusterConfigWithLiveState(config map[string]interface{}, state map[string]interface{}, clusterSchema *tfschema.Resource) {
-	for f, _ := range clusterSchema.Schema {
+	for f := range clusterSchema.Schema {
 		if f == "cluster_id" {
 			continue
 		}

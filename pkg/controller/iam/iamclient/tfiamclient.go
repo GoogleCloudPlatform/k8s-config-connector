@@ -451,7 +451,7 @@ func (t *TFIAMClient) buildUnstructuredIAMSkeletonFromReference(ctx context.Cont
 	tfInfo := &terraform.InstanceInfo{
 		Type: tfResourceName,
 	}
-	tfStateParsedFromId, err := krmtotf.ImportState(ctx, id, tfInfo, t.provider)
+	tfStateParsedFromID, err := krmtotf.ImportState(ctx, id, tfInfo, t.provider)
 	if err != nil {
 		return nil, fmt.Errorf("failed to import state given id %v: %w", id, err)
 	}
@@ -464,7 +464,7 @@ func (t *TFIAMClient) buildUnstructuredIAMSkeletonFromReference(ctx context.Cont
 	spec := map[string]interface{}{
 		refFieldName: refFieldVal,
 	}
-	for k, v := range tfStateParsedFromId.Attributes {
+	for k, v := range tfStateParsedFromID.Attributes {
 		spec[k] = v
 	}
 
@@ -581,7 +581,7 @@ func (t *TFIAMClient) getResourceForHeadlessKind(ctx context.Context, gvk schema
 }
 
 func (t *TFIAMClient) getProjectResource(ctx context.Context, gvk schema.GroupVersionKind, nn types.NamespacedName) (*krmtotf.Resource, error) {
-	projectID, err := k8s.GetProjectIDForNamespace(t.kubeClient, ctx, nn.Namespace)
+	projectID, err := k8s.GetProjectIDForNamespace(ctx, t.kubeClient, nn.Namespace)
 	if err != nil {
 		return nil, fmt.Errorf("error getting project ID for namespace: %w", err)
 	}
@@ -670,7 +670,7 @@ func getReferenceFieldValue(id string, rc *corekccv1alpha1.ResourceConfig) (stri
 	case corekccv1alpha1.IAMReferenceTypeId:
 		return id, nil
 	case corekccv1alpha1.IAMReferenceTypeName:
-		return parseNameFromId(id)
+		return parseNameFromID(id)
 	default:
 		panic(fmt.Errorf("unknown value type: %v", rc.IAMConfig.ReferenceField.Type))
 	}

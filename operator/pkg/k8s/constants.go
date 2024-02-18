@@ -38,7 +38,7 @@ const (
 	OperatorSystemNamespace              = "configconnector-operator-system"
 	VersionAnnotation                    = "cnrm.cloud.google.com/version"
 	OperatorVersionAnnotation            = "cnrm.cloud.google.com/operator-version"
-	ProjectIdAnnotation                  = "cnrm.cloud.google.com/project-id"
+	ProjectIDAnnotation                  = "cnrm.cloud.google.com/project-id"
 	StableChannel                        = "stable"
 	ConfigConnectorAllowedName           = "configconnector.core.cnrm.cloud.google.com"
 	ConfigConnectorContextAllowedName    = "configconnectorcontext.core.cnrm.cloud.google.com"

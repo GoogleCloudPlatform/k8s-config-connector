@@ -45,9 +45,9 @@ func TestQuickStart(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error creating dependencies: %v", err)
 	}
-	projectId := testgcp.GetDefaultProjectID(t)
+	projectID := testgcp.GetDefaultProjectID(t)
 	// define a basic disk resource with minimal fields
-	diskSkeleton, err := newDiskSkeleton(projectId, "us-central1-a", "my-compute-disk")
+	diskSkeleton, err := newDiskSkeleton(projectID, "us-central1-a", "my-compute-disk")
 	if err != nil {
 		t.Fatalf("error creating disk skeleton: %v", err)
 	}
@@ -131,8 +131,8 @@ func printUnstructuredIndented(u *unstructured.Unstructured) {
 	fmt.Println(stringVal)
 }
 
-func newDiskSkeleton(projectId, location, name string) (*unstructured.Unstructured, error) {
-	diskYAML := strings.Replace(diskTemplate, "${projectId}", projectId, 1)
+func newDiskSkeleton(projectID, location, name string) (*unstructured.Unstructured, error) {
+	diskYAML := strings.Replace(diskTemplate, "${projectId}", projectID, 1)
 	diskYAML = strings.Replace(diskYAML, "${location}", location, 1)
 	diskYAML = strings.Replace(diskYAML, "${name}", name, 1)
 	var u *unstructured.Unstructured

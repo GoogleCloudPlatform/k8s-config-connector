@@ -241,7 +241,7 @@ func resolveBigtableInstanceNumNodes(r *Resource, config map[string]interface{})
 		if !ok {
 			return fmt.Errorf("cannot decode cluster")
 		}
-		clusterId, found, err := unstructured.NestedString(c, "clusterId")
+		clusterID, found, err := unstructured.NestedString(c, "clusterId")
 		if err != nil {
 			return fmt.Errorf("error determining clusterId: %w", err)
 		} else if !found {
@@ -253,7 +253,7 @@ func resolveBigtableInstanceNumNodes(r *Resource, config map[string]interface{})
 		}
 		if !found {
 			// remove from output config
-			if err = removeNumNodesFromBigtableCluster(config, clusterId); err != nil {
+			if err = removeNumNodesFromBigtableCluster(config, clusterID); err != nil {
 				return fmt.Errorf("error removing numNodes: %w", err)
 			}
 		}

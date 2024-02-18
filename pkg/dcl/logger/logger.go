@@ -28,7 +28,7 @@ type dclLogger struct {
 	debug bool
 }
 
-func SimpleDCLLogger() dclLogger {
+func SimpleDCLLogger() dclLogger { //nolint:revive
 	return dclLogger{
 		debug: dclDebug != "",
 	}

@@ -48,7 +48,7 @@ var (
 
 func TestReconcile_UnmanagedResource(t *testing.T) {
 	t.Parallel()
-	testID := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	client := mgr.GetClient()
 	testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
 	testcontroller.EnsureNamespaceExistsT(t, client, testID)
@@ -90,7 +90,7 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 
 func TestReconcile_ManagedResource(t *testing.T) {
 	t.Parallel()
-	testID := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	client := mgr.GetClient()
 	testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
 	testcontroller.EnsureNamespaceExistsT(t, client, testID)
@@ -206,5 +206,5 @@ func getCurrentCondition(ctx context.Context, c client.Client, u *unstructured.U
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForUnitTestsWithCRDs(m, []*apiextensions.CustomResourceDefinition{fakeCRD}, &mgr)
+	testmain.ForUnitTestsWithCRDs(m, []*apiextensions.CustomResourceDefinition{fakeCRD}, &mgr)
 }

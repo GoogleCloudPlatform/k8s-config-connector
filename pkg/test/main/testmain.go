@@ -33,7 +33,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
 
-func TestMainForIntegrationTests(m *testing.M, mgr *manager.Manager) {
+func ForIntegrationTests(m *testing.M, mgr *manager.Manager) {
 	// Since Terraform logging defers to the Go standard logger,
 	// here we discard everything logged onto the Go standard logger to
 	// disable logging from Terraform Google provider in integration tests.
@@ -41,23 +41,23 @@ func TestMainForIntegrationTests(m *testing.M, mgr *manager.Manager) {
 	TestMain(m, test.IntegrationTestType, nil, mgr)
 }
 
-func TestMainForUnitTests(m *testing.M, mgr *manager.Manager) {
+func ForUnitTests(m *testing.M, mgr *manager.Manager) {
 	TestMain(m, test.UnitTestType, nil, mgr)
 }
 
-func TestMainForUnitTestsWithCRDs(m *testing.M, crds []*apiextensions.CustomResourceDefinition, mgr *manager.Manager) {
+func ForUnitTestsWithCRDs(m *testing.M, crds []*apiextensions.CustomResourceDefinition, mgr *manager.Manager) {
 	TestMain(m, test.UnitTestType, crds, mgr)
 }
 
 // TestMain starts a local K8S API server to run tests against. These tests do
 // not require an external API server to execute.
 func TestMain(m *testing.M, testType test.TestType, crds []*apiextensions.CustomResourceDefinition, mgr *manager.Manager) {
-	TestMainSetupMultipleEnvironments(m, testType, crds, []*manager.Manager{mgr})
+	SetupMultipleEnvironments(m, testType, crds, []*manager.Manager{mgr})
 }
 
-// TestMainSetupMultipleEnvironments starts n API servers to run tests against. The value for 'n' is determined by
+// SetupMultipleEnvironments starts n API servers to run tests against. The value for 'n' is determined by
 // the length of the 'mgrPtrs' argument. This is useful when testing multi-cluster scenarios.
-func TestMainSetupMultipleEnvironments(m *testing.M, testType test.TestType, crds []*apiextensions.CustomResourceDefinition, mgrPtrs []*manager.Manager) {
+func SetupMultipleEnvironments(m *testing.M, testType test.TestType, crds []*apiextensions.CustomResourceDefinition, mgrPtrs []*manager.Manager) {
 	logging.SetupLogger()
 	var err error
 
