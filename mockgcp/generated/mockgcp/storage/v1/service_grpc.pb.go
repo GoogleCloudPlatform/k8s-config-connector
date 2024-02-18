@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: mockgcp/storage/v1/service.proto
 
-package storage
+package storagepb
 
 import (
 	context "context"
@@ -19,202 +19,2958 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// StorageClient is the client API for Storage service.
+// AnywhereCachesServerClient is the client API for AnywhereCachesServer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type StorageClient interface {
-	// Returns metadata for the specified bucket.
-	GetBucket(ctx context.Context, in *GetBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
-	// Creates a new bucket.
-	InsertBucket(ctx context.Context, in *InsertBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
-	// Permanently deletes an empty bucket.
-	DeleteBucket(ctx context.Context, in *DeleteBucketRequest, opts ...grpc.CallOption) (*empty.Empty, error)
-	// Updates a bucket.
-	PatchBucket(ctx context.Context, in *PatchBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
+type AnywhereCachesServerClient interface {
+	DisableAnywhereCache(ctx context.Context, in *DisableAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error)
+	GetAnywhereCache(ctx context.Context, in *GetAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error)
+	InsertAnywhereCache(ctx context.Context, in *InsertAnywhereCacheRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error)
+	ListAnywhereCaches(ctx context.Context, in *ListAnywhereCachesRequest, opts ...grpc.CallOption) (*AnywhereCaches, error)
+	PauseAnywhereCache(ctx context.Context, in *PauseAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error)
+	ResumeAnywhereCache(ctx context.Context, in *ResumeAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error)
+	UpdateAnywhereCache(ctx context.Context, in *UpdateAnywhereCacheRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error)
 }
 
-type storageClient struct {
+type anywhereCachesServerClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewStorageClient(cc grpc.ClientConnInterface) StorageClient {
-	return &storageClient{cc}
+func NewAnywhereCachesServerClient(cc grpc.ClientConnInterface) AnywhereCachesServerClient {
+	return &anywhereCachesServerClient{cc}
 }
 
-func (c *storageClient) GetBucket(ctx context.Context, in *GetBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
-	out := new(Bucket)
-	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.Storage/GetBucket", in, out, opts...)
+func (c *anywhereCachesServerClient) DisableAnywhereCache(ctx context.Context, in *DisableAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error) {
+	out := new(AnywhereCache)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/DisableAnywhereCache", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storageClient) InsertBucket(ctx context.Context, in *InsertBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
-	out := new(Bucket)
-	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.Storage/InsertBucket", in, out, opts...)
+func (c *anywhereCachesServerClient) GetAnywhereCache(ctx context.Context, in *GetAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error) {
+	out := new(AnywhereCache)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/GetAnywhereCache", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storageClient) DeleteBucket(ctx context.Context, in *DeleteBucketRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.Storage/DeleteBucket", in, out, opts...)
+func (c *anywhereCachesServerClient) InsertAnywhereCache(ctx context.Context, in *InsertAnywhereCacheRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error) {
+	out := new(GoogleLongrunningOperation)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/InsertAnywhereCache", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storageClient) PatchBucket(ctx context.Context, in *PatchBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
-	out := new(Bucket)
-	err := c.cc.Invoke(ctx, "/mockgcp.storage.v1.Storage/PatchBucket", in, out, opts...)
+func (c *anywhereCachesServerClient) ListAnywhereCaches(ctx context.Context, in *ListAnywhereCachesRequest, opts ...grpc.CallOption) (*AnywhereCaches, error) {
+	out := new(AnywhereCaches)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/ListAnywhereCaches", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// StorageServer is the server API for Storage service.
-// All implementations must embed UnimplementedStorageServer
+func (c *anywhereCachesServerClient) PauseAnywhereCache(ctx context.Context, in *PauseAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error) {
+	out := new(AnywhereCache)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/PauseAnywhereCache", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *anywhereCachesServerClient) ResumeAnywhereCache(ctx context.Context, in *ResumeAnywhereCacheRequest, opts ...grpc.CallOption) (*AnywhereCache, error) {
+	out := new(AnywhereCache)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/ResumeAnywhereCache", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *anywhereCachesServerClient) UpdateAnywhereCache(ctx context.Context, in *UpdateAnywhereCacheRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error) {
+	out := new(GoogleLongrunningOperation)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.AnywhereCachesServer/UpdateAnywhereCache", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// AnywhereCachesServerServer is the server API for AnywhereCachesServer service.
+// All implementations must embed UnimplementedAnywhereCachesServerServer
 // for forward compatibility
-type StorageServer interface {
-	// Returns metadata for the specified bucket.
-	GetBucket(context.Context, *GetBucketRequest) (*Bucket, error)
-	// Creates a new bucket.
-	InsertBucket(context.Context, *InsertBucketRequest) (*Bucket, error)
-	// Permanently deletes an empty bucket.
+type AnywhereCachesServerServer interface {
+	DisableAnywhereCache(context.Context, *DisableAnywhereCacheRequest) (*AnywhereCache, error)
+	GetAnywhereCache(context.Context, *GetAnywhereCacheRequest) (*AnywhereCache, error)
+	InsertAnywhereCache(context.Context, *InsertAnywhereCacheRequest) (*GoogleLongrunningOperation, error)
+	ListAnywhereCaches(context.Context, *ListAnywhereCachesRequest) (*AnywhereCaches, error)
+	PauseAnywhereCache(context.Context, *PauseAnywhereCacheRequest) (*AnywhereCache, error)
+	ResumeAnywhereCache(context.Context, *ResumeAnywhereCacheRequest) (*AnywhereCache, error)
+	UpdateAnywhereCache(context.Context, *UpdateAnywhereCacheRequest) (*GoogleLongrunningOperation, error)
+	mustEmbedUnimplementedAnywhereCachesServerServer()
+}
+
+// UnimplementedAnywhereCachesServerServer must be embedded to have forward compatible implementations.
+type UnimplementedAnywhereCachesServerServer struct {
+}
+
+func (UnimplementedAnywhereCachesServerServer) DisableAnywhereCache(context.Context, *DisableAnywhereCacheRequest) (*AnywhereCache, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DisableAnywhereCache not implemented")
+}
+func (UnimplementedAnywhereCachesServerServer) GetAnywhereCache(context.Context, *GetAnywhereCacheRequest) (*AnywhereCache, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAnywhereCache not implemented")
+}
+func (UnimplementedAnywhereCachesServerServer) InsertAnywhereCache(context.Context, *InsertAnywhereCacheRequest) (*GoogleLongrunningOperation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InsertAnywhereCache not implemented")
+}
+func (UnimplementedAnywhereCachesServerServer) ListAnywhereCaches(context.Context, *ListAnywhereCachesRequest) (*AnywhereCaches, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAnywhereCaches not implemented")
+}
+func (UnimplementedAnywhereCachesServerServer) PauseAnywhereCache(context.Context, *PauseAnywhereCacheRequest) (*AnywhereCache, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PauseAnywhereCache not implemented")
+}
+func (UnimplementedAnywhereCachesServerServer) ResumeAnywhereCache(context.Context, *ResumeAnywhereCacheRequest) (*AnywhereCache, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResumeAnywhereCache not implemented")
+}
+func (UnimplementedAnywhereCachesServerServer) UpdateAnywhereCache(context.Context, *UpdateAnywhereCacheRequest) (*GoogleLongrunningOperation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAnywhereCache not implemented")
+}
+func (UnimplementedAnywhereCachesServerServer) mustEmbedUnimplementedAnywhereCachesServerServer() {}
+
+// UnsafeAnywhereCachesServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AnywhereCachesServerServer will
+// result in compilation errors.
+type UnsafeAnywhereCachesServerServer interface {
+	mustEmbedUnimplementedAnywhereCachesServerServer()
+}
+
+func RegisterAnywhereCachesServerServer(s grpc.ServiceRegistrar, srv AnywhereCachesServerServer) {
+	s.RegisterService(&AnywhereCachesServer_ServiceDesc, srv)
+}
+
+func _AnywhereCachesServer_DisableAnywhereCache_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DisableAnywhereCacheRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnywhereCachesServerServer).DisableAnywhereCache(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/DisableAnywhereCache",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnywhereCachesServerServer).DisableAnywhereCache(ctx, req.(*DisableAnywhereCacheRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnywhereCachesServer_GetAnywhereCache_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAnywhereCacheRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnywhereCachesServerServer).GetAnywhereCache(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/GetAnywhereCache",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnywhereCachesServerServer).GetAnywhereCache(ctx, req.(*GetAnywhereCacheRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnywhereCachesServer_InsertAnywhereCache_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertAnywhereCacheRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnywhereCachesServerServer).InsertAnywhereCache(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/InsertAnywhereCache",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnywhereCachesServerServer).InsertAnywhereCache(ctx, req.(*InsertAnywhereCacheRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnywhereCachesServer_ListAnywhereCaches_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAnywhereCachesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnywhereCachesServerServer).ListAnywhereCaches(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/ListAnywhereCaches",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnywhereCachesServerServer).ListAnywhereCaches(ctx, req.(*ListAnywhereCachesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnywhereCachesServer_PauseAnywhereCache_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PauseAnywhereCacheRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnywhereCachesServerServer).PauseAnywhereCache(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/PauseAnywhereCache",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnywhereCachesServerServer).PauseAnywhereCache(ctx, req.(*PauseAnywhereCacheRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnywhereCachesServer_ResumeAnywhereCache_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResumeAnywhereCacheRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnywhereCachesServerServer).ResumeAnywhereCache(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/ResumeAnywhereCache",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnywhereCachesServerServer).ResumeAnywhereCache(ctx, req.(*ResumeAnywhereCacheRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnywhereCachesServer_UpdateAnywhereCache_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAnywhereCacheRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnywhereCachesServerServer).UpdateAnywhereCache(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.AnywhereCachesServer/UpdateAnywhereCache",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnywhereCachesServerServer).UpdateAnywhereCache(ctx, req.(*UpdateAnywhereCacheRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// AnywhereCachesServer_ServiceDesc is the grpc.ServiceDesc for AnywhereCachesServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var AnywhereCachesServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.AnywhereCachesServer",
+	HandlerType: (*AnywhereCachesServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "DisableAnywhereCache",
+			Handler:    _AnywhereCachesServer_DisableAnywhereCache_Handler,
+		},
+		{
+			MethodName: "GetAnywhereCache",
+			Handler:    _AnywhereCachesServer_GetAnywhereCache_Handler,
+		},
+		{
+			MethodName: "InsertAnywhereCache",
+			Handler:    _AnywhereCachesServer_InsertAnywhereCache_Handler,
+		},
+		{
+			MethodName: "ListAnywhereCaches",
+			Handler:    _AnywhereCachesServer_ListAnywhereCaches_Handler,
+		},
+		{
+			MethodName: "PauseAnywhereCache",
+			Handler:    _AnywhereCachesServer_PauseAnywhereCache_Handler,
+		},
+		{
+			MethodName: "ResumeAnywhereCache",
+			Handler:    _AnywhereCachesServer_ResumeAnywhereCache_Handler,
+		},
+		{
+			MethodName: "UpdateAnywhereCache",
+			Handler:    _AnywhereCachesServer_UpdateAnywhereCache_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/storage/v1/service.proto",
+}
+
+// BucketAccessControlsServerClient is the client API for BucketAccessControlsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type BucketAccessControlsServerClient interface {
+	DeleteBucketAccessControl(ctx context.Context, in *DeleteBucketAccessControlRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	GetBucketAccessControl(ctx context.Context, in *GetBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error)
+	InsertBucketAccessControl(ctx context.Context, in *InsertBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error)
+	ListBucketAccessControls(ctx context.Context, in *ListBucketAccessControlsRequest, opts ...grpc.CallOption) (*BucketAccessControls, error)
+	PatchBucketAccessControl(ctx context.Context, in *PatchBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error)
+	UpdateBucketAccessControl(ctx context.Context, in *UpdateBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error)
+}
+
+type bucketAccessControlsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewBucketAccessControlsServerClient(cc grpc.ClientConnInterface) BucketAccessControlsServerClient {
+	return &bucketAccessControlsServerClient{cc}
+}
+
+func (c *bucketAccessControlsServerClient) DeleteBucketAccessControl(ctx context.Context, in *DeleteBucketAccessControlRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketAccessControlsServer/DeleteBucketAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketAccessControlsServerClient) GetBucketAccessControl(ctx context.Context, in *GetBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error) {
+	out := new(BucketAccessControl)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketAccessControlsServer/GetBucketAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketAccessControlsServerClient) InsertBucketAccessControl(ctx context.Context, in *InsertBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error) {
+	out := new(BucketAccessControl)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketAccessControlsServer/InsertBucketAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketAccessControlsServerClient) ListBucketAccessControls(ctx context.Context, in *ListBucketAccessControlsRequest, opts ...grpc.CallOption) (*BucketAccessControls, error) {
+	out := new(BucketAccessControls)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketAccessControlsServer/ListBucketAccessControls", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketAccessControlsServerClient) PatchBucketAccessControl(ctx context.Context, in *PatchBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error) {
+	out := new(BucketAccessControl)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketAccessControlsServer/PatchBucketAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketAccessControlsServerClient) UpdateBucketAccessControl(ctx context.Context, in *UpdateBucketAccessControlRequest, opts ...grpc.CallOption) (*BucketAccessControl, error) {
+	out := new(BucketAccessControl)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketAccessControlsServer/UpdateBucketAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// BucketAccessControlsServerServer is the server API for BucketAccessControlsServer service.
+// All implementations must embed UnimplementedBucketAccessControlsServerServer
+// for forward compatibility
+type BucketAccessControlsServerServer interface {
+	DeleteBucketAccessControl(context.Context, *DeleteBucketAccessControlRequest) (*empty.Empty, error)
+	GetBucketAccessControl(context.Context, *GetBucketAccessControlRequest) (*BucketAccessControl, error)
+	InsertBucketAccessControl(context.Context, *InsertBucketAccessControlRequest) (*BucketAccessControl, error)
+	ListBucketAccessControls(context.Context, *ListBucketAccessControlsRequest) (*BucketAccessControls, error)
+	PatchBucketAccessControl(context.Context, *PatchBucketAccessControlRequest) (*BucketAccessControl, error)
+	UpdateBucketAccessControl(context.Context, *UpdateBucketAccessControlRequest) (*BucketAccessControl, error)
+	mustEmbedUnimplementedBucketAccessControlsServerServer()
+}
+
+// UnimplementedBucketAccessControlsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedBucketAccessControlsServerServer struct {
+}
+
+func (UnimplementedBucketAccessControlsServerServer) DeleteBucketAccessControl(context.Context, *DeleteBucketAccessControlRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBucketAccessControl not implemented")
+}
+func (UnimplementedBucketAccessControlsServerServer) GetBucketAccessControl(context.Context, *GetBucketAccessControlRequest) (*BucketAccessControl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBucketAccessControl not implemented")
+}
+func (UnimplementedBucketAccessControlsServerServer) InsertBucketAccessControl(context.Context, *InsertBucketAccessControlRequest) (*BucketAccessControl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InsertBucketAccessControl not implemented")
+}
+func (UnimplementedBucketAccessControlsServerServer) ListBucketAccessControls(context.Context, *ListBucketAccessControlsRequest) (*BucketAccessControls, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBucketAccessControls not implemented")
+}
+func (UnimplementedBucketAccessControlsServerServer) PatchBucketAccessControl(context.Context, *PatchBucketAccessControlRequest) (*BucketAccessControl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchBucketAccessControl not implemented")
+}
+func (UnimplementedBucketAccessControlsServerServer) UpdateBucketAccessControl(context.Context, *UpdateBucketAccessControlRequest) (*BucketAccessControl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBucketAccessControl not implemented")
+}
+func (UnimplementedBucketAccessControlsServerServer) mustEmbedUnimplementedBucketAccessControlsServerServer() {
+}
+
+// UnsafeBucketAccessControlsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to BucketAccessControlsServerServer will
+// result in compilation errors.
+type UnsafeBucketAccessControlsServerServer interface {
+	mustEmbedUnimplementedBucketAccessControlsServerServer()
+}
+
+func RegisterBucketAccessControlsServerServer(s grpc.ServiceRegistrar, srv BucketAccessControlsServerServer) {
+	s.RegisterService(&BucketAccessControlsServer_ServiceDesc, srv)
+}
+
+func _BucketAccessControlsServer_DeleteBucketAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBucketAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketAccessControlsServerServer).DeleteBucketAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.BucketAccessControlsServer/DeleteBucketAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketAccessControlsServerServer).DeleteBucketAccessControl(ctx, req.(*DeleteBucketAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketAccessControlsServer_GetBucketAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBucketAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketAccessControlsServerServer).GetBucketAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.BucketAccessControlsServer/GetBucketAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketAccessControlsServerServer).GetBucketAccessControl(ctx, req.(*GetBucketAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketAccessControlsServer_InsertBucketAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertBucketAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketAccessControlsServerServer).InsertBucketAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.BucketAccessControlsServer/InsertBucketAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketAccessControlsServerServer).InsertBucketAccessControl(ctx, req.(*InsertBucketAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketAccessControlsServer_ListBucketAccessControls_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBucketAccessControlsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketAccessControlsServerServer).ListBucketAccessControls(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.BucketAccessControlsServer/ListBucketAccessControls",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketAccessControlsServerServer).ListBucketAccessControls(ctx, req.(*ListBucketAccessControlsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketAccessControlsServer_PatchBucketAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchBucketAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketAccessControlsServerServer).PatchBucketAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.BucketAccessControlsServer/PatchBucketAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketAccessControlsServerServer).PatchBucketAccessControl(ctx, req.(*PatchBucketAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketAccessControlsServer_UpdateBucketAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBucketAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketAccessControlsServerServer).UpdateBucketAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.BucketAccessControlsServer/UpdateBucketAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketAccessControlsServerServer).UpdateBucketAccessControl(ctx, req.(*UpdateBucketAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// BucketAccessControlsServer_ServiceDesc is the grpc.ServiceDesc for BucketAccessControlsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var BucketAccessControlsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.BucketAccessControlsServer",
+	HandlerType: (*BucketAccessControlsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "DeleteBucketAccessControl",
+			Handler:    _BucketAccessControlsServer_DeleteBucketAccessControl_Handler,
+		},
+		{
+			MethodName: "GetBucketAccessControl",
+			Handler:    _BucketAccessControlsServer_GetBucketAccessControl_Handler,
+		},
+		{
+			MethodName: "InsertBucketAccessControl",
+			Handler:    _BucketAccessControlsServer_InsertBucketAccessControl_Handler,
+		},
+		{
+			MethodName: "ListBucketAccessControls",
+			Handler:    _BucketAccessControlsServer_ListBucketAccessControls_Handler,
+		},
+		{
+			MethodName: "PatchBucketAccessControl",
+			Handler:    _BucketAccessControlsServer_PatchBucketAccessControl_Handler,
+		},
+		{
+			MethodName: "UpdateBucketAccessControl",
+			Handler:    _BucketAccessControlsServer_UpdateBucketAccessControl_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/storage/v1/service.proto",
+}
+
+// BucketsServerClient is the client API for BucketsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type BucketsServerClient interface {
+	DeleteBucket(ctx context.Context, in *DeleteBucketRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	GetBucket(ctx context.Context, in *GetBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
+	InsertBucket(ctx context.Context, in *InsertBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
+	ListBuckets(ctx context.Context, in *ListBucketsRequest, opts ...grpc.CallOption) (*Buckets, error)
+	LockRetentionPolicyBucket(ctx context.Context, in *LockRetentionPolicyBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
+	PatchBucket(ctx context.Context, in *PatchBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
+	UpdateBucket(ctx context.Context, in *UpdateBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
+}
+
+type bucketsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewBucketsServerClient(cc grpc.ClientConnInterface) BucketsServerClient {
+	return &bucketsServerClient{cc}
+}
+
+func (c *bucketsServerClient) DeleteBucket(ctx context.Context, in *DeleteBucketRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/DeleteBucket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketsServerClient) GetBucket(ctx context.Context, in *GetBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
+	out := new(Bucket)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/GetBucket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketsServerClient) InsertBucket(ctx context.Context, in *InsertBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
+	out := new(Bucket)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/InsertBucket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketsServerClient) ListBuckets(ctx context.Context, in *ListBucketsRequest, opts ...grpc.CallOption) (*Buckets, error) {
+	out := new(Buckets)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/ListBuckets", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketsServerClient) LockRetentionPolicyBucket(ctx context.Context, in *LockRetentionPolicyBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
+	out := new(Bucket)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/LockRetentionPolicyBucket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketsServerClient) PatchBucket(ctx context.Context, in *PatchBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
+	out := new(Bucket)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/PatchBucket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketsServerClient) UpdateBucket(ctx context.Context, in *UpdateBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
+	out := new(Bucket)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/UpdateBucket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// BucketsServerServer is the server API for BucketsServer service.
+// All implementations must embed UnimplementedBucketsServerServer
+// for forward compatibility
+type BucketsServerServer interface {
 	DeleteBucket(context.Context, *DeleteBucketRequest) (*empty.Empty, error)
-	// Updates a bucket.
+	GetBucket(context.Context, *GetBucketRequest) (*Bucket, error)
+	InsertBucket(context.Context, *InsertBucketRequest) (*Bucket, error)
+	ListBuckets(context.Context, *ListBucketsRequest) (*Buckets, error)
+	LockRetentionPolicyBucket(context.Context, *LockRetentionPolicyBucketRequest) (*Bucket, error)
 	PatchBucket(context.Context, *PatchBucketRequest) (*Bucket, error)
-	mustEmbedUnimplementedStorageServer()
+	UpdateBucket(context.Context, *UpdateBucketRequest) (*Bucket, error)
+	mustEmbedUnimplementedBucketsServerServer()
 }
 
-// UnimplementedStorageServer must be embedded to have forward compatible implementations.
-type UnimplementedStorageServer struct {
+// UnimplementedBucketsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedBucketsServerServer struct {
 }
 
-func (UnimplementedStorageServer) GetBucket(context.Context, *GetBucketRequest) (*Bucket, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBucket not implemented")
-}
-func (UnimplementedStorageServer) InsertBucket(context.Context, *InsertBucketRequest) (*Bucket, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method InsertBucket not implemented")
-}
-func (UnimplementedStorageServer) DeleteBucket(context.Context, *DeleteBucketRequest) (*empty.Empty, error) {
+func (UnimplementedBucketsServerServer) DeleteBucket(context.Context, *DeleteBucketRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBucket not implemented")
 }
-func (UnimplementedStorageServer) PatchBucket(context.Context, *PatchBucketRequest) (*Bucket, error) {
+func (UnimplementedBucketsServerServer) GetBucket(context.Context, *GetBucketRequest) (*Bucket, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBucket not implemented")
+}
+func (UnimplementedBucketsServerServer) InsertBucket(context.Context, *InsertBucketRequest) (*Bucket, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InsertBucket not implemented")
+}
+func (UnimplementedBucketsServerServer) ListBuckets(context.Context, *ListBucketsRequest) (*Buckets, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBuckets not implemented")
+}
+func (UnimplementedBucketsServerServer) LockRetentionPolicyBucket(context.Context, *LockRetentionPolicyBucketRequest) (*Bucket, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LockRetentionPolicyBucket not implemented")
+}
+func (UnimplementedBucketsServerServer) PatchBucket(context.Context, *PatchBucketRequest) (*Bucket, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PatchBucket not implemented")
 }
-func (UnimplementedStorageServer) mustEmbedUnimplementedStorageServer() {}
+func (UnimplementedBucketsServerServer) UpdateBucket(context.Context, *UpdateBucketRequest) (*Bucket, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBucket not implemented")
+}
+func (UnimplementedBucketsServerServer) mustEmbedUnimplementedBucketsServerServer() {}
 
-// UnsafeStorageServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to StorageServer will
+// UnsafeBucketsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to BucketsServerServer will
 // result in compilation errors.
-type UnsafeStorageServer interface {
-	mustEmbedUnimplementedStorageServer()
+type UnsafeBucketsServerServer interface {
+	mustEmbedUnimplementedBucketsServerServer()
 }
 
-func RegisterStorageServer(s grpc.ServiceRegistrar, srv StorageServer) {
-	s.RegisterService(&Storage_ServiceDesc, srv)
+func RegisterBucketsServerServer(s grpc.ServiceRegistrar, srv BucketsServerServer) {
+	s.RegisterService(&BucketsServer_ServiceDesc, srv)
 }
 
-func _Storage_GetBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetBucketRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StorageServer).GetBucket(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.storage.v1.Storage/GetBucket",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServer).GetBucket(ctx, req.(*GetBucketRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Storage_InsertBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InsertBucketRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StorageServer).InsertBucket(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/mockgcp.storage.v1.Storage/InsertBucket",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServer).InsertBucket(ctx, req.(*InsertBucketRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Storage_DeleteBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BucketsServer_DeleteBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteBucketRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageServer).DeleteBucket(ctx, in)
+		return srv.(BucketsServerServer).DeleteBucket(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.storage.v1.Storage/DeleteBucket",
+		FullMethod: "/google.cloud.storage.v1.BucketsServer/DeleteBucket",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServer).DeleteBucket(ctx, req.(*DeleteBucketRequest))
+		return srv.(BucketsServerServer).DeleteBucket(ctx, req.(*DeleteBucketRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Storage_PatchBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BucketsServer_GetBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketsServerServer).GetBucket(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.BucketsServer/GetBucket",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketsServerServer).GetBucket(ctx, req.(*GetBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketsServer_InsertBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketsServerServer).InsertBucket(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.BucketsServer/InsertBucket",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketsServerServer).InsertBucket(ctx, req.(*InsertBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketsServer_ListBuckets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBucketsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketsServerServer).ListBuckets(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.BucketsServer/ListBuckets",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketsServerServer).ListBuckets(ctx, req.(*ListBucketsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketsServer_LockRetentionPolicyBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LockRetentionPolicyBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketsServerServer).LockRetentionPolicyBucket(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.BucketsServer/LockRetentionPolicyBucket",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketsServerServer).LockRetentionPolicyBucket(ctx, req.(*LockRetentionPolicyBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketsServer_PatchBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PatchBucketRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageServer).PatchBucket(ctx, in)
+		return srv.(BucketsServerServer).PatchBucket(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/mockgcp.storage.v1.Storage/PatchBucket",
+		FullMethod: "/google.cloud.storage.v1.BucketsServer/PatchBucket",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServer).PatchBucket(ctx, req.(*PatchBucketRequest))
+		return srv.(BucketsServerServer).PatchBucket(ctx, req.(*PatchBucketRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Storage_ServiceDesc is the grpc.ServiceDesc for Storage service.
+func _BucketsServer_UpdateBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketsServerServer).UpdateBucket(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.BucketsServer/UpdateBucket",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketsServerServer).UpdateBucket(ctx, req.(*UpdateBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// BucketsServer_ServiceDesc is the grpc.ServiceDesc for BucketsServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Storage_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mockgcp.storage.v1.Storage",
-	HandlerType: (*StorageServer)(nil),
+var BucketsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.BucketsServer",
+	HandlerType: (*BucketsServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "DeleteBucket",
+			Handler:    _BucketsServer_DeleteBucket_Handler,
+		},
+		{
 			MethodName: "GetBucket",
-			Handler:    _Storage_GetBucket_Handler,
+			Handler:    _BucketsServer_GetBucket_Handler,
 		},
 		{
 			MethodName: "InsertBucket",
-			Handler:    _Storage_InsertBucket_Handler,
+			Handler:    _BucketsServer_InsertBucket_Handler,
 		},
 		{
-			MethodName: "DeleteBucket",
-			Handler:    _Storage_DeleteBucket_Handler,
+			MethodName: "ListBuckets",
+			Handler:    _BucketsServer_ListBuckets_Handler,
+		},
+		{
+			MethodName: "LockRetentionPolicyBucket",
+			Handler:    _BucketsServer_LockRetentionPolicyBucket_Handler,
 		},
 		{
 			MethodName: "PatchBucket",
-			Handler:    _Storage_PatchBucket_Handler,
+			Handler:    _BucketsServer_PatchBucket_Handler,
+		},
+		{
+			MethodName: "UpdateBucket",
+			Handler:    _BucketsServer_UpdateBucket_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/storage/v1/service.proto",
+}
+
+// ChannelsServerClient is the client API for ChannelsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ChannelsServerClient interface {
+	StopChannel(ctx context.Context, in *StopChannelRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+}
+
+type channelsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewChannelsServerClient(cc grpc.ClientConnInterface) ChannelsServerClient {
+	return &channelsServerClient{cc}
+}
+
+func (c *channelsServerClient) StopChannel(ctx context.Context, in *StopChannelRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ChannelsServer/StopChannel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ChannelsServerServer is the server API for ChannelsServer service.
+// All implementations must embed UnimplementedChannelsServerServer
+// for forward compatibility
+type ChannelsServerServer interface {
+	StopChannel(context.Context, *StopChannelRequest) (*empty.Empty, error)
+	mustEmbedUnimplementedChannelsServerServer()
+}
+
+// UnimplementedChannelsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedChannelsServerServer struct {
+}
+
+func (UnimplementedChannelsServerServer) StopChannel(context.Context, *StopChannelRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StopChannel not implemented")
+}
+func (UnimplementedChannelsServerServer) mustEmbedUnimplementedChannelsServerServer() {}
+
+// UnsafeChannelsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ChannelsServerServer will
+// result in compilation errors.
+type UnsafeChannelsServerServer interface {
+	mustEmbedUnimplementedChannelsServerServer()
+}
+
+func RegisterChannelsServerServer(s grpc.ServiceRegistrar, srv ChannelsServerServer) {
+	s.RegisterService(&ChannelsServer_ServiceDesc, srv)
+}
+
+func _ChannelsServer_StopChannel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StopChannelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChannelsServerServer).StopChannel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ChannelsServer/StopChannel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChannelsServerServer).StopChannel(ctx, req.(*StopChannelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ChannelsServer_ServiceDesc is the grpc.ServiceDesc for ChannelsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ChannelsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.ChannelsServer",
+	HandlerType: (*ChannelsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "StopChannel",
+			Handler:    _ChannelsServer_StopChannel_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/storage/v1/service.proto",
+}
+
+// DefaultObjectAccessControlsServerClient is the client API for DefaultObjectAccessControlsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type DefaultObjectAccessControlsServerClient interface {
+	DeleteDefaultObjectAccessControl(ctx context.Context, in *DeleteDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	GetDefaultObjectAccessControl(ctx context.Context, in *GetDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+	InsertDefaultObjectAccessControl(ctx context.Context, in *InsertDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+	ListDefaultObjectAccessControls(ctx context.Context, in *ListDefaultObjectAccessControlsRequest, opts ...grpc.CallOption) (*ObjectAccessControls, error)
+	PatchDefaultObjectAccessControl(ctx context.Context, in *PatchDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+	UpdateDefaultObjectAccessControl(ctx context.Context, in *UpdateDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+}
+
+type defaultObjectAccessControlsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewDefaultObjectAccessControlsServerClient(cc grpc.ClientConnInterface) DefaultObjectAccessControlsServerClient {
+	return &defaultObjectAccessControlsServerClient{cc}
+}
+
+func (c *defaultObjectAccessControlsServerClient) DeleteDefaultObjectAccessControl(ctx context.Context, in *DeleteDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/DeleteDefaultObjectAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *defaultObjectAccessControlsServerClient) GetDefaultObjectAccessControl(ctx context.Context, in *GetDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
+	out := new(ObjectAccessControl)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/GetDefaultObjectAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *defaultObjectAccessControlsServerClient) InsertDefaultObjectAccessControl(ctx context.Context, in *InsertDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
+	out := new(ObjectAccessControl)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/InsertDefaultObjectAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *defaultObjectAccessControlsServerClient) ListDefaultObjectAccessControls(ctx context.Context, in *ListDefaultObjectAccessControlsRequest, opts ...grpc.CallOption) (*ObjectAccessControls, error) {
+	out := new(ObjectAccessControls)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/ListDefaultObjectAccessControls", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *defaultObjectAccessControlsServerClient) PatchDefaultObjectAccessControl(ctx context.Context, in *PatchDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
+	out := new(ObjectAccessControl)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/PatchDefaultObjectAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *defaultObjectAccessControlsServerClient) UpdateDefaultObjectAccessControl(ctx context.Context, in *UpdateDefaultObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
+	out := new(ObjectAccessControl)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/UpdateDefaultObjectAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// DefaultObjectAccessControlsServerServer is the server API for DefaultObjectAccessControlsServer service.
+// All implementations must embed UnimplementedDefaultObjectAccessControlsServerServer
+// for forward compatibility
+type DefaultObjectAccessControlsServerServer interface {
+	DeleteDefaultObjectAccessControl(context.Context, *DeleteDefaultObjectAccessControlRequest) (*empty.Empty, error)
+	GetDefaultObjectAccessControl(context.Context, *GetDefaultObjectAccessControlRequest) (*ObjectAccessControl, error)
+	InsertDefaultObjectAccessControl(context.Context, *InsertDefaultObjectAccessControlRequest) (*ObjectAccessControl, error)
+	ListDefaultObjectAccessControls(context.Context, *ListDefaultObjectAccessControlsRequest) (*ObjectAccessControls, error)
+	PatchDefaultObjectAccessControl(context.Context, *PatchDefaultObjectAccessControlRequest) (*ObjectAccessControl, error)
+	UpdateDefaultObjectAccessControl(context.Context, *UpdateDefaultObjectAccessControlRequest) (*ObjectAccessControl, error)
+	mustEmbedUnimplementedDefaultObjectAccessControlsServerServer()
+}
+
+// UnimplementedDefaultObjectAccessControlsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedDefaultObjectAccessControlsServerServer struct {
+}
+
+func (UnimplementedDefaultObjectAccessControlsServerServer) DeleteDefaultObjectAccessControl(context.Context, *DeleteDefaultObjectAccessControlRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDefaultObjectAccessControl not implemented")
+}
+func (UnimplementedDefaultObjectAccessControlsServerServer) GetDefaultObjectAccessControl(context.Context, *GetDefaultObjectAccessControlRequest) (*ObjectAccessControl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDefaultObjectAccessControl not implemented")
+}
+func (UnimplementedDefaultObjectAccessControlsServerServer) InsertDefaultObjectAccessControl(context.Context, *InsertDefaultObjectAccessControlRequest) (*ObjectAccessControl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InsertDefaultObjectAccessControl not implemented")
+}
+func (UnimplementedDefaultObjectAccessControlsServerServer) ListDefaultObjectAccessControls(context.Context, *ListDefaultObjectAccessControlsRequest) (*ObjectAccessControls, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListDefaultObjectAccessControls not implemented")
+}
+func (UnimplementedDefaultObjectAccessControlsServerServer) PatchDefaultObjectAccessControl(context.Context, *PatchDefaultObjectAccessControlRequest) (*ObjectAccessControl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchDefaultObjectAccessControl not implemented")
+}
+func (UnimplementedDefaultObjectAccessControlsServerServer) UpdateDefaultObjectAccessControl(context.Context, *UpdateDefaultObjectAccessControlRequest) (*ObjectAccessControl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDefaultObjectAccessControl not implemented")
+}
+func (UnimplementedDefaultObjectAccessControlsServerServer) mustEmbedUnimplementedDefaultObjectAccessControlsServerServer() {
+}
+
+// UnsafeDefaultObjectAccessControlsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to DefaultObjectAccessControlsServerServer will
+// result in compilation errors.
+type UnsafeDefaultObjectAccessControlsServerServer interface {
+	mustEmbedUnimplementedDefaultObjectAccessControlsServerServer()
+}
+
+func RegisterDefaultObjectAccessControlsServerServer(s grpc.ServiceRegistrar, srv DefaultObjectAccessControlsServerServer) {
+	s.RegisterService(&DefaultObjectAccessControlsServer_ServiceDesc, srv)
+}
+
+func _DefaultObjectAccessControlsServer_DeleteDefaultObjectAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteDefaultObjectAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DefaultObjectAccessControlsServerServer).DeleteDefaultObjectAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/DeleteDefaultObjectAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DefaultObjectAccessControlsServerServer).DeleteDefaultObjectAccessControl(ctx, req.(*DeleteDefaultObjectAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DefaultObjectAccessControlsServer_GetDefaultObjectAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDefaultObjectAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DefaultObjectAccessControlsServerServer).GetDefaultObjectAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/GetDefaultObjectAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DefaultObjectAccessControlsServerServer).GetDefaultObjectAccessControl(ctx, req.(*GetDefaultObjectAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DefaultObjectAccessControlsServer_InsertDefaultObjectAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertDefaultObjectAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DefaultObjectAccessControlsServerServer).InsertDefaultObjectAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/InsertDefaultObjectAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DefaultObjectAccessControlsServerServer).InsertDefaultObjectAccessControl(ctx, req.(*InsertDefaultObjectAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DefaultObjectAccessControlsServer_ListDefaultObjectAccessControls_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListDefaultObjectAccessControlsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DefaultObjectAccessControlsServerServer).ListDefaultObjectAccessControls(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/ListDefaultObjectAccessControls",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DefaultObjectAccessControlsServerServer).ListDefaultObjectAccessControls(ctx, req.(*ListDefaultObjectAccessControlsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DefaultObjectAccessControlsServer_PatchDefaultObjectAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchDefaultObjectAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DefaultObjectAccessControlsServerServer).PatchDefaultObjectAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/PatchDefaultObjectAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DefaultObjectAccessControlsServerServer).PatchDefaultObjectAccessControl(ctx, req.(*PatchDefaultObjectAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DefaultObjectAccessControlsServer_UpdateDefaultObjectAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateDefaultObjectAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DefaultObjectAccessControlsServerServer).UpdateDefaultObjectAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.DefaultObjectAccessControlsServer/UpdateDefaultObjectAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DefaultObjectAccessControlsServerServer).UpdateDefaultObjectAccessControl(ctx, req.(*UpdateDefaultObjectAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// DefaultObjectAccessControlsServer_ServiceDesc is the grpc.ServiceDesc for DefaultObjectAccessControlsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var DefaultObjectAccessControlsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.DefaultObjectAccessControlsServer",
+	HandlerType: (*DefaultObjectAccessControlsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "DeleteDefaultObjectAccessControl",
+			Handler:    _DefaultObjectAccessControlsServer_DeleteDefaultObjectAccessControl_Handler,
+		},
+		{
+			MethodName: "GetDefaultObjectAccessControl",
+			Handler:    _DefaultObjectAccessControlsServer_GetDefaultObjectAccessControl_Handler,
+		},
+		{
+			MethodName: "InsertDefaultObjectAccessControl",
+			Handler:    _DefaultObjectAccessControlsServer_InsertDefaultObjectAccessControl_Handler,
+		},
+		{
+			MethodName: "ListDefaultObjectAccessControls",
+			Handler:    _DefaultObjectAccessControlsServer_ListDefaultObjectAccessControls_Handler,
+		},
+		{
+			MethodName: "PatchDefaultObjectAccessControl",
+			Handler:    _DefaultObjectAccessControlsServer_PatchDefaultObjectAccessControl_Handler,
+		},
+		{
+			MethodName: "UpdateDefaultObjectAccessControl",
+			Handler:    _DefaultObjectAccessControlsServer_UpdateDefaultObjectAccessControl_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/storage/v1/service.proto",
+}
+
+// FoldersServerClient is the client API for FoldersServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type FoldersServerClient interface {
+	DeleteFolder(ctx context.Context, in *DeleteFolderRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	GetFolder(ctx context.Context, in *GetFolderRequest, opts ...grpc.CallOption) (*Folder, error)
+	InsertFolder(ctx context.Context, in *InsertFolderRequest, opts ...grpc.CallOption) (*Folder, error)
+	ListFolders(ctx context.Context, in *ListFoldersRequest, opts ...grpc.CallOption) (*Folders, error)
+	RenameFolder(ctx context.Context, in *RenameFolderRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error)
+}
+
+type foldersServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewFoldersServerClient(cc grpc.ClientConnInterface) FoldersServerClient {
+	return &foldersServerClient{cc}
+}
+
+func (c *foldersServerClient) DeleteFolder(ctx context.Context, in *DeleteFolderRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.FoldersServer/DeleteFolder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *foldersServerClient) GetFolder(ctx context.Context, in *GetFolderRequest, opts ...grpc.CallOption) (*Folder, error) {
+	out := new(Folder)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.FoldersServer/GetFolder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *foldersServerClient) InsertFolder(ctx context.Context, in *InsertFolderRequest, opts ...grpc.CallOption) (*Folder, error) {
+	out := new(Folder)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.FoldersServer/InsertFolder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *foldersServerClient) ListFolders(ctx context.Context, in *ListFoldersRequest, opts ...grpc.CallOption) (*Folders, error) {
+	out := new(Folders)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.FoldersServer/ListFolders", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *foldersServerClient) RenameFolder(ctx context.Context, in *RenameFolderRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error) {
+	out := new(GoogleLongrunningOperation)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.FoldersServer/RenameFolder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// FoldersServerServer is the server API for FoldersServer service.
+// All implementations must embed UnimplementedFoldersServerServer
+// for forward compatibility
+type FoldersServerServer interface {
+	DeleteFolder(context.Context, *DeleteFolderRequest) (*empty.Empty, error)
+	GetFolder(context.Context, *GetFolderRequest) (*Folder, error)
+	InsertFolder(context.Context, *InsertFolderRequest) (*Folder, error)
+	ListFolders(context.Context, *ListFoldersRequest) (*Folders, error)
+	RenameFolder(context.Context, *RenameFolderRequest) (*GoogleLongrunningOperation, error)
+	mustEmbedUnimplementedFoldersServerServer()
+}
+
+// UnimplementedFoldersServerServer must be embedded to have forward compatible implementations.
+type UnimplementedFoldersServerServer struct {
+}
+
+func (UnimplementedFoldersServerServer) DeleteFolder(context.Context, *DeleteFolderRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteFolder not implemented")
+}
+func (UnimplementedFoldersServerServer) GetFolder(context.Context, *GetFolderRequest) (*Folder, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFolder not implemented")
+}
+func (UnimplementedFoldersServerServer) InsertFolder(context.Context, *InsertFolderRequest) (*Folder, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InsertFolder not implemented")
+}
+func (UnimplementedFoldersServerServer) ListFolders(context.Context, *ListFoldersRequest) (*Folders, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListFolders not implemented")
+}
+func (UnimplementedFoldersServerServer) RenameFolder(context.Context, *RenameFolderRequest) (*GoogleLongrunningOperation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RenameFolder not implemented")
+}
+func (UnimplementedFoldersServerServer) mustEmbedUnimplementedFoldersServerServer() {}
+
+// UnsafeFoldersServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to FoldersServerServer will
+// result in compilation errors.
+type UnsafeFoldersServerServer interface {
+	mustEmbedUnimplementedFoldersServerServer()
+}
+
+func RegisterFoldersServerServer(s grpc.ServiceRegistrar, srv FoldersServerServer) {
+	s.RegisterService(&FoldersServer_ServiceDesc, srv)
+}
+
+func _FoldersServer_DeleteFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FoldersServerServer).DeleteFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.FoldersServer/DeleteFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FoldersServerServer).DeleteFolder(ctx, req.(*DeleteFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FoldersServer_GetFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FoldersServerServer).GetFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.FoldersServer/GetFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FoldersServerServer).GetFolder(ctx, req.(*GetFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FoldersServer_InsertFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FoldersServerServer).InsertFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.FoldersServer/InsertFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FoldersServerServer).InsertFolder(ctx, req.(*InsertFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FoldersServer_ListFolders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFoldersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FoldersServerServer).ListFolders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.FoldersServer/ListFolders",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FoldersServerServer).ListFolders(ctx, req.(*ListFoldersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FoldersServer_RenameFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RenameFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FoldersServerServer).RenameFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.FoldersServer/RenameFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FoldersServerServer).RenameFolder(ctx, req.(*RenameFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// FoldersServer_ServiceDesc is the grpc.ServiceDesc for FoldersServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var FoldersServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.FoldersServer",
+	HandlerType: (*FoldersServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "DeleteFolder",
+			Handler:    _FoldersServer_DeleteFolder_Handler,
+		},
+		{
+			MethodName: "GetFolder",
+			Handler:    _FoldersServer_GetFolder_Handler,
+		},
+		{
+			MethodName: "InsertFolder",
+			Handler:    _FoldersServer_InsertFolder_Handler,
+		},
+		{
+			MethodName: "ListFolders",
+			Handler:    _FoldersServer_ListFolders_Handler,
+		},
+		{
+			MethodName: "RenameFolder",
+			Handler:    _FoldersServer_RenameFolder_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/storage/v1/service.proto",
+}
+
+// ManagedFoldersServerClient is the client API for ManagedFoldersServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ManagedFoldersServerClient interface {
+	DeleteManagedFolder(ctx context.Context, in *DeleteManagedFolderRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	GetManagedFolder(ctx context.Context, in *GetManagedFolderRequest, opts ...grpc.CallOption) (*ManagedFolder, error)
+	InsertManagedFolder(ctx context.Context, in *InsertManagedFolderRequest, opts ...grpc.CallOption) (*ManagedFolder, error)
+	ListManagedFolders(ctx context.Context, in *ListManagedFoldersRequest, opts ...grpc.CallOption) (*ManagedFolders, error)
+}
+
+type managedFoldersServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewManagedFoldersServerClient(cc grpc.ClientConnInterface) ManagedFoldersServerClient {
+	return &managedFoldersServerClient{cc}
+}
+
+func (c *managedFoldersServerClient) DeleteManagedFolder(ctx context.Context, in *DeleteManagedFolderRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ManagedFoldersServer/DeleteManagedFolder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *managedFoldersServerClient) GetManagedFolder(ctx context.Context, in *GetManagedFolderRequest, opts ...grpc.CallOption) (*ManagedFolder, error) {
+	out := new(ManagedFolder)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ManagedFoldersServer/GetManagedFolder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *managedFoldersServerClient) InsertManagedFolder(ctx context.Context, in *InsertManagedFolderRequest, opts ...grpc.CallOption) (*ManagedFolder, error) {
+	out := new(ManagedFolder)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ManagedFoldersServer/InsertManagedFolder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *managedFoldersServerClient) ListManagedFolders(ctx context.Context, in *ListManagedFoldersRequest, opts ...grpc.CallOption) (*ManagedFolders, error) {
+	out := new(ManagedFolders)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ManagedFoldersServer/ListManagedFolders", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ManagedFoldersServerServer is the server API for ManagedFoldersServer service.
+// All implementations must embed UnimplementedManagedFoldersServerServer
+// for forward compatibility
+type ManagedFoldersServerServer interface {
+	DeleteManagedFolder(context.Context, *DeleteManagedFolderRequest) (*empty.Empty, error)
+	GetManagedFolder(context.Context, *GetManagedFolderRequest) (*ManagedFolder, error)
+	InsertManagedFolder(context.Context, *InsertManagedFolderRequest) (*ManagedFolder, error)
+	ListManagedFolders(context.Context, *ListManagedFoldersRequest) (*ManagedFolders, error)
+	mustEmbedUnimplementedManagedFoldersServerServer()
+}
+
+// UnimplementedManagedFoldersServerServer must be embedded to have forward compatible implementations.
+type UnimplementedManagedFoldersServerServer struct {
+}
+
+func (UnimplementedManagedFoldersServerServer) DeleteManagedFolder(context.Context, *DeleteManagedFolderRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteManagedFolder not implemented")
+}
+func (UnimplementedManagedFoldersServerServer) GetManagedFolder(context.Context, *GetManagedFolderRequest) (*ManagedFolder, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetManagedFolder not implemented")
+}
+func (UnimplementedManagedFoldersServerServer) InsertManagedFolder(context.Context, *InsertManagedFolderRequest) (*ManagedFolder, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InsertManagedFolder not implemented")
+}
+func (UnimplementedManagedFoldersServerServer) ListManagedFolders(context.Context, *ListManagedFoldersRequest) (*ManagedFolders, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListManagedFolders not implemented")
+}
+func (UnimplementedManagedFoldersServerServer) mustEmbedUnimplementedManagedFoldersServerServer() {}
+
+// UnsafeManagedFoldersServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ManagedFoldersServerServer will
+// result in compilation errors.
+type UnsafeManagedFoldersServerServer interface {
+	mustEmbedUnimplementedManagedFoldersServerServer()
+}
+
+func RegisterManagedFoldersServerServer(s grpc.ServiceRegistrar, srv ManagedFoldersServerServer) {
+	s.RegisterService(&ManagedFoldersServer_ServiceDesc, srv)
+}
+
+func _ManagedFoldersServer_DeleteManagedFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteManagedFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagedFoldersServerServer).DeleteManagedFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ManagedFoldersServer/DeleteManagedFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagedFoldersServerServer).DeleteManagedFolder(ctx, req.(*DeleteManagedFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManagedFoldersServer_GetManagedFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetManagedFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagedFoldersServerServer).GetManagedFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ManagedFoldersServer/GetManagedFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagedFoldersServerServer).GetManagedFolder(ctx, req.(*GetManagedFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManagedFoldersServer_InsertManagedFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertManagedFolderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagedFoldersServerServer).InsertManagedFolder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ManagedFoldersServer/InsertManagedFolder",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagedFoldersServerServer).InsertManagedFolder(ctx, req.(*InsertManagedFolderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManagedFoldersServer_ListManagedFolders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListManagedFoldersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagedFoldersServerServer).ListManagedFolders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ManagedFoldersServer/ListManagedFolders",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagedFoldersServerServer).ListManagedFolders(ctx, req.(*ListManagedFoldersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ManagedFoldersServer_ServiceDesc is the grpc.ServiceDesc for ManagedFoldersServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ManagedFoldersServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.ManagedFoldersServer",
+	HandlerType: (*ManagedFoldersServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "DeleteManagedFolder",
+			Handler:    _ManagedFoldersServer_DeleteManagedFolder_Handler,
+		},
+		{
+			MethodName: "GetManagedFolder",
+			Handler:    _ManagedFoldersServer_GetManagedFolder_Handler,
+		},
+		{
+			MethodName: "InsertManagedFolder",
+			Handler:    _ManagedFoldersServer_InsertManagedFolder_Handler,
+		},
+		{
+			MethodName: "ListManagedFolders",
+			Handler:    _ManagedFoldersServer_ListManagedFolders_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/storage/v1/service.proto",
+}
+
+// NotificationsServerClient is the client API for NotificationsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type NotificationsServerClient interface {
+	DeleteNotification(ctx context.Context, in *DeleteNotificationRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	GetNotification(ctx context.Context, in *GetNotificationRequest, opts ...grpc.CallOption) (*Notification, error)
+	InsertNotification(ctx context.Context, in *InsertNotificationRequest, opts ...grpc.CallOption) (*Notification, error)
+	ListNotifications(ctx context.Context, in *ListNotificationsRequest, opts ...grpc.CallOption) (*Notifications, error)
+}
+
+type notificationsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewNotificationsServerClient(cc grpc.ClientConnInterface) NotificationsServerClient {
+	return &notificationsServerClient{cc}
+}
+
+func (c *notificationsServerClient) DeleteNotification(ctx context.Context, in *DeleteNotificationRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.NotificationsServer/DeleteNotification", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notificationsServerClient) GetNotification(ctx context.Context, in *GetNotificationRequest, opts ...grpc.CallOption) (*Notification, error) {
+	out := new(Notification)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.NotificationsServer/GetNotification", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notificationsServerClient) InsertNotification(ctx context.Context, in *InsertNotificationRequest, opts ...grpc.CallOption) (*Notification, error) {
+	out := new(Notification)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.NotificationsServer/InsertNotification", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notificationsServerClient) ListNotifications(ctx context.Context, in *ListNotificationsRequest, opts ...grpc.CallOption) (*Notifications, error) {
+	out := new(Notifications)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.NotificationsServer/ListNotifications", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// NotificationsServerServer is the server API for NotificationsServer service.
+// All implementations must embed UnimplementedNotificationsServerServer
+// for forward compatibility
+type NotificationsServerServer interface {
+	DeleteNotification(context.Context, *DeleteNotificationRequest) (*empty.Empty, error)
+	GetNotification(context.Context, *GetNotificationRequest) (*Notification, error)
+	InsertNotification(context.Context, *InsertNotificationRequest) (*Notification, error)
+	ListNotifications(context.Context, *ListNotificationsRequest) (*Notifications, error)
+	mustEmbedUnimplementedNotificationsServerServer()
+}
+
+// UnimplementedNotificationsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedNotificationsServerServer struct {
+}
+
+func (UnimplementedNotificationsServerServer) DeleteNotification(context.Context, *DeleteNotificationRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteNotification not implemented")
+}
+func (UnimplementedNotificationsServerServer) GetNotification(context.Context, *GetNotificationRequest) (*Notification, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNotification not implemented")
+}
+func (UnimplementedNotificationsServerServer) InsertNotification(context.Context, *InsertNotificationRequest) (*Notification, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InsertNotification not implemented")
+}
+func (UnimplementedNotificationsServerServer) ListNotifications(context.Context, *ListNotificationsRequest) (*Notifications, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListNotifications not implemented")
+}
+func (UnimplementedNotificationsServerServer) mustEmbedUnimplementedNotificationsServerServer() {}
+
+// UnsafeNotificationsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to NotificationsServerServer will
+// result in compilation errors.
+type UnsafeNotificationsServerServer interface {
+	mustEmbedUnimplementedNotificationsServerServer()
+}
+
+func RegisterNotificationsServerServer(s grpc.ServiceRegistrar, srv NotificationsServerServer) {
+	s.RegisterService(&NotificationsServer_ServiceDesc, srv)
+}
+
+func _NotificationsServer_DeleteNotification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteNotificationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotificationsServerServer).DeleteNotification(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.NotificationsServer/DeleteNotification",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotificationsServerServer).DeleteNotification(ctx, req.(*DeleteNotificationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotificationsServer_GetNotification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetNotificationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotificationsServerServer).GetNotification(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.NotificationsServer/GetNotification",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotificationsServerServer).GetNotification(ctx, req.(*GetNotificationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotificationsServer_InsertNotification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertNotificationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotificationsServerServer).InsertNotification(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.NotificationsServer/InsertNotification",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotificationsServerServer).InsertNotification(ctx, req.(*InsertNotificationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotificationsServer_ListNotifications_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListNotificationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotificationsServerServer).ListNotifications(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.NotificationsServer/ListNotifications",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotificationsServerServer).ListNotifications(ctx, req.(*ListNotificationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// NotificationsServer_ServiceDesc is the grpc.ServiceDesc for NotificationsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var NotificationsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.NotificationsServer",
+	HandlerType: (*NotificationsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "DeleteNotification",
+			Handler:    _NotificationsServer_DeleteNotification_Handler,
+		},
+		{
+			MethodName: "GetNotification",
+			Handler:    _NotificationsServer_GetNotification_Handler,
+		},
+		{
+			MethodName: "InsertNotification",
+			Handler:    _NotificationsServer_InsertNotification_Handler,
+		},
+		{
+			MethodName: "ListNotifications",
+			Handler:    _NotificationsServer_ListNotifications_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/storage/v1/service.proto",
+}
+
+// ObjectAccessControlsServerClient is the client API for ObjectAccessControlsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ObjectAccessControlsServerClient interface {
+	DeleteObjectAccessControl(ctx context.Context, in *DeleteObjectAccessControlRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	GetObjectAccessControl(ctx context.Context, in *GetObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+	InsertObjectAccessControl(ctx context.Context, in *InsertObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+	ListObjectAccessControls(ctx context.Context, in *ListObjectAccessControlsRequest, opts ...grpc.CallOption) (*ObjectAccessControls, error)
+	PatchObjectAccessControl(ctx context.Context, in *PatchObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+	UpdateObjectAccessControl(ctx context.Context, in *UpdateObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error)
+}
+
+type objectAccessControlsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewObjectAccessControlsServerClient(cc grpc.ClientConnInterface) ObjectAccessControlsServerClient {
+	return &objectAccessControlsServerClient{cc}
+}
+
+func (c *objectAccessControlsServerClient) DeleteObjectAccessControl(ctx context.Context, in *DeleteObjectAccessControlRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectAccessControlsServer/DeleteObjectAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectAccessControlsServerClient) GetObjectAccessControl(ctx context.Context, in *GetObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
+	out := new(ObjectAccessControl)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectAccessControlsServer/GetObjectAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectAccessControlsServerClient) InsertObjectAccessControl(ctx context.Context, in *InsertObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
+	out := new(ObjectAccessControl)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectAccessControlsServer/InsertObjectAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectAccessControlsServerClient) ListObjectAccessControls(ctx context.Context, in *ListObjectAccessControlsRequest, opts ...grpc.CallOption) (*ObjectAccessControls, error) {
+	out := new(ObjectAccessControls)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectAccessControlsServer/ListObjectAccessControls", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectAccessControlsServerClient) PatchObjectAccessControl(ctx context.Context, in *PatchObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
+	out := new(ObjectAccessControl)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectAccessControlsServer/PatchObjectAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectAccessControlsServerClient) UpdateObjectAccessControl(ctx context.Context, in *UpdateObjectAccessControlRequest, opts ...grpc.CallOption) (*ObjectAccessControl, error) {
+	out := new(ObjectAccessControl)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectAccessControlsServer/UpdateObjectAccessControl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ObjectAccessControlsServerServer is the server API for ObjectAccessControlsServer service.
+// All implementations must embed UnimplementedObjectAccessControlsServerServer
+// for forward compatibility
+type ObjectAccessControlsServerServer interface {
+	DeleteObjectAccessControl(context.Context, *DeleteObjectAccessControlRequest) (*empty.Empty, error)
+	GetObjectAccessControl(context.Context, *GetObjectAccessControlRequest) (*ObjectAccessControl, error)
+	InsertObjectAccessControl(context.Context, *InsertObjectAccessControlRequest) (*ObjectAccessControl, error)
+	ListObjectAccessControls(context.Context, *ListObjectAccessControlsRequest) (*ObjectAccessControls, error)
+	PatchObjectAccessControl(context.Context, *PatchObjectAccessControlRequest) (*ObjectAccessControl, error)
+	UpdateObjectAccessControl(context.Context, *UpdateObjectAccessControlRequest) (*ObjectAccessControl, error)
+	mustEmbedUnimplementedObjectAccessControlsServerServer()
+}
+
+// UnimplementedObjectAccessControlsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedObjectAccessControlsServerServer struct {
+}
+
+func (UnimplementedObjectAccessControlsServerServer) DeleteObjectAccessControl(context.Context, *DeleteObjectAccessControlRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteObjectAccessControl not implemented")
+}
+func (UnimplementedObjectAccessControlsServerServer) GetObjectAccessControl(context.Context, *GetObjectAccessControlRequest) (*ObjectAccessControl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetObjectAccessControl not implemented")
+}
+func (UnimplementedObjectAccessControlsServerServer) InsertObjectAccessControl(context.Context, *InsertObjectAccessControlRequest) (*ObjectAccessControl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InsertObjectAccessControl not implemented")
+}
+func (UnimplementedObjectAccessControlsServerServer) ListObjectAccessControls(context.Context, *ListObjectAccessControlsRequest) (*ObjectAccessControls, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListObjectAccessControls not implemented")
+}
+func (UnimplementedObjectAccessControlsServerServer) PatchObjectAccessControl(context.Context, *PatchObjectAccessControlRequest) (*ObjectAccessControl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchObjectAccessControl not implemented")
+}
+func (UnimplementedObjectAccessControlsServerServer) UpdateObjectAccessControl(context.Context, *UpdateObjectAccessControlRequest) (*ObjectAccessControl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateObjectAccessControl not implemented")
+}
+func (UnimplementedObjectAccessControlsServerServer) mustEmbedUnimplementedObjectAccessControlsServerServer() {
+}
+
+// UnsafeObjectAccessControlsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ObjectAccessControlsServerServer will
+// result in compilation errors.
+type UnsafeObjectAccessControlsServerServer interface {
+	mustEmbedUnimplementedObjectAccessControlsServerServer()
+}
+
+func RegisterObjectAccessControlsServerServer(s grpc.ServiceRegistrar, srv ObjectAccessControlsServerServer) {
+	s.RegisterService(&ObjectAccessControlsServer_ServiceDesc, srv)
+}
+
+func _ObjectAccessControlsServer_DeleteObjectAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteObjectAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectAccessControlsServerServer).DeleteObjectAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectAccessControlsServer/DeleteObjectAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectAccessControlsServerServer).DeleteObjectAccessControl(ctx, req.(*DeleteObjectAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectAccessControlsServer_GetObjectAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetObjectAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectAccessControlsServerServer).GetObjectAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectAccessControlsServer/GetObjectAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectAccessControlsServerServer).GetObjectAccessControl(ctx, req.(*GetObjectAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectAccessControlsServer_InsertObjectAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertObjectAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectAccessControlsServerServer).InsertObjectAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectAccessControlsServer/InsertObjectAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectAccessControlsServerServer).InsertObjectAccessControl(ctx, req.(*InsertObjectAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectAccessControlsServer_ListObjectAccessControls_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListObjectAccessControlsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectAccessControlsServerServer).ListObjectAccessControls(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectAccessControlsServer/ListObjectAccessControls",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectAccessControlsServerServer).ListObjectAccessControls(ctx, req.(*ListObjectAccessControlsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectAccessControlsServer_PatchObjectAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchObjectAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectAccessControlsServerServer).PatchObjectAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectAccessControlsServer/PatchObjectAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectAccessControlsServerServer).PatchObjectAccessControl(ctx, req.(*PatchObjectAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectAccessControlsServer_UpdateObjectAccessControl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateObjectAccessControlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectAccessControlsServerServer).UpdateObjectAccessControl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectAccessControlsServer/UpdateObjectAccessControl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectAccessControlsServerServer).UpdateObjectAccessControl(ctx, req.(*UpdateObjectAccessControlRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ObjectAccessControlsServer_ServiceDesc is the grpc.ServiceDesc for ObjectAccessControlsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ObjectAccessControlsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.ObjectAccessControlsServer",
+	HandlerType: (*ObjectAccessControlsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "DeleteObjectAccessControl",
+			Handler:    _ObjectAccessControlsServer_DeleteObjectAccessControl_Handler,
+		},
+		{
+			MethodName: "GetObjectAccessControl",
+			Handler:    _ObjectAccessControlsServer_GetObjectAccessControl_Handler,
+		},
+		{
+			MethodName: "InsertObjectAccessControl",
+			Handler:    _ObjectAccessControlsServer_InsertObjectAccessControl_Handler,
+		},
+		{
+			MethodName: "ListObjectAccessControls",
+			Handler:    _ObjectAccessControlsServer_ListObjectAccessControls_Handler,
+		},
+		{
+			MethodName: "PatchObjectAccessControl",
+			Handler:    _ObjectAccessControlsServer_PatchObjectAccessControl_Handler,
+		},
+		{
+			MethodName: "UpdateObjectAccessControl",
+			Handler:    _ObjectAccessControlsServer_UpdateObjectAccessControl_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/storage/v1/service.proto",
+}
+
+// ObjectsServerClient is the client API for ObjectsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ObjectsServerClient interface {
+	BulkRestoreObject(ctx context.Context, in *BulkRestoreObjectRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error)
+	ComposeObject(ctx context.Context, in *ComposeObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	CopyObject(ctx context.Context, in *CopyObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	DeleteObject(ctx context.Context, in *DeleteObjectRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	GetObject(ctx context.Context, in *GetObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	InsertObject(ctx context.Context, in *InsertObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	ListObjects(ctx context.Context, in *ListObjectsRequest, opts ...grpc.CallOption) (*Objects, error)
+	PatchObject(ctx context.Context, in *PatchObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	RestoreObject(ctx context.Context, in *RestoreObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	RewriteObject(ctx context.Context, in *RewriteObjectRequest, opts ...grpc.CallOption) (*RewriteResponse, error)
+	UpdateObject(ctx context.Context, in *UpdateObjectRequest, opts ...grpc.CallOption) (*Object, error)
+	WatchAllObject(ctx context.Context, in *WatchAllObjectRequest, opts ...grpc.CallOption) (*Channel, error)
+}
+
+type objectsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewObjectsServerClient(cc grpc.ClientConnInterface) ObjectsServerClient {
+	return &objectsServerClient{cc}
+}
+
+func (c *objectsServerClient) BulkRestoreObject(ctx context.Context, in *BulkRestoreObjectRequest, opts ...grpc.CallOption) (*GoogleLongrunningOperation, error) {
+	out := new(GoogleLongrunningOperation)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/BulkRestoreObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectsServerClient) ComposeObject(ctx context.Context, in *ComposeObjectRequest, opts ...grpc.CallOption) (*Object, error) {
+	out := new(Object)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/ComposeObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectsServerClient) CopyObject(ctx context.Context, in *CopyObjectRequest, opts ...grpc.CallOption) (*Object, error) {
+	out := new(Object)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/CopyObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectsServerClient) DeleteObject(ctx context.Context, in *DeleteObjectRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/DeleteObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectsServerClient) GetObject(ctx context.Context, in *GetObjectRequest, opts ...grpc.CallOption) (*Object, error) {
+	out := new(Object)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/GetObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectsServerClient) InsertObject(ctx context.Context, in *InsertObjectRequest, opts ...grpc.CallOption) (*Object, error) {
+	out := new(Object)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/InsertObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectsServerClient) ListObjects(ctx context.Context, in *ListObjectsRequest, opts ...grpc.CallOption) (*Objects, error) {
+	out := new(Objects)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/ListObjects", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectsServerClient) PatchObject(ctx context.Context, in *PatchObjectRequest, opts ...grpc.CallOption) (*Object, error) {
+	out := new(Object)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/PatchObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectsServerClient) RestoreObject(ctx context.Context, in *RestoreObjectRequest, opts ...grpc.CallOption) (*Object, error) {
+	out := new(Object)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/RestoreObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectsServerClient) RewriteObject(ctx context.Context, in *RewriteObjectRequest, opts ...grpc.CallOption) (*RewriteResponse, error) {
+	out := new(RewriteResponse)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/RewriteObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectsServerClient) UpdateObject(ctx context.Context, in *UpdateObjectRequest, opts ...grpc.CallOption) (*Object, error) {
+	out := new(Object)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/UpdateObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *objectsServerClient) WatchAllObject(ctx context.Context, in *WatchAllObjectRequest, opts ...grpc.CallOption) (*Channel, error) {
+	out := new(Channel)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ObjectsServer/WatchAllObject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ObjectsServerServer is the server API for ObjectsServer service.
+// All implementations must embed UnimplementedObjectsServerServer
+// for forward compatibility
+type ObjectsServerServer interface {
+	BulkRestoreObject(context.Context, *BulkRestoreObjectRequest) (*GoogleLongrunningOperation, error)
+	ComposeObject(context.Context, *ComposeObjectRequest) (*Object, error)
+	CopyObject(context.Context, *CopyObjectRequest) (*Object, error)
+	DeleteObject(context.Context, *DeleteObjectRequest) (*empty.Empty, error)
+	GetObject(context.Context, *GetObjectRequest) (*Object, error)
+	InsertObject(context.Context, *InsertObjectRequest) (*Object, error)
+	ListObjects(context.Context, *ListObjectsRequest) (*Objects, error)
+	PatchObject(context.Context, *PatchObjectRequest) (*Object, error)
+	RestoreObject(context.Context, *RestoreObjectRequest) (*Object, error)
+	RewriteObject(context.Context, *RewriteObjectRequest) (*RewriteResponse, error)
+	UpdateObject(context.Context, *UpdateObjectRequest) (*Object, error)
+	WatchAllObject(context.Context, *WatchAllObjectRequest) (*Channel, error)
+	mustEmbedUnimplementedObjectsServerServer()
+}
+
+// UnimplementedObjectsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedObjectsServerServer struct {
+}
+
+func (UnimplementedObjectsServerServer) BulkRestoreObject(context.Context, *BulkRestoreObjectRequest) (*GoogleLongrunningOperation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BulkRestoreObject not implemented")
+}
+func (UnimplementedObjectsServerServer) ComposeObject(context.Context, *ComposeObjectRequest) (*Object, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ComposeObject not implemented")
+}
+func (UnimplementedObjectsServerServer) CopyObject(context.Context, *CopyObjectRequest) (*Object, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CopyObject not implemented")
+}
+func (UnimplementedObjectsServerServer) DeleteObject(context.Context, *DeleteObjectRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteObject not implemented")
+}
+func (UnimplementedObjectsServerServer) GetObject(context.Context, *GetObjectRequest) (*Object, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetObject not implemented")
+}
+func (UnimplementedObjectsServerServer) InsertObject(context.Context, *InsertObjectRequest) (*Object, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InsertObject not implemented")
+}
+func (UnimplementedObjectsServerServer) ListObjects(context.Context, *ListObjectsRequest) (*Objects, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListObjects not implemented")
+}
+func (UnimplementedObjectsServerServer) PatchObject(context.Context, *PatchObjectRequest) (*Object, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchObject not implemented")
+}
+func (UnimplementedObjectsServerServer) RestoreObject(context.Context, *RestoreObjectRequest) (*Object, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RestoreObject not implemented")
+}
+func (UnimplementedObjectsServerServer) RewriteObject(context.Context, *RewriteObjectRequest) (*RewriteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RewriteObject not implemented")
+}
+func (UnimplementedObjectsServerServer) UpdateObject(context.Context, *UpdateObjectRequest) (*Object, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateObject not implemented")
+}
+func (UnimplementedObjectsServerServer) WatchAllObject(context.Context, *WatchAllObjectRequest) (*Channel, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WatchAllObject not implemented")
+}
+func (UnimplementedObjectsServerServer) mustEmbedUnimplementedObjectsServerServer() {}
+
+// UnsafeObjectsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ObjectsServerServer will
+// result in compilation errors.
+type UnsafeObjectsServerServer interface {
+	mustEmbedUnimplementedObjectsServerServer()
+}
+
+func RegisterObjectsServerServer(s grpc.ServiceRegistrar, srv ObjectsServerServer) {
+	s.RegisterService(&ObjectsServer_ServiceDesc, srv)
+}
+
+func _ObjectsServer_BulkRestoreObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BulkRestoreObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).BulkRestoreObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectsServer/BulkRestoreObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).BulkRestoreObject(ctx, req.(*BulkRestoreObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectsServer_ComposeObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ComposeObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).ComposeObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectsServer/ComposeObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).ComposeObject(ctx, req.(*ComposeObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectsServer_CopyObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CopyObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).CopyObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectsServer/CopyObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).CopyObject(ctx, req.(*CopyObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectsServer_DeleteObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).DeleteObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectsServer/DeleteObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).DeleteObject(ctx, req.(*DeleteObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectsServer_GetObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).GetObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectsServer/GetObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).GetObject(ctx, req.(*GetObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectsServer_InsertObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).InsertObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectsServer/InsertObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).InsertObject(ctx, req.(*InsertObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectsServer_ListObjects_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListObjectsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).ListObjects(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectsServer/ListObjects",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).ListObjects(ctx, req.(*ListObjectsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectsServer_PatchObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).PatchObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectsServer/PatchObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).PatchObject(ctx, req.(*PatchObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectsServer_RestoreObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RestoreObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).RestoreObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectsServer/RestoreObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).RestoreObject(ctx, req.(*RestoreObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectsServer_RewriteObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RewriteObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).RewriteObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectsServer/RewriteObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).RewriteObject(ctx, req.(*RewriteObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectsServer_UpdateObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).UpdateObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectsServer/UpdateObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).UpdateObject(ctx, req.(*UpdateObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ObjectsServer_WatchAllObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WatchAllObjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ObjectsServerServer).WatchAllObject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ObjectsServer/WatchAllObject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ObjectsServerServer).WatchAllObject(ctx, req.(*WatchAllObjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ObjectsServer_ServiceDesc is the grpc.ServiceDesc for ObjectsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ObjectsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.ObjectsServer",
+	HandlerType: (*ObjectsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "BulkRestoreObject",
+			Handler:    _ObjectsServer_BulkRestoreObject_Handler,
+		},
+		{
+			MethodName: "ComposeObject",
+			Handler:    _ObjectsServer_ComposeObject_Handler,
+		},
+		{
+			MethodName: "CopyObject",
+			Handler:    _ObjectsServer_CopyObject_Handler,
+		},
+		{
+			MethodName: "DeleteObject",
+			Handler:    _ObjectsServer_DeleteObject_Handler,
+		},
+		{
+			MethodName: "GetObject",
+			Handler:    _ObjectsServer_GetObject_Handler,
+		},
+		{
+			MethodName: "InsertObject",
+			Handler:    _ObjectsServer_InsertObject_Handler,
+		},
+		{
+			MethodName: "ListObjects",
+			Handler:    _ObjectsServer_ListObjects_Handler,
+		},
+		{
+			MethodName: "PatchObject",
+			Handler:    _ObjectsServer_PatchObject_Handler,
+		},
+		{
+			MethodName: "RestoreObject",
+			Handler:    _ObjectsServer_RestoreObject_Handler,
+		},
+		{
+			MethodName: "RewriteObject",
+			Handler:    _ObjectsServer_RewriteObject_Handler,
+		},
+		{
+			MethodName: "UpdateObject",
+			Handler:    _ObjectsServer_UpdateObject_Handler,
+		},
+		{
+			MethodName: "WatchAllObject",
+			Handler:    _ObjectsServer_WatchAllObject_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/storage/v1/service.proto",
+}
+
+// ProjectsServerClient is the client API for ProjectsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ProjectsServerClient interface {
+}
+
+type projectsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewProjectsServerClient(cc grpc.ClientConnInterface) ProjectsServerClient {
+	return &projectsServerClient{cc}
+}
+
+// ProjectsServerServer is the server API for ProjectsServer service.
+// All implementations must embed UnimplementedProjectsServerServer
+// for forward compatibility
+type ProjectsServerServer interface {
+	mustEmbedUnimplementedProjectsServerServer()
+}
+
+// UnimplementedProjectsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedProjectsServerServer struct {
+}
+
+func (UnimplementedProjectsServerServer) mustEmbedUnimplementedProjectsServerServer() {}
+
+// UnsafeProjectsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ProjectsServerServer will
+// result in compilation errors.
+type UnsafeProjectsServerServer interface {
+	mustEmbedUnimplementedProjectsServerServer()
+}
+
+func RegisterProjectsServerServer(s grpc.ServiceRegistrar, srv ProjectsServerServer) {
+	s.RegisterService(&ProjectsServer_ServiceDesc, srv)
+}
+
+// ProjectsServer_ServiceDesc is the grpc.ServiceDesc for ProjectsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ProjectsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.ProjectsServer",
+	HandlerType: (*ProjectsServerServer)(nil),
+	Methods:     []grpc.MethodDesc{},
+	Streams:     []grpc.StreamDesc{},
+	Metadata:    "mockgcp/storage/v1/service.proto",
+}
+
+// ProjectsHmacKeysServerClient is the client API for ProjectsHmacKeysServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ProjectsHmacKeysServerClient interface {
+	CreateProjectsHmacKey(ctx context.Context, in *CreateProjectsHmacKeyRequest, opts ...grpc.CallOption) (*HmacKey, error)
+	DeleteProjectsHmacKey(ctx context.Context, in *DeleteProjectsHmacKeyRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	GetProjectsHmacKey(ctx context.Context, in *GetProjectsHmacKeyRequest, opts ...grpc.CallOption) (*HmacKeyMetadata, error)
+	ListProjectsHmacKeys(ctx context.Context, in *ListProjectsHmacKeysRequest, opts ...grpc.CallOption) (*HmacKeysMetadata, error)
+	UpdateProjectsHmacKey(ctx context.Context, in *UpdateProjectsHmacKeyRequest, opts ...grpc.CallOption) (*HmacKeyMetadata, error)
+}
+
+type projectsHmacKeysServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewProjectsHmacKeysServerClient(cc grpc.ClientConnInterface) ProjectsHmacKeysServerClient {
+	return &projectsHmacKeysServerClient{cc}
+}
+
+func (c *projectsHmacKeysServerClient) CreateProjectsHmacKey(ctx context.Context, in *CreateProjectsHmacKeyRequest, opts ...grpc.CallOption) (*HmacKey, error) {
+	out := new(HmacKey)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ProjectsHmacKeysServer/CreateProjectsHmacKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsHmacKeysServerClient) DeleteProjectsHmacKey(ctx context.Context, in *DeleteProjectsHmacKeyRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ProjectsHmacKeysServer/DeleteProjectsHmacKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsHmacKeysServerClient) GetProjectsHmacKey(ctx context.Context, in *GetProjectsHmacKeyRequest, opts ...grpc.CallOption) (*HmacKeyMetadata, error) {
+	out := new(HmacKeyMetadata)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ProjectsHmacKeysServer/GetProjectsHmacKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsHmacKeysServerClient) ListProjectsHmacKeys(ctx context.Context, in *ListProjectsHmacKeysRequest, opts ...grpc.CallOption) (*HmacKeysMetadata, error) {
+	out := new(HmacKeysMetadata)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ProjectsHmacKeysServer/ListProjectsHmacKeys", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsHmacKeysServerClient) UpdateProjectsHmacKey(ctx context.Context, in *UpdateProjectsHmacKeyRequest, opts ...grpc.CallOption) (*HmacKeyMetadata, error) {
+	out := new(HmacKeyMetadata)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ProjectsHmacKeysServer/UpdateProjectsHmacKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ProjectsHmacKeysServerServer is the server API for ProjectsHmacKeysServer service.
+// All implementations must embed UnimplementedProjectsHmacKeysServerServer
+// for forward compatibility
+type ProjectsHmacKeysServerServer interface {
+	CreateProjectsHmacKey(context.Context, *CreateProjectsHmacKeyRequest) (*HmacKey, error)
+	DeleteProjectsHmacKey(context.Context, *DeleteProjectsHmacKeyRequest) (*empty.Empty, error)
+	GetProjectsHmacKey(context.Context, *GetProjectsHmacKeyRequest) (*HmacKeyMetadata, error)
+	ListProjectsHmacKeys(context.Context, *ListProjectsHmacKeysRequest) (*HmacKeysMetadata, error)
+	UpdateProjectsHmacKey(context.Context, *UpdateProjectsHmacKeyRequest) (*HmacKeyMetadata, error)
+	mustEmbedUnimplementedProjectsHmacKeysServerServer()
+}
+
+// UnimplementedProjectsHmacKeysServerServer must be embedded to have forward compatible implementations.
+type UnimplementedProjectsHmacKeysServerServer struct {
+}
+
+func (UnimplementedProjectsHmacKeysServerServer) CreateProjectsHmacKey(context.Context, *CreateProjectsHmacKeyRequest) (*HmacKey, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateProjectsHmacKey not implemented")
+}
+func (UnimplementedProjectsHmacKeysServerServer) DeleteProjectsHmacKey(context.Context, *DeleteProjectsHmacKeyRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProjectsHmacKey not implemented")
+}
+func (UnimplementedProjectsHmacKeysServerServer) GetProjectsHmacKey(context.Context, *GetProjectsHmacKeyRequest) (*HmacKeyMetadata, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProjectsHmacKey not implemented")
+}
+func (UnimplementedProjectsHmacKeysServerServer) ListProjectsHmacKeys(context.Context, *ListProjectsHmacKeysRequest) (*HmacKeysMetadata, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectsHmacKeys not implemented")
+}
+func (UnimplementedProjectsHmacKeysServerServer) UpdateProjectsHmacKey(context.Context, *UpdateProjectsHmacKeyRequest) (*HmacKeyMetadata, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProjectsHmacKey not implemented")
+}
+func (UnimplementedProjectsHmacKeysServerServer) mustEmbedUnimplementedProjectsHmacKeysServerServer() {
+}
+
+// UnsafeProjectsHmacKeysServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ProjectsHmacKeysServerServer will
+// result in compilation errors.
+type UnsafeProjectsHmacKeysServerServer interface {
+	mustEmbedUnimplementedProjectsHmacKeysServerServer()
+}
+
+func RegisterProjectsHmacKeysServerServer(s grpc.ServiceRegistrar, srv ProjectsHmacKeysServerServer) {
+	s.RegisterService(&ProjectsHmacKeysServer_ServiceDesc, srv)
+}
+
+func _ProjectsHmacKeysServer_CreateProjectsHmacKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateProjectsHmacKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsHmacKeysServerServer).CreateProjectsHmacKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ProjectsHmacKeysServer/CreateProjectsHmacKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsHmacKeysServerServer).CreateProjectsHmacKey(ctx, req.(*CreateProjectsHmacKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsHmacKeysServer_DeleteProjectsHmacKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProjectsHmacKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsHmacKeysServerServer).DeleteProjectsHmacKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ProjectsHmacKeysServer/DeleteProjectsHmacKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsHmacKeysServerServer).DeleteProjectsHmacKey(ctx, req.(*DeleteProjectsHmacKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsHmacKeysServer_GetProjectsHmacKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProjectsHmacKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsHmacKeysServerServer).GetProjectsHmacKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ProjectsHmacKeysServer/GetProjectsHmacKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsHmacKeysServerServer).GetProjectsHmacKey(ctx, req.(*GetProjectsHmacKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsHmacKeysServer_ListProjectsHmacKeys_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectsHmacKeysRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsHmacKeysServerServer).ListProjectsHmacKeys(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ProjectsHmacKeysServer/ListProjectsHmacKeys",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsHmacKeysServerServer).ListProjectsHmacKeys(ctx, req.(*ListProjectsHmacKeysRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsHmacKeysServer_UpdateProjectsHmacKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProjectsHmacKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsHmacKeysServerServer).UpdateProjectsHmacKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ProjectsHmacKeysServer/UpdateProjectsHmacKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsHmacKeysServerServer).UpdateProjectsHmacKey(ctx, req.(*UpdateProjectsHmacKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ProjectsHmacKeysServer_ServiceDesc is the grpc.ServiceDesc for ProjectsHmacKeysServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ProjectsHmacKeysServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.ProjectsHmacKeysServer",
+	HandlerType: (*ProjectsHmacKeysServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateProjectsHmacKey",
+			Handler:    _ProjectsHmacKeysServer_CreateProjectsHmacKey_Handler,
+		},
+		{
+			MethodName: "DeleteProjectsHmacKey",
+			Handler:    _ProjectsHmacKeysServer_DeleteProjectsHmacKey_Handler,
+		},
+		{
+			MethodName: "GetProjectsHmacKey",
+			Handler:    _ProjectsHmacKeysServer_GetProjectsHmacKey_Handler,
+		},
+		{
+			MethodName: "ListProjectsHmacKeys",
+			Handler:    _ProjectsHmacKeysServer_ListProjectsHmacKeys_Handler,
+		},
+		{
+			MethodName: "UpdateProjectsHmacKey",
+			Handler:    _ProjectsHmacKeysServer_UpdateProjectsHmacKey_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/storage/v1/service.proto",
+}
+
+// ProjectsServiceAccountServerClient is the client API for ProjectsServiceAccountServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ProjectsServiceAccountServerClient interface {
+	GetProjectsServiceAccount(ctx context.Context, in *GetProjectsServiceAccountRequest, opts ...grpc.CallOption) (*ServiceAccount, error)
+}
+
+type projectsServiceAccountServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewProjectsServiceAccountServerClient(cc grpc.ClientConnInterface) ProjectsServiceAccountServerClient {
+	return &projectsServiceAccountServerClient{cc}
+}
+
+func (c *projectsServiceAccountServerClient) GetProjectsServiceAccount(ctx context.Context, in *GetProjectsServiceAccountRequest, opts ...grpc.CallOption) (*ServiceAccount, error) {
+	out := new(ServiceAccount)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.ProjectsServiceAccountServer/GetProjectsServiceAccount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ProjectsServiceAccountServerServer is the server API for ProjectsServiceAccountServer service.
+// All implementations must embed UnimplementedProjectsServiceAccountServerServer
+// for forward compatibility
+type ProjectsServiceAccountServerServer interface {
+	GetProjectsServiceAccount(context.Context, *GetProjectsServiceAccountRequest) (*ServiceAccount, error)
+	mustEmbedUnimplementedProjectsServiceAccountServerServer()
+}
+
+// UnimplementedProjectsServiceAccountServerServer must be embedded to have forward compatible implementations.
+type UnimplementedProjectsServiceAccountServerServer struct {
+}
+
+func (UnimplementedProjectsServiceAccountServerServer) GetProjectsServiceAccount(context.Context, *GetProjectsServiceAccountRequest) (*ServiceAccount, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProjectsServiceAccount not implemented")
+}
+func (UnimplementedProjectsServiceAccountServerServer) mustEmbedUnimplementedProjectsServiceAccountServerServer() {
+}
+
+// UnsafeProjectsServiceAccountServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ProjectsServiceAccountServerServer will
+// result in compilation errors.
+type UnsafeProjectsServiceAccountServerServer interface {
+	mustEmbedUnimplementedProjectsServiceAccountServerServer()
+}
+
+func RegisterProjectsServiceAccountServerServer(s grpc.ServiceRegistrar, srv ProjectsServiceAccountServerServer) {
+	s.RegisterService(&ProjectsServiceAccountServer_ServiceDesc, srv)
+}
+
+func _ProjectsServiceAccountServer_GetProjectsServiceAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProjectsServiceAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServiceAccountServerServer).GetProjectsServiceAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.ProjectsServiceAccountServer/GetProjectsServiceAccount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServiceAccountServerServer).GetProjectsServiceAccount(ctx, req.(*GetProjectsServiceAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ProjectsServiceAccountServer_ServiceDesc is the grpc.ServiceDesc for ProjectsServiceAccountServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ProjectsServiceAccountServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.cloud.storage.v1.ProjectsServiceAccountServer",
+	HandlerType: (*ProjectsServiceAccountServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetProjectsServiceAccount",
+			Handler:    _ProjectsServiceAccountServer_GetProjectsServiceAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
