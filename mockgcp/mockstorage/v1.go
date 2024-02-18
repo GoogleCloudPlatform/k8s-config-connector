@@ -32,17 +32,7 @@ type StorageV1 struct {
 func (s *StorageV1) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.Bucket, error) {
 	fqn := req.GetBucket()
 
-	now := timestamppb.Now()
-
 	obj := &pb.Bucket{}
-	obj.Id = fqn
-	obj.Name = fqn
-	obj.ProjectNumber = 0 // todo
-	obj.Location = "US"
-	obj.Location = "multi-region"
-	obj.StorageClass = "STANDARD"
-	obj.TimeCreated = now
-	obj.Updated = now
 
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -54,8 +44,23 @@ func (s *StorageV1) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*p
 func (s *StorageV1) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest) (*pb.Bucket, error) {
 	fqn := req.GetBucket().GetName()
 
+	now := timestamppb.Now()
+
 	obj := proto.Clone(req.GetBucket()).(*pb.Bucket)
 	obj.Name = fqn
+
+	obj.Id = fqn
+	obj.Name = fqn
+	obj.ProjectNumber = 0 // todo
+
+	obj.Location = "US"
+	obj.LocationType = "multi-region"
+	obj.TimeCreated = now
+	obj.Updated = now
+
+	if obj.StorageClass == "" {
+		obj.StorageClass = "STANDARD"
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
