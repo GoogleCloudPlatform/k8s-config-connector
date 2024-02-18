@@ -30,6 +30,7 @@ import (
 	"golang.org/x/oauth2/google"
 	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/option"
+	"google.golang.org/grpc"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -233,6 +234,10 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 
 		h.gcpAccessToken = "dummytoken"
 		kccConfig.GCPAccessToken = h.gcpAccessToken
+
+		transport_tpg.GRPCConnectionFactory = func(ctx context.Context) *grpc.ClientConn {
+			return mockCloud.NewGRPCConnection(ctx)
+		}
 	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
 		t.Logf("targeting real GCP")
 	} else {
