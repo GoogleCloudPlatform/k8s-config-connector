@@ -18,12 +18,14 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	longrunning "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
@@ -84,13 +86,18 @@ func (s *instanceAdminServer) CreateCluster(ctx context.Context, req *pb.CreateC
 	obj := proto.Clone(req.Cluster).(*pb.Cluster)
 	obj.Name = clusterFQN
 
-	obj.State = pb.Cluster_READY
+	if err := s.populateDefaultsForCluster(obj); err != nil {
+		return nil, err
+	}
 	obj.ServeNodes = 1
+
 	if err := s.storage.Create(ctx, clusterFQN, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	return s.operations.StartLRO(ctx, "", nil, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *instanceAdminServer) PartialUpdateCluster(ctx context.Context, req *pb.PartialUpdateClusterRequest) (*longrunning.Operation, error) {
@@ -108,6 +115,8 @@ func (s *instanceAdminServer) PartialUpdateCluster(ctx context.Context, req *pb.
 		return nil, err
 	}
 
+	now := time.Now()
+
 	updateMask := req.GetUpdateMask()
 
 	for _, path := range updateMask.GetPaths() {
@@ -116,21 +125,23 @@ func (s *instanceAdminServer) PartialUpdateCluster(ctx context.Context, req *pb.
 			obj.ServeNodes = req.GetCluster().GetServeNodes()
 
 		case "cluster_config.cluster_autoscaling_config":
-			if obj.Config == nil {
-				obj.Config = &pb.Cluster_ClusterConfig_{
-					ClusterConfig: &pb.Cluster_ClusterConfig{},
+			if req.Cluster.GetClusterConfig().GetClusterAutoscalingConfig() == nil {
+				if cc := obj.GetClusterConfig(); cc != nil {
+					cc.ClusterAutoscalingConfig = nil
 				}
+			} else {
+				if obj.Config == nil {
+					obj.Config = &pb.Cluster_ClusterConfig_{
+						ClusterConfig: &pb.Cluster_ClusterConfig{},
+					}
+				}
+				clusterConfig := obj.Config.(*pb.Cluster_ClusterConfig_)
+				if clusterConfig.ClusterConfig == nil {
+					clusterConfig.ClusterConfig = &pb.Cluster_ClusterConfig{}
+				}
+				clusterConfig.ClusterConfig.ClusterAutoscalingConfig = req.Cluster.GetClusterConfig().GetClusterAutoscalingConfig()
 			}
-			clusterConfig := obj.Config.(*pb.Cluster_ClusterConfig_)
-			if clusterConfig.ClusterConfig == nil {
-				clusterConfig.ClusterConfig = &pb.Cluster_ClusterConfig{}
-			}
-			clusterConfig.ClusterConfig.ClusterAutoscalingConfig = req.Cluster.GetClusterConfig().GetClusterAutoscalingConfig()
 
-		// case "type":
-		// 	obj.Type = req.GetCluster().GetType()
-		// // case "labels":
-		// // 	obj.Labels = req.GetCluster().GetLabels()
 		default:
 			return nil, fmt.Errorf("mock does implement update of %q", path)
 		}
@@ -140,7 +151,14 @@ func (s *instanceAdminServer) PartialUpdateCluster(ctx context.Context, req *pb.
 		return nil, err
 	}
 
-	return s.operations.StartLRO(ctx, nil, func() (proto.Message, error) {
+	zone := "us-central1-a" // TODO
+	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
+	metadata := &pb.PartialUpdateClusterMetadata{
+		RequestTime:     timestamppb.New(now),
+		OriginalRequest: req,
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.FinishTime = timestamppb.Now()
 		return obj, nil
 	})
 }
@@ -159,6 +177,11 @@ func (s *instanceAdminServer) DeleteCluster(ctx context.Context, req *pb.DeleteC
 	}
 
 	return &emptypb.Empty{}, nil
+}
+func (s *MockService) populateDefaultsForCluster(obj *pb.Cluster) error {
+	obj.State = pb.Cluster_READY
+
+	return nil
 }
 
 type clusterName struct {

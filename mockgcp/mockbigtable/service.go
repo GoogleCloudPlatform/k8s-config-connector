@@ -20,11 +20,9 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 	// pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/bigtable/admin/v2"
@@ -32,20 +30,18 @@ import (
 
 // MockService represents a mocked bigtable service.
 type MockService struct {
-	kube    client.Client
+	*common.MockEnvironment
 	storage storage.Storage
 
-	projects   projects.ProjectStore
 	operations *operations.Operations
 }
 
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:       env.GetKubeClient(),
-		storage:    storage,
-		projects:   env.GetProjects(),
-		operations: operations.NewOperationsService(storage),
+		MockEnvironment: env,
+		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
 	}
 	return s
 }
@@ -56,6 +52,7 @@ func (s *MockService) ExpectedHost() string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterBigtableInstanceAdminServer(grpcServer, &instanceAdminServer{MockService: s})
+	pb.RegisterBigtableTableAdminServer(grpcServer, &tableAdminServer{MockService: s})
 	s.operations.RegisterGRPCServices(grpcServer)
 }
 

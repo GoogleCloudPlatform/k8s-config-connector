@@ -402,8 +402,16 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 					// Remove operation polling requests (ones where the operation is not ready)
 					events = events.KeepIf(func(e *test.LogEntry) bool {
-						if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
-							return true
+						isOperation := false
+						if strings.Contains(e.Request.URL, "/operations/${operationID}") {
+							isOperation = true
+						}
+						if e.Request.URL == "/google.longrunning.Operations/GetOperation" {
+							// Looks like a GRPC GetOperation request
+							isOperation = true
+						}
+						if !isOperation {
+							return true // Keep
 						}
 						responseBody := e.Response.ParseBody()
 						if responseBody == nil {

@@ -59,7 +59,7 @@ func (s *instanceAdminServer) ListInstances(ctx context.Context, req *pb.ListIns
 	if err != nil {
 		return nil, err
 	}
-	project, err := s.projects.GetProject(projectName)
+	project, err := s.Projects.GetProject(projectName)
 	if err != nil {
 		return nil, err
 	}
@@ -81,13 +81,20 @@ func (s *instanceAdminServer) ListInstances(ctx context.Context, req *pb.ListIns
 
 func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.CreateInstanceRequest) (*longrunning.Operation, error) {
 	reqName := req.GetParent() + "/instances/" + req.GetInstanceId()
-	instanceName, err := s.parseInstanceName(reqName)
+	name, err := s.parseInstanceName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
+	// "Clean up" the original request; this syncs the metadata OriginalRequest field
+	for _, reqCluster := range req.GetClusters() {
+		if proto.Equal(reqCluster.EncryptionConfig, &pb.Cluster_EncryptionConfig{}) {
+			reqCluster.EncryptionConfig = nil
+		}
+	}
+
 	now := time.Now()
-	instanceFQN := instanceName.String()
+	instanceFQN := name.String()
 
 	obj := proto.Clone(req.Instance).(*pb.Instance)
 	obj.Name = instanceFQN
@@ -107,12 +114,26 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 		clusterFQN := instanceFQN + "/clusters/" + clusterID
 		obj := proto.Clone(cluster).(*pb.Cluster)
 		obj.Name = clusterFQN
+		if err := s.populateDefaultsForCluster(obj); err != nil {
+			return nil, err
+		}
 		if err := s.storage.Create(ctx, clusterFQN, obj); err != nil {
 			return nil, err
 		}
 	}
 
-	return s.operations.NewLRO(ctx)
+	zone := "us-west1-b" // TODO
+
+	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
+	metadata := &pb.CreateInstanceMetadata{
+		RequestTime:     timestamppb.New(now),
+		OriginalRequest: req,
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.FinishTime = timestamppb.New(time.Now())
+
+		return obj, nil
+	})
 }
 
 func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb.PartialUpdateInstanceRequest) (*longrunning.Operation, error) {
@@ -130,6 +151,7 @@ func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb
 		return nil, err
 	}
 
+	now := time.Now()
 	updateMask := req.GetUpdateMask()
 
 	for _, path := range updateMask.GetPaths() {
@@ -149,7 +171,15 @@ func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	return s.operations.StartLRO(ctx, nil, func() (proto.Message, error) {
+	zone := "us-central1-a" // TODO
+	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
+	metadata := &pb.UpdateInstanceMetadata{
+		RequestTime:     timestamppb.New(now),
+		OriginalRequest: req,
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.FinishTime = timestamppb.Now()
+
 		return obj, nil
 	})
 }
@@ -185,7 +215,7 @@ func (s *MockService) parseInstanceName(name string) (*instanceName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "instances" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
