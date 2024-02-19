@@ -46,14 +46,6 @@ func NewOpenAPIConverter(doc *openapi.Document) *OpenAPIConverter {
 	}
 }
 
-func (c *OpenAPIConverter) resolveProperty(name string) *openapi.Property {
-	prop, found := c.doc.Schemas[name]
-	if !found {
-		klog.Fatalf("unable to resolve property %q", name)
-	}
-	return prop
-}
-
 func (c *OpenAPIConverter) addImport(s string) {
 	c.imports[s] = true
 }
@@ -81,9 +73,9 @@ func (c *OpenAPIConverter) buildMessageFromOpenAPI(message *openapi.Property) (*
 
 		case "object":
 			if property.Ref != "" {
-				resolved := c.resolveProperty(property.Ref)
+				typeName := c.resolveMessageType(property.Ref)
 				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &resolved.ID
+				field.TypeName = &typeName
 
 			} else if property.AdditionalProperties != nil {
 				valueField := &descriptorpb.FieldDescriptorProto{
@@ -101,15 +93,7 @@ func (c *OpenAPIConverter) buildMessageFromOpenAPI(message *openapi.Property) (*
 
 				case "":
 					if property.AdditionalProperties.Ref != "" {
-
-						valueMessage := property.AdditionalProperties.Ref
-						// "overridesByRequestProtocol": {
-						// 	"additionalProperties": {
-						// 	  "$ref": "BackendRule"
-						// 	},
-						// 	"description": "The map between request protocol and the backend address.",
-						// 	"type": "object"
-						//   },
+						valueMessage := c.resolveMessageType(property.AdditionalProperties.Ref)
 
 						valueField.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
 						valueField.TypeName = PtrTo(valueMessage)
@@ -161,9 +145,9 @@ func (c *OpenAPIConverter) buildMessageFromOpenAPI(message *openapi.Property) (*
 		case "":
 			// TODO: Combine with object?
 			if property.Ref != "" {
-				resolved := c.resolveProperty(property.Ref)
+				typeName := c.resolveMessageType(property.Ref)
 				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &resolved.ID
+				field.TypeName = &typeName
 			} else {
 				klog.Fatalf("expected property.Ref to be set for empty type: %+v", property)
 			}
@@ -172,14 +156,14 @@ func (c *OpenAPIConverter) buildMessageFromOpenAPI(message *openapi.Property) (*
 			field.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
 
 			if property.Ref != "" {
-				resolved := c.resolveProperty(property.Ref)
+				typeName := c.resolveMessageType(property.Ref)
 				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &resolved.ID
+				field.TypeName = &typeName
 			} else if property.Items != nil {
 				if property.Items.Ref != "" {
-					resolved := c.resolveProperty(property.Items.Ref)
+					typeName := c.resolveMessageType(property.Items.Ref)
 					field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-					field.TypeName = &resolved.ID
+					field.TypeName = &typeName
 				} else {
 					switch property.Items.Type {
 					case "string", "boolean", "integer", "number":
@@ -527,15 +511,8 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 			if method.Response.Ref == "" {
 				klog.Fatalf("unexpected method Response: %+v", method)
 			}
-			serviceMethod.OutputType = PtrTo(method.Response.Ref)
+			serviceMethod.OutputType = PtrTo(c.resolveMessageType(method.Response.Ref))
 		} else {
-			// responseType := *serviceMethod.Name + "Response"
-			// serviceMethod.OutputType = &responseType
-
-			// desc := &descriptorpb.DescriptorProto{}
-			// desc.Name = &responseType
-			// c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, desc)
-
 			serviceMethod.OutputType = PtrTo("google.protobuf.Empty")
 			c.addImport("google/protobuf/empty.proto")
 		}
@@ -625,6 +602,22 @@ func (c *OpenAPIConverter) visitResources(ctx context.Context, namePrefix string
 	}
 
 	return nil
+}
+
+func (c *OpenAPIConverter) resolveMessageType(ref string) string {
+	_, found := c.doc.Schemas[ref]
+	if !found {
+		klog.Fatalf("unable to resolve property ref %q", ref)
+	}
+
+	switch ref {
+	case "Operation":
+		c.addImport("google/longrunning/operations.proto")
+		return "google.longrunning.Operation"
+
+	default:
+		return ref
+	}
 }
 
 func (c *OpenAPIConverter) setPrimitiveType(property *openapi.Property, field *descriptorpb.FieldDescriptorProto) {
