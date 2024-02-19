@@ -318,7 +318,10 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 	}
 
 	serviceName := ToProtoIdentifier(pluralName)
-	serviceName += "Server"
+	if !strings.HasSuffix(serviceName, "Server") {
+		serviceName += "Server"
+	}
+
 	service := &descriptorpb.ServiceDescriptorProto{
 		Name: PtrTo(serviceName),
 	}
@@ -454,31 +457,47 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 			serviceMethod.InputType = &requestTypeName
 
 			for parameterName, parameter := range method.Parameters {
+				addParameter := false
+
+				fieldName := ToProtoFieldName(parameterName)
+				if rename := parameterRenames[fieldName]; rename != "" {
+					fieldName = rename
+				}
 
 				switch parameter.Location {
 				case "path":
+					addParameter = true
+				case "query":
+					addParameter = true
+					// Only if field not explicitly declared
+					for _, f := range desc.Field {
+						if f.GetName() == fieldName {
+							addParameter = false
+						}
+					}
+
+				default:
+					klog.Fatalf("parameter location not recognized %+v", parameter)
+				}
+
+				if addParameter {
 					tag := nextTag
 					nextTag++
 
 					field := &descriptorpb.FieldDescriptorProto{}
 					field.Number = PtrTo(tag)
-					//field.JsonName = PtrTo(parameterName)
-					field.Name = PtrTo(ToProtoFieldName(parameterName))
-					if rename := parameterRenames[field.GetName()]; rename != "" {
-						field.Name = PtrTo(rename)
-					}
+					field.Name = PtrTo(fieldName)
+					// TODO: Merge parameter and property?
 					switch parameter.Type {
 					case "string":
 						field.Type = descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum()
+					case "boolean":
+						field.Type = descriptorpb.FieldDescriptorProto_TYPE_BOOL.Enum()
 					default:
 						klog.Fatalf("parameter type not recognized %+v", parameter)
 					}
 
 					desc.Field = append(desc.Field, field)
-				case "query":
-					klog.Warningf("ignoring query parameter %+v", parameter)
-				default:
-					klog.Fatalf("parameter location not recognized %+v", parameter)
 				}
 			}
 
