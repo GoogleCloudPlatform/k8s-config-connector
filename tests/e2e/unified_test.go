@@ -169,6 +169,21 @@ func TestAllInSeries(t *testing.T) {
 
 					operationIDs := map[string]bool{}
 					for _, event := range events.HTTPEvents {
+						url := event.Request.URL
+						if ix := strings.Index(url, "?"); ix != -1 {
+							url = url[:ix]
+						}
+						tokens := strings.Split(url, "/")
+						n := len(tokens)
+						if n >= 2 {
+							switch tokens[n-2] {
+							case "operations":
+								operationIDs[tokens[n-1]] = true
+							}
+						}
+					}
+
+					for _, event := range events.HTTPEvents {
 						id := ""
 						body := event.Response.ParseBody()
 						val, ok := body["name"]
@@ -238,7 +253,14 @@ func TestAllInSeries(t *testing.T) {
 							return false
 						}
 						done, _, _ := unstructured.NestedBool(responseBody, "done")
-						return !done // remove if not done
+						if !done {
+							return true // definitely not done - remove!
+						}
+						status, _, _ := unstructured.NestedString(responseBody, "status")
+						if status == "RUNNING" || status == "PENDING" {
+							return true // definitely not done - remove!
+						}
+						return false
 					})
 
 					jsonMutators := []test.JSONMutator{}
@@ -263,10 +285,18 @@ func TestAllInSeries(t *testing.T) {
 					addReplacement("response.etag", "abcdef0123A=")
 
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
+
 					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
+
+					addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("endTime", "2024-04-01T12:34:56.123456Z")
+
+					addReplacement("serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("serverCaCert.expirationTime", "2024-04-01T12:34:56.123456Z")
 
 					events.PrettifyJSON(jsonMutators...)
 
