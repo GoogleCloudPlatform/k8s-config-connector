@@ -23,7 +23,6 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -32,7 +31,6 @@ import (
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 func TestAllInSeries(t *testing.T) {
@@ -129,36 +127,12 @@ func TestAllInSeries(t *testing.T) {
 				opt.CleanupResources = false // We delete explicitly below
 				create.RunCreateDeleteTest(h, opt)
 
-				for _, exportResource := range exportResources {
-					exportURI := ""
-
-					gvk := exportResource.GroupVersionKind()
-					switch gvk.GroupKind() {
-					case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
-						name := exportResource.GetName()
-						projectID := project.ProjectID
-						exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + name
+				for _, obj := range exportResources {
+					got := exportResource(h, obj)
+					if got != "" {
+						expectedPath := filepath.Join(fixture.SourceDir, "export.yaml")
+						h.CompareGoldenFile(expectedPath, string(got), h.IgnoreComments, h.ReplaceString(project.ProjectID, "example-project-id"))
 					}
-
-					if exportURI == "" {
-						continue
-					}
-
-					exportParams := h.ExportParams()
-					exportParams.IAMFormat = "partialpolicy"
-					exportParams.ResourceFormat = "krm"
-					outputDir := h.TempDir()
-					outputPath := filepath.Join(outputDir, "export.yaml")
-					exportParams.Output = outputPath
-					exportParams.URI = exportURI
-					if err := export.Execute(h.Ctx, &exportParams); err != nil {
-						t.Errorf("error from export.Execute: %v", err)
-						continue
-					}
-
-					expectedPath := filepath.Join(fixture.SourceDir, "export.yaml")
-					output := h.MustReadFile(outputPath)
-					h.CompareGoldenFile(expectedPath, string(output), h.IgnoreComments, h.ReplaceString(project.ProjectID, "example-project-id"))
 				}
 
 				create.DeleteResources(h, opt.Create)

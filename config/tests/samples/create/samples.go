@@ -106,7 +106,7 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 		}
 	}
 
-	waitForReady(t, opt.Create)
+	WaitForReady(t, opt.Create...)
 
 	if len(opt.Updates) != 0 {
 		// treat as a patch
@@ -115,7 +115,7 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 				t.Fatalf("error updating resource: %v", err)
 			}
 		}
-		waitForReady(t, opt.Updates)
+		WaitForReady(t, opt.Updates...)
 	}
 
 	// Clean up resources on success if CleanupResources flag is true
@@ -124,11 +124,11 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	}
 }
 
-func waitForReady(t *Harness, unstructs []*unstructured.Unstructured) {
+func WaitForReady(h *Harness, unstructs ...*unstructured.Unstructured) {
 	var wg sync.WaitGroup
 	for _, u := range unstructs {
 		wg.Add(1)
-		go waitForReadySingleResource(t, &wg, u)
+		go waitForReadySingleResource(h, &wg, u)
 	}
 	wg.Wait()
 }
@@ -201,6 +201,9 @@ func DeleteResources(t *Harness, unstructs []*unstructured.Unstructured) {
 	for _, u := range unstructs {
 		logger.Info("Deleting resource", "kind", u.GetKind(), "name", u.GetName())
 		if err := t.GetClient().Delete(t.Ctx, u); err != nil {
+			if apierrors.IsNotFound(err) {
+				continue
+			}
 			t.Errorf("error deleting: %v", err)
 		}
 	}

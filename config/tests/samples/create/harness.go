@@ -33,6 +33,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -73,6 +74,9 @@ type Harness struct {
 	// gcpAccessToken is set to the oauth2 token to use for GCP, primarily when GCP is mocked.
 	gcpAccessToken string
 	kccConfig      kccmanager.Config
+
+	// goldenFiles tracks the golden files we checked, so we can look for "extra" golden files.
+	goldenFiles []string
 }
 
 type httpRoundTripperKeyType int
@@ -490,7 +494,58 @@ func (t *Harness) waitForCRDReady(obj client.Object) {
 	}
 }
 
+func (h *Harness) NoExtraGoldenFiles(glob string) {
+	// absDir, err := filepath.Abs(dir)
+	// if err != nil {
+	// 	h.Fatalf("error getting absolute path for %q: %v", dir, err)
+	// }
+
+	// var gotFiles []string
+	// if err := filepath.WalkDir(absDir, func(p string, entry fs.DirEntry, err error) error {
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// 	if !entry.IsDir() {
+	// 		gotFiles = append(gotFiles, p)
+	// 	}
+	// 	return nil
+	// }); err != nil {
+	// 	h.Fatalf("error walking directory %q: %v", dir, err)
+	// }
+
+	gotFiles, err := filepath.Glob(glob)
+	if err != nil {
+		h.Fatalf("error matching glob %q: %v", glob, err)
+	}
+
+	goldenFilesSet := sets.New(h.goldenFiles...)
+
+	for _, gotFile := range gotFiles {
+		abs, err := filepath.Abs(gotFile)
+		if err != nil {
+			h.Fatalf("error getting absolute path for %q: %v", gotFile, err)
+		}
+		if goldenFilesSet.Has(abs) {
+			continue
+		}
+
+		h.Errorf("found extra file %q", gotFile)
+
+		if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+			if err := os.Remove(abs); err != nil {
+				h.Errorf("error removing extra file %q", abs)
+			}
+		}
+	}
+}
+
 func (h *Harness) CompareGoldenFile(p string, got string, normalizers ...func(s string) string) {
+	abs, err := filepath.Abs(p)
+	if err != nil {
+		h.Fatalf("error converting path %q to absolute path: %v", p, err)
+	}
+	h.goldenFiles = append(h.goldenFiles, abs)
+
 	if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 		// Short-circuit when the output is correct
 		b, err := os.ReadFile(p)
