@@ -26,7 +26,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -37,7 +36,6 @@ import (
 	"gopkg.in/dnaeon/go-vcr.v3/cassette"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -242,36 +240,12 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				}
 				create.RunCreateDeleteTest(h, opt)
 
-				for _, exportResource := range exportResources {
-					exportURI := ""
-
-					gvk := exportResource.GroupVersionKind()
-					switch gvk.GroupKind() {
-					case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
-						name := exportResource.GetName()
-						projectID := project.ProjectID
-						exportURI = "//serviceusage.googleapis.com/projects/" + projectID + "/services/" + name
+				for _, obj := range exportResources {
+					got := exportResource(h, obj)
+					if got != "" {
+						expectedPath := filepath.Join(fixture.SourceDir, "export.yaml")
+						h.CompareGoldenFile(expectedPath, string(got), IgnoreComments, ReplaceString(project.ProjectID, "example-project-id"))
 					}
-
-					if exportURI == "" {
-						continue
-					}
-
-					exportParams := h.ExportParams()
-					exportParams.IAMFormat = "partialpolicy"
-					exportParams.ResourceFormat = "krm"
-					outputDir := h.TempDir()
-					outputPath := filepath.Join(outputDir, "export.yaml")
-					exportParams.Output = outputPath
-					exportParams.URI = exportURI
-					if err := export.Execute(h.Ctx, &exportParams); err != nil {
-						t.Errorf("error from export.Execute: %v", err)
-						continue
-					}
-
-					expectedPath := filepath.Join(fixture.SourceDir, "export.yaml")
-					output := h.MustReadFile(outputPath)
-					h.CompareGoldenFile(expectedPath, string(output), h.IgnoreComments, h.ReplaceString(project.ProjectID, "example-project-id"))
 				}
 
 				if testPause {
@@ -281,13 +255,13 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 				// Verify events against golden file
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
-					events := h.Events
+					events := test.LogEntries(h.Events.HTTPEvents)
 
 					operationIDs := map[string]bool{}
 					pathIDs := map[string]string{}
 
 					// Find "easy" operations and resources by looking for fully-qualified methods
-					for _, event := range events.HTTPEvents {
+					for _, event := range events {
 						u := event.Request.URL
 						if index := strings.Index(u, "?"); index != -1 {
 							u = u[:index]
@@ -307,7 +281,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 					}
 
-					for _, event := range events.HTTPEvents {
+					for _, event := range events {
 						id := ""
 						body := event.Response.ParseBody()
 						val, ok := body["name"]
@@ -331,7 +305,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 					}
 
-					for _, event := range events.HTTPEvents {
+					for _, event := range events {
 						if !strings.Contains(event.Request.URL, "/operations/${operationID}") {
 							continue
 						}
@@ -346,7 +320,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					}
 
 					// Replace any dynamic IDs that appear in URLs
-					for _, event := range events.HTTPEvents {
+					for _, event := range events {
 						url := event.Request.URL
 						for k, v := range pathIDs {
 							url = strings.ReplaceAll(url, "/"+k, "/"+v)
@@ -355,19 +329,19 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					}
 
 					// Remove operation polling requests (ones where the operation is not ready)
-					events.RemoveRequests(func(e *test.LogEntry) bool {
+					events = events.KeepIf(func(e *test.LogEntry) bool {
 						if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
-							return false
+							return true
 						}
 						responseBody := e.Response.ParseBody()
 						if responseBody == nil {
-							return false
+							return true
 						}
 						if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
-							return false
+							return true
 						}
 						// remove if not done - and done can be omitted when false
-						return true
+						return false
 					})
 
 					jsonMutators := []test.JSONMutator{}
@@ -432,15 +406,15 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					got := events.FormatHTTP()
 					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
 					normalizers := []func(string) string{}
-					normalizers = append(normalizers, h.IgnoreComments)
-					normalizers = append(normalizers, h.ReplaceString(uniqueID, "${uniqueId}"))
-					normalizers = append(normalizers, h.ReplaceString(project.ProjectID, "${projectId}"))
-					normalizers = append(normalizers, h.ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
+					normalizers = append(normalizers, IgnoreComments)
+					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
+					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
+					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
 					for k, v := range pathIDs {
-						normalizers = append(normalizers, h.ReplaceString(k, v))
+						normalizers = append(normalizers, ReplaceString(k, v))
 					}
 					for k := range operationIDs {
-						normalizers = append(normalizers, h.ReplaceString(k, "${operationID}"))
+						normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
 					}
 
 					if testPause {
