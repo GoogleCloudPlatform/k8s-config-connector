@@ -21,12 +21,13 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"k8s.io/klog/v2"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"

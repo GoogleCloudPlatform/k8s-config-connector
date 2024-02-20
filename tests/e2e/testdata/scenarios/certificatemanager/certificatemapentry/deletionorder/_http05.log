@@ -1,0 +1,120 @@
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "sample certificate-map for creating certificate-map-entry",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "sample certificate for creating certificate map entry",
+  "expireTime": "3021-12-25T08:40:51Z",
+  "labels": {
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+  "pemCertificate": "-----BEGIN CERTIFICATE-----\nMIIDDzCCAfegAwIBAgIUDOiCLH9QNMMYnjPZVf4VwO9blsEwDQYJKoZIhvcNAQEL\nBQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wIBcNMjIwODI0MDg0MDUxWhgPMzAy\nMTEyMjUwODQwNTFaMBYxFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvOT925GG4lKV9HvAHsbecMhGPAqjhVRC26iZ\nUJC8oSWOu95lWJSX5ZhbiF6Nz192wDGV/VAh3Lxj8RYtcn75eDxQKTcKouDld+To\nCGIStPFWbR6rbysLuZqFVEXVOTvp2QIegInfrvnGC4j7Qpic7zrFB9HzJx+0HpeE\nyO4gkdzJfEK/gMmolUgJrKX59o+0+Rj+Jq3EtcQxL1fVBVJSx0NvpoR1eYpnHMr/\nrJKZkUUZ2xE86hrtpiP6OEYQTi00rmf4GnZF5QfGGD0xuoQXtR7Tu+XhKibXIhxc\nD4RzPLX1QS040PXvmMPLDb4YlUQ6V3Rs42JDvkkDwIMXZvn8awIDAQABo1MwUTAd\nBgNVHQ4EFgQURuo1CCZZAUv7xi02f2nC5tRbf18wHwYDVR0jBBgwFoAURuo1CCZZ\nAUv7xi02f2nC5tRbf18wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOC\nAQEAqx3tDxurnYr9EUPhF5/LlDPYM+VI7EgrKdRnuIqUlZI0tm3vOGME0te6dBTC\nYLNaHLW3m/4Tm4M2eg0Kpz6CxJfn3109G31dCi0xwzSDHf5TPUWvqIVhq5WRgMIf\nn8KYBlQSmqdJBRztUIQH/UPFnSbxymlS4s5qwDgTH5ag9EEBcnWsQ2LZjKi0eqve\nMaqAvvB+j8RGZzYY4re94bSJI42zIZ6nMWPtXwRuDc30xl/u+E0jWIgWbPwSd6Km\n3wnJnGiU2ezPGq3zEU+Rc39VVIFKQpciNeYuF3neHPJvYOf58qW2Z8s0VH0MR1x3\n3DoO/e30FIr9j+PRD+s5BPKF2A==\n-----END CERTIFICATE-----\n",
+  "sanDnsnames": [
+    "example.com"
+  ],
+  "selfManaged": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+400 Bad Request
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Resource '\"projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}\"' has nested resources. If the API supports cascading delete, set 'force' to true to delete it and its nested resources.",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+400 Bad Request
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.PreconditionFailure",
+        "violations": [
+          {
+            "description": "can't delete certificate that is referenced by a CertificateMapEntry or other resources",
+            "subject": "projects/${projectNumber}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+            "type": "RESOURCE_STILL_IN_USE"
+          }
+        ]
+      }
+    ],
+    "message": "Validation failed",
+    "status": "INVALID_ARGUMENT"
+  }
+}
