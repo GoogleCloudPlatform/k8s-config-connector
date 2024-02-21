@@ -37,3 +37,5 @@ allowlisted_modules:
   - github.com/go-errors/errors
   # Apache 2.0 for repo and third_party is BSD-3-Clause
   - github.com/google/pprof
+  # Apache 2.0: https://github.com/apparentlymart/go-textseg/blob/5b41aa275ccaac4ccaa91729a8ee92e7eac9c728/LICENSE
+  - github.com/apparentlymart/go-textseg/v13
