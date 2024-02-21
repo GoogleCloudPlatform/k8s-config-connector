@@ -12,20 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package forcesetfield
+package changestateintospec
 
 import (
 	"context"
 	"fmt"
 	"io"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/diffs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/kubecli"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/spf13/cobra"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/client-go/rest"
+	"k8s.io/klog/v2"
+	"k8s.io/klog/v2/textlogger"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 )
 
 // Options configures the behaviour of the ChangeStateIntoSpec operation.
@@ -33,18 +35,25 @@ type Options struct {
 	kubecli.ClusterOptions
 	kubecli.ObjectOptions
 
-	// FieldManager is the field-manager owner value to use when making changes
-	FieldManager string
+	// NewStateIntoSpecAnnotation is the new value for the state-into-spec annotation
+	NewStateIntoSpecAnnotation string
+
+	// FieldOwner is the field-manager owner value to use when making changes
+	FieldOwner string
 
 	// DryRun is true if we should not actually make changes, just print the changes we would make
 	DryRun bool
+
+	// PreserveFields is a list of additional spec fields we should preserve
+	PreserveFields []string
 }
 
 func (o *Options) PopulateDefaults() {
 	o.ClusterOptions.PopulateDefaults()
 	o.ObjectOptions.PopulateDefaults()
 
-	o.FieldManager = "change-state-into-spec"
+	o.FieldOwner = "change-state-into-spec"
+	o.NewStateIntoSpecAnnotation = "absent"
 	o.DryRun = false
 }
 
@@ -53,25 +62,16 @@ func AddCommand(parent *cobra.Command) {
 	options.PopulateDefaults()
 
 	cmd := &cobra.Command{
-		Use:   "force-set-field KIND NAME FIELD.PATH=VALUE",
-		Short: "Sets a field on a KCC object, even immutable fields (experimental)",
+		Use:   "change-state-into-spec",
+		Short: "Change the state-into-spec annotation on existing objects (experimental)",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
 
-			setFields := map[string]string{}
-			if len(args) >= 3 {
-				for i := 2; i < len(args); i++ {
-					tokens := strings.SplitN(args[i], "=", 2)
-					if len(tokens) < 2 {
-						return fmt.Errorf("expected spec.path=value, got %q", args[i])
-					}
-					k := tokens[0]
-					v := tokens[1]
-					setFields[k] = v
-				}
-			}
+			logConfig := textlogger.NewConfig(textlogger.Output(cmd.ErrOrStderr()))
+			log := textlogger.NewLogger(logConfig)
+			ctx = klog.NewContext(ctx, log)
 
-			return Run(ctx, cmd.OutOrStdout(), options, setFields)
+			return Run(ctx, cmd.OutOrStdout(), options)
 		},
 		Args: cobra.ArbitraryArgs,
 	}
@@ -79,12 +79,14 @@ func AddCommand(parent *cobra.Command) {
 	options.ObjectOptions.AddFlags(cmd)
 	options.ClusterOptions.AddFlags(cmd)
 
+	cmd.Flags().StringVar(&options.NewStateIntoSpecAnnotation, "set", options.NewStateIntoSpecAnnotation, "New value for the state-into-spec annotation")
 	cmd.Flags().BoolVar(&options.DryRun, "dry-run", options.DryRun, "dry-run mode will not make changes, but only print the changes it would make")
+	cmd.Flags().StringSliceVar(&options.PreserveFields, "keep-field", options.PreserveFields, "Additional fields to preserve in the spec")
 
 	parent.AddCommand(cmd)
 }
 
-func Run(ctx context.Context, out io.Writer, options Options, setFields map[string]string) error {
+func Run(ctx context.Context, out io.Writer, options Options) error {
 	// log := klog.FromContext(ctx)
 
 	if options.ImpersonateUser == "" {
@@ -111,12 +113,29 @@ func Run(ctx context.Context, out io.Writer, options Options, setFields map[stri
 
 	originalObject := u.DeepCopy()
 
-	for k, v := range setFields {
-		if err := setField(ctx, u, k, v); err != nil {
-			return fmt.Errorf("setting field %q to %q: %w", k, v, err)
-		}
-
+	preserveFields := make(map[string]bool)
+	// The exception to state-into-spec; we always want to preserve the resourceID field.
+	preserveFields[".spec.resourceID"] = true
+	for _, preserveField := range options.PreserveFields {
+		preserveFields[preserveField] = true
 	}
+
+	preserveFieldsFunc := func(fieldPath fieldpath.Path) bool {
+		fieldName := fieldPath.String()
+		return preserveFields[fieldName]
+	}
+
+	if err := stateintospec.RemoveStateIntoSpecFields(ctx, u, preserveFieldsFunc); err != nil {
+		return err
+	}
+
+	annotations := u.GetAnnotations()
+	if annotations == nil {
+		annotations = make(map[string]string)
+	}
+	annotations["cnrm.cloud.google.com/state-into-spec"] = options.NewStateIntoSpecAnnotation
+	u.SetAnnotations(annotations)
+
 	diff, err := diffs.BuildObjectDiff(originalObject, u)
 	if err != nil {
 		return fmt.Errorf("building object diff: %w", err)
@@ -133,39 +152,9 @@ func Run(ctx context.Context, out io.Writer, options Options, setFields map[stri
 	}
 
 	fmt.Fprintf(out, "applying changes\n")
-	if err := kubeClient.Update(ctx, u, client.FieldOwner(options.FieldManager)); err != nil {
+	if err := kubeClient.Update(ctx, u, client.FieldOwner(options.FieldOwner)); err != nil {
 		return fmt.Errorf("updating object: %w", err)
 	}
-
-	return nil
-}
-
-func setField(ctx context.Context, u *unstructured.Unstructured, fieldPath string, newValue any) error {
-	// log := klog.FromContext(ctx)
-
-	elements := strings.Split(fieldPath, ".")
-
-	pos := u.Object
-	n := len(elements)
-	for i := 0; i < n-1; i++ {
-		element := elements[i]
-
-		v, found := pos[element]
-		if !found {
-			v = make(map[string]any)
-			pos[element] = v
-		}
-		m, ok := v.(map[string]any)
-		if !ok {
-			return fmt.Errorf("unexpected type for %q: got %T, expected object", fieldPath, v)
-		}
-		pos = m
-	}
-
-	last := elements[n-1]
-
-	// TODO: What about things that aren't strings?
-	pos[last] = newValue
 
 	return nil
 }
