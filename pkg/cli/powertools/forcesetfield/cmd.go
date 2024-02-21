@@ -124,7 +124,11 @@ func Run(ctx context.Context, out io.Writer, options Options, setFields map[stri
 		return fmt.Errorf("building object diff: %w", err)
 	}
 
-	diff.PrettyPrintTo(out)
+	fmt.Fprintf(out, "\n\n")
+	printOpts := diffs.PrettyPrintOptions{PrintObjectInfo: true, Indent: "    "}
+	diff.PrettyPrintTo(printOpts, out)
+	fmt.Fprintf(out, "\n\n")
+
 	if options.DryRun {
 		fmt.Fprintf(out, "dry-run mode, not making changes\n")
 		return nil
