@@ -117,7 +117,7 @@ func isLegacyArgs() bool {
 		return false
 	}
 	cmd, _, err := rootCmd.Find(args)
-	if err == nil && cmd.Args != nil {
+	if err == nil && cmd != nil {
 		return false
 	}
 	for i := 0; i < len(args); {
