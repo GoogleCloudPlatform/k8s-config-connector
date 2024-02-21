@@ -23,6 +23,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/parameters"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/log"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 
 	tfversion "github.com/hashicorp/terraform-provider-google-beta/version"
@@ -57,6 +58,9 @@ func init() {
 	rootCmd.AddCommand(printResourcesCmd)
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(applyCmd)
+
+	powertools.AddCommands(rootCmd)
+
 	rootCmd.SilenceErrors = true
 }
 
@@ -113,7 +117,7 @@ func isLegacyArgs() bool {
 		return false
 	}
 	cmd, _, err := rootCmd.Find(args)
-	if err == nil && cmd.Args != nil {
+	if err == nil && cmd != nil {
 		return false
 	}
 	for i := 0; i < len(args); {
