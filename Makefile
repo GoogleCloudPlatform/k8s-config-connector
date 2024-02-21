@@ -163,6 +163,11 @@ docker-build-unmanageddetector: docker-build-builder
 	cp config/installbundle/components/unmanageddetector/unmanageddetector_image_patch_template.yaml config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${UNMANAGED_DETECTOR_IMG}"'@' ./config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
 
+# Build the config-connector-cli docker image
+.PHONY: docker-build-config-connector-cli
+docker-build-config-connector-cli:
+	KO_DOCKER_REPO=gcr.io/justinsb-root-20220725/config-connector-cli go run github.com/google/ko@v0.15.1 build --local --bare --tags 5a0ad25 ./cmd/config-connector
+
 # Push the docker image
 .PHONY: docker-push
 docker-push:
