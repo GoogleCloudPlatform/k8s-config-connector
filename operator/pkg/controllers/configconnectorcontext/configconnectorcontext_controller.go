@@ -122,6 +122,7 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*Reconciler, error) {
 		declarative.WithObjectTransform(r.addLabels()),
 		declarative.WithObjectTransform(r.handleCCContextLifecycle()),
 		declarative.WithObjectTransform(r.applyNamespacedCustomizations()),
+		declarative.WithObjectTransform(r.logManifests()),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}),
@@ -552,4 +553,15 @@ func formatCNRMResourcesPresentError(kindToCount map[string]int64) error {
 	}
 	msg := "cannot finalize deletion until all Config Connector resources in namespace have been removed: there are %v Config Connector resource(s) in namespace (%v)"
 	return fmt.Errorf(msg, totalCount, strings.Join(kindCountStrings, ", "))
+}
+
+func (r *Reconciler) logManifests() declarative.ObjectTransform {
+	return func(_ context.Context, _ declarative.DeclarativeObject, m *manifest.Objects) error {
+		mInJSON, err := m.JSONManifest()
+		if err != nil {
+			return fmt.Errorf("error parsing the transformed objects into JSON: %w", err)
+		}
+		r.log.Info("applying manifests for namespaced components", "manifests", fmt.Sprintf("%+v", mInJSON))
+		return nil
+	}
 }
