@@ -17,14 +17,20 @@ package kubecli
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
+	"regexp"
 	"strings"
+	"time"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/discovery"
+	diskcached "k8s.io/client-go/discovery/cached/disk"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/util/homedir"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 )
@@ -56,7 +62,8 @@ func NewClient(ctx context.Context, options ClusterOptions) (*Client, error) {
 		return nil, fmt.Errorf("building kubernetes client: %w", err)
 	}
 
-	discoveryClient, err := discovery.NewDiscoveryClientForConfigAndClient(restConfig, httpClient)
+	discoveryClient, err := buildDiscoveryClient(ctx, restConfig)
+	// discoveryClient, err := discovery.NewDiscoveryClientForConfigAndClient(restConfig, httpClient)
 	if err != nil {
 		return nil, fmt.Errorf("building discovery client: %w", err)
 	}
@@ -65,6 +72,53 @@ func NewClient(ctx context.Context, options ClusterOptions) (*Client, error) {
 		DiscoveryClient: discoveryClient,
 		Client:          kubeClient,
 	}, nil
+}
+
+func buildDiscoveryClient(ctx context.Context, restConfig *rest.Config) (discovery.DiscoveryInterface, error) {
+	// Based on toDiscoveryClient in https://github.com/kubernetes/kubernetes/blob/v1.30.0-alpha.0/staging/src/k8s.io/cli-runtime/pkg/genericclioptions/config_flags.go
+
+	config := *restConfig
+
+	// config.Burst = f.discoveryBurst
+	// config.QPS = f.discoveryQPS
+
+	cacheDir := getDefaultCacheDir()
+
+	// // retrieve a user-provided value for the "cache-dir"
+	// // override httpCacheDir and discoveryCacheDir if user-value is given.
+	// // user-provided value has higher precedence than default
+	// // and KUBECACHEDIR environment variable.
+	// if f.CacheDir != nil && *f.CacheDir != "" && *f.CacheDir != getDefaultCacheDir() {
+	// 	cacheDir = *f.CacheDir
+	// }
+
+	httpCacheDir := filepath.Join(cacheDir, "http")
+	discoveryCacheDir := computeDiscoverCacheDir(filepath.Join(cacheDir, "discovery"), config.Host)
+
+	return diskcached.NewCachedDiscoveryClientForConfig(&config, discoveryCacheDir, httpCacheDir, time.Duration(6*time.Hour))
+}
+
+// overlyCautiousIllegalFileCharacters matches characters that *might* not be supported.  Windows is really restrictive, so this is really restrictive
+var overlyCautiousIllegalFileCharacters = regexp.MustCompile(`[^(\w/.)]`)
+
+// computeDiscoverCacheDir takes the parentDir and the host and comes up with a "usually non-colliding" name.
+func computeDiscoverCacheDir(parentDir, host string) string {
+	// strip the optional scheme from host if its there:
+	schemelessHost := strings.Replace(strings.Replace(host, "https://", "", 1), "http://", "", 1)
+	// now do a simple collapse of non-AZ09 characters.  Collisions are possible but unlikely.  Even if we do collide the problem is short lived
+	safeHost := overlyCautiousIllegalFileCharacters.ReplaceAllString(schemelessHost, "_")
+	return filepath.Join(parentDir, safeHost)
+}
+
+// getDefaultCacheDir returns default caching directory path.
+// it first looks at KUBECACHEDIR env var if it is set, otherwise
+// it returns standard kube cache dir.
+func getDefaultCacheDir() string {
+	if kcd := os.Getenv("KUBECACHEDIR"); kcd != "" {
+		return kcd
+	}
+
+	return filepath.Join(homedir.HomeDir(), ".kube", "cache")
 }
 
 func (c *Client) GetObject(ctx context.Context, options ObjectOptions) (*unstructured.Unstructured, error) {
