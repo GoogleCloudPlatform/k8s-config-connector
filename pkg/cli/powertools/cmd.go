@@ -16,6 +16,7 @@ package powertools
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/forcesetfield"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/changestateintospec"
 	"github.com/spf13/cobra"
 )
 
@@ -25,7 +26,9 @@ func AddCommands(parent *cobra.Command) {
 		Short: "Powertools holds our experimental / dangerous tools",
 		Args:  cobra.NoArgs,
 	}
-	parent.AddCommand(powertoolsCmd)
 
 	forcesetfield.AddCommand(powertoolsCmd)
+	changestateintospec.AddCommand(powertoolsCmd)
+
+	parent.AddCommand(powertoolsCmd)
 }
