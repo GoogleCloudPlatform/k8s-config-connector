@@ -196,8 +196,32 @@ func Run(ctx context.Context, out io.Writer, options Options) error {
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(schema.GroupVersionKind{Group: matches[0].Group, Version: matches[0].Version, Kind: matches[0].Kind})
 
-	if err := k8s.Get(ctx, key, u); err != nil {
+	if err := kubeClient.Get(ctx, key, u); err != nil {
 		return fmt.Errorf("getting object %v: %w", key, err)
+	}
+
+	originalObject := u.DeepCopy()
+
+	managedFields, err := ParseManagedFields(u.GetManagedFields())
+	if err != nil {
+		return fmt.Errorf("parsing managed fields: %w", err)
+	}
+
+	for manager, fields := range managedFields {
+		if manager != k8s.ControllerManagedFieldManager {
+			continue
+		}
+
+		preserveFields := make(map[string]bool)
+		// The exception to state-into-spec; we always want to preserve the resourceID field.
+		preserveFields[".spec.resourceID"] = true
+		for _, preserveField := range options.PreserveFields {
+			preserveFields[preserveField] = true
+		}
+
+		if err := removeStateIntoSpecFields(ctx, u, fields, preserveFields); err != nil {
+			return err
+		}
 	}
 
 	// y, err := yaml.Marshal(u)
@@ -205,8 +229,6 @@ func Run(ctx context.Context, out io.Writer, options Options) error {
 	// 	return fmt.Errorf("converting object to yaml: %w", err)
 	// }
 	//fmt.Fprintf(out, "%s\n", string(y))
-
-	oldObject := u.DeepCopy()
 
 	annotations := u.GetAnnotations()
 	if annotations == nil {
