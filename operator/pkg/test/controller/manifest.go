@@ -391,7 +391,7 @@ func ManuallyReplaceSecretVolume(components []string, secretName string) []strin
 
 func ManuallyModifyNamespaceTemplates(t *testing.T, template []string, nsName, saName string, userProjectOverride bool, billingProject string, c client.Client) []string {
 	var res []string
-	nsID, err := cluster.GetNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, c, context.TODO(), nsName)
+	nsID, err := cluster.GetNamespaceID(context.TODO(), k8s.OperatorNamespaceIDConfigMapNN, c, nsName)
 	if err != nil {
 		t.Fatalf("error getting the id for namespace %v", err)
 	}

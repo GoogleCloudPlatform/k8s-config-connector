@@ -187,7 +187,7 @@ func (r *reconcileContext) doReconcile(auditConfig *iamv1beta1.IAMAuditConfig) (
 		}
 		if !k8s.HasAbandonAnnotation(auditConfig) {
 			if err := r.Reconciler.iamClient.DeleteAuditConfig(r.Ctx, auditConfig); err != nil {
-				if !errors.Is(err, kcciamclient.NotFoundError) && !k8s.IsReferenceNotFoundError(err) {
+				if !errors.Is(err, kcciamclient.ErrNotFound) && !k8s.IsReferenceNotFoundError(err) {
 					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(auditConfig))
 						resource, err := ToK8sResource(auditConfig)
@@ -208,7 +208,7 @@ func (r *reconcileContext) doReconcile(auditConfig *iamv1beta1.IAMAuditConfig) (
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(auditConfig))
 			return r.handleUnresolvableDeps(auditConfig, unwrappedErr)
 		}
-		if !errors.Is(err, kcciamclient.NotFoundError) {
+		if !errors.Is(err, kcciamclient.ErrNotFound) {
 			return false, r.handleUpdateFailed(auditConfig, err)
 		}
 	}

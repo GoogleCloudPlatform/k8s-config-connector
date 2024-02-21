@@ -51,20 +51,20 @@ func ForUnitTestsWithCRDs(m *testing.M, crds []*apiextensions.CustomResourceDefi
 
 // TestMain starts a local K8S API server to run tests against. These tests do
 // not require an external API server to execute.
-func TestMain(m *testing.M, testType test.TestType, crds []*apiextensions.CustomResourceDefinition, mgr *manager.Manager) {
+func TestMain(m *testing.M, testType test.Type, crds []*apiextensions.CustomResourceDefinition, mgr *manager.Manager) {
 	SetupMultipleEnvironments(m, testType, crds, []*manager.Manager{mgr})
 }
 
 // SetupMultipleEnvironments starts n API servers to run tests against. The value for 'n' is determined by
 // the length of the 'mgrPtrs' argument. This is useful when testing multi-cluster scenarios.
-func SetupMultipleEnvironments(m *testing.M, testType test.TestType, crds []*apiextensions.CustomResourceDefinition, mgrPtrs []*manager.Manager) {
+func SetupMultipleEnvironments(m *testing.M, testType test.Type, crds []*apiextensions.CustomResourceDefinition, mgrPtrs []*manager.Manager) {
 	logging.SetupLogger()
 	var err error
 
 	envs := make([]*envtest.Environment, 0, len(mgrPtrs))
 	stops := make([]func(), 0, len(mgrPtrs))
 	for _, mp := range mgrPtrs {
-		var whCfgs []cnrmwebhook.WebhookConfig
+		var whCfgs []cnrmwebhook.Config
 		if testType == test.IntegrationTestType {
 			whCfgs, err = webhook.GetTestCommonWebhookConfigs()
 			if err != nil {

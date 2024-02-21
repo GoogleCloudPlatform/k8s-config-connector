@@ -66,8 +66,8 @@ func TestGetNotFound(t *testing.T) {
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.Config{})
 	client := gcpclient.New(tfProvider, smLoader)
 	result, err := client.Get(ctx, serviceResource)
-	if err != gcpclient.NotFoundError {
-		t.Fatalf("unexpected error value: got '%v', want '%v", err, gcpclient.NotFoundError)
+	if err != gcpclient.ErrNotFound {
+		t.Fatalf("unexpected error value: got '%v', want '%v", err, gcpclient.ErrNotFound)
 	}
 	if result != nil {
 		t.Fatalf("unexpected result value: got '%v', want '%v'", result, nil)

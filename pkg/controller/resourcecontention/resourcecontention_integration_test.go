@@ -147,7 +147,7 @@ func assertNamespaceIdsAreNotEqual(t *testing.T, mgr1, mgr2 manager.Manager, nam
 
 func getNamespaceID(t *testing.T, mgr manager.Manager, namespace string) string {
 	t.Helper()
-	id, err := cluster.GetNamespaceID(k8s.NamespaceIDConfigMapNN, mgr.GetClient(), context.TODO(), namespace)
+	id, err := cluster.GetNamespaceID(context.TODO(), k8s.NamespaceIDConfigMapNN, mgr.GetClient(), namespace)
 	if err != nil {
 		t.Fatal(err)
 	}

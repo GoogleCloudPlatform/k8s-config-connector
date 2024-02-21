@@ -200,7 +200,7 @@ func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember)
 		}
 		if !k8s.HasAbandonAnnotation(policyMember) {
 			if err := r.Reconciler.iamClient.DeletePolicyMember(r.Ctx, policyMember); err != nil {
-				if !errors.Is(err, kcciamclient.NotFoundError) && !k8s.IsReferenceNotFoundError(err) {
+				if !errors.Is(err, kcciamclient.ErrNotFound) && !k8s.IsReferenceNotFoundError(err) {
 					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
 						resource, err := ToK8sResource(policyMember)
@@ -221,7 +221,7 @@ func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember)
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
 			return r.handleUnresolvableDeps(policyMember, unwrappedErr)
 		}
-		if !errors.Is(err, kcciamclient.NotFoundError) {
+		if !errors.Is(err, kcciamclient.ErrNotFound) {
 			return false, r.handleUpdateFailed(policyMember, err)
 		}
 	}

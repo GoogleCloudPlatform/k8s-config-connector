@@ -25,7 +25,7 @@ type mockServiceClient struct {
 	t *testing.T
 }
 
-func NewMockServiceClient(t *testing.T) mockServiceClient {
+func NewMockServiceClient(t *testing.T) mockServiceClient { //nolint:revive
 	return mockServiceClient{
 		t: t,
 	}

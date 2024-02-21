@@ -63,7 +63,7 @@ func testStream(t *testing.T, stream *asset.Stream, expectedCount int) {
 			t.Fatalf("unexpected error reading asset: %v", err)
 		}
 		assertAsset(t, asset)
-		count += 1
+		count++
 	}
 	if count != expectedCount {
 		t.Fatalf("unexpected value for count: got '%v', want '%v'", count, expectedCount)

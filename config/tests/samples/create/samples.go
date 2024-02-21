@@ -60,7 +60,7 @@ func networksInSampleCount(sample Sample) int {
 	count := 0
 	for _, r := range sample.Resources {
 		if r.GetKind() == "ComputeNetwork" {
-			count += 1
+			count++
 		}
 	}
 	return count
@@ -85,7 +85,7 @@ func getNamespaces(resources []*unstructured.Unstructured) []string {
 	return namespaces.List()
 }
 
-type CreateDeleteTestOptions struct {
+type CreateDeleteTestOptions struct { //nolint:revive
 	// Create is the set of objects to create
 	Create []*unstructured.Unstructured
 

@@ -321,10 +321,8 @@ func PreserveUserSpecifiedLegacyField(original, reconciled *k8s.Resource, path .
 	if !found {
 		return nil
 	}
-	if err := unstructured.SetNestedField(reconciled.Spec, vo, path...); err != nil {
-		return err
-	}
-	return nil
+
+	return unstructured.SetNestedField(reconciled.Spec, vo, path...)
 }
 
 // PreserveUserSpecifiedLegacyFieldUnderSlice iterates through the specified slice/array field in the reconciled and original resource, and adds
@@ -375,10 +373,8 @@ func PreserveUserSpecifiedLegacyArrayField(original, reconciled *k8s.Resource, p
 	if !found {
 		return nil
 	}
-	if err := unstructured.SetNestedSlice(reconciled.Spec, vo, path...); err != nil {
-		return err
-	}
-	return nil
+
+	return unstructured.SetNestedSlice(reconciled.Spec, vo, path...)
 }
 
 // PruneDefaultedAuthoritativeFieldIfOnlyLegacyFieldSpecified prune the defaulted authoritative field from the reconciled resource (post-actuation) if only
@@ -686,10 +682,8 @@ func removePrefixFromStringFieldInSpec(r *k8s.Resource, prefix string, path ...s
 		return nil
 	}
 	v := strings.TrimPrefix(vo, prefix)
-	if err := unstructured.SetNestedField(r.Spec, v, path...); err != nil {
-		return err
-	}
-	return nil
+
+	return unstructured.SetNestedField(r.Spec, v, path...)
 }
 
 // fieldPath is the path to a Terraform field.

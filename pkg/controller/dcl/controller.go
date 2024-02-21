@@ -591,7 +591,7 @@ func (r *Reconciler) finalizeResourceDeletion(ctx context.Context, resource *dcl
 // * Hierarchical resources are also considered parents.
 // It is assumed that parent and hierarchical references are always at the top
 // level.
-func (r *Reconciler) isOrphaned(ctx context.Context, resource *dcl.Resource) (orphaned bool, parent *k8s.Resource, err error) {
+func (r *Reconciler) isOrphaned(_ context.Context, resource *dcl.Resource) (orphaned bool, parent *k8s.Resource, err error) {
 	gvk := resource.GroupVersionKind()
 	resourceMetadata, found := r.converter.MetadataLoader.GetResourceWithGVK(gvk)
 	if !found {

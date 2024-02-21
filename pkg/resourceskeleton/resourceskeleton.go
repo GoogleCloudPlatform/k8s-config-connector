@@ -90,7 +90,7 @@ func NewFromAsset(a *asset.Asset, smLoader *servicemappingloader.ServiceMappingL
 		Type: rc.Name,
 	}
 	name := trimServiceHostName(a, sm)
-	importID, err := convertAssetNameToImportID(a, rc, name)
+	importID, err := convertAssetNameToImportID(rc, name)
 	if err != nil {
 		return nil, fmt.Errorf("error coverting cloud asset inventory name '%v' to resource id: %w", name, err)
 	}
@@ -134,7 +134,7 @@ func trimServiceHostName(a *asset.Asset, sm *v1alpha1.ServiceMapping) string {
 
 // convertAssetNameToImportID converts the name of the resource in Asset Inventory into
 // the import ID of the resource in KCC.
-func convertAssetNameToImportID(a *asset.Asset, rc *v1alpha1.ResourceConfig, name string) (string, error) {
+func convertAssetNameToImportID(rc *v1alpha1.ResourceConfig, name string) (string, error) {
 	// IAMCustomRole is a custom resource, and has a bespoke ID format.
 	if rc.Kind == "IAMCustomRole" {
 		id, err := parseIAMCustomRoleID(name)

@@ -55,7 +55,7 @@ const (
 
 // StartTestManager begins a new test manager, and returns a function
 // to gracefully shutdown.
-func StartTestManagerInstance(env *envtest.Environment, testType test.TestType, whCfgs []cnrmwebhook.WebhookConfig) (manager.Manager, func()) {
+func StartTestManagerInstance(env *envtest.Environment, testType test.Type, whCfgs []cnrmwebhook.Config) (manager.Manager, func()) {
 	mgr, stopFunc, err := startTestManager(env, testType, whCfgs)
 	if err != nil {
 		log.Fatal(err)
@@ -63,7 +63,7 @@ func StartTestManagerInstance(env *envtest.Environment, testType test.TestType, 
 	return mgr, stopFunc
 }
 
-func startTestManager(env *envtest.Environment, testType test.TestType, whCfgs []cnrmwebhook.WebhookConfig) (manager.Manager, func(), error) {
+func startTestManager(env *envtest.Environment, testType test.Type, whCfgs []cnrmwebhook.Config) (manager.Manager, func(), error) {
 	mgr, err := manager.New(env.Config, manager.Options{
 		Port:    env.WebhookInstallOptions.LocalServingPort,
 		Host:    env.WebhookInstallOptions.LocalServingHost,

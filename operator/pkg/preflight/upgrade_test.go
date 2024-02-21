@@ -29,13 +29,8 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/scheme"
-	"k8s.io/client-go/rest"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/loaders"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative"
-)
-
-var (
-	cfg *rest.Config
 )
 
 func init() {
@@ -51,15 +46,15 @@ type FakeRepo struct {
 
 var _ manifest.Repository = &FakeRepo{}
 
-func (r *FakeRepo) LoadManifest(_ context.Context, _ string, _ string, _ declarative.DeclarativeObject) (map[string]string, error) {
+func (r *FakeRepo) LoadManifest(ctx context.Context, component string, id string, o declarative.DeclarativeObject) (map[string]string, error) { //nolint:revive
 	panic("implement me")
 }
 
-func (r *FakeRepo) LoadChannel(_ context.Context, _ string) (*loaders.Channel, error) {
+func (r *FakeRepo) LoadChannel(ctx context.Context, name string) (*loaders.Channel, error) { //nolint:revive
 	return r.channel, nil
 }
 
-func (r *FakeRepo) LoadNamespacedComponents(_ context.Context, _ string, _ string) (map[string]string, error) {
+func (r *FakeRepo) LoadNamespacedComponents(ctx context.Context, componentName string, version string) (map[string]string, error) { //nolint:revive
 	panic("implement me")
 }
 

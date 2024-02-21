@@ -280,7 +280,7 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 				}
 			}
 
-			if err := handleLifecycles(t, ctx, r, tc.cc, m); err != nil {
+			if err := handleLifecycles(ctx, t, r, tc.cc, m); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
 			expectedObjs := tc.resultsFunc(t, c)
@@ -451,7 +451,7 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 			}
 			if len(tc.cccs) > 0 {
 				// Expect that the first attempt returns an error.
-				if err := handleLifecycles(t, ctx, r, tc.cc, m); err == nil {
+				if err := handleLifecycles(ctx, t, r, tc.cc, m); err == nil {
 					t.Fatalf("expect to have an error because the controller manager pod per namespace is not deleted, but got nil")
 				}
 				// Simulate that CCC controller kicks in and deletes the controller manager pod.
@@ -463,7 +463,7 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 					}
 				}
 			}
-			if err := handleLifecycles(t, ctx, r, tc.cc, m); err != nil {
+			if err := handleLifecycles(ctx, t, r, tc.cc, m); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
 			expectedObjs := tc.resultsFunc(t, c)
@@ -776,7 +776,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 
 			m := testcontroller.ParseObjects(ctx, t, tc.manifest)
 			if tc.cc.GetMode() == "namespaced" {
-				if err := handleLifecycles(t, ctx, r, tc.updatedCc, m); err == nil {
+				if err := handleLifecycles(ctx, t, r, tc.updatedCc, m); err == nil {
 					t.Fatalf("got nil, but want to have an error because the controller manager pod per namespace is not deleted")
 				}
 				// Simulate that CCC controller kicks in and deletes the controller manager pod.
@@ -788,7 +788,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 					}
 				}
 			}
-			if err := handleLifecycles(t, ctx, r, tc.updatedCc, m); err != nil {
+			if err := handleLifecycles(ctx, t, r, tc.updatedCc, m); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
 			expectedObjs := tc.resultsFunc(t, c)
@@ -825,8 +825,7 @@ type testCaseStruct struct {
 	resultsFunc    func(t *testing.T, c client.Client) []string
 }
 
-func handleLifecycles(t *testing.T, ctx context.Context,
-	r *Reconciler, cc *corev1beta1.ConfigConnector, m *manifest.Objects) error {
+func handleLifecycles(ctx context.Context, t *testing.T, r *Reconciler, cc *corev1beta1.ConfigConnector, m *manifest.Objects) error {
 	t.Helper()
 
 	fn := r.transformForClusterMode()

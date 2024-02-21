@@ -55,7 +55,7 @@ func NewIAMValidatorHandler(smLoader *servicemappingloader.ServiceMappingLoader,
 	}
 }
 
-func (a *iamValidatorHandler) Handle(ctx context.Context, req admission.Request) admission.Response {
+func (a *iamValidatorHandler) Handle(_ context.Context, req admission.Request) admission.Response {
 	deserializer := codecs.UniversalDeserializer()
 	obj := &unstructured.Unstructured{}
 	if _, _, err := deserializer.Decode(req.AdmissionRequest.Object.Raw, nil, obj); err != nil {

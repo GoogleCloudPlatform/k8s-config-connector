@@ -78,7 +78,7 @@ func TestErrorInAssetStream(t *testing.T) {
 	}
 	assetStream := newMockAssetStream(nextResults)
 	yamlStream := stream.NewYAMLStream(newTestUnstructuredResourceStreamFromAsset(t, assetStream))
-	bytes := yamlStreamToBytesIgnoreErrors(t, yamlStream)
+	bytes := yamlStreamToBytesIgnoreErrors(yamlStream)
 	validateYAMLBytesMatchesExpectedFile(t, bytes)
 	// create a stream of assets where every even indexed asset results in an error
 	nextResults = make([]NextAssetResult, 0, 2*len(allAssets))
@@ -90,7 +90,7 @@ func TestErrorInAssetStream(t *testing.T) {
 	}
 	assetStream = newMockAssetStream(nextResults)
 	yamlStream = stream.NewYAMLStream(newTestUnstructuredResourceStreamFromAsset(t, assetStream))
-	bytes = yamlStreamToBytesIgnoreErrors(t, yamlStream)
+	bytes = yamlStreamToBytesIgnoreErrors(yamlStream)
 	validateYAMLBytesMatchesExpectedFile(t, bytes)
 }
 
@@ -135,12 +135,12 @@ func newMockUnstructuredStream(results []NextUnstructuredResult) stream.Unstruct
 	}
 }
 
-func (m *MockUnstructuredStream) Next(ctx context.Context) (*unstructured.Unstructured, error) {
+func (m *MockUnstructuredStream) Next(_ context.Context) (*unstructured.Unstructured, error) {
 	if m.idx == len(m.results) {
 		return nil, io.EOF
 	}
 	result := m.results[m.idx]
-	m.idx += 1
+	m.idx++
 	return result.Unstructured, result.Err
 }
 
@@ -165,7 +165,7 @@ func (m *MockAssetStream) Next() (*asset.Asset, error) {
 		return nil, io.EOF
 	}
 	result := m.results[m.idx]
-	m.idx += 1
+	m.idx++
 	return result.Asset, result.Err
 }
 
@@ -186,7 +186,7 @@ func yamlStreamToBytes(t *testing.T, stream *stream.YAMLStream) []byte {
 	return results
 }
 
-func yamlStreamToBytesIgnoreErrors(t *testing.T, stream *stream.YAMLStream) []byte {
+func yamlStreamToBytesIgnoreErrors(stream *stream.YAMLStream) []byte {
 	ctx := context.TODO()
 
 	results := make([]byte, 0)

@@ -75,7 +75,7 @@ func newMockGCPClient(t *testing.T) gcpclient.Client {
 	}
 }
 
-func (m *mockGCPClient) Get(ctx context.Context, u *unstructured.Unstructured) (*unstructured.Unstructured, error) {
+func (m *mockGCPClient) Get(_ context.Context, u *unstructured.Unstructured) (*unstructured.Unstructured, error) {
 	newUnstruct := unstructured.Unstructured{
 		Object: deepcopy.DeepCopy(u.Object).(map[string]interface{}),
 	}
@@ -87,16 +87,16 @@ func (m *mockGCPClient) Get(ctx context.Context, u *unstructured.Unstructured) (
 	return &newUnstruct, nil
 }
 
-func (m *mockGCPClient) Apply(u *unstructured.Unstructured) (*unstructured.Unstructured, error) {
+func (m *mockGCPClient) Apply(_ *unstructured.Unstructured) (*unstructured.Unstructured, error) {
 	m.t.Fatalf("unimplemented")
 	return nil, nil
 }
 
-func (m *mockGCPClient) Delete(u *unstructured.Unstructured) error {
+func (m *mockGCPClient) Delete(_ *unstructured.Unstructured) error {
 	m.t.Fatalf("unimplemented")
 	return nil
 }
 
-func (m *mockGCPClient) IsSupported(kind string) bool {
+func (m *mockGCPClient) IsSupported(_ string) bool {
 	return true
 }

@@ -39,7 +39,7 @@ type iamClient struct {
 	smLoader   *servicemappingloader.ServiceMappingLoader
 }
 
-func New(tfProvider *schema.Provider, smloader *servicemappingloader.ServiceMappingLoader) *iamClient {
+func New(tfProvider *schema.Provider, smloader *servicemappingloader.ServiceMappingLoader) *iamClient { //nolint:revive
 	return &iamClient{
 		smLoader:   smloader,
 		tfProvider: tfProvider,
@@ -114,7 +114,7 @@ type singleResourceClient struct {
 	Resource *unstructured.Unstructured
 }
 
-func (c *singleResourceClient) Get(ctx context.Context, key client.ObjectKey, obj client.Object, _ ...client.GetOption) error {
+func (c *singleResourceClient) Get(_ context.Context, key client.ObjectKey, obj client.Object, _ ...client.GetOption) error {
 	unstructObj, ok := obj.(*unstructured.Unstructured)
 	if !ok {
 		return fmt.Errorf("unexpected argument to single resource client, type is '%v' instead of '%v'",
@@ -184,6 +184,6 @@ func (c *singleResourceClient) SubResource(_ string) client.SubResourceClient {
 	panic("unexpected call to client.SubResource(...)")
 }
 
-func (e *singleResourceClient) SubResourceWriter(_ string) client.SubResourceClient {
+func (c *singleResourceClient) SubResourceWriter(_ string) client.SubResourceClient {
 	panic("unexpected call to client.SubResource(...)")
 }

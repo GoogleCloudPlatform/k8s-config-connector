@@ -16,12 +16,12 @@ package unmanageddetector
 
 import "sigs.k8s.io/controller-runtime/pkg/event"
 
-// UnmanagedDetectorPredicate is the predicate meant to be used by the
+// Predicate is the predicate meant to be used by the
 // unmanaged-detector controller. It sets up unmanaged-detector such that it
 // handles Create events only.
-type UnmanagedDetectorPredicate struct{}
+type Predicate struct{}
 
-func (UnmanagedDetectorPredicate) Create(_ event.CreateEvent) bool {
+func (Predicate) Create(_ event.CreateEvent) bool {
 	return true
 }
 
@@ -44,7 +44,7 @@ func (UnmanagedDetectorPredicate) Create(_ event.CreateEvent) bool {
 // (e.g. if KCC is changed from cluster-mode to namespaced-mode), this is no
 // problem as well since controllers reconcile all resources they are
 // configured to watch when they first come up.
-func (UnmanagedDetectorPredicate) Update(_ event.UpdateEvent) bool {
+func (Predicate) Update(_ event.UpdateEvent) bool {
 	return false
 }
 
@@ -54,10 +54,10 @@ func (UnmanagedDetectorPredicate) Update(_ event.UpdateEvent) bool {
 // is, user-requested deletions are handled via Update events, and as explained
 // above, there is no scenario where unmanaged-detector would need to handle
 // Update events.
-func (UnmanagedDetectorPredicate) Delete(_ event.DeleteEvent) bool {
+func (Predicate) Delete(_ event.DeleteEvent) bool {
 	return false
 }
 
-func (UnmanagedDetectorPredicate) Generic(_ event.GenericEvent) bool {
+func (Predicate) Generic(_ event.GenericEvent) bool {
 	return false
 }

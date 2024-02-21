@@ -512,7 +512,7 @@ func testGetSetDeleteIamPolicyMember(ctx context.Context, t *testing.T, iamClien
 		t.Fatalf("expected an error when retrieving IAMPolicyMember, instead got 'nil'")
 	}
 	if !isNotFoundError(err) {
-		t.Fatalf("unexpected error when retrieving IAMPolicyMember: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+		t.Fatalf("unexpected error when retrieving IAMPolicyMember: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	gcpPolicyMember, err := iamClient.SetPolicyMember(ctx, policyMember)
 	if err != nil {
@@ -546,7 +546,7 @@ func testGetSetDeleteIamPolicyMember(ctx context.Context, t *testing.T, iamClien
 		t.Fatalf("expected an error when retrieving IAMPolicyMember, instead got 'nil'")
 	}
 	if !isNotFoundError(err) {
-		t.Fatalf("unexpected error when retrieving IAMPolicyMember: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+		t.Fatalf("unexpected error when retrieving IAMPolicyMember: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 }
 
@@ -628,8 +628,8 @@ func testGetSetDeleteIamAuditConfig(ctx context.Context, t *testing.T, iamClient
 	if err == nil {
 		t.Fatalf("expected an error when retrieving IAMAuditConfig, instead got 'nil'")
 	}
-	if !errors.Is(err, kcciamclient.NotFoundError) {
-		t.Fatalf("unexpected error when retrieving IAMAuditConfig: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+	if !errors.Is(err, kcciamclient.ErrNotFound) {
+		t.Fatalf("unexpected error when retrieving IAMAuditConfig: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	gcpAuditConfig, err := iamClient.SetAuditConfig(ctx, auditConfig)
 	if err != nil {
@@ -658,8 +658,8 @@ func testGetSetDeleteIamAuditConfig(ctx context.Context, t *testing.T, iamClient
 	if err == nil {
 		t.Fatalf("expected an error when retrieving IAMAuditConfig, instead got 'nil'")
 	}
-	if !errors.Is(err, kcciamclient.NotFoundError) {
-		t.Fatalf("unexpected error when retrieving IAMAuditConfig: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+	if !errors.Is(err, kcciamclient.ErrNotFound) {
+		t.Fatalf("unexpected error when retrieving IAMAuditConfig: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 }
 
@@ -881,7 +881,7 @@ func getCurrentFuncName() string {
 // LiveState is empty. DCL-based resource Member gets from the API and
 // returns a 404 if the Member does not exist.
 func isNotFoundError(err error) bool {
-	return errors.Is(err, kcciamclient.NotFoundError) || dcl.IsNotFound(errors.Unwrap(err))
+	return errors.Is(err, kcciamclient.ErrNotFound) || dcl.IsNotFound(errors.Unwrap(err))
 }
 
 func TestMain(m *testing.M) {

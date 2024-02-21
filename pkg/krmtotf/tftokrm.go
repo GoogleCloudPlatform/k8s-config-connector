@@ -648,12 +648,12 @@ func convertTFReferenceToKCCReference(tfField, specKey string, state map[string]
 				return map[string]interface{}{
 					defaultType.Key: stateVal,
 				}
-			} else {
-				return map[string]interface{}{
-					defaultType.Key: corekccv1alpha1.ResourceReference{
-						External: stateVal,
-					},
-				}
+			}
+
+			return map[string]interface{}{
+				defaultType.Key: corekccv1alpha1.ResourceReference{
+					External: stateVal,
+				},
 			}
 		}
 		return corekccv1alpha1.ResourceReference{

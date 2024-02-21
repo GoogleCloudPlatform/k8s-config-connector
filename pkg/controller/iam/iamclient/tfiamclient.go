@@ -102,7 +102,7 @@ func (t *TFIAMClient) GetPolicyMember(ctx context.Context, policyMember *v1beta1
 		return nil, fmt.Errorf("error fetching live state for resource: %w", err)
 	}
 	if liveState.Empty() {
-		return nil, NotFoundError
+		return nil, ErrNotFound
 	}
 	return newIAMPolicyMemberFromTFState(resource, liveState, policyMember)
 }
@@ -124,7 +124,7 @@ func (t *TFIAMClient) DeletePolicyMember(ctx context.Context, policyMember *v1be
 		return fmt.Errorf("error fetching live state for resource: %w", err)
 	}
 	if liveState.Empty() {
-		return NotFoundError
+		return ErrNotFound
 	}
 	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, t.provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
@@ -194,7 +194,7 @@ func (t *TFIAMClient) GetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) 
 		return nil, fmt.Errorf("error fetching live state for resource: %w", err)
 	}
 	if liveState.Empty() {
-		return nil, NotFoundError
+		return nil, ErrNotFound
 	}
 	return newIAMPolicyFromTFState(resource, liveState, policy)
 }
@@ -219,7 +219,7 @@ func (t *TFIAMClient) DeletePolicy(ctx context.Context, policy *v1beta1.IAMPolic
 		return fmt.Errorf("error fetching live state for resource: %w", err)
 	}
 	if liveState.Empty() {
-		return NotFoundError
+		return ErrNotFound
 	}
 	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, t.provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
@@ -283,7 +283,7 @@ func (t *TFIAMClient) GetAuditConfig(ctx context.Context, auditConfig *v1beta1.I
 		return nil, fmt.Errorf("error fetching live state for resource: %w", err)
 	}
 	if liveState.Empty() {
-		return nil, NotFoundError
+		return nil, ErrNotFound
 	}
 	return newIAMAuditConfigFromTFState(resource, liveState, auditConfig)
 }
@@ -305,7 +305,7 @@ func (t *TFIAMClient) DeleteAuditConfig(ctx context.Context, auditConfig *v1beta
 		return fmt.Errorf("error fetching live state for resource: %w", err)
 	}
 	if liveState.Empty() {
-		return NotFoundError
+		return ErrNotFound
 	}
 	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, t.provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
@@ -574,13 +574,13 @@ func (t *TFIAMClient) getResource(ctx context.Context, gvk schema.GroupVersionKi
 func (t *TFIAMClient) getResourceForHeadlessKind(ctx context.Context, gvk schema.GroupVersionKind, nn types.NamespacedName) (*krmtotf.Resource, error) {
 	switch gvk.Kind {
 	case ProjectKind:
-		return t.getProjectResource(ctx, gvk, nn)
+		return t.getProjectResource(ctx, nn)
 	default:
 		return nil, fmt.Errorf("unrecognized IAM kind '%v'", gvk.Kind)
 	}
 }
 
-func (t *TFIAMClient) getProjectResource(ctx context.Context, gvk schema.GroupVersionKind, nn types.NamespacedName) (*krmtotf.Resource, error) {
+func (t *TFIAMClient) getProjectResource(ctx context.Context, nn types.NamespacedName) (*krmtotf.Resource, error) {
 	projectID, err := k8s.GetProjectIDForNamespace(ctx, t.kubeClient, nn.Namespace)
 	if err != nil {
 		return nil, fmt.Errorf("error getting project ID for namespace: %w", err)
@@ -653,7 +653,7 @@ func (t *TFIAMClient) newIAMObjectFromInterface(iamInterface interface{}) metav1
 	panic(fmt.Errorf("unknown type: %v", reflect.TypeOf(iamInterface).Name()))
 }
 
-func (t *TFIAMClient) newServiceMappingForAssociatedIAMInterface(ctx context.Context, iamInterface interface{}, iamConfig corekccv1alpha1.IAMConfig) (*corekccv1alpha1.ServiceMapping, error) {
+func (t *TFIAMClient) newServiceMappingForAssociatedIAMInterface(_ context.Context, iamInterface interface{}, iamConfig corekccv1alpha1.IAMConfig) (*corekccv1alpha1.ServiceMapping, error) {
 	switch iamInterface.(type) {
 	case *v1beta1.IAMPolicy:
 		return newServiceMappingForGVKAndTFResourceName(v1beta1.IAMPolicyGVK, iamConfig.PolicyName), nil

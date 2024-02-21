@@ -257,7 +257,7 @@ func TestAll(t *testing.T) {
 
 			ctx := context.TODO()
 
-			h := NewHarnessWithManager(t, ctx, mgr)
+			h := NewHarnessWithManager(ctx, t, mgr)
 			SetupNamespacesAndApplyDefaults(h, s.Resources, project)
 
 			networkCount := int64(networksInSampleCount(s))

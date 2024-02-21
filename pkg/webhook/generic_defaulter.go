@@ -37,6 +37,6 @@ func NewGenericDefaulter() HandlerFunc {
 	}
 }
 
-func (a *genericDefaulter) Handle(ctx context.Context, req admission.Request) admission.Response {
+func (a *genericDefaulter) Handle(ctx context.Context, req admission.Request) admission.Response { //nolint:revive
 	return admission.ValidationResponse(true, "no-op: this webhook is deprecated")
 }

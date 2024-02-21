@@ -197,7 +197,7 @@ func WithFieldsPresetForRead(imported map[string]interface{}, r *Resource, kubeC
 	// define variables for all the arguments to improve readability.
 	mustResolveSensitiveFields := !k8s.IsDeleted(&r.ObjectMeta)
 	importedAsInstanceState := MapToInstanceState(r.TFResource, imported)
-	var jsonSchema *apiextensions.JSONSchemaProps = nil
+	var jsonSchema *apiextensions.JSONSchemaProps
 	config, secretVersions, err = KRMResourceToTFResourceConfigFull(
 		r, kubeClient, smLoader, importedAsInstanceState, jsonSchema, mustResolveSensitiveFields, label.GetDefaultLabels(),
 	)
