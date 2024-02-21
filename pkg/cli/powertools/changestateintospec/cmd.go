@@ -35,7 +35,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/structured-merge-diff/fieldpath"
-	"sigs.k8s.io/yaml"
 )
 
 // Options configures the behaviour of the ChangeStateIntoSpec operation.
@@ -201,17 +200,13 @@ func Run(ctx context.Context, out io.Writer, options Options) error {
 		return fmt.Errorf("getting object %v: %w", key, err)
 	}
 
-	y, err := yaml.Marshal(u)
-	if err != nil {
-		return fmt.Errorf("converting object to yaml: %w", err)
-	}
+	// y, err := yaml.Marshal(u)
+	// if err != nil {
+	// 	return fmt.Errorf("converting object to yaml: %w", err)
+	// }
+	//fmt.Fprintf(out, "%s\n", string(y))
 
-	fmt.Fprintf(out, "%s\n", string(y))
-
-	if options.DryRun {
-		fmt.Fprintf(out, "dry-run mode, not making changes\n")
-		return nil
-	}
+	oldObject := u.DeepCopy()
 
 	annotations := u.GetAnnotations()
 	if annotations == nil {
@@ -220,7 +215,7 @@ func Run(ctx context.Context, out io.Writer, options Options) error {
 	annotations["cnrm.cloud.google.com/state-into-spec"] = options.NewStateIntoSpecAnnotation
 	u.SetAnnotations(annotations)
 
-	diff, err := diffs.BuildObjectDiff(oldObject, u)
+	diff, err := diffs.BuildObjectDiff(originalObject, u)
 	if err != nil {
 		return fmt.Errorf("building object diff: %w", err)
 	}
