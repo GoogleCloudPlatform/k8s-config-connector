@@ -1182,3 +1182,5 @@
 - resourceConfigId: EdgeContainerNodePool
 # not supported by asset inventory
 - resourceConfigId: EdgeContainerVpnConnection
+# resource google_vertex_ai_dataset doesn't support import
+- resourceConfigId: VertexAIDataset
