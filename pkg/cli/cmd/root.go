@@ -23,6 +23,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/parameters"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/log"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 
 	tfversion "github.com/hashicorp/terraform-provider-google-beta/version"
@@ -57,6 +58,9 @@ func init() {
 	rootCmd.AddCommand(printResourcesCmd)
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(applyCmd)
+
+	powertools.AddCommands(rootCmd)
+
 	rootCmd.SilenceErrors = true
 }
 
