@@ -34,7 +34,7 @@ linters:
     # - goimports
     # - gosec
     # - gosimple
-    # - govet
+    - govet
     # - importas
     # - ineffassign
     # - misspell
