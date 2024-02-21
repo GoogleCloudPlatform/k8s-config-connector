@@ -525,3 +525,7 @@ toc:
   section:
   - title: "VPCAccessConnector"
     path: /config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md
+- title: "Vertex AI"
+  section:
+  - title: "VertexAIDataset"
+    path: /config-connector/docs/reference/resource-docs/vertexai/vertexaidataset.md
