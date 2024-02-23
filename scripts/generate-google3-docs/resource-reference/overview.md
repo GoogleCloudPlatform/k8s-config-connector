@@ -38,12 +38,12 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanageraccesspolicy.md">AccessContextManagerAccessPolicy</a></td>
 </tr>
 <tr>
-  <td><a href="/anthos/clusters/docs/multi-cloud/attached">{{anthos_attached_clusters_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/containerattached/containerattachedcluster.md">ContainerAttachedCluster</a></td>
+  <td><a href="/vpc-service-controls/docs/">{{acm_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanagerserviceperimeter.md">AccessContextManagerServicePerimeter</a></td>
 </tr>
 <tr>
   <td><a href="/vpc-service-controls/docs/">{{acm_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanagerserviceperimeter.md">AccessContextManagerServicePerimeter</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanagerserviceperimeterresource.md">AccessContextManagerServicePerimeterResource</a></td>
 </tr>
 <tr>
   <td><a href="/alloydb/docs/">{{alloydb_name}}</a></td>
@@ -465,6 +465,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/firestore/docs/">{{firestore_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/firestore/firestoreindex.md">FirestoreIndex</a></td>
+</tr>
+<tr>
+  <td><a href="/anthos/clusters/docs/multi-cloud/attached">{{anthos_attached_clusters_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/containerattached/containerattachedcluster.md">ContainerAttachedCluster</a></td>
 </tr>
 <tr>
   <td><a class="external" href="https://gkehub.googleapis.com/$discovery/rest?version=v1beta1">GKE Hub</a></td>

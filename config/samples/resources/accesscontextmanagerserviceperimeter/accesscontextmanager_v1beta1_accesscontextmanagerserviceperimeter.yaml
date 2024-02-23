@@ -19,7 +19,7 @@ spec:
   # Config for DRY-RUN
   # To use this 'useExplicitDryRunSpec' must be set to 'true'
   # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy
-  # Replace "${PROJECT_NUMBERx}" with the appropriate `project number` for the project to be protected by the perimeter
+  # Replace "${PROJECT_NUMBER}" with the appropriate `project number` for the project to be protected by the perimeter
   spec:
     # List of Access Levels to be applied for this perimeter
     accessLevels:

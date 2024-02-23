@@ -65,11 +65,5 @@ var (
 		Kind:    reflect.TypeOf(AccessContextManagerGCPUserAccessBinding{}).Name(),
 	}
 
-	AccessContextManagerServicePerimeterResourceGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(AccessContextManagerServicePerimeterResource{}).Name(),
-	}
-
 	accesscontextmanagerAPIVersion = SchemeGroupVersion.String()
 )

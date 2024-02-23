@@ -112,9 +112,10 @@ var testDisabledList = map[string]bool{
 	// resources, so we shouldn't modify our existing one.
 	"accesscontextmanageraccesspolicy": true,
 	"accesscontextmanageraccesslevel":  true,
-	// Behaviour of Service Perimeter is similar to access level and service policy.
-	// So disabling testing for Service Perimeter
-	"accesscontextmanagerserviceperimeter": true,
+	// Behaviour of Service Perimeter(Resource) is similar to access level and service policy.
+	// So disabling testing for Service Perimeter(Resource)
+	"accesscontextmanagerserviceperimeter":         true,
+	"accesscontextmanagerserviceperimeterresource": true,
 	// Cloud Build Triggers for GitHub repos require the user to connect their
 	// GCP project to their GitHub repo first to work.
 	"build-trigger-for-github-repo": true,

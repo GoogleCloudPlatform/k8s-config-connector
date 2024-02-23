@@ -17,8 +17,6 @@ kind: Project
 metadata:
   annotations:
     cnrm.cloud.google.com/deletion-policy: "abandon"
-  labels:
-    label-one: "value-one"
   name: project-${uniqueId}
 spec:
   resourceID: ${TEST_DEPENDENT_FOLDER_PROJECT_ID}
