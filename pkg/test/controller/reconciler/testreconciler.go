@@ -22,6 +22,8 @@ import (
 	"testing"
 	"time"
 
+	//operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	//operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	partialpolicy "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
@@ -89,6 +91,10 @@ func NewForDCLAndTFTestReconciler(t *testing.T, mgr manager.Manager, provider *t
 	}
 	serviceMetaLoader := metadata.New()
 	dclConverter := conversion.New(dclSchemaLoader, serviceMetaLoader)
+	//scheme := mgr.GetScheme()
+	//log.Printf("maqiuyu...before...\n%+v\n", scheme)
+	//operatorv1beta1.AddToScheme(scheme)
+	//log.Printf("maqiuyu...updated...\n%+v\n", mgr.GetScheme())
 	return &TestReconciler{
 		mgr:          mgr,
 		t:            t,
@@ -184,10 +190,22 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 	// nature.
 	var immediateReconcileRequests chan event.GenericEvent = nil //nolint:revive
 	var resourceWatcherRoutines *semaphore.Weighted = nil        //nolint:revive
-	stateIntoSpecDefaulter, err := k8s.NewStateIntoSpecDefaulter(k8s.StateIntoSpecDefaultValueV1Beta1, nil)
-	if err != nil {
-		r.t.Fatalf("error constructing new state into spec value: %v", err)
-	}
+
+	//kubeClient := r.mgr.GetClient()
+	//ccc := operatorv1beta1.ConfigConnectorContext{
+	//	ObjectMeta: metav1.ObjectMeta{
+	//		Name:      operatork8s.ConfigConnectorContextAllowedName,
+	//		Namespace: "foo-ns",
+	//	},
+	//	Spec: operatorv1beta1.ConfigConnectorContextSpec{
+	//		StateIntoSpec:
+	//	},
+	//}
+	//if err := kubeClient.Create(ctx, ccc); err != nil {
+	//	t.Fatalf("couldn't create google service account %v: %v", sa.GetName(), err)
+	//}
+
+	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(r.mgr.GetClient())
 	defaulters := []k8s.Defaulter{stateIntoSpecDefaulter}
 
 	switch kind {

@@ -130,10 +130,7 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 		return nil, fmt.Errorf("error creating a DCL client config: %w", err)
 	}
 
-	stateIntoSpecDefaulter, err := k8s.NewStateIntoSpecDefaulter(config.StateIntoSpecDefaultValue, config.StateIntoSpecUserOverride)
-	if err != nil {
-		return nil, fmt.Errorf("error constructing new state into spec value: %w", err)
-	}
+	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(mgr.GetClient())
 	controllerConfig := &controller.Config{
 		UserProjectOverride: config.UserProjectOverride,
 		BillingProject:      config.BillingProject,
