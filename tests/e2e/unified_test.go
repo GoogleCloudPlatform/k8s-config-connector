@@ -168,17 +168,46 @@ func TestAllInSeries(t *testing.T) {
 					events := h.Events
 
 					operationIDs := map[string]bool{}
+					pathIDs := map[string]string{}
+
+					// Find "easy" operations and resources by looking for fully-qualified methods
+					for _, event := range events.HTTPEvents {
+						u := event.Request.URL
+						if index := strings.Index(u, "?"); index != -1 {
+							u = u[:index]
+						}
+						tokens := strings.Split(u, "/")
+						n := len(tokens)
+						if n >= 2 {
+							kind := tokens[n-2]
+							id := tokens[n-1]
+							switch kind {
+							case "tensorboards":
+								pathIDs[id] = "${tensorboardID}"
+							case "operations":
+								operationIDs[id] = true
+								pathIDs[id] = "${operationID}"
+							}
+						}
+					}
+
 					for _, event := range events.HTTPEvents {
 						id := ""
 						body := event.Response.ParseBody()
 						val, ok := body["name"]
 						if ok {
-							// operation name format: operations/operation-{operationId}
-							if strings.HasPrefix(val.(string), "operations/") {
-								id = strings.TrimPrefix(val.(string), "operations/")
-								// operation name format: operation-{operationId}
-							} else if strings.HasPrefix(val.(string), "operation") {
-								id = val.(string)
+							s := val.(string)
+							// operation name format: operations/{operationId}
+							if strings.HasPrefix(s, "operations/") {
+								id = strings.TrimPrefix(s, "operations/")
+							}
+							// operation name format: {prefix}/operations/{operationId}
+							if ix := strings.Index(s, "/operations/"); ix != -1 {
+								id = strings.TrimPrefix(s[ix:], "/operations/")
+							}
+							// operation name format: operation-{operationId}
+							if strings.HasPrefix(s, "operation") {
+								id = s
 							}
 						}
 						if id != "" {
@@ -186,17 +215,6 @@ func TestAllInSeries(t *testing.T) {
 						}
 					}
 
-					for _, event := range events.HTTPEvents {
-						url := event.Request.URL
-						for id := range operationIDs {
-							if strings.Contains(url, "/operations/"+id) {
-								url = strings.ReplaceAll(url, "/operations/"+id, "/operations/${operationID}")
-							}
-						}
-						event.Request.URL = url
-					}
-
-					pathIDs := map[string]string{}
 					for _, event := range events.HTTPEvents {
 						if !strings.Contains(event.Request.URL, "/operations/${operationID}") {
 							continue
@@ -207,7 +225,7 @@ func TestAllInSeries(t *testing.T) {
 						}
 						name, _, _ := unstructured.NestedString(responseBody, "response", "name")
 						if strings.HasPrefix(name, "tagKeys/") {
-							pathIDs[name] = "tagKeys/${tagKeyId}"
+							pathIDs[name] = "tagKeys/${tagKeyID}"
 						}
 					}
 
@@ -220,14 +238,6 @@ func TestAllInSeries(t *testing.T) {
 						event.Request.URL = url
 					}
 
-					// TODO: Fix how we poll / wait for objects being ready.
-					events.RemoveRequests(func(e *test.LogEntry) bool {
-						if e.Response.StatusCode == 404 && e.Request.Method == "GET" {
-							return true
-						}
-						return false
-					})
-
 					// Remove operation polling requests (ones where the operation is not ready)
 					events.RemoveRequests(func(e *test.LogEntry) bool {
 						if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
@@ -237,8 +247,11 @@ func TestAllInSeries(t *testing.T) {
 						if responseBody == nil {
 							return false
 						}
-						done, _, _ := unstructured.NestedBool(responseBody, "done")
-						return !done // remove if not done
+						if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
+							return false
+						}
+						// remove if not done - and done can be omitted when false
+						return true
 					})
 
 					jsonMutators := []test.JSONMutator{}
@@ -265,8 +278,34 @@ func TestAllInSeries(t *testing.T) {
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
+
 					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+
+					// Specific to vertexai
+					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+					addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+
+					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
+					//
+					//     "response": {
+					// 	-    "@type": "type.googleapis.com/google.protobuf.Empty"
+					// 	+    "@type": "type.googleapis.com/google.protobuf.Empty",
+					// 	+    "value": {}
+					// 	   }
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						response := obj["response"]
+						if responseMap, ok := response.(map[string]any); ok {
+							if responseMap["@type"] == "type.googleapis.com/google.protobuf.Empty" {
+								value := responseMap["value"]
+								if valueMap, ok := value.(map[string]any); ok && len(valueMap) == 0 {
+									delete(responseMap, "value")
+								}
+							}
+						}
+					})
 
 					events.PrettifyJSON(jsonMutators...)
 
@@ -285,7 +324,7 @@ func TestAllInSeries(t *testing.T) {
 						normalizers = append(normalizers, h.ReplaceString(k, v))
 					}
 					for k := range operationIDs {
-						normalizers = append(normalizers, h.ReplaceString(k, "${operationId}"))
+						normalizers = append(normalizers, h.ReplaceString(k, "${operationID}"))
 					}
 					h.CompareGoldenFile(expectedPath, got, normalizers...)
 				}

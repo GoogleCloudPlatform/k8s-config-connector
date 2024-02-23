@@ -104,7 +104,7 @@ func (s *TagKeys) CreateTagKey(ctx context.Context, req *pb.CreateTagKeyRequest)
 	}
 
 	metadata := &pb.CreateTagKeyMetadata{}
-	return s.operations.StartLRO(ctx, metadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
 		return obj, nil
 	})
 }
@@ -149,7 +149,7 @@ func (s *TagKeys) UpdateTagKey(ctx context.Context, req *pb.UpdateTagKeyRequest)
 	}
 
 	metadata := &pb.UpdateTagKeyMetadata{}
-	return s.operations.StartLRO(ctx, metadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
 		return obj, nil
 	})
 }
@@ -170,7 +170,7 @@ func (s *TagKeys) DeleteTagKey(ctx context.Context, req *pb.DeleteTagKeyRequest)
 	// We should verify that this is part of on of our projects, but ... it's a mock
 
 	metadata := &pb.DeleteTagKeyMetadata{}
-	return s.operations.StartLRO(ctx, metadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
 		return deleted, nil
 	})
 }

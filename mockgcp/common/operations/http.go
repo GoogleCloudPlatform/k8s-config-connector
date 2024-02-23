@@ -27,15 +27,18 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func (s *Operations) RegisterOperationsHandler(prefix string) func(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+func (s *Operations) RegisterOperationsPath(path string) func(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
 	return func(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
 		forwardResponseOptions := mux.GetForwardResponseOptions()
 
-		// GET /{prefix}/operations/{name}
-		if err := mux.HandlePath("GET", "/"+prefix+"/operations/{name}", func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+		if err := mux.HandlePath("GET", path, func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
 			ctx := r.Context()
 			name := pathParams["name"]
+			prefix := pathParams["prefix"]
 			req := &longrunningpb.GetOperationRequest{Name: "operations/" + name}
+			if prefix != "" {
+				req.Name = prefix + "/operations/" + name
+			}
 			op, err := s.GetOperation(ctx, req)
 			if err != nil {
 				if status.Code(err) == codes.NotFound {
