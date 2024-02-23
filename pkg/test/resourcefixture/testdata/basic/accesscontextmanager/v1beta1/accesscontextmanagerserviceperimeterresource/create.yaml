@@ -21,4 +21,7 @@ spec:
     #TODO: support recursive reference https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/1309
     external: "accessPolicies/578359180191/servicePerimeters/restrict_all_test"
   resourceRef:
+    # Referencing a resource name leads to recursive reference and KCC does not support the feature for now.
+    # Please use external reference instead.
+    external: "accessPolicies/578359180191/servicePerimeters/restrict_all_test"
     name: project-${uniqueId}

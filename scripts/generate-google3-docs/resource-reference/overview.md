@@ -379,6 +379,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/containeranalysis/containeranalysisnote.md">ContainerAnalysisNote</a></td>
 </tr>
 <tr>
+  <td><a href="/anthos/clusters/docs/multi-cloud/attached">{{anthos_attached_clusters_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/containerattached/containerattachedcluster.md">ContainerAttachedCluster</a></td>
+</tr>
+<tr>
   <td><a href="/dataflow/docs/">{{dataflow_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/dataflow/dataflowjob.md">DataflowJob</a></td>
 </tr>
