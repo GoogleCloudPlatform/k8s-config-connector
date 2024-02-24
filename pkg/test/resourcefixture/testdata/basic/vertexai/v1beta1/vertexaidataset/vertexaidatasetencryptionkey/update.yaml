@@ -16,6 +16,8 @@ apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
 kind: VertexAIDataset
 metadata:
   name: vertexaidataset-${uniqueId}
+  labels:
+    env: "test"
 spec:
   displayName: "an encrypted vertex AI dataset with labels"
   metadataSchemaUri: "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml"
@@ -25,5 +27,3 @@ spec:
   encryptionSpec:
     kmsKeyNameRef:
       name: kmscryptokey-${uniqueId}
-  labels:
-    env: "test"
