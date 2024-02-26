@@ -20,6 +20,8 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/corecc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
@@ -130,11 +132,22 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 	if err != nil {
 		return nil, fmt.Errorf("error constructing new state into spec value: %w", err)
 	}
+	lc := corecc.GetMainLiveConfig()
+
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
 	if err := registration.Add(mgr, provider, smLoader, dclConfig, dclConverter, registration.RegisterDefaultController, []k8s.Defaulter{stateIntoSpecDefaulter}); err != nil {
 		return nil, fmt.Errorf("error adding registration controller: %w", err)
 	}
+
+	// Now register the core CC/ CCC controllers
+	if err := corecc.Add(mgr, &v1beta1.ConfigConnector{}, v1beta1.ConfigConnectorGroupVersionKind, lc); err != nil {
+		return nil, fmt.Errorf("error adding CC controller: %w", err)
+	}
+	if err := corecc.Add(mgr, &v1beta1.ConfigConnectorContext{}, v1beta1.ConfigConnectorContextGroupVersionKind, lc); err != nil {
+		return nil, fmt.Errorf("error adding CCC controller: %w", err)
+	}
+
 	return mgr, nil
 }
 
