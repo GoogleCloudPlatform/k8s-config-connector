@@ -19,7 +19,7 @@ import (
 	"testing"
 	"time"
 
-	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/core/v1beta1"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
