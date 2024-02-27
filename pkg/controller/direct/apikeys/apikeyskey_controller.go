@@ -156,7 +156,7 @@ func (a *adapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	u := &krm.APIKeysKey{}
-	if err := keyMapping.Map(key, u); err != nil {
+	if err := keyMapping.Map(key, u, nil); err != nil {
 		return false, err
 	}
 	a.actual = u
@@ -188,7 +188,7 @@ func (a *adapter) buildCreateRequest(ctx context.Context) (*pb.CreateKeyRequest,
 	// You can configure only the `display_name`, `restrictions`, and
 	// `annotations` fields.
 	desired := &pb.Key{}
-	if err := keyMapping.Map(a.desired, desired); err != nil {
+	if err := keyMapping.MapSpec(a.desired, desired); err != nil {
 		return nil, err
 	}
 
@@ -243,7 +243,7 @@ func (a *adapter) Update(ctx context.Context) (*unstructured.Unstructured, error
 	}
 
 	key := &pb.Key{}
-	if err := keyMapping.Map(a.desired, key); err != nil {
+	if err := keyMapping.MapSpec(a.desired, key); err != nil {
 		return nil, err
 	}
 

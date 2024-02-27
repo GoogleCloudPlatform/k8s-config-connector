@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/monitoring"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/securesourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
@@ -203,6 +204,14 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 		default:
 			klog.Warningf("requested direct reconciler for %v, but it is not supported", gvk.GroupKind())
 		}
+	}
+
+	switch gvk.Kind {
+	case "SecureSourceManagerInstance":
+		if err := securesourcemanager.AddInstanceController(r.mgr, config); err != nil {
+			return nil, err
+		}
+		return schemaUpdater, nil
 	}
 
 	// Depending on which resource it is, we need to register a different controller.

@@ -20,7 +20,7 @@ type TypeMapping interface {
 	FromType() reflect.Type
 	ToType() reflect.Type
 
-	Map(in *point, out *point) error
+	Map(in *point, out *point, inFieldPrefix *fieldPath) error
 }
 
 type structTypeMapping struct {
@@ -52,8 +52,12 @@ type fieldMapping struct {
 	Transform func(in reflect.Value) (reflect.Value, error)
 }
 
-func (m *structTypeMapping) Map(in *point, out *point) error {
+func (m *structTypeMapping) Map(in *point, out *point, inFieldPrefix *fieldPath) error {
 	for _, mapping := range m.fields {
+		if !mapping.InPath.HasPrefix(inFieldPrefix) {
+			continue
+		}
+
 		inPoint := mapping.InPath.FindPoint(in)
 
 		srcVal := inPoint.GetValue()

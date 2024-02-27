@@ -24,6 +24,18 @@ type fieldPath struct {
 	fields []FieldID
 }
 
+func (f *fieldPath) HasPrefix(prefix *fieldPath) bool {
+	if len(f.fields) < len(prefix.fields) {
+		return false
+	}
+	for i, id := range prefix.fields {
+		if f.fields[i] != id {
+			return false
+		}
+	}
+	return true
+}
+
 func newFieldPath(fields ...FieldID) *fieldPath {
 	return &fieldPath{fields: fields}
 }

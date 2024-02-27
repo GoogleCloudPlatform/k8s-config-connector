@@ -69,7 +69,7 @@ func (m *structTypeMapping) Validate(checkMissing bool) []ValidationError {
 			klog.Infof("outType.Fields = %v", m.outType.Fields())
 
 			errors = append(errors, ValidationError{
-				Message:  fmt.Sprintf("field %s not found in output type %v", mapping.OutPath, m.outType),
+				Message:  fmt.Sprintf("field %s defined in mapping %s => %s but not found in output type %v", mapping.OutPath, mapping.InPath, mapping.OutPath, m.outType),
 				Proposal: proposal,
 			})
 			continue
@@ -78,40 +78,78 @@ func (m *structTypeMapping) Validate(checkMissing bool) []ValidationError {
 	}
 
 	if checkMissing {
+		specField := m.outType.lookupField(ParseFieldPath("spec"))
+		if specField != nil {
+			specType := specField.Type()
 
-		if m.hasSpecStatus {
-			specField := m.inType.lookupField(ParseFieldPath("spec"))
-			statusField := m.inType.lookupField(ParseFieldPath("status"))
-			if specField != nil && statusField != nil {
-				specType := specField.Type()
-				statusType := statusField.Type()
+			missing := make(map[FieldID]Field)
+			for _, cloudField := range specType.Fields() {
+				cloudField := cloudField
 
-				for _, cloudField := range m.outType.Fields() {
-					id := cloudField.ID()
+				id := cloudField.ID()
+				missing[id] = cloudField
+			}
 
-					ignore := false
-					for _, ignoreField := range m.ignore {
-						if ignoreField.ID == id {
-							ignore = true
-						}
-					}
-					if ignore {
-						continue
-					}
-					specField := specType.lookupField(newFieldPath(id))
-					statusField := statusType.lookupField(newFieldPath(id))
-
-					if specField == nil && statusField == nil {
-						proposal := buildGoField(cloudField)
-
-						errors = append(errors, ValidationError{
-							Message:  fmt.Sprintf("field %s not found in KRM spec nor status %v", id, m.inType),
-							Proposal: proposal,
-						})
-						continue
-					}
+			for _, mapping := range m.fields {
+				outPath := mapping.OutPath
+				if len(outPath.fields) == 2 && outPath.fields[0] == "spec" {
+					delete(missing, outPath.fields[1])
 				}
 			}
+
+			for _, ignore := range m.ignore {
+				delete(missing, ignore.ID)
+			}
+
+			for name, field := range missing {
+				proposal := buildGoField(field)
+
+				klog.Infof("outType.Fields = %v", m.outType.Fields())
+
+				errors = append(errors, ValidationError{
+					Message:  fmt.Sprintf("field %s not found in output type %v", name, m.outType),
+					Proposal: proposal,
+				})
+				continue
+			}
+		}
+	}
+
+	if checkMissing {
+
+		if m.hasSpecStatus {
+			// specField := m.inType.lookupField(ParseFieldPath("spec"))
+			// statusField := m.inType.lookupField(ParseFieldPath("status"))
+			// if specField != nil && statusField != nil {
+			// 	specType := specField.Type()
+			// 	statusType := statusField.Type()
+
+			// 	for _, cloudField := range m.outType.Fields() {
+			// 		id := cloudField.ID()
+
+			// 		ignore := false
+			// 		for _, ignoreField := range m.ignore {
+			// 			if ignoreField.ID == id {
+			// 				ignore = true
+			// 			}
+			// 		}
+			// 		if ignore {
+			// 			continue
+			// 		}
+			// 		specField := specType.lookupField(newFieldPath(id))
+			// 		statusField := statusType.lookupField(newFieldPath(id))
+
+			// 		if specField == nil && statusField == nil {
+			// 			proposal := buildGoField(cloudField)
+
+			// 			errors = append(errors, ValidationError{
+			// 				Message:  fmt.Sprintf("field %s not found in KRM spec nor status %v", id, m.inType),
+			// 				Proposal: proposal,
+			// 			})
+			// 			continue
+			// 		}
+			// 	}
+			// }
 		} else {
 			// for _, outField := range m.outType.Fields() {
 			// 	id := outField.ID()

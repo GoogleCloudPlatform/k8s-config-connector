@@ -173,7 +173,7 @@ func (m *Mapping) convert(src reflect.Value, destType reflect.Type) (reflect.Val
 		} else {
 			destVal = reflect.New(destType)
 		}
-		if err := m.Map(srcVal.Interface(), destVal.Interface()); err != nil {
+		if err := m.Map(srcVal.Interface(), destVal.Interface(), nil); err != nil {
 			return reflect.Value{}, err
 		}
 		// Match pointer/non-pointer

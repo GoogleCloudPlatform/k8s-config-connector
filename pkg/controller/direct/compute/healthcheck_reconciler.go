@@ -214,7 +214,7 @@ func (a *globalHealthCheckAdapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	u := &krm.ComputeHealthCheck{}
-	if err := healthcheckMapping.Map(healthcheck, u); err != nil {
+	if err := healthcheckMapping.Map(healthcheck, u, nil); err != nil {
 		return false, err
 	}
 	a.actual = u
@@ -247,7 +247,7 @@ func (a *globalHealthCheckAdapter) Create(ctx context.Context, u *unstructured.U
 	// You can configure only the `display_name`, `restrictions`, and
 	// `annotations` fields.
 	desired := &pb.HealthCheck{}
-	if err := healthcheckMapping.Map(a.desired, desired); err != nil {
+	if err := healthcheckMapping.MapSpec(a.desired, desired); err != nil {
 		return err
 	}
 
@@ -271,7 +271,7 @@ func (a *globalHealthCheckAdapter) Create(ctx context.Context, u *unstructured.U
 func (a *globalHealthCheckAdapter) Update(ctx context.Context) (*unstructured.Unstructured, error) {
 
 	update := &pb.HealthCheck{}
-	if err := healthcheckMapping.Map(a.desired, update); err != nil {
+	if err := healthcheckMapping.MapSpec(a.desired, update); err != nil {
 		return nil, err
 	}
 
@@ -312,7 +312,7 @@ func (a *regionalHealthCheckAdapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	u := &krm.ComputeHealthCheck{}
-	if err := healthcheckMapping.Map(healthcheck, u); err != nil {
+	if err := healthcheckMapping.MapSpec(healthcheck, u); err != nil {
 		return false, err
 	}
 	a.actual = u
@@ -346,7 +346,7 @@ func (a *regionalHealthCheckAdapter) Create(ctx context.Context, u *unstructured
 	// You can configure only the `display_name`, `restrictions`, and
 	// `annotations` fields.
 	desired := &pb.HealthCheck{}
-	if err := healthcheckMapping.Map(a.desired, desired); err != nil {
+	if err := healthcheckMapping.MapSpec(a.desired, desired); err != nil {
 		return err
 	}
 
@@ -371,7 +371,7 @@ func (a *regionalHealthCheckAdapter) Create(ctx context.Context, u *unstructured
 func (a *regionalHealthCheckAdapter) Update(ctx context.Context) (*unstructured.Unstructured, error) {
 
 	update := &pb.HealthCheck{}
-	if err := healthcheckMapping.Map(a.desired, update); err != nil {
+	if err := healthcheckMapping.MapSpec(a.desired, update); err != nil {
 		return nil, err
 	}
 

@@ -30,7 +30,16 @@ type Mapping struct {
 	Mappings []TypeMapping
 }
 
-func (m *Mapping) Map(in any, out any) error {
+func (m *Mapping) MapSpec(in any, out any) error {
+	// inVal := &ReflectValue{reflect.ValueOf(in)}
+	// outVal := &ReflectValue{reflect.ValueOf(out)}
+
+	inFieldPrefix := ParseFieldPath("spec")
+
+	return m.Map(in, out, inFieldPrefix)
+}
+
+func (m *Mapping) Map(in any, out any, inFieldPrefix *fieldPath) error {
 	// inVal := &ReflectValue{reflect.ValueOf(in)}
 	// outVal := &ReflectValue{reflect.ValueOf(out)}
 
@@ -61,7 +70,7 @@ func (m *Mapping) Map(in any, out any) error {
 			continue
 		}
 
-		return typeMapping.Map(inPoint, outPoint)
+		return typeMapping.Map(inPoint, outPoint, inFieldPrefix)
 	}
 
 	// // Check for interfaces
@@ -122,14 +131,23 @@ func Spec(id string) FieldMapping {
 }
 
 type resourceRef struct {
-	ID     string
-	Mapper ResourceRefMapper
+	krmPath   string
+	cloudPath string
+	Mapper    ResourceRefMapper
 }
 
 type ResourceRefMapper = Mapper
 
 func ResourceRef(id string, mapper ResourceRefMapper) FieldMapping {
-	return &resourceRef{ID: id, Mapper: mapper}
+	return &resourceRef{krmPath: id + "Ref", cloudPath: id, Mapper: mapper}
+}
+
+func ResourceRefTODO(krmPath, cloudPath string, mapper ResourceRefMapper) FieldMapping {
+	return &resourceRef{krmPath: krmPath, cloudPath: cloudPath, Mapper: mapper}
+}
+
+func SpecResourceRef(id string, mapper ResourceRefMapper) FieldMapping {
+	return &resourceRef{krmPath: "spec." + id + "Ref", cloudPath: id, Mapper: mapper}
 }
 
 type transformedFieldMapping struct {
@@ -240,8 +258,8 @@ func (b *MappingBuilder) mapKRMToCloud(inType *reflectType, outType *reflectType
 
 		case *resourceRef:
 			createMapping.fields = append(createMapping.fields, &fieldMapping{
-				InPath:    ParseFieldPath(field.ID),
-				OutPath:   ParseFieldPath(field.ID),
+				InPath:    ParseFieldPath(field.krmPath),
+				OutPath:   ParseFieldPath(field.cloudPath),
 				Transform: field.Mapper.KRMToCloud,
 			})
 
@@ -301,8 +319,8 @@ func (b *MappingBuilder) mapCloudToKRM(inType *reflectType, outType *reflectType
 
 		case *resourceRef:
 			createMapping.fields = append(createMapping.fields, &fieldMapping{
-				InPath:    ParseFieldPath(field.ID),
-				OutPath:   ParseFieldPath(field.ID),
+				InPath:    ParseFieldPath(field.cloudPath),
+				OutPath:   ParseFieldPath(field.krmPath),
 				Transform: field.Mapper.CloudToKRM,
 			})
 

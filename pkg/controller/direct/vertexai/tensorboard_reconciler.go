@@ -170,7 +170,7 @@ func (a *tensorboardAdapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	u := &krm.VertexAITensorboard{}
-	if err := tensorboardMapping.Map(tensorboard, u); err != nil {
+	if err := tensorboardMapping.Map(tensorboard, u, nil); err != nil {
 		return false, err
 	}
 	a.actual = u
@@ -208,7 +208,7 @@ func (a *tensorboardAdapter) Create(ctx context.Context, u *unstructured.Unstruc
 	log := klog.FromContext(ctx)
 
 	desired := &pb.Tensorboard{}
-	if err := tensorboardMapping.Map(a.desired, desired); err != nil {
+	if err := tensorboardMapping.MapSpec(a.desired, desired); err != nil {
 		return err
 	}
 
@@ -261,7 +261,7 @@ func (a *tensorboardAdapter) Update(ctx context.Context) (*unstructured.Unstruct
 	log := klog.FromContext(ctx)
 
 	update := &pb.Tensorboard{}
-	if err := tensorboardMapping.Map(a.desired, update); err != nil {
+	if err := tensorboardMapping.MapSpec(a.desired, update); err != nil {
 		return nil, err
 	}
 

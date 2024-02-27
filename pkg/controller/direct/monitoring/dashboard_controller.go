@@ -77,7 +77,7 @@ var dashboardMapping = NewMapping(&pb.Dashboard{}, &krm.MonitoringDashboard{},
 		TODO("timeSeriesTable"), TODO("alertChart"), TODO("timeSeriesTable"), TODO("collapsibleGroup"), "logsPanel").
 	MapNested(&pb.LogsPanel{}, &krm.DashboardLogsPanel{},
 		"filter",
-		ResourceRef("resourceNames", &refMapProjects{})).
+		ResourceRefTODO("resourceNames", "resourceNames", &refMapProjects{})).
 	MapNested(&pb.XyChart{}, &krm.DashboardXyChart{},
 		"dataSets",
 		Transformed("timeshiftDuration", &durationTransform{}),
@@ -289,7 +289,7 @@ func (a *dashboardAdapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	u := &krm.MonitoringDashboard{}
-	if err := dashboardMapping.Map(gcpObject, u); err != nil {
+	if err := dashboardMapping.Map(gcpObject, u, nil); err != nil {
 		return false, err
 	}
 	a.actual = u
@@ -314,7 +314,7 @@ func (a *dashboardAdapter) Delete(ctx context.Context) (bool, error) {
 
 func (a *dashboardAdapter) Create(ctx context.Context, obj *unstructured.Unstructured) error {
 	desired := &pb.Dashboard{}
-	if err := dashboardMapping.Map(a.desired, desired); err != nil {
+	if err := dashboardMapping.MapSpec(a.desired, desired); err != nil {
 		return err
 	}
 
@@ -338,7 +338,7 @@ func (a *dashboardAdapter) Create(ctx context.Context, obj *unstructured.Unstruc
 
 func (a *dashboardAdapter) Update(ctx context.Context) (*unstructured.Unstructured, error) {
 	desired := &pb.Dashboard{}
-	if err := dashboardMapping.Map(a.desired, desired); err != nil {
+	if err := dashboardMapping.MapSpec(a.desired, desired); err != nil {
 		return nil, err
 	}
 
