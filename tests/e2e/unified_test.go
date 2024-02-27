@@ -19,7 +19,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	"hash/fnv"
 	"io"
 	"io/ioutil"
@@ -30,6 +29,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -37,6 +37,7 @@ import (
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
+	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 
 	"gopkg.in/dnaeon/go-vcr.v3/cassette"
@@ -57,6 +58,11 @@ func TestAllInSeries(t *testing.T) {
 		cancel()
 	})
 
+	subtestTimeout := time.Hour
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+		subtestTimeout = time.Minute
+	}
+
 	t.Run("samples", func(t *testing.T) {
 		samples := create.ListAllSamples(t)
 
@@ -65,6 +71,8 @@ func TestAllInSeries(t *testing.T) {
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(sampleKey.Name, func(t *testing.T) {
+				ctx := addTestTimeout(ctx, t, subtestTimeout)
+
 				// Quickly load the sample with a dummy project, just to see if we should skip it
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
@@ -111,6 +119,11 @@ func TestPauseInSeries(t *testing.T) {
 func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, cancel context.CancelFunc) {
 	t.Helper()
 
+	subtestTimeout := time.Hour
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+		subtestTimeout = time.Minute
+	}
+
 	if os.Getenv("RUN_E2E") == "" {
 		t.Skip("RUN_E2E not set; skipping")
 	}
@@ -125,6 +138,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(fixture.Name, func(t *testing.T) {
+				ctx := addTestTimeout(ctx, t, subtestTimeout)
+
 				uniqueID := testvariable.NewUniqueID()
 
 				loadFixture := func(project testgcp.GCPProject) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
@@ -602,4 +617,28 @@ func sortJSON(s string) (string, error) {
 		return "", err
 	}
 	return string(sortedJSON), nil
+}
+
+// addTestTimeout will ensure the test fails if not completed before timeout
+func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration) context.Context {
+	ctx, cancel := context.WithTimeout(ctx, timeout)
+
+	done := false
+	timedOut := false
+	t.Cleanup(func() {
+		done = true
+		if timedOut {
+			t.Fatalf("subtest timeout after %v", timeout)
+		}
+		cancel()
+	})
+
+	go func() {
+		<-ctx.Done()
+		if !done {
+			timedOut = true
+		}
+	}()
+
+	return ctx
 }
