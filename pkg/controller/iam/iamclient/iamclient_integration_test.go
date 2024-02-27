@@ -25,7 +25,9 @@ import (
 	"reflect"
 	"regexp"
 	"runtime"
+	"strings"
 	"testing"
+	"time"
 
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
@@ -538,7 +540,7 @@ func testGetSetDeleteIamPolicyMember(ctx context.Context, t *testing.T, iamClien
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if err := iamClient.DeletePolicyMember(ctx, gcpPolicyMember); err != nil {
+	if err := deletePolicyMemberWithRetries(ctx, t, iamClient, gcpPolicyMember); err != nil {
 		t.Fatalf("error deleting: %v", err)
 	}
 	_, err = iamClient.GetPolicyMember(ctx, policyMember)
@@ -547,6 +549,30 @@ func testGetSetDeleteIamPolicyMember(ctx context.Context, t *testing.T, iamClien
 	}
 	if !isNotFoundError(err) {
 		t.Fatalf("unexpected error when retrieving IAMPolicyMember: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
+	}
+}
+
+func deletePolicyMemberWithRetries(ctx context.Context, t *testing.T, iamClient *kcciamclient.IAMClient, policyMember *iamv1beta1.IAMPolicyMember) error {
+	attempt := 0
+	maxAttempts := 3
+	for {
+		attempt++
+		err := iamClient.DeletePolicyMember(ctx, policyMember)
+		if err == nil {
+			return err
+		}
+		msg := err.Error()
+		if strings.Contains(msg, "concurrent policy changes") {
+			if attempt >= maxAttempts {
+				t.Logf("found concurrent policy changes error, but max attempts reached: %v", err)
+				return err
+			}
+
+			t.Logf("found concurrent policy changes error, will retry: %v", err)
+			time.Sleep(1 * time.Second)
+			continue
+		}
+		return err
 	}
 }
 
