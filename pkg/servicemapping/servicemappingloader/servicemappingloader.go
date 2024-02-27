@@ -166,8 +166,11 @@ func GetResourceConfigsForTFType(sm *v1alpha1.ServiceMapping, tfType string) (*v
 
 func getLocationalityOfResource(u *unstructured.Unstructured) (string, error) {
 	location, found, err := unstructured.NestedString(u.Object, "spec", "location")
-	if err != nil || !found {
-		return "", fmt.Errorf("couldn't find location field: %w", err)
+	if err != nil {
+		return "", fmt.Errorf("error reading spec.location field in %v: %w", u.GroupVersionKind(), err)
+	}
+	if !found {
+		return "", fmt.Errorf("couldn't find spec.location field in %v", u.GroupVersionKind())
 	}
 
 	if location == gcp.Global {
