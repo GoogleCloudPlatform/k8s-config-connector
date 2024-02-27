@@ -36,6 +36,7 @@ spec:
       serverGeneratedIDField: name
       resourceID:
         targetField: name
+        valueTemplate: "projects/{{project}}/locations/{{region}}/datasets/{{value}}"
       hierarchicalReferences:
         - type: project
           key: projectRef
