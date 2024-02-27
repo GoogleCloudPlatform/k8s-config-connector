@@ -21,6 +21,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
@@ -46,6 +47,11 @@ func TestAllInSeries(t *testing.T) {
 		cancel()
 	})
 
+	subtestTimeout := time.Hour
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+		subtestTimeout = time.Minute
+	}
+
 	t.Run("samples", func(t *testing.T) {
 		samples := create.ListAllSamples(t)
 
@@ -54,6 +60,8 @@ func TestAllInSeries(t *testing.T) {
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(sampleKey.Name, func(t *testing.T) {
+				ctx := addTestTimeout(ctx, t, subtestTimeout)
+
 				// Quickly load the sample with a dummy project, just to see if we should skip it
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
@@ -88,6 +96,8 @@ func TestAllInSeries(t *testing.T) {
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(fixture.Name, func(t *testing.T) {
+				ctx := addTestTimeout(ctx, t, subtestTimeout)
+
 				uniqueID := testvariable.NewUniqueID()
 
 				loadFixture := func(project testgcp.GCPProject) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
@@ -341,4 +351,28 @@ func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project test
 	t.Helper()
 	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, project)
 	return test.ToUnstructWithNamespace(t, updatedBytes, testID)
+}
+
+// addTestTimeout will ensure the test fails if not completed before timeout
+func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration) context.Context {
+	ctx, cancel := context.WithTimeout(ctx, timeout)
+
+	done := false
+	timedOut := false
+	t.Cleanup(func() {
+		done = true
+		if timedOut {
+			t.Fatalf("subtest timeout after %v", timeout)
+		}
+		cancel()
+	})
+
+	go func() {
+		<-ctx.Done()
+		if !done {
+			timedOut = true
+		}
+	}()
+
+	return ctx
 }
