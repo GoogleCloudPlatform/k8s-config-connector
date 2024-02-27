@@ -15,11 +15,20 @@
 package nocache
 
 import (
+	opv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+
 	"k8s.io/client-go/rest"
+	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var NoCacheClientFunc = func(config *rest.Config, options client.Options) (client.Client, error) {
 	options.Cache = nil
 	return client.New(config, options)
+}
+
+// Fine grained cache controls for ConfigConnector and ConfigConnectorContext.
+var ByCCandCCC = map[client.Object]cache.ByObject{
+	&opv1beta1.ConfigConnector{}:        {},
+	&opv1beta1.ConfigConnectorContext{}: {},
 }
