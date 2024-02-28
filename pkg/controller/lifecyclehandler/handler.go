@@ -16,7 +16,6 @@ package lifecyclehandler
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -185,11 +184,11 @@ func CausedByUnresolvableDeps(err error) (unwrappedErr error, ok bool) { //nolin
 
 func reasonForUnresolvableDeps(err error) (string, error) {
 	switch {
-	case errors.Is(err, &k8s.ReferenceNotReadyError{}) || errors.Is(err, &k8s.TransitiveDependencyNotReadyError{}):
+	case k8s.IsReferenceNotReadyError(err) || k8s.IsTransitiveDependencyNotReadyError(err):
 		return k8s.DependencyNotReady, nil
-	case errors.Is(err, &k8s.ReferenceNotFoundError{}) || errors.Is(err, &k8s.SecretNotFoundError{}) || errors.Is(err, &k8s.TransitiveDependencyNotFoundError{}):
+	case k8s.IsReferenceNotFoundError(err) || k8s.IsSecretNotFoundError(err) || k8s.IsTransitiveDependencyNotFoundError(err):
 		return k8s.DependencyNotFound, nil
-	case errors.Is(err, &k8s.KeyInSecretNotFoundError{}):
+	case k8s.IsKeyInSecretNotFoundError(err):
 		return k8s.DependencyInvalid, nil
 	default:
 		return "", fmt.Errorf("unrecognized error caused by unresolvable dependencies: %w", err)
