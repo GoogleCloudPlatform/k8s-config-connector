@@ -23,7 +23,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 )
 
@@ -44,21 +44,20 @@ func NewStateIntoSpecDefaulter(client client.Client) Defaulter {
 }
 
 func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource client.Object) (changed bool, err error) {
+	var stateIntoSpecOverridePtr *string
 	cccNamespacedName := types.NamespacedName{
 		Namespace: resource.GetNamespace(),
 		Name:      operatork8s.ConfigConnectorContextAllowedName,
 	}
 	ccc, err := v.getConfigConnectorContext(ctx, cccNamespacedName)
 	if err != nil {
-		if apierrors.IsNotFound(err) {
-			return false, nil
+		if !apierrors.IsNotFound(err) {
+			return false, fmt.Errorf("error getting ConfigConnectorContext object %v/%v: %w", cccNamespacedName.Namespace, cccNamespacedName.Name, err)
 		}
-		return false, fmt.Errorf("error getting ConfigConnectorContext object %v/%v: %w", cccNamespacedName.Namespace, cccNamespacedName.Name, err)
+	} else {
+		stateIntoSpecOverridePtr = ccc.Spec.StateIntoSpec
 	}
-	if ccc.APIVersion != "v1beta1" {
-		return false, fmt.Errorf("cannot handle ConfigConnectorContext object %v/%v of version %v: only version v1beta1 is supported", cccNamespacedName.Namespace, cccNamespacedName.Name, ccc.APIVersion)
-	}
-	defaultValue, err := v.getDefaultValue(ccc.Spec.StateIntoSpec, StateIntoSpecDefaultValueV1Beta1)
+	defaultValue, err := v.getDefaultValue(stateIntoSpecOverridePtr, StateIntoSpecDefaultValueV1Beta1)
 	if err != nil {
 		return false, fmt.Errorf("error getting the default value: %w", err)
 	}
@@ -83,8 +82,8 @@ func (v *StateIntoSpecDefaulter) getDefaultValue(userOverride *string, systemDef
 	return *userOverride, nil
 }
 
-func (v *StateIntoSpecDefaulter) getConfigConnectorContext(ctx context.Context, nn types.NamespacedName) (*corev1beta1.ConfigConnectorContext, error) {
-	ccc := &corev1beta1.ConfigConnectorContext{}
+func (v *StateIntoSpecDefaulter) getConfigConnectorContext(ctx context.Context, nn types.NamespacedName) (*operatorv1beta1.ConfigConnectorContext, error) {
+	ccc := &operatorv1beta1.ConfigConnectorContext{}
 	if err := v.client.Get(ctx, nn, ccc); err != nil {
 		return nil, err
 	}

@@ -26,9 +26,6 @@ import (
 	"testing"
 	"time"
 
-	"k8s.io/apimachinery/pkg/runtime"
-
-	corev1v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -66,28 +63,6 @@ func StartTestManagerInstance(env *envtest.Environment, testType test.Type, whCf
 	return mgr, stopFunc
 }
 
-// Without the scheme, dynamic test returns `no kind is registered for the type
-// XXX in scheme` error.
-// Even with the scheme, dynamic test still returns `the server could not find
-// the requested resource` error.
-func buildSchemeForDependentCRDs() *runtime.Scheme {
-	scheme := runtime.NewScheme()
-
-	schemeFuncs := []func(*runtime.Scheme) error{
-		//clientgoscheme.AddToScheme,
-		//apiextensions.AddToScheme,
-		corev1v1beta1.AddToScheme,
-		//customizev1alpha1.AddToScheme,
-		//customizev1beta1.AddToScheme,
-	}
-	for _, schemeFunc := range schemeFuncs {
-		if err := schemeFunc(scheme); err != nil {
-			klog.Fatalf("failed to add to runtime scheme: %v", err)
-		}
-	}
-	return scheme
-}
-
 func startTestManager(env *envtest.Environment, testType test.Type, whCfgs []cnrmwebhook.Config) (manager.Manager, func(), error) {
 	mgr, err := manager.New(env.Config, manager.Options{
 		Port:    env.WebhookInstallOptions.LocalServingPort,
@@ -97,7 +72,6 @@ func startTestManager(env *envtest.Environment, testType test.Type, whCfgs []cnr
 		NewClient: nocache.NoCacheClientFunc,
 		// Disable metrics server for testing
 		MetricsBindAddress: "0",
-		Scheme:             buildSchemeForDependentCRDs(),
 	})
 	if err != nil {
 		return nil, nil, fmt.Errorf("error creating manager: %w", err)

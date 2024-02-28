@@ -91,10 +91,6 @@ func NewForDCLAndTFTestReconciler(t *testing.T, mgr manager.Manager, provider *t
 	}
 	serviceMetaLoader := metadata.New()
 	dclConverter := conversion.New(dclSchemaLoader, serviceMetaLoader)
-	//scheme := mgr.GetScheme()
-	//log.Printf("maqiuyu...before...\n%+v\n", scheme)
-	//operatorv1beta1.AddToScheme(scheme)
-	//log.Printf("maqiuyu...updated...\n%+v\n", mgr.GetScheme())
 	return &TestReconciler{
 		mgr:          mgr,
 		t:            t,
@@ -190,20 +186,6 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 	// nature.
 	var immediateReconcileRequests chan event.GenericEvent = nil //nolint:revive
 	var resourceWatcherRoutines *semaphore.Weighted = nil        //nolint:revive
-
-	//kubeClient := r.mgr.GetClient()
-	//ccc := operatorv1beta1.ConfigConnectorContext{
-	//	ObjectMeta: metav1.ObjectMeta{
-	//		Name:      operatork8s.ConfigConnectorContextAllowedName,
-	//		Namespace: "foo-ns",
-	//	},
-	//	Spec: operatorv1beta1.ConfigConnectorContextSpec{
-	//		StateIntoSpec:
-	//	},
-	//}
-	//if err := kubeClient.Create(ctx, ccc); err != nil {
-	//	t.Fatalf("couldn't create google service account %v: %v", sa.GetName(), err)
-	//}
 
 	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(r.mgr.GetClient())
 	defaulters := []k8s.Defaulter{stateIntoSpecDefaulter}

@@ -19,6 +19,8 @@ import (
 	"log"
 	"time"
 
+	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/paths"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
@@ -37,6 +39,9 @@ func init() {
 	}
 	if err := apis.AddToScheme(s); err != nil {
 		log.Fatalf("error registering schemes: %v", err)
+	}
+	if err := corev1beta1.SchemeBuilder.AddToScheme(scheme.Scheme); err != nil {
+		log.Fatalf("error registering operator v1beta1 schemes: %v", err)
 	}
 }
 
@@ -59,7 +64,7 @@ func startTestEnvironment(testType test.Type, crds []*apiextensions.CustomResour
 	case testType == test.UnitTestType:
 		env.CRDs = test.FakeCRDs()
 	case testType == test.IntegrationTestType:
-		env.CRDDirectoryPaths = []string{repo.GetCRDsPath()}
+		env.CRDDirectoryPaths = []string{repo.GetCRDsPath(), paths.GetOperatorCRDsPath()}
 	}
 	if testType == test.IntegrationTestType {
 		ConfigureWebhookInstallOptions(env, whCfgs)
