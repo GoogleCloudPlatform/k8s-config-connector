@@ -31,12 +31,10 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 type httpRoundTripperKeyType int
@@ -106,18 +104,10 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 	}
 
 	t.Logf("creating controller")
-	if err := operatorv1beta1.SchemeBuilder.AddToScheme(h.Scheme); err != nil {
-		t.Fatal(err)
-	}
 	mgr, err := ctrl.NewManager(h.RESTConfig(), ctrl.Options{
 		MetricsBindAddress: "0",
 		NewClient:          h.NewClient,
-		Scheme:             h.Scheme,
 	})
-	// Verified that the scheme is registered, but still get
-	// `no kind is registered for the type v1beta1.ConfigConnectorContext in scheme \"pkg/runtime/scheme.go:100\"`
-	// error. Something else is missing?
-	t.Logf("maqiuyu... known types for core %+v\n", mgr.GetScheme().KnownTypes(operatorv1beta1.GroupVersion))
 
 	if err != nil {
 		t.Fatalf("NewManager failed: %v", err)
