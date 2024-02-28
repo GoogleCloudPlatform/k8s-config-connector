@@ -127,7 +127,7 @@ func (s *SecretsV1) AddSecretVersion(ctx context.Context, req *pb.AddSecretVersi
 	if err := s.storage.Create(ctx, secretVersionObj.Name, secretVersionObj); err != nil {
 		// TODO: Delete secret data?
 		// TODO: Owner ref?
-		return nil, status.Errorf(codes.Internal, "error creating secret version: %v", err)
+		return nil, err
 	}
 	klog.Infof("created SecretManagerSecretVersion %v", secretVersionObj.Name)
 

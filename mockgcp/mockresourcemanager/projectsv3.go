@@ -27,7 +27,6 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v3"
@@ -46,7 +45,7 @@ func (s *ProjectsV3) GetProject(ctx context.Context, req *pb.GetProjectRequest) 
 
 	project, err := s.projectsInternal.tryGetProject(ctx, projectName)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "error reading project: %v", err)
+		return nil, err
 	}
 	if project == nil {
 		// This API actually returns a 403 in the project-not-found case, unlike other APIs
@@ -82,10 +81,7 @@ func (s *ProjectsV3) CreateProject(ctx context.Context, req *pb.CreateProjectReq
 	fqn := "projects/" + project.ProjectId
 
 	if err := s.storage.Create(ctx, fqn, project); err != nil {
-		if apierrors.IsAlreadyExists(err) {
-			return nil, status.Errorf(codes.AlreadyExists, "Requested entity already exists")
-		}
-		return nil, status.Errorf(codes.Internal, "error creating project: %v", err)
+		return nil, err
 	}
 
 	lro, err := s.operations.NewLRO(ctx)

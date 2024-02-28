@@ -68,7 +68,7 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 		}
 
 		if err := s.storage.Create(ctx, fqn, service); err != nil {
-			return nil, status.Errorf(codes.Internal, "error creating service: %v", err)
+			return nil, err
 		}
 
 		return s.operations.NewLRO(ctx)

@@ -60,7 +60,7 @@ func (s *CertificateManagerV1) CreateCertificate(ctx context.Context, req *pb.Cr
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating certificate: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -150,7 +150,7 @@ func (s *CertificateManagerV1) CreateCertificateMap(ctx context.Context, req *pb
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating certificate map: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -239,7 +239,7 @@ func (s *CertificateManagerV1) CreateDnsAuthorization(ctx context.Context, req *
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating dns authorization: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
@@ -329,7 +329,7 @@ func (s *CertificateManagerV1) CreateCertificateMapEntry(ctx context.Context, re
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating certificate map entry: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

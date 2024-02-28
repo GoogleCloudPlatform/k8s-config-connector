@@ -58,7 +58,7 @@ func (s *EdgenetworkV1) CreateNetwork(ctx context.Context, req *pb.CreateNetwork
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating network: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

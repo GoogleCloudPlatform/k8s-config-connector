@@ -59,7 +59,7 @@ func (s *PrivateCAV1) CreateCaPool(ctx context.Context, req *pb.CreateCaPoolRequ
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating caPool: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

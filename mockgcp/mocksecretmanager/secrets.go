@@ -71,7 +71,7 @@ func (s *SecretsV1) CreateSecret(ctx context.Context, req *pb.CreateSecretReques
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating secret: %v", err)
+		return nil, err
 	}
 
 	return obj, nil

@@ -83,7 +83,7 @@ func (s *BillingV1) UpdateProjectBillingInfo(ctx context.Context, req *pb.Update
 	obj.ProjectId = projectName.ProjectID
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating projectBillingInfo: %v", err)
+		return nil, err
 	}
 
 	return obj, nil

@@ -100,7 +100,7 @@ func (s *TagKeys) CreateTagKey(ctx context.Context, req *pb.CreateTagKeyRequest)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating tagKey: %v", err)
+		return nil, err
 	}
 
 	metadata := &pb.CreateTagKeyMetadata{}
@@ -145,7 +145,7 @@ func (s *TagKeys) UpdateTagKey(ctx context.Context, req *pb.UpdateTagKeyRequest)
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating tagKey: %v", err)
+		return nil, err
 	}
 
 	metadata := &pb.UpdateTagKeyMetadata{}
