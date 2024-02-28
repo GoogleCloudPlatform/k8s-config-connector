@@ -560,6 +560,7 @@ func filterLogs(log logr.Logger) logr.Logger {
 	f := &filterSink{sink: log.GetSink()}
 	f.IgnoreMessages = sets.New[string]()
 	f.IgnoreMessages.Insert("Registered controller")
+	f.IgnoreMessages.Insert("Registered deletion-defender controller")
 	f.IgnoreMessages.Insert("Starting Controller")
 	f.IgnoreMessages.Insert("Starting EventSource")
 	f.IgnoreMessages.Insert("Starting workers")

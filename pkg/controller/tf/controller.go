@@ -103,7 +103,8 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 	if err != nil {
 		return nil, fmt.Errorf("error creating new controller: %w", err)
 	}
-	logger.Info("Registered controller", "kind", kind, "apiVersion", apiVersion)
+	log := mgr.GetLogger()
+	log.Info("Registered controller", "kind", kind, "apiVersion", apiVersion)
 	return r, nil
 }
 
