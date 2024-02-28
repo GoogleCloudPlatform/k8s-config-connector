@@ -18,6 +18,8 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/log"
 	"io"
 	"os"
 	"strings"
@@ -76,6 +78,10 @@ func NewHarness(t *testing.T) *Harness {
 	if err := iamv1beta1.SchemeBuilder.AddToScheme(h.Scheme); err != nil {
 		t.Fatal(err)
 	}
+	// AddToScheme here doesn't work.
+	if err := operatorv1beta1.SchemeBuilder.AddToScheme(h.Scheme); err != nil {
+		t.Fatal(err)
+	}
 
 	t.Cleanup(h.Stop)
 	return h
@@ -122,6 +128,8 @@ func (h *Harness) WithObjects(initObjs ...*unstructured.Unstructured) {
 	k8s.RegisterType(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"}, "namespaces", meta.RESTScopeRoot)
 	k8s.RegisterType(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Secret"}, "secrets", meta.RESTScopeNamespace)
 
+	k8s.RegisterType(schema.GroupVersionKind{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnectorContext"}, "configconnectorcontexts", meta.RESTScopeNamespace)
+	log.Info("hit????")
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
 		h.Fatalf("error getting new service mapping loader: %v", err)

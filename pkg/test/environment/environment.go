@@ -19,7 +19,7 @@ import (
 	"log"
 	"time"
 
-	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/paths"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -40,7 +40,7 @@ func init() {
 	if err := apis.AddToScheme(s); err != nil {
 		log.Fatalf("error registering schemes: %v", err)
 	}
-	if err := corev1beta1.SchemeBuilder.AddToScheme(scheme.Scheme); err != nil {
+	if err := operatorv1beta1.SchemeBuilder.AddToScheme(s); err != nil {
 		log.Fatalf("error registering operator v1beta1 schemes: %v", err)
 	}
 }
