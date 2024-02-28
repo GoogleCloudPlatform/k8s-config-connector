@@ -211,7 +211,7 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: manifests resource-docs generate-go-client
+ready-pr: lint manifests resource-docs generate-go-client
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl
