@@ -18,8 +18,6 @@ import (
 	"context"
 
 	"google.golang.org/genproto/googleapis/longrunning"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgecontainer/v1"
@@ -53,7 +51,7 @@ func (s *EdgeContainerV1) CreateNodePool(ctx context.Context, req *pb.CreateNode
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating nodePool: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

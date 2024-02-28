@@ -123,7 +123,7 @@ func (s *ServerV1) CreateServiceAccount(ctx context.Context, req *pb.CreateServi
 
 	fqn := name.String()
 	if err := s.storage.Create(ctx, fqn, sa); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating serviceaccount: %v", err)
+		return nil, err
 	}
 
 	return sa, nil

@@ -20,8 +20,6 @@ import (
 	"time"
 
 	longrunning "google.golang.org/genproto/googleapis/longrunning"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -85,7 +83,7 @@ func (s *APIKeysV2) CreateKey(ctx context.Context, req *pb.CreateKeyRequest) (*l
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating key: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

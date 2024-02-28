@@ -62,7 +62,7 @@ func (s *NetworkServicesServer) CreateMesh(ctx context.Context, req *pb.CreateMe
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating mesh: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

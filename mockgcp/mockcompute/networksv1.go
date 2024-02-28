@@ -66,7 +66,7 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 	obj.Kind = PtrTo("compute#network")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating network: %v", err)
+		return nil, err
 	}
 
 	op := &pb.Operation{

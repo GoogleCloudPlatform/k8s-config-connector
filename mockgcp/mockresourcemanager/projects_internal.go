@@ -205,7 +205,7 @@ func (s *ProjectsInternal) mutateProject(ctx context.Context, name string, mutat
 
 	obj, err := s.projectsInternal.tryGetProject(ctx, projectName)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "error reading project: %v", err)
+		return nil, err
 	}
 	if obj == nil {
 		return nil, status.Error(codes.PermissionDenied, "permission denied")

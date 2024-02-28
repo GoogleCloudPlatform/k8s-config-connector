@@ -59,7 +59,7 @@ func (s *CloudFunctionsV1) CreateFunction(ctx context.Context, req *pb.CreateFun
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating function: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)

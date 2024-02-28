@@ -100,7 +100,7 @@ func (s *RegionalDisksV1) Update(ctx context.Context, req *pb.UpdateRegionDiskRe
 	proto.Merge(obj, req.GetDiskResource())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating disk: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)

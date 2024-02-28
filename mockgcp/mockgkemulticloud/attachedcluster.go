@@ -59,7 +59,7 @@ func (s *GKEMulticloudV1) CreateAttachedCluster(ctx context.Context, req *pb.Cre
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating attachedCluster: %v", err)
+		return nil, err
 	}
 
 	return s.operations.NewLRO(ctx)
