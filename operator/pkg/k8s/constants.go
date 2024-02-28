@@ -45,7 +45,7 @@ const (
 	UpToDate                             = "UpToDate"
 	UpToDateMessage                      = "ConfigConnector is up to date"
 	UpdateFailed                         = "UpdateFailed"
-	ReconcileErrMsgTmpl                  = "error during reconciliation: %v"
+	ReconcileErrMsgTmpl                  = "error during reconciliation: %w"
 	ControllerManagerService             = "cnrm-manager"
 	NamespacedManagerServicePrefix       = "cnrm-manager-"
 	NamespacedManagerServiceTmpl         = "cnrm-manager-${NAMESPACE?}"
