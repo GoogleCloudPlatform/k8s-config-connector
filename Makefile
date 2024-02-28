@@ -24,7 +24,7 @@ UNMANAGED_DETECTOR_IMG ?= gcr.io/${PROJECT_ID}/unmanageddetector:${SHORT_SHA}
 GOLANGCI_LINT_CACHE := $(shell pwd)/.tmp/golangci-lint
 # When updating this, make sure to update the corresponding action in
 # ./github/workflows/lint.yaml
-GOLANGCI_LINT_VERSION := v1.54.1
+GOLANGCI_LINT_VERSION := v1.54.2
 
 # Use Docker BuildKit when building images to allow usage of 'setcap' in
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
@@ -211,7 +211,7 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: manifests resource-docs generate-go-client
+ready-pr: lint manifests resource-docs generate-go-client
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl
