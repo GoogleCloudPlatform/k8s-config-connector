@@ -39,15 +39,15 @@ require (
 	go.opencensus.io v0.24.0
 	go.uber.org/zap v1.26.0
 	golang.org/x/oauth2 v0.12.0
-	golang.org/x/sync v0.3.0
+	golang.org/x/sync v0.5.0
 	golang.org/x/time v0.3.0
 	google.golang.org/api v0.139.0
 	google.golang.org/protobuf v1.31.0
 	gopkg.in/yaml.v2 v2.4.0
-	k8s.io/api v0.27.9
+	k8s.io/api v0.27.11
 	k8s.io/apiextensions-apiserver v0.27.9
-	k8s.io/apimachinery v0.27.9
-	k8s.io/client-go v0.27.9
+	k8s.io/apimachinery v0.27.11
+	k8s.io/client-go v0.27.11
 	k8s.io/code-generator v0.27.9
 	k8s.io/gengo v0.0.0-20220902162205-c0856e24416d
 	k8s.io/klog/v2 v2.100.1
@@ -186,12 +186,12 @@ require (
 	go.starlark.net v0.0.0-20200306205701-8dd3e2ee1dd5 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/crypto v0.17.0 // indirect
-	golang.org/x/mod v0.12.0 // indirect
+	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/term v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.13.0 // indirect
+	golang.org/x/tools v0.16.1 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.3.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
