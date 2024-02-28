@@ -17,7 +17,7 @@ kind: AccessContextManagerAccessLevel
 metadata:
   annotations:
     # Replace "${ORG_ID?}" with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
   name: accesslevelsample
 spec:
   accessPolicyRef:

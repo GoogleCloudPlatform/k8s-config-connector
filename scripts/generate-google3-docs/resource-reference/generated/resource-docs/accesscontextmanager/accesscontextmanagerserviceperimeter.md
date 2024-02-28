@@ -2227,7 +2227,8 @@ spec:
     egressPolicies:
     - egressFrom:
         identities:
-        - name: serviceperimeterengressdep
+          - serviceAccountRef:
+              name: serviceperimeterengressdep
     - egressTo:
         resources:
         - projectRef:
@@ -2235,7 +2236,8 @@ spec:
     ingressPolicies:
     - ingressFrom:
         identities:
-        - name: serviceperimeteringressdep
+          - serviceAccountRef:
+              name: serviceperimeteringressdep
         sources:
         - accessLevelRef:
             name: serviceperimeterdep2
@@ -2280,7 +2282,7 @@ kind: AccessContextManagerAccessLevel
 metadata:
   annotations:
     # Replace "${ORG_ID?}" with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
   name: serviceperimeterdep1
 spec:
   accessPolicyRef:
@@ -2297,7 +2299,7 @@ kind: AccessContextManagerAccessLevel
 metadata:
   annotations:
     # Replace "${ORG_ID?}" with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
   name: serviceperimeterdep2
 spec:
   accessPolicyRef:
@@ -2314,7 +2316,7 @@ kind: IAMServiceAccount
 metadata:
   annotations:
     # Replace "${ORG_ID?}" with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
   name: serviceperimeterengressdep
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
@@ -2322,7 +2324,7 @@ kind: IAMServiceAccount
 metadata:
   annotations:
     # Replace "${ORG_ID?}" with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
   name: serviceperimeteringressdep
 ```
 
