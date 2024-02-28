@@ -291,9 +291,13 @@ ServiceMappings file. Add the `ResourceConfig` for your resource:
     - name: google_container_cluster
       kind: ContainerCluster
       ...
-      observedField:
+      observedFields:
         - master_auth.client_certificate
     ```
+
+    After you generated CRD following the next step, you might need to revisit this step.
+    Generally speaking, if a CRD status field is GCP API related (i.e. not a KCC status field),
+    you should add it to the `observedFields`.
 
 ## Generate the CRD
 
